@@ -1,4 +1,4 @@
-Pyedb core
+PyEDB core
 ==========
 
 Ansys Electronics Database Python Client

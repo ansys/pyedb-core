@@ -1,20 +1,16 @@
-import ansys.api.edb.v1.via_group_pb2 as via_group_pb2
-from ansys.edb.cell.hierarchy.group import Group
-from ansys.edb.cell.layout import Layout
-from ansys.edb.cell.net import Net
-from ansys.edb.session import get_via_group_stub
-from ansys.edb.utility.edb_errors import handle_grpc_exception
+"""Via Group."""
 
-import ansys.edb.core.communications.grpc.messages as messages
-from ansys.edb.core.models.base import Points2D
+import ansys.api.edb.v1.via_group_pb2 as via_group_pb2
+
+from ....interfaces.grpc import messages
+from ....session import get_via_group_stub
+from ....utility.edb_errors import handle_grpc_exception
+from .group import Group
 
 
 class _QueryBuilder:
     @staticmethod
-    def create(
-        layout: Layout, outline: Points2D, conductivity_ratio: float, layer: str, net: Net
-    ) -> via_group_pb2.ViaGroupCreationMessage:
-
+    def create(layout, outline, conductivity_ratio, layer, net):
         return via_group_pb2.ViaGroupCreationMessage(
             layout=layout.id,
             points=messages.points_message(outline),
@@ -25,11 +21,25 @@ class _QueryBuilder:
 
 
 class ViaGroup(Group):
+    """Class representing a via group."""
+
     @staticmethod
     @handle_grpc_exception
-    def create(
-        layout: Layout, outline: Points2D, conductivity_ratio: float, layer: str, net: Net = None
-    ) -> "ViaGroup":
+    def create(layout, outline, conductivity_ratio, layer, net=None):
+        """Create a via group.
+
+        Parameters
+        ----------
+        layout : Layout
+        outline : list of Point2D
+        conductivity_ratio : float
+        layer : str
+        net : Net, optional
+
+        Returns
+        -------
+        ViaGroup
+        """
         return ViaGroup(
             get_via_group_stub().Create(
                 _QueryBuilder.create(layout, outline, conductivity_ratio, layer, net)

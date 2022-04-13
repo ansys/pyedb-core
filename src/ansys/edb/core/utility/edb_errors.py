@@ -1,4 +1,5 @@
-"""edb specific errors"""
+"""edb specific errors."""
+
 from functools import wraps
 
 from grpc import StatusCode
@@ -8,12 +9,11 @@ from . import LOGGER
 
 
 def handle_grpc_exception(func):
-    """Capture gRPC exceptions and return a more succinct error message"""
+    """Capture gRPC exceptions and return a more succinct error message."""
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        """Capture gRPC exceptions"""
-
+        """Capture gRPC exceptions."""
         try:
             out = func(*args, **kwargs)
         except (_InactiveRpcError, _MultiThreadedRendezvous) as error:

@@ -1,5 +1,6 @@
+"""Layer."""
+
 from enum import Enum
-from typing import Union
 
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 
@@ -10,6 +11,8 @@ from ..base import ObjBase
 
 
 class LayerType(Enum):
+    """Enum representing types of layers."""
+
     SIGNAL_LAYER = layer_pb2.SIGNAL_LAYER
     DIELECTRIC_LAYER = layer_pb2.DIELECTRIC_LAYER
     CONDUCTING_LAYER = layer_pb2.CONDUCTING_LAYER
@@ -32,17 +35,27 @@ class LayerType(Enum):
 
 
 class Layer(ObjBase):
+    """Base class representing a layer."""
+
     def __init__(self, msg):
+        """Initialize a layer instance."""
         super().__init__(msg)
         self._is_owner = False
 
     def __del__(self):
+        """Destroy a layer instance."""
         if self._is_owner:
             get_layer_stub().Cleanup(self._msg)
 
     @staticmethod
     @handle_grpc_exception
-    def _create(msg) -> Union["Layer", "StackupLayer", "ViaLayer"]:
+    def _create(msg):
+        """Create a layer.
+
+        Returns
+        -------
+        Layer, StackupLayer, ViaLayer
+        """
         lyr = Layer(msg)
         if lyr.is_stackup_layer():
             if lyr.is_via_layer():
@@ -53,11 +66,23 @@ class Layer(ObjBase):
             return lyr
 
     @handle_grpc_exception
-    def get_layer_type(self) -> LayerType:
+    def get_layer_type(self):
+        """Get layer type.
+
+        Returns
+        -------
+        LayerType
+        """
         return LayerType(get_layer_stub().GetLayerType(self._msg).type)
 
     @handle_grpc_exception
-    def is_stackup_layer(self) -> bool:
+    def is_stackup_layer(self):
+        """Determine if a layer is stackup.
+
+        Returns
+        -------
+        bool
+        """
         layer_type = self.get_layer_type()
         return (
             layer_type == LayerType.DIELECTRIC_LAYER
@@ -66,18 +91,47 @@ class Layer(ObjBase):
         )
 
     @handle_grpc_exception
-    def is_via_layer(self) -> bool:
+    def is_via_layer(self):
+        """Determine if a layer is via.
+
+        Returns
+        -------
+        bool
+        """
         return get_layer_stub().IsViaLayer(self._msg).value
 
     @handle_grpc_exception
-    def get_name(self) -> str:
+    def get_name(self):
+        """Get name of a layer.
+
+        Returns
+        -------
+        str
+        """
         return get_layer_stub().GetName(self._msg).value
 
 
 class StackupLayer(Layer):
+    """Stackup layer."""
+
     @staticmethod
     @handle_grpc_exception
     def create(name, layer_type, thickness, elevation, material, layout=None, negative=None):
+        """Create a stackup layer.
+
+        Parameters
+        name : str
+        layer_type : LayerType
+        thickness : float
+        thickness : float
+        material : str
+        layout : Layout, optional
+        negative : bool, optional
+
+        Returns
+        -------
+        StackupLayer
+        """
         params = {
             "name": name,
             "type": layer_type.value,
@@ -95,23 +149,47 @@ class StackupLayer(Layer):
         return stackup_layer
 
     @handle_grpc_exception
-    def set_negative(self, is_negative: bool) -> None:
+    def set_negative(self, is_negative):
+        """Update negative.
+
+        Parameters
+        ----------
+        is_negative : bool
+
+        Returns
+        -------
+        bool
+        """
         return get_stackup_layer_stub().SetNegative(
             layer_pb2.SetNegativeMessage(layer=self._msg, is_negative=is_negative)
         )
 
 
 class ViaLayer(StackupLayer):
+    """Via layer."""
+
     @staticmethod
     @handle_grpc_exception
-    def create(
-        name, lower_ref_layer_name, upper_ref_layer_name, material_name, layout=None
-    ) -> "ViaLayer":
+    def create(name, lr_layer, ur_layer, material, layout=None):
+        """Create a via layer.
+
+        Parameters
+        ----------
+        name : str
+        lr_layer : str
+        ur_layer : str
+        material : str
+        layout : Layout, optional
+
+        Returns
+        -------
+        ViaLayer
+        """
         params = {
             "via_layer_name": name,
-            "lower_ref_layer_name": lower_ref_layer_name,
-            "upper_ref_layer_name": upper_ref_layer_name,
-            "material_name": material_name,
+            "lower_ref_layer_name": lr_layer,
+            "upper_ref_layer_name": ur_layer,
+            "material_name": material,
         }
         messages.optional(params, "layout", layout, messages.edb_obj_message)
         via_layer = ViaLayer(

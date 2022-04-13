@@ -1,4 +1,4 @@
-from typing import List, Tuple
+"""HFSS Simulation Settings."""
 
 from ansys.api.edb.v1.simulation_settings_pb2 import (
     MeshOperationMessage,
@@ -11,20 +11,17 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
 from ....session import get_hfss_simulation_settings_stub
 from ....utility.edb_errors import handle_grpc_exception
 from .adaptive.hfss_adaptive_settings import HFSSAdaptiveSettings
-from .mesh_operation.mesh_operation import MeshOperation
 from .mesh_operation.skin_depth_mesh_operation import SkinDepthMeshOperation
 from .simulation_settings import SimulationSettings
 
 
 class _QueryBuilder:
     @staticmethod
-    def get_adaptive_settings(hfss_sim_settings: "HFSSSimulationSettings"):
+    def get_adaptive_settings(hfss_sim_settings):
         return hfss_sim_settings._msg
 
     @staticmethod
-    def set_mesh_operations(
-        hfss_sim_settings: "HFSSSimulationSettings", new_mesh_ops: List[MeshOperation]
-    ):
+    def set_mesh_operations(hfss_sim_settings, new_mesh_ops):
         new_mesh_op_msgs = []
         for mesh_op in new_mesh_ops:
             mesh_op_msg = _QueryBuilder.mesh_op_message(mesh_op)
@@ -41,7 +38,7 @@ class _QueryBuilder:
         )
 
     @staticmethod
-    def mesh_op_message(op: MeshOperation):
+    def mesh_op_message(op):
         return MeshOperationMessage(
             name=op.name,
             enabled=op.enabled,
@@ -51,7 +48,7 @@ class _QueryBuilder:
         )
 
     @staticmethod
-    def mesh_op_net_layer_message(nls: List[Tuple[str, str, bool]]):
+    def mesh_op_net_layer_message(nls):
         return [MeshOpNetLayerInfoMessage(net=nl[0], layer=nl[1], is_sheet=nl[2]) for nl in nls]
 
     @staticmethod
@@ -66,9 +63,12 @@ class _QueryBuilder:
 
 
 class HFSSSimulationSettings(SimulationSettings):
+    """HFSS Simulation Settings."""
+
     @property
     @handle_grpc_exception
     def adaptive_settings(self) -> HFSSAdaptiveSettings:
+        """Get adaptive settings of this simulation setting."""
         return HFSSAdaptiveSettings(
             get_hfss_simulation_settings_stub().GetAdaptiveSettings(
                 _QueryBuilder.get_adaptive_settings(self)
@@ -77,9 +77,16 @@ class HFSSSimulationSettings(SimulationSettings):
 
     @property
     def mesh_operations(self):
+        """Get list of mesh operations?."""
         pass
 
     @mesh_operations.setter
-    def mesh_operations(self, new_mesh_ops: List[MeshOperation]) -> None:
+    def mesh_operations(self, new_mesh_ops):
+        """Update mesh operations of this simulation setting.
+
+        Parameters
+        ----------
+        new_mesh_ops : list[MeshOperation]
+        """
         query = _QueryBuilder.set_mesh_operations(self, new_mesh_ops)
         get_hfss_simulation_settings_stub().SetMeshOperations(query)

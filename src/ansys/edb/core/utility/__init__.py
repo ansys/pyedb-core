@@ -1,3 +1,5 @@
+"""This package contains utility functions available to other packages."""
+
 import logging
 
 from .edb_logging import EDBLogger

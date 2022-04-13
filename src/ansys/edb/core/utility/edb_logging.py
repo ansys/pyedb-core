@@ -1,6 +1,4 @@
-"""
-``log`` module
-*******************
+"""``log`` module.
 
 ## Objective
 This module intends to create a general framework for logging.
@@ -8,12 +6,12 @@ This module is built upon ``logging`` library and it does NOT intend to
 replace it rather provide a way to interact between ``logging`` and ``EDB Client``.
 
 Usage
-----------
+-----
 
 Global logger
-~~~~~~~~~~~~~~~~~
+-------------
 
-There is a global logger named ``EDB_LOG`` which is created at ``ansys.edb.utility.__init__``.
+There is a global logger named ``EDB_LOGGER`
 If you want to use this global logger, you must call at the top of your module:
 
 .. code::
@@ -44,13 +42,6 @@ To log using this logger, just call the desired method as a normal logger.
     LOGGER.debug('This is LOG debug message.')
 
     | DEBUG    | This is LOG debug message.
-
-Notes
----------
-
-To-Do's
------------
-
 """
 
 from datetime import datetime
@@ -103,7 +94,7 @@ class EDBLogger:
     std_out_handler = None
 
     def __init__(self, level=logging.DEBUG, to_file=False, to_stdout=True, filename=FILE_NAME):
-        """Customized logger class for edb_client.
+        """Customize logger class for edb_client.
 
         Parameters
         ----------
@@ -117,7 +108,6 @@ class EDBLogger:
         filename : str, optional
             Name of the output file. By default ``edb_client.log``.
         """
-
         self.logger = logging.getLogger("edb_client")  # Creating default main logger.
         self.logger.setLevel(level)
         self.logger.propagate = True
@@ -142,13 +132,13 @@ class EDBLogger:
         )  # Using logger to record unhandled exceptions
 
     def stop_logging_to_stdout(self):
-        """Stop logging to stdout"""
+        """Stop logging to stdout."""
         if self.std_out_handler is not None:
             self.logger.removeHandler(self.std_out_handler)
             self.std_out_handler = None
 
     def stop_logging_to_file(self):
-        """Stop logging to file"""
+        """Stop logging to file."""
         if self.file_handler is not None:
             self.logger.removeHandler(self.file_handler)
             self.file_handler = None
@@ -163,7 +153,6 @@ class EDBLogger:
         level : str, optional
             Level of logging. E.x. 'DEBUG'. By default LOG_LEVEL
         """
-
         addfile_handler(self, filename=filename, level=level, write_headers=True)
 
     def log_to_stdout(self, level=LOG_LEVEL):
@@ -174,7 +163,6 @@ class EDBLogger:
         level : str, optional
             Level of logging record. By default LOG_LEVEL
         """
-
         add_stdout_handler(self, level=level)
 
     def set_level(self, level="DEBUG"):
@@ -185,7 +173,7 @@ class EDBLogger:
 
     @staticmethod
     def add_handling_uncaught_exceptions(logger):
-        """This just redirects the output of an exception to the logger."""
+        """Redirects the output of an exception to the logger."""
 
         def handle_exception(exc_type, exc_value, exc_traceback):
             if issubclass(exc_type, KeyboardInterrupt):
@@ -219,7 +207,6 @@ def addfile_handler(edb_logger, filename=FILE_NAME, level=LOG_LEVEL, write_heade
     logger
         Return the EDBLogger object.
     """
-
     file_handler = logging.FileHandler(filename)
     file_handler.setLevel(level)
     file_handler.setFormatter(logging.Formatter(FILE_MSG_FORMAT))
@@ -252,7 +239,6 @@ def add_stdout_handler(edb_logger, level=LOG_LEVEL, write_headers=False):
     logger
         The EDBLogger object.
     """
-
     std_out_handler = logging.StreamHandler()
     std_out_handler.setLevel(level)
     std_out_handler.setFormatter(logging.Formatter(STDOUT_MSG_FORMAT))

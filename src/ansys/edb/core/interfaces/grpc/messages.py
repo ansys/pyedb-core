@@ -1,3 +1,5 @@
+"""Protobuf interface for message creation."""
+
 from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
@@ -20,19 +22,23 @@ from google.protobuf.wrappers_pb2 import BoolValue, StringValue
 
 
 def optional(params, key, value, func):
+    """Evaluate a function is the value is present."""
     if value is not None:
         params[key] = func(value)
 
 
 def str_message(s: str):
+    """Convert to StringValue."""
     return StringValue(value=s) if s is not None else None
 
 
 def bool_message(b: bool):
+    """Convert to BoolValue."""
     return BoolValue(value=b) if b is not None else None
 
 
 def points_message(points):
+    """Convert to PointsMessage."""
     if points is None:
         return None
     elif isinstance(points, list) or isinstance(points, tuple):
@@ -42,6 +48,7 @@ def points_message(points):
 
 
 def points_data_message(points):
+    """Convert to PathPointsMessage."""
     is_tuple = isinstance(points, tuple)
     points_data = points[0] if is_tuple else points
     closed = points[1] if is_tuple and len(points) > 1 and points[1] is not None else True
@@ -51,6 +58,7 @@ def points_data_message(points):
 
 
 def point_message(point):
+    """Convert to PointMessage."""
     if point is None:
         return None
     else:
@@ -58,10 +66,12 @@ def point_message(point):
 
 
 def value_message(value):
+    """Convert to ValueMessage."""
     return ValueMessage(value=value)
 
 
 def edb_obj_message(obj):
+    """Extract EDB impl ptr."""
     if obj is None:
         return None
     else:
@@ -69,6 +79,7 @@ def edb_obj_message(obj):
 
 
 def material_properties_message(**kwargs):
+    """Convert to MaterialDefPropertiesMessage."""
     params = {
         key: value_message(value)
         for key, value in kwargs.items()
@@ -91,6 +102,7 @@ def material_properties_message(**kwargs):
 
 
 def layer_ref_message(layer):
+    """Convert to LayerRefMessage."""
     if layer is None:
         return None
     elif type(layer) == str:
@@ -100,6 +112,7 @@ def layer_ref_message(layer):
 
 
 def net_ref_message(net):
+    """Convert to NetRefMessage."""
     if net is None:
         return None
     elif type(net) == str:
@@ -109,6 +122,7 @@ def net_ref_message(net):
 
 
 def adaptive_frequency_message(frequency: str, max_delta_s: float, max_passes: int):
+    """Convert to AdaptiveFrequencyDataMessage."""
     return AdaptiveFrequencyDataMessage(
         adaptive_frequency=frequency, max_delta=str(max_delta_s), max_passes=max_passes
     )
@@ -126,6 +140,7 @@ def mesh_operation_message(
     max_elem: str = "1000",
     restrict_max_elem: bool = False,
 ):
+    """Convert to MeshOperationMessage."""
     return MeshOperationMessage(
         name=name,
         enabled=enabled,
@@ -139,6 +154,7 @@ def mesh_operation_message(
 
 
 def frequency_sweep_message(name, distribution, start_f, end_f, step, fast_sweep):
+    """Convert to FrequencySweepMessage."""
     return SweepDataMessage(
         name=name,
         frequency_string=distribution + " " + start_f + " " + end_f + " " + step,
@@ -163,5 +179,6 @@ def _mesh_op_net_layer_message(net, layer, is_sheet):
 
 
 def value_message_to_value(message):
+    """Extract a value from ValueMessage."""
     if message:
         return message.value

@@ -1,17 +1,20 @@
+"""Simulation Setup."""
+
 from enum import Enum
-from typing import List, Tuple
 
 import ansys.api.edb.v1.simulation_setup_pb2 as simulation_setup_pb2
-from ansys.edb.cell.cell import Cell
-from ansys.edb.session import get_simulation_setup_stub
-from ansys.edb.simulation_setup.settings.simulation_setup_info import SimulationSetupInfo
-from ansys.edb.utility.edb_errors import handle_grpc_exception
-from ansys.edb.utility.obj_base import ObjBase
 
-import ansys.edb.core.communications.grpc.messages as messages
+from ...interfaces.grpc import messages
+from ...session import get_simulation_setup_stub
+from ...utility.edb_errors import handle_grpc_exception
+from ..base import ObjBase
+from ..cell.cell import Cell
+from .settings.simulation_setup_info import SimulationSetupInfo
 
 
 class SimulationSetupType(Enum):
+    """Enum representing available setup types."""
+
     HFSS = simulation_setup_pb2.HFSS
 
 
@@ -49,16 +52,36 @@ class _QueryBuilder:
 
 
 class SimulationSetup(ObjBase):
+    """Simulation Setup."""
+
     @staticmethod
     @handle_grpc_exception
-    def create(cell: Cell, name: str, sim_type: SimulationSetupType) -> "SimulationSetup":
+    def create(cell, name, sim_type):
+        """Create a simulation setup.
+
+        Parameters
+        ----------
+        cell: Cell
+        name: str
+        sim_type: SimulationSetupType
+
+        Returns
+        -------
+        SimulationSetup
+        """
         return SimulationSetup(
             get_simulation_setup_stub().Create(_QueryBuilder.create(cell, name, sim_type))
         )
 
     @property
     @handle_grpc_exception
-    def simulation_setup_info(self) -> SimulationSetupInfo:
+    def simulation_setup_info(self):
+        """Get simulation setup info.
+
+        Returns
+        -------
+        SimulationSetupInfo
+        """
         return SimulationSetupInfo(
             get_simulation_setup_stub().GetSimulationSetupInfo(
                 _QueryBuilder.get_simulation_setup_info(self)
@@ -66,7 +89,15 @@ class SimulationSetup(ObjBase):
         )
 
     @handle_grpc_exception
-    def adaptive_frequency(self, frequency: str, max_delta_s: float, max_pass: int):
+    def adaptive_frequency(self, frequency, max_delta_s, max_pass):
+        """Add an adaptive frequency to this simulation setup.
+
+        Parameters
+        ----------
+        frequency : str
+        max_delta_s : float
+        max_pass : int
+        """
         return (
             get_simulation_setup_stub()
             .AddAdaptiveFrequencies(
@@ -76,7 +107,16 @@ class SimulationSetup(ObjBase):
         )
 
     @handle_grpc_exception
-    def mesh_operation(self, name: str, net_layers: List[Tuple[str, str, bool]], num_layers: int):
+    def mesh_operation(self, name, net_layers, num_layers):
+        """Add a mesh operation to this simulation setup.
+
+        Parameters
+        ----------
+        name : str
+        net_layers : list
+            Each item in the list must be tuple of str, str, bool
+        num_layers : int
+        """
         return (
             get_simulation_setup_stub()
             .AddMeshOperations(
@@ -87,9 +127,18 @@ class SimulationSetup(ObjBase):
             .value
         )
 
-    def frequency_sweep(
-        self, name: str, distribution: str, start_f: str, end_f: str, step: str, fast_sweep: bool
-    ):
+    def frequency_sweep(self, name, distribution, start_f, end_f, step, fast_sweep):
+        """Add a frequency sweep to this simulation setup.
+
+        Parameters
+        ----------
+        name : str
+        distribution : str
+        start_f : str
+        end_f : str
+        step : str
+        fast_sweep : bool
+        """
         return (
             get_simulation_setup_stub()
             .AddFrequencySweeps(

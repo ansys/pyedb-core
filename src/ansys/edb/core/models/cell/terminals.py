@@ -1,3 +1,5 @@
+"""Terminals."""
+
 import ansys.api.edb.v1.point_term_pb2 as pt
 import ansys.api.edb.v1.term_pb2 as t
 
@@ -14,8 +16,21 @@ class _TerminalQueryBuilder:
 
 
 class Terminal(ObjBase):
+    """Class representing a terminal object."""
+
     @handle_grpc_exception
-    def set_reference(self, ref) -> bool:
+    def set_reference(self, ref):
+        """
+        Set the reference of a terminal.
+
+        Parameters
+        ----------
+        ref : Terminal
+
+        Returns
+        -------
+        bool
+        """
         return (
             get_terminal_stub().SetReference(_TerminalQueryBuilder.set_reference(self, ref)).value
         )
@@ -34,9 +49,27 @@ class _PointTerminalQueryBuilder:
 
 
 class PointTerminal(Terminal):
+    """Class representing a point terminal object."""
+
     @staticmethod
     @handle_grpc_exception
-    def create(layout, net, layer: str, name: str, x: float, y: float):
+    def create(layout, net, layer, name, x, y):
+        """
+        Create a point terminal.
+
+        Parameters
+        ----------
+        layout : Layout
+        net : str
+        layer : str
+        name : str
+        x : float
+        y : float
+
+        Returns
+        -------
+        PointTerminal
+        """
         return PointTerminal(
             get_point_terminal_stub().Create(
                 _PointTerminalQueryBuilder.create(layout, net, layer, name, x, y)

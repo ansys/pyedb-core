@@ -1,3 +1,5 @@
+"""Material Definition."""
+
 from enum import Enum
 
 import ansys.api.edb.v1.material_def_pb2 as pb
@@ -6,10 +8,11 @@ from ...interfaces.grpc import messages
 from ...session import get_material_def_stub
 from ...utility.edb_errors import handle_grpc_exception
 from ..base import ObjBase
-from ..database import Database
 
 
 class MaterialProperty(Enum):
+    """Enum representing property types."""
+
     PERMITTIVITY = pb.PERMITTIVITY
     PERMEABILITY = pb.PERMEABILITY
     CONDUCTIVITY = pb.CONDUCTIVITY
@@ -41,15 +44,39 @@ class _QueryBuilder:
 
 
 class MaterialDef(ObjBase):
+    """Class representing a material definition."""
+
     @staticmethod
     @handle_grpc_exception
-    def create(database: Database, name: str, **kwargs):
+    def create(database, name, **kwargs):
+        """Create a material definition.
+
+        Parameters
+        ----------
+        database : Database
+        name : str
+
+        Returns
+        -------
+        MaterialDef
+        """
         return MaterialDef(
             get_material_def_stub().Create(_QueryBuilder.create(database._msg, name, **kwargs))
         )
 
     @handle_grpc_exception
-    def set_property(self, material_property: MaterialProperty, value: float) -> bool:
+    def set_property(self, material_property, value):
+        """Set a property value of a material.
+
+        Parameters
+        ----------
+        material_property : MaterialProperty
+        value : float
+
+        Returns
+        -------
+        bool
+        """
         return (
             get_material_def_stub()
             .SetProperty(_QueryBuilder.set_property(self._msg, material_property, value))

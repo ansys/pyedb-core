@@ -1,4 +1,4 @@
-from typing import List
+"""Adaptive Settings."""
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import (
     AdaptiveFrequencyDataListMessage,
@@ -13,13 +13,11 @@ from .adaptive_frequency_data import AdaptiveFrequencyData
 
 class _QueryBuilder:
     @staticmethod
-    def get_adaptive_frequency_data_list(adaptive_settings: "AdaptiveSettings"):
+    def get_adaptive_frequency_data_list(adaptive_settings):
         return adaptive_settings._msg
 
     @staticmethod
-    def set_adaptive_frequency_data_list(
-        adaptive_settings: "AdaptiveSettings", new_adaptive_freq_list: List[AdaptiveFrequencyData]
-    ):
+    def set_adaptive_frequency_data_list(adaptive_settings, new_adaptive_freq_list):
         list_msgs = [
             AdaptiveFrequencyDataMessage(
                 adaptive_frequency=data.adaptive_frequency,
@@ -35,8 +33,16 @@ class _QueryBuilder:
 
 
 class AdaptiveSettings(ObjBase):
+    """Class representing adaptive settings."""
+
     @property
-    def adaptive_frequency_data_list(self) -> List[AdaptiveFrequencyData]:
+    def adaptive_frequency_data_list(self):
+        """Get adaptive frequencies.
+
+        Returns
+        -------
+        list of AdaptiveFrequencyData
+        """
         msg = get_adaptive_settings_stub().GetAdaptiveFrequencyDataList(
             _QueryBuilder.get_adaptive_frequency_data_list(self)
         )
@@ -46,9 +52,17 @@ class AdaptiveSettings(ObjBase):
         ]
 
     @adaptive_frequency_data_list.setter
-    def adaptive_frequency_data_list(
-        self, new_adaptive_freq_list: List[AdaptiveFrequencyData]
-    ) -> None:
+    def adaptive_frequency_data_list(self, new_adaptive_freq_list):
+        """Set adaptive frequencies.
+
+        Parameters
+        ----------
+        new_adaptive_freq_list : list of AdaptiveFrequencyData
+
+        Returns
+        -------
+        None
+        """
         get_adaptive_settings_stub().SetAdaptiveFrequencyDataList(
             _QueryBuilder.set_adaptive_frequency_data_list(self, new_adaptive_freq_list)
         )

@@ -1,9 +1,11 @@
+"""Session manager for gRPC."""
+
 from contextlib import contextmanager
 from pathlib import Path as PathlibPath
 from struct import pack, unpack
 import subprocess
 from sys import modules
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
@@ -31,33 +33,6 @@ from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 import grpc
 
-# Stubs type alias
-
-_stub = Union[
-    CellServiceStub,
-    DatabaseServiceStub,
-    EDBIteratorServiceStub,
-    LayerCollectionServiceStub,
-    LayerServiceStub,
-    StackupLayerServiceStub,
-    ViaLayerServiceStub,
-    LayoutServiceStub,
-    MaterialDefServiceStub,
-    NetServiceStub,
-    PrimitiveServiceStub,
-    PolygonServiceStub,
-    PolygonDataServiceStub,
-    PathServiceStub,
-    RectangleServiceStub,
-    TerminalServiceStub,
-    PointTerminalServiceStub,
-    AdaptiveSettingsServiceStub,
-    SimulationSetupServiceStub,
-    HFSSSimulatonSettingsServiceStub,
-    SimulationSetupInfoServiceStub,
-    ViaGroupServiceStub,
-]
-
 
 # Helper class for storing data used by the session
 class _EDBSessionData:
@@ -67,7 +42,7 @@ class _EDBSessionData:
         self.ansys_em_root: Optional[PathlibPath] = None
         self.channel: Optional["grpc.Channel"] = None
         self.local_server_proc: Optional["subprocess.Popen"] = None
-        self.stubs: Dict[str, _stub] = {}
+        self.stubs = {}
 
     def initialize(self, ip_address: str, port_num: str, ansys_em_root: PathlibPath = None):
         self.ip_address = ip_address
@@ -145,13 +120,24 @@ _local_server_error_code_exception_msg_map = {
 }
 
 
-# Launch a local session of the EDB API
-def launch_local_session(ansys_em_root: PathlibPath, port_num: str) -> None:
+def launch_local_session(ansys_em_root, port_num):
+    """Launch a local session of the EDB API.
+
+    Parameters
+    ----------
+    ansys_em_root : pathlib.Path
+    port_num : str
+
+    Returns
+    -------
+    None
+    """
     return _launch_session("localhost", port_num, ansys_em_root)
 
 
 @contextmanager
 def _launch_session(ip_address: str, port_num: str, ansys_em_root: PathlibPath = None) -> None:
+
     session.data.initialize(ip_address, port_num, ansys_em_root)
     try:
         _connect()
@@ -230,7 +216,7 @@ def _is_local_session() -> bool:
     return bool(session.data.ansys_em_root)
 
 
-def _get_stub(keyword: str) -> _stub:
+def _get_stub(keyword: str):
     if _session_is_active():
         return session.data.stubs.get(keyword)
     raise EDBSessionException("No active session detected")
@@ -271,98 +257,233 @@ def _disconnect() -> None:
     session.data.reset()
 
 
-# Stub getters
-def get_cell_stub() -> CellServiceStub:
+def get_cell_stub():
+    """Get Cell stub.
+
+    Returns
+    -------
+    CellServiceStub
+    """
     return _get_stub(_cell_stub_keyword)
 
 
-def get_database_stub() -> DatabaseServiceStub:
+def get_database_stub():
+    """Get Database stub.
+
+    Returns
+    -------
+    DatabaseServiceStub
+    """
     return _get_stub(_db_stub_keyword)
 
 
-def get_edb_iterator_stub() -> EDBIteratorServiceStub:
+def get_edb_iterator_stub():
+    """Get Iterator stub.
+
+    Returns
+    -------
+    EDBIteratorServiceStub
+    """
     return _get_stub(_edb_iter_stub_keyword)
 
 
-def get_layer_collection_stub() -> LayerCollectionServiceStub:
+def get_layer_collection_stub():
+    """Get Layer collection stub.
+
+    Returns
+    -------
+    LayerCollectionServiceStub
+    """
     return _get_stub(_lc_stub_keyword)
 
 
-def get_layer_stub() -> LayerServiceStub:
+def get_layer_stub():
+    """Get Layer stub.
+
+    Returns
+    -------
+    LayerServiceStub
+    """
     return _get_stub(_lyr_stub_keyword)
 
 
-def get_stackup_layer_stub() -> StackupLayerServiceStub:
+def get_stackup_layer_stub():
+    """Get Stackup layer stub.
+
+    Returns
+    -------
+    StackupLayerServiceStub
+    """
     return _get_stub(_stk_lyr_stub_keyword)
 
 
-def get_via_layer_stub() -> ViaLayerServiceStub:
+def get_via_layer_stub():
+    """Get Via layer stub.
+
+    Returns
+    -------
+    ViaLayerServiceStub
+    """
     return _get_stub(_via_lyr_stub_keyword)
 
 
-def get_layout_stub() -> LayoutServiceStub:
+def get_layout_stub():
+    """Get Layout stub.
+
+    Returns
+    -------
+    LayoutServiceStub
+    """
     return _get_stub(_lyt_stub_keyword)
 
 
-def get_material_def_stub() -> MaterialDefServiceStub:
+def get_material_def_stub():
+    """Get Material definition stub.
+
+    Returns
+    -------
+    MaterialDefServiceStub
+    """
     return _get_stub(_mat_def_stub_keyword)
 
 
-def get_net_stub() -> NetServiceStub:
+def get_net_stub():
+    """Get Net stub.
+
+    Returns
+    -------
+    NetServiceStub
+    """
     return _get_stub(_net_stub_keyword)
 
 
-def get_primitive_stub() -> PrimitiveServiceStub:
+def get_primitive_stub():
+    """Get Primitive stub.
+
+    Returns
+    -------
+    PrimitiveServiceStub
+    """
     return _get_stub(_prim_stub_keyword)
 
 
-def get_polygon_stub() -> PolygonServiceStub:
+def get_polygon_stub():
+    """Get Polygon stub.
+
+    Returns
+    -------
+    PolygonServiceStub
+    """
     return _get_stub(_poly_stub_keyword)
 
 
-def get_polygon_data_stub() -> PolygonDataServiceStub:
+def get_polygon_data_stub():
+    """Get Polygon data stub.
+
+    Returns
+    -------
+    PolygonDataServiceStub
+    """
     return _get_stub(_poly_data_stub_keyword)
 
 
-def get_path_stub() -> PathServiceStub:
+def get_path_stub():
+    """Get Path stub.
+
+    Returns
+    -------
+    PathServiceStub
+    """
     return _get_stub(_path_stub_keyword)
 
 
-def get_rectangle_stub() -> RectangleServiceStub:
+def get_rectangle_stub():
+    """Get Rectangle stub.
+
+    Returns
+    -------
+    RectangleServiceStub
+    """
     return _get_stub(_rect_stub_keyword)
 
 
-def get_terminal_stub() -> TerminalServiceStub:
+def get_terminal_stub():
+    """Get Terminal stub.
+
+    Returns
+    -------
+    TerminalServiceStub
+    """
     return _get_stub(_term_stub_keyword)
 
 
-def get_point_terminal_stub() -> PointTerminalServiceStub:
+def get_point_terminal_stub():
+    """Get Point terminal stub.
+
+    Returns
+    -------
+    PointTerminalServiceStub
+    """
     return _get_stub(_pt_term_keyword)
 
 
-def get_adaptive_settings_stub() -> AdaptiveSettingsServiceStub:
+def get_adaptive_settings_stub():
+    """Get Adaptive settings stub.
+
+    Returns
+    -------
+    AdaptiveSettingsServiceStub
+    """
     return _get_stub(_adaptive_settings_stub_keyword)
 
 
-def get_simulation_setup_stub() -> SimulationSetupServiceStub:
+def get_simulation_setup_stub():
+    """Get Simulation setup stub.
+
+    Returns
+    -------
+    SimulationSetupServiceStub
+    """
     return _get_stub(_sim_setup_stub_keyword)
 
 
-def get_hfss_simulation_settings_stub() -> HFSSSimulatonSettingsServiceStub:
+def get_hfss_simulation_settings_stub():
+    """Get HFSS simulation settings stub.
+
+    Returns
+    -------
+    HFSSSimulatonSettingsServiceStub
+    """
     return _get_stub(_hfss_sim_settings_stub_keyword)
 
 
-def get_simulation_setup_info_stub() -> SimulationSetupInfoServiceStub:
+def get_simulation_setup_info_stub():
+    """Get Simulation setup info stub.
+
+    Returns
+    -------
+    SimulationSetupInfoServiceStub
+    """
     return _get_stub(_sim_setup_info_stub_keyword)
 
 
-def get_via_group_stub() -> ViaGroupServiceStub:
+def get_via_group_stub():
+    """Get Via group stub.
+
+    Returns
+    -------
+    ViaGroupServiceStub
+    """
     return _get_stub(_via_group_stub_keyword)
 
 
 class EDBSessionException(Exception):
+    """Base class for exceptions related to EDB sessions."""
+
     pass
 
 
 class EDBSessionStartupException(EDBSessionException):
+    """Exception managing startup process of EDB sessions."""
+
     pass

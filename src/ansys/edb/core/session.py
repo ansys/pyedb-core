@@ -7,6 +7,8 @@ import subprocess
 from sys import modules
 from typing import Optional, Union
 
+import grpc
+
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
@@ -31,7 +33,6 @@ from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoS
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
-import grpc
 
 
 # Helper class for storing data used by the session

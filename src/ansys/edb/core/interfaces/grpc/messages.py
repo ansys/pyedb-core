@@ -2,6 +2,8 @@
 
 from typing import List, Tuple
 
+from google.protobuf.wrappers_pb2 import BoolValue, StringValue
+
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
@@ -18,7 +20,6 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
-from google.protobuf.wrappers_pb2 import BoolValue, StringValue
 
 
 def optional(params, key, value, func):

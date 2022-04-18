@@ -2,9 +2,10 @@
 
 from enum import Enum
 
+from google.protobuf.wrappers_pb2 import BoolValue
+
 import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
-from google.protobuf.wrappers_pb2 import BoolValue
 
 from ...session import get_cell_stub
 from ..base import ObjBase

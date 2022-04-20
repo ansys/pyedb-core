@@ -4,25 +4,33 @@ repos:
   rev: 22.3.0
   hooks:
   - id: black
+    exclude: "^src/ansys/api/"
 
 - repo: https://github.com/pycqa/isort
   rev: 5.10.1
   hooks:
   - id: isort
+    exclude: "^src/ansys/api/"
 
 - repo: https://gitlab.com/PyCQA/flake8
   rev: 4.0.1
   hooks:
   - id: flake8
+    exclude: "^src/ansys/api/"
 
 - repo: https://github.com/codespell-project/codespell
   rev: v2.1.0
   hooks:
   - id: codespell
+    exclude: "^src/ansys/api/"
 
 - repo: https://github.com/pycqa/pydocstyle
   rev: 6.1.1
   hooks:
   - id: pydocstyle
     additional_dependencies: [toml]
-    exclude: "^(tests/)"
+    exclude: |
+      (?x)(
+        ^tests/|
+        ^src/ansys/api/
+      )

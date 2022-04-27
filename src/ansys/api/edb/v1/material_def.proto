@@ -1,0 +1,57 @@
+// Proto file representing the MaterialDef class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+enum MaterialPropertyID {
+  MATERIAL_PROPERTY_PLACEHOLDER = 0; // DO NOT USE - THIS IS A PROTO3 REQUIREMENT
+  PERMITTIVITY = 3;
+  PERMEABILITY = 4;
+  CONDUCTIVITY = 5;
+  DIELECTRIC_LOSS_TANGENT = 6;
+  MAGNETIC_LOSS_TANGENT = 7;
+  THERMAL_CONDUCTIVITY = 14;
+  MASS_DENSITY = 34;
+  SPECIFIC_HEAT = 38;
+  YOUNGS_MODULUS = 39;
+  POISSONS_RATIO = 40;
+  THERMAL_EXPANSION_COEFFICIENT = 42;
+  INVALID_PROPERTY = 71;
+}
+
+service MaterialDefService {
+  rpc Create(MaterialDefCreationMessage) returns (EDBObjMessage) {}
+  // DEPRECATED: use Create instead
+  rpc SetProperty(MaterialDefSetPropertyMessage) returns (google.protobuf.BoolValue) {}
+}
+
+message MaterialDefCreationMessage {
+  EDBObjMessage database = 1;
+  string name = 2;
+  MaterialDefPropertiesMessage properties = 3;
+}
+
+message MaterialDefSetPropertyMessage {
+  EDBObjMessage materialDef = 1;
+  MaterialPropertyID propertyId = 2;
+  ValueMessage value = 3;
+}
+
+message MaterialDefPropertiesMessage {
+  ValueMessage permittivity = 1;
+  ValueMessage permeability = 2;
+  ValueMessage conductivity = 3;
+  ValueMessage dielectric_loss_tangent = 4;
+  ValueMessage magnetic_loss_tangent = 5;
+  ValueMessage thermal_conductivity = 6;
+  ValueMessage mass_density = 7;
+  ValueMessage specific_heat = 8;
+  ValueMessage youngs_modulus = 9;
+  ValueMessage poissons_ratio = 10;
+  ValueMessage thermal_expansion_coefficient = 11;
+}

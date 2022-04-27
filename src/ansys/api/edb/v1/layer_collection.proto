@@ -1,0 +1,47 @@
+// Proto file representing the LCCollection class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+// Enum for LayerCollection modes
+enum LayerCollectionMode {
+  LAMINATE = 0;
+  OVERLAPPING = 1;
+  MULTIZONE = 2;
+}
+
+service LayerCollectionService {
+  // Clean up the layer pointer
+  rpc Cleanup (EDBObjMessage) returns (google.protobuf.Empty) {}
+
+  // Creates an empty LayerCollection
+  rpc Create (LayerCollectionCreateMessage) returns (EDBObjMessage) {}
+
+  // Adds the provided layers to the LayerCollection
+  rpc AddLayers (AddLayersMessage) returns (google.protobuf.BoolValue) {}
+
+  // Finds a layer with the given name in the layer collection
+  rpc FindByName (FindLayerByNameMessage) returns (EDBObjMessage) {}
+}
+
+// Message for Create
+message LayerCollectionCreateMessage {
+  LayerCollectionMode mode = 1;
+}
+
+// Message for AddLayers
+message AddLayersMessage {
+  EDBObjMessage layer_collection = 1;
+  repeated EDBObjMessage layers = 2;
+}
+
+// Message for FindByName
+message FindLayerByNameMessage {
+  EDBObjMessage layer_collection = 1;
+  string name = 2;
+}

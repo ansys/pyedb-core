@@ -1,0 +1,18 @@
+// Proto file representing the base class of definition objects owned by EDB database objects
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Enum for definition object types
+enum DefinitionObjType {
+  PADSTACK_DEF = 0;
+  COMPONENT_DEF = 1;
+  BONDWIRE_DEF = 2;
+  MATERIAL_DEF = 3;
+  DATASET_DEF = 4;
+  PACKAGE_DEF = 5;
+  DEFINITION_TYPE_COUNT = 6;
+  INVALID_DEFINITION_TYPE = -1;
+}

@@ -1,0 +1,23 @@
+// Proto file representing the EDB Polygon class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "point_data.proto";
+import "refs.proto";
+
+// Polygon service definition
+service PolygonService {
+  // Create a polygon
+  rpc Create (PolygonCreationMessage) returns (EDBObjMessage) {}
+}
+
+// Message for Create
+message PolygonCreationMessage {
+  EDBObjMessage layout = 1;
+  LayerRefMessage layer = 2;
+  NetRefMessage net = 3;
+  PointsMessage points = 4;
+}

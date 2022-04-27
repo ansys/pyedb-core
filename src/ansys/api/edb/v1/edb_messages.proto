@@ -1,0 +1,23 @@
+// Proto file containing commonly used messages
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import public "google/protobuf/wrappers.proto";
+import public "google/protobuf/empty.proto";
+
+// Message representing a Value
+message ValueMessage {
+  double value = 1;
+}
+
+// Message representing an arbitrary edb object
+message EDBObjMessage {
+  uint64 impl_ptr_address = 1;
+}
+
+// Message containing a collection of edb objects 
+message EDBObjCollectionMessage {
+	repeated EDBObjMessage edb_obj_collection = 1;
+}

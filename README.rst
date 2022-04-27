@@ -10,7 +10,7 @@ How to install
 At least two installation modes are provided: user and developer.
 
 [NOT RELEASED] For users
-^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 <This instruction does not work until this package is released to PyPI. Go to "For developers" section instead.>
 

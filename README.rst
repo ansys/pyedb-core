@@ -9,8 +9,10 @@ How to install
 
 At least two installation modes are provided: user and developer.
 
-For users
-^^^^^^^^^
+[NOT RELEASED] For users
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+<This instruction does not work until this package is released to PyPI. Go to "For developers" section instead.>
 
 In order to install Pyedb core, make sure you
 have the required build system tool. To do so, run:
@@ -39,6 +41,7 @@ need to follow these steps:
     .. code:: bash
 
         git clone https://github.com/pyansys/pyedb-core
+        cd pyedb-core
 
 2. Create a fresh-clean Python environment and activate it:
 
@@ -51,10 +54,10 @@ need to follow these steps:
         python -m venv .venv && source .venv/bin/activate
 
         # Activate it in a Windows CMD environment
-        source .venv\Scripts\activate.bat
+        .venv\Scripts\activate.bat
 
         # Activate it in a Windows Powershell environment
-        source .venv\Scripts\Activate.ps1
+        .venv\Scripts\Activate.ps1
 
 
 3. Make sure you have the latest required build system and doc, testing, and CI tools:
@@ -67,13 +70,7 @@ need to follow these steps:
         python -m pip install -r requirements/requirements_tests.txt
 
 
-4. Install the project in editable mode:
-
-    .. code:: bash
-    
-        python -m pip install --editable ansys-edb-core
-    
-    5. Finally, verify your development installation by running:
+4. Finally, verify your development installation by running:
 
     .. code:: bash
         

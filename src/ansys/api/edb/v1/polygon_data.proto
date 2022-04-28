@@ -1,0 +1,17 @@
+// Proto file representing the EDB Polygon Data class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "point_data.proto";
+
+
+// Polygon Data service definition
+service PolygonDataService {
+  // Creates a polygon data from array of points and polygon options
+  rpc Create (PathPointsMessage) returns (EDBObjMessage) {}
+  // Destroy a polygon Data
+  rpc Cleanup (EDBObjMessage) returns (google.protobuf.Empty) {}
+}

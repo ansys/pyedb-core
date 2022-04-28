@@ -1,0 +1,45 @@
+// Proto file representing the EDB Database class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+// Database service definition
+service DatabaseService {
+  // Creates a database
+  rpc Create (google.protobuf.StringValue) returns (EDBObjMessage) {}
+
+  // Opens a database
+  rpc Open (OpenDatabaseMessage) returns (EDBObjMessage) {}
+
+  // Deletes a database
+  rpc Delete (google.protobuf.StringValue) returns (google.protobuf.BoolValue) {}
+  
+  // Saves a database
+  rpc Save (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  
+  // Closes a database
+  rpc Close (EDBObjMessage) returns (google.protobuf.BoolValue) {} 
+
+  // Determines whether the database is read only
+  rpc IsReadOnly(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Gets the top circuits in a database
+  rpc GetTopCircuits (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  // Gets the id of a database
+  rpc GetId (EDBObjMessage) returns (google.protobuf.Int64Value) {} 
+
+  // Finds a database with the provided id
+  rpc FindById (google.protobuf.Int64Value) returns (EDBObjMessage) {}
+}
+
+// Message for Open
+message OpenDatabaseMessage {
+  google.protobuf.StringValue edb_path = 1;
+  google.protobuf.BoolValue read_only = 2;
+}

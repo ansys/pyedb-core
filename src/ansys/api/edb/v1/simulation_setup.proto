@@ -1,0 +1,55 @@
+// Proto file representing the EDB SimulationSetup class 
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "adaptive_settings.proto";
+import "simulation_setup_info.proto";
+import "simulation_settings.proto";
+
+// Enum for SimulationSetup types
+enum SimulationSetupType {
+  HFSS = 0;
+}
+
+// SimulationSetup service definition
+service SimulationSetupService {
+  // Creates a SimulationSetup in the given cell with the provided type and name
+  rpc Create(SimulationSetupCreationMessage) returns (EDBObjMessage) {}
+
+  // Get the SimSetupInfo of the SimulationSetup
+  rpc GetSimulationSetupInfo (EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Add adaptive frequency
+  rpc AddAdaptiveFrequencies (AdaptiveFrequenciesSetMessage) returns (google.protobuf.BoolValue) {}
+
+  // Add mesh operations
+  rpc AddMeshOperations (MeshOperationsSetMessage) returns (google.protobuf.BoolValue) {}
+  
+  // Add frequency sweeps
+  rpc AddFrequencySweeps (FrequencySweepsSetMessage) returns (google.protobuf.BoolValue) {}
+}
+
+// Message for Create
+message SimulationSetupCreationMessage {
+  EDBObjMessage cell = 1;
+  string simulation_setup_name = 2;
+  SimulationSetupType simulation_setup_type = 3;
+}
+
+message AdaptiveFrequenciesSetMessage {
+  EDBObjMessage setup = 1;
+  repeated AdaptiveFrequencyDataMessage frequencies = 2;
+}
+
+message MeshOperationsSetMessage {
+  EDBObjMessage setup = 1;
+  repeated MeshOperationMessage mesh_operations = 2;
+}
+
+message FrequencySweepsSetMessage {
+  EDBObjMessage setup = 1;
+  repeated SweepDataMessage sweeps = 2;
+}

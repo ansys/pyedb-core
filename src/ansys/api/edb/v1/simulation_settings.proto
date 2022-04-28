@@ -1,0 +1,63 @@
+// deprecated: Proto file representing the EDB SimulationSettings class and derived classes
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+// DEPRECATED: use SimulationSetupService instead
+service HFSSSimulatonSettingsService {
+  // Gets the HFSSAdaptiveSettings  
+  rpc GetAdaptiveSettings (EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Sets the MeshOperation list
+  rpc SetMeshOperations (SetMeshOperationsMessage) returns (google.protobuf.Empty) {}
+}
+
+// Message for MeshOperation net layer info
+message MeshOpNetLayerInfoMessage {
+  string net = 1;
+  string layer = 2;
+  bool is_sheet = 3;
+}
+
+// Enum for MeshOperation types
+enum MeshOperationType {
+  MESH_SETUP_BASE = 0;
+  MESH_SETUP_LENGTH = 1;
+  MESH_SETUP_SKIN_DEPTH = 2;
+  NUM_MESH_OP_TYPES = 3;
+}
+
+// Message containing skin depth operation specific attributes
+message SkinDepthMeshOperationMessage {
+  string skin_depth = 1;
+  string max_surface_triangle_length = 2;
+  string num_layers = 3;
+  string max_elements = 4;
+  bool restrict_max_elements = 5;
+}
+
+// Message representing a mesh operations
+message MeshOperationMessage {
+  string name = 1;	
+  bool enabled = 2;
+  bool refine_inside = 3;
+  string mesh_region = 4;
+  repeated MeshOpNetLayerInfoMessage net_layer_info = 5;
+  oneof mesh_operation_sub_type {
+    SkinDepthMeshOperationMessage skin_depth_mesh_op = 6;
+  }
+}
+
+// Message representing a list of MeshOperations
+message MeshOperationsMessage {
+	repeated MeshOperationMessage mesh_operations = 1;
+}
+
+// Message for SetMeshOperations
+message SetMeshOperationsMessage {
+  EDBObjMessage hfss_simulation_settings = 1;
+  MeshOperationsMessage mesh_operations = 2;
+}

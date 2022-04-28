@@ -1,0 +1,31 @@
+// Proto file representing the EDB Point Data class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+enum PolySense {
+  SENSE_UNKNOWN = 0;
+  SENSE_CW = 1;
+  SENSE_CCW = 2;
+}
+
+message PointMessage {
+  ValueMessage x = 1;
+  ValueMessage y = 2;
+}
+
+message PathPointsMessage {
+  repeated PointMessage data = 1;
+  bool closed = 2;
+  PolySense sense = 3;
+}
+
+message PointsMessage {
+  oneof shape {
+    PathPointsMessage points_data = 1;
+    EDBObjMessage polygon_data = 2;
+  }
+}

@@ -1,0 +1,68 @@
+// Proto file representing the EDB Rectangle class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "refs.proto";
+
+enum RectangleRepresentationType {
+  INVALID_RECT_TYPE = 0;
+  CENTER_WIDTH_HEIGHT = 1;
+  LOWER_LEFT_UPPER_RIGHT = 2;
+}
+
+service RectangleService {
+  // Create a rectangle
+  rpc Create (RectangleCreationMessage) returns (EDBObjMessage) {}
+  
+  // Return Rectangle Parameters
+  rpc GetParameters (EDBObjMessage) returns (RectangleParametersMessage) {}
+  
+  // Recieve Rectangle Parameters
+  rpc SetParameters (SetRectangleParametersMessage) returns (google.protobuf.BoolValue) {}
+
+  // Render Geometry PolygonData
+  rpc Render(RectanglePolygonDataMessage) returns (EDBObjMessage) {}
+}
+
+// Message for Create
+message RectangleCreationMessage {
+  EDBObjMessage layout = 1;
+  LayerRefMessage layer = 2;
+  NetRefMessage net = 3;
+  RectangleRepresentationType representation_type = 4;
+  ValueMessage parameter1 = 5;
+  ValueMessage parameter2 = 6;
+  ValueMessage parameter3 = 7;
+  ValueMessage parameter4 = 8;
+  ValueMessage corner_radius = 9;
+  ValueMessage rotation = 10;
+}
+
+// Message for rectangle parameters
+message RectangleParametersMessage{
+  RectangleRepresentationType representation_type = 1;
+  ValueMessage parameter1 = 2;
+  ValueMessage parameter2 = 3;
+  ValueMessage parameter3 = 4;
+  ValueMessage parameter4 = 5;
+  ValueMessage corner_radius = 6;
+  ValueMessage rotation = 7;
+}
+
+message SetRectangleParametersMessage{
+  EDBObjMessage target = 1;
+  RectangleParametersMessage parameters = 2;
+}
+
+message RectanglePolygonDataMessage{
+  ValueMessage center_x = 1;
+  ValueMessage center_y = 2;
+  ValueMessage width = 3;
+  ValueMessage height = 4;
+  ValueMessage corner_radius = 5;
+  ValueMessage rotation = 6;
+  bool ishole = 7;
+}

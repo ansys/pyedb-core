@@ -2,13 +2,20 @@
 
 from enum import Enum
 
+import ansys.api.edb.v1.circle_pb2 as circle_pb2
 import ansys.api.edb.v1.path_pb2 as path_pb2
 import ansys.api.edb.v1.polygon_pb2 as polygon_pb2
 import ansys.api.edb.v1.primitive_pb2 as primitive_pb2
 import ansys.api.edb.v1.rectangle_pb2 as rectangle_pb2
 
 from ...interfaces.grpc import messages
-from ...session import get_path_stub, get_polygon_stub, get_primitive_stub, get_rectangle_stub
+from ...session import (
+    get_circle_stub,
+    get_path_stub,
+    get_polygon_stub,
+    get_primitive_stub,
+    get_rectangle_stub,
+)
 from ...utility.edb_errors import handle_grpc_exception
 from ...utility.edb_iterator import EDBIterator
 from .conn_obj import ConnObj
@@ -445,6 +452,128 @@ class Rectangle(Primitive):
         else:
             polygon_data = None
         return polygon_data
+
+
+class Circle(Primitive):
+    """Class representing a circle object."""
+
+    @staticmethod
+    @handle_grpc_exception
+    def create(layout, layer_name, net, center_x, center_y, radius):
+        """Create a circle.
+
+        Parameters
+        ----------
+        layout: Layout,
+        layer_name: str,
+        net: Net,
+        center_x: float,
+        center_y: float,
+        radius: float
+
+        Returns
+        -------
+        Circle
+        """
+        return Circle(
+            get_circle_stub().Create(
+                circle_pb2.CircleCreationMessage(
+                    layout=layout.id,
+                    layer=messages.layer_ref_message(layer_name),
+                    net=messages.net_ref_message(net),
+                    center_x=messages.value_message(center_x),
+                    center_y=messages.value_message(center_y),
+                    radius=messages.value_message(radius),
+                )
+            )
+        )
+
+    @staticmethod
+    @handle_grpc_exception
+    def render(center_x, center_y, radius, is_hole):
+        """Render a circle.
+
+        Parameters
+        ----------
+        center_x: float,
+        center_y: float,
+        radius: float,
+        is_hole: bool
+
+        Returns
+        -------
+        PolygonData
+        """
+        return get_circle_stub().Render(
+            circle_pb2.CircleRenderMessage(
+                center_x=messages.value_message(center_x),
+                center_y=messages.value_message(center_y),
+                radius=messages.value_message(radius),
+                is_hole=is_hole,
+            )
+        )
+
+    @handle_grpc_exception
+    def get_parameters(self):
+        """Get parameters of a circle.
+
+        Returns
+        -------
+        Tuple[float, float, float]
+        """
+        circle_param_msg = get_circle_stub().GetParameters(self._msg)
+        return (
+            messages.value_message_to_value(circle_param_msg.center_x),
+            messages.value_message_to_value(circle_param_msg.center_y),
+            messages.value_message_to_value(circle_param_msg.radius),
+        )
+
+    @handle_grpc_exception
+    def set_parameters(self, center_x, center_y, radius):
+        """Set parameters of a circle.
+
+         Parameters
+         ----------
+        center_x: float,
+        center_y: float,
+        radius: float
+
+         Returns
+         -------
+         bool
+        """
+        return (
+            get_circle_stub()
+            .SetParameters(
+                circle_pb2.SetCircleParametersMessage(
+                    target=self._msg,
+                    parameters=circle_pb2.CircleParametersMessage(
+                        center_x=messages.value_message(center_x),
+                        center_y=messages.value_message(center_y),
+                        radius=messages.value_message(radius),
+                    ),
+                )
+            )
+            .value
+        )
+
+    def get_polygon_data(self):
+        """Get polygon data of a circle.
+
+        Returns
+        -------
+        PolygonData
+        """
+        return Circle.render(*self.get_parameters(), self.is_void())
+
+    def can_be_zone_primitive(self):
+        """Determine if circle can be a zone.
+
+        Returns
+        -------
+        bool
+        """
+        return True
 
 
 class _PolygonQueryBuilder:

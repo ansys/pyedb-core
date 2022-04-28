@@ -11,6 +11,7 @@ import grpc
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
+from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edb_iterator_pb2_grpc import EDBIteratorServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
@@ -86,6 +87,7 @@ _sim_setup_stub_keyword = "SimulationSetup"
 _hfss_sim_settings_stub_keyword = "HFSSSimulationSettings"
 _sim_setup_info_stub_keyword = "SimulationSetupInfo"
 _via_group_stub_keyword = "ViaGroup"
+_circle_stub_keyword = "Circle"
 
 
 # Map of stub keywords to stub ctors. Used for initializing stubs when connecting to the server.
@@ -112,6 +114,7 @@ _type_to_stub_ctor_map = {
     _hfss_sim_settings_stub_keyword: HFSSSimulatonSettingsServiceStub,
     _sim_setup_info_stub_keyword: SimulationSetupInfoServiceStub,
     _via_group_stub_keyword: ViaGroupServiceStub,
+    _circle_stub_keyword: CircleServiceStub,
 }
 
 # Dictionary for storing local server error code exception messages
@@ -476,6 +479,16 @@ def get_via_group_stub():
     ViaGroupServiceStub
     """
     return _get_stub(_via_group_stub_keyword)
+
+
+def get_circle_stub() -> CircleServiceStub:
+    """Get Circle stub.
+
+    Returns
+    -------
+    CircleServiceStub
+    """
+    return _get_stub(_circle_stub_keyword)
 
 
 class EDBSessionException(Exception):

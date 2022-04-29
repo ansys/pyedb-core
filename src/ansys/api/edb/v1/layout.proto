@@ -1,0 +1,45 @@
+// Proto file representing the EDB Layout class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+import "edb_iterator.proto";
+import "layer_collection.proto";
+import "refs.proto";
+
+// Cell service definition
+service LayoutService {
+  // Gets the cell of the provided layout
+  rpc GetCell (EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Gets the layer collection of the layout
+  rpc GetLayerCollection (EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Sets the layer collection of the layout
+  rpc SetLayerCollection (SetLayerCollectionMessage) returns (google.protobuf.BoolValue) {}
+
+  // Sets the type of layer collection of the layout
+  rpc SetLayerCollectionType (SetLayerCollectionTypeMessage) returns (google.protobuf.BoolValue) {}
+
+  // Gets an iterator of the primitives in the layout
+  rpc GetPrimitiveIter(EDBObjMessage) returns (EDBIteratorMessage) {}
+}
+
+message SetLayerCollectionMessage {
+  EDBObjMessage layout = 1;
+  EDBObjMessage layer_collection = 2;
+}
+
+message SetLayerCollectionTypeMessage {
+  EDBObjMessage layout = 1;
+  LayerCollectionMode mode = 2;
+}
+
+message LayerLookupMessage {
+  EDBObjMessage layout = 1;
+  LayerRefMessage layer = 2;
+}

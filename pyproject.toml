@@ -24,7 +24,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "importlib-metadata >=4.0"
+    "importlib-metadata >=4.0",
+    "protobuf==3.10.0",
+    "grpcio>=1.44.0"
 ]
 
 [tool.flit.module]

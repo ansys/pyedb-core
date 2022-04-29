@@ -1,0 +1,29 @@
+// Proto file representing the EDB Net class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+// Net service definition
+service NetService {
+  // Creates a net
+  rpc Create (NetCreationMessage) returns (EDBObjMessage) {}
+
+  // Finds a net on a layer by name
+  rpc FindByName(NetLookupMessage) returns (EDBObjMessage) {}
+}
+
+// Message for Create
+message NetCreationMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+}
+
+message NetLookupMessage {
+	EDBObjMessage layout = 1;
+	string name = 2;
+}

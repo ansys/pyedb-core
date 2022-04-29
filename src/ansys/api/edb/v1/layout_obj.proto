@@ -1,0 +1,27 @@
+// Proto file representing the base class of objects owned by EDB layout objects
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Enum for layout object types
+enum LayoutObjType {
+  PRIMITIVE = 0;
+  PADSTACK_INST = 1;
+  TERM = 2;
+  TERM_INST = 3;
+  CELL_INST = 4;
+  LAYER = 5;
+  NET = 6;
+  PADSTACK = 7;
+  GROUP = 8;
+  NET_CLASS = 9;
+  CELL = 10;
+  DIFFERENTIAL_PAIR = 11;
+  PIN_GROUP = 12;
+  VOLTAGE_REGULATOR = 13;
+  EXTENDED_NET = 14;
+  LAYOUT_OBJ_TYPE_COUNT = 15;
+  INVALID_LAYOUT_OBJ = -1;
+}

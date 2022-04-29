@@ -1,0 +1,90 @@
+// Proto file representing the LCLayer and LCSLayer classes
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+enum LayerType {
+  SIGNAL_LAYER = 0;
+  DIELECTRIC_LAYER = 1;
+  CONDUCTING_LAYER = 2;
+  AIRLINES_LAYER = 3;
+  ERRORS_LAYER = 4;
+  SYMBOL_LAYER = 5;
+  MEASURE_LAYER = 6;
+  ASSEMBLY_LAYER = 8;
+  SILKSCREEN_LAYER = 9;
+  SOLDER_MASK_LAYER = 10;
+  SOLDER_PASTE_LAYER = 11;
+  GLUE_LAYER = 12;
+  WIREBOND_LAYER = 13;
+  USER_LAYER = 14;
+  SIWAVE_HFSS_SOLVER_REGIONS = 16;
+  POST_PROCESSING_LAYER = 17;
+  OUTLINE_LAYER = 18;
+  LAYER_TYPES_COUNT = 19;
+  UNDEFINED_LAYER_TYPE = -1;
+}
+
+// Layer service definition
+service LayerService {
+  // Clean up the layer pointer
+  rpc Cleanup (EDBObjMessage) returns (google.protobuf.Empty) {}
+
+  // Get the layer type of the layer
+  rpc GetLayerType (EDBObjMessage) returns (LayerTypeMessage) {}
+
+  // Check whether or not this layer is a via layer
+  rpc IsViaLayer (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Get the name of this layer
+  rpc GetName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+}
+
+// Message for GetLayerType
+message LayerTypeMessage {
+	LayerType type = 1;
+}
+
+// Stackup layer service definition
+service StackupLayerService {
+  // Creates a stackup layer
+  rpc Create (StackupLayerCreationMessage) returns (EDBObjMessage) {}
+
+  // Set the negative property of the stackup layer
+  rpc SetNegative (SetNegativeMessage) returns (google.protobuf.Empty) {}
+}
+
+// Message for StackupLayerService::Create
+message StackupLayerCreationMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+  LayerType type = 3;
+  ValueMessage thickness = 4;
+  ValueMessage elevation = 5;
+  string material = 6;
+  oneof optional_negative { google.protobuf.BoolValue negative = 7; };
+}
+
+// Message for StackupLayerService::SetNegative
+message SetNegativeMessage {
+  EDBObjMessage layer = 1;
+  bool is_negative = 2;
+}
+
+// Via layer service definition
+service ViaLayerService {
+  // Creates a via layer
+  rpc Create (ViaLayerCreationMessage) returns (EDBObjMessage) {}
+}
+
+// Message for ViaLayerService::Create
+message ViaLayerCreationMessage {
+  EDBObjMessage layout = 1;
+  string via_layer_name = 2;
+  string lower_ref_layer_name = 3;
+  string upper_ref_layer_name = 4;
+  string material_name = 5;
+}

@@ -1,8 +1,7 @@
 """Database."""
 
-import google.protobuf.wrappers_pb2 as proto_wrappers
-
 import ansys.api.edb.v1.database_pb2 as database_pb2
+import google.protobuf.wrappers_pb2 as proto_wrappers
 
 from ..session import get_database_stub
 from ..utility.edb_errors import handle_grpc_exception

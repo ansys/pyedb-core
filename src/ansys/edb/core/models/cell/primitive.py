@@ -465,11 +465,11 @@ class Circle(Primitive):
         Parameters
         ----------
         layout: Layout,
-        layer_name: str,
-        net: Net,
-        center_x: float,
-        center_y: float,
-        radius: float
+        layer_name: LayerRef,
+        net: NetRef,
+        center_x: Value,
+        center_y: Value,
+        radius: Value
 
         Returns
         -------
@@ -495,9 +495,9 @@ class Circle(Primitive):
 
         Parameters
         ----------
-        center_x: float,
-        center_y: float,
-        radius: float,
+        center_x: Value,
+        center_y: Value,
+        radius: Value,
         is_hole: bool
 
         Returns
@@ -519,7 +519,7 @@ class Circle(Primitive):
 
         Returns
         -------
-        Tuple[float, float, float]
+        Tuple[Value, Value, Value]
         """
         circle_param_msg = get_circle_stub().GetParameters(self._msg)
         return (
@@ -534,9 +534,9 @@ class Circle(Primitive):
 
          Parameters
          ----------
-        center_x: float,
-        center_y: float,
-        radius: float
+        center_x: Value,
+        center_y: Value,
+        radius: Value
 
          Returns
          -------

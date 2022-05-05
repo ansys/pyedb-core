@@ -1,0 +1,42 @@
+// Proto file representing the EDB Text class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "refs.proto";
+
+// Text service definition
+service TextService {
+  // Create a text
+  rpc Create (TextCreationMessage) returns (EDBObjMessage) {}
+  
+  // Get text values
+  rpc GetTextData (EDBObjMessage) returns (TextDataMessage) {}
+  
+  // Set text values
+  rpc SetTextData (SetTextDataMessage) returns (google.protobuf.BoolValue) {}
+}
+
+// Message for Create
+message TextCreationMessage {
+  EDBObjMessage layout = 1;
+  LayerRefMessage layer = 2;
+  ValueMessage center_x = 3;
+  ValueMessage center_y = 4;
+  string text = 5;
+}
+
+// Message for Get Data
+message TextDataMessage {
+  ValueMessage center_x = 1;
+  ValueMessage center_y = 2;
+  string text = 3;
+}
+
+// Message for Set Data
+message SetTextDataMessage {
+  EDBObjMessage target = 1;
+  TextDataMessage data = 2;
+}

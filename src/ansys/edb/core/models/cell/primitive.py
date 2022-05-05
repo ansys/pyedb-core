@@ -7,6 +7,7 @@ import ansys.api.edb.v1.path_pb2 as path_pb2
 import ansys.api.edb.v1.polygon_pb2 as polygon_pb2
 import ansys.api.edb.v1.primitive_pb2 as primitive_pb2
 import ansys.api.edb.v1.rectangle_pb2 as rectangle_pb2
+import ansys.api.edb.v1.text_pb2 as text_pb2
 
 from ...interfaces.grpc import messages
 from ...session import (
@@ -15,6 +16,7 @@ from ...session import (
     get_polygon_stub,
     get_primitive_stub,
     get_rectangle_stub,
+    get_text_stub,
 )
 from ...utility.edb_errors import handle_grpc_exception
 from ...utility.edb_iterator import EDBIterator
@@ -584,6 +586,83 @@ class _PolygonQueryBuilder:
             layer=messages.layer_ref_message(layer),
             net=messages.net_ref_message(net),
             points=messages.points_message(points),
+        )
+
+
+class Text(Primitive):
+    """Class representing a text object."""
+
+    @staticmethod
+    @handle_grpc_exception
+    def create(layout, layer_name, center_x, center_y, text):
+        """Create a text object.
+
+        Parameters
+        ----------
+        layout: Layout
+        layer_name: LayerRef
+        center_x: Value
+        center_y: Value
+        text: str
+
+        Returns
+        -------
+        Text
+        """
+        return Text(
+            get_text_stub().Create(
+                text_pb2.TextCreationMessage(
+                    layout=layout.id,
+                    layer=messages.layer_ref_message(layer_name),
+                    center_x=messages.value_message(center_x),
+                    center_y=messages.value_message(center_y),
+                    text=text,
+                )
+            )
+        )
+
+    @handle_grpc_exception
+    def get_text_data(self):
+        """Get the text data of a text.
+
+        Returns
+        -------
+        tuple[Value, Value, str]
+        """
+        text_data_msg = get_text_stub().GetTextData(self._msg)
+        return (
+            messages.value_message_to_value(text_data_msg.center_x),
+            messages.value_message_to_value(text_data_msg.center_y),
+            text_data_msg.text,
+        )
+
+    @handle_grpc_exception
+    def set_text_data(self, center_x, center_y, text):
+        """Set the text data of a text.
+
+        Parameters
+        ----------
+        center_x: Value
+        center_y: Value
+        text: str
+
+        Returns
+        -------
+        bool
+        """
+        return (
+            get_text_stub()
+            .SetTextData(
+                text_pb2.SetTextDataMessage(
+                    target=self._msg,
+                    data=text_pb2.TextDataMessage(
+                        center_x=messages.value_message(center_x),
+                        center_y=messages.value_message(center_y),
+                        text=text,
+                    ),
+                )
+            )
+            .value
         )
 
 

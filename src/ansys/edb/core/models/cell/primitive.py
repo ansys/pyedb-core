@@ -600,14 +600,20 @@ class Text(Primitive):
         Parameters
         ----------
         layout: Layout
+            Layout this circle will be in.
         layer_name: LayerRef
+            Layer name this text will be on.
         center_x: Value
+            X value of center point.
         center_y: Value
+            Y value of center point.
         text: str
+            Text string.
 
         Returns
         -------
         Text
+            The text Object that was created.
         """
         return Text(
             get_text_stub().Create(
@@ -628,6 +634,10 @@ class Text(Primitive):
         Returns
         -------
         tuple[Value, Value, str]
+            Tuple which holds respectively X value, Y value, Text value
+            X value of center point.
+            Y value of center point.
+            Text object's String value.
         """
         text_data_msg = get_text_stub().GetTextData(self._msg)
         return (
@@ -643,12 +653,15 @@ class Text(Primitive):
         Parameters
         ----------
         center_x: Value
+            X value of center point.
         center_y: Value
+            Y value of center point.
         text: str
-
+            Text object's String value.
         Returns
         -------
         bool
+            Boolean value that represents the result of the creation.
         """
         return (
             get_text_stub()

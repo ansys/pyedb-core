@@ -77,7 +77,12 @@ class Database(ObjBase):
 
     @handle_grpc_exception
     def close(self):
-        """Close the session without persisting the changes."""
+        """Close the database. Unsaved changes will be lost.
+
+        Returns
+        -------
+        bool
+        """
         close_success = get_database_stub().Close(self._msg).value
         if close_success:
             self._msg.impl_ptr_address = 0
@@ -92,12 +97,10 @@ class Database(ObjBase):
         -------
         list of Cell
         """
-        return iter(
-            [
-                Cell(edb_obj)
-                for edb_obj in get_database_stub().GetTopCircuits(self._msg).edb_obj_collection
-            ]
-        )
+        return [
+            Cell(edb_obj)
+            for edb_obj in get_database_stub().GetTopCircuits(self._msg).edb_obj_collection
+        ]
 
     @handle_grpc_exception
     def get_id(self):
@@ -126,7 +129,7 @@ class Database(ObjBase):
 
         Parameters
         ----------
-        db_id : str
+        db_id : int
 
         Returns
         -------

@@ -9,11 +9,11 @@ from ..base import ObjBase
 class _QueryBuilder:
     @staticmethod
     def create(layout, name):
-        return net_pb2.NetCreationMessage(layout=layout._msg, name=name)
+        return net_pb2.NetCreationMessage(layout=layout.msg, name=name)
 
     @staticmethod
     def find_by_name(layout, name):
-        return net_pb2.NetLookupMessage(layout=layout._msg, name=name)
+        return net_pb2.NetLookupMessage(layout=layout.msg, name=name)
 
 
 class Net(ObjBase):

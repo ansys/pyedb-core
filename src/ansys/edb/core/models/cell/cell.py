@@ -58,16 +58,16 @@ def sanitize_args(args):
 class _QueryBuilder:
     @staticmethod
     def create(db, cell_type, name):
-        return cell_pb2.CellCreationMessage(database=db._msg, type=cell_type.value, name=name)
+        return cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=name)
 
     @staticmethod
     def get_layout(cell):
-        return cell._msg
+        return cell.msg
 
     @staticmethod
     def set_hfss_extents(cell, **extents):
         extents = sanitize_args(extents)
-        return cell_pb2.CellHfssExtentsMessage(cell=cell._msg, **extents)
+        return cell_pb2.CellHfssExtentsMessage(cell=cell.msg, **extents)
 
 
 class Cell(ObjBase):

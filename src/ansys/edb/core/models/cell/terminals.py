@@ -12,7 +12,7 @@ from ..base import ObjBase
 class _TerminalQueryBuilder:
     @staticmethod
     def set_reference(source, ref):
-        return t.TermSetRefMessage(source_term=source._msg, ref_term=ref._msg)
+        return t.TermSetRefMessage(source_term=source.msg, ref_term=ref.msg)
 
 
 class Terminal(ObjBase):

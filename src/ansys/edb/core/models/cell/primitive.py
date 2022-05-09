@@ -594,14 +594,14 @@ class Text(Primitive):
 
     @staticmethod
     @handle_grpc_exception
-    def create(layout, layer_name, center_x, center_y, text):
+    def create(layout, layer, center_x, center_y, text):
         """Create a text object.
 
         Parameters
         ----------
         layout: Layout
             Layout this circle will be in.
-        layer_name: LayerRef
+        layer: LayerRef
             Layer name this text will be on.
         center_x: Value
             X value of center point.
@@ -619,7 +619,7 @@ class Text(Primitive):
             get_text_stub().Create(
                 text_pb2.TextCreationMessage(
                     layout=layout.id,
-                    layer=messages.layer_ref_message(layer_name),
+                    layer=messages.layer_ref_message(layer),
                     center_x=messages.value_message(center_x),
                     center_y=messages.value_message(center_y),
                     text=text,

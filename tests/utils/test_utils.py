@@ -1,84 +1,115 @@
-from typing import List
+import random
+import string
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
-from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 import pytest
 import pytest_mock
 
 # Comparison utils
 
 
-def msgs_are_equal(msg0, msg1) -> bool:
+def msgs_are_equal(msg0, msg1):
+    """Checks if two messages are equivalent by serializing them to strings and comparing them
+
+    Returns
+    -------
+    bool
+    """
     return msg0.SerializeToString() == msg1.SerializeToString()
 
 
-# Msg Utils
+# Private utils
 
 
-def _create_edb_obj_msg() -> EDBObjMessage:
-    try:
-        _create_edb_obj_msg.id += 1
-    except AttributeError:
-        _create_edb_obj_msg.id = 1
-    return EDBObjMessage(impl_ptr_address=_create_edb_obj_msg.id)
+def _generate_random_int():
+    """Generates a random integer between 0 and 100,000.
+
+    Returns
+    -------
+    int
+    """
+    return random.randint(0, 100000)
 
 
-def create_edb_obj_msgs(num_msgs: int) -> List[EDBObjMessage]:
-    return [_create_edb_obj_msg() for _ in range(num_msgs)]
+# Msg utils
+
+
+def create_edb_obj_msg():
+    """Creates and EDBObjMessage where the impl_ptr_address is a random number
+
+    Returns
+    -------
+    EDBObjMessage
+    """
+    return EDBObjMessage(impl_ptr_address=_generate_random_int())
+
+
+def create_edb_obj_msgs(num_msgs):
+    """Creates a list of EDBObjMessages
+
+    Parameters
+    ----------
+    num_msgs : int
+        number of EDBObjMessages to create
+
+    Returns
+    -------
+    List[EDBObjMessage]
+    """
+    return [create_edb_obj_msg() for _ in range(num_msgs)]
 
 
 def create_edb_obj_collection_msg(num_msgs: int) -> EDBObjCollectionMessage:
+    """Creates an EDBObjCollectionMessage
+
+    Parameters
+    ----------
+    num_msgs : int
+        number of EDBObjMessages to store in the EDBObjCollectionMessage
+
+    Returns
+    -------
+    EDBObjCollectionMessage
+    """
     return EDBObjCollectionMessage(edb_obj_collection=create_edb_obj_msgs(num_msgs))
-
-
-def create_bool_msg(value: bool) -> BoolValue:
-    return BoolValue(value=value)
-
-
-def create_string_msg(value: str) -> StringValue:
-    return StringValue(value=value)
-
-
-def create_int64_msg(value: int) -> Int64Value:
-    return Int64Value(value=value)
 
 
 # Mock server utils
 
 
-def _generate_mock_server_checker(expected_request, expected_response):
-    def assert_expected_request(received_request):
-        assert msgs_are_equal(expected_request, received_request)
-        return expected_response
-
-    return assert_expected_request
-
-
-class _MockServer:
-    def __init__(self, method_name: str, expected_request, expected_response):
-        setattr(
-            self, method_name, _generate_mock_server_checker(expected_request, expected_response)
-        )
-
-
-def get_mock_server(method_name: str, expected_request, expected_response):
-    def mock_server_creator() -> _MockServer:
-        return _MockServer(method_name, expected_request, expected_response)
-
-    return mock_server_creator
-
-
 def patch_stub(
-    stub_getter: str,
-    mocker: pytest_mock.MockerFixture,
-    test_method_name: str,
-    expected_request,
-    expected_response,
+    stub_getter: str, mocker: pytest_mock.MockerFixture, test_method_name: str, expected_response
 ):
+    """Helper method that patches the given stub method.
+
+    Parameters
+    ----------
+    stub_getter : str
+        Module path to stub getter method
+    mocker : pytest_mock.MockerFixture
+        Mocker fixture used when patching the stub method
+    test_method_name : str
+        Name of stub method to be patched
+    expected_response : Any
+        The response message that will be returned by the mocked stub method
+    Returns
+    -------
+    unittest.mock.Mock
+    """
+
+    # Create the mock server
+    mock_server = mocker.Mock()
+    mock_server_attr = {test_method_name + ".return_value": expected_response}
+    mock_server.configure_mock(**mock_server_attr)
+
+    # Patch the stub getter method with the mock server
     mocker.patch(
         stub_getter,
-        get_mock_server(test_method_name, expected_request, expected_response),
+        return_value=mock_server,
     )
+
+    # Return the mock server
+    return getattr(mock_server, test_method_name)
 
 
 # Fixtures
@@ -86,14 +117,43 @@ def patch_stub(
 
 @pytest.fixture(params=[True, False])
 def bool_val(request) -> bool:
+    """Parameterized fixture that returns True and False values
+
+    Returns
+    -------
+    bool
+    """
     return request.param
 
 
-@pytest.fixture(params=create_edb_obj_msgs(2))
-def edb_obj_msg(request) -> EDBObjMessage:
-    return request.param
+@pytest.fixture
+def edb_obj_msg():
+    """Fixture for creating an EDBObjMessage.
+
+    Returns
+    -------
+    EDBObjMessage
+    """
+    return create_edb_obj_msg()
 
 
-@pytest.fixture(params=[edb_obj_id for edb_obj_id in range(2)])
-def edb_obj_id(request) -> int:
-    return request.param
+@pytest.fixture
+def random_str():
+    """Fixture for creating a 10 character long string comprised of random ascii letters.
+
+    Returns
+    -------
+    str
+    """
+    return "".join(random.choice(string.ascii_letters) for _ in range(10))
+
+
+@pytest.fixture
+def random_int():
+    """Fixture for generating a random integer between 0 and 100,000.
+
+    Returns
+    -------
+    int
+    """
+    return _generate_random_int()

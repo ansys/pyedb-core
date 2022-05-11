@@ -2,41 +2,43 @@ from typing import List
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 import pytest
-import pytest_mock
 
+from ansys.edb.core.interfaces.grpc.messages import bool_message, int64_message, str_message
 from ansys.edb.core.models.cell.cell import Cell
 from ansys.edb.core.models.database import Database, database_pb2
-from utils.test_utils import (
-    create_bool_msg,
-    create_edb_obj_collection_msg,
-    create_edb_obj_msgs,
-    create_int64_msg,
-    create_string_msg,
-    msgs_are_equal,
-    patch_stub,
-)
+from utils.test_utils import create_edb_obj_collection_msg, msgs_are_equal, patch_stub
 
 # Helper fixtures and functions
 
 
-@pytest.fixture(params=["edb_path_0.aedb", "edb_path_1.aedb"])
-def db_path(request):
-    return request.param
+@pytest.fixture
+def db_obj(edb_obj_msg):
+    """Fixture for creating a Database used during testing.
+
+    Returns
+    -------
+    Database
+    """
+    return Database(edb_obj_msg)
 
 
-@pytest.fixture(params=[Database(msg) for msg in create_edb_obj_msgs(2)])
-def db_obj(request):
-    return request.param
+def _patch_database_stub(mocker, test_method_name, expected_response):
+    """Helper method that patches the given Database stub method with a mock server.
 
+    Parameters
+    ----------
+    mocker : pytest_mock.MockerFixture
+    test_method_name : str
+    expected_response : Any
 
-def _patch_database_stub(
-    mocker: pytest_mock.MockerFixture, test_method_name: str, expected_request, expected_response
-):
-    patch_stub(
+    Returns
+    -------
+    unittest.mock.Mock
+    """
+    return patch_stub(
         "ansys.edb.core.models.database.get_database_stub",
         mocker,
         test_method_name,
-        expected_request,
         expected_response,
     )
 
@@ -44,90 +46,206 @@ def _patch_database_stub(
 # Tests
 
 
-def test_create(db_path: str, edb_obj_msg: EDBObjMessage, mocker):
-    expected_request = create_string_msg(db_path)
+def test_create(random_str, edb_obj_msg, mocker):
+    """Test for the Database.create(db_path) method
 
-    _patch_database_stub(mocker, "Create", expected_request, edb_obj_msg)
+    Parameters
+    ----------
+    random_str : str
+        String to be used as the db_path parameter
+    edb_obj_msg : EDBObjMessage
+        The message that will be expected as the response from the mock server
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "Create", edb_obj_msg)
 
-    created_db = Database.create(db_path)
+    created_db = Database.create(random_str)
+
+    mock_server.assert_called_once_with(str_message(random_str))
+
     assert isinstance(created_db, Database)
-    assert msgs_are_equal(created_db._msg, edb_obj_msg)
+    assert msgs_are_equal(created_db.id, edb_obj_msg)
 
 
-def test_open(db_path: str, bool_val: bool, edb_obj_msg: EDBObjMessage, mocker):
-    expected_request = database_pb2.OpenDatabaseMessage(
-        edb_path=create_string_msg(db_path),
-        read_only=create_bool_msg(bool_val),
+def test_open(random_str, bool_val, edb_obj_msg, mocker):
+    """Test for the Database.open(db_path, read_only) method
+
+    Parameters
+    ----------
+    random_str : str
+        String to be used as the db_path parameter
+    bool_val : bool
+        Boolean to be used as the read_only parameter
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "Open", edb_obj_msg)
+
+    opened_db = Database.open(random_str, bool_val)
+
+    mock_server.assert_called_once_with(
+        database_pb2.OpenDatabaseMessage(
+            edb_path=str_message(random_str),
+            read_only=bool_message(bool_val),
+        )
     )
 
-    _patch_database_stub(mocker, "Open", expected_request, edb_obj_msg)
-
-    opened_db = Database.open(db_path, bool_val)
     assert isinstance(opened_db, Database)
-    assert msgs_are_equal(opened_db._msg, edb_obj_msg)
+    assert msgs_are_equal(opened_db.id, edb_obj_msg)
 
 
-def test_delete(db_path: str, bool_val: bool, mocker):
-    expected_request = create_string_msg(db_path)
-    expected_response = create_bool_msg(bool_val)
+def test_delete(random_str, bool_val, mocker):
+    """Test for the Database.delete(db_path) method
 
-    _patch_database_stub(mocker, "Delete", expected_request, expected_response)
+    Parameters
+    ----------
+    random_str : str
+        String to be used as the db_path parameter
+    bool_val : bool
+        The expected return value
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "Delete", bool_message(bool_val))
 
-    assert Database.delete(db_path) == bool_val
+    success = Database.delete(random_str)
+
+    mock_server.assert_called_once_with(str_message(random_str))
+
+    assert success == bool_val
 
 
-def test_save(db_obj: Database, bool_val: bool, mocker):
-    expected_response = create_bool_msg(bool_val)
+def test_save(db_obj, bool_val, mocker):
+    """Test for the Database.save() method
 
-    _patch_database_stub(mocker, "Save", db_obj._msg, expected_response)
+    Parameters
+    ----------
+    db_obj : Database
+        Database to be saved
+    bool_val : bool
+        The expected return value
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "Save", bool_message(bool_val))
 
-    assert db_obj.save() == bool_val
+    success = db_obj.save()
+
+    mock_server.assert_called_once_with(db_obj.id)
+
+    assert success == bool_val
 
 
-def test_close(db_obj: Database, bool_val: bool, mocker):
-    expected_response = create_bool_msg(bool_val)
+def test_close(db_obj, bool_val, mocker):
+    """Test for the Database.close() method
 
-    _patch_database_stub(mocker, "Close", db_obj._msg, expected_response)
+    Parameters
+    ----------
+    db_obj : Database
+        Database to be closed
+    bool_val : bool
+        The expected return value
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "Close", bool_message(bool_val))
 
-    assert db_obj.close() == bool_val
+    success = db_obj.close()
+
+    mock_server.assert_called_once_with(db_obj.id)
+
+    assert success == bool_val
 
 
 @pytest.mark.parametrize("expected_num_top_cells", list(range(3)))
-def test_top_circuit_cells(db_obj: Database, expected_num_top_cells: int, mocker):
+def test_top_circuit_cells(db_obj, expected_num_top_cells, mocker):
+    """Test for the Database.top_circuit_cells property
+
+    Parameters
+    ----------
+    db_obj : Database
+        Database to retrieve the top circuit cells of
+    expected_num_top_cells : int
+        The expected number of retrieved top cells
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
     expected_response = create_edb_obj_collection_msg(expected_num_top_cells)
 
-    _patch_database_stub(mocker, "GetTopCircuits", db_obj._msg, expected_response)
+    mock_server = _patch_database_stub(mocker, "GetTopCircuits", expected_response)
 
     top_cells = db_obj.top_circuit_cells
+
+    mock_server.assert_called_once_with(db_obj.id)
+
     assert isinstance(top_cells, List)
     assert len(top_cells) == expected_num_top_cells
     for top_cell_idx in range(expected_num_top_cells):
         top_cell = top_cells[top_cell_idx]
         assert isinstance(top_cell, Cell)
-        assert msgs_are_equal(top_cell._msg, expected_response.edb_obj_collection[top_cell_idx])
+        assert msgs_are_equal(top_cell.id, expected_response.edb_obj_collection[top_cell_idx])
 
 
-def test_get_id(db_obj: Database, edb_obj_id: int, mocker):
-    expected_response = create_int64_msg(edb_obj_id)
+def test_get_id(db_obj, random_int, mocker):
+    """Test for the Database.get_id() method
 
-    _patch_database_stub(mocker, "GetId", db_obj._msg, expected_response)
+    Parameters
+    ----------
+    db_obj : Database
+        Database to get the id of
+    random_int : int
+        The expected return value
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "GetId", int64_message(random_int))
 
-    assert db_obj.get_id() == edb_obj_id
+    db_id = db_obj.get_id()
+
+    mock_server.assert_called_once_with(db_obj.id)
+
+    assert db_id == random_int
 
 
-def test_is_read_only(db_obj: Database, bool_val: bool, mocker):
-    expected_response = create_bool_msg(bool_val)
+def test_is_read_only(db_obj, bool_val, mocker):
+    """Test for the Database.is_read_only() method
 
-    _patch_database_stub(mocker, "IsReadOnly", db_obj._msg, expected_response)
+    Parameters
+    ----------
+    db_obj : Database
+        Database to get the "read only" flag of
+    bool_val : bool
+        The expected return value
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "IsReadOnly", bool_message(bool_val))
 
-    assert db_obj.is_read_only() == bool_val
+    is_read_only = db_obj.is_read_only()
+
+    mock_server.assert_called_once_with(db_obj.id)
+
+    assert is_read_only == bool_val
 
 
-def test_find_by_id(edb_obj_id: int, edb_obj_msg: EDBObjMessage, mocker):
-    expected_request = create_int64_msg(edb_obj_id)
+def test_find_by_id(random_int: int, edb_obj_msg: EDBObjMessage, mocker):
+    """Test for the Database.is_read_only(db_id) method
 
-    _patch_database_stub(mocker, "FindById", expected_request, edb_obj_msg)
+    Parameters
+    ----------
+    random_int : Database
+        Int to be used as the db_id parameter
+    edb_obj_msg : EDBObjMessage
+        The message that will be expected as the response from the mock server
+    mocker : pytest_mock.MockerFixture
+        Mocker used to patch primitive stub with the mock server
+    """
+    mock_server = _patch_database_stub(mocker, "FindById", edb_obj_msg)
 
-    found_db = Database.find_by_id(edb_obj_id)
+    found_db = Database.find_by_id(random_int)
+
+    mock_server.assert_called_once_with(int64_message(random_int))
+
     assert isinstance(found_db, Database)
-    assert msgs_are_equal(found_db._msg, edb_obj_msg)
+    assert msgs_are_equal(found_db.id, edb_obj_msg)

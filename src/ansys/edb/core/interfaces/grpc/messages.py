@@ -18,7 +18,7 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
-from google.protobuf.wrappers_pb2 import BoolValue, StringValue
+from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 
 
 def optional(params, key, value, func):
@@ -35,6 +35,11 @@ def str_message(s: str):
 def bool_message(b: bool):
     """Convert to BoolValue."""
     return BoolValue(value=b) if b is not None else None
+
+
+def int64_message(i: int):
+    """Convert to BoolValue."""
+    return Int64Value(value=i) if i is not None else None
 
 
 def points_message(points):

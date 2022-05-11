@@ -21,7 +21,7 @@ html_short_title = html_title = "ansys-edb-core"
 html_theme_options = {
     "github_url": "https://github.com/pyansys/pyedb-core",
     "show_prev_next": False,
-    "breadcrumbs": True,
+    "show_breadcrumbs": True,
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],

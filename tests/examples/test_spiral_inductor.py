@@ -1,4 +1,6 @@
 import os
+import platform
+import tempfile
 
 from ansys.edb.core.models.cell.cell import Cell, CellType
 from ansys.edb.core.models.cell.hierarchy.via_group import ViaGroup
@@ -32,11 +34,14 @@ from ansys.edb.core.session import launch_local_session
 # This will ensure clean entry and exit from database
 class TDatabase:
     def __init__(self, path: str):
-        path = os.path.join(path)
-        print("deleting old database")
+        rootdir = tempfile.gettempdir()
+        rootdir = os.path.join(rootdir, "pyedb")
+        rootdir = os.path.join(rootdir, platform.python_version())
+        path = os.path.join(rootdir, path)
+        print("deleting old database at", path)
         Database.delete(path)
 
-        print("creating database")
+        print("creating database at", path)
         self.db = Database.create(path)
 
     def __enter__(self):
@@ -422,4 +427,4 @@ class SpiralInductor(BaseExample):
 
 def test_spiral_inductor():
     with launch_local_session(None, "50051"):
-        SpiralInductor().run(r"C:\temp\spiral_inductor.aedb")
+        SpiralInductor().run(r"spiral_inductor.aedb")

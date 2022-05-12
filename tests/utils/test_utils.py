@@ -3,7 +3,6 @@ import string
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
 import pytest
-import pytest_mock
 
 # Comparison utils
 
@@ -59,7 +58,7 @@ def create_edb_obj_msgs(num_msgs):
     return [create_edb_obj_msg() for _ in range(num_msgs)]
 
 
-def create_edb_obj_collection_msg(num_msgs: int) -> EDBObjCollectionMessage:
+def create_edb_obj_collection_msg(num_msgs):
     """Creates an EDBObjCollectionMessage
 
     Parameters
@@ -77,9 +76,7 @@ def create_edb_obj_collection_msg(num_msgs: int) -> EDBObjCollectionMessage:
 # Mock server utils
 
 
-def patch_stub(
-    stub_getter: str, mocker: pytest_mock.MockerFixture, test_method_name: str, expected_response
-):
+def patch_stub(stub_getter, mocker, test_method_name, expected_response):
     """Helper method that patches the given stub method.
 
     Parameters
@@ -116,7 +113,7 @@ def patch_stub(
 
 
 @pytest.fixture(params=[True, False])
-def bool_val(request) -> bool:
+def bool_val(request):
     """Parameterized fixture that returns True and False values
 
     Returns

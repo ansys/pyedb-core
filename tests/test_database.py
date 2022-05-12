@@ -1,6 +1,5 @@
 from typing import List
 
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 import pytest
 
 from ansys.edb.core.interfaces.grpc.messages import bool_message, int64_message, str_message
@@ -229,7 +228,7 @@ def test_is_read_only(db_obj, bool_val, mocker):
     assert is_read_only == bool_val
 
 
-def test_find_by_id(random_int: int, edb_obj_msg: EDBObjMessage, mocker):
+def test_find_by_id(random_int, edb_obj_msg, mocker):
     """Test for the Database.is_read_only(db_id) method
 
     Parameters

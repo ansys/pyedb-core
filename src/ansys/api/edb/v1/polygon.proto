@@ -12,6 +12,12 @@ import "refs.proto";
 service PolygonService {
   // Create a polygon
   rpc Create (PolygonCreationMessage) returns (EDBObjMessage) {}
+  
+  // Get PolygonData
+  rpc GetPolygonData (EDBObjMessage) returns (EDBObjMessage) {}
+  
+  // Set PolygonData
+  rpc SetPolygonData (SetPolygonDataMessage) returns (google.protobuf.BoolValue) {}
 }
 
 // Message for Create
@@ -20,4 +26,10 @@ message PolygonCreationMessage {
   LayerRefMessage layer = 2;
   NetRefMessage net = 3;
   PointsMessage points = 4;
+}
+
+// Message for Set PolygonData
+message SetPolygonDataMessage {
+  EDBObjMessage target = 1;
+  PointsMessage poly = 2;
 }

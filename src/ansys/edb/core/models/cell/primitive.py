@@ -578,17 +578,6 @@ class Circle(Primitive):
         return True
 
 
-class _PolygonQueryBuilder:
-    @staticmethod
-    def create(layout, layer: str, net, points):
-        return polygon_pb2.PolygonCreationMessage(
-            layout=layout.id,
-            layer=messages.layer_ref_message(layer),
-            net=messages.net_ref_message(net),
-            points=messages.points_message(points),
-        )
-
-
 class Text(Primitive):
     """Class representing a text object."""
 
@@ -679,6 +668,17 @@ class Text(Primitive):
         )
 
 
+class _PolygonQueryBuilder:
+    @staticmethod
+    def create(layout, layer: str, net, points):
+        return polygon_pb2.PolygonCreationMessage(
+            layout=layout.id,
+            layer=messages.layer_ref_message(layer),
+            net=messages.net_ref_message(net),
+            points=messages.points_message(points),
+        )
+
+
 class Polygon(Primitive):
     """Class representing a polygon object."""
 
@@ -703,6 +703,44 @@ class Polygon(Primitive):
                 _PolygonQueryBuilder.create(layout, layer_name, net, polygon_data)
             )
         )
+
+    @handle_grpc_exception
+    def get_polygon_data(self):
+        """Get a PolygonData object for this Polygon.
+
+        Returns
+        -------
+        PolygonData
+            PolygonData objects that represent outer contour of the Polygon.
+        """
+        return get_polygon_stub().GetPolygonData(self._msg)
+
+    @handle_grpc_exception
+    def set_polygon_data(self, poly):
+        """Set PolygonData object for this Polygon.
+
+        Parameters
+        ----------
+        poly : PolygonData
+            Outer contour of the Polygon.
+        Returns
+        -------
+        bool
+            Boolean value that represents the result of the setter.
+        """
+        return get_polygon_stub().SetPolygonData(
+            polygon_pb2.SetPolygonDataMessage(target=self._msg, poly=messages.points_message(poly))
+        )
+
+    def can_be_zone_primitive(self):
+        """
+        Determine if a primitive can be a zone.
+
+        Returns
+        -------
+        bool
+        """
+        return True
 
 
 class PathEndCapType(Enum):

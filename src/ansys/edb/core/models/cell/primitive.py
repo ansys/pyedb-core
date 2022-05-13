@@ -600,7 +600,7 @@ class Text(Primitive):
         Parameters
         ----------
         layout: Layout
-            Layout this circle will be in.
+            Layout this text will be in.
         layer: LayerRef
             Layer name this text will be on.
         center_x: Value
@@ -749,11 +749,11 @@ class Path(Primitive):
         Parameters
         ----------
         layout: Layout
-            Layout this circle will be in.
+            Layout this path will be in.
         layer: LayerRef
-            Layer name this text will be on.
+            Layer name this path will be on.
         net: NetRef
-            Net.
+            Net that will be assigned to the path.
         width: Value
             Path width.
         end_cap1: path_pb2.PathEndCapStyle
@@ -813,7 +813,7 @@ class Path(Primitive):
 
     @handle_grpc_exception
     def get_center_line(self):
-        """Get center lines of the path.
+        """Get center line of the path.
 
         Returns
         -------
@@ -824,7 +824,7 @@ class Path(Primitive):
 
     @handle_grpc_exception
     def set_center_line(self, center_line):
-        """Set center lines of the path.
+        """Set center line of the path.
 
         Parameters
         ----------
@@ -948,8 +948,6 @@ class Path(Primitive):
         ----------
         corner_type: PathCornerType
             Corner style.
-        keep_inside: bool
-            Indicates whether the part of the path inside the polygon should be preserved.
 
         Returns
         -------

@@ -38,7 +38,7 @@ def bool_message(b: bool):
 
 
 def int64_message(i: int):
-    """Convert to BoolValue."""
+    """Convert to Int64Value."""
     return Int64Value(value=i) if i is not None else None
 
 

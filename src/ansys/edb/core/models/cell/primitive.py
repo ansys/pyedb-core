@@ -726,7 +726,7 @@ class Polygon(Primitive):
         Returns
         -------
         bool
-            Boolean value that represents the result of the setter.
+            Returns true if the contour of Polygon is set correctly and false if not.
         """
         return get_polygon_stub().SetPolygonData(
             polygon_pb2.SetPolygonDataMessage(target=self._msg, poly=messages.points_message(poly))

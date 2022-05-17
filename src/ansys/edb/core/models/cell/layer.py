@@ -45,7 +45,7 @@ class Layer(ObjBase):
     def __del__(self):
         """Destroy a layer instance."""
         if self._is_owner:
-            get_layer_stub().Cleanup(self._msg)
+            get_layer_stub().Cleanup(self.msg)
 
     @staticmethod
     @handle_grpc_exception
@@ -73,7 +73,7 @@ class Layer(ObjBase):
         -------
         LayerType
         """
-        return LayerType(get_layer_stub().GetLayerType(self._msg).type)
+        return LayerType(get_layer_stub().GetLayerType(self.msg).type)
 
     @handle_grpc_exception
     def is_stackup_layer(self):
@@ -98,7 +98,7 @@ class Layer(ObjBase):
         -------
         bool
         """
-        return get_layer_stub().IsViaLayer(self._msg).value
+        return get_layer_stub().IsViaLayer(self.msg).value
 
     @handle_grpc_exception
     def get_name(self):
@@ -108,7 +108,7 @@ class Layer(ObjBase):
         -------
         str
         """
-        return get_layer_stub().GetName(self._msg).value
+        return get_layer_stub().GetName(self.msg).value
 
 
 class StackupLayer(Layer):
@@ -161,7 +161,7 @@ class StackupLayer(Layer):
         bool
         """
         return get_stackup_layer_stub().SetNegative(
-            layer_pb2.SetNegativeMessage(layer=self._msg, is_negative=is_negative)
+            layer_pb2.SetNegativeMessage(layer=self.msg, is_negative=is_negative)
         )
 
 

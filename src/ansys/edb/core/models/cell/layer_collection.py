@@ -29,7 +29,7 @@ class LayerCollection(ObjBase):
     def __del__(self):
         """Clean up a layer collection."""
         if self._is_owner:
-            get_layer_collection_stub().Cleanup(self._msg)
+            get_layer_collection_stub().Cleanup(self.msg)
 
     @staticmethod
     def create(mode=LayerCollectionMode.LAMINATE):
@@ -62,11 +62,11 @@ class LayerCollection(ObjBase):
         -------
         bool
         """
-        layer_msgs = [lyr._msg for lyr in layers]
+        layer_msgs = [lyr.msg for lyr in layers]
         return (
             get_layer_collection_stub()
             .AddLayers(
-                layer_collection_pb2.AddLayersMessage(layer_collection=self._msg, layers=layer_msgs)
+                layer_collection_pb2.AddLayersMessage(layer_collection=self.msg, layers=layer_msgs)
             )
             .value
         )
@@ -86,7 +86,7 @@ class LayerCollection(ObjBase):
         return Layer._create(
             get_layer_collection_stub().FindByName(
                 layer_collection_pb2.FindLayerByNameMessage(
-                    layer_collection=self._msg, name=layer_name
+                    layer_collection=self.msg, name=layer_name
                 )
             )
         )

@@ -64,7 +64,7 @@ def test_create(random_str, edb_obj_msg, mocker):
     mock_server.assert_called_once_with(str_message(random_str))
 
     assert isinstance(created_db, Database)
-    assert msgs_are_equal(created_db.id, edb_obj_msg)
+    assert msgs_are_equal(created_db.msg, edb_obj_msg)
 
 
 def test_open(random_str, bool_val, edb_obj_msg, mocker):
@@ -91,7 +91,7 @@ def test_open(random_str, bool_val, edb_obj_msg, mocker):
     )
 
     assert isinstance(opened_db, Database)
-    assert msgs_are_equal(opened_db.id, edb_obj_msg)
+    assert msgs_are_equal(opened_db.msg, edb_obj_msg)
 
 
 def test_delete(random_str, bool_val, mocker):
@@ -131,7 +131,7 @@ def test_save(db_obj, bool_val, mocker):
 
     success = db_obj.save()
 
-    mock_server.assert_called_once_with(db_obj.id)
+    mock_server.assert_called_once_with(db_obj.msg)
 
     assert success == bool_val
 
@@ -150,11 +150,13 @@ def test_close(db_obj, bool_val, mocker):
     """
     mock_server = _patch_database_stub(mocker, "Close", bool_message(bool_val))
 
+    expected_message = db_obj.msg
     success = db_obj.close()
 
-    mock_server.assert_called_once_with(db_obj.id)
+    mock_server.assert_called_once_with(expected_message)
 
     assert success == bool_val
+    assert (db_obj.msg is None) == success
 
 
 @pytest.mark.parametrize("expected_num_top_cells", list(range(3)))
@@ -176,14 +178,14 @@ def test_top_circuit_cells(db_obj, expected_num_top_cells, mocker):
 
     top_cells = db_obj.top_circuit_cells
 
-    mock_server.assert_called_once_with(db_obj.id)
+    mock_server.assert_called_once_with(db_obj.msg)
 
     assert isinstance(top_cells, List)
     assert len(top_cells) == expected_num_top_cells
     for top_cell_idx in range(expected_num_top_cells):
         top_cell = top_cells[top_cell_idx]
         assert isinstance(top_cell, Cell)
-        assert msgs_are_equal(top_cell.id, expected_response.edb_obj_collection[top_cell_idx])
+        assert msgs_are_equal(top_cell.msg, expected_response.edb_obj_collection[top_cell_idx])
 
 
 def test_get_id(db_obj, random_int, mocker):
@@ -202,7 +204,7 @@ def test_get_id(db_obj, random_int, mocker):
 
     db_id = db_obj.get_id()
 
-    mock_server.assert_called_once_with(db_obj.id)
+    mock_server.assert_called_once_with(db_obj.msg)
 
     assert db_id == random_int
 
@@ -223,7 +225,7 @@ def test_is_read_only(db_obj, bool_val, mocker):
 
     is_read_only = db_obj.is_read_only()
 
-    mock_server.assert_called_once_with(db_obj.id)
+    mock_server.assert_called_once_with(db_obj.msg)
 
     assert is_read_only == bool_val
 
@@ -233,7 +235,7 @@ def test_find_by_id(random_int, edb_obj_msg, mocker):
 
     Parameters
     ----------
-    random_int : Database
+    random_int : int
         Int to be used as the db_id parameter
     edb_obj_msg : EDBObjMessage
         The message that will be expected as the response from the mock server
@@ -247,4 +249,4 @@ def test_find_by_id(random_int, edb_obj_msg, mocker):
     mock_server.assert_called_once_with(int64_message(random_int))
 
     assert isinstance(found_db, Database)
-    assert msgs_are_equal(found_db.id, edb_obj_msg)
+    assert msgs_are_equal(found_db.msg, edb_obj_msg)

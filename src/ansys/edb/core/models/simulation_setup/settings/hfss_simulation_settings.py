@@ -18,7 +18,7 @@ from .simulation_settings import SimulationSettings
 class _QueryBuilder:
     @staticmethod
     def get_adaptive_settings(hfss_sim_settings):
-        return hfss_sim_settings._msg
+        return hfss_sim_settings.msg
 
     @staticmethod
     def set_mesh_operations(hfss_sim_settings, new_mesh_ops):
@@ -34,7 +34,7 @@ class _QueryBuilder:
             new_mesh_op_msgs.append(mesh_op_msg)
         new_mesh_op_msg = MeshOperationsMessage(mesh_operations=new_mesh_op_msgs)
         return SetMeshOperationsMessage(
-            hfss_simulation_settings=hfss_sim_settings._msg, mesh_operations=new_mesh_op_msg
+            hfss_simulation_settings=hfss_sim_settings.msg, mesh_operations=new_mesh_op_msg
         )
 
     @staticmethod

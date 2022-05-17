@@ -61,7 +61,7 @@ class MaterialDef(ObjBase):
         MaterialDef
         """
         return MaterialDef(
-            get_material_def_stub().Create(_QueryBuilder.create(database._msg, name, **kwargs))
+            get_material_def_stub().Create(_QueryBuilder.create(database.msg, name, **kwargs))
         )
 
     @handle_grpc_exception
@@ -79,6 +79,6 @@ class MaterialDef(ObjBase):
         """
         return (
             get_material_def_stub()
-            .SetProperty(_QueryBuilder.set_property(self._msg, material_property, value))
+            .SetProperty(_QueryBuilder.set_property(self.msg, material_property, value))
             .value
         )

@@ -12,7 +12,7 @@ from ..base import ObjBase
 class _TerminalQueryBuilder:
     @staticmethod
     def set_reference(source, ref):
-        return t.TermSetRefMessage(source_term=source._msg, ref_term=ref._msg)
+        return t.TermSetRefMessage(source_term=source.msg, ref_term=ref.msg)
 
 
 class Terminal(ObjBase):
@@ -38,9 +38,9 @@ class Terminal(ObjBase):
 
 class _PointTerminalQueryBuilder:
     @staticmethod
-    def create(layout, net, layer: str, name: str, x: float, y: float):
+    def create(layout, net, layer, name, x, y):
         return pt.PointTermCreationMessage(
-            layout=layout.id,
+            layout=layout.msg,
             net=messages.net_ref_message(net),
             layer=messages.layer_ref_message(layer),
             name=name,
@@ -60,8 +60,8 @@ class PointTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
-        net : str
-        layer : str
+        net : str or Net
+        layer : str or Layer
         name : str
         x : float
         y : float

@@ -46,4 +46,4 @@ class PolygonData(ObjBase):
 
     def cleanup(self):
         """Clean up resources."""
-        return get_polygon_data_stub().Cleanup(self._msg)
+        return get_polygon_data_stub().Cleanup(self.msg)

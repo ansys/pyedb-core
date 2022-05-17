@@ -21,7 +21,7 @@ def msgs_are_equal(msg0, msg1):
 
 
 def _generate_random_int():
-    """Generates a random integer between 0 and 100,000.
+    """Generates a random integer between 0 and 100,000. Note this is not guaranteed to be unique.
 
     Returns
     -------
@@ -34,13 +34,13 @@ def _generate_random_int():
 
 
 def create_edb_obj_msg():
-    """Creates and EDBObjMessage where the impl_ptr_address is a random number
+    """Creates and EDBObjMessage where the id is a random number
 
     Returns
     -------
     EDBObjMessage
     """
-    return EDBObjMessage(impl_ptr_address=_generate_random_int())
+    return EDBObjMessage(id=_generate_random_int())
 
 
 def create_edb_obj_msgs(num_msgs):

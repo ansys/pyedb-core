@@ -139,7 +139,7 @@ class Primitive(ConnObj):
 
         Parameters
         ----------
-        layer : Layer
+        layer : str or Layer
 
         Returns
         -------
@@ -294,8 +294,8 @@ class Rectangle(Primitive):
         Parameters
         ----------
         layout : Layout
-        layer : str
-        net : str
+        layer : str or Layer
+        net : str or Net
         rep_type : Rectangle.RectangleRepresentationType
         param1 : float
         param2 : float
@@ -311,7 +311,7 @@ class Rectangle(Primitive):
         return Rectangle(
             get_rectangle_stub().Create(
                 rectangle_pb2.RectangleCreationMessage(
-                    layout=layout.id,
+                    layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
                     net=messages.net_ref_message(net),
                     representation_type=rep_type.value,
@@ -461,14 +461,14 @@ class Circle(Primitive):
 
     @staticmethod
     @handle_grpc_exception
-    def create(layout, layer_name, net, center_x, center_y, radius):
+    def create(layout, layer, net, center_x, center_y, radius):
         """Create a circle.
 
         Parameters
         ----------
         layout: Layout,
-        layer_name: LayerRef,
-        net: NetRef,
+        layer: str or Layer,
+        net: str or Net,
         center_x: Value,
         center_y: Value,
         radius: Value
@@ -480,8 +480,8 @@ class Circle(Primitive):
         return Circle(
             get_circle_stub().Create(
                 circle_pb2.CircleCreationMessage(
-                    layout=layout.id,
-                    layer=messages.layer_ref_message(layer_name),
+                    layout=layout.msg,
+                    layer=messages.layer_ref_message(layer),
                     net=messages.net_ref_message(net),
                     center_x=messages.value_message(center_x),
                     center_y=messages.value_message(center_y),
@@ -580,9 +580,9 @@ class Circle(Primitive):
 
 class _PolygonQueryBuilder:
     @staticmethod
-    def create(layout, layer: str, net, points):
+    def create(layout, layer, net, points):
         return polygon_pb2.PolygonCreationMessage(
-            layout=layout.id,
+            layout=layout.msg,
             layer=messages.layer_ref_message(layer),
             net=messages.net_ref_message(net),
             points=messages.points_message(points),
@@ -601,7 +601,7 @@ class Text(Primitive):
         ----------
         layout: Layout
             Layout this circle will be in.
-        layer: LayerRef
+        layer: str or Layer
             Layer name this text will be on.
         center_x: Value
             X value of center point.
@@ -618,7 +618,7 @@ class Text(Primitive):
         return Text(
             get_text_stub().Create(
                 text_pb2.TextCreationMessage(
-                    layout=layout.id,
+                    layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
                     center_x=messages.value_message(center_x),
                     center_y=messages.value_message(center_y),
@@ -727,7 +727,7 @@ class _PathQueryBuilder:
     @staticmethod
     def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
         return path_pb2.PathCreationMessage(
-            layout=layout.id,
+            layout=layout.msg,
             layer=messages.layer_ref_message(layer),
             net=messages.net_ref_message(net),
             width=messages.value_message(width),
@@ -744,7 +744,23 @@ class Path(Primitive):
     @staticmethod
     @handle_grpc_exception
     def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
-        """Create a path."""
+        """Create a path.
+
+        Parameters
+        ----------
+        layout : Layout
+        layer : str or Layer
+        net : str or Net
+        width : Value
+        end_cap1 : PathEndCapType
+        end_cap2 : PathEndCapType
+        corner : PathCornerType
+        points : PolygonData
+
+        Returns
+        -------
+        Path
+        """
         return Path(
             get_path_stub().Create(
                 _PathQueryBuilder.create(

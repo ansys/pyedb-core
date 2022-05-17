@@ -3,7 +3,7 @@
 from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
-from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.point_data_pb2 import (
     SENSE_CCW,
@@ -49,7 +49,7 @@ def points_message(points):
     elif isinstance(points, list) or isinstance(points, tuple):
         return PointsMessage(points_data=points_data_message(points))
     else:
-        return PointsMessage(polygon_data=edb_obj_message(points))
+        return PointsMessage(polygon_data=edb_obj_message(points.msg))
 
 
 def points_data_message(points):
@@ -79,8 +79,10 @@ def edb_obj_message(obj):
     """Extract EDB impl ptr."""
     if obj is None:
         return None
+    elif isinstance(obj, EDBObjMessage):
+        return obj
     else:
-        return obj.id
+        raise RuntimeError("EDB Object has invalid ID.")
 
 
 def material_properties_message(**kwargs):
@@ -113,7 +115,7 @@ def layer_ref_message(layer):
     elif type(layer) == str:
         return LayerRefMessage(name=str_message(layer))
     else:
-        return LayerRefMessage(id=edb_obj_message(layer))
+        return LayerRefMessage(id=edb_obj_message(layer.msg))
 
 
 def net_ref_message(net):
@@ -123,7 +125,7 @@ def net_ref_message(net):
     elif type(net) == str:
         return NetRefMessage(name=str_message(net))
     else:
-        return NetRefMessage(id=edb_obj_message(net))
+        return NetRefMessage(id=edb_obj_message(net.msg))
 
 
 def adaptive_frequency_message(frequency: str, max_delta_s: float, max_passes: int):

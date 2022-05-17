@@ -15,7 +15,7 @@ message ValueMessage {
 // Message representing an arbitrary edb object
 message EDBObjMessage {
   uint64 impl_ptr_address = 1;
-  string id = 2;
+  uint64 id = 2;
 }
 
 // Message containing a collection of edb objects 

@@ -14,19 +14,24 @@ class ObjBase:
         self._msg = msg
 
     def is_null(self):
-        """Determine whether this object exists in EDB."""
-        return len(self.id) == 0
-
-    @property
-    def id(self):
-        """Return unique ID of an EDB object.
+        """Determine whether this object exists in EDB.
 
         Returns
         -------
-        str
+        bool
+        """
+        return self.id == 0
+
+    @property
+    def id(self):
+        """Return unique ID of an EDB object. 0 indicates invalid object.
+
+        Returns
+        -------
+        int
         """
         if self._msg is None:
-            return ""
+            return 0
 
         return self._msg.id
 
@@ -42,5 +47,11 @@ class ObjBase:
 
     @msg.setter
     def msg(self, val):
-        if self._msg is None or val is None:
+        """Modify protobuf message that represents this object's ID. can only be used to reset ID to None.
+
+        Parameters
+        ----------
+        val : EDBObjMessage
+        """
+        if val is None:
             self._msg = val

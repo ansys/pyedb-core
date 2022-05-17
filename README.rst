@@ -19,7 +19,7 @@ have the required build system tool. To do so, run:
 
 .. code:: bash
 
-    python -m pip install -U pip flit
+    python -m pip install -U pip
 
 Then, you can simply execute:
 
@@ -64,10 +64,12 @@ need to follow these steps:
 
     .. code:: bash
 
-        python -m pip install -U pip flit tox
-        python -m pip install -r requirements/requirements_build.txt
-        python -m pip install -r requirements/requirements_doc.txt
-        python -m pip install -r requirements/requirements_tests.txt
+        python -m pip install -U pip tox
+
+        # Copy default environment variables for test
+        cp .env.test.example .env.test
+
+        # Modify .env.test if necessary
 
 
 4. Finally, verify your development installation by running:
@@ -92,8 +94,8 @@ own virtual environment so anything being tested is isolated from the project in
 order to guarantee project's integrity. The following environments commands are provided:
 
 - **tox -e style**: will check for coding style quality.
-- **tox -e py3X**: being X the minor version of your Python environment. Checks for unit tests.
-- **tox -e py3X-coverage**: checks for unit testing and code coverage.
+- **tox -e py3X**: checks for unit tests. Replace X with the minor version of your Python environment. Pass pytest flags after "--". For example, `tox -e py3X -- -s` to show stdout from pytest
+- **tox -e py3X-coverage**: checks for code coverage.
 - **tox -e doc**: checs for documentation building process.
 
 

@@ -2,6 +2,7 @@ Utility
 =======
 
 Classes
+-------
 
 .. currentmodule:: ansys.edb.core.utility.edb_iterator
 
@@ -17,3 +18,4 @@ Classes
    :toctree: _autosummary
 
    EDBLogger
+

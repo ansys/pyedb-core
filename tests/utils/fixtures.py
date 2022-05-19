@@ -85,3 +85,23 @@ def layers(request):
 @pytest.fixture
 def layer(layers):
     return layers[0]
+
+
+@pytest.fixture
+def layer_ref(request):
+    if isinstance(request.param, str):
+        ret = request.getfixturevalue(request.param)
+        if isinstance(ret, Layer) or isinstance(ret, str):
+            return ret
+        else:
+            comment = (
+                f"Invalid parameter for 'layer_ref'."
+                f"Fixture '{request.param}' resolved to {type(ret)}. Must be either str or Layer."
+            )
+    else:
+        comment = (
+            "Invalid parameter for 'layer_ref'."
+            "It must be a string name of another fixture that resolves to str or Layer."
+        )
+
+    raise RuntimeError(comment)

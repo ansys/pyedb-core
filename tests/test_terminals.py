@@ -54,19 +54,19 @@ def test_get_params(patch, point_terminal, layer):
 
 
 @pytest.mark.parametrize(
-    "layer, point",
+    "layer_ref, point, success",
     [
-        ("layer", (1e-9, 2e-9)),  # Layer instance fixture & float
-        ("random_str", (5, 6)),  # Layer name fixture     & int
+        ("layer", (1e-9, 2e-9), True),  # Layer instance fixture & float & success
+        ("random_str", (5, 6), False),  # Layer str name fixture & int   & fail
     ],
-    indirect=["layer"],
+    indirect=["layer_ref"],
 )
-def test_set_params(patch, point_terminal, layer, point):
-    mock = patch("SetParameters", messages.bool_message(True))
+def test_set_params(patch, point_terminal, layer_ref, point, success):
+    mock = patch("SetParameters", messages.bool_message(success))
 
-    res = point_terminal.set_params(layer, point)
+    res = point_terminal.set_params(layer_ref, point)
 
     mock.assert_called_once_with(
-        messages.point_term_set_params_message(point_terminal, layer, point)
+        messages.point_term_set_params_message(point_terminal, layer_ref, point)
     )
-    assert res
+    assert res == success

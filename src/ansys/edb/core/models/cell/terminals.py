@@ -1,12 +1,12 @@
 """Terminals."""
 
-import ansys.api.edb.v1.point_term_pb2 as pt
 import ansys.api.edb.v1.term_pb2 as t
 
 from ...interfaces.grpc import messages
 from ...session import get_point_terminal_stub, get_terminal_stub
 from ...utility.edb_errors import handle_grpc_exception
 from ..base import ObjBase
+from .layer import Layer
 
 
 class _TerminalQueryBuilder:
@@ -36,18 +36,6 @@ class Terminal(ObjBase):
         )
 
 
-class _PointTerminalQueryBuilder:
-    @staticmethod
-    def create(layout, net, layer, name, x, y):
-        return pt.PointTermCreationMessage(
-            layout=layout.msg,
-            net=messages.net_ref_message(net),
-            layer=messages.layer_ref_message(layer),
-            name=name,
-            point=messages.point_message((x, y)),
-        )
-
-
 class PointTerminal(Terminal):
     """Class representing a point terminal object."""
 
@@ -63,8 +51,8 @@ class PointTerminal(Terminal):
         net : str or Net
         layer : str or Layer
         name : str
-        x : float
-        y : float
+        x : Value
+        y : Value
 
         Returns
         -------
@@ -72,6 +60,38 @@ class PointTerminal(Terminal):
         """
         return PointTerminal(
             get_point_terminal_stub().Create(
-                _PointTerminalQueryBuilder.create(layout, net, layer, name, x, y)
+                messages.point_term_creation_message(layout, net, layer, name, x, y)
             )
+        )
+
+    @handle_grpc_exception
+    def get_params(self):
+        """Get x, y coordinates and the layer this point terminal is placed on.
+
+        Returns
+        -------
+        (Layer, (Value, Value))
+        """
+        res = get_point_terminal_stub().GetParameters(self.msg)
+        point = (res.point.x.value, res.point.y.value)
+        layer = Layer(res.layer.id)
+        return layer, point
+
+    @handle_grpc_exception
+    def set_params(self, layer, point):
+        """Set x, y coordinates and the layer this point terminal is placed on.
+
+        Parameters
+        ----------
+        layer : str or Layer
+        point : PointData
+
+        Returns
+        -------
+        bool
+        """
+        return (
+            get_point_terminal_stub()
+            .SetParameters(messages.point_term_set_params_message(self, layer, point))
+            .value
         )

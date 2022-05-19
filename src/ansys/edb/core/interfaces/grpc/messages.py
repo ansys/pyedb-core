@@ -11,6 +11,11 @@ from ansys.api.edb.v1.point_data_pb2 import (
     PointMessage,
     PointsMessage,
 )
+from ansys.api.edb.v1.point_term_pb2 import (
+    PointTermCreationMessage,
+    PointTermParamsMessage,
+    PointTermSetParamsMessage,
+)
 from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, NetRefMessage
 from ansys.api.edb.v1.simulation_settings_pb2 import (
     MeshOperationMessage,
@@ -68,6 +73,26 @@ def point_message(point):
         return None
     else:
         return PointMessage(x=value_message(point[0]), y=value_message(point[1]))
+
+
+def point_term_params_message(layer, point):
+    """Convert to PointTermParamMessage."""
+    return PointTermParamsMessage(point=point_message(point), layer=layer_ref_message(layer))
+
+
+def point_term_set_params_message(term, layer, point):
+    """Convert to PointTermSetParamsMessage."""
+    return PointTermSetParamsMessage(term=term.msg, params=point_term_params_message(layer, point))
+
+
+def point_term_creation_message(layout, net, layer, name, x, y):
+    """Convert to PointTermCreationMessage."""
+    return PointTermCreationMessage(
+        layout=layout.msg,
+        net=net_ref_message(net),
+        name=name,
+        params=point_term_params_message(layer, (x, y)),
+    )
 
 
 def value_message(value):

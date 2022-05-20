@@ -600,9 +600,9 @@ class Text(Primitive):
         Parameters
         ----------
         layout: Layout
-            Layout this circle will be in.
+            Layout this text will be in.
         layer: str or Layer
-            Layer name this text will be on.
+            Layer this text will be on.
         center_x: Value
             X value of center point.
         center_y: Value
@@ -768,3 +768,274 @@ class Path(Primitive):
                 )
             )
         )
+
+    @staticmethod
+    @handle_grpc_exception
+    def render(width, end_cap1, end_cap2, corner_style, path):
+        """Render a Path object.
+
+        Parameters
+        ----------
+        width: Value
+            Path width.
+        end_cap1: path_pb2.PathEndCapStyle
+            End cap style of path start end cap.
+        end_cap2: path_pb2.PathEndCapStyle
+            End cap style of path end end cap.
+        corner_style: path_pb2.PathCornerStyle
+            Corner style.
+        path: PolygonData
+            PolygonData to set.
+
+        Returns
+        -------
+        PolygonData
+            PolygonData object created.
+        """
+        return get_path_stub().Render(
+            path_pb2.PathRenderMessage(
+                width=messages.value_message(width),
+                end_cap1=end_cap1.value,
+                end_cap2=end_cap2.value,
+                corner_style=corner_style.value,
+                path=messages.points_message(path),
+            )
+        )
+
+    @handle_grpc_exception
+    def get_center_line(self):
+        """Get center line of the path.
+
+        Returns
+        -------
+        PolygonData
+            PolygonData containing the center line for this Path.
+        """
+        return get_path_stub().GetCenterLine(self._msg)
+
+    @handle_grpc_exception
+    def set_center_line(self, center_line):
+        """Set center line of the path.
+
+        Parameters
+        ----------
+        center_line: PolygonData
+            PolygonData containing the center line for this Path.
+
+        Returns
+        -------
+        bool
+            True if succeeds.
+        """
+        return (
+            get_path_stub()
+            .SetCenterLine(
+                path_pb2.SetCenterLineMessage(
+                    target=self._msg, center_line=messages.points_message(center_line)
+                )
+            )
+            .value
+        )
+
+    @handle_grpc_exception
+    def get_end_cap_style(self):
+        """Get path end cap styles.
+
+        Returns
+        -------
+        tuple[path_pb2.PathEndCapStyle, path_pb2.PathEndCapStyle]
+            End cap style of path start end cap.
+            End cap style of path end end cap.
+        """
+        end_cap_msg = get_path_stub().GetEndCapStyle(self._msg)
+        return (PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2))
+
+    @handle_grpc_exception
+    def set_end_cap_style(self, end_cap1, end_cap2) -> bool:
+        """Set path end cap styles.
+
+        Parameters
+        ----------
+        end_cap1: path_pb2.PathEndCapStyle
+            End cap style of path start end cap.
+        end_cap2: path_pb2.PathEndCapStyle
+            End cap style of path end end cap.
+
+        Returns
+        -------
+        bool
+            True if succeeds.
+        """
+        return (
+            get_path_stub()
+            .SetEndCapStyle(
+                path_pb2.SetEndCapStyleMessage(
+                    target=self._msg,
+                    end_cap=path_pb2.EndCapStyleMessage(
+                        end_cap1=end_cap1.value, end_cap2=end_cap2.value
+                    ),
+                )
+            )
+            .value
+        )
+
+    @handle_grpc_exception
+    def get_clip_info(self):
+        """Get data used to clip the path.
+
+        Returns
+        -------
+        tuple[PolygonData, bool]
+            PolygonData used to clip the path.
+            Indicates whether the part of the path inside the polygon is preserved.
+        """
+        clip_info_msg = get_path_stub().GetClipInfo(self._msg)
+        return (clip_info_msg.clipping_poly, clip_info_msg.keep_inside)
+
+    @handle_grpc_exception
+    def set_clip_info(self, clipping_poly, keep_inside=True):
+        """Set data used to clip the path.
+
+        Parameters
+        ----------
+        clipping_poly: Points2D
+            PolygonData used to clip the path.
+        keep_inside: bool
+            Indicates whether the part of the path inside the polygon should be preserved.
+
+        Returns
+        -------
+        bool
+            True if succeeds.
+        """
+        return (
+            get_path_stub()
+            .SetClipInfo(
+                path_pb2.SetClipInfoMessage(
+                    target=self._msg,
+                    clipping_poly=messages.points_message(clipping_poly),
+                    keep_inside=keep_inside,
+                )
+            )
+            .value
+        )
+
+    @handle_grpc_exception
+    def get_corner_style(self):
+        """Get path corner style.
+
+        Returns
+        -------
+        PathCornerType
+            Corner style.
+        """
+        return PathCornerType(get_path_stub().GetCornerStyle(self._msg).corner_style)
+
+    @handle_grpc_exception
+    def set_corner_style(self, corner_type):
+        """Set path corner style.
+
+        Parameters
+        ----------
+        corner_type: PathCornerType
+            Corner style.
+
+        Returns
+        -------
+        bool
+            True if succeeds.
+        """
+        return (
+            get_path_stub()
+            .SetCornerStyle(
+                path_pb2.SetCornerStyleMessage(
+                    target=self._msg,
+                    corner_style=path_pb2.CornerStyleMessage(corner_style=corner_type.value),
+                )
+            )
+            .value
+        )
+
+    @handle_grpc_exception
+    def get_width(self):
+        """Get path width.
+
+        Returns
+        -------
+        Value
+            Width.
+        """
+        return messages.value_message_to_value(get_path_stub().GetWidth(self._msg).width)
+
+    @handle_grpc_exception
+    def set_width(self, width):
+        """Set path width.
+
+        Parameters
+        ----------
+        width: Value
+            Width.
+
+        Returns
+        -------
+        bool
+            True if succeeds.
+        """
+        return (
+            get_path_stub()
+            .SetWidth(
+                path_pb2.SetWidthMessage(
+                    target=self._msg,
+                    width=path_pb2.WidthMessage(width=messages.value_message(width)),
+                )
+            )
+            .value
+        )
+
+    @handle_grpc_exception
+    def get_miter_ratio(self):
+        """Get miter ratio.
+
+        Returns
+        -------
+        Value
+            Miter Ratio.
+        """
+        return messages.value_message_to_value(get_path_stub().GetMiterRatio(self._msg).miter_ratio)
+
+    @handle_grpc_exception
+    def set_miter_ratio(self, miter_ratio):
+        """Set miter ratio.
+
+        Parameters
+        ----------
+        miter_ratio: Value
+            Miter Ratio Value.
+
+        Returns
+        -------
+        bool
+            True if succeeds.
+        """
+        return (
+            get_path_stub()
+            .SetMiterRatio(
+                path_pb2.SetMiterRatioMessage(
+                    target=self._msg,
+                    miter_ratio=path_pb2.MiterRatioMessage(
+                        miter_ratio=messages.value_message(miter_ratio)
+                    ),
+                )
+            )
+            .value
+        )
+
+    def can_be_zone_primitive(self) -> bool:
+        """Check if this primitive can be a zone primitive or not.
+
+        Returns
+        -------
+        bool
+            The primitive can be a zone primitive,
+        """
+        return True

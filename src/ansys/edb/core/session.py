@@ -1,7 +1,7 @@
 """Session manager for gRPC."""
 
 from contextlib import contextmanager
-from pathlib import Path as PathlibPath
+from os import path
 from struct import pack, unpack
 import subprocess
 from sys import modules
@@ -40,20 +40,20 @@ import grpc
 class _EDBSessionData:
     def __init__(self):
         self.ip_address = ""
-        self.port_num = ""
-        self.ansys_em_root: Optional[PathlibPath] = None
+        self.port_num = -1
+        self.ansys_em_root: Optional[str] = None
         self.channel: Optional["grpc.Channel"] = None
         self.local_server_proc: Optional["subprocess.Popen"] = None
         self.stubs = {}
 
-    def initialize(self, ip_address: str, port_num: str, ansys_em_root: PathlibPath = None):
+    def initialize(self, ip_address, port_num, ansys_em_root=None):
         self.ip_address = ip_address
         self.port_num = port_num
         self.ansys_em_root = ansys_em_root
 
     def reset(self):
         self.ip_address = ""
-        self.port_num = ""
+        self.port_num = -1
         self.ansys_em_root = None
         self.channel = None
         self.local_server_proc = None
@@ -132,7 +132,7 @@ def launch_local_session(ansys_em_root, port_num):
     Parameters
     ----------
     ansys_em_root : pathlib.Path, optional
-    port_num : str
+    port_num : int
 
     Returns
     -------
@@ -142,7 +142,7 @@ def launch_local_session(ansys_em_root, port_num):
 
 
 @contextmanager
-def _launch_session(ip_address: str, port_num: str, ansys_em_root: PathlibPath = None) -> None:
+def _launch_session(ip_address, port_num, ansys_em_root=None):
 
     session.data.initialize(ip_address, port_num, ansys_em_root)
     try:
@@ -181,7 +181,7 @@ def _handle_local_server_startup_exit_code() -> None:
 
 def _start_local_server() -> None:
     # Start the server
-    server_exe_path = str(PathlibPath.joinpath(session.data.ansys_em_root, "EDB_RPC_Server.exe"))
+    server_exe_path = path.join(session.data.ansys_em_root, "EDB_RPC_Server")
     try:
         session.data.local_server_proc = subprocess.Popen(server_exe_path, stdout=subprocess.PIPE)
     except OSError as os_err:

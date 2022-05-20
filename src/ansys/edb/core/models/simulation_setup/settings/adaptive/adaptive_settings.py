@@ -14,7 +14,7 @@ from .adaptive_frequency_data import AdaptiveFrequencyData
 class _QueryBuilder:
     @staticmethod
     def get_adaptive_frequency_data_list(adaptive_settings):
-        return adaptive_settings._msg
+        return adaptive_settings.msg
 
     @staticmethod
     def set_adaptive_frequency_data_list(adaptive_settings, new_adaptive_freq_list):
@@ -28,7 +28,7 @@ class _QueryBuilder:
         ]
         list_msg = AdaptiveFrequencyDataListMessage(adaptive_frequency_data=list_msgs)
         return SetAdaptiveFrequencyDataListMessage(
-            adaptive_settings=adaptive_settings._msg, adaptive_frequency_data_list=list_msg
+            adaptive_settings=adaptive_settings.msg, adaptive_frequency_data_list=list_msg
         )
 
 

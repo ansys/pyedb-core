@@ -2,6 +2,7 @@ Simulation Setup
 ================
 
 Classes
+-------
 
 .. currentmodule:: ansys.edb.core.models.simulation_setup.simulation_setup
 

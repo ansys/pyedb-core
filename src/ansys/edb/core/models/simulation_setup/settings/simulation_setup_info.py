@@ -16,11 +16,11 @@ from .sweep_data import SweepData
 class _QueryBuilder:
     @staticmethod
     def get_simulation_settings(sim_setup_info):
-        return sim_setup_info._msg
+        return sim_setup_info.msg
 
     @staticmethod
     def get_sweep_data_list(sim_setup_info):
-        return sim_setup_info._msg
+        return sim_setup_info.msg
 
     @staticmethod
     def set_sweep_data_list(sim_setup_info, sweep_data_list):
@@ -32,7 +32,7 @@ class _QueryBuilder:
         ]
         new_sweep_data_list_msg = SweepDataListMessage(sweep_data=new_sweep_data_list_msgs)
         return SetSweepDataListMessage(
-            simulation_setup_info=sim_setup_info._msg, sweep_data_list=new_sweep_data_list_msg
+            simulation_setup_info=sim_setup_info.msg, sweep_data_list=new_sweep_data_list_msg
         )
 
 

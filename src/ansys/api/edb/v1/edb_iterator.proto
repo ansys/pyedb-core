@@ -24,6 +24,6 @@ service EDBIteratorService {
 
 // Message representing an edb iterator
 message EDBIteratorMessage {
-  uint64 impl_ptr_address = 1;
+  EDBObjMessage id = 1;
   iterator_type type = 2;
 }

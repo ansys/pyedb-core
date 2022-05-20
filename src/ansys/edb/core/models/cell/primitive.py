@@ -42,25 +42,25 @@ class PrimitiveType(Enum):
 class _PrimitiveQueryBuilder:
     @staticmethod
     def get_primitive_type(p):
-        return p._msg
+        return p.msg
 
     @staticmethod
     def add_void(p, hole):
-        return primitive_pb2.PrimitiveVoidCreationMessage(target=p._msg, hole=hole._msg)
+        return primitive_pb2.PrimitiveVoidCreationMessage(target=p.msg, hole=hole.msg)
 
     @staticmethod
     def set_hfss_prop(p, material_name, solve_inside):
         return primitive_pb2.PrimitiveHfssPropMessage(
-            target=p._msg, material_name=material_name, solve_inside=solve_inside
+            target=p.msg, material_name=material_name, solve_inside=solve_inside
         )
 
     @staticmethod
     def set_is_negative(p, is_negative):
-        return primitive_pb2.SetIsNegativeMessage(target=p._msg, is_negative=is_negative)
+        return primitive_pb2.SetIsNegativeMessage(target=p.msg, is_negative=is_negative)
 
     @staticmethod
     def set_layer(p, layer):
-        return primitive_pb2.SetLayerMessage(target=p._msg, layer=messages.layer_ref_message(layer))
+        return primitive_pb2.SetLayerMessage(target=p.msg, layer=messages.layer_ref_message(layer))
 
 
 class Primitive(ConnObj):
@@ -130,7 +130,7 @@ class Primitive(ConnObj):
         -------
         Layer
         """
-        layer_msg = get_primitive_stub().GetLayer(self._msg)
+        layer_msg = get_primitive_stub().GetLayer(self.msg)
         return Layer._create(layer_msg)
 
     @handle_grpc_exception
@@ -139,7 +139,7 @@ class Primitive(ConnObj):
 
         Parameters
         ----------
-        layer : Layer
+        layer : str or Layer
 
         Returns
         -------
@@ -155,7 +155,7 @@ class Primitive(ConnObj):
         -------
         bool
         """
-        return get_primitive_stub().GetIsNegative(self._msg).value
+        return get_primitive_stub().GetIsNegative(self.msg).value
 
     @handle_grpc_exception
     def set_is_negative(self, is_negative):
@@ -183,7 +183,7 @@ class Primitive(ConnObj):
         -------
         bool
         """
-        return get_primitive_stub().IsVoid(self._msg).value
+        return get_primitive_stub().IsVoid(self.msg).value
 
     @handle_grpc_exception
     def has_voids(self):
@@ -194,7 +194,7 @@ class Primitive(ConnObj):
         -------
         bool
         """
-        return get_primitive_stub().HasVoids(self._msg).value
+        return get_primitive_stub().HasVoids(self.msg).value
 
     @property
     @handle_grpc_exception
@@ -206,7 +206,7 @@ class Primitive(ConnObj):
         -------
         EDBIterator
         """
-        return EDBIterator(get_primitive_stub().Voids(self._msg), Primitive._create)
+        return EDBIterator(get_primitive_stub().Voids(self.msg), Primitive._create)
 
     @handle_grpc_exception
     def get_owner(self):
@@ -217,7 +217,7 @@ class Primitive(ConnObj):
         -------
         Primitive
         """
-        return Primitive._create(get_primitive_stub().GetOwner(self._msg))
+        return Primitive._create(get_primitive_stub().GetOwner(self.msg))
 
     @handle_grpc_exception
     def is_parameterized(self):
@@ -228,7 +228,7 @@ class Primitive(ConnObj):
         -------
         bool
         """
-        return get_primitive_stub().IsParameterized(self._msg).value
+        return get_primitive_stub().IsParameterized(self.msg).value
 
     @handle_grpc_exception
     def get_hfss_prop(self):
@@ -240,7 +240,7 @@ class Primitive(ConnObj):
         material : str
         solve_inside : bool
         """
-        prop_msg = get_primitive_stub().GetHfssProp(self._msg)
+        prop_msg = get_primitive_stub().GetHfssProp(self.msg)
         return prop_msg.material_name, prop_msg.solve_inside
 
     @handle_grpc_exception
@@ -252,7 +252,7 @@ class Primitive(ConnObj):
         -------
         bool
         """
-        return get_primitive_stub().RemoveHfssProp(self._msg).value
+        return get_primitive_stub().RemoveHfssProp(self.msg).value
 
     @handle_grpc_exception
     def is_zone_primitive(self):
@@ -263,7 +263,7 @@ class Primitive(ConnObj):
         -------
         bool
         """
-        return get_primitive_stub().IsZonePrimitive(self._msg).value
+        return get_primitive_stub().IsZonePrimitive(self.msg).value
 
     def can_be_zone_primitive(self):
         """
@@ -294,8 +294,8 @@ class Rectangle(Primitive):
         Parameters
         ----------
         layout : Layout
-        layer : str
-        net : str
+        layer : str or Layer
+        net : str or Net
         rep_type : Rectangle.RectangleRepresentationType
         param1 : float
         param2 : float
@@ -311,7 +311,7 @@ class Rectangle(Primitive):
         return Rectangle(
             get_rectangle_stub().Create(
                 rectangle_pb2.RectangleCreationMessage(
-                    layout=layout.id,
+                    layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
                     net=messages.net_ref_message(net),
                     representation_type=rep_type.value,
@@ -328,7 +328,7 @@ class Rectangle(Primitive):
     @handle_grpc_exception
     def get_parameters(self):
         """Get coordinates parameters."""
-        rect_param_msg = get_rectangle_stub().GetParameters(self._msg)
+        rect_param_msg = get_rectangle_stub().GetParameters(self.msg)
         return (
             Rectangle.RectangleRepresentationType(rect_param_msg.representation_type),
             messages.value_message_to_value(rect_param_msg.parameter1),
@@ -361,7 +361,7 @@ class Rectangle(Primitive):
             get_rectangle_stub()
             .SetParameters(
                 rectangle_pb2.SetRectangleParametersMessage(
-                    target=self._msg,
+                    target=self.msg,
                     parameters=rectangle_pb2.RectangleParametersMessage(
                         representation_type=rep_type.value,
                         parameter1=messages.value_message(param1),
@@ -461,14 +461,14 @@ class Circle(Primitive):
 
     @staticmethod
     @handle_grpc_exception
-    def create(layout, layer_name, net, center_x, center_y, radius):
+    def create(layout, layer, net, center_x, center_y, radius):
         """Create a circle.
 
         Parameters
         ----------
         layout: Layout,
-        layer_name: LayerRef,
-        net: NetRef,
+        layer: str or Layer,
+        net: str or Net,
         center_x: Value,
         center_y: Value,
         radius: Value
@@ -480,8 +480,8 @@ class Circle(Primitive):
         return Circle(
             get_circle_stub().Create(
                 circle_pb2.CircleCreationMessage(
-                    layout=layout.id,
-                    layer=messages.layer_ref_message(layer_name),
+                    layout=layout.msg,
+                    layer=messages.layer_ref_message(layer),
                     net=messages.net_ref_message(net),
                     center_x=messages.value_message(center_x),
                     center_y=messages.value_message(center_y),
@@ -523,7 +523,7 @@ class Circle(Primitive):
         -------
         Tuple[Value, Value, Value]
         """
-        circle_param_msg = get_circle_stub().GetParameters(self._msg)
+        circle_param_msg = get_circle_stub().GetParameters(self.msg)
         return (
             messages.value_message_to_value(circle_param_msg.center_x),
             messages.value_message_to_value(circle_param_msg.center_y),
@@ -548,7 +548,7 @@ class Circle(Primitive):
             get_circle_stub()
             .SetParameters(
                 circle_pb2.SetCircleParametersMessage(
-                    target=self._msg,
+                    target=self.msg,
                     parameters=circle_pb2.CircleParametersMessage(
                         center_x=messages.value_message(center_x),
                         center_y=messages.value_message(center_y),
@@ -580,9 +580,9 @@ class Circle(Primitive):
 
 class _PolygonQueryBuilder:
     @staticmethod
-    def create(layout, layer: str, net, points):
+    def create(layout, layer, net, points):
         return polygon_pb2.PolygonCreationMessage(
-            layout=layout.id,
+            layout=layout.msg,
             layer=messages.layer_ref_message(layer),
             net=messages.net_ref_message(net),
             points=messages.points_message(points),
@@ -601,8 +601,8 @@ class Text(Primitive):
         ----------
         layout: Layout
             Layout this text will be in.
-        layer: LayerRef
-            Layer name this text will be on.
+        layer: str or Layer
+            Layer this text will be on.
         center_x: Value
             X value of center point.
         center_y: Value
@@ -618,7 +618,7 @@ class Text(Primitive):
         return Text(
             get_text_stub().Create(
                 text_pb2.TextCreationMessage(
-                    layout=layout.id,
+                    layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
                     center_x=messages.value_message(center_x),
                     center_y=messages.value_message(center_y),
@@ -639,7 +639,7 @@ class Text(Primitive):
             Y value of center point.
             Text object's String value.
         """
-        text_data_msg = get_text_stub().GetTextData(self._msg)
+        text_data_msg = get_text_stub().GetTextData(self.msg)
         return (
             messages.value_message_to_value(text_data_msg.center_x),
             messages.value_message_to_value(text_data_msg.center_y),
@@ -667,7 +667,7 @@ class Text(Primitive):
             get_text_stub()
             .SetTextData(
                 text_pb2.SetTextDataMessage(
-                    target=self._msg,
+                    target=self.msg,
                     data=text_pb2.TextDataMessage(
                         center_x=messages.value_message(center_x),
                         center_y=messages.value_message(center_y),
@@ -727,7 +727,7 @@ class _PathQueryBuilder:
     @staticmethod
     def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
         return path_pb2.PathCreationMessage(
-            layout=layout.id,
+            layout=layout.msg,
             layer=messages.layer_ref_message(layer),
             net=messages.net_ref_message(net),
             width=messages.value_message(width),
@@ -744,31 +744,22 @@ class Path(Primitive):
     @staticmethod
     @handle_grpc_exception
     def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
-        """Create a Path object.
+        """Create a path.
 
         Parameters
         ----------
-        layout: Layout
-            Layout this path will be in.
-        layer: LayerRef
-            Layer name this path will be on.
-        net: NetRef
-            Net that will be assigned to the path.
-        width: Value
-            Path width.
-        end_cap1: path_pb2.PathEndCapStyle
-            End cap style of path start end cap.
-        end_cap2: path_pb2.PathEndCapStyle
-            End cap style of path end end cap.
-        corner: path_pb2.PathCornerStyle
-            Corner style.
-        points: Points2D
-            Centerline polygonData to set.
+        layout : Layout
+        layer : str or Layer
+        net : str or Net
+        width : Value
+        end_cap1 : PathEndCapType
+        end_cap2 : PathEndCapType
+        corner : PathCornerType
+        points : PolygonData
 
         Returns
         -------
         Path
-            The Path Object that was created.
         """
         return Path(
             get_path_stub().Create(

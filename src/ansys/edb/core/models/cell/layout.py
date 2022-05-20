@@ -20,7 +20,7 @@ class Layout(ObjBase):
         -------
         LayerCollection
         """
-        return LayerCollection(False, get_layout_stub().GetLayerCollection(self._msg))
+        return LayerCollection(False, get_layout_stub().GetLayerCollection(self.msg))
 
     def set_layer_collection(self, layer_collection):
         """
@@ -34,7 +34,7 @@ class Layout(ObjBase):
             get_layout_stub()
             .SetLayerCollection(
                 layout_pb2.SetLayerCollectionMessage(
-                    layout=self._msg, layer_collection=layer_collection._msg
+                    layout=self.msg, layer_collection=layer_collection.msg
                 )
             )
             .value
@@ -49,4 +49,4 @@ class Layout(ObjBase):
         -------
         EDBIterator
         """
-        return EDBIterator(get_layout_stub().GetPrimitiveIter(self._msg), Primitive._create)
+        return EDBIterator(get_layout_stub().GetPrimitiveIter(self.msg), Primitive._create)

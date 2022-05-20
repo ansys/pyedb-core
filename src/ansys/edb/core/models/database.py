@@ -73,14 +73,19 @@ class Database(ObjBase):
         -------
         bool
         """
-        return get_database_stub().Save(self._msg).value
+        return get_database_stub().Save(self.msg).value
 
     @handle_grpc_exception
     def close(self):
-        """Close the session without persisting the changes."""
-        close_success = get_database_stub().Close(self._msg).value
+        """Close the database. Unsaved changes will be lost.
+
+        Returns
+        -------
+        bool
+        """
+        close_success = get_database_stub().Close(self.msg).value
         if close_success:
-            self._msg.impl_ptr_address = 0
+            self.msg = None
         return close_success
 
     @property
@@ -92,12 +97,10 @@ class Database(ObjBase):
         -------
         list of Cell
         """
-        return iter(
-            [
-                Cell(edb_obj)
-                for edb_obj in get_database_stub().GetTopCircuits(self._msg).edb_obj_collection
-            ]
-        )
+        return [
+            Cell(edb_obj)
+            for edb_obj in get_database_stub().GetTopCircuits(self.msg).edb_obj_collection
+        ]
 
     @handle_grpc_exception
     def get_id(self):
@@ -107,7 +110,7 @@ class Database(ObjBase):
         -------
         int
         """
-        return get_database_stub().GetId(self._msg).value
+        return get_database_stub().GetId(self.msg).value
 
     @handle_grpc_exception
     def is_read_only(self):
@@ -117,7 +120,7 @@ class Database(ObjBase):
         -------
         bool
         """
-        return get_database_stub().IsReadOnly(self._msg).value
+        return get_database_stub().IsReadOnly(self.msg).value
 
     @staticmethod
     @handle_grpc_exception
@@ -126,7 +129,7 @@ class Database(ObjBase):
 
         Parameters
         ----------
-        db_id : str
+        db_id : int
 
         Returns
         -------

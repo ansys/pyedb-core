@@ -12,7 +12,7 @@ class _QueryBuilder:
     @staticmethod
     def create(layout, outline, conductivity_ratio, layer, net):
         return via_group_pb2.ViaGroupCreationMessage(
-            layout=layout.id,
+            layout=layout.msg,
             points=messages.points_message(outline),
             layer=messages.layer_ref_message(layer),
             net=messages.net_ref_message(net),
@@ -33,8 +33,8 @@ class ViaGroup(Group):
         layout : Layout
         outline : list of Point2D
         conductivity_ratio : float
-        layer : str
-        net : Net, optional
+        layer : str or Layer
+        net : str or Net, optional
 
         Returns
         -------

@@ -22,12 +22,12 @@ class _QueryBuilder:
     @staticmethod
     def create(cell: Cell, name: str, sim_type: SimulationSetupType):
         return simulation_setup_pb2.SimulationSetupCreationMessage(
-            cell=cell._msg, simulation_setup_name=name, simulation_setup_type=sim_type.value
+            cell=cell.msg, simulation_setup_name=name, simulation_setup_type=sim_type.value
         )
 
     @staticmethod
     def get_simulation_setup_info(sim_setup: "SimulationSetup"):
-        return sim_setup._msg
+        return sim_setup.msg
 
     @staticmethod
     def add_adaptive_frequencies(setup, frequencies):

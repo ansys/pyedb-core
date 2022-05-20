@@ -6,6 +6,16 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 
+enum TerminalType {
+  EDGE_TERM = 0;
+  POINT_TERM = 1;
+  TERM_INST_TERM = 2;
+  PADSTACK_INST_TERM = 3;
+  BUNDLE_TERM = 4;
+  PIN_GROUP_TERM = 5;
+  INVALID_TERM = -1;
+}
+
 service TerminalService {
   // Sets a reference on point term
   rpc SetReference(TermSetRefMessage) returns (google.protobuf.BoolValue) {}

@@ -3,13 +3,18 @@
 from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
-from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.point_data_pb2 import (
     SENSE_CCW,
     PathPointsMessage,
     PointMessage,
     PointsMessage,
+)
+from ansys.api.edb.v1.point_term_pb2 import (
+    PointTermCreationMessage,
+    PointTermParamsMessage,
+    PointTermSetParamsMessage,
 )
 from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, NetRefMessage
 from ansys.api.edb.v1.simulation_settings_pb2 import (
@@ -18,7 +23,7 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
-from google.protobuf.wrappers_pb2 import BoolValue, StringValue
+from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 
 
 def optional(params, key, value, func):
@@ -37,6 +42,11 @@ def bool_message(b: bool):
     return BoolValue(value=b) if b is not None else None
 
 
+def int64_message(i: int):
+    """Convert to Int64Value."""
+    return Int64Value(value=i) if i is not None else None
+
+
 def points_message(points):
     """Convert to PointsMessage."""
     if points is None:
@@ -44,7 +54,7 @@ def points_message(points):
     elif isinstance(points, list) or isinstance(points, tuple):
         return PointsMessage(points_data=points_data_message(points))
     else:
-        return PointsMessage(polygon_data=edb_obj_message(points))
+        return PointsMessage(polygon_data=edb_obj_message(points.msg))
 
 
 def points_data_message(points):
@@ -65,6 +75,26 @@ def point_message(point):
         return PointMessage(x=value_message(point[0]), y=value_message(point[1]))
 
 
+def point_term_params_message(layer, point):
+    """Convert to PointTermParamMessage."""
+    return PointTermParamsMessage(point=point_message(point), layer=layer_ref_message(layer))
+
+
+def point_term_set_params_message(term, layer, point):
+    """Convert to PointTermSetParamsMessage."""
+    return PointTermSetParamsMessage(term=term.msg, params=point_term_params_message(layer, point))
+
+
+def point_term_creation_message(layout, net, layer, name, x, y):
+    """Convert to PointTermCreationMessage."""
+    return PointTermCreationMessage(
+        layout=layout.msg,
+        net=net_ref_message(net),
+        name=name,
+        params=point_term_params_message(layer, (x, y)),
+    )
+
+
 def value_message(value):
     """Convert to ValueMessage."""
     return ValueMessage(value=value)
@@ -74,8 +104,10 @@ def edb_obj_message(obj):
     """Extract EDB impl ptr."""
     if obj is None:
         return None
+    elif isinstance(obj, EDBObjMessage):
+        return obj
     else:
-        return obj.id
+        raise RuntimeError("EDB Object has invalid ID.")
 
 
 def material_properties_message(**kwargs):
@@ -108,7 +140,7 @@ def layer_ref_message(layer):
     elif type(layer) == str:
         return LayerRefMessage(name=str_message(layer))
     else:
-        return LayerRefMessage(id=edb_obj_message(layer))
+        return LayerRefMessage(id=edb_obj_message(layer.msg))
 
 
 def net_ref_message(net):
@@ -118,7 +150,7 @@ def net_ref_message(net):
     elif type(net) == str:
         return NetRefMessage(name=str_message(net))
     else:
-        return NetRefMessage(id=edb_obj_message(net))
+        return NetRefMessage(id=edb_obj_message(net.msg))
 
 
 def adaptive_frequency_message(frequency: str, max_delta_s: float, max_passes: int):

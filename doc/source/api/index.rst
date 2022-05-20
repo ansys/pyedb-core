@@ -5,6 +5,7 @@ API Reference
 =============
 
 **[Ansys Internal - Confidential]**
+**This is a working document and will be changed without notice.**
 
 
 This section gives an overview of the API for all the pyedb classes, functions, and attributes.
@@ -16,10 +17,19 @@ Modules
 .. toctree::
    :maxdepth: 1
 
-   cell
    database
    definition
+   geometry
+   layer
+   layout
+   net
+   primitive
+   session
    simulation_setup
+   terminal
    utility
+   
+
+
 
 

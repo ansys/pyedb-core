@@ -14,7 +14,7 @@ class EDBIterator(ObjBase):
 
     def __del__(self):
         """Delete an iterator."""
-        get_edb_iterator_stub().Cleanup(self._msg)
+        get_edb_iterator_stub().Cleanup(self.msg)
 
     def __iter__(self):
         """Load next batch into memory."""
@@ -34,5 +34,5 @@ class EDBIterator(ObjBase):
             return edb_obj
 
     def _get_next_chunk(self):
-        self.chunk = get_edb_iterator_stub().NextChunk(self._msg).edb_obj_collection
+        self.chunk = get_edb_iterator_stub().NextChunk(self.msg).edb_obj_collection
         self.edb_obj_idx = 0

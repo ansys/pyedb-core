@@ -5,6 +5,7 @@ import pytest
 from ansys.edb.core.interfaces.grpc.messages import bool_message, int64_message, str_message
 from ansys.edb.core.models.cell.cell import Cell
 from ansys.edb.core.models.database import Database, database_pb2
+from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_collection_msg, msgs_are_equal, patch_stub
 
 # Helper fixtures and functions

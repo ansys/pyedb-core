@@ -105,9 +105,8 @@ def test_point_terminal_get_params(patch, point_terminal, layer):
 def test_point_terminal_set_params(patch, point_terminal, layer_ref, point, success):
     mock = patch("point_terminal", "SetParameters", messages.bool_message(success))
 
-    res = point_terminal.set_params(layer_ref, point)
+    point_terminal.set_params(layer_ref, point)
 
     mock.assert_called_once_with(
         messages.point_term_set_params_message(point_terminal, layer_ref, point)
     )
-    assert res == success

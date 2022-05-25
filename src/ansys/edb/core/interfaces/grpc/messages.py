@@ -3,6 +3,7 @@
 from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
+from ansys.api.edb.v1.bundle_term_pb2 import BundleTermTerminalsMessage
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.point_data_pb2 import (
@@ -93,6 +94,11 @@ def point_term_creation_message(layout, net, layer, name, x, y):
         name=name,
         params=point_term_params_message(layer, (x, y)),
     )
+
+
+def bundle_term_terminals_message(terminals):
+    """Convert to BundleTermTerminalsMessage."""
+    return BundleTermTerminalsMessage(terminals=[edb_obj_message(t.msg) for t in terminals])
 
 
 def value_message(value):

@@ -3,7 +3,7 @@
 import ansys.api.edb.v1.term_pb2 as t
 
 from ...interfaces.grpc import messages
-from ...session import get_point_terminal_stub, get_terminal_stub
+from ...session import get_bundle_terminal_stub, get_point_terminal_stub, get_terminal_stub
 from ...utility.edb_errors import handle_grpc_exception
 from ..base import ObjBase
 from .layer import Layer
@@ -26,14 +26,47 @@ class Terminal(ObjBase):
         Parameters
         ----------
         ref : Terminal
+        """
+        get_terminal_stub().SetReference(_TerminalQueryBuilder.set_reference(self, ref))
+
+
+class BundleTerminal(Terminal):
+    """Class representing a bundle terminal object."""
+
+    @staticmethod
+    @handle_grpc_exception
+    def create(terminals):
+        """
+        Create a bundle terminal.
+
+        Parameters
+        ----------
+        terminals : list of Terminal
 
         Returns
         -------
-        bool
+        PointTerminal
         """
-        return (
-            get_terminal_stub().SetReference(_TerminalQueryBuilder.set_reference(self, ref)).value
+        return BundleTerminal(
+            get_bundle_terminal_stub().Create(messages.bundle_term_terminals_message(terminals))
         )
+
+    @property
+    @handle_grpc_exception
+    def terminals(self):
+        """Get list of terminals grouped in this terminal.
+
+        Returns
+        -------
+        list of Terminal
+        """
+        return [Terminal(msg) for msg in get_bundle_terminal_stub().GetTerminals(self.msg)]
+
+    @handle_grpc_exception
+    def ungroup(self):
+        """Delete this grouping."""
+        get_bundle_terminal_stub().Ungroup(self.msg)
+        self.msg = None
 
 
 class PointTerminal(Terminal):
@@ -85,13 +118,7 @@ class PointTerminal(Terminal):
         ----------
         layer : str or Layer
         point : PointData
-
-        Returns
-        -------
-        bool
         """
-        return (
-            get_point_terminal_stub()
-            .SetParameters(messages.point_term_set_params_message(self, layer, point))
-            .value
+        get_point_terminal_stub().SetParameters(
+            messages.point_term_set_params_message(self, layer, point)
         )

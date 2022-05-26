@@ -8,6 +8,7 @@ from sys import modules
 from typing import Optional, Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
+from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
@@ -81,6 +82,7 @@ _poly_data_stub_keyword = "PolygonData"
 _path_stub_keyword = "Path"
 _rect_stub_keyword = "Rectangle"
 _term_stub_keyword = "Terminal"
+_bundle_term_keyword = "BundleTerminal"
 _pt_term_keyword = "PointTerminal"
 _adaptive_settings_stub_keyword = "AdaptiveSettings"
 _sim_setup_stub_keyword = "SimulationSetup"
@@ -109,6 +111,7 @@ _type_to_stub_ctor_map = {
     _path_stub_keyword: PathServiceStub,
     _rect_stub_keyword: RectangleServiceStub,
     _term_stub_keyword: TerminalServiceStub,
+    _bundle_term_keyword: BundleTerminalServiceStub,
     _pt_term_keyword: PointTerminalServiceStub,
     _adaptive_settings_stub_keyword: AdaptiveSettingsServiceStub,
     _sim_setup_stub_keyword: SimulationSetupServiceStub,
@@ -421,6 +424,16 @@ def get_terminal_stub():
     TerminalServiceStub
     """
     return _get_stub(_term_stub_keyword)
+
+
+def get_bundle_terminal_stub():
+    """Get Bundle terminal stub.
+
+    Returns
+    -------
+    BundleTerminalServiceStub
+    """
+    return _get_stub(_bundle_term_keyword)
 
 
 def get_point_terminal_stub():

@@ -14,7 +14,7 @@ service PointTerminalService {
 
   rpc GetParameters(EDBObjMessage) returns (PointTermParamsMessage) {}
 
-  rpc SetParameters(PointTermSetParamsMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetParameters(PointTermSetParamsMessage) returns (google.protobuf.Empty) {}
 }
 
 message PointTermCreationMessage {

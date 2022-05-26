@@ -18,7 +18,7 @@ enum TerminalType {
 
 service TerminalService {
   // Sets a reference on point term
-  rpc SetReference(TermSetRefMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetReference(TermSetRefMessage) returns (google.protobuf.Empty) {}
 }
 
 message TermSetRefMessage {

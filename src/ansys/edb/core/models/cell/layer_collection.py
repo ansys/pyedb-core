@@ -26,11 +26,6 @@ class LayerCollection(ObjBase):
         super().__init__(msg)
         self._is_owner = is_owner
 
-    def __del__(self):
-        """Clean up a layer collection."""
-        if self._is_owner:
-            get_layer_collection_stub().Cleanup(self.msg)
-
     @staticmethod
     def create(mode=LayerCollectionMode.LAMINATE):
         """Create a layer collection.

@@ -57,10 +57,6 @@ class _Session:
         self.stubs = None
         self.session = None
 
-    def __del__(self):
-        if MOD.current_session == self:
-            self.disconnect()
-
     def __enter__(self):
         if MOD.current_session == self:
             self.connect()
@@ -121,7 +117,8 @@ class _Session:
             self.channel = None
 
         print("successfully disconnected.")
-        MOD.current_session = None
+        if MOD.current_session == self:
+            MOD.current_session = None
 
         if self.is_local():
             self.stop_server()
@@ -181,8 +178,10 @@ class _Session:
 
     def stop_server(self):
         if self.local_server_proc and not self.local_server_proc.poll():
+            print("stopping server...")
             self.local_server_proc.terminate()
             self.local_server_proc.wait()
+            print("successfully stopped server.")
         self.local_server_proc = None
 
 

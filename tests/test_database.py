@@ -157,7 +157,7 @@ def test_close(db_obj, bool_val, mocker):
     mock_server.assert_called_once_with(expected_message)
 
     assert success == bool_val
-    assert (db_obj.msg is None) == success
+    assert (db_obj.is_null()) == success
 
 
 @pytest.mark.parametrize("expected_num_top_cells", list(range(3)))

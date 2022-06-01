@@ -5,7 +5,7 @@ from os import path
 from struct import pack, unpack
 import subprocess
 from sys import modules
-from typing import Optional, Union
+from typing import Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
@@ -36,34 +36,155 @@ from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 import grpc
 
+# The session module singleton
+MOD = modules[__name__]
+MOD.current_session = None
+
 
 # Helper class for storing data used by the session
-class _EDBSessionData:
-    def __init__(self):
-        self.ip_address = ""
-        self.port_num = -1
-        self.ansys_em_root: Optional[str] = None
-        self.channel: Optional["grpc.Channel"] = None
-        self.local_server_proc: Optional["subprocess.Popen"] = None
-        self.stubs = {}
+class _Session:
+    def __init__(self, ip_address, port_num, ansys_em_root):
+        if MOD.current_session is None:
+            MOD.current_session = self
+        else:
+            raise EDBSessionStartupException("There can be only one session active at a time")
 
-    def initialize(self, ip_address, port_num, ansys_em_root=None):
-        self.ip_address = ip_address
+        self.ip_address = ip_address or "localhost"
         self.port_num = port_num
         self.ansys_em_root = ansys_em_root
-
-    def reset(self):
-        self.ip_address = ""
-        self.port_num = -1
-        self.ansys_em_root = None
         self.channel = None
         self.local_server_proc = None
-        self.stubs.clear()
+        self.stubs = None
+        self.session = None
 
+    def __del__(self):
+        if MOD.current_session == self:
+            self.disconnect()
 
-# The session module singleton
-session = modules[__name__]
-session.data = _EDBSessionData()
+    def __enter__(self):
+        if MOD.current_session == self:
+            self.connect()
+            return self
+        else:
+            raise EDBSessionStartupException("There can be only one session active at a time")
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()
+
+    def _initialize_stubs(self):
+        self.stubs = {key: stub(self.channel) for key, stub in _type_to_stub_ctor_map.items()}
+
+    @property
+    def server_url(self):
+        if self.is_local():
+            return "localhost:{}".format(self.port_num)
+        else:
+            return "{}:{}".format(self.ip_address, self.port_num)
+
+    @property
+    def server_executable(self):
+        if self.is_local():
+            return path.join(self.ansys_em_root, "EDB_RPC_Server")
+        else:
+            return ""
+
+    def stub(self, name):
+        if self.is_active():
+            return self.stubs.get(name)
+
+    def is_active(self):
+        return self.channel is not None and self.stubs is not None
+
+    def is_local(self):
+        return self.ansys_em_root is not None
+
+    def connect(self):
+        if self.is_active():
+            return
+
+        if self.is_local():
+            self.start_server()
+
+        print("connecting...")
+        self.channel = grpc.insecure_channel(self.server_url)
+
+        self._initialize_stubs()
+        print("successfully connected.")
+
+    def disconnect(self):
+        print("disconnecting...")
+        if self.stubs is not None:
+            self.stubs = None
+
+        if self.channel is not None:
+            self.channel.close()
+            self.channel = None
+
+        print("successfully disconnected.")
+        MOD.current_session = None
+
+        if self.is_local():
+            self.stop_server()
+
+    def start_server(self):
+        try:
+            print(f"starting a server from {self.server_executable}...")
+            self.local_server_proc = subprocess.Popen(
+                self.server_executable, stdout=subprocess.PIPE
+            )
+        except OSError as os_err:
+            raise EDBSessionStartupException(
+                'The OS error "{}" occurred when starting the local server. '
+                "Was the correct Ansys EM root directory specified?".format(os_err)
+            )
+        except Exception as err:
+            self.disconnect()
+            raise _raise_unknown_startup_exception(err)
+
+        self.wait_server_ready()
+        print("successfully started a server.")
+
+    def wait_server_ready(self):
+        """Wait for the server to say it successfully started up."""
+        local_server_proc_output = self.local_server_proc.stdout.readline()
+        stdout = local_server_proc_output.decode().rstrip()
+        expected_output = "Server listening on 127.0.0.1:{}".format(self.port_num)
+
+        if stdout != expected_output:
+            try:
+                print("local server failed to start properly. trying to gracefully shutdown...")
+                if self.local_server_proc.wait(10):
+                    self._on_server_startup_error()
+            except subprocess.TimeoutExpired:
+                # If the server has not stopped, it will be manually terminated
+                # when _disconnect is called in _launch_session.
+                # Throw an exception with what info we have.
+                raise _raise_unknown_startup_exception(stdout)
+            finally:
+                self.disconnect()
+
+    def _on_server_startup_error(self):
+        # Check if the server process has exited
+        if not self.local_server_proc.poll():
+            return
+
+        # Get the return code in a usable format
+        ret_code = self.local_server_proc.returncode
+        ret_code = ret_code if ret_code < 0 else unpack("i", pack("I", ret_code))[0]
+
+        # Handle the return code
+        raise EDBSessionStartupException(
+            _local_server_error_code_exception_msg_map.get(
+                ret_code, "Local server exited with error code {}".format(ret_code)
+            )
+        )
+
+    def stop_server(self):
+        if self.local_server_proc and not self.local_server_proc.poll():
+            self.local_server_proc.terminate()
+            self.local_server_proc.wait()
+        self.local_server_proc = None
+
 
 # Keywords for accessing stubs
 _cell_stub_keyword = "Cell"
@@ -129,30 +250,46 @@ _local_server_error_code_exception_msg_map = {
 }
 
 
-def launch_local_session(ansys_em_root, port_num):
-    """Launch a local session of the EDB API.
+def launch_session(ansys_em_root, port_num, ip_address=None):
+    """Launch a local session to an EDB API server. must be manually disconnected after use.
 
     Parameters
     ----------
-    ansys_em_root : pathlib.Path, optional
+    ansys_em_root : str, optional
     port_num : int
-
+    ip_address : str, optional
     Returns
     -------
     None
     """
-    return _launch_session("localhost", port_num, ansys_em_root)
+    MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
+    MOD.current_session.connect()
+    return MOD.current_session
 
 
 @contextmanager
-def _launch_session(ip_address, port_num, ansys_em_root=None):
+def session(ansys_em_root, port_num, ip_address=None):
+    """Launch a local session to an EDB API server in a context manager.
 
-    session.data.initialize(ip_address, port_num, ansys_em_root)
+    Parameters
+    ----------
+    ansys_em_root : atr, optional
+    port_num : int
+    ip_address : str, optional
+    Returns
+    -------
+    None
+    """
     try:
-        _connect()
-        yield session
+        MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
+        MOD.current_session.connect()
+        yield
+    except Exception as e:  # noqa
+        print("EDB session ran into unhandled error.")
+        print(e)
+        raise
     finally:
-        _disconnect()
+        MOD.current_session.disconnect()
 
 
 def _raise_unknown_startup_exception(error_msg: Union[str, Exception]) -> None:
@@ -161,109 +298,10 @@ def _raise_unknown_startup_exception(error_msg: Union[str, Exception]) -> None:
     )
 
 
-def _handle_local_server_startup_exit_code() -> None:
-    # Check if the server process has exited
-    if not session.data.local_server_proc.poll():
-        return
-
-    # Get the return code in a usable format
-    original_return_code = session.data.local_server_proc.returncode
-    final_return_code = (
-        original_return_code
-        if original_return_code < 0
-        else unpack("i", pack("I", original_return_code))[0]
-    )
-
-    # Handle the return code
-    raise EDBSessionStartupException(
-        _local_server_error_code_exception_msg_map.get(
-            final_return_code, "Local server exited with error code {}".format(final_return_code)
-        )
-    )
-
-
-def _start_local_server() -> None:
-    # Start the server
-    server_exe_path = path.join(session.data.ansys_em_root, "EDB_RPC_Server")
-    try:
-        session.data.local_server_proc = subprocess.Popen(server_exe_path, stdout=subprocess.PIPE)
-    except OSError as os_err:
-        raise EDBSessionStartupException(
-            'The OS error "{}" occurred when starting the local server. '
-            "Was the correct Ansys EM root directory specified?".format(os_err)
-        )
-    except Exception as err:
-        raise _raise_unknown_startup_exception(err)
-
-    # Wait for the server to say it successfully started up
-    local_server_proc_output = session.data.local_server_proc.stdout.readline()
-    expected_ip_address = (
-        "127.0.0.1" if session.data.ip_address == "localhost" else session.data.ip_address
-    )
-    expected_address = "{}:{}".format(expected_ip_address, session.data.port_num)
-    expected_output = "Server listening on {}".format(expected_address)
-    clean_local_server_proc_output = local_server_proc_output.decode().rstrip()
-    if clean_local_server_proc_output != expected_output:
-        try:
-            # If we received unexpected output
-            # give the server time to exit since it most likely failed to start
-            if session.data.local_server_proc.wait(10):
-                # If the server exited, throw the corresponding exception
-                _handle_local_server_startup_exit_code()
-        except subprocess.TimeoutExpired:
-            # If the server has not stopped, it will be manually terminated
-            # when _disconnect is called in _launch_session.
-            # Throw an exception with what info we have.
-            raise _raise_unknown_startup_exception(clean_local_server_proc_output)
-
-
-def _session_is_active() -> bool:
-    return bool(session.data.channel) and bool(session.data.stubs)
-
-
-def _is_local_session() -> bool:
-    return bool(session.data.ansys_em_root)
-
-
 def _get_stub(keyword: str):
-    if _session_is_active():
-        return session.data.stubs.get(keyword)
+    if MOD.current_session is not None:
+        return MOD.current_session.stub(keyword)
     raise EDBSessionException("No active session detected")
-
-
-def _initialize_stubs() -> None:
-    for key, stub in _type_to_stub_ctor_map.items():
-        session.data.stubs.update({key: stub(session.data.channel)})
-
-
-def _connect() -> None:
-    # Make sure there isn't already an active session
-    if _session_is_active():
-        raise EDBSessionStartupException("There can be only one session active at a time")
-
-    # Initialize the channel and stubs
-    session.data.channel = grpc.insecure_channel(
-        "{}:{}".format(session.data.ip_address, session.data.port_num)
-    )
-    _initialize_stubs()
-
-    # If necessary, start the local server
-    if _is_local_session():
-        _start_local_server()
-
-
-def _disconnect() -> None:
-    # Cleanup the channel and stubs
-    if session.data.channel:
-        session.data.channel.close()
-
-    # If necessary, shutdown the local server
-    if session.data.local_server_proc and not session.data.local_server_proc.poll():
-        session.data.local_server_proc.terminate()
-        session.data.local_server_proc.wait()
-
-    # Reset the data in the session data to its initial state
-    session.data.reset()
 
 
 def get_cell_stub():

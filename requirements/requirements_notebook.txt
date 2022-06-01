@@ -1,0 +1,2 @@
+ansys-tools-protos-generator>=0.1.0
+notebook

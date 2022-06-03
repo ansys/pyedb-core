@@ -20,10 +20,6 @@ class PolygonSenseType(Enum):
 class PolygonData(ObjBase):
     """Class representing a polygon data object."""
 
-    def __del__(self):
-        """Clean up resources."""
-        self.cleanup()
-
     @staticmethod
     def create(points, closed, sense=PolygonSenseType.SENSE_CCW):
         """Create a polygon data.

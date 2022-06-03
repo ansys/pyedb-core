@@ -27,7 +27,7 @@ from ansys.edb.core.models.simulation_setup.simulation_setup import (
     SimulationSetup,
     SimulationSetupType,
 )
-from ansys.edb.core.session import launch_local_session
+from ansys.edb.core.session import session
 import settings
 
 
@@ -427,5 +427,5 @@ class SpiralInductor(BaseExample):
 
 
 def test_spiral_inductor():
-    with launch_local_session(settings.configs.get("RPC_SERVER_ROOT"), 50051):
+    with session(settings.configs.get("RPC_SERVER_ROOT"), 50051):
         SpiralInductor().run(r"spiral_inductor.aedb")

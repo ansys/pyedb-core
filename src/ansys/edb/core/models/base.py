@@ -1,5 +1,7 @@
 """Base Model."""
 
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
+
 
 class ObjBase:
     """Class representing a base object that all gRPC-related models extend from."""
@@ -9,9 +11,9 @@ class ObjBase:
 
         Parameters
         ----------
-        msg : EdbObjMessage
+        msg : EDBObjMessage
         """
-        self._msg = msg
+        self._id = msg.id
 
     def is_null(self):
         """Determine whether this object exists in EDB.
@@ -30,10 +32,7 @@ class ObjBase:
         -------
         int
         """
-        if self._msg is None:
-            return 0
-
-        return self._msg.id
+        return self._id
 
     @property
     def msg(self):
@@ -43,7 +42,7 @@ class ObjBase:
         -------
         EDBObjMessage
         """
-        return self._msg
+        return EDBObjMessage(id=self.id)
 
     @msg.setter
     def msg(self, val):
@@ -54,4 +53,4 @@ class ObjBase:
         val : EDBObjMessage
         """
         if val is None:
-            self._msg = val
+            self._id = 0

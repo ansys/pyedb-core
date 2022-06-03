@@ -42,11 +42,6 @@ class Layer(ObjBase):
         super().__init__(msg)
         self._is_owner = False
 
-    def __del__(self):
-        """Destroy a layer instance."""
-        if self._is_owner:
-            get_layer_stub().Cleanup(self.msg)
-
     @staticmethod
     @handle_grpc_exception
     def _create(msg):

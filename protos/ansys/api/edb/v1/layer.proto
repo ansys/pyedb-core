@@ -5,6 +5,7 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
+import "database.proto";
 
 enum LayerType {
   SIGNAL_LAYER = 0;
@@ -28,63 +29,186 @@ enum LayerType {
   UNDEFINED_LAYER_TYPE = -1;
 }
 
+enum TopBottomAssociation {
+  TOP_ASSOCIATED = 0;
+  NO_TOP_BOTTOM_ASSOCIATED = 1;
+  BOTTOM_ASSOCIATED = 2;
+  TOP_BOTTOM_ASSOCIATION_COUNT = 4;
+  INVALID_TOP_BOTTOM_ASSOCIATION = -1;
+}
+
+enum DrawOverride {
+  NO_OVERRIDE = 0;
+  FILL = 1;
+  WIREFRAME = -1;	
+}
+
+enum LayerVisibility {
+  LAYER_VISIBILITY_PLACEHOLDER = 0; // DO NOT USE - THIS IS A PROTO3 REQUIREMENT
+  PRIMITIVE_VISIBLE = 0x00000001;
+  PATH_VISIBLE = 0x00000002;
+  PAD_VISIBLE = 0x00000004;
+  HOLE_VISIBLE = 0x00000008;
+  COMPONENT_VISIBLE = 0x00000010;
+  ALL_VISIBLE = 0x0000001F;
+}
+
 // Layer service definition
 service LayerService {
-  // Clean up the layer pointer
-  rpc Cleanup (EDBObjMessage) returns (google.protobuf.Empty) {}
+  // Create a non-stackup layer
+  rpc Create (LayerCreationMessage) returns (EDBObjMessage) {}
 
   // Get the layer type of the layer
   rpc GetLayerType (EDBObjMessage) returns (LayerTypeMessage) {}
+
+  // Set the layer type of the layer
+  rpc SetLayerType (SetLayerTypeMessage) returns (google.protobuf.Empty) {}
 
   // Check whether or not this layer is a via layer
   rpc IsViaLayer (EDBObjMessage) returns (google.protobuf.BoolValue) {}
 
   // Get the name of this layer
   rpc GetName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  // Set the name of this layer
+  rpc SetName (SetNameMessage) returns (google.protobuf.Empty) {}
+
+  // Create a clone of this layer
+  rpc Clone (CloneMessage) returns (EDBObjMessage) {}
+
+  // Get the layer id of this layer
+  rpc GetLayerId (EDBObjMessage) returns (google.protobuf.Int64Value) {}
+
+  // Get the top bottom association of this layer
+  rpc GetTopBottomAssociation (EDBObjMessage) returns (TopBottomAssociationMessage) {}
+  
+  // Set the top bottom association of this layer
+  rpc SetTopBottomAssociation (SetTopBottomAssociationMessage) returns (google.protobuf.Empty) {}
+
+  // Get the color of this layer
+  rpc GetColor (EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+
+  // Set the color of this layer
+  rpc SetColor (SetColorMessage) returns (google.protobuf.Empty) {}
+
+  // Get the visibility mask of this layer
+  rpc GetVisibilityMask (EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+
+  // Set the visibility mask of this layer
+  rpc SetVisibilityMask (SetVisibilityMaskMessage) returns (google.protobuf.Empty) {}
+
+  // Get the layer's locked status
+  rpc GetLocked (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set the layer's locked status
+  rpc SetLocked (SetLockedMessage) returns (google.protobuf.Empty) {}
+
+  // Get the layer's transparency value
+  rpc GetTransparency (EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+
+  // Set the layer's transparency status
+  rpc SetTransparency (SetTransparencyMessage) returns (google.protobuf.Empty) {}
+
+  // Get the layer's draw override type
+  rpc GetDrawOverride (EDBObjMessage) returns (DrawOverrideMessage) {}
+
+  // Set the layer's draw override type
+  rpc SetDrawOverride (SetDrawOverrideMessage) returns (google.protobuf.Empty) {}
+
+  // Get the layer's product property corresponding to the given product and attribute ids
+  rpc GetProductProperty (GetProductPropertyMessage) returns (google.protobuf.StringValue) {}
+
+  // Set the layer's product property corresponding to the given product and attribute ids
+  rpc SetProductProperty (SetProductPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get a list of property ids associated with the layer for the given product.
+  rpc GetProductPropertyIds (GetProductPropertyIdsMessage) returns (ProductPropertyIdsMessage) {}
+
+  // Get whether this layer is in the specified zone
+  rpc IsInZone (ZoneMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set whether this layer is in the specified zone
+  rpc SetIsInZone (SetIsInZoneMessage) returns (google.protobuf.Empty) {}
+
+  // Get the zone ids of all zones containing this layer
+  rpc GetZones (EDBObjMessage) returns (ZonesMessage) {}
+
+  // Get the zone index asociated with the layer's owning layer collection (if owner is invalid index is 0, if owner is multizone index is -1)
+  rpc GetZone (EDBObjMessage) returns (google.protobuf.Int64Value) {}
 }
 
-// Message for GetLayerType
+message LayerCreationMessage {
+  string name = 1;
+  LayerType type = 2;
+}
+
 message LayerTypeMessage {
-	LayerType type = 1;
+  LayerType type = 1;
 }
 
-// Stackup layer service definition
-service StackupLayerService {
-  // Creates a stackup layer
-  rpc Create (StackupLayerCreationMessage) returns (EDBObjMessage) {}
-
-  // Set the negative property of the stackup layer
-  rpc SetNegative (SetNegativeMessage) returns (google.protobuf.Empty) {}
-}
-
-// Message for StackupLayerService::Create
-message StackupLayerCreationMessage {
-  EDBObjMessage layout = 1;
-  string name = 2;
-  LayerType type = 3;
-  ValueMessage thickness = 4;
-  ValueMessage elevation = 5;
-  string material = 6;
-  oneof optional_negative { google.protobuf.BoolValue negative = 7; };
-}
-
-// Message for StackupLayerService::SetNegative
-message SetNegativeMessage {
+message SetLayerTypeMessage {
   EDBObjMessage layer = 1;
-  bool is_negative = 2;
+  LayerType type = 2;
 }
 
-// Via layer service definition
-service ViaLayerService {
-  // Creates a via layer
-  rpc Create (ViaLayerCreationMessage) returns (EDBObjMessage) {}
+message SetNameMessage {
+  EDBObjMessage layer = 1;
+  string name = 2;
 }
 
-// Message for ViaLayerService::Create
-message ViaLayerCreationMessage {
-  EDBObjMessage layout = 1;
-  string via_layer_name = 2;
-  string lower_ref_layer_name = 3;
-  string upper_ref_layer_name = 4;
-  string material_name = 5;
+message CloneMessage {
+  EDBObjMessage layer = 1;
+  bool copy_id = 2;
+}
+
+message TopBottomAssociationMessage {
+  TopBottomAssociation top_bottom_association = 1;
+}
+
+message SetTopBottomAssociationMessage {
+  EDBObjMessage layer = 1;
+  TopBottomAssociation top_bottom_association = 2;
+}
+
+message SetColorMessage {
+  EDBObjMessage layer = 1;
+  uint64 color = 2;
+}
+
+message SetVisibilityMaskMessage {
+  EDBObjMessage layer = 1;
+  uint64 visibility_mask = 2;
+}
+
+message SetLockedMessage {
+  EDBObjMessage layer = 1;
+  bool is_locked = 2;
+}
+
+message SetTransparencyMessage {
+  EDBObjMessage layer = 1;
+  uint64 transparency = 2;
+}
+
+message DrawOverrideMessage {
+  DrawOverride draw_override = 1;
+}
+
+message SetDrawOverrideMessage {
+  EDBObjMessage layer = 1;
+  DrawOverride draw_override = 2;
+}
+
+message ZoneMessage {
+  EDBObjMessage layer = 1;
+  int64 zone = 2;
+}
+
+message SetIsInZoneMessage {
+  ZoneMessage zone_msg = 1;
+  bool in_zone = 2;
+}
+
+message ZonesMessage {
+  repeated int64 zones = 1;
 }

@@ -4,6 +4,12 @@ from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
 from ansys.api.edb.v1.bundle_term_pb2 import BundleTermTerminalsMessage
+from ansys.api.edb.v1.database_pb2 import (
+    GetProductPropertyIdsMessage,
+    GetProductPropertyMessage,
+    ProductPropertyIdMessage,
+    SetProductPropertyMessage,
+)
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.point_data_pb2 import (
@@ -220,3 +226,29 @@ def value_message_to_value(message):
     """Extract a value from ValueMessage."""
     if message:
         return message.value
+
+
+def product_property_id_message(prod_id, att_id):
+    """Convert to ProductPropertyIdMessage."""
+    return ProductPropertyIdMessage(product_id=prod_id.value, attribute_id=att_id)
+
+
+def set_product_property_message(obj, prod_id, att_id, value):
+    """Convert to SetProductPropertyMessage."""
+    return SetProductPropertyMessage(
+        edb_obj=obj.msg,
+        product_prop_id=product_property_id_message(prod_id, att_id),
+        property_value=value,
+    )
+
+
+def get_product_property_message(obj, prod_id, att_id):
+    """Convert to GetProductPropertyMessage."""
+    return GetProductPropertyMessage(
+        edb_obj=obj.msg, product_prop_id=product_property_id_message(prod_id, att_id)
+    )
+
+
+def get_product_property_ids_message(obj, prod_id):
+    """Convert to GetProductPropertyIdsMessage."""
+    return GetProductPropertyIdsMessage(edb_obj=obj.msg, product_id=prod_id.value)

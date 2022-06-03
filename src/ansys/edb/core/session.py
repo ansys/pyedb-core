@@ -14,11 +14,7 @@ from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edb_iterator_pb2_grpc import EDBIteratorServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
-from ansys.api.edb.v1.layer_pb2_grpc import (
-    LayerServiceStub,
-    StackupLayerServiceStub,
-    ViaLayerServiceStub,
-)
+from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
@@ -31,9 +27,11 @@ from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsServiceStub
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
+from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
+from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 import grpc
 
 # The session module singleton

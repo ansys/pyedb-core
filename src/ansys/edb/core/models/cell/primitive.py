@@ -849,7 +849,7 @@ class Path(Primitive):
         PolygonData
             PolygonData containing the center line for this Path.
         """
-        return get_path_stub().GetCenterLine(self._msg)
+        return get_path_stub().GetCenterLine(self.msg)
 
     @handle_grpc_exception
     def set_center_line(self, center_line):
@@ -869,7 +869,7 @@ class Path(Primitive):
             get_path_stub()
             .SetCenterLine(
                 path_pb2.SetCenterLineMessage(
-                    target=self._msg, center_line=messages.points_message(center_line)
+                    target=self.msg, center_line=messages.points_message(center_line)
                 )
             )
             .value
@@ -885,7 +885,7 @@ class Path(Primitive):
             End cap style of path start end cap.
             End cap style of path end end cap.
         """
-        end_cap_msg = get_path_stub().GetEndCapStyle(self._msg)
+        end_cap_msg = get_path_stub().GetEndCapStyle(self.msg)
         return (PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2))
 
     @handle_grpc_exception
@@ -908,7 +908,7 @@ class Path(Primitive):
             get_path_stub()
             .SetEndCapStyle(
                 path_pb2.SetEndCapStyleMessage(
-                    target=self._msg,
+                    target=self.msg,
                     end_cap=path_pb2.EndCapStyleMessage(
                         end_cap1=end_cap1.value, end_cap2=end_cap2.value
                     ),
@@ -927,7 +927,7 @@ class Path(Primitive):
             PolygonData used to clip the path.
             Indicates whether the part of the path inside the polygon is preserved.
         """
-        clip_info_msg = get_path_stub().GetClipInfo(self._msg)
+        clip_info_msg = get_path_stub().GetClipInfo(self.msg)
         return (clip_info_msg.clipping_poly, clip_info_msg.keep_inside)
 
     @handle_grpc_exception
@@ -950,7 +950,7 @@ class Path(Primitive):
             get_path_stub()
             .SetClipInfo(
                 path_pb2.SetClipInfoMessage(
-                    target=self._msg,
+                    target=self.msg,
                     clipping_poly=messages.points_message(clipping_poly),
                     keep_inside=keep_inside,
                 )
@@ -967,7 +967,7 @@ class Path(Primitive):
         PathCornerType
             Corner style.
         """
-        return PathCornerType(get_path_stub().GetCornerStyle(self._msg).corner_style)
+        return PathCornerType(get_path_stub().GetCornerStyle(self.msg).corner_style)
 
     @handle_grpc_exception
     def set_corner_style(self, corner_type):
@@ -987,7 +987,7 @@ class Path(Primitive):
             get_path_stub()
             .SetCornerStyle(
                 path_pb2.SetCornerStyleMessage(
-                    target=self._msg,
+                    target=self.msg,
                     corner_style=path_pb2.CornerStyleMessage(corner_style=corner_type.value),
                 )
             )
@@ -1003,7 +1003,7 @@ class Path(Primitive):
         Value
             Width.
         """
-        return messages.value_message_to_value(get_path_stub().GetWidth(self._msg).width)
+        return messages.value_message_to_value(get_path_stub().GetWidth(self.msg).width)
 
     @handle_grpc_exception
     def set_width(self, width):
@@ -1023,7 +1023,7 @@ class Path(Primitive):
             get_path_stub()
             .SetWidth(
                 path_pb2.SetWidthMessage(
-                    target=self._msg,
+                    target=self.msg,
                     width=path_pb2.WidthMessage(width=messages.value_message(width)),
                 )
             )
@@ -1039,7 +1039,7 @@ class Path(Primitive):
         Value
             Miter Ratio.
         """
-        return messages.value_message_to_value(get_path_stub().GetMiterRatio(self._msg).miter_ratio)
+        return messages.value_message_to_value(get_path_stub().GetMiterRatio(self.msg).miter_ratio)
 
     @handle_grpc_exception
     def set_miter_ratio(self, miter_ratio):
@@ -1059,7 +1059,7 @@ class Path(Primitive):
             get_path_stub()
             .SetMiterRatio(
                 path_pb2.SetMiterRatioMessage(
-                    target=self._msg,
+                    target=self.msg,
                     miter_ratio=path_pb2.MiterRatioMessage(
                         miter_ratio=messages.value_message(miter_ratio)
                     ),

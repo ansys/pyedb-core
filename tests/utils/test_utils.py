@@ -2,17 +2,23 @@ import random
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
 
+from ansys.edb.core.models.base import ObjBase
+
 # Comparison utils
 
 
-def msgs_are_equal(msg0, msg1):
-    """Checks if two messages are equivalent by serializing them to strings and comparing them
+def equals(v0, v1):
+    """Checks if two values are equivalent
 
     Returns
     -------
     bool
     """
-    return msg0.SerializeToString() == msg1.SerializeToString()
+    if isinstance(v0, EDBObjMessage) and isinstance(v1, EDBObjMessage):
+        return v0.SerializeToString() == v1.SerializeToString()
+    if isinstance(v0, ObjBase) and isinstance(v1, ObjBase):
+        return equals(v0.msg, v1.msg)
+    raise NotImplementedError()
 
 
 def generate_random_int():
@@ -71,7 +77,7 @@ def create_edb_obj_collection_msg(num_msgs):
 # Mock server utils
 
 
-def patch_stub(stub_getter, mocker, test_method_name, expected_response):
+def patch_stub(stub_getter, mocker, test_method_name, expected_response, **kwargs):
     """Helper method that patches the given stub method.
 
     Parameters
@@ -95,10 +101,8 @@ def patch_stub(stub_getter, mocker, test_method_name, expected_response):
     mock_server.configure_mock(**mock_server_attr)
 
     # Patch the stub getter method with the mock server
-    mocker.patch(
-        stub_getter,
-        return_value=mock_server,
-    )
+
+    mocker.patch(stub_getter, return_value=mock_server, **kwargs)
 
     # Return the mock server
     return getattr(mock_server, test_method_name)

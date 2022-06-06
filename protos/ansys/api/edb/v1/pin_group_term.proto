@@ -1,0 +1,37 @@
+// Proto file representing the EDB PinGroupTerm class
+
+syntax = "proto3";
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "refs.proto";
+
+service PinGroupTerminalService {
+  rpc Create (PinGroupTermCreationMessage) returns (EDBObjMessage) {}
+
+  rpc GetPinGroup (EDBObjMessage) returns (EDBObjMessage) {}
+
+  rpc SetPinGroup (PinGroupTermSetPinGroupMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetLayer (EDBObjMessage) returns (EDBObjMessage) {}
+
+  rpc SetLayer (PinGroupTermSetLayerMessage) returns (google.protobuf.Empty) {}
+}
+
+message PinGroupTermCreationMessage {
+  EDBObjMessage layout = 1;
+  NetRefMessage net = 2;
+  google.protobuf.StringValue name = 3;
+  EDBObjMessage pin_group = 4;
+  google.protobuf.BoolValue is_ref = 5;
+}
+
+message PinGroupTermSetPinGroupMessage {
+  EDBObjMessage term = 1;
+  EDBObjMessage pin_group = 2;
+}
+
+message PinGroupTermSetLayerMessage {
+  EDBObjMessage term = 1;
+  LayerRefMessage layer = 2;
+}

@@ -1,0 +1,33 @@
+// Proto file representing the EDB PadstackInstTerm class
+
+syntax = "proto3";
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "refs.proto";
+
+service PadstackInstanceTerminalService {
+  rpc Create (PadstackInstTermCreationsMessage) returns (EDBObjMessage) {}
+
+  rpc GetParameters (EDBObjMessage) returns (PadstackInstTermParamsMessage) {}
+
+  rpc SetParameters (PadstackInstTermSetParamsMessage) returns (google.protobuf.Empty) {}
+}
+
+message PadstackInstTermParamsMessage {
+  EDBObjMessage padstack_instance = 1;
+  LayerRefMessage layer = 2;
+}
+
+message PadstackInstTermCreationsMessage {
+  EDBObjMessage layout = 1;
+  NetRefMessage net = 2;
+  google.protobuf.StringValue name = 3;
+  PadstackInstTermParamsMessage params = 4;
+  google.protobuf.BoolValue is_ref = 5;
+}
+
+message PadstackInstTermSetParamsMessage {
+  EDBObjMessage term = 1;
+  PadstackInstTermParamsMessage params = 2;
+}

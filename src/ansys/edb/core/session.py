@@ -8,6 +8,12 @@ from sys import modules
 from typing import Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
+from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
+    ApdBondwireDefServiceStub,
+    BondwireDefServiceStub,
+    Jedec4BondwireDefServiceStub,
+    Jedec5BondwireDefServiceStub,
+)
 from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
@@ -209,6 +215,10 @@ _sim_setup_info_stub_keyword = "SimulationSetupInfo"
 _via_group_stub_keyword = "ViaGroup"
 _circle_stub_keyword = "Circle"
 _text_stub_keyword = "Text"
+_bondwire_def_stub_keyword = "BondwireDef"
+_apd_bondwire_def_stub_keyword = "ApdBondwireDef"
+_jedec4_bondwire_def_stub_keyword = "Jedec4BondwireDef"
+_jedec5_bondwire_def_stub_keyword = "Jedec5BondwireDef"
 
 
 # Map of stub keywords to stub ctors. Used for initializing stubs when connecting to the server.
@@ -238,6 +248,10 @@ _type_to_stub_ctor_map = {
     _via_group_stub_keyword: ViaGroupServiceStub,
     _circle_stub_keyword: CircleServiceStub,
     _text_stub_keyword: TextServiceStub,
+    _bondwire_def_stub_keyword: BondwireDefServiceStub,
+    _apd_bondwire_def_stub_keyword: ApdBondwireDefServiceStub,
+    _jedec4_bondwire_def_stub_keyword: Jedec4BondwireDefServiceStub,
+    _jedec5_bondwire_def_stub_keyword: Jedec5BondwireDefServiceStub,
 }
 
 # Dictionary for storing local server error code exception messages
@@ -549,6 +563,46 @@ def get_text_stub():
     TextServiceStub
     """
     return _get_stub(_text_stub_keyword)
+
+
+def get_bondwire_def_stub():
+    """Get Bondwire Def stub.
+
+    Returns
+    -------
+    BondwireDefServiceStub
+    """
+    return _get_stub(_bondwire_def_stub_keyword)
+
+
+def get_apd_bondwire_def_stub():
+    """Get Apd Bondwire Def stub.
+
+    Returns
+    -------
+    ApdBondwireDefServiceStub
+    """
+    return _get_stub(_apd_bondwire_def_stub_keyword)
+
+
+def get_jedec4_bondwire_def_stub():
+    """Get Jedec4 Bondwire Def stub.
+
+    Returns
+    -------
+    Jedec4BondwireDefServiceStub
+    """
+    return _get_stub(_jedec4_bondwire_def_stub_keyword)
+
+
+def get_jedec5_bondwire_def_stub():
+    """Get Jedec5 Bondwire Def stub.
+
+    Returns
+    -------
+    Jedec5BondwireDefServiceStub
+    """
+    return _get_stub(_jedec5_bondwire_def_stub_keyword)
 
 
 class EDBSessionException(Exception):

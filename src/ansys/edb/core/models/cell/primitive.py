@@ -2,6 +2,7 @@
 
 from enum import Enum
 
+import ansys.api.edb.v1.bondwire_pb2 as bondwire_pb2
 import ansys.api.edb.v1.circle_pb2 as circle_pb2
 import ansys.api.edb.v1.path_pb2 as path_pb2
 import ansys.api.edb.v1.polygon_pb2 as polygon_pb2
@@ -11,6 +12,7 @@ import ansys.api.edb.v1.text_pb2 as text_pb2
 
 from ...interfaces.grpc import messages
 from ...session import (
+    get_bondwire_stub,
     get_circle_stub,
     get_path_stub,
     get_polygon_stub,
@@ -21,6 +23,7 @@ from ...session import (
 from ...utility.edb_errors import handle_grpc_exception
 from ...utility.edb_iterator import EDBIterator
 from .conn_obj import ConnObj
+from .hierarchy.cell_instance import CellInst
 from .layer import Layer
 
 
@@ -1077,3 +1080,428 @@ class Path(Primitive):
             The primitive can be a zone primitive,
         """
         return True
+
+
+class _BondwireQueryBuilder:
+    @staticmethod
+    def create(
+        layout,
+        net,
+        bondwire_type,
+        definition_name,
+        placement_layer,
+        width,
+        material,
+        start_context,
+        start_layer_name,
+        start_x,
+        start_y,
+        end_context,
+        end_layer_name,
+        end_x,
+        end_y,
+    ):
+        return bondwire_pb2.BondwireCreateMessage(
+            layout=layout.id,
+            net=messages.net_ref_message(net),
+            bondwire_type=bondwire_type.value,
+            definition_name=definition_name,
+            placement_layer=placement_layer,
+            width=messages.value_message(width),
+            material=material,
+            start_context=messages.cell_inst_ref_message(start_context),
+            start_layer_name=start_layer_name,
+            start_x=messages.value_message(start_x),
+            start_y=messages.value_message(start_y),
+            end_context=messages.cell_inst_ref_message(end_context),
+            end_layer_name=end_layer_name,
+            end_x=messages.value_message(end_x),
+            end_y=messages.value_message(end_y),
+        )
+
+    @staticmethod
+    def bondwire_bool_message(b, evaluated):
+        return bondwire_pb2.BondwireBoolMessage(target=b.msg, evaluated=evaluated)
+
+    @staticmethod
+    def set_material_message(b, material):
+        return bondwire_pb2.SetMaterialMessage(target=b.msg, material=material)
+
+    @staticmethod
+    def set_bondwire_type_message(b, bondwire_type):
+        return bondwire_pb2.SetBondwireTypeMessage(target=b.msg, type=bondwire_type.value)
+
+    @staticmethod
+    def get_cross_section_type_message(bondwire_cross_section_type):
+        return bondwire_pb2.GetCrossSectionTypeMessage(type=bondwire_cross_section_type.value)
+
+    @staticmethod
+    def set_cross_section_type_message(b, bondwire_cross_section_type):
+        return bondwire_pb2.SetCrossSectionTypeMessage(
+            target=b.msg, type=bondwire_cross_section_type.value
+        )
+
+    @staticmethod
+    def set_cross_section_height_message(b, height):
+        return bondwire_pb2.SetCrossSectionHeightMessage(
+            target=b.msg, height=messages.value_message(height)
+        )
+
+    @staticmethod
+    def set_definition_name_message(b, definition_name):
+        return bondwire_pb2.SetDefinitionNameMessage(target=b.msg, definition_name=definition_name)
+
+    @staticmethod
+    def get_elevation_message(b, cell_instance):
+        return bondwire_pb2.GetElevationMessage(
+            bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance)
+        )
+
+    @staticmethod
+    def set_elevation_message(b, cell_instance, lyrname):
+        return bondwire_pb2.SetElevationMessage(
+            target=_BondwireQueryBuilder.get_elevation_message(b, cell_instance), lyrname=lyrname
+        )
+
+    @staticmethod
+    def bondwire_value_message(b, value):
+        return bondwire_pb2.BondwireValueMessage(target=b.msg, value=messages.value_message(value))
+
+    @staticmethod
+    def bondwire_traj_message(x1, y1, y2, x2):
+        return bondwire_pb2.BondwireTrajMessage(
+            x1=messages.value_message(x1),
+            y1=messages.value_message(y1),
+            x2=messages.value_message(x2),
+            y2=messages.value_message(y2),
+        )
+
+    @staticmethod
+    def set_bondwire_traj_message(b, x1, y1, y2, x2):
+        return bondwire_pb2.SetBondwireTrajMessage(
+            target=b.msg, traj=_BondwireQueryBuilder.bondwire_traj_message(x1, y1, x2, y2)
+        )
+
+
+class Bondwire(Primitive):
+    """Class representing a bondwire object."""
+
+    class BondwireType(Enum):
+        """Enum representing possible bondwire types."""
+
+        APD = bondwire_pb2.APD_BONDWIRE
+        JEDEC4 = bondwire_pb2.JEDEC4_BONDWIRE
+        JEDEC5 = bondwire_pb2.JEDEC5_BONDWIRE
+        NUM_OF_TYPE = bondwire_pb2.NUM_OF_BONDWIRE_TYPE
+        INVALID = bondwire_pb2.INVALID_BONDWIRE_TYPE
+
+    class BondwireCrossSectionType(Enum):
+        """Enum representing possible bondwire cross section types."""
+
+        ROUND = bondwire_pb2.BONDWIRE_ROUND
+        RECTANGLE = bondwire_pb2.BONDWIRE_RECTANGLE
+        INVALID = bondwire_pb2.INVALID_BONDWIRE_CROSS_SECTION_TYPE
+
+    @staticmethod
+    @handle_grpc_exception
+    def create(
+        layout,
+        net,
+        bondwire_type,
+        definition_name,
+        placement_layer,
+        width,
+        material,
+        start_context,
+        start_layer_name,
+        start_x,
+        start_y,
+        end_context,
+        end_layer_name,
+        end_x,
+        end_y,
+    ):
+        """Create a bondwire object.
+
+        Parameters
+        ----------
+        layout: Layout
+        net: Net
+        bondwire_type: Bondwire.BondwireType
+        definition_name: str
+        placement_layer: str
+        width: float
+        material: str
+        start_context: CellInst
+        start_layer_name: str
+        start_x: float
+        start_y: float
+        end_context: CellInst
+        end_layer_name: str
+        end_x: float
+        end_y: float
+
+        Returns
+        -------
+        Bondwire
+        """
+        return Bondwire(
+            get_bondwire_stub().Create(
+                _BondwireQueryBuilder.create(
+                    layout,
+                    net,
+                    bondwire_type,
+                    definition_name,
+                    placement_layer,
+                    width,
+                    material,
+                    start_context,
+                    start_layer_name,
+                    start_x,
+                    start_y,
+                    end_context,
+                    end_layer_name,
+                    end_x,
+                    end_y,
+                )
+            )
+        )
+
+    @handle_grpc_exception
+    def get_material(self, evaluated):
+        """Get bondwire's material.
+
+        Parameters
+        ----------
+        evaluated: bool
+
+        Returns
+        -------
+        str
+            Material name
+        """
+        return get_bondwire_stub().GetMaterial(
+            _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
+        )
+
+    @handle_grpc_exception
+    def set_material(self, material):
+        """Set the material of a bondwire.
+
+        Parameters
+        ----------
+        material: str
+        """
+        get_bondwire_stub().SetMaterial(_BondwireQueryBuilder.set_material_message(self, material))
+
+    @handle_grpc_exception
+    def get_type(self):
+        """Get bondwire-type of a bondwire object.
+
+        Returns
+        -------
+        Bondwire.BondwireType
+        """
+        btype_msg = get_bondwire_stub().GetType(self.msg)
+        return Bondwire.BondwireType(btype_msg.type)
+
+    @handle_grpc_exception
+    def set_type(self, bondwire_type):
+        """Set the bondwire-type of a bondwire.
+
+        Parameters
+        ----------
+        bondwire_type: Bondwire.BondwireType
+        """
+        get_bondwire_stub().SetType(
+            _BondwireQueryBuilder.set_bondwire_type_message(self, bondwire_type)
+        )
+
+    @handle_grpc_exception
+    def get_cross_section_type(self):
+        """Get bondwire-cross-section-type of a bondwire object.
+
+        Returns
+        -------
+        Bondwire.BondwireCrossSectionType
+        """
+        return Bondwire.BondwireCrossSectionType(
+            get_bondwire_stub().GetCrossSectionType(self.msg).type
+        )
+
+    @handle_grpc_exception
+    def set_cross_section_type(self, bondwire_type):
+        """Set the bondwire-cross-section-type of a bondwire.
+
+        Parameters
+        ----------
+        bondwire_type: Bondwire.BondwireCrossSectionType
+        """
+        get_bondwire_stub().SetCrossSectionType(
+            _BondwireQueryBuilder.set_cross_section_type_message(self, bondwire_type)
+        )
+
+    @handle_grpc_exception
+    def get_cross_section_height(self):
+        """Get bondwire-cross-section height of a bondwire object.
+
+        Returns
+        -------
+        Value
+        """
+        return messages.value_message_to_value(get_bondwire_stub().GetCrossSectionHeight(self.msg))
+
+    @handle_grpc_exception
+    def set_cross_section_height(self, height):
+        """Set the cross-section-height value of a bondwire.
+
+        Parameters
+        ----------
+        height: value
+        """
+        get_bondwire_stub().SetCrossSectionHeight(
+            _BondwireQueryBuilder.set_cross_section_height_message(self, height)
+        )
+
+    @handle_grpc_exception
+    def get_definition_name(self, evaluated):
+        """Get definition name of a bondwire object.
+
+        Parameters
+        ----------
+        evaluated: bool
+            Search material in variable namespace
+
+        Returns
+        -------
+        str
+        """
+        return get_bondwire_stub().GetDefinitionName(
+            _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
+        )
+
+    @handle_grpc_exception
+    def set_definition_name(self, definition_name):
+        """Set the definition name of a bondwire.
+
+        Parameters
+        ----------
+        definition_name: str
+        """
+        get_bondwire_stub().SetDefinitionName(
+            _BondwireQueryBuilder.set_definition_name_message(self, definition_name)
+        )
+
+    @handle_grpc_exception
+    def get_traj(self):
+        """Get trajectory parameters of a bondwire object.
+
+        Returns
+        -------
+        tuple[float, float, float, float]
+        """
+        traj_msg = get_bondwire_stub().GetTraj(self.msg)
+        return (
+            messages.value_message_to_value(traj_msg.x1),
+            messages.value_message_to_value(traj_msg.y1),
+            messages.value_message_to_value(traj_msg.x2),
+            messages.value_message_to_value(traj_msg.y2),
+        )
+
+    @handle_grpc_exception
+    def set_traj(self, x1, y1, x2, y2):
+        """Set the parameters of the trajectory of a bondwire.
+
+        Parameters
+        ----------
+        x1: Value
+        y1: Value
+        x2: Value
+        y2: Value
+        """
+        get_bondwire_stub().SetTraj(
+            _BondwireQueryBuilder.set_bondwire_traj_message(self, x1, y1, x2, y2)
+        )
+
+    @handle_grpc_exception
+    def get_width_value(self):
+        """Get width of a bondwire object.
+
+        Returns
+        -------
+        Value
+        """
+        val = get_bondwire_stub().GetWidthValue(self.msg)
+        return messages.value_message_to_value(val)
+
+    @handle_grpc_exception
+    def set_width_value(self, width):
+        """Set the width of a bondwire.
+
+        Parameters
+        ----------
+        width: Value
+        """
+        get_bondwire_stub().SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
+
+    @handle_grpc_exception
+    def get_start_elevation(self, start_context: CellInst) -> Layer:
+        """Get the start elevation layer of a bondwire object.
+
+        Parameters
+        ----------
+        start_context: CellInst
+
+        Returns
+        -------
+        Layer
+        """
+        return Layer(
+            get_bondwire_stub().GetStartElevation(
+                _BondwireQueryBuilder.get_elevation_message(self, start_context)
+            )
+        )
+
+    @handle_grpc_exception
+    def set_start_elevation(self, start_context, layer):
+        """Set the set start elevation of a bondwire.
+
+        Parameters
+        ----------
+        start_context: CellInst
+        layer: str or Layer
+        """
+        get_bondwire_stub().SetStartElevation(
+            _BondwireQueryBuilder.set_elevation_message(self, start_context, layer)
+        )
+
+    @handle_grpc_exception
+    def get_end_elevation(self, end_context):
+        """Get the end elevation layer of a bondwire object.
+
+        Parameters
+        ----------
+        end_context: CellInst
+
+        Returns
+        -------
+        Layer
+        """
+        return Layer(
+            get_bondwire_stub().GetEndElevation(
+                _BondwireQueryBuilder.get_elevation_message(self, end_context)
+            )
+        )
+
+    @handle_grpc_exception
+    def set_end_elevation(self, end_context, layer):
+        """Set the set end elevation of a bondwire.
+
+        Parameters
+        ----------
+        end_context: CellInst
+        layer: str or Layer
+        """
+        get_bondwire_stub().SetEndElevation(
+            _BondwireQueryBuilder.set_elevation_message(self, end_context, layer)
+        )

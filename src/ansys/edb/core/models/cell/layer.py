@@ -327,7 +327,7 @@ class Layer(ObjBase):
         """Set the locked status of the layer.
 
         Parameters
-        -------
+        ----------
         locked : bool
         """
         get_layer_stub().SetLocked(layer_pb2.SetLockedMessage(layer=self.msg, is_locked=locked))
@@ -349,7 +349,7 @@ class Layer(ObjBase):
         """Set the transparency value of the layer.
 
         Parameters
-        -------
+        ----------
         transparency : int
         """
         get_layer_stub().SetTransparency(
@@ -373,7 +373,7 @@ class Layer(ObjBase):
         """Set the draw override of the layer.
 
         Parameters
-        -------
+        ----------
         draw_override : DrawOverride
         """
         get_layer_stub().SetDrawOverride(
@@ -385,7 +385,7 @@ class Layer(ObjBase):
         """Get the product property of the layer associated with the given product and attribute ids.
 
         Parameters
-        -------
+        ----------
         prod_id : ProductIdType
         attr_it : int
 
@@ -404,7 +404,7 @@ class Layer(ObjBase):
         """Set the product property of the layer associated with the given product and attribute ids.
 
         Parameters
-        -------
+        ----------
         prod_id : ProductIdType
         attr_it : int
         prop_value : str
@@ -418,7 +418,7 @@ class Layer(ObjBase):
         """Get a list of attribute ids corresponding to the provided product id for the layer.
 
         Parameters
-        -------
+        ----------
         prod_id : ProductIdType
 
         Returns
@@ -437,7 +437,7 @@ class Layer(ObjBase):
         """Check if the layer exists in the provided zone.
 
         Parameters
-        -------
+        ----------
         zone : int
 
         Returns
@@ -451,7 +451,7 @@ class Layer(ObjBase):
         """Set whether the layer exists in the specified zone.
 
         Parameters
-        -------
+        ----------
         zone : int
         in_zone : bool
         """

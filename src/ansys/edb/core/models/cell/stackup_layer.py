@@ -2,11 +2,10 @@
 
 import ansys.api.edb.v1.stackup_layer_pb2 as stackup_layer_pb2
 
-from ansys.edb.core.models.cell.layer import Layer
-
 from ...interfaces.grpc import messages
 from ...session import get_stackup_layer_stub
 from ...utility.edb_errors import handle_grpc_exception
+from .layer import Layer
 
 
 class StackupLayer(Layer):

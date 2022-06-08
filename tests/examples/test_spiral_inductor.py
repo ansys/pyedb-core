@@ -4,7 +4,7 @@ import tempfile
 
 from ansys.edb.core.models.cell.cell import Cell, CellType
 from ansys.edb.core.models.cell.hierarchy.via_group import ViaGroup
-from ansys.edb.core.models.cell.layer import LayerType, StackupLayer, ViaLayer
+from ansys.edb.core.models.cell.layer import LayerType
 from ansys.edb.core.models.cell.layer_collection import LayerCollection, LayerCollectionMode
 from ansys.edb.core.models.cell.net import Net
 from ansys.edb.core.models.cell.primitive import (
@@ -14,7 +14,9 @@ from ansys.edb.core.models.cell.primitive import (
     Polygon,
     Rectangle,
 )
+from ansys.edb.core.models.cell.stackup_layer import StackupLayer
 from ansys.edb.core.models.cell.terminals import PointTerminal
+from ansys.edb.core.models.cell.via_layer import ViaLayer
 from ansys.edb.core.models.database import Database
 from ansys.edb.core.models.definition.material_def import MaterialDef, MaterialProperty
 from ansys.edb.core.models.polygon_data import PolygonData

@@ -1,5 +1,7 @@
 """Database."""
 
+from enum import Enum
+
 import ansys.api.edb.v1.database_pb2 as database_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
@@ -7,6 +9,16 @@ from ..session import get_database_stub
 from ..utility.edb_errors import handle_grpc_exception
 from .base import ObjBase
 from .cell.cell import Cell
+
+
+class ProductIdType(Enum):
+    """Enum representing the ids of Ansys products that support EDB usage."""
+
+    DESIGNER = database_pb2.DESIGNER
+    SIWAVE = database_pb2.SI_WAVE
+    GENERIC_TRANSLATOR = database_pb2.GENERIC_TRANSLATOR
+    USER_DEFINED = database_pb2.USER_DEFINED
+    INVALID_PRODUCT = database_pb2.INVALID_PRODUCT
 
 
 class Database(ObjBase):

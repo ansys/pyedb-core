@@ -4,10 +4,20 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 
-from ...interfaces.grpc import messages
-from ...session import get_layer_stub, get_stackup_layer_stub, get_via_layer_stub
+from ...interfaces.grpc.messages import (
+    get_product_property_ids_message,
+    get_product_property_message,
+    set_product_property_message,
+)
+from ...session import get_layer_stub
 from ...utility.edb_errors import handle_grpc_exception
 from ..base import ObjBase
+
+
+# Message creation helper method
+def _is_in_zone_message(lyr, zone):
+    """Convert to IsInZoneMessage."""
+    return layer_pb2.ZoneMessage(layer=lyr.msg, zone=zone)
 
 
 class LayerType(Enum):
@@ -34,6 +44,35 @@ class LayerType(Enum):
     UNDEFINED_LAYER_TYPE = layer_pb2.UNDEFINED_LAYER_TYPE
 
 
+class TopBottomAssociation(Enum):
+    """Enum representing the top-bottom association of layers."""
+
+    TOP_ASSOCIATED = layer_pb2.TOP_ASSOCIATED
+    NO_TOP_BOTTOM_ASSOCIATED = layer_pb2.NO_TOP_BOTTOM_ASSOCIATED
+    BOTTOM_ASSOCIATED = layer_pb2.BOTTOM_ASSOCIATED
+    TOP_BOTTOM_ASSOCIATION_COUNT = layer_pb2.TOP_BOTTOM_ASSOCIATION_COUNT
+    INVALID_TOP_BOTTOM_ASSOCIATION = layer_pb2.INVALID_TOP_BOTTOM_ASSOCIATION
+
+
+class DrawOverride(Enum):
+    """Enum representing draw override options for layers."""
+
+    NO_OVERRIDE = layer_pb2.NO_OVERRIDE
+    FILL = layer_pb2.FILL
+    WIREFRAME = layer_pb2.WIREFRAME
+
+
+class LayerVisibility(Enum):
+    """Enum representing visibility options for layers."""
+
+    PRIMITIVE_VISIBLE = layer_pb2.PRIMITIVE_VISIBLE
+    PATH_VISIBLE = layer_pb2.PATH_VISIBLE
+    PAD_VISIBLE = layer_pb2.PAD_VISIBLE
+    HOLE_VISIBLE = layer_pb2.HOLE_VISIBLE
+    COMPONENT_VISIBLE = layer_pb2.COMPONENT_VISIBLE
+    ALL_VISIBLE = layer_pb2.ALL_VISIBLE
+
+
 class Layer(ObjBase):
     """Base class representing a layer."""
 
@@ -45,6 +84,9 @@ class Layer(ObjBase):
     @staticmethod
     @handle_grpc_exception
     def _create(msg):
+        from .stackup_layer import StackupLayer
+        from .via_layer import ViaLayer
+
         """Create a layer.
 
         Returns
@@ -60,8 +102,27 @@ class Layer(ObjBase):
         else:
             return lyr
 
+    @staticmethod
     @handle_grpc_exception
-    def get_layer_type(self):
+    def create(name, lyr_type):
+        """Create a non-stackup layer.
+
+        Parameters
+        ----------
+        name : string
+        lyr_type : LayerType
+
+        Returns
+        -------
+        Layer
+        """
+        return Layer(
+            get_layer_stub().Create(layer_pb2.LayerCreationMessage(name=name, type=lyr_type.value))
+        )
+
+    @property
+    @handle_grpc_exception
+    def type(self):
         """Get layer type.
 
         Returns
@@ -70,15 +131,28 @@ class Layer(ObjBase):
         """
         return LayerType(get_layer_stub().GetLayerType(self.msg).type)
 
+    @type.setter
+    @handle_grpc_exception
+    def type(self, lyr_type):
+        """Set layer type.
+
+        Parameters
+        ----------
+        lyr_type : LayerType
+        """
+        get_layer_stub().SetLayerType(
+            layer_pb2.SetLayerTypeMessage(layer=self.msg, type=lyr_type.value)
+        )
+
     @handle_grpc_exception
     def is_stackup_layer(self):
-        """Determine if a layer is stackup.
+        """Determine if the layer is a stackup layer.
 
         Returns
         -------
         bool
         """
-        layer_type = self.get_layer_type()
+        layer_type = self.type
         return (
             layer_type == LayerType.DIELECTRIC_LAYER
             or layer_type == LayerType.CONDUCTING_LAYER
@@ -87,7 +161,7 @@ class Layer(ObjBase):
 
     @handle_grpc_exception
     def is_via_layer(self):
-        """Determine if a layer is via.
+        """Determine if the layer is via layer.
 
         Returns
         -------
@@ -95,9 +169,10 @@ class Layer(ObjBase):
         """
         return get_layer_stub().IsViaLayer(self.msg).value
 
+    @property
     @handle_grpc_exception
-    def get_name(self):
-        """Get name of a layer.
+    def name(self):
+        """Get the name of the layer.
 
         Returns
         -------
@@ -105,90 +180,305 @@ class Layer(ObjBase):
         """
         return get_layer_stub().GetName(self.msg).value
 
-
-class StackupLayer(Layer):
-    """Stackup layer."""
-
-    @staticmethod
+    @name.setter
     @handle_grpc_exception
-    def create(name, layer_type, thickness, elevation, material, layout=None, negative=None):
-        """Create a stackup layer.
-
-        Parameters
-        name : str
-        layer_type : LayerType
-        thickness : float
-        thickness : float
-        material : str
-        layout : Layout, optional
-        negative : bool, optional
-
-        Returns
-        -------
-        StackupLayer
-        """
-        params = {
-            "name": name,
-            "type": layer_type.value,
-            "thickness": messages.value_message(thickness),
-            "elevation": messages.value_message(elevation),
-            "material": material,
-        }
-        messages.optional(params, "layout", layout, messages.edb_obj_message)
-        messages.optional(params, "negative", negative, messages.bool_message)
-
-        stackup_layer = StackupLayer(
-            get_stackup_layer_stub().Create(layer_pb2.StackupLayerCreationMessage(**params))
-        )
-        stackup_layer._is_owner = True
-        return stackup_layer
-
-    @handle_grpc_exception
-    def set_negative(self, is_negative):
-        """Update negative.
+    def name(self, name):
+        """Set the layer name.
 
         Parameters
         ----------
-        is_negative : bool
+        name : str
+        """
+        get_layer_stub().SetName(layer_pb2.SetNameMessage(layer=self.msg, name=name))
+
+    @handle_grpc_exception
+    def clone(self, copy_id=True):
+        """Create a clone of the layer.
+
+        Parameters
+        ----------
+        copy_id : bool
+
+        Returns
+        -------
+        Layer
+        """
+        return Layer(
+            get_layer_stub().Clone(layer_pb2.CloneMessage(layer=self.msg, copy_id=copy_id))
+        )
+
+    @property
+    @handle_grpc_exception
+    def layer_id(self):
+        """Get the layer id of the layer.
+
+        Returns
+        -------
+        int
+        """
+        return get_layer_stub().GetLayerId(self.msg).value
+
+    @property
+    @handle_grpc_exception
+    def top_bottom_association(self):
+        """Get the top-bottom association of the layer.
+
+        Returns
+        -------
+        TopBottomAssociation
+        """
+        return TopBottomAssociation(
+            get_layer_stub().GetTopBottomAssociation(self.msg).top_bottom_association
+        )
+
+    @top_bottom_association.setter
+    @handle_grpc_exception
+    def top_bottom_association(self, top_bottom_association):
+        """Set the top-bottom association of the layer.
+
+        Parameters
+        ----------
+        top_bottom_association : TopBottomAssociation
+        """
+        get_layer_stub().SetTopBottomAssociation(
+            layer_pb2.SetTopBottomAssociationMessage(
+                layer=self.msg, top_bottom_association=top_bottom_association.value
+            )
+        )
+
+    @property
+    @handle_grpc_exception
+    def color(self):
+        """Get the color of the layer.
+
+        Returns
+        -------
+        tuple[int, int, int]
+            Tuple containing the color RGB values in the format (R,G,B)
+        """
+        color_int = get_layer_stub().GetColor(self.msg).value
+        r = color_int & 0x000000FF
+        g = (color_int & 0x0000FF00) >> 8
+        b = (color_int & 0x00FF0000) >> 16
+        return r, g, b
+
+    @color.setter
+    @handle_grpc_exception
+    def color(self, rgb):
+        """Set the color of the layer.
+
+        Parameters
+        ----------
+        tuple[int, int, int]
+            Tuple containing the color RGB values in the format (R,G,B)
+        """
+        r = rgb[0] & 0x000000FF
+        g = (rgb[1] << 8) & 0x0000FF00
+        b = (rgb[2] << 16) & 0x00FF0000
+        get_layer_stub().SetColor(layer_pb2.SetColorMessage(layer=self.msg, color=b | g | r))
+
+    @property
+    @handle_grpc_exception
+    def visibility_mask(self):
+        """Get the visibility mask of the layer.
+
+        Returns
+        -------
+        int
+        """
+        return get_layer_stub().GetVisibilityMask(self.msg).value
+
+    @visibility_mask.setter
+    @handle_grpc_exception
+    def visibility_mask(self, visibility_mask):
+        """Set the visibility mask of the layer.
+
+        Parameters
+        ----------
+        visibility_mask : int or LayerVisibility
+
+        Returns
+        -------
+        int
+        """
+        vis_mask_int = (
+            visibility_mask.value
+            if isinstance(visibility_mask, LayerVisibility)
+            else visibility_mask
+        )
+        get_layer_stub().SetVisibilityMask(
+            layer_pb2.SetVisibilityMaskMessage(layer=self.msg, visibility_mask=vis_mask_int)
+        )
+
+    @property
+    @handle_grpc_exception
+    def locked(self):
+        """Check if the layer is locked.
 
         Returns
         -------
         bool
         """
-        return get_stackup_layer_stub().SetNegative(
-            layer_pb2.SetNegativeMessage(layer=self.msg, is_negative=is_negative)
-        )
+        return get_layer_stub().GetLocked(self.msg).value
 
-
-class ViaLayer(StackupLayer):
-    """Via layer."""
-
-    @staticmethod
+    @locked.setter
     @handle_grpc_exception
-    def create(name, lr_layer, ur_layer, material, layout=None):
-        """Create a via layer.
+    def locked(self, locked):
+        """Set the locked status of the layer.
 
         Parameters
         ----------
-        name : str
-        lr_layer : str
-        ur_layer : str
-        material : str
-        layout : Layout, optional
+        locked : bool
+        """
+        get_layer_stub().SetLocked(layer_pb2.SetLockedMessage(layer=self.msg, is_locked=locked))
+
+    @property
+    @handle_grpc_exception
+    def transparency(self):
+        """Get the transparency value of the layer.
 
         Returns
         -------
-        ViaLayer
+        int
         """
-        params = {
-            "via_layer_name": name,
-            "lower_ref_layer_name": lr_layer,
-            "upper_ref_layer_name": ur_layer,
-            "material_name": material,
-        }
-        messages.optional(params, "layout", layout, messages.edb_obj_message)
-        via_layer = ViaLayer(
-            get_via_layer_stub().Create(layer_pb2.ViaLayerCreationMessage(**params))
+        return get_layer_stub().GetTransparency(self.msg).value
+
+    @transparency.setter
+    @handle_grpc_exception
+    def transparency(self, transparency):
+        """Set the transparency value of the layer.
+
+        Parameters
+        ----------
+        transparency : int
+        """
+        get_layer_stub().SetTransparency(
+            layer_pb2.SetTransparencyMessage(layer=self.msg, transparency=transparency)
         )
-        via_layer._is_owner = True
-        return via_layer
+
+    @property
+    @handle_grpc_exception
+    def draw_override(self):
+        """Get the draw override of the layer.
+
+        Returns
+        -------
+        DrawOverride
+        """
+        return DrawOverride(get_layer_stub().GetDrawOverride(self.msg).draw_override)
+
+    @draw_override.setter
+    @handle_grpc_exception
+    def draw_override(self, draw_override):
+        """Set the draw override of the layer.
+
+        Parameters
+        ----------
+        draw_override : DrawOverride
+        """
+        get_layer_stub().SetDrawOverride(
+            layer_pb2.SetDrawOverrideMessage(layer=self.msg, draw_override=draw_override.value)
+        )
+
+    @handle_grpc_exception
+    def get_product_property(self, prod_id, attr_it):
+        """Get the product property of the layer associated with the given product and attribute ids.
+
+        Parameters
+        ----------
+        prod_id : ProductIdType
+        attr_it : int
+
+        Returns
+        -------
+        str
+        """
+        return (
+            get_layer_stub()
+            .GetProductProperty(get_product_property_message(self, prod_id, attr_it))
+            .value
+        )
+
+    @handle_grpc_exception
+    def set_product_property(self, prod_id, attr_it, prop_value):
+        """Set the product property of the layer associated with the given product and attribute ids.
+
+        Parameters
+        ----------
+        prod_id : ProductIdType
+        attr_it : int
+        prop_value : str
+        """
+        get_layer_stub().SetProductProperty(
+            set_product_property_message(self, prod_id, attr_it, prop_value)
+        )
+
+    @handle_grpc_exception
+    def get_product_property_ids(self, prod_id):
+        """Get a list of attribute ids corresponding to the provided product id for the layer.
+
+        Parameters
+        ----------
+        prod_id : ProductIdType
+
+        Returns
+        ------
+        list[int]
+        """
+        attr_ids = (
+            get_layer_stub()
+            .GetProductPropertyIds(get_product_property_ids_message(self, prod_id))
+            .ids
+        )
+        return [attr_id for attr_id in attr_ids]
+
+    @handle_grpc_exception
+    def is_in_zone(self, zone):
+        """Check if the layer exists in the provided zone.
+
+        Parameters
+        ----------
+        zone : int
+
+        Returns
+        ------
+        bool
+        """
+        return get_layer_stub().IsInZone(_is_in_zone_message(self, zone)).value
+
+    @handle_grpc_exception
+    def set_is_in_zone(self, zone, in_zone=True):
+        """Set whether the layer exists in the specified zone.
+
+        Parameters
+        ----------
+        zone : int
+        in_zone : bool
+        """
+        return get_layer_stub().SetIsInZone(
+            layer_pb2.SetIsInZoneMessage(zone_msg=_is_in_zone_message(self, zone), in_zone=in_zone)
+        )
+
+    @property
+    @handle_grpc_exception
+    def zones(self):
+        """Retrieve the zone ids of all zones containing the layer.
+
+        Returns
+        -------
+        list[int]
+        """
+        return [zone for zone in get_layer_stub().GetZones(self.msg).zones]
+
+    @property
+    @handle_grpc_exception
+    def zone(self):
+        """Return the zone index associated with owning layer collection.
+
+        If owner is invalid the index is 0, if owner is multizone the index is -1.
+
+        Returns
+        -------
+        int
+        """
+        return get_layer_stub().GetZone(self.msg).value

@@ -1294,21 +1294,8 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
         )
 
-    @property
     @handle_grpc_exception
-    def material(self):
-        """Exposes material as a property.
-
-        Returns
-        -------
-        str
-            Material name
-        """
-        return Bondwire.get_material(self, True)
-
-    @material.setter
-    @handle_grpc_exception
-    def material(self, material):
+    def set_material(self, material):
         """Set the material of a bondwire.
 
         Parameters
@@ -1408,20 +1395,8 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
         )
 
-    @property
     @handle_grpc_exception
-    def definition_name(self):
-        """Exposes definition name of a bondwire object.
-
-        Returns
-        -------
-        str
-        """
-        return Bondwire.get_definition_name(self, True)
-
-    @definition_name.setter
-    @handle_grpc_exception
-    def definition_name(self, definition_name):
+    def set_definition_name(self, definition_name):
         """Set the definition name of a bondwire.
 
         Parameters

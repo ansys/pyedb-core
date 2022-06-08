@@ -23,7 +23,6 @@ from ...session import (
 from ...utility.edb_errors import handle_grpc_exception
 from ...utility.edb_iterator import EDBIterator
 from .conn_obj import ConnObj
-from .hierarchy.cell_instance import CellInst
 from .layer import Layer
 
 
@@ -1109,11 +1108,11 @@ class _BondwireQueryBuilder:
             placement_layer=placement_layer,
             width=messages.value_message(width),
             material=material,
-            start_context=messages.cell_inst_ref_message(start_context),
+            start_context=messages.cell_instance_ref_message(start_context),
             start_layer_name=start_layer_name,
             start_x=messages.value_message(start_x),
             start_y=messages.value_message(start_y),
-            end_context=messages.cell_inst_ref_message(end_context),
+            end_context=messages.cell_instance_ref_message(end_context),
             end_layer_name=end_layer_name,
             end_x=messages.value_message(end_x),
             end_y=messages.value_message(end_y),
@@ -1184,7 +1183,18 @@ class _BondwireQueryBuilder:
 
 
 class Bondwire(Primitive):
-    """Class representing a bondwire object."""
+    """
+    Class representing a bondwire object.
+
+        Attributes:
+            material (str)
+            type (BondwireType)
+            cross_section_type (BondwireCrossSectionType)
+            cross_section_height (Value)
+            definition_name (str)
+            traj (tuple[Value, Value, Value, Value])
+            width (Value)
+    """
 
     class BondwireType(Enum):
         """Enum representing possible bondwire types."""
@@ -1226,20 +1236,20 @@ class Bondwire(Primitive):
         Parameters
         ----------
         layout: Layout
-        net: Net
+        net: Net, optional
         bondwire_type: Bondwire.BondwireType
         definition_name: str
         placement_layer: str
-        width: float
+        width: Value
         material: str
-        start_context: CellInst
+        start_context: CellInstance
         start_layer_name: str
-        start_x: float
-        start_y: float
-        end_context: CellInst
+        start_x: Value
+        start_y: Value
+        end_context: CellInstance
         end_layer_name: str
-        end_x: float
-        end_y: float
+        end_x: Value
+        end_y: Value
 
         Returns
         -------
@@ -1268,13 +1278,13 @@ class Bondwire(Primitive):
         )
 
     @handle_grpc_exception
-    def get_material(self, evaluated):
-        """Get bondwire's material.
+    def get_material(self, evaluated=True):
+        """Get material of the bondwire.
 
         Parameters
         ----------
-        evaluated: bool
-
+        evaluated: bool, optional
+            True if an evaluated material name is wanted.
         Returns
         -------
         str
@@ -1284,8 +1294,21 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
         )
 
+    @property
     @handle_grpc_exception
-    def set_material(self, material):
+    def material(self):
+        """Exposes material as a property.
+
+        Returns
+        -------
+        str
+            Material name
+        """
+        return Bondwire.get_material(self, True)
+
+    @material.setter
+    @handle_grpc_exception
+    def material(self, material):
         """Set the material of a bondwire.
 
         Parameters
@@ -1294,8 +1317,9 @@ class Bondwire(Primitive):
         """
         get_bondwire_stub().SetMaterial(_BondwireQueryBuilder.set_material_message(self, material))
 
+    @property
     @handle_grpc_exception
-    def get_type(self):
+    def type(self):
         """Get bondwire-type of a bondwire object.
 
         Returns
@@ -1305,8 +1329,9 @@ class Bondwire(Primitive):
         btype_msg = get_bondwire_stub().GetType(self.msg)
         return Bondwire.BondwireType(btype_msg.type)
 
+    @type.setter
     @handle_grpc_exception
-    def set_type(self, bondwire_type):
+    def type(self, bondwire_type):
         """Set the bondwire-type of a bondwire.
 
         Parameters
@@ -1317,8 +1342,9 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.set_bondwire_type_message(self, bondwire_type)
         )
 
+    @property
     @handle_grpc_exception
-    def get_cross_section_type(self):
+    def cross_section_type(self):
         """Get bondwire-cross-section-type of a bondwire object.
 
         Returns
@@ -1329,8 +1355,9 @@ class Bondwire(Primitive):
             get_bondwire_stub().GetCrossSectionType(self.msg).type
         )
 
+    @cross_section_type.setter
     @handle_grpc_exception
-    def set_cross_section_type(self, bondwire_type):
+    def cross_section_type(self, bondwire_type):
         """Set the bondwire-cross-section-type of a bondwire.
 
         Parameters
@@ -1341,8 +1368,9 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.set_cross_section_type_message(self, bondwire_type)
         )
 
+    @property
     @handle_grpc_exception
-    def get_cross_section_height(self):
+    def cross_section_height(self):
         """Get bondwire-cross-section height of a bondwire object.
 
         Returns
@@ -1351,8 +1379,9 @@ class Bondwire(Primitive):
         """
         return messages.value_message_to_value(get_bondwire_stub().GetCrossSectionHeight(self.msg))
 
+    @cross_section_height.setter
     @handle_grpc_exception
-    def set_cross_section_height(self, height):
+    def cross_section_height(self, height):
         """Set the cross-section-height value of a bondwire.
 
         Parameters
@@ -1364,14 +1393,13 @@ class Bondwire(Primitive):
         )
 
     @handle_grpc_exception
-    def get_definition_name(self, evaluated):
+    def get_definition_name(self, evaluated=True):
         """Get definition name of a bondwire object.
 
         Parameters
         ----------
-        evaluated: bool
-            Search material in variable namespace
-
+        evaluated: bool, optional
+            True if an evaluated (in variable namespace) material name is wanted.
         Returns
         -------
         str
@@ -1380,8 +1408,20 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
         )
 
+    @property
     @handle_grpc_exception
-    def set_definition_name(self, definition_name):
+    def definition_name(self):
+        """Exposes definition name of a bondwire object.
+
+        Returns
+        -------
+        str
+        """
+        return Bondwire.get_definition_name(self, True)
+
+    @definition_name.setter
+    @handle_grpc_exception
+    def definition_name(self, definition_name):
         """Set the definition name of a bondwire.
 
         Parameters
@@ -1392,13 +1432,14 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.set_definition_name_message(self, definition_name)
         )
 
+    @property
     @handle_grpc_exception
-    def get_traj(self):
+    def traj(self):
         """Get trajectory parameters of a bondwire object.
 
         Returns
         -------
-        tuple[float, float, float, float]
+        tuple[Value, Value, Value, Value]
         """
         traj_msg = get_bondwire_stub().GetTraj(self.msg)
         return (
@@ -1408,8 +1449,9 @@ class Bondwire(Primitive):
             messages.value_message_to_value(traj_msg.y2),
         )
 
+    @traj.setter
     @handle_grpc_exception
-    def set_traj(self, x1, y1, x2, y2):
+    def traj(self, x1, y1, x2, y2):
         """Set the parameters of the trajectory of a bondwire.
 
         Parameters
@@ -1423,8 +1465,9 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.set_bondwire_traj_message(self, x1, y1, x2, y2)
         )
 
+    @property
     @handle_grpc_exception
-    def get_width_value(self):
+    def width(self):
         """Get width of a bondwire object.
 
         Returns
@@ -1434,8 +1477,9 @@ class Bondwire(Primitive):
         val = get_bondwire_stub().GetWidthValue(self.msg)
         return messages.value_message_to_value(val)
 
+    @width.setter
     @handle_grpc_exception
-    def set_width_value(self, width):
+    def width(self, width):
         """Set the width of a bondwire.
 
         Parameters
@@ -1445,12 +1489,12 @@ class Bondwire(Primitive):
         get_bondwire_stub().SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
 
     @handle_grpc_exception
-    def get_start_elevation(self, start_context: CellInst) -> Layer:
+    def get_start_elevation(self, start_context):
         """Get the start elevation layer of a bondwire object.
 
         Parameters
         ----------
-        start_context: CellInst
+        start_context: CellInstance
 
         Returns
         -------
@@ -1468,7 +1512,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        start_context: CellInst
+        start_context: CellInstance
         layer: str or Layer
         """
         get_bondwire_stub().SetStartElevation(
@@ -1481,7 +1525,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        end_context: CellInst
+        end_context: CellInstance
 
         Returns
         -------
@@ -1499,7 +1543,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        end_context: CellInst
+        end_context: CellInstance
         layer: str or Layer
         """
         get_bondwire_stub().SetEndElevation(

@@ -20,7 +20,7 @@ message NetRefMessage {
   }
 }
 
-message CellInstRefMessage {
+message CellInstanceRefMessage {
   oneof ref {
     EDBObjMessage id = 1;
     google.protobuf.StringValue name = 2;

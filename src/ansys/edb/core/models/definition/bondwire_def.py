@@ -59,36 +59,14 @@ class _QueryBuilder:
 class BondwireDef(ObjBase):
     """Class representing a bondwire definition."""
 
-    @staticmethod
-    @handle_grpc_exception
-    def _create(msg):
-        """Create a bondwire definition.
-
-        Parameters
-        ----------
-        msg : BondwireDef
-
-        Returns
-        -------
-        BondwireDef
-        """
-        bwr = BondwireDef(msg)
-        if bwr.get_bondwire_type() == BondwireDefType.APD_BONDWIRE_DEF:
-            return ApdBondwireDef(msg)
-        elif bwr.get_bondwire_type() == BondwireDefType.JEDEC4_BONDWIRE_DEF:
-            return Jedec4BondwireDef(msg)
-        elif bwr.get_bondwire_type() == BondwireDefType.JEDEC5_BONDWIRE_DEF:
-            return Jedec5BondwireDef(msg)
-        else:
-            return None
-
     @handle_grpc_exception
     def delete(self):
         """Delete a bondwire definition."""
         get_bondwire_def_stub().Delete(self.msg)
 
+    @property
     @handle_grpc_exception
-    def get_name(self):
+    def name(self):
         """Return the name of the bondwire definition.
 
         Returns
@@ -174,7 +152,8 @@ class ApdBondwireDef(BondwireDef):
             _QueryBuilder.bondwire_def_str_message(self, name)
         )
 
-    def get_bondwire_type(self):
+    @property
+    def bondwire_type(self):
         """Return apd bondwire type.
 
         Returns
@@ -261,8 +240,8 @@ class Jedec4BondwireDef(ObjBase):
             _Jedec4QueryBuilder.jedec4_bondwire_def_set_parameters_message(self, parameter)
         )
 
-    @staticmethod
-    def get_bondwire_type(self):
+    @property
+    def bondwire_type(self):
         """Return jedec 4 bondwire type.
 
         Returns
@@ -372,7 +351,7 @@ class Jedec5BondwireDef(BondwireDef):
             _Jedec5QueryBuilder.jedec5_bondwire_def_set_parameters_message(self, ttd, dpa, lpa)
         )
 
-    @staticmethod
+    @property
     def get_bondwire_type(self):
         """Return jedec 5 bondwire type.
 

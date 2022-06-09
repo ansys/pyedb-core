@@ -78,6 +78,8 @@ class Primitive(ConnObj):
             return Polygon(msg)
         elif prim_type == PrimitiveType.PATH:
             return Path(msg)
+        elif prim_type == PrimitiveType.BONDWIRE:
+            return Bondwire(msg)
         else:
             return None
 
@@ -1216,7 +1218,6 @@ class Bondwire(Primitive):
     @handle_grpc_exception
     def create(
         layout,
-        net,
         bondwire_type,
         definition_name,
         placement_layer,
@@ -1230,13 +1231,13 @@ class Bondwire(Primitive):
         end_layer_name,
         end_x,
         end_y,
+        net=None,
     ):
         """Create a bondwire object.
 
         Parameters
         ----------
         layout: Layout
-        net: Net, optional
         bondwire_type: Bondwire.BondwireType
         definition_name: str
         placement_layer: str
@@ -1250,6 +1251,7 @@ class Bondwire(Primitive):
         end_layer_name: str
         end_x: Value
         end_y: Value
+        net: Net, optional
 
         Returns
         -------
@@ -1391,8 +1393,10 @@ class Bondwire(Primitive):
         -------
         str
         """
-        return get_bondwire_stub().GetDefinitionName(
-            _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
+        return (
+            get_bondwire_stub()
+            .GetDefinitionName(_BondwireQueryBuilder.bondwire_bool_message(self, evaluated))
+            .value
         )
 
     @handle_grpc_exception
@@ -1488,7 +1492,7 @@ class Bondwire(Primitive):
         Parameters
         ----------
         start_context: CellInstance
-        layer: str or Layer
+        layer: str
         """
         get_bondwire_stub().SetStartElevation(
             _BondwireQueryBuilder.set_elevation_message(self, start_context, layer)

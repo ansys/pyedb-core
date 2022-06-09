@@ -3,10 +3,12 @@
 from enum import Enum
 
 import ansys.api.edb.v1.cell_pb2 as cell_pb2
-from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 from google.protobuf.wrappers_pb2 import BoolValue
 
+from ansys.edb.core.interfaces.grpc.messages import value_message
+
 from ...session import get_cell_stub
+from ...utility.variable_server import _VariableServer
 from ..base import ObjBase
 from .layout import Layout
 
@@ -26,7 +28,7 @@ def to_extent_message(val):
     else:
         value, absolute = val
 
-    return cell_pb2.ExtentMessage(value=ValueMessage(value=value), absolute=absolute)
+    return cell_pb2.ExtentMessage(value=value_message(value), absolute=absolute)
 
 
 def to_bool_message(val: bool):
@@ -70,8 +72,18 @@ class _QueryBuilder:
         return cell_pb2.CellHfssExtentsMessage(cell=cell.msg, **extents)
 
 
-class Cell(ObjBase):
+class Cell(ObjBase, _VariableServer):
     """Class representing a cell object."""
+
+    def __init__(self, msg):
+        """Initialize a new cell object.
+
+        Parameters
+        ----------
+        msg : EDBObjMessage
+        """
+        ObjBase.__init__(self, msg)
+        _VariableServer.__init__(self, msg)
 
     @staticmethod
     def create(db, cell_type, cell_name):

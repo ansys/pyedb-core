@@ -7,6 +7,7 @@ import google.protobuf.wrappers_pb2 as proto_wrappers
 
 from ..session import get_database_stub
 from ..utility.edb_errors import handle_grpc_exception
+from ..utility.variable_server import _VariableServer
 from .base import ObjBase
 from .cell.cell import Cell
 
@@ -21,8 +22,18 @@ class ProductIdType(Enum):
     INVALID_PRODUCT = database_pb2.INVALID_PRODUCT
 
 
-class Database(ObjBase):
+class Database(ObjBase, _VariableServer):
     """Class representing a database object."""
+
+    def __init__(self, msg):
+        """Initialize a new Database.
+
+        Parameters
+        ----------
+        msg : EDBObjMessage
+        """
+        ObjBase.__init__(self, msg)
+        _VariableServer.__init__(self, msg)
 
     @staticmethod
     @handle_grpc_exception

@@ -8,16 +8,16 @@ import public "google/protobuf/wrappers.proto";
 import public "google/protobuf/empty.proto";
 
 message ComplexMessage {
-  double re = 1;
-  double im = 2;
+    double real = 1;
+    double imag = 2;
 }
 
 // Message representing a Value
 message ValueMessage {
   string text = 1;
-  oneof value {
+    oneof _val {
     ComplexMessage constant = 2;
-    EDBObjMessage expression = 3;
+        EDBObjMessage variable_owner = 3;
   }
 }
 

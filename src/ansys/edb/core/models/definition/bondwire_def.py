@@ -12,6 +12,7 @@ from ...session import (
     get_jedec5_bondwire_def_stub,
 )
 from ...utility.edb_errors import handle_grpc_exception
+from ...utility.value import Value
 from ..base import ObjBase
 
 
@@ -222,9 +223,7 @@ class Jedec4BondwireDef(ObjBase):
         -------
         Value
         """
-        return messages.value_message_to_value(
-            get_jedec4_bondwire_def_stub().GetParameters(self.msg)
-        )
+        return Value(get_jedec4_bondwire_def_stub().GetParameters(self.msg))
 
     @handle_grpc_exception
     def set_parameters(self, parameter):
@@ -325,9 +324,9 @@ class Jedec5BondwireDef(BondwireDef):
         """
         get_parameters_msg = get_jedec5_bondwire_def_stub().GetParameters(self.msg)
         return (
-            messages.value_message_to_value(get_parameters_msg.top_to_die_distance),
-            messages.value_message_to_value(get_parameters_msg.die_pad_angle),
-            messages.value_message_to_value(get_parameters_msg.lead_pad_angle),
+            Value(get_parameters_msg.top_to_die_distance),
+            Value(get_parameters_msg.die_pad_angle),
+            Value(get_parameters_msg.lead_pad_angle),
         )
 
     @handle_grpc_exception

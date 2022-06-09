@@ -43,6 +43,8 @@ from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
+from ansys.api.edb.v1.value_pb2_grpc import ValueServiceStub
+from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 import grpc
@@ -254,6 +256,8 @@ class StubType(Enum):
     apd_bondwire_def = ApdBondwireDefServiceStub
     jedec4_bondwire_def = Jedec4BondwireDefServiceStub
     jedec5_bondwire_def = Jedec5BondwireDefServiceStub
+    value = ValueServiceStub
+    variable_server = VariableServerServiceStub
 
 
 # Dictionary for storing local server error code exception messages
@@ -549,6 +553,26 @@ def get_apd_bondwire_def_stub():
     ApdBondwireDefServiceStub
     """
     return StubAccessor(StubType.apd_bondwire_def).__get__()
+
+
+def get_value_stub():
+    """Get Value stub.
+
+    Returns
+    -------
+    ValueServiceStub
+    """
+    return StubAccessor(StubType.value).__get__()
+
+
+def get_variable_server_stub():
+    """Get VariableServer stub.
+
+    Returns
+    -------
+    VariableServerServiceStub
+    """
+    return StubAccessor(StubType.variable_server).__get__()
 
 
 def get_jedec4_bondwire_def_stub():

@@ -41,7 +41,7 @@ class _QueryBuilder:
         )
 
     @staticmethod
-    def bondwire_def_str_message(obj, string: str):
+    def bondwire_def_str_message(obj, string):
         """Create a bondwire definition string message.
 
         Parameters
@@ -165,9 +165,7 @@ class ApdBondwireDef(BondwireDef):
 
 class _Jedec4QueryBuilder:
     @staticmethod
-    def jedec4_bondwire_def_set_parameters_message(
-        j: "Jedec4BondwireDef", top_to_die_distance: Value
-    ):
+    def jedec4_bondwire_def_set_parameters_message(j, top_to_die_distance):
         return pb.Jedec4BondwireDefSetParametersMessage(
             target=j.msg,
             top_to_die_distance=messages.value_message(top_to_die_distance),
@@ -253,9 +251,7 @@ class Jedec4BondwireDef(ObjBase):
 
 class _Jedec5QueryBuilder:
     @staticmethod
-    def jedec5_bondwire_def_parameters_message(
-        top_to_die_distance: Value, die_pad_angle: Value, lead_pad_angle: Value
-    ):
+    def jedec5_bondwire_def_parameters_message(top_to_die_distance, die_pad_angle, lead_pad_angle):
         return pb.Jedec5BondwireDefParametersMessage(
             top_to_die_distance=messages.value_message(top_to_die_distance),
             die_pad_angle=messages.value_message(die_pad_angle),
@@ -264,10 +260,10 @@ class _Jedec5QueryBuilder:
 
     @staticmethod
     def jedec5_bondwire_def_set_parameters_message(
-        j: "Jedec5BondwireDef",
-        top_to_die_distance: Value,
-        die_pad_angle: Value,
-        lead_pad_angle: Value,
+        j,
+        top_to_die_distance,
+        die_pad_angle,
+        lead_pad_angle,
     ):
         return pb.Jedec5BondwireDefSetParametersMessage(
             target=j.msg,

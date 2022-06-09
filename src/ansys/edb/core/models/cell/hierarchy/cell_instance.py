@@ -40,7 +40,7 @@ class CellInstance(HierarchyObj):
         ----------
         layout: Layout
         name: str
-        ref_layout: Reference Layout
+        ref_layout: Layout
 
         Returns
         -------

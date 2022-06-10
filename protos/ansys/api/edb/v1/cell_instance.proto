@@ -1,0 +1,18 @@
+// Proto file representing the EDB Cell class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service CellInstanceService {
+  // Creates a cell instance
+  rpc Create (CellInstanceCreationMessage) returns (EDBObjMessage) {}
+}
+
+message CellInstanceCreationMessage {
+  EDBObjMessage layout = 1;
+  EDBObjMessage ref_layout = 2;
+  string name = 3;
+}

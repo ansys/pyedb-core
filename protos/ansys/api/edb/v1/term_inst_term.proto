@@ -16,7 +16,7 @@ service TerminalInstanceTerminalService {
 message TermInstTermCreationMessage {
   EDBObjMessage layout = 1;
   NetRefMessage net = 2;
-  google.protobuf.StringValue name = 3;
+  string name = 3;
   EDBObjMessage term_inst = 4;
   bool is_ref = 5;
 }

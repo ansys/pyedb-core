@@ -85,7 +85,7 @@ class PinGroup(ObjBase):
         -------
         list of PadstackInstance
         """
-        ps = self.__stub.GetPins(self.msg).pins
+        ps = self.__stub.GetPins(self.msg).items
         return [PadstackInstance(p) for p in ps]
 
     @handle_grpc_exception
@@ -106,4 +106,4 @@ class PinGroup(ObjBase):
         ----------
         pins : list of PadstackInstance
         """
-        self.__stub.AddPins(messages.pin_group_pins_modify_message(self, pins))
+        self.__stub.RemovePins(messages.pin_group_pins_modify_message(self, pins))

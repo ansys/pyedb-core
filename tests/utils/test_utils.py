@@ -71,7 +71,7 @@ def create_edb_obj_collection_msg(num_msgs):
     -------
     EDBObjCollectionMessage
     """
-    return EDBObjCollectionMessage(edb_obj_collection=create_edb_obj_msgs(num_msgs))
+    return EDBObjCollectionMessage(items=create_edb_obj_msgs(num_msgs))
 
 
 # Mock server utils

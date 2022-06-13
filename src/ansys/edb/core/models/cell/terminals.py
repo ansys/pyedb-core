@@ -786,7 +786,7 @@ class BundleTerminal(Terminal):
         -------
         BundleTerminal
         """
-        return BundleTerminal(cls.__stub.Create(messages.bundle_term_terminals_message(terminals)))
+        return BundleTerminal(cls.__stub.Create(messages.edb_obj_collection_message(terminals)))
 
     @property
     @handle_grpc_exception

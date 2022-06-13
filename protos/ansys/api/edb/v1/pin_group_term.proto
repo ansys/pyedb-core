@@ -21,9 +21,9 @@ service PinGroupTerminalService {
 message PinGroupTermCreationMessage {
   EDBObjMessage layout = 1;
   NetRefMessage net = 2;
-  google.protobuf.StringValue name = 3;
+  string name = 3;
   EDBObjMessage pin_group = 4;
-  google.protobuf.BoolValue is_ref = 5;
+  bool is_ref = 5;
 }
 
 message PinGroupTermSetPinGroupMessage {

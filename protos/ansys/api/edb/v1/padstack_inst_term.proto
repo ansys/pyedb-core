@@ -22,9 +22,9 @@ message PadstackInstTermParamsMessage {
 message PadstackInstTermCreationsMessage {
   EDBObjMessage layout = 1;
   NetRefMessage net = 2;
-  google.protobuf.StringValue name = 3;
+  string name = 3;
   PadstackInstTermParamsMessage params = 4;
-  google.protobuf.BoolValue is_ref = 5;
+  bool is_ref = 5;
 }
 
 message PadstackInstTermSetParamsMessage {

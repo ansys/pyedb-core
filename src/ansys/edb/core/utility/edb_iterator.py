@@ -30,5 +30,5 @@ class EDBIterator(ObjBase):
             return edb_obj
 
     def _get_next_chunk(self):
-        self.chunk = get_edb_iterator_stub().NextChunk(self.msg).edb_obj_collection
+        self.chunk = get_edb_iterator_stub().NextChunk(self.msg).items
         self.edb_obj_idx = 0

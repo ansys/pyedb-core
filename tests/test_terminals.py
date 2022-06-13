@@ -44,7 +44,7 @@ def test_bundle_terminal_create(patch, point_terminal, bundle_terminal, edb_obj_
     bt = BundleTerminal.create([point_terminal, bundle_terminal])
 
     mock.assert_called_once_with(
-        messages.bundle_term_terminals_message([point_terminal, bundle_terminal])
+        messages.edb_obj_collection_message([point_terminal, bundle_terminal])
     )
     assert isinstance(bt, BundleTerminal)
     assert not bt.is_null()
@@ -103,7 +103,7 @@ def test_point_terminal_get_params(patch, point_terminal, layer):
     mock = patch(PointTerminal).GetParameters
     mock.return_value = messages.point_term_params_message(layer, point)
 
-    res = point_terminal.get_params()
+    res = point_terminal.params
 
     mock.assert_called_once_with(point_terminal.msg)
     assert isinstance(res, tuple)
@@ -126,7 +126,7 @@ def test_point_terminal_set_params(patch, point_terminal, layer_ref, point, succ
     mock = patch(PointTerminal).SetParameters
     mock.return_value = messages.bool_message(success)
 
-    point_terminal.set_params(layer_ref, point)
+    point_terminal.params = (layer_ref, point)
 
     mock.assert_called_once_with(
         messages.point_term_set_params_message(point_terminal, layer_ref, point)

@@ -1,0 +1,72 @@
+// Proto file representing the EDB hierarchy objects class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+import "point_data.proto";
+import "transform.proto";
+
+// Hierarchy object service definition
+service HierarchyObjectService {
+  // Get Transform
+  rpc GetTransform(EDBObjMessage) returns (TransformMessage) {}
+
+  // Set Transform
+  rpc SetTransform(SetHierarchyObjectTransformMessage) returns (google.protobuf.Empty) {}
+
+  // Get Name
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  // Set Name
+  rpc SetName(EDBObjNameMessage) returns (google.protobuf.Empty) {}
+
+  // Get Component
+  rpc GetComponent(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get Placement Layer
+  rpc GetPlacementLayer(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Set Placement Layer
+  rpc SetPlacementLayer(SetHierarchyObjectPlacementLayer) returns (google.protobuf.Empty) {}
+
+  // Get Location
+  rpc GetLocation(EDBObjMessage) returns (PointMessage) {}
+
+  // Set Location
+  rpc SetLocation(SetHierarchyObjectLocationMessage) returns (google.protobuf.Empty) {}
+
+  // Get Solve Independent Preference
+  rpc GetSolveIndependentPreference(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set Solve Independent Preference
+  rpc SetSolveIndependentPreference(SetHierarchyObjectSolveIndependentPreferenceMessage) returns (google.protobuf.Empty) {}
+}
+
+message SetHierarchyObjectTransformMessage {
+  EDBObjMessage target = 1;
+  TransformMessage transf = 2;
+}
+
+message SetHierarchyObjectPlacementLayer {
+  EDBObjMessage target = 1;
+  EDBObjMessage player = 2;
+}
+
+message SetHierarchyObjectLocationMessage {
+  EDBObjMessage target = 1;
+  PointMessage loc = 2;
+}
+
+message SetHierarchyObjectSolveIndependentPreferenceMessage {
+   EDBObjMessage target = 1;
+   bool ind = 2;
+}
+
+
+
+
+

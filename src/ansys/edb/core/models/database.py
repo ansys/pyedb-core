@@ -109,10 +109,7 @@ class Database(ObjBase):
         -------
         list of Cell
         """
-        return [
-            Cell(edb_obj)
-            for edb_obj in get_database_stub().GetTopCircuits(self.msg).edb_obj_collection
-        ]
+        return [Cell(edb_obj) for edb_obj in get_database_stub().GetTopCircuits(self.msg).items]
 
     @handle_grpc_exception
     def get_id(self):

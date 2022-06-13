@@ -16,6 +16,9 @@ enum EdgeType
 }
 
 service EdgeService {
+
+  rpc GetEdgeType (EDBObjMessage) returns (EdgeTypeMessage) {}
+
   rpc Create (EdgeCreationMessage) returns (EDBObjMessage) {}
 
   rpc GetParameters (EDBObjMessage) returns (EdgeParamsMessage) {}
@@ -27,6 +30,10 @@ service EdgeTerminalService {
   rpc GetEdges (EDBObjMessage) returns (EDBObjCollectionMessage) {}
 
   rpc SetEdges (EdgeTermSetEdgesMessage) returns (google.protobuf.Empty) {}
+}
+
+message EdgeTypeMessage {
+  EdgeType t = 1;
 }
 
 message EdgeCreationMessage {

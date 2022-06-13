@@ -4,14 +4,13 @@ from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
 from ansys.api.edb.v1.arc_data_pb2 import ArcMessage
-from ansys.api.edb.v1.bundle_term_pb2 import BundleTermTerminalsMessage
 from ansys.api.edb.v1.database_pb2 import (
     GetProductPropertyIdsMessage,
     GetProductPropertyMessage,
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
 )
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage, ValueMessage
 from ansys.api.edb.v1.edge_term_pb2 import (
     EdgeCreationMessage,
     EdgeParamsMessage,
@@ -31,7 +30,6 @@ from ansys.api.edb.v1.pin_group_pb2 import (
     PinGroupCreationMessage,
     PinGroupGetUniqueNameMessage,
     PinGroupLookupMessage,
-    PinGroupPinsMessage,
     PinGroupPinsModifyMessage,
 )
 from ansys.api.edb.v1.pin_group_term_pb2 import (
@@ -162,10 +160,10 @@ def padstack_inst_term_creation_message(layout, name, padstack_instance, layer, 
     """Convert to PadstackInstTermCreationMessage."""
     return PadstackInstTermCreationsMessage(
         layout=layout.msg,
-        name=str_message(name),
+        name=name,
         params=padstack_inst_term_params_message(padstack_instance, layer),
         net=net_ref_message(net),
-        is_ref=bool_message(is_ref),
+        is_ref=is_ref,
     )
 
 
@@ -179,23 +177,18 @@ def padstack_inst_term_set_params_message(term, padstack_instance, layer):
 def pin_group_creation_message(layout, name, padstack_instances):
     """Convert to PinGroupCreationMessage."""
     return PinGroupCreationMessage(
-        layout=layout.msg, name=str_message(name), pins=[pi.msg for pi in padstack_instances]
+        layout=layout.msg, name=name, pins=[pi.msg for pi in padstack_instances]
     )
 
 
 def pin_group_lookup_message(layout, name):
     """Convert to PinGroupLookupMessage."""
-    return PinGroupLookupMessage(layout=layout.msg, name=str_message(name))
+    return PinGroupLookupMessage(layout=layout.msg, name=name)
 
 
 def pin_group_get_unique_name_message(layout, prefix):
     """Convert to PinGroupGetUniqueNameMessage."""
-    return PinGroupGetUniqueNameMessage(layout=layout.msg, prefix=str_message(prefix))
-
-
-def pin_group_pins_message(padstack_instances):
-    """Convert to PinGroupPinsMessage."""
-    return PinGroupPinsMessage(pins=[pi.msg for pi in padstack_instances])
+    return PinGroupGetUniqueNameMessage(layout=layout.msg, prefix=prefix)
 
 
 def pin_group_pins_modify_message(pin_group, padstack_instances):
@@ -210,9 +203,9 @@ def pin_group_term_creation_message(layout, net_ref, name, pin_group, is_ref):
     return PinGroupTermCreationMessage(
         layout=layout.msg,
         net=net_ref_message(net_ref),
-        name=str_message(name),
+        name=name,
         pin_group=pin_group.msg,
-        is_ref=bool_message(is_ref),
+        is_ref=is_ref,
     )
 
 
@@ -269,11 +262,6 @@ def edge_term_creation_message(layout, net, name, edges, is_ref):
 def edge_term_set_edges_message(terminal, edges):
     """Convert to EdgeTermSetEdgesMessage."""
     return EdgeTermSetEdgesMessage(term=terminal.msg, edges=[edge.msg for edge in edges])
-
-
-def bundle_term_terminals_message(terminals):
-    """Convert to BundleTermTerminalsMessage."""
-    return BundleTermTerminalsMessage(terminals=[edb_obj_message(t.msg) for t in terminals])
 
 
 def term_set_params_message(term, **params):
@@ -360,7 +348,7 @@ def term_inst_creation_message(layout, net_ref, cell_inst, name):
         layout=layout.msg,
         net=net_ref_message(net_ref),
         cell_inst=cell_inst.msg,
-        name=str_message(name),
+        name=name,
     )
 
 
@@ -369,9 +357,9 @@ def term_inst_term_creation_message(layout, net_ref, name, term_inst, is_ref):
     return TermInstTermCreationMessage(
         layout=layout.msg,
         net=net_ref_message(net_ref),
-        name=str_message(name),
+        name=name,
         term_inst=term_inst.msg,
-        is_ref=bool_message(is_ref),
+        is_ref=is_ref,
     )
 
 
@@ -386,13 +374,18 @@ def value_message(value):
 
 
 def edb_obj_message(obj):
-    """Extract EDB impl ptr."""
+    """Convert to EDBObjMessage."""
     if obj is None:
         return None
     elif isinstance(obj, EDBObjMessage):
         return obj
     else:
         return obj.msg
+
+
+def edb_obj_collection_message(objs):
+    """Convert to EDBObjCollectionMessage."""
+    return EDBObjCollectionMessage(items=[edb_obj_message(obj) for obj in objs])
 
 
 def rlc_message(rlc):
@@ -415,9 +408,9 @@ def port_post_processing_prop_message(prop):
         voltage_phase=value_message(prop.voltage_phase),
         deembed_length=value_message(prop.deembed_length),
         renormalization_impedance=value_message(prop.renormalization_impedance),
-        do_deembed=bool_message(prop.do_deembed),
-        do_deembed_gap_length=bool_message(prop.do_deembed_gap_l),
-        do_renormalize=bool_message(prop.do_renormalize),
+        do_deembed=prop.do_deembed,
+        do_deembed_gap_length=prop.do_deembed_gap_l,
+        do_renormalize=prop.do_renormalize,
     )
 
 

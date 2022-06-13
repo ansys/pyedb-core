@@ -19,27 +19,23 @@ service PinGroupService {
 
   rpc RemovePins (PinGroupPinsModifyMessage) returns (google.protobuf.Empty) {}
 
-  rpc GetPins (EDBObjMessage) returns (PinGroupPinsMessage) {}
+  rpc GetPins (EDBObjMessage) returns (EDBObjCollectionMessage) {}
 }
 
 message PinGroupCreationMessage {
   EDBObjMessage layout = 1;
-  google.protobuf.StringValue name = 2;
+  string name = 2;
   repeated EDBObjMessage pins = 3;
 }
 
 message PinGroupLookupMessage {
   EDBObjMessage layout = 1;
-  google.protobuf.StringValue name = 2;
+  string name = 2;
 }
 
 message PinGroupGetUniqueNameMessage {
   EDBObjMessage layout = 1;
-  google.protobuf.StringValue prefix = 2;
-}
-
-message PinGroupPinsMessage {
-  repeated EDBObjMessage pins = 1;
+  string prefix = 2;
 }
 
 message PinGroupPinsModifyMessage {

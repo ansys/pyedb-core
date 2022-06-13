@@ -186,7 +186,7 @@ def test_top_circuit_cells(db_obj, expected_num_top_cells, mocker):
     for top_cell_idx in range(expected_num_top_cells):
         top_cell = top_cells[top_cell_idx]
         assert isinstance(top_cell, Cell)
-        assert equals(top_cell.msg, expected_response.edb_obj_collection[top_cell_idx])
+        assert equals(top_cell.msg, expected_response.items[top_cell_idx])
 
 
 def test_get_id(db_obj, random_int, mocker):

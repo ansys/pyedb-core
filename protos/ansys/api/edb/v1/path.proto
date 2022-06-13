@@ -128,12 +128,12 @@ message SetCornerStyleMessage{
   CornerStyleMessage corner_style = 2;
 }
 
-// Message for Get Widht
+// Message for Get Width
 message WidthMessage{
   ValueMessage width = 1;
 }
 
-// Message for Set Widht
+// Message for Set Width
 message SetWidthMessage{
   EDBObjMessage target = 1;
   WidthMessage width = 2;
@@ -141,7 +141,7 @@ message SetWidthMessage{
 
 // Message for Get Miter Ratio
 message MiterRatioMessage{
-	ValueMessage miter_ratio = 1;
+  ValueMessage miter_ratio = 1;
 }
 
 // Message for Set Miter Ratio

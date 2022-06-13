@@ -1,0 +1,21 @@
+// Proto file representing the EDB Value class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service ValueService {
+
+  rpc CreateValue (ValueTextMessage) returns (ValueMessage) {}
+
+  rpc GetDouble (ValueTextMessage) returns (google.protobuf.DoubleValue) {}
+
+  rpc GetComplex (ValueTextMessage) returns (ComplexMessage) {}
+}
+
+message ValueTextMessage {
+    string text = 1;
+    EDBObjMessage variable_owner = 2;
+}

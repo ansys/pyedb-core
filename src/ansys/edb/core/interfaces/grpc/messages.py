@@ -3,15 +3,45 @@
 from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
-from ansys.api.edb.v1.bundle_term_pb2 import BundleTermTerminalsMessage
+from ansys.api.edb.v1.arc_data_pb2 import ArcMessage
 from ansys.api.edb.v1.database_pb2 import (
     GetProductPropertyIdsMessage,
     GetProductPropertyMessage,
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
 )
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
+from ansys.api.edb.v1.edb_messages_pb2 import (
+    ComplexMessage,
+    EDBObjCollectionMessage,
+    EDBObjMessage,
+    ValueMessage,
+)
+from ansys.api.edb.v1.edge_term_pb2 import (
+    EdgeCreationMessage,
+    EdgeParamsMessage,
+    EdgeTermCreationMessage,
+    EdgeTermSetEdgesMessage,
+    EdgeType,
+    PadEdgeParamsMessage,
+    PrimitiveEdgeParamsMessage,
+)
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
+from ansys.api.edb.v1.padstack_inst_term_pb2 import (
+    PadstackInstTermCreationsMessage,
+    PadstackInstTermParamsMessage,
+    PadstackInstTermSetParamsMessage,
+)
+from ansys.api.edb.v1.pin_group_pb2 import (
+    PinGroupCreationMessage,
+    PinGroupGetUniqueNameMessage,
+    PinGroupLookupMessage,
+    PinGroupPinsModifyMessage,
+)
+from ansys.api.edb.v1.pin_group_term_pb2 import (
+    PinGroupTermCreationMessage,
+    PinGroupTermSetLayerMessage,
+    PinGroupTermSetPinGroupMessage,
+)
 from ansys.api.edb.v1.point_data_pb2 import (
     SENSE_CCW,
     PathPointsMessage,
@@ -23,13 +53,28 @@ from ansys.api.edb.v1.point_term_pb2 import (
     PointTermParamsMessage,
     PointTermSetParamsMessage,
 )
+from ansys.api.edb.v1.port_post_processing_prop_pb2 import PortPostProcessingPropMessage
 from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, NetRefMessage
+from ansys.api.edb.v1.rlc_pb2 import RlcMessage
 from ansys.api.edb.v1.simulation_settings_pb2 import (
     MeshOperationMessage,
     MeshOpNetLayerInfoMessage,
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
+from ansys.api.edb.v1.term_inst_pb2 import TermInstCreationMessage
+from ansys.api.edb.v1.term_inst_term_pb2 import (
+    TermInstTermCreationMessage,
+    TermInstTermSetInstanceMessage,
+)
+from ansys.api.edb.v1.term_pb2 import (
+    TermFindByNameMessage,
+    TermGetProductSolversMessage,
+    TermSetLayerMessage,
+    TermSetParamsMessage,
+    TermSetRefMessage,
+    TermSetSolverOptionMessage,
+)
 from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 
 
@@ -82,6 +127,13 @@ def point_message(point):
         return PointMessage(x=value_message(point[0]), y=value_message(point[1]))
 
 
+def arc_message(arc):
+    """Convert to ArcMessage."""
+    if isinstance(arc, tuple) and len(arc) == 2:
+        return ArcMessage(start=point_message(arc[0]), end=point_message(arc[1]))
+    raise RuntimeError("arc must be of a tuple containing start and end point.")
+
+
 def point_term_params_message(layer, point):
     """Convert to PointTermParamMessage."""
     return PointTermParamsMessage(point=point_message(point), layer=layer_ref_message(layer))
@@ -102,24 +154,269 @@ def point_term_creation_message(layout, net, layer, name, x, y):
     )
 
 
-def bundle_term_terminals_message(terminals):
-    """Convert to BundleTermTerminalsMessage."""
-    return BundleTermTerminalsMessage(terminals=[edb_obj_message(t.msg) for t in terminals])
+def padstack_inst_term_params_message(padstack_instance, layer):
+    """Convert to PadstackInstTermParamsMessage."""
+    return PadstackInstTermParamsMessage(
+        padstack_instance=padstack_instance.msg, layer=layer_ref_message(layer)
+    )
+
+
+def padstack_inst_term_creation_message(layout, name, padstack_instance, layer, net, is_ref):
+    """Convert to PadstackInstTermCreationMessage."""
+    return PadstackInstTermCreationsMessage(
+        layout=layout.msg,
+        name=name,
+        params=padstack_inst_term_params_message(padstack_instance, layer),
+        net=net_ref_message(net),
+        is_ref=is_ref,
+    )
+
+
+def padstack_inst_term_set_params_message(term, padstack_instance, layer):
+    """Convert to PadstackInstTermSetParamsMessage."""
+    return PadstackInstTermSetParamsMessage(
+        term=term.msg, params=padstack_inst_term_params_message(padstack_instance, layer)
+    )
+
+
+def pin_group_creation_message(layout, name, padstack_instances):
+    """Convert to PinGroupCreationMessage."""
+    return PinGroupCreationMessage(
+        layout=layout.msg, name=name, pins=[pi.msg for pi in padstack_instances]
+    )
+
+
+def pin_group_lookup_message(layout, name):
+    """Convert to PinGroupLookupMessage."""
+    return PinGroupLookupMessage(layout=layout.msg, name=name)
+
+
+def pin_group_get_unique_name_message(layout, prefix):
+    """Convert to PinGroupGetUniqueNameMessage."""
+    return PinGroupGetUniqueNameMessage(layout=layout.msg, prefix=prefix)
+
+
+def pin_group_pins_modify_message(pin_group, padstack_instances):
+    """Convert to PinGroupPinsModifyMessage."""
+    return PinGroupPinsModifyMessage(
+        pin_group=pin_group.msg, pins=[pi.msg for pi in padstack_instances]
+    )
+
+
+def pin_group_term_creation_message(layout, net_ref, name, pin_group, is_ref):
+    """Convert to PinGroupTermCreationMessage."""
+    return PinGroupTermCreationMessage(
+        layout=layout.msg,
+        net=net_ref_message(net_ref),
+        name=name,
+        pin_group=pin_group.msg,
+        is_ref=is_ref,
+    )
+
+
+def pin_group_term_set_pin_group_message(term, pin_group):
+    """Convert to PinGroupTermSetPinGroupMessage."""
+    return PinGroupTermSetPinGroupMessage(term=term.msg, pin_group=pin_group.msg)
+
+
+def pin_group_term_set_layer_message(term, layer_ref):
+    """Convert to PinGroupTermSetLayerMessage."""
+    return PinGroupTermSetLayerMessage(term=term.msg, layer=layer_ref_message(layer_ref))
+
+
+def edge_creation_message(edge_type, **params):
+    """Convert to EdgeCreationMessage."""
+    return EdgeCreationMessage(edge_type=edge_type, params=edge_params_message(edge_type, **params))
+
+
+def edge_params_message(edge_type, **params):
+    """Convert to EdgeParamsMessage."""
+    if edge_type == EdgeType.PRIMITIVE_EDGE:
+        return EdgeParamsMessage(primitve_params=primitive_edge_params_message(**params))
+    elif edge_type == EdgeType.PAD_EDGE:
+        return EdgeParamsMessage(pad_params=pad_edge_params_message(**params))
+    else:
+        raise RuntimeError(f"Edge type {edge_type} is not valid.")
+
+
+def primitive_edge_params_message(primitive, point):
+    """Convert to PrimitiveEdgeParamsMessage."""
+    return PrimitiveEdgeParamsMessage(primitive=primitive.msg, point=point_message(point))
+
+
+def pad_edge_params_message(padstack_instance, layer, arc):
+    """Convert to PadEdgeParamsMessage."""
+    return PadEdgeParamsMessage(
+        padstack_instance=padstack_instance.msg,
+        layer=layer_ref_message(layer),
+        arc=arc_message(arc),
+    )
+
+
+def edge_term_creation_message(layout, net, name, edges, is_ref):
+    """Convert to EdgeTermCreationMessage."""
+    return EdgeTermCreationMessage(
+        layout=layout.msg,
+        net=net_ref_message(net),
+        name=name,
+        edges=[edge.msg for edge in edges],
+        is_ref=is_ref,
+    )
+
+
+def edge_term_set_edges_message(terminal, edges):
+    """Convert to EdgeTermSetEdgesMessage."""
+    return EdgeTermSetEdgesMessage(term=terminal.msg, edges=[edge.msg for edge in edges])
+
+
+def term_set_params_message(term, **params):
+    """Convert to TermSetParamsMessage."""
+    payload = {"term": term.msg}
+
+    if "boundary_type" in params:
+        payload["boundary_type"] = params.pop("boundary_type")
+    if "term_to_ground" in params:
+        payload["term_to_ground"] = params.pop("term_to_ground")
+    if "hfss_pi_type" in params:
+        payload["hfss_pi_type"] = params.pop("hfss_pi_type")
+    if "ref_term" in params or "ref_layer" in params:
+        ref_term = params.pop("ref_term", ())
+        ref_term = ref_term if isinstance(ref_term, tuple) else (ref_term,)
+        ref_layer = params.pop("ref_layer", ())
+        ref_layer = ref_layer if isinstance(ref_layer, tuple) else (ref_layer,)
+        payload["ref"] = term_set_ref_message(ref_term, ref_layer)
+    if "is_auto_port" in params:
+        payload["is_auto_port"] = bool_message(params.pop("is_auto_port"))
+    if "is_circuit_port" in params:
+        payload["is_circuit_port"] = bool_message(params.pop("is_circuit_port"))
+    if "use_ref_from_hierarchy" in params:
+        payload["use_ref_from_hierarchy"] = bool_message(params.pop("use_ref_from_hierarchy"))
+    if "name" in params:
+        payload["name"] = str_message(params.pop("name"))
+    if "impedance" in params:
+        payload["impedance"] = value_message(params.pop("impedance"))
+    if "source_amplitude" in params:
+        payload["source_amplitude"] = value_message(params.pop("source_amplitude"))
+    if "source_phase" in params:
+        payload["source_phase"] = value_message(params.pop("source_phase"))
+    if "s_param_model" in params:
+        payload["s_param_model"] = str_message(params.pop("s_param_model"))
+    if "rlc" in params:
+        payload["rlc"] = rlc_message(params.pop("rlc"))
+    if "port_post_processing_prop" in params:
+        payload["port_post_processing_prop"] = port_post_processing_prop_message(
+            params.pop("port_post_processing_prop")
+        )
+    if len(params.keys()):
+        raise RuntimeError("unknown parameters.")
+    return TermSetParamsMessage(**payload)
+
+
+def term_set_ref_message(term_params, layer_params):
+    """Convert to TermSetRefMessage."""
+    if len(term_params) and len(layer_params):
+        raise RuntimeError("can only reference either a terminal or a layer.")
+    if len(term_params) == 1:
+        return TermSetRefMessage(ref_term=edb_obj_message(*term_params))
+    if len(layer_params):
+        return TermSetRefMessage(ref_layer=term_set_layer_message(*layer_params))
+
+
+def term_set_layer_message(layer_ref, contexts=None):
+    """Convert to TermSetLayerMessage."""
+    contexts = [] if contexts is None else contexts
+    return TermSetLayerMessage(
+        layer=layer_ref_message(layer_ref), contexts=[str_message(ctx) for ctx in contexts]
+    )
+
+
+def term_find_by_name_message(layout, name):
+    """Convert to TermFindByNameMessage."""
+    return TermFindByNameMessage(layout=layout.msg, name=name)
+
+
+def term_get_product_solver_message(term, product_id):
+    """Convert to TermGetProductSolversMessage."""
+    return TermGetProductSolversMessage(term=term.msg, product_id=product_id)
+
+
+def term_set_solver_option_message(term, product_id, name, option):
+    """Convert to TermSetSolverOptionMessage."""
+    return TermSetSolverOptionMessage(
+        term=term.msg, product_id=product_id, name=name, option=option
+    )
+
+
+def term_inst_creation_message(layout, net_ref, cell_inst, name):
+    """Convert to TermInstCreationMessage."""
+    return TermInstCreationMessage(
+        layout=layout.msg,
+        net=net_ref_message(net_ref),
+        cell_inst=cell_inst.msg,
+        name=name,
+    )
+
+
+def term_inst_term_creation_message(layout, net_ref, name, term_inst, is_ref):
+    """Convert to TermInstTermCreationMessage."""
+    return TermInstTermCreationMessage(
+        layout=layout.msg,
+        net=net_ref_message(net_ref),
+        name=name,
+        term_inst=term_inst.msg,
+        is_ref=is_ref,
+    )
+
+
+def term_inst_term_set_instance_message(term, term_inst):
+    """Convert to TermInstTermSetInstanceMessage."""
+    return TermInstTermSetInstanceMessage(term=term.msg, term_inst=term_inst.msg)
 
 
 def value_message(value):
     """Convert to ValueMessage."""
-    return ValueMessage(value=value)
+    return ValueMessage(constant=ComplexMessage(re=value))
 
 
 def edb_obj_message(obj):
-    """Extract EDB impl ptr."""
+    """Convert to EDBObjMessage."""
     if obj is None:
         return None
     elif isinstance(obj, EDBObjMessage):
         return obj
     else:
-        raise RuntimeError("EDB Object has invalid ID.")
+        return obj.msg
+
+
+def edb_obj_collection_message(objs):
+    """Convert to EDBObjCollectionMessage."""
+    return EDBObjCollectionMessage(items=[edb_obj_message(obj) for obj in objs])
+
+
+def rlc_message(rlc):
+    """Convert to RlcMessage."""
+    return RlcMessage(
+        r=value_message(rlc.r),
+        l=value_message(rlc.l),
+        c=value_message(rlc.c),
+        r_enabled=bool_message(rlc.r_enabled),
+        l_enabled=bool_message(rlc.l_enabled),
+        c_enabled=bool_message(rlc.c_enabled),
+        is_parallel=bool_message(rlc.is_parallel),
+    )
+
+
+def port_post_processing_prop_message(prop):
+    """Convert to PortPostProcessingPropMessage."""
+    return PortPostProcessingPropMessage(
+        voltage_magnitude=value_message(prop.voltage_magnitude),
+        voltage_phase=value_message(prop.voltage_phase),
+        deembed_length=value_message(prop.deembed_length),
+        renormalization_impedance=value_message(prop.renormalization_impedance),
+        do_deembed=prop.do_deembed,
+        do_deembed_gap_length=prop.do_deembed_gap_l,
+        do_renormalize=prop.do_renormalize,
+    )
 
 
 def material_properties_message(**kwargs):
@@ -225,7 +522,7 @@ def _mesh_op_net_layer_message(net, layer, is_sheet):
 def value_message_to_value(message):
     """Extract a value from ValueMessage."""
     if message:
-        return message.value
+        return message.constant.re
 
 
 def product_property_id_message(prod_id, att_id):

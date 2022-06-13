@@ -5,6 +5,10 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
+import "database.proto";
+import "refs.proto";
+import "rlc.proto";
+import "port_post_processing_prop.proto";
 
 enum TerminalType {
   EDGE_TERM = 0;
@@ -13,15 +17,122 @@ enum TerminalType {
   PADSTACK_INST_TERM = 3;
   BUNDLE_TERM = 4;
   PIN_GROUP_TERM = 5;
-  INVALID_TERM = -1;
+}
+
+enum TerminalBoundaryType {
+  PORT_BOUNDARY = 0;
+  PEC_BOUNDARY = 1;
+  RLC_BOUNDARY = 2;
+  CURRENT_SOURCE = 3;
+  VOLTAGE_SOURCE = 4;
+  NEXXIM_GROUND = 5;
+  NEXXIM_PORT = 6;
+  DC_TERMINAL = 7;
+  VOLTAGE_PROBE = 8;
+  INVALID_BOUNDARY = -1;
+}
+
+enum SourceTermToGroundType {
+  NO_GROUND = 0;
+  NEGATIVE = 1;
+  POSITIVE = 2;
+}
+
+enum HfssPIType {
+  PI_DEFAULT = 0;
+  PI_COAXIAL_OPEN = 1;
+  PI_COAXIAL_SHORTENED = 2;
+  PI_GAP = 3;
+  PI_LUMPED = 4;
+  PI_INVALID = -1;
 }
 
 service TerminalService {
-  // Sets a reference on point term
-  rpc SetReference(TermSetRefMessage) returns (google.protobuf.Empty) {}
+  rpc FindByName (TermFindByNameMessage) returns (EDBObjMessage) {}
+
+  rpc GetParams (EDBObjMessage) returns (TermParamsMessage) {}
+
+  rpc SetParams (TermSetParamsMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetProductSolvers (TermGetProductSolversMessage) returns (TermProductSolversMessage) {}
+
+  rpc SetProductSolverOptions (TermSetSolverOptionMessage) returns (google.protobuf.Empty) {}
+}
+
+message TermParamsMessage {
+  TerminalType term_type = 1;
+  TerminalBoundaryType boundary_type = 2;
+  SourceTermToGroundType term_to_ground = 3;
+  HfssPIType hfss_pi_type = 4;
+  EDBObjMessage ref_term = 5;
+  EDBObjMessage ref_layer = 6;
+  EDBObjMessage bundle_term = 7;
+  bool is_interface = 8;
+  bool is_reference = 9;
+  bool is_auto_port = 10;
+  bool is_circuit_port = 11;
+  bool use_ref_from_hierarchy = 12;
+  string name = 13;
+  ValueMessage impedance = 14;
+  ValueMessage source_amplitude = 15;
+  ValueMessage source_phase = 16;
+  string s_param_model = 17;
+  RlcMessage rlc = 18;
+  PortPostProcessingPropMessage port_post_processing_prop = 19;
+}
+
+message TermSetParamsMessage {
+  EDBObjMessage term = 1;
+  oneof optional_boundary_type { TerminalBoundaryType boundary_type = 2; }
+  oneof optional_term_to_ground { SourceTermToGroundType term_to_ground = 3; }
+  oneof optional_hfss_pi_type { HfssPIType hfss_pi_type = 4; }
+  TermSetRefMessage ref = 5;
+  oneof optional_is_auto_port { google.protobuf.BoolValue is_auto_port = 6; }
+  oneof optional_is_circuit_port { google.protobuf.BoolValue is_circuit_port = 7; }
+  oneof optional_use_ref_from_hierarchy { google.protobuf.BoolValue use_ref_from_hierarchy = 8; }
+  google.protobuf.StringValue name = 9;
+  ValueMessage impedance = 10;
+  ValueMessage source_amplitude = 11;
+  ValueMessage source_phase = 12;
+  google.protobuf.StringValue s_param_model = 13;
+  RlcMessage rlc = 14;
+  PortPostProcessingPropMessage port_post_processing_prop = 15;
 }
 
 message TermSetRefMessage {
-  EDBObjMessage source_term = 1;
-  EDBObjMessage ref_term = 2;
+  oneof ref {
+    EDBObjMessage ref_term = 1;
+    TermSetLayerMessage ref_layer = 2;
+  }
+}
+
+message TermSetLayerMessage {
+  LayerRefMessage layer = 1;
+  repeated google.protobuf.StringValue contexts = 2;
+}
+
+message TermFindByNameMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+}
+
+message TermGetProductSolversMessage {
+  EDBObjMessage term = 1;
+  ProductIdType product_id = 2;
+}
+
+message TermProductSolverMessage {
+  string name = 1;
+  string option = 2;
+}
+
+message TermProductSolversMessage {
+  repeated TermProductSolverMessage solvers = 1;
+}
+
+message TermSetSolverOptionMessage {
+  EDBObjMessage term = 1;
+  ProductIdType product_id = 2;
+  string name = 3;
+  string option = 4;
 }

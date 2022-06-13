@@ -1,0 +1,73 @@
+// Proto file representing the EDB Edge Term class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "arc_data.proto";
+import "point_data.proto";
+import "refs.proto";
+
+enum EdgeType
+{
+  PRIMITIVE_EDGE = 0;
+  PAD_EDGE = 1;
+}
+
+service EdgeService {
+
+  rpc GetEdgeType (EDBObjMessage) returns (EdgeTypeMessage) {}
+
+  rpc Create (EdgeCreationMessage) returns (EDBObjMessage) {}
+
+  rpc GetParameters (EDBObjMessage) returns (EdgeParamsMessage) {}
+}
+
+service EdgeTerminalService {
+  rpc Create (EdgeTermCreationMessage) returns (EDBObjMessage) {}
+
+  rpc GetEdges (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  rpc SetEdges (EdgeTermSetEdgesMessage) returns (google.protobuf.Empty) {}
+}
+
+message EdgeTypeMessage {
+  EdgeType t = 1;
+}
+
+message EdgeCreationMessage {
+  EdgeType edge_type = 1;
+  EdgeParamsMessage params = 2;
+}
+
+message EdgeParamsMessage {
+  oneof type {
+    PrimitiveEdgeParamsMessage primitve_params = 1;
+    PadEdgeParamsMessage pad_params = 2;
+  }
+}
+
+message PrimitiveEdgeParamsMessage {
+  EDBObjMessage primitive = 1;
+  PointMessage point = 2;
+}
+
+message PadEdgeParamsMessage {
+  EDBObjMessage padstack = 1;
+  LayerRefMessage layer = 2;
+  ArcMessage arc = 3;
+}
+
+message EdgeTermCreationMessage {
+  EDBObjMessage layout = 1;
+  NetRefMessage net = 2;
+  string name = 3;
+  repeated EDBObjMessage edges = 4;
+  bool is_ref = 5;
+}
+
+message EdgeTermSetEdgesMessage {
+  EDBObjMessage term = 1;
+  repeated EDBObjMessage edges = 2;
+}

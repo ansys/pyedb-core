@@ -1077,3 +1077,9 @@ class Path(Primitive):
             The primitive can be a zone primitive,
         """
         return True
+
+
+class PadstackInstance(ConnObj):
+    """Class representing padstack instance."""
+
+    pass

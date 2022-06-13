@@ -452,7 +452,7 @@ class Terminal(ObjBase):
         -------
         Value
         """
-        return self._params.impedance.value
+        return messages.value_message_to_value(self._params.impedance)
 
     @impedance.setter
     def impedance(self, value):
@@ -472,7 +472,7 @@ class Terminal(ObjBase):
         -------
         Value
         """
-        return self._params.source_amplitude.value
+        return messages.value_message_to_value(self._params.source_amplitude)
 
     @source_amplitude.setter
     def source_amplitude(self, value):
@@ -492,7 +492,7 @@ class Terminal(ObjBase):
         -------
         Value
         """
-        return self._params.source_phase.value
+        return messages.value_message_to_value(self._params.source_phase)
 
     @source_phase.setter
     def source_phase(self, value):
@@ -845,7 +845,10 @@ class PointTerminal(Terminal):
         (Layer, (Value, Value))
         """
         res = self.__stub.GetParameters(self.msg)
-        point = (res.point.x.value, res.point.y.value)
+        point = (
+            messages.value_message_to_value(res.point.x),
+            messages.value_message_to_value(res.point.y),
+        )
         layer = Layer(res.layer.id)
         return layer, point
 
@@ -869,16 +872,16 @@ class PointTerminal(Terminal):
         """
         return self.params[1]
 
+    @params.setter
     @handle_grpc_exception
-    def set_params(self, layer, point):
+    def params(self, params):
         """Set x, y coordinates and the layer this point terminal is placed on.
 
         Parameters
         ----------
-        layer : str or Layer
-        point : PointData
+        params : tuple[str or Layer, PointData]
         """
-        self.__stub.SetParameters(messages.point_term_set_params_message(self, layer, point))
+        self.__stub.SetParameters(messages.point_term_set_params_message(self, *params))
 
 
 class PadstackInstanceTerminal(Terminal):

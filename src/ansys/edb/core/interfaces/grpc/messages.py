@@ -10,7 +10,12 @@ from ansys.api.edb.v1.database_pb2 import (
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
 )
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage, ValueMessage
+from ansys.api.edb.v1.edb_messages_pb2 import (
+    ComplexMessage,
+    EDBObjCollectionMessage,
+    EDBObjMessage,
+    ValueMessage,
+)
 from ansys.api.edb.v1.edge_term_pb2 import (
     EdgeCreationMessage,
     EdgeParamsMessage,
@@ -370,7 +375,7 @@ def term_inst_term_set_instance_message(term, term_inst):
 
 def value_message(value):
     """Convert to ValueMessage."""
-    return ValueMessage(value=value)
+    return ValueMessage(constant=ComplexMessage(re=value))
 
 
 def edb_obj_message(obj):
@@ -517,7 +522,7 @@ def _mesh_op_net_layer_message(net, layer, is_sheet):
 def value_message_to_value(message):
     """Extract a value from ValueMessage."""
     if message:
-        return message.value
+        return message.constant.re
 
 
 def product_property_id_message(prod_id, att_id):

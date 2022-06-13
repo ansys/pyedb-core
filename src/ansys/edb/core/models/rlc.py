@@ -1,5 +1,6 @@
 """RLC."""
 
+from ansys.edb.core.interfaces.grpc import messages
 from ansys.edb.core.models.base import ObjBase
 
 
@@ -28,7 +29,7 @@ class Rlc(ObjBase):
         -------
         float
         """
-        return self._r if self._msg is None else self._msg.r.value
+        return self._r if self._msg is None else messages.value_message_to_value(self._msg.r)
 
     @property
     def l(self):
@@ -38,7 +39,7 @@ class Rlc(ObjBase):
         -------
         float
         """
-        return self._l if self._msg is None else self._msg.l.value
+        return self._l if self._msg is None else messages.value_message_to_value(self._msg.l)
 
     @property
     def c(self):
@@ -48,7 +49,7 @@ class Rlc(ObjBase):
         -------
         float
         """
-        return self._c if self._msg is None else self._msg.c.value
+        return self._c if self._msg is None else messages.value_message_to_value(self._msg.c)
 
     @property
     def r_enabled(self):

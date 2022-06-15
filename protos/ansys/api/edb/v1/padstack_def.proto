@@ -8,9 +8,6 @@ service PadstackDefService {
   // create a PadstackDef
   rpc Create(PadstackDefStringMessage) returns (EDBObjMessage) {}
 
-  // delete a PadstackDef
-  rpc Delete(EDBObjMessage) returns (google.protobuf.Empty) {}
-
   // find a PadstackDef by name
   rpc FindByName(PadstackDefStringMessage) returns (EDBObjMessage) {}
 

@@ -65,11 +65,6 @@ class PadstackDef(ObjBase):
             )
         )
 
-    @handle_grpc_exception
-    def delete(self):
-        """Delete a PadstackDef."""
-        get_padstack_def_stub().Delete(self._msg)
-
     @staticmethod
     @handle_grpc_exception
     def find_by_name(db, name):
@@ -90,8 +85,9 @@ class PadstackDef(ObjBase):
             )
         )
 
+    @property
     @handle_grpc_exception
-    def get_name(self):
+    def name(self):
         """Get Name of a PadstackDef.
 
         Returns
@@ -100,8 +96,9 @@ class PadstackDef(ObjBase):
         """
         return get_padstack_def_stub().GetName(self._msg).value
 
+    @property
     @handle_grpc_exception
-    def get_data(self):
+    def data(self):
         """Get PadstackDefData of a PadstackDef.
 
         Returns
@@ -110,8 +107,9 @@ class PadstackDef(ObjBase):
         """
         return PadstackDefData(get_padstack_def_stub().GetData(self._msg))
 
+    @data.setter
     @handle_grpc_exception
-    def set_data(self, data):
+    def data(self, data):
         """Set PadstackDefData of a PadstackDef.
 
         Parameters

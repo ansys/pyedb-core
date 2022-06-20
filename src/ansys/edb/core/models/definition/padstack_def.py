@@ -17,7 +17,7 @@ class _PadstackDefQueryBuilder:
 
         Parameters
         ----------
-        target: Object e.g. Database or PadstackDef.
+        target: Database or PadstackDef
         name : str
 
         Returns
@@ -32,8 +32,10 @@ class _PadstackDefQueryBuilder:
 
         Parameters
         ----------
-        target: PadstackDef to change.
-        data : PadstackDefData data to be set on the PadstackDef
+        target: PadstackDef
+            PadstackDef target to change.
+        data : PadstackDefData
+            PadstackDefData data to be set on the PadstackDef
 
         Returns
         -------
@@ -52,8 +54,10 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        db: Database to change.
-        name : str data to be set on the PadstackDef
+        db: Database
+            Database object which will create the PadstackDef.
+        name : str
+            Data to be set on the PadstackDef
 
         Returns
         -------
@@ -73,7 +77,8 @@ class PadstackDef(ObjBase):
         Parameters
         ----------
         db: Database.
-        name : Name of PadstackDef.
+        name : str
+            Name of PadstackDef.
 
         Returns
         -------
@@ -114,7 +119,8 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        data : PadstackDefData data to be set on the PadstackDef.
+        data : PadstackDefData
+            PadstackDefData data object to be set on the PadstackDef.
         """
         get_padstack_def_stub().SetData(
             _PadstackDefQueryBuilder.padstack_def_set_data_message(self, data)

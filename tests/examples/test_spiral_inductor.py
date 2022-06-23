@@ -348,7 +348,7 @@ class SpiralInductor(BaseExample):
             )
             layers.append(layer)
             if name == "Ground":
-                layer.set_negative(True)
+                layer.negative = True
 
         return layers
 

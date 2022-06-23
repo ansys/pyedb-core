@@ -5,10 +5,13 @@ on:
     tags:
       - "*"
     branches:
-      - main
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-
   style:
     name: Code style
     runs-on: ubuntu-latest
@@ -26,7 +29,7 @@ jobs:
 
 
   tests:
-    name: Tests and coverage
+    name: Tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -45,7 +48,7 @@ jobs:
           python -m pip install --upgrade pip flit tox tox-gh-actions
       - name: Test with tox
         # Only the tox environment specified in the tox.ini gh-actions is run
-        run: tox -- --ignore=tests/examples
+        run: tox -e test -- --ignore=tests/examples
 
 
   docs:

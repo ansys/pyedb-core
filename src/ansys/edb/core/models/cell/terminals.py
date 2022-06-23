@@ -8,6 +8,7 @@ import ansys.api.edb.v1.term_pb2 as term_pb2
 from ...interfaces.grpc import messages
 from ...session import StubAccessor, StubType
 from ...utility.edb_errors import handle_grpc_exception
+from ...utility.value import Value
 from ..arc_data import ArcData
 from ..base import ObjBase, TypeField
 from ..cell.conn_obj import ConnObj
@@ -452,7 +453,7 @@ class Terminal(ObjBase):
         -------
         Value
         """
-        return messages.value_message_to_value(self._params.impedance)
+        return Value(self._params.impedance)
 
     @impedance.setter
     def impedance(self, value):
@@ -472,7 +473,7 @@ class Terminal(ObjBase):
         -------
         Value
         """
-        return messages.value_message_to_value(self._params.source_amplitude)
+        return Value(self._params.source_amplitude)
 
     @source_amplitude.setter
     def source_amplitude(self, value):
@@ -492,7 +493,7 @@ class Terminal(ObjBase):
         -------
         Value
         """
-        return messages.value_message_to_value(self._params.source_phase)
+        return Value(self._params.source_phase)
 
     @source_phase.setter
     def source_phase(self, value):
@@ -846,8 +847,8 @@ class PointTerminal(Terminal):
         """
         res = self.__stub.GetParameters(self.msg)
         point = (
-            messages.value_message_to_value(res.point.x),
-            messages.value_message_to_value(res.point.y),
+            Value(res.point.x),
+            Value(res.point.y),
         )
         layer = Layer(res.layer.id)
         return layer, point

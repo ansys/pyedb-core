@@ -4,13 +4,24 @@ import ansys.api.edb.v1.layout_pb2 as layout_pb2
 
 from ...session import get_layout_stub
 from ...utility.edb_iterator import EDBIterator
+from ...utility.variable_server import _VariableServer
 from ..base import ObjBase
 from .layer_collection import LayerCollection
 from .primitive import Primitive
 
 
-class Layout(ObjBase):
+class Layout(ObjBase, _VariableServer):
     """Class representing layout object."""
+
+    def __init__(self, msg):
+        """Initialize a new layout.
+
+        Parameters
+        ----------
+        msg : EDBObjMessage
+        """
+        ObjBase.__init__(self, msg)
+        _VariableServer.__init__(self, msg)
 
     def get_layer_collection(self):
         """

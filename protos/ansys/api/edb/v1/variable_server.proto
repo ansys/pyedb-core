@@ -55,10 +55,9 @@ message SetVariableMessage {
 message SetDescriptionMessage {
   EDBObjMessage variable_owner = 1;
   string name = 2;
-  string descr = 3;
+  string desc = 3;
 }
 
 message GetVariableNamesMessage {
-  EDBObjMessage variable_owner = 1;
   repeated string names = 2;
 }

@@ -111,7 +111,8 @@ def test_point_terminal_get_params(patch, point_terminal, layer):
     assert isinstance(res[0], Layer)
     assert isinstance(res[1], tuple)
     assert res[0].id == layer.id
-    assert res[1] == point
+    assert res[1][0].double == point[0]
+    assert res[1][1].double == point[1]
 
 
 @pytest.mark.parametrize(
@@ -170,18 +171,18 @@ def test_terminal_get_params(patch, point_terminal, bundle_terminal, layer):
     assert not point_terminal.is_circuit_port
     assert point_terminal.use_reference_from_hierarchy
     assert point_terminal.name == "name"
-    assert point_terminal.impedance == 50.0
-    assert point_terminal.source_amplitude == 10.0
-    assert point_terminal.source_phase == 5.0
+    assert point_terminal.impedance.double == 50.0
+    assert point_terminal.source_amplitude.double == 10.0
+    assert point_terminal.source_phase.double == 5.0
     assert point_terminal.model == "model"
     rlc = point_terminal.rlc_boundary_parameters
     assert rlc is not None
-    assert rlc.r == 10.0
+    assert rlc.r.double == 10.0
     assert rlc.r_enabled and rlc.is_parallel
     assert not rlc.l_enabled and not rlc.c_enabled
     prop = point_terminal.port_post_processing_prop
     assert prop is not None
-    assert prop.renormalization_impedance == 50.0
+    assert prop.renormalization_impedance.double == 50.0
     assert prop.do_renormalize
     assert not prop.do_deembed and not prop.do_deembed_gap_l
 

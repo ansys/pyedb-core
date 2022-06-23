@@ -1,7 +1,7 @@
 """Port Post Processing Prop."""
 
-from ansys.edb.core.interfaces.grpc import messages
 from ansys.edb.core.models.base import ObjBase
+from ansys.edb.core.utility.value import Value
 
 
 class PortPostProcessingProp(ObjBase):
@@ -30,11 +30,7 @@ class PortPostProcessingProp(ObjBase):
         -------
         float
         """
-        return (
-            self._voltage_magnitude
-            if self._msg is None
-            else messages.value_message_to_value(self._msg.voltage_magnitude)
-        )
+        return self._voltage_magnitude if self._msg is None else Value(self._msg.voltage_magnitude)
 
     @property
     def voltage_phase(self):
@@ -45,11 +41,7 @@ class PortPostProcessingProp(ObjBase):
         -------
         float
         """
-        return (
-            self._voltage_phase
-            if self._msg is None
-            else messages.value_message_to_value(self._msg.voltage_phase)
-        )
+        return self._voltage_phase if self._msg is None else Value(self._msg.voltage_phase)
 
     @property
     def deembed_length(self):
@@ -60,11 +52,7 @@ class PortPostProcessingProp(ObjBase):
         -------
         float
         """
-        return (
-            self._deembed_length
-            if self._msg is None
-            else messages.value_message_to_value(self._msg.deembed_length)
-        )
+        return self._deembed_length if self._msg is None else Value(self._msg.deembed_length)
 
     @property
     def renormalization_impedance(self):
@@ -78,7 +66,7 @@ class PortPostProcessingProp(ObjBase):
         return (
             self._renormalization_impedance
             if self._msg is None
-            else messages.value_message_to_value(self._msg.renormalization_impedance)
+            else Value(self._msg.renormalization_impedance)
         )
 
     @property

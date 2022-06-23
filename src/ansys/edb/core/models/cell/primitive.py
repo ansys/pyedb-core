@@ -20,6 +20,7 @@ from ...session import (
 )
 from ...utility.edb_errors import handle_grpc_exception
 from ...utility.edb_iterator import EDBIterator
+from ...utility.value import Value
 from .conn_obj import ConnObj
 from .layer import Layer
 
@@ -331,12 +332,12 @@ class Rectangle(Primitive):
         rect_param_msg = get_rectangle_stub().GetParameters(self.msg)
         return (
             Rectangle.RectangleRepresentationType(rect_param_msg.representation_type),
-            messages.value_message_to_value(rect_param_msg.parameter1),
-            messages.value_message_to_value(rect_param_msg.parameter2),
-            messages.value_message_to_value(rect_param_msg.parameter3),
-            messages.value_message_to_value(rect_param_msg.parameter4),
-            messages.value_message_to_value(rect_param_msg.corner_radius),
-            messages.value_message_to_value(rect_param_msg.rotation),
+            Value(rect_param_msg.parameter1),
+            Value(rect_param_msg.parameter2),
+            Value(rect_param_msg.parameter3),
+            Value(rect_param_msg.parameter4),
+            Value(rect_param_msg.corner_radius),
+            Value(rect_param_msg.rotation),
         )
 
     @handle_grpc_exception
@@ -525,9 +526,9 @@ class Circle(Primitive):
         """
         circle_param_msg = get_circle_stub().GetParameters(self.msg)
         return (
-            messages.value_message_to_value(circle_param_msg.center_x),
-            messages.value_message_to_value(circle_param_msg.center_y),
-            messages.value_message_to_value(circle_param_msg.radius),
+            Value(circle_param_msg.center_x),
+            Value(circle_param_msg.center_y),
+            Value(circle_param_msg.radius),
         )
 
     @handle_grpc_exception
@@ -630,8 +631,8 @@ class Text(Primitive):
         """
         text_data_msg = get_text_stub().GetTextData(self.msg)
         return (
-            messages.value_message_to_value(text_data_msg.center_x),
-            messages.value_message_to_value(text_data_msg.center_y),
+            Value(text_data_msg.center_x),
+            Value(text_data_msg.center_y),
             text_data_msg.text,
         )
 
@@ -1003,7 +1004,7 @@ class Path(Primitive):
         Value
             Width.
         """
-        return messages.value_message_to_value(get_path_stub().GetWidth(self.msg).width)
+        return Value(get_path_stub().GetWidth(self.msg).width)
 
     @handle_grpc_exception
     def set_width(self, width):
@@ -1039,7 +1040,7 @@ class Path(Primitive):
         Value
             Miter Ratio.
         """
-        return messages.value_message_to_value(get_path_stub().GetMiterRatio(self.msg).miter_ratio)
+        return Value(get_path_stub().GetMiterRatio(self.msg).miter_ratio)
 
     @handle_grpc_exception
     def set_miter_ratio(self, miter_ratio):

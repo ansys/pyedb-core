@@ -390,7 +390,7 @@ class SpiralInductor(BaseExample):
         for t, t_ref in terminals:
             terminal = self.create_point_terminal(*t)
             terminal_ref = self.create_point_terminal(*t_ref)
-            terminal.set_reference(terminal_ref)
+            terminal.reference_terminal = terminal_ref
 
     def set_extents(self):
         print("setting HFSS extents")

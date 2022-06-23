@@ -6,13 +6,9 @@ package ansys.api.edb.v1;
 import "edb_messages.proto";
 
 service BundleTerminalService {
-  rpc Create (BundleTermTerminalsMessage) returns (EDBObjMessage) {}
+  rpc Create (EDBObjCollectionMessage) returns (EDBObjMessage) {}
 
   rpc Ungroup (EDBObjMessage) returns (google.protobuf.Empty) {}
 
-  rpc GetTerminals (EDBObjMessage) returns (BundleTermTerminalsMessage) {}
-}
-
-message BundleTermTerminalsMessage {
-  repeated EDBObjMessage terminals = 1;
+  rpc GetTerminals (EDBObjMessage) returns (EDBObjCollectionMessage) {}
 }

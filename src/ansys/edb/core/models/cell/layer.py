@@ -422,7 +422,7 @@ class Layer(ObjBase):
         prod_id : ProductIdType
 
         Returns
-        ------
+        -------
         list[int]
         """
         attr_ids = (
@@ -441,7 +441,7 @@ class Layer(ObjBase):
         zone : int
 
         Returns
-        ------
+        -------
         bool
         """
         return get_layer_stub().IsInZone(_is_in_zone_message(self, zone)).value

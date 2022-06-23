@@ -7,9 +7,18 @@ package ansys.api.edb.v1;
 import public "google/protobuf/wrappers.proto";
 import public "google/protobuf/empty.proto";
 
+message ComplexMessage {
+    double real = 1;
+    double imag = 2;
+}
+
 // Message representing a Value
 message ValueMessage {
-  double value = 1;
+  string text = 1;
+    oneof _val {
+    ComplexMessage constant = 2;
+        EDBObjMessage variable_owner = 3;
+  }
 }
 
 // Message representing an arbitrary edb object
@@ -20,5 +29,11 @@ message EDBObjMessage {
 
 // Message containing a collection of edb objects 
 message EDBObjCollectionMessage {
-	repeated EDBObjMessage edb_obj_collection = 1;
+  repeated EDBObjMessage items = 1;
+}
+
+// Message representing an arbitrary edb object and a name
+message EDBObjNameMessage {
+  EDBObjMessage target = 1;
+  string name = 2;
 }

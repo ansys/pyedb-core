@@ -1,0 +1,18 @@
+// Proto file for Transforms
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+message TransformMessage {
+  ValueMessage scale = 1;
+  ValueMessage angle = 2;
+  bool mirror = 3;
+  ValueMessage offset_x = 4;
+  ValueMessage offset_y = 5;
+}
+

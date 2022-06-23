@@ -1,0 +1,44 @@
+// Proto file representing the EDB PinGroup class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service PinGroupService {
+  rpc Create (PinGroupCreationMessage) returns (EDBObjMessage) {}
+
+  rpc FindByName (PinGroupLookupMessage) returns (EDBObjMessage) {}
+
+  rpc GetUniqueName (PinGroupGetUniqueNameMessage) returns (google.protobuf.StringValue) {}
+
+  rpc GetName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  rpc AddPins (PinGroupPinsModifyMessage) returns (google.protobuf.Empty) {}
+
+  rpc RemovePins (PinGroupPinsModifyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPins (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+}
+
+message PinGroupCreationMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+  repeated EDBObjMessage pins = 3;
+}
+
+message PinGroupLookupMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+}
+
+message PinGroupGetUniqueNameMessage {
+  EDBObjMessage layout = 1;
+  string prefix = 2;
+}
+
+message PinGroupPinsModifyMessage {
+  EDBObjMessage pin_group = 1;
+  repeated EDBObjMessage pins = 2;
+}

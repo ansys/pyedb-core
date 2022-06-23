@@ -19,3 +19,10 @@ Classes
 
    EDBLogger
 
+.. currentmodule:: ansys.edb.core.utility.value
+
+.. autosummary::
+   :toctree: _autosummary
+
+   Value
+

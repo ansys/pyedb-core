@@ -1,6 +1,7 @@
 """Session manager for gRPC."""
 
 from contextlib import contextmanager
+from enum import Enum
 from os import path
 from struct import pack, unpack
 import subprocess
@@ -9,18 +10,28 @@ from typing import Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.bondwire_pb2_grpc import BondwireServiceStub
+from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
+    ApdBondwireDefServiceStub,
+    BondwireDefServiceStub,
+    Jedec4BondwireDefServiceStub,
+    Jedec5BondwireDefServiceStub,
+)
 from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edb_iterator_pb2_grpc import EDBIteratorServiceStub
+from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
+from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTerminalServiceStub
 from ansys.api.edb.v1.path_pb2_grpc import PathServiceStub
+from ansys.api.edb.v1.pin_group_pb2_grpc import PinGroupServiceStub
+from ansys.api.edb.v1.pin_group_term_pb2_grpc import PinGroupTerminalServiceStub
 from ansys.api.edb.v1.point_term_pb2_grpc import PointTerminalServiceStub
 from ansys.api.edb.v1.polygon_data_pb2_grpc import PolygonDataServiceStub
 from ansys.api.edb.v1.polygon_pb2_grpc import PolygonServiceStub
@@ -30,8 +41,12 @@ from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsS
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
+from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
+from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
+from ansys.api.edb.v1.value_pb2_grpc import ValueServiceStub
+from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 import grpc
@@ -39,6 +54,25 @@ import grpc
 # The session module singleton
 MOD = modules[__name__]
 MOD.current_session = None
+
+
+class StubAccessor(object):
+    """A descriptor to assign specific stub to a model."""
+
+    def __init__(self, stub_type):
+        """Initialize a descriptor stub with name and stub service.
+
+        Parameters
+        ----------
+        stub_type : StubType
+        """
+        self.__stub_name = stub_type.name
+
+    def __get__(self, instance=None, owner=None):
+        """Return the corresponding stub service if a session is active."""
+        if MOD.current_session is not None:
+            return MOD.current_session.stub(self.__stub_name)
+        raise EDBSessionException("No active session detected")
 
 
 # Helper class for storing data used by the session
@@ -68,7 +102,7 @@ class _Session:
         self.disconnect()
 
     def _initialize_stubs(self):
-        self.stubs = {key: stub(self.channel) for key, stub in _type_to_stub_ctor_map.items()}
+        self.stubs = {stub.name: stub.value(self.channel) for stub in StubType}
 
     @property
     def server_url(self):
@@ -185,66 +219,48 @@ class _Session:
         self.local_server_proc = None
 
 
-# Keywords for accessing stubs
-_cell_stub_keyword = "Cell"
-_db_stub_keyword = "Database"
-_edb_iter_stub_keyword = "EDBDIterator"
-_lc_stub_keyword = "LayerCollection"
-_lyr_stub_keyword = "Layer"
-_stk_lyr_stub_keyword = "StackupLayer"
-_via_lyr_stub_keyword = "ViaLayer"
-_lyt_stub_keyword = "Layout"
-_mat_def_stub_keyword = "MaterialDef"
-_net_stub_keyword = "Net"
-_prim_stub_keyword = "Primitive"
-_poly_stub_keyword = "Polygon"
-_poly_data_stub_keyword = "PolygonData"
-_path_stub_keyword = "Path"
-_rect_stub_keyword = "Rectangle"
-_term_stub_keyword = "Terminal"
-_bundle_term_keyword = "BundleTerminal"
-_pt_term_keyword = "PointTerminal"
-_adaptive_settings_stub_keyword = "AdaptiveSettings"
-_sim_setup_stub_keyword = "SimulationSetup"
-_hfss_sim_settings_stub_keyword = "HFSSSimulationSettings"
-_sim_setup_info_stub_keyword = "SimulationSetupInfo"
-_via_group_stub_keyword = "ViaGroup"
-_circle_stub_keyword = "Circle"
-_text_stub_keyword = "Text"
-_bondwire_stub_keyword = "Bondwire"
-_cell_instance_stub_keyword = "CellInstance"
+class StubType(Enum):
+    """Enum representing available service stubs."""
 
+    cell = CellServiceStub
+    database = DatabaseServiceStub
+    iterator = EDBIteratorServiceStub
+    layer_collection = LayerCollectionServiceStub
+    layer = LayerServiceStub
+    stackup_layer = StackupLayerServiceStub
+    via_layer = ViaLayerServiceStub
+    layout = LayoutServiceStub
+    material = MaterialDefServiceStub
+    net = NetServiceStub
+    primitive = PrimitiveServiceStub
+    polygon = PolygonServiceStub
+    polygon_data = PolygonDataServiceStub
+    path = PathServiceStub
+    rectangle = RectangleServiceStub
+    adaptive_settings = AdaptiveSettingsServiceStub
+    simulation_setup = SimulationSetupServiceStub
+    hfss_simulation_settings = HFSSSimulatonSettingsServiceStub
+    simulation_setup_info = SimulationSetupInfoServiceStub
+    via_group = ViaGroupServiceStub
+    circle = CircleServiceStub
+    text = TextServiceStub
+    terminal = TerminalServiceStub
+    terminal_instance = TerminalInstanceServiceStub
+    terminal_instance_terminal = TerminalInstanceTerminalServiceStub
+    bundle_terminal = BundleTerminalServiceStub
+    edge = EdgeServiceStub
+    edge_terminal = EdgeTerminalServiceStub
+    point_terminal = PointTerminalServiceStub
+    padstack_instance_terminal = PadstackInstanceTerminalServiceStub
+    pin_group = PinGroupServiceStub
+    pin_group_terminal = PinGroupTerminalServiceStub
+    bondwire_def = BondwireDefServiceStub
+    apd_bondwire_def = ApdBondwireDefServiceStub
+    jedec4_bondwire_def = Jedec4BondwireDefServiceStub
+    jedec5_bondwire_def = Jedec5BondwireDefServiceStub
+    value = ValueServiceStub
+    variable_server = VariableServerServiceStub
 
-# Map of stub keywords to stub ctors. Used for initializing stubs when connecting to the server.
-_type_to_stub_ctor_map = {
-    _cell_stub_keyword: CellServiceStub,
-    _db_stub_keyword: DatabaseServiceStub,
-    _edb_iter_stub_keyword: EDBIteratorServiceStub,
-    _lc_stub_keyword: LayerCollectionServiceStub,
-    _lyr_stub_keyword: LayerServiceStub,
-    _stk_lyr_stub_keyword: StackupLayerServiceStub,
-    _via_lyr_stub_keyword: ViaLayerServiceStub,
-    _lyt_stub_keyword: LayoutServiceStub,
-    _mat_def_stub_keyword: MaterialDefServiceStub,
-    _net_stub_keyword: NetServiceStub,
-    _prim_stub_keyword: PrimitiveServiceStub,
-    _poly_stub_keyword: PolygonServiceStub,
-    _poly_data_stub_keyword: PolygonDataServiceStub,
-    _path_stub_keyword: PathServiceStub,
-    _rect_stub_keyword: RectangleServiceStub,
-    _term_stub_keyword: TerminalServiceStub,
-    _bundle_term_keyword: BundleTerminalServiceStub,
-    _pt_term_keyword: PointTerminalServiceStub,
-    _adaptive_settings_stub_keyword: AdaptiveSettingsServiceStub,
-    _sim_setup_stub_keyword: SimulationSetupServiceStub,
-    _hfss_sim_settings_stub_keyword: HFSSSimulatonSettingsServiceStub,
-    _sim_setup_info_stub_keyword: SimulationSetupInfoServiceStub,
-    _via_group_stub_keyword: ViaGroupServiceStub,
-    _circle_stub_keyword: CircleServiceStub,
-    _text_stub_keyword: TextServiceStub,
-    _bondwire_stub_keyword: BondwireServiceStub,
-    _cell_instance_stub_keyword: CellInstanceServiceStub,
-}
 
 # Dictionary for storing local server error code exception messages
 _local_server_error_code_exception_msg_map = {
@@ -301,12 +317,6 @@ def _raise_unknown_startup_exception(error_msg: Union[str, Exception]) -> None:
     )
 
 
-def _get_stub(keyword: str):
-    if MOD.current_session is not None:
-        return MOD.current_session.stub(keyword)
-    raise EDBSessionException("No active session detected")
-
-
 def get_cell_stub():
     """Get Cell stub.
 
@@ -314,7 +324,7 @@ def get_cell_stub():
     -------
     CellServiceStub
     """
-    return _get_stub(_cell_stub_keyword)
+    return StubAccessor(StubType.cell).__get__()
 
 
 def get_database_stub():
@@ -324,7 +334,7 @@ def get_database_stub():
     -------
     DatabaseServiceStub
     """
-    return _get_stub(_db_stub_keyword)
+    return StubAccessor(StubType.database).__get__()
 
 
 def get_edb_iterator_stub():
@@ -334,7 +344,7 @@ def get_edb_iterator_stub():
     -------
     EDBIteratorServiceStub
     """
-    return _get_stub(_edb_iter_stub_keyword)
+    return StubAccessor(StubType.iterator).__get__()
 
 
 def get_layer_collection_stub():
@@ -344,7 +354,7 @@ def get_layer_collection_stub():
     -------
     LayerCollectionServiceStub
     """
-    return _get_stub(_lc_stub_keyword)
+    return StubAccessor(StubType.layer_collection).__get__()
 
 
 def get_layer_stub():
@@ -354,7 +364,7 @@ def get_layer_stub():
     -------
     LayerServiceStub
     """
-    return _get_stub(_lyr_stub_keyword)
+    return StubAccessor(StubType.layer).__get__()
 
 
 def get_stackup_layer_stub():
@@ -364,7 +374,7 @@ def get_stackup_layer_stub():
     -------
     StackupLayerServiceStub
     """
-    return _get_stub(_stk_lyr_stub_keyword)
+    return StubAccessor(StubType.stackup_layer).__get__()
 
 
 def get_via_layer_stub():
@@ -374,7 +384,7 @@ def get_via_layer_stub():
     -------
     ViaLayerServiceStub
     """
-    return _get_stub(_via_lyr_stub_keyword)
+    return StubAccessor(StubType.via_layer).__get__()
 
 
 def get_layout_stub():
@@ -384,7 +394,7 @@ def get_layout_stub():
     -------
     LayoutServiceStub
     """
-    return _get_stub(_lyt_stub_keyword)
+    return StubAccessor(StubType.layout).__get__()
 
 
 def get_material_def_stub():
@@ -394,7 +404,7 @@ def get_material_def_stub():
     -------
     MaterialDefServiceStub
     """
-    return _get_stub(_mat_def_stub_keyword)
+    return StubAccessor(StubType.material).__get__()
 
 
 def get_net_stub():
@@ -404,7 +414,7 @@ def get_net_stub():
     -------
     NetServiceStub
     """
-    return _get_stub(_net_stub_keyword)
+    return StubAccessor(StubType.net).__get__()
 
 
 def get_primitive_stub():
@@ -414,7 +424,7 @@ def get_primitive_stub():
     -------
     PrimitiveServiceStub
     """
-    return _get_stub(_prim_stub_keyword)
+    return StubAccessor(StubType.primitive).__get__()
 
 
 def get_polygon_stub():
@@ -424,7 +434,7 @@ def get_polygon_stub():
     -------
     PolygonServiceStub
     """
-    return _get_stub(_poly_stub_keyword)
+    return StubAccessor(StubType.polygon).__get__()
 
 
 def get_polygon_data_stub():
@@ -434,7 +444,7 @@ def get_polygon_data_stub():
     -------
     PolygonDataServiceStub
     """
-    return _get_stub(_poly_data_stub_keyword)
+    return StubAccessor(StubType.polygon_data).__get__()
 
 
 def get_path_stub():
@@ -444,7 +454,7 @@ def get_path_stub():
     -------
     PathServiceStub
     """
-    return _get_stub(_path_stub_keyword)
+    return StubAccessor(StubType.path).__get__()
 
 
 def get_rectangle_stub():
@@ -454,37 +464,7 @@ def get_rectangle_stub():
     -------
     RectangleServiceStub
     """
-    return _get_stub(_rect_stub_keyword)
-
-
-def get_terminal_stub():
-    """Get Terminal stub.
-
-    Returns
-    -------
-    TerminalServiceStub
-    """
-    return _get_stub(_term_stub_keyword)
-
-
-def get_bundle_terminal_stub():
-    """Get Bundle terminal stub.
-
-    Returns
-    -------
-    BundleTerminalServiceStub
-    """
-    return _get_stub(_bundle_term_keyword)
-
-
-def get_point_terminal_stub():
-    """Get Point terminal stub.
-
-    Returns
-    -------
-    PointTerminalServiceStub
-    """
-    return _get_stub(_pt_term_keyword)
+    return StubAccessor(StubType.rectangle).__get__()
 
 
 def get_adaptive_settings_stub():
@@ -494,7 +474,7 @@ def get_adaptive_settings_stub():
     -------
     AdaptiveSettingsServiceStub
     """
-    return _get_stub(_adaptive_settings_stub_keyword)
+    return StubAccessor(StubType.adaptive_settings).__get__()
 
 
 def get_simulation_setup_stub():
@@ -504,7 +484,7 @@ def get_simulation_setup_stub():
     -------
     SimulationSetupServiceStub
     """
-    return _get_stub(_sim_setup_stub_keyword)
+    return StubAccessor(StubType.simulation_setup).__get__()
 
 
 def get_hfss_simulation_settings_stub():
@@ -514,7 +494,7 @@ def get_hfss_simulation_settings_stub():
     -------
     HFSSSimulatonSettingsServiceStub
     """
-    return _get_stub(_hfss_sim_settings_stub_keyword)
+    return StubAccessor(StubType.hfss_simulation_settings).__get__()
 
 
 def get_simulation_setup_info_stub():
@@ -524,7 +504,7 @@ def get_simulation_setup_info_stub():
     -------
     SimulationSetupInfoServiceStub
     """
-    return _get_stub(_sim_setup_info_stub_keyword)
+    return StubAccessor(StubType.simulation_setup_info).__get__()
 
 
 def get_via_group_stub():
@@ -534,17 +514,17 @@ def get_via_group_stub():
     -------
     ViaGroupServiceStub
     """
-    return _get_stub(_via_group_stub_keyword)
+    return StubAccessor(StubType.via_group).__get__()
 
 
-def get_circle_stub() -> CircleServiceStub:
+def get_circle_stub():
     """Get Circle stub.
 
     Returns
     -------
     CircleServiceStub
     """
-    return _get_stub(_circle_stub_keyword)
+    return StubAccessor(StubType.circle).__get__()
 
 
 def get_text_stub():
@@ -554,7 +534,67 @@ def get_text_stub():
     -------
     TextServiceStub
     """
-    return _get_stub(_text_stub_keyword)
+    return StubAccessor(StubType.text).__get__()
+
+
+def get_bondwire_def_stub():
+    """Get Bondwire Def stub.
+
+    Returns
+    -------
+    BondwireDefServiceStub
+    """
+    return StubAccessor(StubType.bondwire_def).__get__()
+
+
+def get_apd_bondwire_def_stub():
+    """Get Apd Bondwire Def stub.
+
+    Returns
+    -------
+    ApdBondwireDefServiceStub
+    """
+    return StubAccessor(StubType.apd_bondwire_def).__get__()
+
+
+def get_value_stub():
+    """Get Value stub.
+
+    Returns
+    -------
+    ValueServiceStub
+    """
+    return StubAccessor(StubType.value).__get__()
+
+
+def get_variable_server_stub():
+    """Get VariableServer stub.
+
+    Returns
+    -------
+    VariableServerServiceStub
+    """
+    return StubAccessor(StubType.variable_server).__get__()
+
+
+def get_jedec4_bondwire_def_stub():
+    """Get Jedec4 Bondwire Def stub.
+
+    Returns
+    -------
+    Jedec4BondwireDefServiceStub
+    """
+    return StubAccessor(StubType.jedec4_bondwire_def).__get__()
+
+
+def get_jedec5_bondwire_def_stub():
+    """Get Jedec5 Bondwire Def stub.
+
+    Returns
+    -------
+    Jedec5BondwireDefServiceStub
+    """
+    return StubAccessor(StubType.jedec5_bondwire_def).__get__()
 
 
 def get_bondwire_stub():

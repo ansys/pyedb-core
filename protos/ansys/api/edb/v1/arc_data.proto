@@ -1,0 +1,13 @@
+// Proto file representing the EDB Arc Data class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "point_data.proto";
+
+message ArcMessage {
+  PointMessage start = 1;
+  PointMessage end = 2;
+}

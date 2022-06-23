@@ -6,7 +6,7 @@ from ansys.edb.core.interfaces.grpc.messages import bool_message, int64_message,
 from ansys.edb.core.models.cell.cell import Cell
 from ansys.edb.core.models.database import Database, database_pb2
 from utils.fixtures import *  # noqa
-from utils.test_utils import create_edb_obj_collection_msg, msgs_are_equal, patch_stub
+from utils.test_utils import create_edb_obj_collection_msg, equals, patch_stub
 
 # Helper fixtures and functions
 
@@ -65,7 +65,7 @@ def test_create(random_str, edb_obj_msg, mocker):
     mock_server.assert_called_once_with(str_message(random_str))
 
     assert isinstance(created_db, Database)
-    assert msgs_are_equal(created_db.msg, edb_obj_msg)
+    assert equals(created_db.msg, edb_obj_msg)
 
 
 def test_open(random_str, bool_val, edb_obj_msg, mocker):
@@ -92,7 +92,7 @@ def test_open(random_str, bool_val, edb_obj_msg, mocker):
     )
 
     assert isinstance(opened_db, Database)
-    assert msgs_are_equal(opened_db.msg, edb_obj_msg)
+    assert equals(opened_db.msg, edb_obj_msg)
 
 
 def test_delete(random_str, bool_val, mocker):
@@ -186,7 +186,7 @@ def test_top_circuit_cells(db_obj, expected_num_top_cells, mocker):
     for top_cell_idx in range(expected_num_top_cells):
         top_cell = top_cells[top_cell_idx]
         assert isinstance(top_cell, Cell)
-        assert msgs_are_equal(top_cell.msg, expected_response.edb_obj_collection[top_cell_idx])
+        assert equals(top_cell.msg, expected_response.items[top_cell_idx])
 
 
 def test_get_id(db_obj, random_int, mocker):
@@ -250,4 +250,4 @@ def test_find_by_id(random_int, edb_obj_msg, mocker):
     mock_server.assert_called_once_with(int64_message(random_int))
 
     assert isinstance(found_db, Database)
-    assert msgs_are_equal(found_db.msg, edb_obj_msg)
+    assert equals(found_db.msg, edb_obj_msg)

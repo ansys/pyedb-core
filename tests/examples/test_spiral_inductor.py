@@ -30,7 +30,7 @@ from ansys.edb.core.models.simulation_setup.simulation_setup import (
     SimulationSetupType,
 )
 from ansys.edb.core.session import session
-import settings
+import tests.settings
 
 
 # Wrapper class over Database
@@ -429,5 +429,5 @@ class SpiralInductor(BaseExample):
 
 
 def test_spiral_inductor():
-    with session(settings.configs.get("RPC_SERVER_ROOT"), 50051):
+    with session(tests.settings.configs.get("RPC_SERVER_ROOT"), 50051):
         SpiralInductor().run(r"spiral_inductor.aedb")

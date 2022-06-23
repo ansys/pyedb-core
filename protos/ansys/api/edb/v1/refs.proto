@@ -19,3 +19,10 @@ message NetRefMessage {
     google.protobuf.StringValue name = 2;
   }
 }
+
+message CellInstanceRefMessage {
+  oneof ref {
+    EDBObjMessage id = 1;
+    google.protobuf.StringValue name = 2;
+  }
+}

@@ -15,7 +15,9 @@ from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
     Jedec4BondwireDefServiceStub,
     Jedec5BondwireDefServiceStub,
 )
+from ansys.api.edb.v1.bondwire_pb2_grpc import BondwireServiceStub
 from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
+from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
@@ -252,12 +254,14 @@ class StubType(Enum):
     padstack_instance_terminal = PadstackInstanceTerminalServiceStub
     pin_group = PinGroupServiceStub
     pin_group_terminal = PinGroupTerminalServiceStub
+    bondwire = BondwireServiceStub
     bondwire_def = BondwireDefServiceStub
     apd_bondwire_def = ApdBondwireDefServiceStub
     jedec4_bondwire_def = Jedec4BondwireDefServiceStub
     jedec5_bondwire_def = Jedec5BondwireDefServiceStub
     value = ValueServiceStub
     variable_server = VariableServerServiceStub
+    cell_instance = CellInstanceServiceStub
 
 
 # Dictionary for storing local server error code exception messages
@@ -593,6 +597,26 @@ def get_jedec5_bondwire_def_stub():
     Jedec5BondwireDefServiceStub
     """
     return StubAccessor(StubType.jedec5_bondwire_def).__get__()
+
+
+def get_bondwire_stub():
+    """Get Bondwire stub.
+
+    Returns
+    -------
+    BondwireServiceStub
+    """
+    return StubAccessor(StubType.bondwire).__get__()
+
+
+def get_cell_instance_stub():
+    """Get CellInstance stub.
+
+    Returns
+    -------
+    CellInstanceServiceStub
+    """
+    return StubAccessor(StubType.cell_instance).__get__()
 
 
 class EDBSessionException(Exception):

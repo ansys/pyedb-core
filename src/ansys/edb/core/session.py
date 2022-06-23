@@ -9,13 +9,13 @@ from sys import modules
 from typing import Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
-from ansys.api.edb.v1.bondwire_pb2_grpc import BondwireServiceStub
 from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
     ApdBondwireDefServiceStub,
     BondwireDefServiceStub,
     Jedec4BondwireDefServiceStub,
     Jedec5BondwireDefServiceStub,
 )
+from ansys.api.edb.v1.bondwire_pb2_grpc import BondwireServiceStub
 from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
@@ -254,12 +254,14 @@ class StubType(Enum):
     padstack_instance_terminal = PadstackInstanceTerminalServiceStub
     pin_group = PinGroupServiceStub
     pin_group_terminal = PinGroupTerminalServiceStub
+    bondwire = BondwireServiceStub
     bondwire_def = BondwireDefServiceStub
     apd_bondwire_def = ApdBondwireDefServiceStub
     jedec4_bondwire_def = Jedec4BondwireDefServiceStub
     jedec5_bondwire_def = Jedec5BondwireDefServiceStub
     value = ValueServiceStub
     variable_server = VariableServerServiceStub
+    cell_instance = CellInstanceServiceStub
 
 
 # Dictionary for storing local server error code exception messages
@@ -604,7 +606,7 @@ def get_bondwire_stub():
     -------
     BondwireServiceStub
     """
-    return _get_stub(_bondwire_stub_keyword)
+    return StubAccessor(StubType.bondwire).__get__()
 
 
 def get_cell_instance_stub():
@@ -614,7 +616,7 @@ def get_cell_instance_stub():
     -------
     CellInstanceServiceStub
     """
-    return _get_stub(_cell_instance_stub_keyword)
+    return StubAccessor(StubType.cell_instance).__get__()
 
 
 class EDBSessionException(Exception):

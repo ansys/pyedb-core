@@ -1535,4 +1535,3 @@ class PadstackInstance(ConnObj):
     """Class representing padstack instance."""
 
     pass
-

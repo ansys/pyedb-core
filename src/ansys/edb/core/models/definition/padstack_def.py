@@ -69,6 +69,11 @@ class PadstackDef(ObjBase):
             )
         )
 
+    @handle_grpc_exception
+    def delete(self):
+        """Delete a PadstackDef."""
+        get_padstack_def_stub().Delete(self._msg)
+
     @staticmethod
     @handle_grpc_exception
     def find_by_name(db, name):

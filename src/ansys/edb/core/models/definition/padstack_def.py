@@ -24,7 +24,7 @@ class _PadstackDefQueryBuilder:
         -------
         PadstackDefStringMessage
         """
-        return pb.PadstackDefStringMessage(target=target._msg, name=name)
+        return pb.PadstackDefStringMessage(target=target.msg, name=name)
 
     @staticmethod
     def padstack_def_set_data_message(target, data):
@@ -41,7 +41,7 @@ class _PadstackDefQueryBuilder:
         -------
         PadstackDefSetDataMessage
         """
-        return pb.PadstackDefSetDataMessage(target=target._msg, data=data._msg)
+        return pb.PadstackDefSetDataMessage(target=target.msg, data=data.msg)
 
 
 class PadstackDef(ObjBase):
@@ -72,7 +72,7 @@ class PadstackDef(ObjBase):
     @handle_grpc_exception
     def delete(self):
         """Delete a PadstackDef."""
-        get_padstack_def_stub().Delete(self._msg)
+        get_padstack_def_stub().Delete(self.msg)
 
     @staticmethod
     @handle_grpc_exception
@@ -104,7 +104,7 @@ class PadstackDef(ObjBase):
         -------
         str
         """
-        return get_padstack_def_stub().GetName(self._msg).value
+        return get_padstack_def_stub().GetName(self.msg).value
 
     @property
     @handle_grpc_exception
@@ -115,7 +115,7 @@ class PadstackDef(ObjBase):
         -------
         PadstackDefData
         """
-        return PadstackDefData(get_padstack_def_stub().GetData(self._msg))
+        return PadstackDefData(get_padstack_def_stub().GetData(self.msg))
 
     @data.setter
     @handle_grpc_exception

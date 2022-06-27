@@ -30,7 +30,6 @@ from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
 from ansys.api.edb.v1.padstack_def_pb2_grpc import PadstackDefServiceStub
 from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTerminalServiceStub
-
 from ansys.api.edb.v1.path_pb2_grpc import PathServiceStub
 from ansys.api.edb.v1.pin_group_pb2_grpc import PinGroupServiceStub
 from ansys.api.edb.v1.pin_group_term_pb2_grpc import PinGroupTerminalServiceStub
@@ -265,6 +264,7 @@ class StubType(Enum):
     value = ValueServiceStub
     variable_server = VariableServerServiceStub
     cell_instance = CellInstanceServiceStub
+
 
 # Dictionary for storing local server error code exception messages
 _local_server_error_code_exception_msg_map = {
@@ -619,6 +619,8 @@ def get_cell_instance_stub():
     CellInstanceServiceStub
     """
     return StubAccessor(StubType.cell_instance).__get__()
+
+
 def get_padstack_def_stub():
     """Get Jedec5 Bondwire Def stub.
 
@@ -627,9 +629,6 @@ def get_padstack_def_stub():
     PadstackDefServiceStub
     """
     return StubAccessor(StubType.padstack_def).__get__()
-
-
-
 
 
 class EDBSessionException(Exception):

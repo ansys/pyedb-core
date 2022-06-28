@@ -3,7 +3,7 @@
 import ansys.api.edb.v1.net_pb2 as net_pb2
 
 from ...session import get_net_stub
-from ..base import ObjBase
+from .layout_obj import LayoutObj
 
 
 class _QueryBuilder:
@@ -16,7 +16,7 @@ class _QueryBuilder:
         return net_pb2.NetLookupMessage(layout=layout.msg, name=name)
 
 
-class Net(ObjBase):
+class Net(LayoutObj):
     """Class representing net."""
 
     @staticmethod

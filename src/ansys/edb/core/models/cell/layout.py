@@ -44,7 +44,7 @@ class Layout(ObjBase, _VariableServer):
 
         Returns
         -------
-        Cell
+        ansys.edb.core.models.cell.Cell
         """
         from .cell import Cell
 
@@ -255,6 +255,10 @@ class Layout(ObjBase, _VariableServer):
         expansion_unitless : bool
         use_round_corner : bool
         num_increments : num
+
+        Returns
+        -------
+        PolygonData
         """
         return PolygonData(
             self.__stub.GetExpandedExtentFromNets(
@@ -294,12 +298,22 @@ class Layout(ObjBase, _VariableServer):
 
     @property
     def zone_primitives(self):
-        """Get zone primitives."""
+        """Get zone primitives.
+
+        Returns
+        -------
+        list[Primitive]
+        """
         return [Primitive(msg) for msg in self.__stub.GetZonePrimitives(self.msg)]
 
     @property
     def fixed_zone_primitive(self):
-        """Get fixed zone primitive."""
+        """Get fixed zone primitive.
+
+        Returns
+        -------
+        Primitive
+        """
         msg = self.__stub.GetFixedZonePrimitive(self.msg)
         return None if msg is None else Primitive(msg)
 
@@ -315,9 +329,14 @@ class Layout(ObjBase, _VariableServer):
 
     @property
     def board_bend_defs(self):
-        """Get board bend definitions."""
+        """Get board bend definitions.
+
+        Returns
+        -------
+        list[BoardBendDef]
+        """
         return [BoardBendDef(msg) for msg in self.__stub.GetBoardBendDefs(self.msg)]
 
     def synchronize_bend_manager(self):
         """Synchronize bend manager."""
-        return self.__stub.SynchronizeBendManager(self.msg)
+        self.__stub.SynchronizeBendManager(self.msg)

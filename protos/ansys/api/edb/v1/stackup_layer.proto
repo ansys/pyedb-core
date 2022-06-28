@@ -12,8 +12,77 @@ service StackupLayerService {
   // Creates a stackup layer
   rpc Create (StackupLayerCreationMessage) returns (EDBObjMessage) {}
 
+  // Get the negative property of the stackup layer
+  rpc GetNegative (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
   // Set the negative property of the stackup layer
   rpc SetNegative (SetNegativeMessage) returns (google.protobuf.Empty) {}
+
+  // Get the thickness of the layer
+  rpc GetThickness(EDBObjMessage) returns (ValueMessage) {}
+
+  // Set the thickness of the layer
+  rpc SetThickness(StackupLayerValueMessage) returns (google.protobuf.Empty) {}
+
+  // Get the lower elevation of the layer
+  rpc GetLowerElevation(EDBObjMessage) returns (ValueMessage) {}
+
+  // Set the lower elevation of the layer
+  rpc SetLowerElevation(StackupLayerValueMessage) returns (google.protobuf.Empty) {}
+
+  // Get the upper elevation of the layer
+  rpc GetUpperElevation(EDBObjMessage) returns (ValueMessage) {}
+
+  // Get the material of the layer
+  rpc GetMaterial(GetLayerMaterialMessage) returns (google.protobuf.StringValue) {}
+
+  // Set the material of the layer
+  rpc SetMaterial(SetLayerMaterialMessage) returns (google.protobuf.Empty) {}
+
+  // Get the fill material of the layer
+  rpc GetFillMaterial(GetLayerMaterialMessage) returns (google.protobuf.StringValue) {}
+
+  // Set the fill material of the layer
+  rpc SetFillMaterial(SetLayerMaterialMessage) returns (google.protobuf.Empty) {}
+
+  // Enable/Disable surface roughness for the layer
+  rpc SetRoughnessEnabled(SetLayerPropEnabledMessage) returns (google.protobuf.Empty) {}
+
+  // Check if surface roughness is enabled for the layer
+  rpc IsRoughnessEnabled(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Get the roughness model of the layer
+  rpc GetRoughnessModel(LayerRoughnessRegionMessage) returns (RoughnessModelMessage) {}
+
+  // Set the roughness model of the layer
+  rpc SetRoughnessModel(SetRoughnessModelMessage) returns (google.protobuf.Empty) {}
+
+  // Check if etch factor is enabled for the layer
+  rpc IsEtchFactorEnabled(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Enable/Disable etch factor for the layer
+  rpc SetEtchFactorEnabled(SetLayerPropEnabledMessage) returns (google.protobuf.Empty) {}
+
+  // Set the etch factor of the layer
+  rpc SetEtchFactor(StackupLayerValueMessage) returns (google.protobuf.Empty) {}
+
+  // Get the etch factor of the layer
+  rpc GetEtchFactor(EDBObjMessage) returns (ValueMessage) {}
+
+  // Check if solver properties are enabled for the layer
+  rpc GetUseSolverProperties(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Enable/Disable solver properties for the layer
+  rpc SetUseSolverProperties(SetLayerPropEnabledMessage) returns (google.protobuf.Empty) {}
+
+  // Get the HFSS solver-specific properties of the layer
+  rpc GetHFSSSolverProperties(EDBObjMessage) returns (HFSSSolverPropertiesMessage) {}
+
+  // Set the HFSS solver-specific properties of the layer
+  rpc SetHFSSSolverProperties(SetHFSSSolverPropertiesMessage) returns (google.protobuf.Empty) {}
+
+  // Retrieves the layer ids of all via layers referencing the layer.
+  rpc GetReferencingViaLayerIds(EDBObjMessage) returns (ViaLayerIdsMessage) {}
 }
 
 // Message for StackupLayerService::Create
@@ -29,4 +98,75 @@ message StackupLayerCreationMessage {
 message SetNegativeMessage {
   EDBObjMessage layer = 1;
   bool is_negative = 2;
+}
+
+message StackupLayerValueMessage {
+  EDBObjMessage layer = 1;
+  ValueMessage value = 2;
+}
+
+message GetLayerMaterialMessage {
+  EDBObjMessage layer = 1;
+  bool evaluated = 2;
+}
+
+message SetLayerMaterialMessage {
+  EDBObjMessage layer = 1;
+  string material = 2;
+}
+
+message SetLayerPropEnabledMessage {
+  EDBObjMessage layer = 1;
+  bool enabled = 2;
+}
+
+message GroisseRoughnessModelMessage {
+  ValueMessage roughness = 1;
+}
+
+message HurrayRoughnessModelMessage {
+  ValueMessage nodule_radius = 1;
+  ValueMessage surface_ratio = 2;
+}
+
+message RoughnessModelMessage {
+  ValueMessage roughness = 1;
+  oneof huray_surface_ratio {
+    ValueMessage surface_ratio = 2;
+  }
+}
+
+message LayerRoughnessRegionMessage {
+  EDBObjMessage layer = 1;
+  enum RoughnessRegion {
+    TOP = 0;
+    BOTTOM = 1;
+    SIDE = 2;
+  }
+  RoughnessRegion roughness_region = 2;
+}
+
+message SetRoughnessModelMessage {
+  LayerRoughnessRegionMessage layer_rough_region = 1;
+  RoughnessModelMessage roughness_model = 2;
+}
+
+message HFSSSolverPropertiesMessage {
+  enum DCThicknessType {
+    EFFECTIVE = 0;
+    LAYER = 1;
+    MANUAL = 2;
+  }
+  bool solve_inside = 1;
+  DCThicknessType dc_thickness_type = 2;
+  ValueMessage dc_thickness = 3;
+}
+
+message SetHFSSSolverPropertiesMessage {
+  EDBObjMessage layer = 1;
+  HFSSSolverPropertiesMessage hfss_solver_props = 2;
+}
+
+message ViaLayerIdsMessage {
+  repeated int64 ref_layer_ids = 1;
 }

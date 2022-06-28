@@ -1,0 +1,15 @@
+name: Template Validation
+
+on:
+  pull_request:
+    types: [opened, edited]
+  workflow_dispatch:
+
+jobs:
+  pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run a PR title validation
+        run: grep -E "((T|S|D)[0-9]{6}\:\s[A-Z])" <<< "${{ github.event.pull_request.title }}"
+

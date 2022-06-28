@@ -4,18 +4,22 @@ from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
 from ansys.api.edb.v1.arc_data_pb2 import ArcMessage
-from ansys.api.edb.v1.database_pb2 import (
-    GetProductPropertyIdsMessage,
-    GetProductPropertyMessage,
-    ProductPropertyIdMessage,
-    SetProductPropertyMessage,
+from ansys.api.edb.v1.cell_pb2 import (
+    CellAddSimSetupMessage,
+    CellCutOutMessage,
+    CellFindMessage,
+    CellSetTemperatureSettingsMessage,
 )
 from ansys.api.edb.v1.edb_messages_pb2 import (
     BoolPropertyMessage,
     EDBObjCollectionMessage,
     EDBObjMessage,
+    GetProductPropertyIdsMessage,
+    GetProductPropertyMessage,
     IntPropertyMessage,
     PointerPropertyMessage,
+    ProductPropertyIdMessage,
+    SetProductPropertyMessage,
     StringPropertyMessage,
     ValueMessage,
 )
@@ -33,6 +37,7 @@ from ansys.api.edb.v1.layout_pb2 import (
     LayoutExpandedExtentMessage,
     LayoutGetItemsMessage,
 )
+from ansys.api.edb.v1.hfss_extent_info_pb2 import HfssExtentInfoMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.padstack_inst_term_pb2 import (
     PadstackInstTermCreationsMessage,
@@ -70,6 +75,7 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
+from ansys.api.edb.v1.temperature_settings_pb2 import TemperatureSettingsMessage
 from ansys.api.edb.v1.term_inst_pb2 import TermInstCreationMessage
 from ansys.api.edb.v1.term_inst_term_pb2 import (
     TermInstTermCreationMessage,
@@ -144,11 +150,6 @@ def arc_message(arc):
     raise RuntimeError("arc must be of a tuple containing start and end point.")
 
 
-def layout_get_items_message(layout, item_type):
-    """Convert to LayoutGetItemsMessage."""
-    return LayoutGetItemsMessage(layout=layout.msg, obj_type=item_type.value)
-
-
 def int_property_message(target, value):
     """Convert to IntPropertyMessage."""
     return IntPropertyMessage(target=target.msg, value=value)
@@ -167,6 +168,11 @@ def string_property_message(target, value):
 def pointer_property_message(target, value):
     """Convert to PointerPropertyMessage."""
     return PointerPropertyMessage(target=target.msg, value=value.msg)
+
+
+def layout_get_items_message(layout, item_type):
+    """Convert to LayoutGetItemsMessage."""
+    return LayoutGetItemsMessage(layout=layout.msg, obj_type=item_type.value)
 
 
 def layout_expanded_extent_message(
@@ -188,6 +194,60 @@ def layout_convert_p2v_message(layout, primitives, is_pins):
     """Convert to LayoutConvertP2VMessage."""
     return LayoutConvertP2VMessage(
         layout=layout.msg, primitives=edb_obj_collection_message(primitives), is_pins=is_pins
+
+
+def temperature_settings_message(settings):
+    """Convert to TemperatureSettingsMessage."""
+    return TemperatureSettingsMessage(
+        temperature=value_message(settings.temperature),
+        include_temp_dependence=settings.include_temp_dependence,
+        enable_thermal_feedback=settings.enable_thermal_feedback,
+    )
+
+
+def hfss_extent_info_message(val):
+    """Convert to ExtentMessage."""
+    if type(val) == float:
+        value = val
+        absolute = False
+    else:
+        value, absolute = val
+
+    return HfssExtentInfoMessage(value=value_message(value), absolute=absolute)
+
+
+def cell_find_message(database, cell_type, cell_name=None, cell_id=None):
+    """Convert to CellFindMessage."""
+    if cell_name is not None:
+        return CellFindMessage(database=database.msg, type=cell_type.value, name=cell_name)
+    elif cell_id is not None:
+        return CellFindMessage(database=database.msg, type=cell_type.value, id=cell_id)
+    else:
+        assert False, "either name or id must be provided to find a cell."
+
+
+def cell_cutout_message(cell, included_nets, clipped_nets, clipping_polygon, clean_clipping):
+    """Convert to CellCutOutMessage."""
+    return CellCutOutMessage(
+        cell=cell.msg,
+        included_nets=edb_obj_collection_message(included_nets),
+        clipped_nets=edb_obj_collection_message(clipped_nets),
+        clipping_polygon=edb_obj_message(clipping_polygon),
+        clean_clipping=clean_clipping,
+    )
+
+
+def cell_add_sim_setup_message(cell, setup_type, name, sim_setup):
+    """Convert to CellAddSimSetupMessage."""
+    return CellAddSimSetupMessage(
+        cell=cell.msg, setup_type=setup_type.value, name=name, simsetup=sim_setup
+    )
+
+
+def cell_set_temperature_settings_message(cell, temp_settings):
+    """Convert to CellSetTemperatureSettingsMessage."""
+    return CellSetTemperatureSettingsMessage(
+        cell=cell.msg, temp_settings=temperature_settings_message(temp_settings)
     )
 
 

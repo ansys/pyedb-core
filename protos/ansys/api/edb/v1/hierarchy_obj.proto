@@ -66,6 +66,10 @@ message SetHierarchyObjectSolveIndependentPreferenceMessage {
    bool ind = 2;
 }
 
+message ObjectNameInLayoutMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+} 
 
 
 

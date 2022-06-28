@@ -321,16 +321,6 @@ def _raise_unknown_startup_exception(error_msg: Union[str, Exception]) -> None:
     )
 
 
-def get_cell_stub():
-    """Get Cell stub.
-
-    Returns
-    -------
-    CellServiceStub
-    """
-    return StubAccessor(StubType.cell).__get__()
-
-
 def get_database_stub():
     """Get Database stub.
 

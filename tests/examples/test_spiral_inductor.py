@@ -67,7 +67,7 @@ class BaseExample:
         print("creating default cell")
         self.cell = Cell.create(self.db, CellType.CIRCUIT_CELL, "EMDesign1")
         print("assigning default layout")
-        self.layout = self.cell.get_layout()
+        self.layout = self.cell.layout
         return db
 
     def __init__(self):

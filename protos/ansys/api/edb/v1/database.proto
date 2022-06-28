@@ -6,14 +6,6 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 
-enum ProductIdType {
-  DESIGNER = 0;
-  SI_WAVE = 1;
-  GENERIC_TRANSLATOR = 2;
-  USER_DEFINED = 3;
-  INVALID_PRODUCT = -1;
-}
-
 service DatabaseService {
   // Creates a database
   rpc Create (google.protobuf.StringValue) returns (EDBObjMessage) {}
@@ -49,27 +41,3 @@ message OpenDatabaseMessage {
   google.protobuf.BoolValue read_only = 2;
 }
 
-message ProductPropertyIdMessage {
-  ProductIdType product_id = 1;
-  uint64 attribute_id = 2;
-}
-
-message GetProductPropertyMessage {
-  EDBObjMessage edb_obj = 1;
-  ProductPropertyIdMessage product_prop_id = 2;
-}
-
-message SetProductPropertyMessage {
-  EDBObjMessage edb_obj = 1;
-  ProductPropertyIdMessage product_prop_id = 2;
-  string property_value = 3;
-}
-
-message GetProductPropertyIdsMessage {
-  EDBObjMessage edb_obj = 1;
-  ProductIdType product_id = 2;
-}
-
-message ProductPropertyIdsMessage {
-  repeated uint64 ids = 1;
-}

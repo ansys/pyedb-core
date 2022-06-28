@@ -79,7 +79,6 @@ class Layer(ObjBase):
     def __init__(self, msg):
         """Initialize a layer instance."""
         super().__init__(msg)
-        self._is_owner = False
 
     @staticmethod
     @handle_grpc_exception

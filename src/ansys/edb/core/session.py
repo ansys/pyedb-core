@@ -28,6 +28,7 @@ from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
+from ansys.api.edb.v1.padstack_def_pb2_grpc import PadstackDefServiceStub
 from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTerminalServiceStub
 from ansys.api.edb.v1.path_pb2_grpc import PathServiceStub
 from ansys.api.edb.v1.pin_group_pb2_grpc import PinGroupServiceStub
@@ -259,6 +260,7 @@ class StubType(Enum):
     apd_bondwire_def = ApdBondwireDefServiceStub
     jedec4_bondwire_def = Jedec4BondwireDefServiceStub
     jedec5_bondwire_def = Jedec5BondwireDefServiceStub
+    padstack_def = PadstackDefServiceStub
     value = ValueServiceStub
     variable_server = VariableServerServiceStub
     cell_instance = CellInstanceServiceStub
@@ -617,6 +619,16 @@ def get_cell_instance_stub():
     CellInstanceServiceStub
     """
     return StubAccessor(StubType.cell_instance).__get__()
+
+
+def get_padstack_def_stub():
+    """Get Jedec5 Bondwire Def stub.
+
+    Returns
+    -------
+    PadstackDefServiceStub
+    """
+    return StubAccessor(StubType.padstack_def).__get__()
 
 
 class EDBSessionException(Exception):

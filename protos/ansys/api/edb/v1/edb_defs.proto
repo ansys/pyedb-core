@@ -1,0 +1,10 @@
+// Proto file containing type definitions
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+enum GeometryExtentType {
+  BOUNDING_BOX = 0;
+  CONFORMING = 1;
+}

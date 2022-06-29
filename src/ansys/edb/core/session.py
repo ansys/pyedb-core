@@ -391,16 +391,6 @@ def get_via_layer_stub():
     return StubAccessor(StubType.via_layer).__get__()
 
 
-def get_layout_stub():
-    """Get Layout stub.
-
-    Returns
-    -------
-    LayoutServiceStub
-    """
-    return StubAccessor(StubType.layout).__get__()
-
-
 def get_material_def_stub():
     """Get Material definition stub.
 

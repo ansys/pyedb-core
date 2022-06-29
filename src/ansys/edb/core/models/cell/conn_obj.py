@@ -1,9 +1,9 @@
 """ConnObj."""
 
-from ..base import ObjBase
+from .layout_obj import LayoutObj
 
 
-class ConnObj(ObjBase):
+class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
     pass

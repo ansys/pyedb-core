@@ -1535,3 +1535,9 @@ class PadstackInstance(ConnObj):
     """Class representing padstack instance."""
 
     pass
+
+
+class BoardBendDef(Primitive):
+    """Class representing board bending definitions."""
+
+    pass

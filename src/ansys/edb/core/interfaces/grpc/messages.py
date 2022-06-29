@@ -10,7 +10,15 @@ from ansys.api.edb.v1.database_pb2 import (
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
 )
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage, ValueMessage
+from ansys.api.edb.v1.edb_messages_pb2 import (
+    BoolPropertyMessage,
+    EDBObjCollectionMessage,
+    EDBObjMessage,
+    IntPropertyMessage,
+    PointerPropertyMessage,
+    StringPropertyMessage,
+    ValueMessage,
+)
 from ansys.api.edb.v1.edge_term_pb2 import (
     EdgeCreationMessage,
     EdgeParamsMessage,
@@ -19,6 +27,11 @@ from ansys.api.edb.v1.edge_term_pb2 import (
     EdgeType,
     PadEdgeParamsMessage,
     PrimitiveEdgeParamsMessage,
+)
+from ansys.api.edb.v1.layout_pb2 import (
+    LayoutConvertP2VMessage,
+    LayoutExpandedExtentMessage,
+    LayoutGetItemsMessage,
 )
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.padstack_inst_term_pb2 import (
@@ -129,6 +142,53 @@ def arc_message(arc):
     if isinstance(arc, tuple) and len(arc) == 2:
         return ArcMessage(start=point_message(arc[0]), end=point_message(arc[1]))
     raise RuntimeError("arc must be of a tuple containing start and end point.")
+
+
+def layout_get_items_message(layout, item_type):
+    """Convert to LayoutGetItemsMessage."""
+    return LayoutGetItemsMessage(layout=layout.msg, obj_type=item_type.value)
+
+
+def int_property_message(target, value):
+    """Convert to IntPropertyMessage."""
+    return IntPropertyMessage(target=target.msg, value=value)
+
+
+def bool_property_message(target, value):
+    """Convert to BoolPropertyMessage."""
+    return BoolPropertyMessage(target=target.msg, value=value)
+
+
+def string_property_message(target, value):
+    """Convert to StringPropertyMessage."""
+    return StringPropertyMessage(target=target.msg, value=value)
+
+
+def pointer_property_message(target, value):
+    """Convert to PointerPropertyMessage."""
+    return PointerPropertyMessage(target=target.msg, value=value.msg)
+
+
+def layout_expanded_extent_message(
+    layout, nets, extent, exp, exp_unitless, use_round_corner, num_increments
+):
+    """Convert to LayoutExpandedExtentMessage."""
+    return LayoutExpandedExtentMessage(
+        layout=layout.msg,
+        nets=edb_obj_collection_message(nets),
+        etype=extent.value,
+        expansion_factor=exp,
+        expansion_factor_unitless=exp_unitless,
+        use_round_corner=use_round_corner,
+        num_increments=num_increments,
+    )
+
+
+def layout_convert_p2v_message(layout, primitives, is_pins):
+    """Convert to LayoutConvertP2VMessage."""
+    return LayoutConvertP2VMessage(
+        layout=layout.msg, primitives=edb_obj_collection_message(primitives), is_pins=is_pins
+    )
 
 
 def point_term_params_message(layer, point):

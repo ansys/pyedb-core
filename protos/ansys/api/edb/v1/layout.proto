@@ -10,6 +10,8 @@ import "edb_messages.proto";
 import "edb_iterator.proto";
 import "layer_collection.proto";
 import "refs.proto";
+import "layout_obj.proto";
+import "edb_defs.proto";
 
 // Cell service definition
 service LayoutService {
@@ -20,10 +22,34 @@ service LayoutService {
   rpc GetLayerCollection (EDBObjMessage) returns (EDBObjMessage) {}
 
   // Sets the layer collection of the layout
-  rpc SetLayerCollection (SetLayerCollectionMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetLayerCollection (SetLayerCollectionMessage) returns (google.protobuf.Empty) {}
 
-  // Sets the type of layer collection of the layout
-  rpc SetLayerCollectionType (SetLayerCollectionTypeMessage) returns (google.protobuf.BoolValue) {}
+  // Gets the layout objects that belong to the layout
+  rpc GetItems (LayoutGetItemsMessage) returns (EDBObjCollectionMessage) {}
+
+  // Get expanded extent from nets
+  rpc GetExpandedExtentFromNets (LayoutExpandedExtentMessage) returns (EDBObjMessage) {}
+
+  // Convert primitives to via
+  rpc ConvertPrimitivesToVias(LayoutConvertP2VMessage) returns (google.protobuf.Empty) {}
+
+  // Gets if the port reference terminals are connected
+  rpc ArePortReferenceTerminalsConnected (EDBObjMessage) returns (LayoutPortRefTerminalsConnectedMessage) {}
+
+  // Gets list of zone primitives
+  rpc GetZonePrimitives (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  // Set fixed zone primitives
+  rpc SetFixedZonePrimitives (PointerPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get fixed zone primitive
+  rpc GetFixedZonePrimitive (EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get board bend definitions
+  rpc GetBoardBendDefs (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  // Synchronize bend manager
+  rpc SynchronizeBendManager (EDBObjMessage) returns (google.protobuf.Empty) {}
 
   // Gets an iterator of the primitives in the layout
   rpc GetPrimitiveIter(EDBObjMessage) returns (EDBIteratorMessage) {}
@@ -34,12 +60,33 @@ message SetLayerCollectionMessage {
   EDBObjMessage layer_collection = 2;
 }
 
-message SetLayerCollectionTypeMessage {
-  EDBObjMessage layout = 1;
-  LayerCollectionMode mode = 2;
-}
-
 message LayerLookupMessage {
   EDBObjMessage layout = 1;
   LayerRefMessage layer = 2;
+}
+
+message LayoutGetItemsMessage {
+  EDBObjMessage layout = 1;
+  LayoutObjType obj_type = 2;
+}
+
+message LayoutExpandedExtentMessage {
+  EDBObjMessage layout = 1;
+  EDBObjCollectionMessage nets = 2;
+  GeometryExtentType etype = 3;
+  float expansion_factor = 4;
+  bool expansion_factor_unitless = 5;
+  bool use_round_corner = 6;
+  uint64 num_increments = 7;
+}
+
+message LayoutConvertP2VMessage {
+  EDBObjMessage layout = 1;
+  EDBObjCollectionMessage primitives = 2;
+  bool is_pins = 3;
+}
+
+message LayoutPortRefTerminalsConnectedMessage {
+  bool is_connected = 1;
+  repeated google.protobuf.StringValue error_ports = 2;
 }

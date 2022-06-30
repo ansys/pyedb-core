@@ -24,13 +24,20 @@ class CellType(Enum):
     FOOTPRINT_CELL = edb_defs_pb2.FOOTPRINT_CELL
 
 
+class DesignMode(Enum):
+    """Enum representing possible modes."""
+
+    GENERAL = edb_defs_pb2.GENERAL_MODE
+    IC = edb_defs_pb2.IC_MODE
+
+
 # dict representing options of HFSS Extents available via API.
 HFSS_EXTENT_ARGS = {
-    "dielectric": messages.hfss_extent_info_message,
-    "airbox_horizontal": messages.hfss_extent_info_message,
-    "airbox_vertical": messages.hfss_extent_info_message,
-    "airbox_vertical_positive": messages.hfss_extent_info_message,
-    "airbox_vertical_negative": messages.hfss_extent_info_message,
+    "dielectric": messages.hfss_extent_message,
+    "airbox_horizontal": messages.hfss_extent_message,
+    "airbox_vertical": messages.hfss_extent_message,
+    "airbox_vertical_positive": messages.hfss_extent_message,
+    "airbox_vertical_negative": messages.hfss_extent_message,
     "airbox_truncate_at_ground": messages.bool_message,
 }
 
@@ -247,9 +254,9 @@ class Cell(ObjBase, _VariableServer):
 
         Returns
         -------
-        int
+        DesignMode
         """
-        return self.__stub.GetDesignMode(self.msg)
+        return DesignMode(self.__stub.GetDesignMode(self.msg).mode)
 
     @design_mode.setter
     def design_mode(self, value):
@@ -257,9 +264,9 @@ class Cell(ObjBase, _VariableServer):
 
         Parameters
         ----------
-        value : int
+        value : DesignMode
         """
-        self.__stub.SetDesignMode(messages.int_property_message(self, value))
+        self.__stub.SetDesignMode(messages.design_mode_property_message(self, value))
 
     @property
     def hfss_extent_info(self):

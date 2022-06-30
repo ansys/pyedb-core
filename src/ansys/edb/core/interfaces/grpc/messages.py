@@ -12,15 +12,18 @@ from ansys.api.edb.v1.cell_pb2 import (
 )
 from ansys.api.edb.v1.edb_messages_pb2 import (
     BoolPropertyMessage,
+    DesignModePropertyMessage,
     EDBObjCollectionMessage,
     EDBObjMessage,
     GetProductPropertyIdsMessage,
     GetProductPropertyMessage,
+    HfssExtentMessage,
     IntPropertyMessage,
     PointerPropertyMessage,
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
     StringPropertyMessage,
+    TemperatureSettingsMessage,
     ValueMessage,
 )
 from ansys.api.edb.v1.edge_term_pb2 import (
@@ -37,7 +40,6 @@ from ansys.api.edb.v1.layout_pb2 import (
     LayoutExpandedExtentMessage,
     LayoutGetItemsMessage,
 )
-from ansys.api.edb.v1.hfss_extent_info_pb2 import HfssExtentInfoMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.padstack_inst_term_pb2 import (
     PadstackInstTermCreationsMessage,
@@ -75,7 +77,6 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
-from ansys.api.edb.v1.temperature_settings_pb2 import TemperatureSettingsMessage
 from ansys.api.edb.v1.term_inst_pb2 import TermInstCreationMessage
 from ansys.api.edb.v1.term_inst_term_pb2 import (
     TermInstTermCreationMessage,
@@ -194,6 +195,7 @@ def layout_convert_p2v_message(layout, primitives, is_pins):
     """Convert to LayoutConvertP2VMessage."""
     return LayoutConvertP2VMessage(
         layout=layout.msg, primitives=edb_obj_collection_message(primitives), is_pins=is_pins
+    )
 
 
 def temperature_settings_message(settings):
@@ -205,15 +207,20 @@ def temperature_settings_message(settings):
     )
 
 
-def hfss_extent_info_message(val):
+def hfss_extent_message(val):
     """Convert to ExtentMessage."""
-    if type(val) == float:
+    if type(val) == float or type(val) == int:
         value = val
         absolute = False
     else:
         value, absolute = val
 
-    return HfssExtentInfoMessage(value=value_message(value), absolute=absolute)
+    return HfssExtentMessage(value=value, absolute=absolute)
+
+
+def design_mode_property_message(target, mode):
+    """Convert to DesignModePropertyMessage."""
+    return DesignModePropertyMessage(target=target, mode=mode.value)
 
 
 def cell_find_message(database, cell_type, cell_name=None, cell_id=None):

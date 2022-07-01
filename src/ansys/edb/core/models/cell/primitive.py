@@ -1367,7 +1367,7 @@ class Bondwire(Primitive):
         -------
         Value
         """
-        return messages.value_message_to_value(get_bondwire_stub().GetCrossSectionHeight(self.msg))
+        return Value(get_bondwire_stub().GetCrossSectionHeight(self.msg))
 
     @cross_section_height.setter
     @handle_grpc_exception
@@ -1423,10 +1423,10 @@ class Bondwire(Primitive):
         """
         traj_msg = get_bondwire_stub().GetTraj(self.msg)
         return (
-            messages.value_message_to_value(traj_msg.x1),
-            messages.value_message_to_value(traj_msg.y1),
-            messages.value_message_to_value(traj_msg.x2),
-            messages.value_message_to_value(traj_msg.y2),
+            Value(traj_msg.x1),
+            Value(traj_msg.y1),
+            Value(traj_msg.x2),
+            Value(traj_msg.y2),
         )
 
     @traj.setter
@@ -1455,7 +1455,7 @@ class Bondwire(Primitive):
         Value
         """
         val = get_bondwire_stub().GetWidthValue(self.msg)
-        return messages.value_message_to_value(val)
+        return Value(val)
 
     @width.setter
     @handle_grpc_exception

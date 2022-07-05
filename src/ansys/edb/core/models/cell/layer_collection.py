@@ -415,7 +415,7 @@ class LayerCollection(ObjBase):
         prod_id : ProductIdType
 
         Returns
-        ------
+        -------
         list[int]
         """
         attr_ids = (
@@ -447,7 +447,7 @@ class LayerCollection(ObjBase):
         merged_mat_name : str
 
         Returns
-        ------
+        -------
         StackupLayer
         """
         return StackupLayer(
@@ -470,7 +470,7 @@ class LayerCollection(ObjBase):
         """Get a list of all zones in the LayerCollection.
 
         Returns
-        ------
+        -------
         list[int]
         """
         zones = get_layer_collection_stub().GetZoneIds(self.msg).zones

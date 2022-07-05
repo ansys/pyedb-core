@@ -1,10 +1,29 @@
 """Value Class."""
 
+from typing import Union
+
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
 import ansys.api.edb.v1.value_pb2 as value_msgs
 
 from ..session import get_value_stub
 from ..utility.edb_errors import handle_grpc_exception
+
+
+def value_like(val):
+    """Take a value implicitly convertible to Value and return as Value.
+
+    Parameters
+    ----------
+    val : ValueLikeT
+
+    Returns
+    -------
+    Value
+    """
+    if isinstance(val, Value):
+        return val
+    elif type(val) in [int, float, complex, str]:
+        return Value(val)
 
 
 class Value:
@@ -34,6 +53,22 @@ class Value:
             self.msg.constant.imag = val.imag
         else:
             assert False, "Invalid Value"
+
+    def __eq__(self, other):
+        """Compare if two values are equivalent by evaluated value.
+
+        Parameters
+        ----------
+        other : Value
+
+        Returns
+        -------
+        bool
+        """
+        if isinstance(other, self.__class__):
+            return self.double == other.double
+
+        return False
 
     @property
     def is_parametric(self):
@@ -107,3 +142,6 @@ class Value:
             return str(self.msg.constant.real)
         else:
             return str(complex(self.msg.constant.real, self.msg.constant.imag))
+
+
+ValueLikeT = Union[int, float, complex, str, Value]

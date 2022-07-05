@@ -95,12 +95,6 @@ from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 from ansys.edb.core.utility.value import Value
 
 
-def optional(params, key, value, func):
-    """Evaluate a function is the value is present."""
-    if value is not None:
-        params[key] = func(value)
-
-
 def str_message(s: str):
     """Convert to StringValue."""
     return StringValue(value=s) if s is not None else None

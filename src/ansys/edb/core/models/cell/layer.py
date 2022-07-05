@@ -76,11 +76,6 @@ class LayerVisibility(Enum):
 class Layer(ObjBase):
     """Base class representing a layer."""
 
-    def __init__(self, msg):
-        """Initialize a layer instance."""
-        super().__init__(msg)
-        self._is_owner = False
-
     @staticmethod
     @handle_grpc_exception
     def _create(msg):

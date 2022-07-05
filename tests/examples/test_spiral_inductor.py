@@ -67,7 +67,7 @@ class BaseExample:
         print("creating default cell")
         self.cell = Cell.create(self.db, CellType.CIRCUIT_CELL, "EMDesign1")
         print("assigning default layout")
-        self.layout = self.cell.get_layout()
+        self.layout = self.cell.layout
         return db
 
     def __init__(self):
@@ -134,7 +134,7 @@ class BaseExample:
         return PointTerminal.create(self.layout, self.net(net_name), layer_name, name, x, y)
 
     def set_hfss_extents(self, **extents):
-        self.cell.set_hfss_extents(**extents)
+        self.cell.set_hfss_extent_info(**extents)
 
 
 def um(val, val2=None):
@@ -316,7 +316,7 @@ class SpiralInductor(BaseExample):
         lc.add_layers(layers)
         # weighted_capacitance = 2
         # lc.simplify_dielectrics_for_phi(db, 5e-6, weighted_capacitance)
-        self.layout.set_layer_collection(lc)
+        self.layout.layer_collection = lc
         return lc
 
     def create_layers(self):

@@ -4,12 +4,9 @@ syntax = "proto3";
 
 package ansys.api.edb.v1;
 
+import "edb_defs.proto";
 import "edb_messages.proto";
 
-enum CellType {
-  CIRCUIT_CELL = 0;
-  FOOTPRINT_CELL = 1;
-}
 
 service CellService {
   // Creates a cell
@@ -18,8 +15,98 @@ service CellService {
   // Gets the layout of the provided cell
   rpc GetLayout (EDBObjMessage) returns (EDBObjMessage) {}
 
-  // Sets HFSS extents on cell
-  rpc SetHfssExtents (CellHfssExtentsMessage) returns (google.protobuf.BoolValue) {}
+  // Get the flattened layout
+  rpc GetFlattenedLayout (EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Find cell by name or id
+  rpc Find (CellFindMessage) returns (EDBObjMessage) {}
+
+  // Delete a cell
+  rpc Delete (EDBObjMessage) returns (google.protobuf.Empty) {}
+
+  // Get the database
+  rpc GetDatabase (EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get whether the cell is of type footprint
+  rpc IsFootprint (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Get whether the cell is a black box
+  rpc IsBlackBox (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set whether the cell is a black box
+  rpc SetBlackBox (BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get whether the cell supresses pads
+  rpc GetSuppressPads (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set whether the cell supresses pads
+  rpc SetSuppressPads (BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get whether the anti pads is always on
+  rpc GetAntiPadsAlwaysOn (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set whether the anti pads is always on
+  rpc SetAntiPadsAlwaysOn (BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get the option for anti pads
+  rpc GetAntiPadsOption (EDBObjMessage) returns (google.protobuf.Int64Value) {}
+
+  // Set the option for anti pads
+  rpc SetAntiPadsOption (IntPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get whether the cell is a symbolic footprint
+  rpc IsSymbolicFootprint (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Get the name of the cell
+  rpc GetName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  // Set the name of the cell
+  rpc SetName (StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get the cell's design mode
+  rpc GetDesignMode (EDBObjMessage) returns (DesignModeMessage) {}
+
+  // Set the cell's design mode
+  rpc SetDesignMode (DesignModePropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get HFSS extent info
+  rpc GetHfssExtentInfo (EDBObjMessage) returns (HfssExtentInfoMessage) {}
+
+  // Set HFSS extent info
+  rpc SetHfssExtentInfo (CellSetHfssExtentsMessage) returns (google.protobuf.Empty) {}
+
+  // Get temperature settings
+  rpc GetTemperatureSettings (EDBObjMessage) returns (TemperatureSettingsMessage) {}
+
+  // Set temperature settings
+  rpc SetTemperatureSettings (CellSetTemperatureSettingsMessage) returns (google.protobuf.Empty) {}
+
+  // Cut out a polygon
+  rpc CutOut (CellCutOutMessage) returns (EDBObjMessage) {}
+
+  // Get a list of property ids.
+  rpc GetProductPropertyIds (GetProductPropertyIdsMessage) returns (ProductPropertyIdsMessage) {}
+
+  // Get product properies
+  rpc GetProductProperty (GetProductPropertyMessage) returns (google.protobuf.StringValue) {}
+
+  // Set a product property value
+  rpc SetProductProperty (SetProductPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Add a simulation setup
+  rpc AddSimulationSetup (CellAddSimSetupMessage) returns (google.protobuf.Empty) {}
+
+  // Delete a simulation setup by name
+  rpc DeleteSimulationSetup (StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get simulation setups
+  rpc GetSimulationSetups (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  // Generate auto HFSS regions
+  rpc GenerateAutoHFSSRegions (EDBObjMessage) returns (google.protobuf.Empty) {}
+
+  // Generate via smart box
+  rpc GenerateViaSmartBox (StringPropertyMessage) returns (EDBObjCollectionMessage) {}
 }
 
 message CellCreationMessage {
@@ -28,16 +115,40 @@ message CellCreationMessage {
   string name = 3;
 }
 
-message ExtentMessage {
-  ValueMessage value = 1;
-  bool absolute = 2;
+message CellSetHfssExtentsMessage {
+  EDBObjMessage cell = 1;
+  oneof optional_dielectric { HfssExtentMessage dielectric = 2; }
+  oneof optional_airbox_horizontal { HfssExtentMessage airbox_horizontal = 3; }
+  oneof optional_airbox_vertical_positive { HfssExtentMessage airbox_vertical_positive = 4; }
+  oneof optional_airbox_vertical_negative { HfssExtentMessage airbox_vertical_negative = 5; }
+  oneof optional_airbox_truncate_at_ground { google.protobuf.BoolValue airbox_truncate_at_ground = 6; }
 }
 
-message CellHfssExtentsMessage {
+message CellCutOutMessage {
   EDBObjMessage cell = 1;
-  oneof optional_dielectric { ExtentMessage dielectric = 2; }
-  oneof optional_airbox_horizontal { ExtentMessage airbox_horizontal = 3; }
-  oneof optional_airbox_vertical_positive { ExtentMessage airbox_vertical_positive = 4; }
-  oneof optional_airbox_vertical_negative { ExtentMessage airbox_vertical_negative = 5; }
-  oneof optional_airbox_truncate_at_ground { google.protobuf.BoolValue airbox_truncate_at_ground = 6; }
+  EDBObjCollectionMessage included_nets = 2;
+  EDBObjCollectionMessage clipped_nets = 3;
+  EDBObjMessage clipping_polygon = 4;
+  bool clean_clipping = 5;
+}
+
+message CellFindMessage {
+  EDBObjMessage database = 1;
+  CellType type = 2;
+  oneof query {
+    string name = 3;
+	sint64 id = 4;
+  }
+}
+
+message CellAddSimSetupMessage {
+  EDBObjMessage cell = 1;
+  string name = 2;
+  string simsetup = 3;
+  SimulationSetupType setup_type = 4;
+}
+
+message CellSetTemperatureSettingsMessage {
+  EDBObjMessage cell = 1;
+  TemperatureSettingsMessage temp_settings = 2;
 }

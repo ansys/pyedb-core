@@ -8,7 +8,6 @@ package ansys.api.edb.v1;
 // Imports
 import "edb_messages.proto";
 import "edb_iterator.proto";
-import "layer_collection.proto";
 import "refs.proto";
 import "layout_obj.proto";
 import "edb_defs.proto";

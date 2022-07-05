@@ -5,7 +5,7 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "database.proto";
+import "edb_defs.proto";
 import "refs.proto";
 import "rlc.proto";
 import "port_post_processing_prop.proto";

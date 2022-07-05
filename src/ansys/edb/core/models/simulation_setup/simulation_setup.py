@@ -2,25 +2,25 @@
 
 from enum import Enum
 
+import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import ansys.api.edb.v1.simulation_setup_pb2 as simulation_setup_pb2
 
 from ...interfaces.grpc import messages
 from ...session import get_simulation_setup_stub
 from ...utility.edb_errors import handle_grpc_exception
 from ..base import ObjBase
-from ..cell.cell import Cell
 from .settings.simulation_setup_info import SimulationSetupInfo
 
 
 class SimulationSetupType(Enum):
     """Enum representing available setup types."""
 
-    HFSS = simulation_setup_pb2.HFSS
+    HFSS = edb_defs_pb2.HFSS
 
 
 class _QueryBuilder:
     @staticmethod
-    def create(cell: Cell, name: str, sim_type: SimulationSetupType):
+    def create(cell, name: str, sim_type: SimulationSetupType):
         return simulation_setup_pb2.SimulationSetupCreationMessage(
             cell=cell.msg, simulation_setup_name=name, simulation_setup_type=sim_type.value
         )

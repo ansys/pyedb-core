@@ -59,11 +59,11 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        mode : LayerCollectionMode
+        mode : LayerCollectionMode, optional
 
         Returns
         -------
-        LayerCollection, optional
+        LayerCollection
         """
         return LayerCollection(
             get_layer_collection_stub().Create(

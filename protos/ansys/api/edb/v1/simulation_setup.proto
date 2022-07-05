@@ -4,15 +4,11 @@ syntax = "proto3";
 
 package ansys.api.edb.v1;
 
+import "edb_defs.proto";
 import "edb_messages.proto";
 import "adaptive_settings.proto";
 import "simulation_setup_info.proto";
 import "simulation_settings.proto";
-
-// Enum for SimulationSetup types
-enum SimulationSetupType {
-  HFSS = 0;
-}
 
 // SimulationSetup service definition
 service SimulationSetupService {

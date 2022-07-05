@@ -7,21 +7,76 @@ package ansys.api.edb.v1;
 import public "google/protobuf/wrappers.proto";
 import public "google/protobuf/empty.proto";
 
+import "edb_defs.proto";
+
+//------------------------------------------------------------------------------
+// Value
+
 message ComplexMessage {
-    double real = 1;
-    double imag = 2;
+  double real = 1;
+  double imag = 2;
 }
 
-// Message representing a Value
 message ValueMessage {
   string text = 1;
-    oneof _val {
+  oneof _val {
     ComplexMessage constant = 2;
-        EDBObjMessage variable_owner = 3;
+	EDBObjMessage variable_owner = 3;
   }
 }
 
-// Message representing an arbitrary edb object
+//------------------------------------------------------------------------------
+// Cell
+
+message DesignModeMessage {
+  DesignMode mode = 1;
+}
+
+message DesignModePropertyMessage {
+  EDBObjMessage target = 1;
+  DesignMode mode = 2;
+}
+
+//------------------------------------------------------------------------------
+// Temperature Settings
+
+message TemperatureSettingsMessage {
+  ValueMessage temperature = 1;
+  bool include_temp_dependence = 2;
+  bool enable_thermal_feedback = 3;
+}
+
+//------------------------------------------------------------------------------
+// HFSS Extents
+
+message HfssExtentMessage {
+  float value = 1;
+  bool absolute = 2;
+}
+
+message HfssExtentInfoMessage {
+  bool use_open_region = 1;
+  HfssExtentsType extent_type = 2;
+  HfssExtentsOpenRegionType open_region_type = 3;
+  EDBObjMessage base_polygon = 4;
+  HfssExtentsType dielectric_extent_type = 5;
+  EDBObjMessage dielectric_base_polygon = 6;
+  HfssExtentMessage extent_size = 7;
+  bool honor_user_dielectric = 8;
+  bool truncate_airbox_at_ground = 9;
+  HfssExtentMessage airbox_horizontal_extent = 10;
+  HfssExtentMessage airbox_vertical_positive_extent = 11;
+  HfssExtentMessage airbox_vertical_negative_extent = 12;
+  bool sync_airbox_vertical_extent = 13;
+  bool is_pml_visible = 14;
+  ValueMessage operating_frequency = 15;
+  ValueMessage radiation_level = 16;
+  bool user_xy_data_extent_for_vertical_expansion = 17;
+}
+
+//------------------------------------------------------------------------------
+// Helpers
+
 message EDBObjMessage {
   uint64 impl_ptr_address = 1;
   uint64 id = 2;
@@ -56,4 +111,29 @@ message StringPropertyMessage {
 message PointerPropertyMessage {
   EDBObjMessage target = 1;
   EDBObjMessage value = 2;
+}
+
+message ProductPropertyIdMessage {
+  ProductIdType product_id = 1;
+  uint64 attribute_id = 2;
+}
+
+message GetProductPropertyMessage {
+  EDBObjMessage edb_obj = 1;
+  ProductPropertyIdMessage product_prop_id = 2;
+}
+
+message SetProductPropertyMessage {
+  EDBObjMessage edb_obj = 1;
+  ProductPropertyIdMessage product_prop_id = 2;
+  string property_value = 3;
+}
+
+message GetProductPropertyIdsMessage {
+  EDBObjMessage edb_obj = 1;
+  ProductIdType product_id = 2;
+}
+
+message ProductPropertyIdsMessage {
+  repeated uint64 ids = 1;
 }

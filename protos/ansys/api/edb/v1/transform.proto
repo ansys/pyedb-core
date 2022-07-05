@@ -16,3 +16,7 @@ message TransformMessage {
   ValueMessage offset_y = 5;
 }
 
+message TransformPropertyMessage {
+  EDBObjMessage target = 1;
+  TransformMessage transf = 2;
+}

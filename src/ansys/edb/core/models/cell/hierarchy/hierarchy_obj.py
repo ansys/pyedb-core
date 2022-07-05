@@ -2,7 +2,6 @@
 
 from ....interfaces.grpc import messages
 from ....session import StubAccessor, StubType
-from ....utility.edb_errors import handle_grpc_exception
 from ....utility.transform import Transform
 from ....utility.value import Value
 from ...definition.component_def import ComponentDef
@@ -15,8 +14,8 @@ class HierarchyObj(ConnObj):
 
     __stub = StubAccessor(StubType.hierarchy_obj)
 
-    @handle_grpc_exception
-    def get_transform(self):
+    @property
+    def transform(self):
         """Get transform.
 
         Returns
@@ -32,18 +31,18 @@ class HierarchyObj(ConnObj):
             transform_msg.offset_y,
         )
 
-    @handle_grpc_exception
-    def set_transform(self, transform):
+    @transform.setter
+    def transform(self, value):
         """Set transform.
 
         Parameters
         ----------
-        transform : Transform
+        value : Transform
         """
-        return self.__stub.SetTransform(messages.transform_property_message(self, transform))
+        return self.__stub.SetTransform(messages.transform_property_message(self, value))
 
-    @handle_grpc_exception
-    def get_name(self):
+    @property
+    def name(self):
         """Get name of the hierarchy object.
 
         Returns
@@ -52,18 +51,18 @@ class HierarchyObj(ConnObj):
         """
         return self.__stub.GetName(self.msg).value
 
-    @handle_grpc_exception
-    def set_name(self, name):
+    @name.setter
+    def name(self, value):
         """Set name of the hierarchy object.
 
         Parameters
         ----------
-        name : str
+        value : str
         """
-        return self.__stub.SetName(messages.edb_obj_name_message(self, name))
+        return self.__stub.SetName(messages.edb_obj_name_message(self, value))
 
-    @handle_grpc_exception
-    def get_component(self):
+    @property
+    def component(self):
         """Get underlying component on the hierarchy object.
 
         Returns
@@ -72,8 +71,8 @@ class HierarchyObj(ConnObj):
         """
         return ComponentDef(self.__stub.GetComponent(self.msg))
 
-    @handle_grpc_exception
-    def get_placement_layer(self):
+    @property
+    def placement_layer(self):
         """Get placement layer.
 
         Returns
@@ -82,39 +81,39 @@ class HierarchyObj(ConnObj):
         """
         return Layer(self.__stub.GetPlacementLayer(self.msg))
 
-    @handle_grpc_exception
-    def set_placement_layer(self, player):
+    @placement_layer.setter
+    def placement_layer(self, value):
         """Set placement layer.
 
         Parameters
         ----------
-        player : layer
+        value : Layer
         """
-        return self.__stub.SetPlacementLayer(messages.pointer_property_message(self, player))
+        return self.__stub.SetPlacementLayer(messages.pointer_property_message(self, value))
 
-    @handle_grpc_exception
-    def get_location(self):
+    @property
+    def location(self):
         """Get location.
 
         Returns
         -------
-        pair of values
+        [value x, value y]
         """
         pnt_msg = self.__stub.GetLocation(self.msg)
         return [Value(pnt_msg.x), Value(pnt_msg.y)]
 
-    @handle_grpc_exception
-    def set_location(self, point):
+    @location.setter
+    def location(self, value):
         """Set location.
 
         Parameters
         ----------
-        point : pair of values
+        value : [value x, value y]
         """
-        return self.__stub.SetLocation(messages.point_property_message(self, point))
+        return self.__stub.SetLocation(messages.point_property_message(self, value))
 
-    @handle_grpc_exception
-    def get_solve_independent_preference(self):
+    @property
+    def solve_independent_preference(self):
         """Get solve independent preference.
 
         Returns
@@ -123,12 +122,14 @@ class HierarchyObj(ConnObj):
         """
         return self.__stub.GetSolveIndependentPreference(self.msg).value
 
-    @handle_grpc_exception
-    def set_solve_independent_preference(self, ind):
+    @solve_independent_preference.setter
+    def solve_independent_preference(self, value):
         """Set solve independent preference.
 
         Parameters
         ----------
-        ind : bool
+        value : bool
         """
-        return self.__stub.SetSolveIndependentPreference(messages.bool_property_message(self, ind))
+        return self.__stub.SetSolveIndependentPreference(
+            messages.bool_property_message(self, value)
+        )

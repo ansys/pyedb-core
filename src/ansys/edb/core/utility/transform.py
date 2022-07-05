@@ -13,11 +13,11 @@ class Transform:
 
         Parameters
         ----------
-        scale - str, int, float, complex, ValueMessage
-        angle - str, int, float, complex, ValueMessage
-        mirror - bool
-        offset_x - str, int, float, complex, ValueMessage
-        offset_y - str, int, float, complex, ValueMessage
+        scale - scale parameter
+        angle - rotation angle, specified CCW in radians.
+        mirror - mirror about Y-axis
+        offset_x - X offset
+        offset_y - Y offset
         """
         self.scale = Value(scale)
         self.angle = Value(angle)

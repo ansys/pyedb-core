@@ -126,7 +126,7 @@ class BaseExample:
         )
 
     def create_point_terminal(self, net_name, name, x, y, layer_name):
-        return PointTerminal.create(self.layout, self.net(net_name), layer_name, name, x, y)
+        return PointTerminal.create(self.layout, self.net(net_name), layer_name, name, (x, y))
 
     def set_hfss_extents(self, **extents):
         self.cell.set_hfss_extent_info(**extents)

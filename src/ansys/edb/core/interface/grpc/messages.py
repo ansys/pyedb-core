@@ -63,6 +63,8 @@ from ansys.api.edb.v1.pin_group_term_pb2 import (
 from ansys.api.edb.v1.point_data_pb2 import (
     SENSE_CCW,
     PathPointsMessage,
+    PointDataRotateMessage,
+    PointDataWithLineMessage,
     PointMessage,
     PointPropertyMessage,
     PointsMessage,
@@ -97,6 +99,7 @@ from ansys.api.edb.v1.term_pb2 import (
 from ansys.api.edb.v1.transform_pb2 import TransformMessage, TransformPropertyMessage
 from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 
+from ansys.edb.core.utility import conversions
 from ansys.edb.core.utility.value import Value
 
 
@@ -137,15 +140,29 @@ def points_data_message(points):
 
 def point_message(point):
     """Convert to PointMessage."""
-    if point is None:
-        return None
-    else:
-        return PointMessage(x=value_message(point[0]), y=value_message(point[1]))
+    point = conversions.to_point(point)
+    return PointMessage(x=value_message(point.x), y=value_message(point.y))
 
 
 def point_property_message(target, point):
     """Convert to PointPropertyMessage."""
     return PointPropertyMessage(target=target.msg, point=point_message(point))
+
+
+def point_data_rotate_message(point, center, angle):
+    """Convert to PointRotateMessage."""
+    return PointDataRotateMessage(
+        point=point_message(point), rotation_center=point_message(center), angle=angle
+    )
+
+
+def point_data_with_line_message(point, line_start, line_end):
+    """Convert to PointDataWithLineMessage."""
+    return PointDataWithLineMessage(
+        point=point_message(point),
+        line_start=point_message(line_start),
+        line_end=point_message(line_end),
+    )
 
 
 def arc_message(arc):
@@ -306,13 +323,13 @@ def point_term_set_params_message(term, layer, point):
     return PointTermSetParamsMessage(term=term.msg, params=point_term_params_message(layer, point))
 
 
-def point_term_creation_message(layout, net, layer, name, x, y):
+def point_term_creation_message(layout, net, layer, name, point):
     """Convert to PointTermCreationMessage."""
     return PointTermCreationMessage(
         layout=layout.msg,
         net=net_ref_message(net),
         name=name,
-        params=point_term_params_message(layer, (x, y)),
+        params=point_term_params_message(layer, point),
     )
 
 

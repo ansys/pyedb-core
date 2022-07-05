@@ -36,6 +36,7 @@ from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTermina
 from ansys.api.edb.v1.path_pb2_grpc import PathServiceStub
 from ansys.api.edb.v1.pin_group_pb2_grpc import PinGroupServiceStub
 from ansys.api.edb.v1.pin_group_term_pb2_grpc import PinGroupTerminalServiceStub
+from ansys.api.edb.v1.point_data_pb2_grpc import PointDataServiceStub
 from ansys.api.edb.v1.point_term_pb2_grpc import PointTerminalServiceStub
 from ansys.api.edb.v1.polygon_data_pb2_grpc import PolygonDataServiceStub
 from ansys.api.edb.v1.polygon_pb2_grpc import PolygonServiceStub
@@ -270,6 +271,7 @@ class StubType(Enum):
     hierarchy_obj = HierarchyObjectServiceStub
     group = GroupServiceStub
     layer_map = LayerMapServiceStub
+    point_data = PointDataServiceStub
 
 
 # Dictionary for storing local server error code exception messages
@@ -545,16 +547,6 @@ def get_apd_bondwire_def_stub():
     ApdBondwireDefServiceStub
     """
     return StubAccessor(StubType.apd_bondwire_def).__get__()
-
-
-def get_value_stub():
-    """Get Value stub.
-
-    Returns
-    -------
-    ValueServiceStub
-    """
-    return StubAccessor(StubType.value).__get__()
 
 
 def get_variable_server_stub():

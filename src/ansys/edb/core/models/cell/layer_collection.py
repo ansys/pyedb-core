@@ -52,10 +52,6 @@ def _layer_collection_zone_message(layer_collection, zone):
 class LayerCollection(ObjBase):
     """Layer Collection."""
 
-    def __init__(self, msg):
-        """Initialize a layer collection."""
-        super().__init__(msg)
-
     @staticmethod
     @handle_grpc_exception
     def create(mode=LayerCollectionMode.LAMINATE):
@@ -67,7 +63,7 @@ class LayerCollection(ObjBase):
 
         Returns
         -------
-        LayerCollection
+        LayerCollection, optional
         """
         return LayerCollection(
             get_layer_collection_stub().Create(
@@ -131,12 +127,12 @@ class LayerCollection(ObjBase):
         Parameters
         ----------
         control_file_path : str
-        schema_file_path : str
+        schema_file_path : str, optional
         """
         import_msg = layer_collection_pb2.ImportFromControlFileMessage(
             layer_collection=self.msg, control_file_path=control_file_path
         )
-        if schema_file_path:
+        if schema_file_path is not None:
             import_msg.schema_path = schema_file_path
         get_layer_collection_stub().ImportFromControlFile(import_msg)
 
@@ -145,12 +141,12 @@ class LayerCollection(ObjBase):
         add_layer_msg = layer_collection_pb2.AddLayerMessage(
             layer_collection=self.msg, layer=layer.msg
         )
-        if above_below:
+        if above_below is not None:
             above_below_msg = layer_collection_pb2.AddLayerAboveBelowMessage(
                 above_below_layer_name=above_below[0], add_above=above_below[1]
             )
             add_layer_msg.above_below_msg.CopyFrom(above_below_msg)
-        elif add_top:
+        elif add_top is not None:
             add_layer_msg.add_top = add_top
         return Layer._create(get_layer_collection_stub().AddLayer(add_layer_msg))
 
@@ -311,10 +307,7 @@ class LayerCollection(ObjBase):
             elif layer_type_set == LayerTypeSet.DIELECTRIC_LAYER_SET:
                 return [LayerType.DIELECTRIC_LAYER]
             elif layer_type_set == LayerTypeSet.NON_STACKUP_LAYER_SET:
-                return [
-                    layer_type
-                    for layer_type in list(LayerType)[LayerType.AIRLINES_LAYER.value : -2]
-                ]
+                return list(LayerType)[LayerType.AIRLINES_LAYER.value : -2]
             else:
                 return []
 
@@ -514,7 +507,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        copy_zone : int
+        copy_zone : int, optional
             If valid the new zone is inserted as a copy of the specified
             zone, otherwise the new zone is empty
 
@@ -550,8 +543,8 @@ class LayerCollection(ObjBase):
         Parameters
         ----------
         database : Database
-        layer_thickness_thresh : float
-        merging_method : DielectricMergingMethod
+        layer_thickness_thresh : float, optional
+        merging_method : DielectricMergingMethod, optional
 
         Returns
         ------

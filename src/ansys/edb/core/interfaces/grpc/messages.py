@@ -15,6 +15,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     DesignModePropertyMessage,
     EDBObjCollectionMessage,
     EDBObjMessage,
+    EDBObjNameMessage,
     GetProductPropertyIdsMessage,
     GetProductPropertyMessage,
     HfssExtentMessage,
@@ -61,6 +62,7 @@ from ansys.api.edb.v1.point_data_pb2 import (
     SENSE_CCW,
     PathPointsMessage,
     PointMessage,
+    PointPropertyMessage,
     PointsMessage,
 )
 from ansys.api.edb.v1.point_term_pb2 import (
@@ -90,6 +92,7 @@ from ansys.api.edb.v1.term_pb2 import (
     TermSetRefMessage,
     TermSetSolverOptionMessage,
 )
+from ansys.api.edb.v1.transform_pb2 import TransformMessage, TransformPropertyMessage
 from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 
 from ansys.edb.core.utility.value import Value
@@ -138,6 +141,11 @@ def point_message(point):
         return PointMessage(x=value_message(point[0]), y=value_message(point[1]))
 
 
+def point_property_message(target, point):
+    """Convert to PointPropertyMessage."""
+    return PointPropertyMessage(target=target.msg, point=point_message(point))
+
+
 def arc_message(arc):
     """Convert to ArcMessage."""
     if isinstance(arc, tuple) and len(arc) == 2:
@@ -163,6 +171,30 @@ def string_property_message(target, value):
 def pointer_property_message(target, value):
     """Convert to PointerPropertyMessage."""
     return PointerPropertyMessage(target=target.msg, value=value.msg)
+
+
+def edb_obj_name_message(obj, name):
+    """Convert to EDBObjNameMessage."""
+    return EDBObjNameMessage(target=edb_obj_message(obj), name=name)
+
+
+def transform_message(transform):
+    """Convert to TransformMessage."""
+    if transform is None:
+        return None
+    else:
+        return TransformMessage(
+            scale=value_message(transform.scale),
+            angle=value_message(transform.angle),
+            mirror=transform.mirror,
+            offset_x=value_message(transform.offset_x),
+            offset_y=value_message(transform.offset_y),
+        )
+
+
+def transform_property_message(target, transform):
+    """Convert to TransformPropertyMessage."""
+    return TransformPropertyMessage(target=target.msg, transf=transform_message(transform))
 
 
 def layout_get_items_message(layout, item_type):

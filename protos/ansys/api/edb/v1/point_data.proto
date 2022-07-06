@@ -29,3 +29,8 @@ message PointsMessage {
     EDBObjMessage polygon_data = 2;
   }
 }
+
+message PointPropertyMessage {
+  EDBObjMessage target = 1;
+  PointMessage point = 2;
+}

@@ -613,16 +613,6 @@ def get_padstack_def_stub():
     return StubAccessor(StubType.padstack_def).__get__()
 
 
-def get_hierarchy_object_stub():
-    """Get Hierarchy Object stub.
-
-    Returns
-    -------
-    HierarchyObjectServiceStub
-    """
-    return StubAccessor(StubType.hierarchy_obj).__get__()
-
-
 class EDBSessionException(Exception):
     """Base class for exceptions related to EDB sessions."""
 

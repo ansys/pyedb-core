@@ -4,9 +4,11 @@ Nets
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.models.cell.net
+.. currentmodule:: ansys.edb.core.net
 
 .. autosummary::
    :toctree: _autosummary
    
+   ExtendedNet
    Net
+   NetClass

@@ -3,8 +3,8 @@
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage, ValueMessage
 import ansys.api.edb.v1.value_pb2 as value_msgs
 
-from ..session import get_value_stub
-from ..utility.edb_errors import handle_grpc_exception
+from ansys.edb.core.session import get_value_stub
+from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 
 
 class Value:

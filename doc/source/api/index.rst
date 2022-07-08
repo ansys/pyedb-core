@@ -20,6 +20,7 @@ Modules
    database
    definition
    geometry
+   hierarchy
    layer
    layout
    net

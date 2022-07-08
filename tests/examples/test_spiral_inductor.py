@@ -2,34 +2,29 @@ import os
 import platform
 import tempfile
 
-from ansys.edb.core.models.cell.cell import Cell, CellType
-from ansys.edb.core.models.cell.hierarchy.via_group import ViaGroup
-from ansys.edb.core.models.cell.layer import LayerType
-from ansys.edb.core.models.cell.layer_collection import LayerCollection, LayerCollectionMode
-from ansys.edb.core.models.cell.net import Net
-from ansys.edb.core.models.cell.primitive import (
-    Path,
-    PathCornerType,
-    PathEndCapType,
-    Polygon,
-    Rectangle,
+from ansys.edb.core.database import Database
+from ansys.edb.core.definition import MaterialDef, MaterialProperty
+from ansys.edb.core.geometry import PolygonData
+from ansys.edb.core.hierarchy import ViaGroup
+from ansys.edb.core.layer import (
+    LayerCollection,
+    LayerCollectionMode,
+    LayerType,
+    StackupLayer,
+    ViaLayer,
 )
-from ansys.edb.core.models.cell.stackup_layer import StackupLayer
-from ansys.edb.core.models.cell.terminals import PointTerminal
-from ansys.edb.core.models.cell.via_layer import ViaLayer
-from ansys.edb.core.models.database import Database
-from ansys.edb.core.models.definition.material_def import MaterialDef, MaterialProperty
-from ansys.edb.core.models.polygon_data import PolygonData
-from ansys.edb.core.models.simulation_setup.settings.adaptive.adaptive_frequency_data import (
+from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.net import Net
+from ansys.edb.core.primitive import Path, PathCornerType, PathEndCapType, Polygon, Rectangle
+from ansys.edb.core.session import session
+from ansys.edb.core.simulation_setup import (
     AdaptiveFrequencyData,
-)
-import ansys.edb.core.models.simulation_setup.settings.mesh_operation.skin_depth_mesh_operation
-from ansys.edb.core.models.simulation_setup.settings.sweep_data import SweepData
-from ansys.edb.core.models.simulation_setup.simulation_setup import (
     SimulationSetup,
     SimulationSetupType,
+    SweepData,
 )
-from ansys.edb.core.session import session
+import ansys.edb.core.simulation_setup.skin_depth_mesh_operation
+from ansys.edb.core.terminal import PointTerminal
 import settings
 
 
@@ -413,10 +408,7 @@ class SpiralInductor(BaseExample):
             adaptive_settings.adaptive_frequency_data_list + [afd]
         )
 
-        models = ansys.edb.core.models
-        skin_depth_mesh_operation = (
-            models.simulation_setup.settings.mesh_operation.skin_depth_mesh_operation
-        )
+        skin_depth_mesh_operation = ansys.edb.core.simulation_setup.skin_depth_mesh_operation
 
         settings.mesh_operations = [
             skin_depth_mesh_operation.SkinDepthMeshOperation(

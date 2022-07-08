@@ -1,8 +1,7 @@
 import ansys.api.edb.v1.term_pb2 as term_pb2
-import pytest
 
-import ansys.edb.core.interfaces.grpc.messages as messages
-from ansys.edb.core.models.cell.terminals import (
+import ansys.edb.core.interface.grpc.messages as messages
+from ansys.edb.core.terminal import (
     BoundaryType,
     BundleTerminal,
     HfssPIType,
@@ -10,8 +9,8 @@ from ansys.edb.core.models.cell.terminals import (
     SourceTermToGroundType,
     Terminal,
 )
-from ansys.edb.core.models.port_post_processing_prop import PortPostProcessingProp
-from ansys.edb.core.models.rlc import Rlc
+from ansys.edb.core.utility.port_post_processing_prop import PortPostProcessingProp
+from ansys.edb.core.utility.rlc import Rlc
 from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_msgs, equals
 
@@ -20,7 +19,7 @@ from utils.test_utils import create_edb_obj_msgs, equals
 def patch(mocker):
     def _patch(cls):
         mock = mocker.Mock()
-        path = f"ansys.edb.core.models.cell.terminals.{cls.__name__}._{cls.__name__}__stub"
+        path = f"ansys.edb.core.terminal.terminals.{cls.__name__}._{cls.__name__}__stub"
         mocker.patch(path, mock)
         return mock
 

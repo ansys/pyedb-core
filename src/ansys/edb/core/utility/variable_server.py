@@ -4,7 +4,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 import ansys.api.edb.v1.value_pb2 as value_server_msgs
 import ansys.api.edb.v1.variable_server_pb2 as variable_server_msgs
 
-from ..interfaces.grpc.messages import value_message
+from ..interface.grpc.messages import value_message
 from ..session import get_value_stub, get_variable_server_stub
 from ..utility.edb_errors import handle_grpc_exception
 from ..utility.value import Value

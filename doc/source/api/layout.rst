@@ -4,17 +4,17 @@ Layout
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.models.cell.cell
+.. currentmodule:: ansys.edb.core.layout
 
 .. autosummary::
    :toctree: _autosummary
    
    CellType
+   DesignMode
    Cell
-
-.. currentmodule:: ansys.edb.core.models.cell.layout
-
-.. autosummary::
-   :toctree: _autosummary
-   
+   ConnObj
+   DifferentialPair
    Layout
+   LayoutObjType
+   LayoutObj
+   VoltageRegulator

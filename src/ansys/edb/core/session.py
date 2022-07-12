@@ -23,6 +23,7 @@ from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edb_iterator_pb2_grpc import EDBIteratorServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
+from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
@@ -266,6 +267,7 @@ class StubType(Enum):
     variable_server = VariableServerServiceStub
     cell_instance = CellInstanceServiceStub
     hierarchy_obj = HierarchyObjectServiceStub
+    group = GroupServiceStub
 
 
 # Dictionary for storing local server error code exception messages

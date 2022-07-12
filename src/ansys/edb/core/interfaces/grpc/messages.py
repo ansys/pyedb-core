@@ -36,6 +36,8 @@ from ansys.api.edb.v1.edge_term_pb2 import (
     PadEdgeParamsMessage,
     PrimitiveEdgeParamsMessage,
 )
+from ansys.api.edb.v1.group_pb2 import GroupModifyMemberMessage
+from ansys.api.edb.v1.hierarchy_obj_pb2 import ObjectNameInLayoutMessage
 from ansys.api.edb.v1.layout_pb2 import (
     LayoutConvertP2VMessage,
     LayoutExpandedExtentMessage,
@@ -176,6 +178,16 @@ def pointer_property_message(target, value):
 def edb_obj_name_message(obj, name):
     """Convert to EDBObjNameMessage."""
     return EDBObjNameMessage(target=edb_obj_message(obj), name=name)
+
+
+def object_name_in_layout_message(layout, name):
+    """Convert to ObjectNameInLayoutMessage."""
+    return ObjectNameInLayoutMessage(layout=layout.msg, name=name)
+
+
+def group_modify_member_message(target, member):
+    """Convert to GroupModifyMemberMessage."""
+    return GroupModifyMemberMessage(target=target.msg, member=member.msg)
 
 
 def transform_message(transform):

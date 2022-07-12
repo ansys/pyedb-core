@@ -1,0 +1,37 @@
+// Proto file representing the EDB Group class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+import "hierarchy_obj.proto";
+
+// Group service definition
+service GroupService {
+  // Create a group
+  rpc Create(ObjectNameInLayoutMessage) returns (EDBObjMessage) {}
+
+  // Finds a group by name in the given layout
+  rpc FindByName(ObjectNameInLayoutMessage) returns (EDBObjMessage) {}
+
+  // Add a member to the group
+  rpc AddMember(GroupModifyMemberMessage) returns (google.protobuf.Empty) {}
+
+  // Remove a member from the group
+  rpc RemoveMember(GroupModifyMemberMessage) returns (google.protobuf.Empty) {}
+
+  // Ungroup this group
+  rpc Ungroup(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get iterable for group members
+  rpc GetMembers(EDBObjMessage) returns (EDBObjCollectionMessage) {}
+}
+
+message GroupModifyMemberMessage {
+  EDBObjMessage target = 1;
+  EDBObjMessage member = 2;
+}
+

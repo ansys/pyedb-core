@@ -1,0 +1,43 @@
+// Proto file representing the LayerMap class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+enum LayerMapUniqueDirection {
+  FORWARD_UNIQUE = 0;
+  BACKWARD_UNIQUE = 1;
+  TWOWAY_UNIQUE = 2;
+  ILLEGAL_UNIQUE_DIRECTION = -1;
+}
+
+// LayerMap service definition
+service LayerMapService {
+
+  // Create a layer map
+  rpc Create (LayerMapUniqueDirectionMessage) returns (EDBObjMessage) {}
+
+  // Clear a layer map
+  rpc Clear (EDBObjMessage) returns (google.protobuf.Empty) {}
+  
+  // SetMapping of a layer map
+  rpc SetMapping (LayerMapTwoIntPropertiesMessage) returns (google.protobuf.Empty) {}
+  
+  // GetMapping of a layer map
+  rpc GetMappingForward (IntPropertyMessage) returns (ProductPropertyIdsMessage) {}
+  
+  // GetMapping of a layer map
+  rpc GetMappingBackward (IntPropertyMessage) returns (ProductPropertyIdsMessage) {}
+}
+
+message LayerMapUniqueDirectionMessage {
+  LayerMapUniqueDirection direction = 1;
+}
+
+message LayerMapTwoIntPropertiesMessage {
+  EDBObjMessage target = 1;
+  uint64 from_id = 2;
+  uint64 to_id = 3;
+}

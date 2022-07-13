@@ -6,7 +6,7 @@ from ansys.api.edb.v1 import layer_map_pb2 as pb
 
 from ..interfaces.grpc import messages
 from ..models.base import ObjBase
-from ..session import get_layer_map_stub
+from ..session import StubAccessor, StubType
 from .edb_errors import handle_grpc_exception
 
 
@@ -43,13 +43,17 @@ class _QueryBuilder:
 class LayerMap(ObjBase):
     """Class representing a Layer Map two way map where key and val is layer id."""
 
+    __stub = StubAccessor(StubType.layer_map)
+
     class LayerMapUniqueDirection(Enum):
         """Enum representing unique direction."""
 
         FORWARD_UNIQUE = pb.FORWARD_UNIQUE
+        """FORWARD_UNIQUE Mapping many to one (1,1), (2,1), (3,1)"""
         BACKWARD_UNIQUE = pb.BACKWARD_UNIQUE
+        """BACKWARD_UNIQUE Mapping one to many (1,1), (1,2), (1,3)"""
         TWOWAY_UNIQUE = pb.TWOWAY_UNIQUE
-        ILLEGAL_UNIQUE_DIRECTION = pb.ILLEGAL_UNIQUE_DIRECTION
+        """TWOWAY_UNIQUE Mapping one to one (1,1), (2,3), (3,2)"""
 
     @staticmethod
     @handle_grpc_exception
@@ -67,13 +71,15 @@ class LayerMap(ObjBase):
             The LayerMap Object that was created.
         """
         return LayerMap(
-            get_layer_map_stub().Create(_QueryBuilder.layer_map_unique_direction_message(direction))
+            StubAccessor(StubType.layer_map)
+            .__get__()
+            .Create(_QueryBuilder.layer_map_unique_direction_message(direction))
         )
 
     @handle_grpc_exception
     def clear(self):
         """Clear a LayerMap's entries."""
-        get_layer_map_stub().Clear(
+        self.__stub.Clear(
             self.msg,
         )
 
@@ -88,7 +94,7 @@ class LayerMap(ObjBase):
         to_id: int
             Layer Id (value) "to" which to map with the "from_id"
         """
-        get_layer_map_stub().SetMapping(
+        self.__stub.SetMapping(
             _QueryBuilder.layer_map_two_int_properties_message(
                 target=self.msg,
                 from_id=from_id,
@@ -99,7 +105,7 @@ class LayerMap(ObjBase):
     @handle_grpc_exception
     def get_mapping_forward(self, layer_id):
         """Get list of ids mapped forward with the given id (key)."""
-        msg = get_layer_map_stub().GetMappingForward(
+        msg = self.__stub.GetMappingForward(
             messages.int_property_message(
                 target=self,
                 value=layer_id,
@@ -110,7 +116,7 @@ class LayerMap(ObjBase):
     @handle_grpc_exception
     def get_mapping_backward(self, layer_id):
         """Get list of ids mapped backward with the given id (value)."""
-        msg = get_layer_map_stub().GetMappingBackward(
+        msg = self.__stub.GetMappingBackward(
             messages.int_property_message(
                 target=self,
                 value=layer_id,

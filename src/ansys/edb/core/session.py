@@ -617,16 +617,6 @@ def get_padstack_def_stub():
     return StubAccessor(StubType.padstack_def).__get__()
 
 
-def get_layer_map_stub():
-    """Get Layer Map stub.
-
-    Returns
-    -------
-    LayerMapServiceStub
-    """
-    return StubAccessor(StubType.layer_map).__get__()
-
-
 class EDBSessionException(Exception):
     """Base class for exceptions related to EDB sessions."""
 

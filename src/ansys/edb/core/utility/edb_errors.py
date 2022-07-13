@@ -5,7 +5,7 @@ from functools import wraps
 from grpc import StatusCode
 from grpc._channel import _InactiveRpcError, _MultiThreadedRendezvous
 
-from . import LOGGER
+from ansys.edb.core.utility import LOGGER
 
 
 def handle_grpc_exception(func):

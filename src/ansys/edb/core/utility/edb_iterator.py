@@ -1,6 +1,7 @@
 """EDB Iterator."""
 
-from ..models.base import ObjBase
+from ansys.edb.core.utility.base import ObjBase
+
 from ..session import get_edb_iterator_stub
 
 

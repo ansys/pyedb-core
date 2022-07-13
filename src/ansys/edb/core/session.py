@@ -26,6 +26,7 @@ from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalSer
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
+from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
@@ -268,6 +269,7 @@ class StubType(Enum):
     cell_instance = CellInstanceServiceStub
     hierarchy_obj = HierarchyObjectServiceStub
     group = GroupServiceStub
+    layer_map = LayerMapServiceStub
 
 
 # Dictionary for storing local server error code exception messages

@@ -1,5 +1,4 @@
 """This module parses message back to client data types."""
-import ansys.edb.core.models.geometries as geometries
 
 
 def to_point_data(point_message):
@@ -13,4 +12,4 @@ def to_point_data(point_message):
     -------
     ansys.edb.core.models.geometries.point_data.PointData
     """
-    return geometries.point_data.PointData([point_message.x, point_message.y])
+    return ansys.edb.core.geometry.point_data.PointData([point_message.x, point_message.y])

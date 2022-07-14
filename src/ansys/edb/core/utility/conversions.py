@@ -1,7 +1,6 @@
 """This module performs conversions from arbitrary user input to explicit types."""
 
-import ansys.edb.core.models.geometries as geometries
-import ansys.edb.core.utility.value as value
+from ansys.edb.core import geometry, utility
 
 
 def to_value(val):
@@ -13,14 +12,16 @@ def to_value(val):
 
     Returns
     -------
-    ansys.edb.core.utility.value.Value
+    utility.Value
     """
-    if isinstance(val, value.Value):
+    if isinstance(val, utility.Value):
         return val
     elif type(val) in [int, float, complex, str]:
-        return value.Value(val)
+        return utility.Value(val)
     else:
-        raise TypeError("value-like objects must be either of type Value or int/float/complex/str.")
+        raise TypeError(
+            f"value-like objects must be either of type Value or int/float/complex/str. - Received '{val}'"
+        )
 
 
 def to_point(val):
@@ -32,15 +33,15 @@ def to_point(val):
 
     Returns
     -------
-    ansys.edb.core.models.geometries.point_data.PointData
+    geometry.PointData
     """
-    if isinstance(val, geometries.point_data.PointData):
+    if isinstance(val, geometry.PointData):
         return val
     try:
         if len(val) == 2:
-            return geometries.point_data.PointData(val)
+            return geometry.PointData(val)
     except TypeError:
-        return geometries.point_data.PointData(val)
+        return geometry.PointData(val)
 
     raise TypeError(
         "point-like objects must be either of type PointData or a list/tuple containing (start, end) or (arc_height)."

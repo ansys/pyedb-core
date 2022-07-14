@@ -7,7 +7,62 @@ package ansys.api.edb.v1;
 import "edb_messages.proto";
 import "point_data.proto";
 
+enum RotationDirection {
+  ROTATION_DIRECTION_CCW = 0;
+  ROTATION_DIRECTION_CW = 1;
+  ROTATION_DIRECTION_COLINEAR = 2;
+}
+
+service ArcDataService {
+  // Get height of an arc
+  rpc GetHeight (ArcMessage) returns (google.protobuf.FloatValue) {}
+
+  // Get center point of an arc
+  rpc GetCenter (ArcMessage) returns (PointMessage) {}
+
+  // Get midpoint of an arc
+  rpc GetMidpoint (ArcMessage) returns (PointMessage) {}
+
+  // Get radius of an arc
+  rpc GetRadius (ArcMessage) returns (google.protobuf.FloatValue) {}
+
+  // Get bounding box of an arc
+  rpc GetBoundingBox (ArcMessage) returns (ArcDataTwoPointsMessage) {}
+
+  // Get angle between two arcs.
+  rpc GetAngle (ArcMessage) returns (google.protobuf.FloatValue) {}
+
+  // Get closest points between two arcs.
+  rpc ClosestPoints (ArcDataTwoArcsMessage) returns (ArcDataTwoPointsMessage) {}
+}
+
 message ArcMessage {
+  message RadiusMessage {
+    float radius = 1;
+	RotationDirection dir = 2;
+	bool is_big = 3;
+  }
+  message CenterMessage {
+    PointMessage point = 1;
+	RotationDirection dir = 2;
+  }
+
   PointMessage start = 1;
   PointMessage end = 2;
+  oneof option {
+    google.protobuf.FloatValue height = 3;
+    PointMessage thru = 4;
+	RadiusMessage radius = 5;
+	CenterMessage center = 6;
+  }
+}
+
+message ArcDataTwoArcsMessage {
+  ArcMessage arc1 = 1;
+  ArcMessage arc2 = 2;
+}
+
+message ArcDataTwoPointsMessage {
+  PointMessage point1 = 1;
+  PointMessage point2 = 2;
 }

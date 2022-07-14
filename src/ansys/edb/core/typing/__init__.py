@@ -2,7 +2,7 @@
 
 from typing import Iterable, Union
 
-import ansys.edb.core.models.geometries.point_data as point_data
+import ansys.edb.core.geometry.point_data as point_data
 import ansys.edb.core.utility.value as value
 
 ValueLike = Union[int, float, complex, str, value.Value]

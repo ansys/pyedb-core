@@ -100,7 +100,6 @@ from ansys.api.edb.v1.transform_pb2 import TransformMessage, TransformPropertyMe
 from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 
 from ansys.edb.core.utility import conversions
-from ansys.edb.core.utility.value import Value
 
 
 def str_message(s: str):
@@ -704,7 +703,7 @@ def value_message(val):
     -------
     ValueMessage
     """
-    if isinstance(val, Value):
+    if hasattr(val, "msg") and isinstance(val.msg, ValueMessage):
         return val.msg
 
     msg = ValueMessage()

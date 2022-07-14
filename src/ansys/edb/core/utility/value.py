@@ -1,14 +1,11 @@
 """Value Class."""
 
-from ansys.api.edb.v1 import value_pb2_grpc
+from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
-import ansys.api.edb.v1.value_pb2 as value_msgs
 
-from ansys.edb.core.interface.grpc import messages
 from ansys.edb.core import session
-from ansys.edb.core.utility import conversions
-
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
+from ansys.edb.core.interface.grpc import messages
+from ansys.edb.core.utility import conversions, edb_errors
 
 
 class Value:
@@ -16,7 +13,7 @@ class Value:
 
     __stub: value_pb2_grpc.ValueServiceStub = session.StubAccessor(session.StubType.value)
 
-    @handle_grpc_exception
+    @edb_errors.handle_grpc_exception
     def __init__(self, val, _owner=None):
         """Initialize Value object.
 
@@ -30,7 +27,7 @@ class Value:
         elif isinstance(val, Value):
             self.msg = val.msg
         elif isinstance(val, str):
-            temp = value_msgs.ValueTextMessage(
+            temp = value_pb2.ValueTextMessage(
                 text=val, variable_owner=messages.edb_obj_message(_owner)
             )
             self.msg = self.__stub.CreateValue(temp)
@@ -50,10 +47,12 @@ class Value:
         -------
         str
         """
-        if self.is_parametric:
-            return f"{self.text}"
+        if self.msg.text:
+            return self.msg.text
+        elif self.msg.constant.imag == 0:
+            return str(self.msg.constant.real)
         else:
-            return f"{self._value}"
+            return str(complex(self.msg.constant.real, self.msg.constant.imag))
 
     def __eq__(self, other):
         """Compare if two values are equivalent by evaluated value.
@@ -68,11 +67,9 @@ class Value:
         """
         try:
             other = conversions.to_value(other)
-            if isinstance(other, self.__class__):
-                return self.double == other.double
+            return self._value == other._value
         except TypeError:
             return False
-        return False
 
     def __add__(self, other):
         """Perform addition of two values.
@@ -149,7 +146,7 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        power : int, float
 
         Returns
         -------
@@ -199,9 +196,9 @@ class Value:
         return complex(self._value)
 
     @property
-    @handle_grpc_exception
+    @edb_errors.handle_grpc_exception
     def _value(self):
-        """Get complex number from Value object.
+        """Evaluate parametric value, if any, and return as number.
 
         Returns
         -------
@@ -209,7 +206,7 @@ class Value:
         """
         if self.is_parametric:
             evaluated = self.__stub.GetComplex(
-                value_msgs.ValueTextMessage(
+                value_pb2.ValueTextMessage(
                     text=self.msg.text, variable_owner=self.msg.variable_owner
                 )
             )
@@ -220,21 +217,6 @@ class Value:
             return evaluated.real
         else:
             return complex(evaluated.real, evaluated.imag)
-
-    @property
-    def text(self):
-        """Get text from Value object.
-
-        Returns
-        -------
-        str
-        """
-        if self.msg.text:
-            return self.msg.text
-        elif self.msg.constant.imag == 0:
-            return str(self.msg.constant.real)
-        else:
-            return str(complex(self.msg.constant.real, self.msg.constant.imag))
 
     @property
     def sqrt(self):

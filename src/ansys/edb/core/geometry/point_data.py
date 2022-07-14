@@ -5,11 +5,11 @@ import operator
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
 from ansys.edb.core import session
-from ansys.edb.core.interfaces.grpc import messages, responses
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.interface.grpc import messages, parser
+from ansys.edb.core.utility import conversions, value
 
 
-class PointData(object):
+class PointData:
     """Represent arbitrary (x, y) coordinates that exist on 2D space."""
 
     __stub: point_data_pb2_grpc.PointDataServiceStub = session.StubAccessor(
@@ -21,20 +21,27 @@ class PointData(object):
 
         Parameters
         ----------
-        data : Iterable[ansys.edb.core.typing.ValueLike], ansys.edb.core.typing.ValueLike
+        data : Iterable[Iterable[ansys.edb.core.typing.ValueLike], ansys.edb.core.typing.ValueLike]
         """
         self._x = self._y = self._arc_h = None
 
-        if len(data) < 2:
-            data = data[0]
+        if len(data) == 1:
+            # try to expand the argument.
+            try:
+                iter(data[0])
+                data = data[0]
+            except TypeError:
+                pass
 
-        try:
-            if len(data) == 2:
-                self._x, self._y = [conversions.to_value(val) for val in data]
-            else:
-                self._arc_h, *_ = [conversions.to_value(val) for val in data]
-        except TypeError:
-            self._arc_h = conversions.to_value(data)
+        if len(data) == 1:
+            self._arc_h = conversions.to_value(data[0])
+        elif len(data) == 2:
+            self._x, self._y = [conversions.to_value(val) for val in data]
+        else:
+            raise TypeError(
+                "PointData must receive either one value representing arc height or "
+                f"two values representing x and y coordinates. - Received '{data}'"
+            )
 
     def __eq__(self, other):
         """Compare if two objects represent the same coordinates.
@@ -107,8 +114,8 @@ class PointData(object):
         return [self.arc_height] if self.is_arc else [self.x, self.y]
 
     def _map_reduce(self, other, op):
-        _other = conversions.to_point(other)
-        return [reduce(op, values) for values in zip(self._matrix_values, _other._matrix_values)]
+        other = conversions.to_point(other)
+        return [reduce(op, values) for values in zip(self._matrix_values, other._matrix_values)]
 
     @property
     def is_arc(self):
@@ -170,7 +177,7 @@ class PointData(object):
         """
         if self.is_arc:
             return 0
-        return sum([v**2 for v in self._matrix_values], conversions.to_value(0)).sqrt
+        return sum([v**2 for v in self._matrix_values], value.Value(0)).sqrt
 
     @property
     def normalized(self):
@@ -181,11 +188,13 @@ class PointData(object):
         PointData
         """
         mag = self.magnitude
-        n = 0 if mag == 0 else [v / mag for v in self._matrix_values]
+        n = [0] * len(self) if mag == 0 else [v / mag for v in self._matrix_values]
         return self.__class__(n)
 
     def closest(self, start, end):
         """Return the closest point on the line segment [start, end] from the point.
+
+        Return None if either point is an arc.
 
         Parameters
         ----------
@@ -194,10 +203,11 @@ class PointData(object):
 
         Returns
         -------
-        PointData
+        typing.Optional[PointData]
         """
-        pm = self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
-        return responses.to_point_data(pm)
+        if not self.is_arc:
+            pm = self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
+            return parser.to_point_data(pm)
 
     def distance(self, start, end=None):
         """Compute the shortest distance from the point to the line segment [start, end] when end point is given, \
@@ -215,11 +225,14 @@ class PointData(object):
         if end is None:
             return (self - start).magnitude
         else:
-            pm = self.__stub.Distance(messages.point_data_with_line_message(self, start, end))
-            return responses.to_point_data(pm)
+            return self.__stub.Distance(
+                messages.point_data_with_line_message(self, start, end)
+            ).value
 
     def cross(self, other):
         """Compute the cross product of the point vector with another.
+
+        Return None if either point is an arc.
 
         Parameters
         ----------
@@ -227,7 +240,7 @@ class PointData(object):
 
         Returns
         -------
-        np.ndarray
+        typing.Optional[value.Value]
         """
         other = conversions.to_point(other)
         if not self.is_arc and not other.is_arc:
@@ -236,13 +249,15 @@ class PointData(object):
     def move(self, vector):
         """Move the point by a vector.
 
+        Return None if either point is an arc.
+
         Parameters
         ----------
         vector : ansys.edb.core.typing.PointLike
 
         Returns
         -------
-        PointData
+        typing.Optional[PointData]
         """
         vector = conversions.to_point(vector)
         if not self.is_arc and not vector.is_arc:
@@ -250,6 +265,8 @@ class PointData(object):
 
     def rotate(self, angle, center):
         """Rotate a point at the specified center by the specified angle.
+
+        Return None if either point is an arc.
 
         Parameters
         ----------
@@ -259,8 +276,8 @@ class PointData(object):
 
         Returns
         -------
-        PointData
+        typing.Optional[PointData]
         """
         if not self.is_arc:
             pm = self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))
-            return responses.to_point_data(pm)
+            return parser.to_point_data(pm)

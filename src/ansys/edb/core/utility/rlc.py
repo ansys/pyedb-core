@@ -1,6 +1,6 @@
 """RLC."""
 
-from ansys.edb.core.utility.base import ObjBase
+from ansys.edb.core.core.base import ObjBase
 from ansys.edb.core.utility.value import Value
 
 

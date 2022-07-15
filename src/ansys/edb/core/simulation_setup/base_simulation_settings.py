@@ -1,6 +1,6 @@
 """Base Simulation Settings."""
 
-from ansys.edb.core.utility.base import ObjBase
+from ansys.edb.core.core import ObjBase
 
 
 class BaseSimulationSettings(ObjBase):

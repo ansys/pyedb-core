@@ -3,26 +3,19 @@
 import ansys.api.edb.v1.layout_pb2 as layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
-from ansys.edb.core.geometry.polygon_data import PolygonData
-from ansys.edb.core.hierarchy.cell_instance import CellInstance
-from ansys.edb.core.hierarchy.group import Group
-from ansys.edb.core.hierarchy.pin_group import PinGroup
-import ansys.edb.core.interface.grpc.messages as messages
-from ansys.edb.core.layer.layer_collection import LayerCollection
-from ansys.edb.core.layout.differential_pair import DifferentialPair
-from ansys.edb.core.layout.layout_obj import LayoutObjType
-from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
-from ansys.edb.core.net.extended_net import ExtendedNet
-from ansys.edb.core.net.net import Net
-from ansys.edb.core.net.net_class import NetClass
-from ansys.edb.core.primitive.primitive import BoardBendDef, PadstackInstance, Primitive
+from ansys.edb.core.core import ObjBase, messages
+from ansys.edb.core.core.variable_server import VariableServer
+from ansys.edb.core.geometry import PolygonData
+from ansys.edb.core.hierarchy import CellInstance, Group, PinGroup
+from ansys.edb.core.layer import LayerCollection
+from ansys.edb.core.layout import LayoutObjType, VoltageRegulator
+from ansys.edb.core.net import DifferentialPair, ExtendedNet, Net, NetClass
+from ansys.edb.core.primitive import BoardBendDef, PadstackInstance, Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminals import Terminal
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.variable_server import _VariableServer
+from ansys.edb.core.terminal import Terminal
 
 
-class Layout(ObjBase, _VariableServer):
+class Layout(ObjBase, VariableServer):
     """Class representing layout object."""
 
     __stub: LayoutServiceStub = StubAccessor(StubType.layout)
@@ -35,7 +28,7 @@ class Layout(ObjBase, _VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        _VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @property
     def cell(self):

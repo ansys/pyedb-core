@@ -4,8 +4,8 @@ from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
 from ansys.edb.core import session
-from ansys.edb.core.interface.grpc import messages
-from ansys.edb.core.utility import conversions, edb_errors
+from ansys.edb.core.core import edb_errors, messages
+from ansys.edb.core.utility import conversions
 
 
 class Value:

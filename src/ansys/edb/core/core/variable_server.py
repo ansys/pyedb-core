@@ -3,13 +3,13 @@
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 import ansys.api.edb.v1.variable_server_pb2 as variable_server_msgs
 
-from ..interface.grpc.messages import value_message
-from ..session import get_variable_server_stub
-from ..utility.edb_errors import handle_grpc_exception
-from ..utility.value import Value
+from ansys.edb.core.core import handle_grpc_exception
+from ansys.edb.core.core.messages import value_message
+from ansys.edb.core.session import get_variable_server_stub
+from ansys.edb.core.utility import Value
 
 
-class _VariableServer:
+class VariableServer:
     """Class that owns variables.
 
     It can be either database, cell, or component_def object.

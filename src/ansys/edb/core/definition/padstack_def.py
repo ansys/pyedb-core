@@ -2,10 +2,9 @@
 
 import ansys.api.edb.v1.padstack_def_pb2 as pb
 
-from ansys.edb.core.definition.padstack_def_data import PadstackDefData
+from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.definition import PadstackDefData
 from ansys.edb.core.session import get_padstack_def_stub
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 
 
 class _PadstackDefQueryBuilder:

@@ -1,5 +1,6 @@
 """HFSS Adaptive Settings."""
-from ansys.edb.core.simulation_setup.adaptive_settings import AdaptiveSettings
+
+from ansys.edb.core.simulation_setup import AdaptiveSettings
 
 
 class HFSSAdaptiveSettings(AdaptiveSettings):

@@ -6,11 +6,9 @@ from ansys.api.edb.v1.simulation_setup_info_pb2 import (
     SweepDataMessage,
 )
 
+from ansys.edb.core.core import ObjBase, handle_grpc_exception
 from ansys.edb.core.session import get_simulation_setup_info_stub
-from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSSimulationSettings
-from ansys.edb.core.simulation_setup.sweep_data import SweepData
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
+from ansys.edb.core.simulation_setup import HFSSSimulationSettings, SweepData
 
 
 class _QueryBuilder:

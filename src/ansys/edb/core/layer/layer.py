@@ -4,14 +4,13 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 
-from ansys.edb.core.interface.grpc.messages import (
+from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,
     set_product_property_message,
 )
 from ansys.edb.core.session import get_layer_stub
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 
 
 # Message creation helper method

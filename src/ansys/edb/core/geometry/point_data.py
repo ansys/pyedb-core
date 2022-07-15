@@ -5,7 +5,7 @@ import operator
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
 from ansys.edb.core import session
-from ansys.edb.core.interface.grpc import messages, parser
+from ansys.edb.core.core import messages, parser
 from ansys.edb.core.utility import conversions, value
 
 

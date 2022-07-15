@@ -1,5 +1,5 @@
 """HFSS Extent Info."""
-from ansys.edb.core.utility.base import ObjBase
+from ansys.edb.core.core.base import ObjBase
 
 
 class HfssExtentInfo(ObjBase):

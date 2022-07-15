@@ -4,9 +4,8 @@ from enum import Enum
 
 import ansys.api.edb.v1.point_data_pb2 as pb
 
-from ansys.edb.core.interface.grpc import messages
+from ansys.edb.core.core import ObjBase, messages
 from ansys.edb.core.session import get_polygon_data_stub
-from ansys.edb.core.utility.base import ObjBase
 
 
 class PolygonSenseType(Enum):

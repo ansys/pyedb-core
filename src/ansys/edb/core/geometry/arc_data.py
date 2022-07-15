@@ -1,5 +1,5 @@
 """Arc Data."""
-from ansys.edb.core.utility.base import ObjBase
+from ansys.edb.core.core import ObjBase
 
 
 class ArcData(ObjBase):

@@ -6,11 +6,10 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.core.variable_server import VariableServer
+from ansys.edb.core.layout import Cell
 from ansys.edb.core.session import get_database_stub
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
-from ansys.edb.core.utility.variable_server import _VariableServer
 
 
 class ProductIdType(Enum):
@@ -23,7 +22,7 @@ class ProductIdType(Enum):
     INVALID_PRODUCT = edb_defs_pb2.INVALID_PRODUCT
 
 
-class Database(ObjBase, _VariableServer):
+class Database(ObjBase, VariableServer):
     """Class representing a database object."""
 
     def __init__(self, msg):
@@ -34,7 +33,7 @@ class Database(ObjBase, _VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        _VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @staticmethod
     @handle_grpc_exception

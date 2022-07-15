@@ -10,6 +10,17 @@ from ansys.edb.core.net import Net
 from .test_utils import create_edb_obj_msg, generate_random_int
 
 
+@pytest.fixture
+def mocked_stub(mocker):
+    def _stub(mod, cls):
+        mock = mocker.Mock()
+        path = f"{mod.__name__}.{cls.__name__}._{cls.__name__}__stub"
+        mocker.patch(path, mock)
+        return mock
+
+    return _stub
+
+
 @pytest.fixture(params=[True, False])
 def bool_val(request):
     """Parameterized fixture that returns True and False values

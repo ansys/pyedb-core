@@ -26,7 +26,7 @@ class PolygonData(ObjBase):
 
         Parameters
         ----------
-        points : list of tuple of float, float
+        points : list[ansys.edb.core.typing.PointLike]
         closed : bool
         sense : PolygonSenseType, optional
 

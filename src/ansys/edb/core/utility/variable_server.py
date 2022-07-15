@@ -1,11 +1,10 @@
 """VariableServer Class."""
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
-import ansys.api.edb.v1.value_pb2 as value_server_msgs
 import ansys.api.edb.v1.variable_server_pb2 as variable_server_msgs
 
 from ..interface.grpc.messages import value_message
-from ..session import get_value_stub, get_variable_server_stub
+from ..session import get_variable_server_stub
 from ..utility.edb_errors import handle_grpc_exception
 from ..utility.value import Value
 
@@ -186,7 +185,6 @@ class _VariableServer:
         Value
         """
         if isinstance(val, str):
-            temp = value_server_msgs.ValueTextMessage(text=val, variable_owner=self.msg)
-            return Value(get_value_stub().CreateValue(temp))
+            return Value(val, self)
 
         return Value(val)

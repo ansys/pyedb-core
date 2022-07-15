@@ -12,6 +12,12 @@ enum PolySense {
   SENSE_CCW = 2;
 }
 
+service PointDataService {
+  rpc Rotate (PointDataRotateMessage) returns (PointMessage) {}
+  rpc ClosestPoint (PointDataWithLineMessage) returns (PointMessage) {}
+  rpc Distance (PointDataWithLineMessage) returns (google.protobuf.FloatValue) {}
+}
+
 message PointMessage {
   ValueMessage x = 1;
   ValueMessage y = 2;
@@ -33,4 +39,16 @@ message PointsMessage {
 message PointPropertyMessage {
   EDBObjMessage target = 1;
   PointMessage point = 2;
+}
+
+message PointDataRotateMessage {
+  PointMessage point = 1;
+  PointMessage rotate_center = 2;
+  float rotate_angle = 3;
+}
+
+message PointDataWithLineMessage {
+  PointMessage point = 1;
+  PointMessage line_start = 2;
+  PointMessage line_end = 3;
 }

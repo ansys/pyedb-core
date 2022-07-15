@@ -98,7 +98,7 @@ class EDBLogger:
 
         Parameters
         ----------
-        level : str, optional
+        level : int, optional
             Level of logging as defined in the package ``logging``. By default 'DEBUG'.
         to_file : bool, optional
             To record the logs in a file, by default ``False``.

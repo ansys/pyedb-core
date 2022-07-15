@@ -815,7 +815,7 @@ class PointTerminal(Terminal):
 
     @classmethod
     @handle_grpc_exception
-    def create(cls, layout, net, layer, name, x, y):
+    def create(cls, layout, net, layer, name, point):
         """
         Create a point terminal.
 
@@ -825,15 +825,14 @@ class PointTerminal(Terminal):
         net : str or Net
         layer : str or Layer
         name : str
-        x : Value
-        y : Value
+        point : PointLike
 
         Returns
         -------
         PointTerminal
         """
         return PointTerminal(
-            cls.__stub.Create(messages.point_term_creation_message(layout, net, layer, name, x, y))
+            cls.__stub.Create(messages.point_term_creation_message(layout, net, layer, name, point))
         )
 
     @property

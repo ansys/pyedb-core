@@ -5,7 +5,7 @@ from functools import wraps
 from grpc import StatusCode
 from grpc._channel import _InactiveRpcError, _MultiThreadedRendezvous
 
-from ansys.edb.core.utility import LOGGER
+from ansys.edb.core import utility
 
 
 def handle_grpc_exception(func):
@@ -23,7 +23,7 @@ def handle_grpc_exception(func):
             if code == StatusCode.UNAVAILABLE:
                 msg = "Cannot communicate with EDB Server"
 
-            LOGGER.error(msg)
+            utility.LOGGER.error(msg)
             # rethrow the exception
             raise
         return out

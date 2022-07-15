@@ -31,6 +31,7 @@ from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
+from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
 from ansys.api.edb.v1.padstack_def_pb2_grpc import PadstackDefServiceStub
 from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTerminalServiceStub
 from ansys.api.edb.v1.path_pb2_grpc import PathServiceStub
@@ -269,6 +270,7 @@ class StubType(Enum):
     cell_instance = CellInstanceServiceStub
     hierarchy_obj = HierarchyObjectServiceStub
     group = GroupServiceStub
+    netclass = NetClassServiceStub
     layer_map = LayerMapServiceStub
 
 

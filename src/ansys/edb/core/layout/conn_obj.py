@@ -2,6 +2,7 @@
 from ansys.api.edb.v1 import connectable_pb2
 
 import ansys.edb.core.hierarchy as hierarchy
+from ansys.edb.core.hierarchy.component_group import ComponentGroup
 from ansys.edb.core.interface.grpc import messages
 from ansys.edb.core.layout.layout_obj import LayoutObj, LayoutObjType
 from ansys.edb.core.net import Net
@@ -16,7 +17,7 @@ class _QueryBuilder:
 
     @staticmethod
     def set_net_message(target, net):
-        return connectable_pb2.FindByIdLayoutObjMessage(
+        return connectable_pb2.SetNetMessage(
             target=target.msg,
             net=messages.net_ref_message(net),
         )
@@ -54,10 +55,7 @@ class ConnObj(LayoutObj):
             Connectable object of given ID.
         """
         return ConnObj(
-            StubAccessor(StubType.connectable)
-            .__get__()
-            .FindById(messages.int_property_message(target=layout, value=uid))
-            .msg
+            ConnObj.__stub.FindById(messages.int_property_message(target=layout, value=uid))
         )
 
     @staticmethod
@@ -79,10 +77,9 @@ class ConnObj(LayoutObj):
             Connectable object of given ID.
         """
         return ConnObj(
-            StubAccessor(StubType.connectable)
-            .__get__()
-            .FindByIdAndType(_QueryBuilder.find_id_layout_obj_message(layout, type, id))
-            .msg
+            ConnObj.__stub.FindByIdAndType(
+                _QueryBuilder.find_id_layout_obj_message(layout, type, id)
+            )
         )
 
     @property
@@ -96,7 +93,7 @@ class ConnObj(LayoutObj):
                 This id is unique across the all Connectable objects in the cell
                 and persistent across closing and reopening the database.
         """
-        return self.__stub.GetId(self.msg)
+        return self.__stub.GetId(self.msg).id
 
     @property
     @handle_grpc_exception
@@ -108,7 +105,7 @@ class ConnObj(LayoutObj):
             ConnObj
                 Component of the connectable object.
         """
-        return ConnObj(self.__stub.GetComponent(self.msg))
+        return ComponentGroup(self.__stub.GetComponent(self.msg))
 
     @property
     @handle_grpc_exception

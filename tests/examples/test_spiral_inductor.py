@@ -376,7 +376,7 @@ class SpiralInductor(BaseExample):
         polygon = self.create_polygon_data(
             [um(265.1, 330), um(265.1, 340), um(275.1, 340), um(275.1, 330)], True
         )
-        ViaGroup.create(self.layout, polygon, 0.5, "VOVERPASS")
+        ViaGroup.create_with_outline(self.layout, polygon, 0.5, "VOVERPASS")
         self.create_point_terminals()
 
     def create_point_terminals(self):

@@ -62,7 +62,7 @@ service PadstackInstanceService {
   rpc SetIsLayoutPin(PadstackInstSetIsLayoutPinMessage) returns (google.protobuf.Empty) {}
 
   // Get Back Drill Type from PadstackInst
-  rpc GetBackDrillType(PadstackInstGetBackDrillTypeMessage) returns (PadstackInstBackDrillTypeMessage) {}
+  rpc GetBackDrillType(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillTypeMessage) {}
 
   // Get back drill by layer from PadstackInst
   rpc GetBackDrillByLayer(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillByLayerMessage) {}
@@ -138,11 +138,6 @@ message PadstackInstHoleOverridesMessage {
 message PadstackInstSetHoleOverridesMessage {
   EDBObjMessage target = 1;
   PadstackInstHoleOverridesMessage hole_override_msg = 2;
-}
-
-message PadstackInstGetBackDrillTypeMessage {
-  EDBObjMessage target = 1;
-  bool from_bottom = 2;
 }
 
 message PadstackInstBackDrillTypeMessage {

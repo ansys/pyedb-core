@@ -52,3 +52,8 @@ message PointDataWithLineMessage {
   PointMessage line_start = 2;
   PointMessage line_end = 3;
 }
+
+message BoxMessage {
+  PointMessage lower_left = 1;
+  PointMessage upper_right = 2;
+}

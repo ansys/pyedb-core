@@ -253,7 +253,7 @@ class Layout(ObjBase, VariableServer):
         PolygonData
         """
         return PolygonData(
-            self.__stub.GetExpandedExtentFromNets(
+            msg=self.__stub.GetExpandedExtentFromNets(
                 messages.layout_expanded_extent_message(
                     self,
                     nets,

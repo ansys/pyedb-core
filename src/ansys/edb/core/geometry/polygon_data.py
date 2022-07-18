@@ -4,8 +4,10 @@ from enum import Enum
 
 import ansys.api.edb.v1.point_data_pb2 as pb
 
+from ansys.edb.core import geometry
 from ansys.edb.core.core import ObjBase, messages
 from ansys.edb.core.session import get_polygon_data_stub
+from ansys.edb.core.utility import conversions
 
 
 class PolygonSenseType(Enum):
@@ -18,6 +20,46 @@ class PolygonSenseType(Enum):
 
 class PolygonData(ObjBase):
     """Class representing a polygon data object."""
+
+    def __init__(self, msg=None, lower_left=None, upper_right=None):
+        """Create a polygon.
+
+        Parameters
+        ----------
+        msg : EDBObjMessage, optional
+            deprecated - will be removed.
+        lower_left : ansys.edb.core.typing.PointLike, optional
+        upper_right : ansys.edb.core.typing.PointLike, optional
+        """
+        super().__init__(msg)
+        if lower_left is not None and upper_right is not None:
+            lower_left = conversions.to_point(lower_left)
+            upper_right = conversions.to_point(upper_right)
+            self._points = [
+                geometry.PointData(lower_left.x, lower_left.y),
+                geometry.PointData(upper_right.x, lower_left.y),
+                geometry.PointData(upper_right.x, upper_right.y),
+                geometry.PointData(lower_left.x, upper_right.y),
+            ]
+
+    def __len__(self):
+        """Get the number of coordinates.
+
+        Returns
+        -------
+        int
+        """
+        return len(self._points)
+
+    @property
+    def points(self):
+        """Get the list of coordinates.
+
+        Returns
+        -------
+        list[geometry.PointData]
+        """
+        return self._points
 
     @staticmethod
     def create(points, closed, sense=PolygonSenseType.SENSE_CCW):
@@ -34,11 +76,7 @@ class PolygonData(ObjBase):
         PolygonData
         """
         return PolygonData(
-            get_polygon_data_stub().Create(
+            msg=get_polygon_data_stub().Create(
                 messages.points_data_message((points, closed, sense.value))
             )
         )
-
-    def cleanup(self):
-        """Clean up resources."""
-        return get_polygon_data_stub().Cleanup(self.msg)

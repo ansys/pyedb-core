@@ -13,7 +13,7 @@ class ObjBase:
         ----------
         msg : EDBObjMessage
         """
-        self._id = msg.id
+        self._id = 0 if msg is None else msg.id
 
     def is_null(self):
         """Determine whether this object exists in EDB.

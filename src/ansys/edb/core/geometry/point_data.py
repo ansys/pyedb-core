@@ -1,12 +1,13 @@
 """Point Data."""
 from functools import reduce
+import math
 import operator
 
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
-from ansys.edb.core import session
+from ansys.edb.core import session, utility
 from ansys.edb.core.core import messages, parser
-from ansys.edb.core.utility import conversions, value
+from ansys.edb.core.utility import conversions
 
 
 class PointData:
@@ -54,9 +55,7 @@ class PointData:
         -------
         bool
         """
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        return False
+        return self.equals(other)
 
     def __len__(self):
         """Return the number of coordinates present.
@@ -103,13 +102,34 @@ class PointData:
         coord = ",".join([str(v) for v in self._matrix_values])
         return f"<{coord}>" if self.is_arc else f"({coord})"
 
+    def equals(self, other, tolerance=0.0):
+        """Get if two points are located at the same coordinates.
+
+        Parameters
+        ----------
+        other : ansys.edb.core.typing.PointLike
+        tolerance : float, optional
+
+        Returns
+        -------
+        bool
+        """
+
+        def value_equals(a, b):
+            return a.equals(b, tolerance)
+
+        try:
+            return all(self._map_reduce(other, value_equals))
+        except TypeError:
+            return False
+
     @property
     def _matrix_values(self):
         """Return coordinates of this point as a list of Value.
 
         Returns
         -------
-        list of ansys.edb.core.utility.Value
+        list of utility.Value
         """
         return [self.arc_height] if self.is_arc else [self.x, self.y]
 
@@ -133,7 +153,7 @@ class PointData:
 
         Returns
         -------
-        ansys.edb.core.utility.Value
+        utility.Value
         """
         return self._arc_h
 
@@ -143,7 +163,7 @@ class PointData:
 
         Returns
         -------
-        ansys.edb.core.utility.Value
+        utility.Value
         """
         return self._x
 
@@ -153,7 +173,7 @@ class PointData:
 
         Returns
         -------
-        ansys.edb.core.utility.Value
+        utility.Value
         """
         return self._y
 
@@ -177,7 +197,7 @@ class PointData:
         """
         if self.is_arc:
             return 0
-        return sum([v**2 for v in self._matrix_values], value.Value(0)).sqrt
+        return math.sqrt(sum([v**2 for v in self._matrix_values], utility.Value(0)).value)
 
     @property
     def normalized(self):
@@ -240,7 +260,7 @@ class PointData:
 
         Returns
         -------
-        typing.Optional[value.Value]
+        typing.Optional[utility.Value]
         """
         other = conversions.to_point(other)
         if not self.is_arc and not other.is_arc:
@@ -281,3 +301,31 @@ class PointData:
         if not self.is_arc:
             pm = self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))
             return parser.to_point_data(pm)
+
+    def dot(self, other):
+        """Perform per-component multiplication (dot product) of two points.
+
+        Parameters
+        ----------
+        other : ansys.edb.core.typing.PointLike
+
+        Returns
+        -------
+        float
+        """
+        return sum(self._map_reduce(other, operator.__mul__), utility.Value(0)).value
+
+    def angle(self, other):
+        """Get the angle between another vector.
+
+        Parameters
+        ----------
+        other : ansys.edb.core.typing.PointLike
+
+        Returns
+        -------
+        float
+            angle in radian.
+        """
+        other = conversions.to_point(other)
+        return math.acos(self.dot(other) / (self.magnitude * other.magnitude))

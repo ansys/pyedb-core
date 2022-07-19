@@ -14,6 +14,8 @@ import ansys.api.edb.v1.text_pb2 as text_pb2
 from ansys.edb.core.core import ConnObj, messages
 from ansys.edb.core.core.edb_iterator import EDBIterator
 from ansys.edb.core.layer import Layer
+from ansys.edb.core import hierarchy
+from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.session import (
     StubAccessor,
     StubType,
@@ -25,13 +27,10 @@ from ansys.edb.core.session import (
     get_rectangle_stub,
     get_text_stub,
 )
-from ansys.edb.core.utility import Value
-
-from .. import hierarchy
-from ..definition.padstack_def import PadstackDef
-from ..terminal import TerminalInstance
-from ..core.edb_errors import handle_grpc_exception
-from ..utility.layer_map import LayerMap
+from ansys.edb.core.terminal import TerminalInstance
+from ansys.edb.core.core.edb_errors import handle_grpc_exception
+from ansys.edb.core.utility.layer_map import LayerMap
+from ansys.edb.core.utility.value import Value
 
 
 class PrimitiveType(Enum):
@@ -1733,11 +1732,11 @@ class PadstackInstance(Primitive):
             Rotation
         """
         params = self.__stub.GetPositionAndRotation(self.msg)
-        return [
+        return (
             Value(params.x),
             Value(params.y),
             Value(params.rotation),
-        ]
+        )
 
     @handle_grpc_exception
     def set_position_and_rotation(self, x, y, rotation):
@@ -1766,10 +1765,10 @@ class PadstackInstance(Primitive):
             bottom_layer
         """
         params = self.__stub.GetLayerRange(self.msg)
-        return [
+        return (
             Layer(params.top_layer),  # or maybe Layer._create(
             Layer(params.bottom_layer),
-        ]
+        )
 
     @handle_grpc_exception
     def set_layer_range(self, top_layer, bottom_layer):
@@ -1844,10 +1843,10 @@ class PadstackInstance(Primitive):
             Value hole_override
         """
         params = self.__stub.GetHoleOverrides(self.msg)
-        return [
+        return (
             params.is_hole_override,
             Value(params.hole_override),
-        ]
+        )
 
     @handle_grpc_exception
     def set_hole_overrides(self, is_hole_override, hole_override):
@@ -2001,7 +2000,7 @@ class PadstackInstance(Primitive):
 
         Parameters
         ----------
-        pin_group : PinGroup
+        pin_group : hierarchy.PinGroup
 
         Returns
         -------
@@ -2019,7 +2018,7 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        List[ptr] pins
+        list[hierarchy.PinGroup] pins
         """
         pins = self.__stub.GetPinGroups(self.msg).items
         return [hierarchy.PinGroup(p) for p in pins]

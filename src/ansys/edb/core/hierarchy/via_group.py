@@ -3,10 +3,9 @@
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 
 from ansys.edb.core.geometry.polygon_data import PolygonData
+from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.interface.grpc import messages
 from ansys.edb.core.session import StubAccessor, StubType
-
-from .group import Group
 
 
 class ViaGroup(Group):
@@ -26,7 +25,7 @@ class ViaGroup(Group):
 
         Returns
         -------
-        list of ViaGroup
+        list of ViaGroups
         """
         via_groups = cls.__stub.CreateWithPrimitives(
             messages.via_group_create_with_primitives_message(layout, primitives, is_persistent)
@@ -78,7 +77,7 @@ class ViaGroup(Group):
 
         Returns
         -------
-        list of ConnObjs
+        PolygonData
         """
         return PolygonData(self.__stub.GetOutline(self.msg))
 

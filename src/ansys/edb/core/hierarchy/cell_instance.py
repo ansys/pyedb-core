@@ -27,7 +27,6 @@ class CellInstance(HierarchyObj):
         Returns
         -------
         CellInstance
-            Cell instance created.
         """
         return CellInstance(
             cls.__stub.Create(messages.cell_instance_creation_message(layout, name, ref))
@@ -46,7 +45,6 @@ class CellInstance(HierarchyObj):
         Returns
         -------
         CellInstance
-            Cell instance created.
         """
         return CellInstance(
             cls.__stub.CreateWithComponent(
@@ -77,7 +75,7 @@ class CellInstance(HierarchyObj):
 
         Returns
         -------
-        Layout
+        ansys.edb.core.layout.layout.Layout
         """
         from ansys.edb.core.layout.layout import Layout
 

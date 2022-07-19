@@ -19,8 +19,8 @@ class Transform3D:
         rot_angle : Value
         offset : triple of Values
         """
-        self.anchor = [Value(x) for x in anchor]
-        self.rot_axis_from = [Value(x) for x in rot_axis_from]
-        self.rot_axis_to = [Value(x) for x in rot_axis_to]
+        self.anchor = [Value(val) for val in anchor]
+        self.rot_axis_from = [Value(val) for val in rot_axis_from]
+        self.rot_axis_to = [Value(val) for val in rot_axis_to]
         self.rot_angle = Value(rot_angle)
-        self.offset = [Value(x) for x in offset]
+        self.offset = [Value(val) for val in offset]

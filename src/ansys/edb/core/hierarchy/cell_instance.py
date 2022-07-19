@@ -2,6 +2,7 @@
 
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
+from ansys.edb.core import layout
 from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
 from ansys.edb.core.interface.grpc import messages
 from ansys.edb.core.session import StubAccessor, StubType
@@ -75,11 +76,9 @@ class CellInstance(HierarchyObj):
 
         Returns
         -------
-        ansys.edb.core.layout.layout.Layout
+        Layout
         """
-        from ansys.edb.core.layout.layout import Layout
-
-        return Layout(self.__stub.GetReferenceLayout(self.msg))
+        return layout.Layout(self.__stub.GetReferenceLayout(self.msg))
 
     @property
     def term_instances(self):

@@ -20,8 +20,9 @@ class ViaGroup(Group):
         Parameters
         ----------
         layout : Layout
-        primitives : list of ConnObjs
-        is_persistent : should primitives be persistent
+        primitives : list of Primitives
+        is_persistent : bool
+            should primitives be persistent
 
         Returns
         -------

@@ -1,13 +1,11 @@
 """Transform 3D Class."""
 
-from ..utility.edb_errors import handle_grpc_exception
 from ..utility.value import Value
 
 
 class Transform3D:
     """Class representing a 3d transformation."""
 
-    @handle_grpc_exception
     def __init__(self, anchor, rot_axis_from, rot_axis_to, rot_angle, offset):
         """Initialize a transform 3d object.
 

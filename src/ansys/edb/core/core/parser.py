@@ -10,6 +10,6 @@ def to_point_data(point_message):
 
     Returns
     -------
-    ansys.edb.core.models.geometries.point_data.PointData
+    ansys.edb.core.geometry.point_data.PointData
     """
     return ansys.edb.core.geometry.point_data.PointData([point_message.x, point_message.y])

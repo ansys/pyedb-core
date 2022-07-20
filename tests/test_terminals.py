@@ -1,9 +1,8 @@
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb.core import terminal
-from ansys.edb.core.interface.grpc import messages
-from ansys.edb.core.utility.port_post_processing_prop import PortPostProcessingProp
-from ansys.edb.core.utility.rlc import Rlc
+from ansys.edb.core.core import messages
+from ansys.edb.core.utility import PortPostProcessingProp, Rlc
 from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_msgs, equals
 

@@ -4,16 +4,14 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_collection_pb2 as layer_collection_pb2
 
-from ansys.edb.core.interface.grpc.messages import (
+from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,
     set_product_property_message,
 )
-from ansys.edb.core.layer.layer import Layer, LayerType
-from ansys.edb.core.layer.stackup_layer import StackupLayer
+from ansys.edb.core.layer import Layer, LayerType, StackupLayer
 from ansys.edb.core.session import get_layer_collection_stub
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 
 
 class LayerCollectionMode(Enum):

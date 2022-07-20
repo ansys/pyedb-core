@@ -2,11 +2,9 @@
 
 import ansys.api.edb.v1.via_group_pb2 as via_group_pb2
 
-from ansys.edb.core.interface.grpc import messages
+from ansys.edb.core.core import handle_grpc_exception, messages
+from ansys.edb.core.hierarchy import Group
 from ansys.edb.core.session import get_via_group_stub
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
-
-from .group import Group
 
 
 class _QueryBuilder:

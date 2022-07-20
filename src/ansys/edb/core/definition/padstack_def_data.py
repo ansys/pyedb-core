@@ -1,5 +1,6 @@
 """Padstack Data Definition."""
-from ansys.edb.core.utility.base import ObjBase
+
+from ansys.edb.core.core import ObjBase
 
 
 class PadstackDefData(ObjBase):

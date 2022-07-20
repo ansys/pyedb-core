@@ -5,11 +5,9 @@ from enum import Enum
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import ansys.api.edb.v1.simulation_setup_pb2 as simulation_setup_pb2
 
-from ansys.edb.core.interface.grpc import messages
+from ansys.edb.core.core import ObjBase, handle_grpc_exception, messages
 from ansys.edb.core.session import get_simulation_setup_stub
-from ansys.edb.core.simulation_setup.simulation_setup_info import SimulationSetupInfo
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
+from ansys.edb.core.simulation_setup import SimulationSetupInfo
 
 
 class SimulationSetupType(Enum):

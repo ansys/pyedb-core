@@ -3,7 +3,7 @@ import enum
 
 import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 
-from ansys.edb.core.utility.base import ObjBase
+from ansys.edb.core.core import ObjBase
 
 
 class LayoutObjType(enum.Enum):

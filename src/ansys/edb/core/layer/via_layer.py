@@ -2,9 +2,9 @@
 
 import ansys.api.edb.v1.via_layer_pb2 as via_layer_pb2
 
-from ansys.edb.core.layer.stackup_layer import StackupLayer
+from ansys.edb.core.core import handle_grpc_exception
+from ansys.edb.core.layer import StackupLayer
 from ansys.edb.core.session import get_via_layer_stub
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 
 
 def _via_lyr_ref_lyr_id_msg(lyr, is_upper_ref):

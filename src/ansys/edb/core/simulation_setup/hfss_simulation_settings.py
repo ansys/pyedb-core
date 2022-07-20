@@ -8,11 +8,13 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 
+from ansys.edb.core.core import handle_grpc_exception
 from ansys.edb.core.session import get_hfss_simulation_settings_stub
-from ansys.edb.core.simulation_setup.hfss_adaptive_settings import HFSSAdaptiveSettings
-from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
-from ansys.edb.core.simulation_setup.skin_depth_mesh_operation import SkinDepthMeshOperation
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
+from ansys.edb.core.simulation_setup import (
+    HFSSAdaptiveSettings,
+    SimulationSettings,
+    SkinDepthMeshOperation,
+)
 
 
 class _QueryBuilder:

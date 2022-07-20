@@ -6,9 +6,9 @@ from ansys.api.edb.v1.adaptive_settings_pb2 import (
     SetAdaptiveFrequencyDataListMessage,
 )
 
+from ansys.edb.core.core import ObjBase
 from ansys.edb.core.session import get_adaptive_settings_stub
-from ansys.edb.core.simulation_setup.adaptive_frequency_data import AdaptiveFrequencyData
-from ansys.edb.core.utility.base import ObjBase
+from ansys.edb.core.simulation_setup import AdaptiveFrequencyData
 
 
 class _QueryBuilder:

@@ -13,7 +13,6 @@ Classes
    DesignMode
    Cell
    ConnObj
-   DifferentialPair
    Layout
    LayoutObjType
    LayoutObj

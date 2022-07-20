@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import ansys.api.edb.v1.cell_instance_pb2 as pb
 
-from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
+from ansys.edb.core.core import handle_grpc_exception
+from ansys.edb.core.hierarchy import HierarchyObj
 from ansys.edb.core.session import get_cell_instance_stub
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 
 
 class _CellInstanceQueryBuilder:

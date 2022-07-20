@@ -1,8 +1,7 @@
 """EDB Iterator."""
 
-from ansys.edb.core.utility.base import ObjBase
-
-from ..session import get_edb_iterator_stub
+from ansys.edb.core.core import ObjBase
+from ansys.edb.core.session import get_edb_iterator_stub
 
 
 class EDBIterator(ObjBase):

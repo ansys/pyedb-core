@@ -1,10 +1,8 @@
 """Pin Group."""
 
-from ansys.edb.core.interface.grpc import messages
-from ansys.edb.core.primitive.primitive import PadstackInstance
+from ansys.edb.core.core import ObjBase, handle_grpc_exception, messages
+from ansys.edb.core.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 
 
 class PinGroup(ObjBase):

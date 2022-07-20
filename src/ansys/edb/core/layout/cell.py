@@ -6,14 +6,12 @@ import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-import ansys.edb.core.interface.grpc.messages as messages
-from ansys.edb.core.layout.layout import Layout
+from ansys.edb.core.core import ObjBase, messages
+from ansys.edb.core.core.variable_server import VariableServer
+from ansys.edb.core.layout import Layout
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
-from ansys.edb.core.utility.base import ObjBase
-from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
-from ansys.edb.core.utility.temperature_settings import TemperatureSettings
-from ansys.edb.core.utility.variable_server import _VariableServer
+from ansys.edb.core.simulation_setup import SimulationSetup
+from ansys.edb.core.utility import HfssExtentInfo, TemperatureSettings
 
 
 class CellType(Enum):
@@ -62,7 +60,7 @@ class _QueryBuilder:
         return cell_pb2.CellSetHfssExtentsMessage(cell=cell.msg, **extents)
 
 
-class Cell(ObjBase, _VariableServer):
+class Cell(ObjBase, VariableServer):
     """Class representing a cell object."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
@@ -75,7 +73,7 @@ class Cell(ObjBase, _VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        _VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @classmethod
     def create(cls, db, cell_type, cell_name):

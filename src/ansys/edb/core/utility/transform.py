@@ -1,7 +1,7 @@
 """Transform Class."""
 
-from ..utility.edb_errors import handle_grpc_exception
-from ..utility.value import Value
+from ansys.edb.core.core.edb_errors import handle_grpc_exception
+from ansys.edb.core.utility.value import Value
 
 
 class Transform:

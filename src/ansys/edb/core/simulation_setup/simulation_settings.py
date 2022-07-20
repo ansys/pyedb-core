@@ -1,6 +1,6 @@
 """Simulation Settings."""
 
-from ansys.edb.core.simulation_setup.base_simulation_settings import BaseSimulationSettings
+from ansys.edb.core.simulation_setup import BaseSimulationSettings
 
 
 class SimulationSettings(BaseSimulationSettings):

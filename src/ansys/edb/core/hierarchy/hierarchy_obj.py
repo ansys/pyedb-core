@@ -1,12 +1,11 @@
 """Hierarchy Obj."""
 
-from ansys.edb.core.definition.component_def import ComponentDef
-from ansys.edb.core.interface.grpc import messages
-from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.layout.conn_obj import ConnObj
+from ansys.edb.core.core import messages
+from ansys.edb.core.definition import ComponentDef
+from ansys.edb.core.layer import Layer
+from ansys.edb.core.layout import ConnObj
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility.transform import Transform
-from ansys.edb.core.utility.value import Value
+from ansys.edb.core.utility import Transform, Value
 
 
 class HierarchyObj(ConnObj):

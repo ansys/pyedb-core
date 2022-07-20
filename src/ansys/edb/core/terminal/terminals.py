@@ -5,19 +5,14 @@ from enum import Enum
 import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
-from ansys.edb.core.geometry.arc_data import ArcData
-from ansys.edb.core.hierarchy.cell_instance import CellInstance
-from ansys.edb.core.hierarchy.pin_group import PinGroup
-from ansys.edb.core.interface.grpc import messages
-from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.layout.conn_obj import ConnObj
-from ansys.edb.core.primitive.primitive import PadstackInstance, Primitive
+from ansys.edb.core.core import ObjBase, TypeField, handle_grpc_exception, messages
+from ansys.edb.core.geometry import ArcData
+from ansys.edb.core.hierarchy import CellInstance, PinGroup
+from ansys.edb.core.layer import Layer
+from ansys.edb.core.layout import ConnObj
+from ansys.edb.core.primitive import PadstackInstance, Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility.base import ObjBase, TypeField
-from ansys.edb.core.utility.edb_errors import handle_grpc_exception
-from ansys.edb.core.utility.port_post_processing_prop import PortPostProcessingProp
-from ansys.edb.core.utility.rlc import Rlc
-from ansys.edb.core.utility.value import Value
+from ansys.edb.core.utility import PortPostProcessingProp, Rlc, Value
 
 
 class TerminalType(Enum):

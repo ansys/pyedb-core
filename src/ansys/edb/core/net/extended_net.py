@@ -1,5 +1,6 @@
 """Extended Net."""
-from ansys.edb.core.net.net_class import NetClass
+
+from ansys.edb.core.net import NetClass
 
 
 class ExtendedNet(NetClass):

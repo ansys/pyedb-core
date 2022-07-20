@@ -11,13 +11,11 @@ Classes
 
    AdaptiveFrequencyData
    AdaptiveSettings
-   BaseSimulationSettings
    HFSSAdaptiveSettings
    HFSSSimulationSettings
    MeshOperation
    SimulationSetupType
    SimulationSetup
-   SimulationSettings
    SimulationSetupInfo
    SkinDepthMeshOperation
    SweepData

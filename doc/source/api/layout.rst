@@ -12,8 +12,5 @@ Classes
    CellType
    DesignMode
    Cell
-   ConnObj
    Layout
-   LayoutObjType
-   LayoutObj
    VoltageRegulator

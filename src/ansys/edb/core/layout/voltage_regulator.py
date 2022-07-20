@@ -1,5 +1,5 @@
 """Voltage regulator."""
-from ansys.edb.core.layout import ConnObj
+from ansys.edb.core.core import ConnObj
 
 
 class VoltageRegulator(ConnObj):

@@ -1,6 +1,6 @@
 """ConnObj."""
 
-from ansys.edb.core.layout import LayoutObj
+from ansys.edb.core.core.layout_obj import LayoutObj
 
 
 class ConnObj(LayoutObj):

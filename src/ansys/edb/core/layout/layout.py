@@ -3,12 +3,11 @@
 import ansys.api.edb.v1.layout_pb2 as layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
-from ansys.edb.core.core import ObjBase, messages
-from ansys.edb.core.core.variable_server import VariableServer
+from ansys.edb.core.core import LayoutObjType, ObjBase, VariableServer, messages
 from ansys.edb.core.geometry import PolygonData
 from ansys.edb.core.hierarchy import CellInstance, Group, PinGroup
 from ansys.edb.core.layer import LayerCollection
-from ansys.edb.core.layout import LayoutObjType, VoltageRegulator
+from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
 from ansys.edb.core.net import DifferentialPair, ExtendedNet, Net, NetClass
 from ansys.edb.core.primitive import BoardBendDef, PadstackInstance, Primitive
 from ansys.edb.core.session import StubAccessor, StubType

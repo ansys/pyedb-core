@@ -10,10 +10,9 @@ import ansys.api.edb.v1.primitive_pb2 as primitive_pb2
 import ansys.api.edb.v1.rectangle_pb2 as rectangle_pb2
 import ansys.api.edb.v1.text_pb2 as text_pb2
 
-from ansys.edb.core.core import handle_grpc_exception, messages
+from ansys.edb.core.core import ConnObj, handle_grpc_exception, messages
 from ansys.edb.core.core.edb_iterator import EDBIterator
 from ansys.edb.core.layer import Layer
-from ansys.edb.core.layout import ConnObj
 from ansys.edb.core.session import (
     get_bondwire_stub,
     get_circle_stub,

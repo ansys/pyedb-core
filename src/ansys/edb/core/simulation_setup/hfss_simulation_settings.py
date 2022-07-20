@@ -8,13 +8,10 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 
+from ansys.edb.core import simulation_setup
 from ansys.edb.core.core import handle_grpc_exception
 from ansys.edb.core.session import get_hfss_simulation_settings_stub
-from ansys.edb.core.simulation_setup import (
-    HFSSAdaptiveSettings,
-    SimulationSettings,
-    SkinDepthMeshOperation,
-)
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
 
 
 class _QueryBuilder:
@@ -28,7 +25,7 @@ class _QueryBuilder:
         for mesh_op in new_mesh_ops:
             mesh_op_msg = _QueryBuilder.mesh_op_message(mesh_op)
 
-            if isinstance(mesh_op, SkinDepthMeshOperation):
+            if isinstance(mesh_op, simulation_setup.SkinDepthMeshOperation):
                 mesh_op_msg.skin_depth_mesh_op.CopyFrom(
                     _QueryBuilder.skin_depth_op_message(mesh_op)
                 )
@@ -54,7 +51,7 @@ class _QueryBuilder:
         return [MeshOpNetLayerInfoMessage(net=nl[0], layer=nl[1], is_sheet=nl[2]) for nl in nls]
 
     @staticmethod
-    def skin_depth_op_message(op: SkinDepthMeshOperation):
+    def skin_depth_op_message(op):
         return SkinDepthMeshOperationMessage(
             skin_depth=op.skin_depth,
             max_surface_triangle_length=op.surf_tri_length,
@@ -69,9 +66,9 @@ class HFSSSimulationSettings(SimulationSettings):
 
     @property
     @handle_grpc_exception
-    def adaptive_settings(self) -> HFSSAdaptiveSettings:
+    def adaptive_settings(self):
         """Get adaptive settings of this simulation setting."""
-        return HFSSAdaptiveSettings(
+        return simulation_setup.HFSSAdaptiveSettings(
             get_hfss_simulation_settings_stub().GetAdaptiveSettings(
                 _QueryBuilder.get_adaptive_settings(self)
             )

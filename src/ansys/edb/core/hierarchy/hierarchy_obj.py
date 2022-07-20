@@ -1,9 +1,8 @@
 """Hierarchy Obj."""
 
-from ansys.edb.core.core import messages
+from ansys.edb.core.core import ConnObj, messages
 from ansys.edb.core.definition import ComponentDef
 from ansys.edb.core.layer import Layer
-from ansys.edb.core.layout import ConnObj
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import Transform, Value
 

@@ -5,9 +5,9 @@ from enum import Enum
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import ansys.api.edb.v1.simulation_setup_pb2 as simulation_setup_pb2
 
+from ansys.edb.core import simulation_setup
 from ansys.edb.core.core import ObjBase, handle_grpc_exception, messages
 from ansys.edb.core.session import get_simulation_setup_stub
-from ansys.edb.core.simulation_setup import SimulationSetupInfo
 
 
 class SimulationSetupType(Enum):
@@ -80,7 +80,7 @@ class SimulationSetup(ObjBase):
         -------
         SimulationSetupInfo
         """
-        return SimulationSetupInfo(
+        return simulation_setup.SimulationSetupInfo(
             get_simulation_setup_stub().GetSimulationSetupInfo(
                 _QueryBuilder.get_simulation_setup_info(self)
             )

@@ -6,9 +6,9 @@ from ansys.api.edb.v1.simulation_setup_info_pb2 import (
     SweepDataMessage,
 )
 
+from ansys.edb.core import simulation_setup
 from ansys.edb.core.core import ObjBase, handle_grpc_exception
 from ansys.edb.core.session import get_simulation_setup_info_stub
-from ansys.edb.core.simulation_setup import HFSSSimulationSettings, SweepData
 
 
 class _QueryBuilder:
@@ -47,7 +47,7 @@ class SimulationSetupInfo(ObjBase):
         SimulationSettings
         """
         # TODO: Add support for sim types other than HFSS
-        return HFSSSimulationSettings(
+        return simulation_setup.HFSSSimulationSettings(
             get_simulation_setup_info_stub().GetSimulationSettings(
                 _QueryBuilder.get_simulation_settings(self)
             )
@@ -66,7 +66,8 @@ class SimulationSetupInfo(ObjBase):
             _QueryBuilder.get_sweep_data_list(self)
         )
         return [
-            SweepData._create(sweep_data_msg) for sweep_data_msg in sweep_data_list_msg.sweep_data
+            simulation_setup.SweepData._create(sweep_data_msg)
+            for sweep_data_msg in sweep_data_list_msg.sweep_data
         ]
 
     @sweep_data_list.setter

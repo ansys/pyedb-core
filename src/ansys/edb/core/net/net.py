@@ -2,7 +2,7 @@
 
 import ansys.api.edb.v1.net_pb2 as net_pb2
 
-from ansys.edb.core.layout.layout_obj import LayoutObj
+from ansys.edb.core.layout.layout_obj import LayoutObj, LayoutObjType
 from ansys.edb.core.session import get_net_stub
 
 
@@ -18,6 +18,8 @@ class _QueryBuilder:
 
 class Net(LayoutObj):
     """Class representing net."""
+
+    layout_type = LayoutObjType.NET
 
     @staticmethod
     def create(layout, name):

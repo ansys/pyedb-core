@@ -8,6 +8,7 @@ import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
 import ansys.edb.core.interface.grpc.messages as messages
 from ansys.edb.core.layout.layout import Layout
+from ansys.edb.core.layout.layout_obj import LayoutObjType
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
 from ansys.edb.core.utility.base import ObjBase
@@ -66,6 +67,7 @@ class Cell(ObjBase, _VariableServer):
     """Class representing a cell object."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
+    layout_type = LayoutObjType.CELL
 
     def __init__(self, msg):
         """Initialize a new cell object.

@@ -5,6 +5,7 @@ from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
 from ansys.edb.core.interface.grpc import messages
 from ansys.edb.core.layout.conn_obj import ConnObj
+from ansys.edb.core.layout.layout_obj import LayoutObjType
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -12,6 +13,7 @@ class Group(HierarchyObj):
     """Class representing group object."""
 
     __stub: GroupServiceStub = StubAccessor(StubType.group)
+    layout_type = LayoutObjType.GROUP
 
     @classmethod
     def create(cls, layout, name):

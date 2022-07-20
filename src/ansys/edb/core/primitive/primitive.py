@@ -13,6 +13,7 @@ import ansys.api.edb.v1.text_pb2 as text_pb2
 from ansys.edb.core.interface.grpc import messages
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.layout.conn_obj import ConnObj
+from ansys.edb.core.layout.layout_obj import LayoutObjType
 from ansys.edb.core.session import (
     get_bondwire_stub,
     get_circle_stub,
@@ -40,6 +41,8 @@ class PrimitiveType(Enum):
     PATH_3D = primitive_pb2.PATH_3D
     BOARD_BEND = primitive_pb2.BOARD_BEND
     INVALID_TYPE = primitive_pb2.INVALID_TYPE
+
+    layout_type = LayoutObjType.PRIMITIVE
 
 
 class _PrimitiveQueryBuilder:
@@ -1533,6 +1536,8 @@ class Bondwire(Primitive):
 
 class PadstackInstance(ConnObj):
     """Class representing padstack instance."""
+
+    layout_type = LayoutObjType.PADSTACK_INSTANCE
 
     pass
 

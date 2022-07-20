@@ -18,6 +18,7 @@ class NetClass(LayoutObj):
     """Net class."""
 
     __stub = StubAccessor(StubType.netclass)
+    layout_type = layout_type = LayoutObjType.NET_CLASS
 
     @classmethod
     @handle_grpc_exception

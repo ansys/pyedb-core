@@ -123,6 +123,16 @@ message GetProductPropertyMessage {
   ProductPropertyIdMessage product_prop_id = 2;
 }
 
+message DoublePropertyMessage {
+  EDBObjMessage target = 1;
+  double value = 2;
+}
+
+message ValuePropertyMessage {
+  EDBObjMessage target = 1;
+  ValueMessage value = 2;
+}
+
 message SetProductPropertyMessage {
   EDBObjMessage edb_obj = 1;
   ProductPropertyIdMessage product_prop_id = 2;
@@ -136,4 +146,8 @@ message GetProductPropertyIdsMessage {
 
 message ProductPropertyIdsMessage {
   repeated uint64 ids = 1;
+}
+
+message EDBInternalIdMessage{
+  uint64 id = 1;
 }

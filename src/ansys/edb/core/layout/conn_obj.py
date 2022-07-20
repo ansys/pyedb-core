@@ -27,6 +27,7 @@ class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
     __stub = StubAccessor(StubType.connectable)
+    layout_type = LayoutObjType(None)
 
     @property
     @handle_grpc_exception
@@ -39,9 +40,9 @@ class ConnObj(LayoutObj):
         """
         return LayoutObjType(self.__stub.GetObjType(self.msg).type)
 
-    @staticmethod
+    @classmethod
     @handle_grpc_exception
-    def find_by_id(layout, uid):
+    def find_by_id(cls, layout, uid):
         """Find a Connectable object by Database ID.
 
         Parameters
@@ -50,37 +51,24 @@ class ConnObj(LayoutObj):
              The owning Layout.
         uid
             Database ID
-        Returns
-        -------
-            Connectable object of given ID.
-        """
-        return ConnObj(
-            ConnObj.__stub.FindById(messages.int_property_message(target=layout, value=uid))
-        )
-
-    @staticmethod
-    @handle_grpc_exception
-    def find_by_id_and_type(layout, type, id):
-        """Find a Connectable object by Database ID and type.
-
-        Parameters
-        ----------
-        layout
-            The owning Layout.
-        type
-            Cell type
-        id
-            Database ID
 
         Returns
         -------
-            Connectable object of given ID.
+            Connectable object (Net/Cell/Primitive/etc.) of given ID.
         """
-        return ConnObj(
-            ConnObj.__stub.FindByIdAndType(
-                _QueryBuilder.find_id_layout_obj_message(layout, type, id)
+        conn_type = cls.layout_type
+        response_message = None
+        if type is None:
+            response_message = ConnObj.__stub.FindById(
+                messages.int_property_message(target=layout, value=uid)
             )
-        )
+        else:
+            response_message = ConnObj.__stub.FindByIdAndType(
+                _QueryBuilder.find_id_layout_obj_message(layout, conn_type, uid)
+            )
+        if response_message is not None:
+            return cls(response_message)
+        return None
 
     @property
     @handle_grpc_exception
@@ -150,7 +138,7 @@ class ConnObj(LayoutObj):
 
         Parameters
         ----------
-        net: Net
-            A Net object to associate this connectable with.
+        net: Net/str
+            A Net object(or Net name) to associate this connectable with.
         """
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))

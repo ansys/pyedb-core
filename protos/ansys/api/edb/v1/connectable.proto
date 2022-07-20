@@ -23,14 +23,14 @@ service ConnectableService {
   rpc FindByIdAndType(FindByIdLayoutObjMessage) returns (EDBObjMessage) {}
 
   // Get the unique, persistent ID for the Connectable object.
-  rpc GetId(EDBObjMessage) returns (IdMessage) {}
-  
+  rpc GetId(EDBObjMessage) returns (EDBInternalIdMessage) {}
+
   // Gets the Component of the connectable object.
   rpc GetComponent(EDBObjMessage) returns (EDBObjMessage) {}
-  
+
   // Gets the group of the connectable object.
   rpc GetGroup(EDBObjMessage) returns (EDBObjMessage) {}
-  
+
   // Sets the group of the connectable object.
   rpc SetGroup(PointerPropertyMessage) returns (google.protobuf.Empty) {}
 
@@ -49,10 +49,6 @@ message FindByIdLayoutObjMessage {
   EDBObjMessage layout = 1;
   LayoutObjType type = 2;
   uint64 id = 3;
-}
-
-message IdMessage {
-  uint64 id = 1;
 }
 
 message SetNetMessage {

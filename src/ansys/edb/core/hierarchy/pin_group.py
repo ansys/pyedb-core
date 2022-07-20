@@ -1,6 +1,7 @@
 """Pin Group."""
 
 from ansys.edb.core.interface.grpc import messages
+from ansys.edb.core.layout.layout_obj import LayoutObjType
 from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.base import ObjBase
@@ -11,6 +12,7 @@ class PinGroup(ObjBase):
     """Class representing a pin group."""
 
     __stub = StubAccessor(StubType.pin_group)
+    layout_type = LayoutObjType.PIN_GROUP
 
     @classmethod
     @handle_grpc_exception

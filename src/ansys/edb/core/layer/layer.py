@@ -9,6 +9,7 @@ from ansys.edb.core.interface.grpc.messages import (
     get_product_property_message,
     set_product_property_message,
 )
+from ansys.edb.core.layout.layout_obj import LayoutObjType
 from ansys.edb.core.session import get_layer_stub
 from ansys.edb.core.utility.base import ObjBase
 from ansys.edb.core.utility.edb_errors import handle_grpc_exception
@@ -75,6 +76,8 @@ class LayerVisibility(Enum):
 
 class Layer(ObjBase):
     """Base class representing a layer."""
+
+    layout_type = layout_type = LayoutObjType.LAYER
 
     @staticmethod
     @handle_grpc_exception

@@ -2,7 +2,6 @@
 
 import ansys.api.edb.v1.via_layer_pb2 as via_layer_pb2
 
-from ansys.edb.core.core import handle_grpc_exception
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.session import get_via_layer_stub
 
@@ -16,7 +15,6 @@ class ViaLayer(StackupLayer):
     """Via layer."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(name, lr_layer, ur_layer, material):
         """Create a via layer.
 
@@ -42,7 +40,6 @@ class ViaLayer(StackupLayer):
         )
         return via_layer
 
-    @handle_grpc_exception
     def get_ref_layer_name(self, upper_ref):
         """Get the name of the reference layer of the via layer.
 
@@ -57,7 +54,6 @@ class ViaLayer(StackupLayer):
         """
         return get_via_layer_stub().GetRefLayerName(_via_lyr_ref_lyr_id_msg(self, upper_ref)).value
 
-    @handle_grpc_exception
     def set_ref_layer(self, ref_layer, upper_ref):
         """Set the reference layer of the via layer.
 

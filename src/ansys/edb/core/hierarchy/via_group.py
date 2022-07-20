@@ -3,7 +3,7 @@
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 
 from ansys.edb.core.core import messages
-from ansys.edb.core.geometry.polygon_data import PolygonData
+from ansys.edb.core.geometry import PolygonData
 from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.session import StubAccessor, StubType
 

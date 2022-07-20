@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 
-from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.core import ObjBase
 from ansys.edb.core.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,
@@ -76,7 +76,6 @@ class Layer(ObjBase):
     """Base class representing a layer."""
 
     @staticmethod
-    @handle_grpc_exception
     def _create(msg):
         from ansys.edb.core.layer.stackup_layer import StackupLayer
         from ansys.edb.core.layer.via_layer import ViaLayer
@@ -97,7 +96,6 @@ class Layer(ObjBase):
             return lyr
 
     @staticmethod
-    @handle_grpc_exception
     def create(name, lyr_type):
         """Create a non-stackup layer.
 
@@ -115,7 +113,6 @@ class Layer(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def type(self):
         """Get layer type.
 
@@ -126,7 +123,6 @@ class Layer(ObjBase):
         return LayerType(get_layer_stub().GetLayerType(self.msg).type)
 
     @type.setter
-    @handle_grpc_exception
     def type(self, lyr_type):
         """Set layer type.
 
@@ -138,7 +134,6 @@ class Layer(ObjBase):
             layer_pb2.SetLayerTypeMessage(layer=self.msg, type=lyr_type.value)
         )
 
-    @handle_grpc_exception
     def is_stackup_layer(self):
         """Determine if the layer is a stackup layer.
 
@@ -153,7 +148,6 @@ class Layer(ObjBase):
             or layer_type == LayerType.SIGNAL_LAYER
         )
 
-    @handle_grpc_exception
     def is_via_layer(self):
         """Determine if the layer is via layer.
 
@@ -164,7 +158,6 @@ class Layer(ObjBase):
         return get_layer_stub().IsViaLayer(self.msg).value
 
     @property
-    @handle_grpc_exception
     def name(self):
         """Get the name of the layer.
 
@@ -175,7 +168,6 @@ class Layer(ObjBase):
         return get_layer_stub().GetName(self.msg).value
 
     @name.setter
-    @handle_grpc_exception
     def name(self, name):
         """Set the layer name.
 
@@ -185,7 +177,6 @@ class Layer(ObjBase):
         """
         get_layer_stub().SetName(layer_pb2.SetNameMessage(layer=self.msg, name=name))
 
-    @handle_grpc_exception
     def clone(self, copy_id=True):
         """Create a clone of the layer.
 
@@ -202,7 +193,6 @@ class Layer(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def layer_id(self):
         """Get the layer id of the layer.
 
@@ -213,7 +203,6 @@ class Layer(ObjBase):
         return get_layer_stub().GetLayerId(self.msg).value
 
     @property
-    @handle_grpc_exception
     def top_bottom_association(self):
         """Get the top-bottom association of the layer.
 
@@ -226,7 +215,6 @@ class Layer(ObjBase):
         )
 
     @top_bottom_association.setter
-    @handle_grpc_exception
     def top_bottom_association(self, top_bottom_association):
         """Set the top-bottom association of the layer.
 
@@ -241,7 +229,6 @@ class Layer(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def color(self):
         """Get the color of the layer.
 
@@ -257,7 +244,6 @@ class Layer(ObjBase):
         return r, g, b
 
     @color.setter
-    @handle_grpc_exception
     def color(self, rgb):
         """Set the color of the layer.
 
@@ -272,7 +258,6 @@ class Layer(ObjBase):
         get_layer_stub().SetColor(layer_pb2.SetColorMessage(layer=self.msg, color=b | g | r))
 
     @property
-    @handle_grpc_exception
     def visibility_mask(self):
         """Get the visibility mask of the layer.
 
@@ -283,7 +268,6 @@ class Layer(ObjBase):
         return get_layer_stub().GetVisibilityMask(self.msg).value
 
     @visibility_mask.setter
-    @handle_grpc_exception
     def visibility_mask(self, visibility_mask):
         """Set the visibility mask of the layer.
 
@@ -305,7 +289,6 @@ class Layer(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def locked(self):
         """Check if the layer is locked.
 
@@ -316,7 +299,6 @@ class Layer(ObjBase):
         return get_layer_stub().GetLocked(self.msg).value
 
     @locked.setter
-    @handle_grpc_exception
     def locked(self, locked):
         """Set the locked status of the layer.
 
@@ -327,7 +309,6 @@ class Layer(ObjBase):
         get_layer_stub().SetLocked(layer_pb2.SetLockedMessage(layer=self.msg, is_locked=locked))
 
     @property
-    @handle_grpc_exception
     def transparency(self):
         """Get the transparency value of the layer.
 
@@ -338,7 +319,6 @@ class Layer(ObjBase):
         return get_layer_stub().GetTransparency(self.msg).value
 
     @transparency.setter
-    @handle_grpc_exception
     def transparency(self, transparency):
         """Set the transparency value of the layer.
 
@@ -351,7 +331,6 @@ class Layer(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def draw_override(self):
         """Get the draw override of the layer.
 
@@ -362,7 +341,6 @@ class Layer(ObjBase):
         return DrawOverride(get_layer_stub().GetDrawOverride(self.msg).draw_override)
 
     @draw_override.setter
-    @handle_grpc_exception
     def draw_override(self, draw_override):
         """Set the draw override of the layer.
 
@@ -374,7 +352,6 @@ class Layer(ObjBase):
             layer_pb2.SetDrawOverrideMessage(layer=self.msg, draw_override=draw_override.value)
         )
 
-    @handle_grpc_exception
     def get_product_property(self, prod_id, attr_it):
         """Get the product property of the layer associated with the given product and attribute ids.
 
@@ -393,7 +370,6 @@ class Layer(ObjBase):
             .value
         )
 
-    @handle_grpc_exception
     def set_product_property(self, prod_id, attr_it, prop_value):
         """Set the product property of the layer associated with the given product and attribute ids.
 
@@ -407,7 +383,6 @@ class Layer(ObjBase):
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
-    @handle_grpc_exception
     def get_product_property_ids(self, prod_id):
         """Get a list of attribute ids corresponding to the provided product id for the layer.
 
@@ -426,7 +401,6 @@ class Layer(ObjBase):
         )
         return [attr_id for attr_id in attr_ids]
 
-    @handle_grpc_exception
     def is_in_zone(self, zone):
         """Check if the layer exists in the provided zone.
 
@@ -440,7 +414,6 @@ class Layer(ObjBase):
         """
         return get_layer_stub().IsInZone(_is_in_zone_message(self, zone)).value
 
-    @handle_grpc_exception
     def set_is_in_zone(self, zone, in_zone=True):
         """Set whether the layer exists in the specified zone.
 
@@ -454,7 +427,6 @@ class Layer(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def zones(self):
         """Retrieve the zone ids of all zones containing the layer.
 
@@ -465,7 +437,6 @@ class Layer(ObjBase):
         return [zone for zone in get_layer_stub().GetZones(self.msg).zones]
 
     @property
-    @handle_grpc_exception
     def zone(self):
         """Return the zone index associated with owning layer collection.
 

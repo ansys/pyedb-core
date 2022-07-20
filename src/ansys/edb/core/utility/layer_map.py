@@ -6,7 +6,6 @@ from ansys.api.edb.v1 import layer_map_pb2 as pb
 
 from ansys.edb.core.core import messages
 from ansys.edb.core.core.base import ObjBase
-from ansys.edb.core.core.edb_errors import handle_grpc_exception
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -56,7 +55,6 @@ class LayerMap(ObjBase):
         """TWOWAY_UNIQUE Mapping one to one (1,1), (2,3), (3,2)"""
 
     @staticmethod
-    @handle_grpc_exception
     def create(direction):
         """Create a LayerMap object.
 
@@ -76,14 +74,12 @@ class LayerMap(ObjBase):
             .Create(_QueryBuilder.layer_map_unique_direction_message(direction))
         )
 
-    @handle_grpc_exception
     def clear(self):
         """Clear a LayerMap's entries."""
         self.__stub.Clear(
             self.msg,
         )
 
-    @handle_grpc_exception
     def set_mapping(self, from_id, to_id):
         """Create an entry to the LayerMap object.
 
@@ -102,7 +98,6 @@ class LayerMap(ObjBase):
             )
         )
 
-    @handle_grpc_exception
     def get_mapping_forward(self, layer_id):
         """Get list of ids mapped forward with the given id (key)."""
         msg = self.__stub.GetMappingForward(
@@ -113,7 +108,6 @@ class LayerMap(ObjBase):
         )
         return [int(to_id) for to_id in msg.ids]
 
-    @handle_grpc_exception
     def get_mapping_backward(self, layer_id):
         """Get list of ids mapped backward with the given id (value)."""
         msg = self.__stub.GetMappingBackward(

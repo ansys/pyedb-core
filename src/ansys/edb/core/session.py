@@ -58,6 +58,8 @@ from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 import grpc
 
+from ansys.edb.core.core import edb_errors
+
 # The session module singleton
 MOD = modules[__name__]
 MOD.current_session = None
@@ -80,6 +82,15 @@ class StubAccessor(object):
         if MOD.current_session is not None:
             return MOD.current_session.stub(self.__stub_name)
         raise EDBSessionException("No active session detected")
+
+
+class _Stub:
+    def __init__(self, s):
+        self._stub = s
+
+    def __getattr__(self, item):
+        if hasattr(self._stub, item):
+            return edb_errors.handle_grpc_exception(getattr(self._stub, item))
 
 
 # Helper class for storing data used by the session
@@ -108,8 +119,11 @@ class _Session:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disconnect()
 
+    def _initialize_stub(self, stub):
+        return _Stub(stub(self.channel))
+
     def _initialize_stubs(self):
-        self.stubs = {stub.name: stub.value(self.channel) for stub in StubType}
+        self.stubs = {stub.name: self._initialize_stub(stub.value) for stub in StubType}
 
     @property
     def server_url(self):

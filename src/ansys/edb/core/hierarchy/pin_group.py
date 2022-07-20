@@ -1,6 +1,6 @@
 """Pin Group."""
 
-from ansys.edb.core.core import ObjBase, handle_grpc_exception, messages
+from ansys.edb.core.core import ObjBase, messages
 from ansys.edb.core.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
 
@@ -11,7 +11,6 @@ class PinGroup(ObjBase):
     __stub = StubAccessor(StubType.pin_group)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, name, padstack_instances):
         """Create a pin group.
 
@@ -30,7 +29,6 @@ class PinGroup(ObjBase):
         )
 
     @classmethod
-    @handle_grpc_exception
     def find(cls, layout, name):
         """Find a pin group by name.
 
@@ -46,7 +44,6 @@ class PinGroup(ObjBase):
         return PinGroup(cls.__stub.FindByName(messages.pin_group_lookup_message(layout, name)))
 
     @classmethod
-    @handle_grpc_exception
     def unique_name(cls, layout, prefix):
         """Return a unique pin group name in the layout.
 
@@ -64,7 +61,6 @@ class PinGroup(ObjBase):
         ).value
 
     @property
-    @handle_grpc_exception
     def name(self):
         """Get the name.
 
@@ -75,7 +71,6 @@ class PinGroup(ObjBase):
         return self.__stub.GetName(self.msg).value
 
     @property
-    @handle_grpc_exception
     def pins(self):
         """Get the list of padstack instances.
 
@@ -86,7 +81,6 @@ class PinGroup(ObjBase):
         ps = self.__stub.GetPins(self.msg).items
         return [PadstackInstance(p) for p in ps]
 
-    @handle_grpc_exception
     def add_pins(self, pins):
         """Add the list of padstack instances to the group.
 
@@ -96,7 +90,6 @@ class PinGroup(ObjBase):
         """
         self.__stub.AddPins(messages.pin_group_pins_modify_message(self, pins))
 
-    @handle_grpc_exception
     def remove_pins(self, pins):
         """Remove the list of padstack instances from the group.
 

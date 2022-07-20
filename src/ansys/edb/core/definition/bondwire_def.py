@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.bondwire_def_pb2 as pb
 
-from ansys.edb.core.core import ObjBase, handle_grpc_exception, messages
+from ansys.edb.core.core import ObjBase, messages
 from ansys.edb.core.session import (
     get_apd_bondwire_def_stub,
     get_bondwire_def_stub,
@@ -58,13 +58,11 @@ class _QueryBuilder:
 class BondwireDef(ObjBase):
     """Class representing a bondwire definition."""
 
-    @handle_grpc_exception
     def delete(self):
         """Delete a bondwire definition."""
         get_bondwire_def_stub().Delete(self.msg)
 
     @property
-    @handle_grpc_exception
     def name(self):
         """Return the name of the bondwire definition.
 
@@ -79,7 +77,6 @@ class ApdBondwireDef(BondwireDef):
     """Class representing an apd bondwire definition."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(database, name):
         """Create an apd bondwire definition.
 
@@ -97,7 +94,6 @@ class ApdBondwireDef(BondwireDef):
         )
         return ApdBondwireDef(bw_msg)
 
-    @handle_grpc_exception
     def load_definitions_from_file(database, name):
         """Create an apd bondwire definition.
 
@@ -110,7 +106,6 @@ class ApdBondwireDef(BondwireDef):
             _QueryBuilder.bondwire_def_str_message(database, name)
         )
 
-    @handle_grpc_exception
     def find_by_name(database, name):
         """Find an apd bondwire definition by name.
 
@@ -129,7 +124,6 @@ class ApdBondwireDef(BondwireDef):
             )
         )
 
-    @handle_grpc_exception
     def get_parameters(self):
         """Get parameters of an apd bondwire definition.
 
@@ -139,7 +133,6 @@ class ApdBondwireDef(BondwireDef):
         """
         return get_apd_bondwire_def_stub().GetParameters(self.msg)
 
-    @handle_grpc_exception
     def set_parameters(self, name):
         """Set parameters of an apd bondwire definition.
 
@@ -175,7 +168,6 @@ class Jedec4BondwireDef(ObjBase):
     """Class representing a jedec 4 bondwire definition."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(database, name):
         """Create a jedec 4 bondwire definition.
 
@@ -194,7 +186,6 @@ class Jedec4BondwireDef(ObjBase):
             )
         )
 
-    @handle_grpc_exception
     def find_by_name(database, name):
         """Find a jedec 4 bondwire definition by name.
 
@@ -213,7 +204,6 @@ class Jedec4BondwireDef(ObjBase):
             )
         )
 
-    @handle_grpc_exception
     def get_parameters(self):
         """Get parameters of a jedec 4 bondwire definition.
 
@@ -223,7 +213,6 @@ class Jedec4BondwireDef(ObjBase):
         """
         return Value(get_jedec4_bondwire_def_stub().GetParameters(self.msg))
 
-    @handle_grpc_exception
     def set_parameters(self, parameter):
         """Set parameters of a jedec 4 bondwire definition.
 
@@ -274,7 +263,6 @@ class Jedec5BondwireDef(BondwireDef):
     """Class representing a jedec 4 bondwire definition."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(database, name):
         """Create a jedec 5 bondwire definition.
 
@@ -293,7 +281,6 @@ class Jedec5BondwireDef(BondwireDef):
             )
         )
 
-    @handle_grpc_exception
     def find_by_name(database, name):
         """Find a jedec 5 bondwire definition by name.
 
@@ -312,7 +299,6 @@ class Jedec5BondwireDef(BondwireDef):
             )
         )
 
-    @handle_grpc_exception
     def get_parameters(self):
         """Get parameters of a jedec 5 bondwire definition.
 
@@ -327,7 +313,6 @@ class Jedec5BondwireDef(BondwireDef):
             Value(get_parameters_msg.lead_pad_angle),
         )
 
-    @handle_grpc_exception
     def set_parameters(self, ttd, dpa, lpa):
         """Set parameters of a jedec 5 bondwire definition.
 

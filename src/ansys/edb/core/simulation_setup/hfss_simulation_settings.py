@@ -9,7 +9,6 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
 )
 
 from ansys.edb.core import simulation_setup
-from ansys.edb.core.core import handle_grpc_exception
 from ansys.edb.core.session import get_hfss_simulation_settings_stub
 from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
 
@@ -65,7 +64,6 @@ class HFSSSimulationSettings(SimulationSettings):
     """HFSS Simulation Settings."""
 
     @property
-    @handle_grpc_exception
     def adaptive_settings(self):
         """Get adaptive settings of this simulation setting."""
         return simulation_setup.HFSSAdaptiveSettings(

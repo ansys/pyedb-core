@@ -6,8 +6,7 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.core import ObjBase, handle_grpc_exception
-from ansys.edb.core.core.variable_server import VariableServer
+from ansys.edb.core.core import ObjBase, VariableServer
 from ansys.edb.core.layout import Cell
 from ansys.edb.core.session import get_database_stub
 
@@ -36,7 +35,6 @@ class Database(ObjBase, VariableServer):
         VariableServer.__init__(self, msg)
 
     @staticmethod
-    @handle_grpc_exception
     def create(db_path):
         """Create a database at the specified file location.
 
@@ -51,7 +49,6 @@ class Database(ObjBase, VariableServer):
         return Database(get_database_stub().Create(proto_wrappers.StringValue(value=db_path)))
 
     @staticmethod
-    @handle_grpc_exception
     def open(db_path, read_only):
         """Open an existing database at the specified file location.
 
@@ -74,7 +71,6 @@ class Database(ObjBase, VariableServer):
         )
 
     @staticmethod
-    @handle_grpc_exception
     def delete(db_path):
         """Delete a database at the specified file location.
 
@@ -88,7 +84,6 @@ class Database(ObjBase, VariableServer):
         """
         return get_database_stub().Delete(proto_wrappers.StringValue(value=db_path)).value
 
-    @handle_grpc_exception
     def save(self):
         """Persist any changes into a file.
 
@@ -98,7 +93,6 @@ class Database(ObjBase, VariableServer):
         """
         return get_database_stub().Save(self.msg).value
 
-    @handle_grpc_exception
     def close(self):
         """Close the database. Unsaved changes will be lost.
 
@@ -112,7 +106,6 @@ class Database(ObjBase, VariableServer):
         return close_success
 
     @property
-    @handle_grpc_exception
     def top_circuit_cells(self):
         """Get circuit cells.
 
@@ -122,7 +115,6 @@ class Database(ObjBase, VariableServer):
         """
         return [Cell(edb_obj) for edb_obj in get_database_stub().GetTopCircuits(self.msg).items]
 
-    @handle_grpc_exception
     def get_id(self):
         """Get ID of the database.
 
@@ -132,7 +124,6 @@ class Database(ObjBase, VariableServer):
         """
         return get_database_stub().GetId(self.msg).value
 
-    @handle_grpc_exception
     def is_read_only(self):
         """Determine if the database is open in a read-only mode.
 
@@ -143,7 +134,6 @@ class Database(ObjBase, VariableServer):
         return get_database_stub().IsReadOnly(self.msg).value
 
     @staticmethod
-    @handle_grpc_exception
     def find_by_id(db_id):
         """Find a database by ID.
 

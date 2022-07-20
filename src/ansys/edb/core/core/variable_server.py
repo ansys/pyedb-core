@@ -3,7 +3,6 @@
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 import ansys.api.edb.v1.variable_server_pb2 as variable_server_msgs
 
-from ansys.edb.core.core import handle_grpc_exception
 from ansys.edb.core.core.messages import value_message
 from ansys.edb.core.session import get_variable_server_stub
 from ansys.edb.core.utility import Value
@@ -26,7 +25,6 @@ class VariableServer:
         assert variable_owner.id > 0, "Invalid variable owner id"
         self.variable_owner = EDBObjMessage(id=variable_owner.id)
 
-    @handle_grpc_exception
     def add_variable(self, name, value, is_param=False):
         """Add new variable to the VariableServer.
 
@@ -45,7 +43,6 @@ class VariableServer:
         )
         get_variable_server_stub().AddVariable(temp)
 
-    @handle_grpc_exception
     def add_menu_variable(self, name, values, is_param, index=0):
         """Add new menu variable to the VariableServer.
 
@@ -71,7 +68,6 @@ class VariableServer:
         )
         get_variable_server_stub().AddMenuVariable(temp)
 
-    @handle_grpc_exception
     def delete_variable(self, name):
         """Add new menu variable to the VariableServer.
 
@@ -84,7 +80,6 @@ class VariableServer:
         )
         get_variable_server_stub().DeleteVariable(temp)
 
-    @handle_grpc_exception
     def set_variable_value(self, name, new_value):
         """Set variable to have a new value.
 
@@ -98,7 +93,6 @@ class VariableServer:
         )
         get_variable_server_stub().SetVariableValue(temp)
 
-    @handle_grpc_exception
     def get_variable_value(self, name):
         """Get the existing value from the variable.
 
@@ -115,7 +109,6 @@ class VariableServer:
         )
         return Value(get_variable_server_stub().GetVariableValue(temp))
 
-    @handle_grpc_exception
     def is_parameter(self, name):
         """Return True if the variable is a parameter, otherwise False.
 
@@ -132,7 +125,6 @@ class VariableServer:
         )
         return get_variable_server_stub().IsParameter(temp).value
 
-    @handle_grpc_exception
     def get_all_variable_names(self):
         """Return names of all variables in the VariableServer.
 
@@ -142,7 +134,6 @@ class VariableServer:
         """
         return get_variable_server_stub().GetAllVariableNames(self.variable_owner).names
 
-    @handle_grpc_exception
     def get_variable_desc(self, name):
         """Set variable to have a new description.
 
@@ -159,7 +150,6 @@ class VariableServer:
         )
         return get_variable_server_stub().GetVariableDesc(temp).value
 
-    @handle_grpc_exception
     def set_variable_desc(self, name, desc):
         """Set variable to have a new value.
 

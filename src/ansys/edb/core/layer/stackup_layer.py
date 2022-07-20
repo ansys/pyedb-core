@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.stackup_layer_pb2 as stackup_layer_pb2
 
-from ansys.edb.core.core import handle_grpc_exception, messages
+from ansys.edb.core.core import messages
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import get_stackup_layer_stub
 from ansys.edb.core.utility import Value
@@ -54,7 +54,6 @@ class StackupLayer(Layer):
     """Stackup layer."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(name, layer_type, thickness, elevation, material):
         """Create a stackup layer.
 
@@ -83,7 +82,6 @@ class StackupLayer(Layer):
         return stackup_layer
 
     @property
-    @handle_grpc_exception
     def negative(self):
         """Get the negative property of the layer.
 
@@ -94,7 +92,6 @@ class StackupLayer(Layer):
         return get_stackup_layer_stub().GetNegative(self.msg).value
 
     @negative.setter
-    @handle_grpc_exception
     def negative(self, is_negative):
         """Set the negative property of the layer.
 
@@ -107,7 +104,6 @@ class StackupLayer(Layer):
         )
 
     @property
-    @handle_grpc_exception
     def thickness(self):
         """Get the thickness value of the layer.
 
@@ -118,7 +114,6 @@ class StackupLayer(Layer):
         return Value(get_stackup_layer_stub().GetThickness(self.msg))
 
     @thickness.setter
-    @handle_grpc_exception
     def thickness(self, thickness):
         """Set the thickness value of the layer.
 
@@ -129,7 +124,6 @@ class StackupLayer(Layer):
         get_stackup_layer_stub().SetThickness(_stackup_layer_value_message(self, thickness))
 
     @property
-    @handle_grpc_exception
     def lower_elevation(self):
         """Get the lower elevation value of the layer.
 
@@ -140,7 +134,6 @@ class StackupLayer(Layer):
         return Value(get_stackup_layer_stub().GetLowerElevation(self.msg))
 
     @lower_elevation.setter
-    @handle_grpc_exception
     def lower_elevation(self, lower_elevation):
         """Set the lower elevation value of the layer.
 
@@ -153,7 +146,6 @@ class StackupLayer(Layer):
         )
 
     @property
-    @handle_grpc_exception
     def upper_elevation(self):
         """Get the upper elevation value of the layer.
 
@@ -163,7 +155,6 @@ class StackupLayer(Layer):
         """
         return Value(get_stackup_layer_stub().GetUpperElevation(self.msg))
 
-    @handle_grpc_exception
     def get_material(self, evaluated=True):
         """Get the name of the material of the layer.
 
@@ -179,7 +170,6 @@ class StackupLayer(Layer):
             _get_layer_material_name_message(self, evaluated)
         )
 
-    @handle_grpc_exception
     def set_material(self, material_name):
         """Set the name of the material of the layer.
 
@@ -189,7 +179,6 @@ class StackupLayer(Layer):
         """
         get_stackup_layer_stub().SetMaterial(_set_layer_material_name_message(self, material_name))
 
-    @handle_grpc_exception
     def get_fill_material(self, evaluated=True):
         """Get the name of the material of the layer.
 
@@ -205,7 +194,6 @@ class StackupLayer(Layer):
             _get_layer_material_name_message(self, evaluated)
         )
 
-    @handle_grpc_exception
     def set_fill_material(self, fill_material_name):
         """Set the name of the fill material of the layer.
 
@@ -218,7 +206,6 @@ class StackupLayer(Layer):
         )
 
     @property
-    @handle_grpc_exception
     def roughness_enabled(self):
         """Check if roughness models are used by the layer.
 
@@ -229,7 +216,6 @@ class StackupLayer(Layer):
         return get_stackup_layer_stub().IsRoughnessEnabled(self.msg).value
 
     @roughness_enabled.setter
-    @handle_grpc_exception
     def roughness_enabled(self, enable_roughness):
         """Set if roughness models are used by the layer.
 
@@ -241,7 +227,6 @@ class StackupLayer(Layer):
             stackup_layer_pb2.SetLayerPropEnabledMessage(layer=self.msg, enabled=enable_roughness)
         )
 
-    @handle_grpc_exception
     def get_roughness_model(self, region):
         """Get the roughness model used by the layer.
 
@@ -266,7 +251,6 @@ class StackupLayer(Layer):
             else (roughness, Value(response.surface_ratio))
         )
 
-    @handle_grpc_exception
     def set_roughness_model(self, roughness_model, region):
         """Set the roughness model used by the layer.
 
@@ -294,7 +278,6 @@ class StackupLayer(Layer):
         get_stackup_layer_stub().SetRoughnessModel(request)
 
     @property
-    @handle_grpc_exception
     def etch_factor_enabled(self):
         """Check if etch factor is used by the layer.
 
@@ -305,7 +288,6 @@ class StackupLayer(Layer):
         return get_stackup_layer_stub().IsEtchFactorEnabled(self.msg).value
 
     @etch_factor_enabled.setter
-    @handle_grpc_exception
     def etch_factor_enabled(self, enable_etch_factor):
         """Set if etch factor is used by the layer.
 
@@ -318,7 +300,6 @@ class StackupLayer(Layer):
         )
 
     @property
-    @handle_grpc_exception
     def etch_factor(self):
         """Get the etch factor of the layer.
 
@@ -329,7 +310,6 @@ class StackupLayer(Layer):
         return Value(get_stackup_layer_stub().GetEtchFactor(self.msg))
 
     @etch_factor.setter
-    @handle_grpc_exception
     def etch_factor(self, etch_factor):
         """Set the etch factor of the layer.
 
@@ -340,7 +320,6 @@ class StackupLayer(Layer):
         get_stackup_layer_stub().SetEtchFactor(_stackup_layer_value_message(self, etch_factor))
 
     @property
-    @handle_grpc_exception
     def use_solver_properties(self):
         """Check if solver properties are used by the layer.
 
@@ -351,7 +330,6 @@ class StackupLayer(Layer):
         return get_stackup_layer_stub().IsEtchFactorEnabled(self.msg).value
 
     @use_solver_properties.setter
-    @handle_grpc_exception
     def use_solver_properties(self, use_solver_properties):
         """Set if solver properties are used by the layer.
 
@@ -366,7 +344,6 @@ class StackupLayer(Layer):
         )
 
     @property
-    @handle_grpc_exception
     def hfss_solver_properties(self):
         """Get the solver properties of the layer.
 
@@ -383,7 +360,6 @@ class StackupLayer(Layer):
         )
 
     @hfss_solver_properties.setter
-    @handle_grpc_exception
     def hfss_solver_properties(self, hfss_solver_props):
         """Set the solver properties of the layer.
 
@@ -404,7 +380,6 @@ class StackupLayer(Layer):
         get_stackup_layer_stub().SetHFSSSolverProperties(request)
 
     @property
-    @handle_grpc_exception
     def referencing_via_layer_ids(self):
         """Retrieve the layer ids of all via layers referencing the layer.
 

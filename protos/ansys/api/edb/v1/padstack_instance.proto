@@ -1,0 +1,186 @@
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+//import "point_data.proto";
+
+// BACK_DRILL_TYPE type enum
+enum BackDrillType {
+  NO_DRILL = 0;
+  LAYER_DRILL = 1;
+  DEPTH_DRILL = 2;
+}
+
+service PadstackInstanceService {
+  // create a PadstackInst
+  rpc Create(PadstackInstCreateMessage) returns (EDBObjMessage) {}
+  
+  // Get PadstackDef from PadstackInst
+  rpc GetPadstackDef(EDBObjMessage) returns (EDBObjMessage) {}
+  
+  // Get name of PadstackInst
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  // Set name of PadstackInst
+  rpc SetName(PadstackInstSetNameMessage) returns (google.protobuf.Empty) {}
+  
+  // Get position and rotation from PadstackInst
+  rpc GetPositionAndRotation(EDBObjMessage) returns (PadstackInstPositionAndRotationMessage) {}
+
+  // Set position and rotation of PadstackInst
+  rpc SetPositionAndRotation(PadstackInstSetPositionAndRotationMessage) returns (google.protobuf.Empty) {}
+  
+  // Get layer range from PadstackInst
+  rpc GetLayerRange(EDBObjMessage) returns (PadstackInstLayerRangeMessage) {}
+  
+  // Set layer range of PadstackInst
+  rpc SetLayerRange(PadstackInstSetLayerRangeMessage) returns (google.protobuf.Empty) {}
+  
+  // Get SolderBall Layer from PadstackInst
+  rpc GetSolderBallLayer(EDBObjMessage) returns (EDBObjMessage) {}
+  
+  // Set SolderBall Layer of PadstackInst
+  rpc SetSolderBallLayer(PadstackInstSetSolderBallLayerMessage) returns (google.protobuf.Empty) {}
+  
+  // Get Layer Map from PadstackInst
+  rpc GetLayerMap(EDBObjMessage) returns (EDBObjMessage) {}
+  
+  // Set Layer Map from PadstackInst
+  rpc SetLayerMap(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get Hole Overrides from PadstackInst
+  rpc GetHoleOverrides(EDBObjMessage) returns (PadstackInstHoleOverridesMessage) {}
+
+  // Set Hole Overrides of PadstackInst
+  rpc SetHoleOverrides(PadstackInstSetHoleOverridesMessage) returns (google.protobuf.Empty) {}
+
+  // Check if PadstackInst is layout pin
+  rpc GetIsLayoutPin(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set PadstackInst to be layout pin
+  rpc SetIsLayoutPin(PadstackInstSetIsLayoutPinMessage) returns (google.protobuf.Empty) {}
+
+  // Get Back Drill Type from PadstackInst
+  rpc GetBackDrillType(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillTypeMessage) {}
+
+  // Get back drill by layer from PadstackInst
+  rpc GetBackDrillByLayer(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillByLayerMessage) {}
+
+  // Get back drill by depth from PadstackInst
+  rpc GetBackDrillByDepth(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillByDepthMessage) {}
+
+  // Set back drill of PadstackInst by layer by Layer
+  rpc SetBackDrillByLayer(PadstackInstSetBackDrillByLayerMessage) returns (google.protobuf.Empty) {}
+
+  // Set back drill of PadstackInst by layer by Depth
+  rpc SetBackDrillByDepth(PadstackInstSetBackDrillByDepthMessage) returns (google.protobuf.Empty) {}
+
+  // Get Terminal of PadstackInst
+  rpc GetPadstackInstanceTerminal(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Check if PadstackInst is in pin group
+  rpc IsInPinGroup(PadstackInstIsInPinGroupMessage) returns (google.protobuf.BoolValue) {}
+
+  // Get pin groups of PadstackInst
+  rpc GetPinGroups(EDBObjMessage) returns (EDBObjCollectionMessage ) {}
+
+}
+
+message PadstackInstCreateMessage{
+  EDBObjMessage layout = 1;
+  EDBObjMessage net = 2;
+  string name = 3;
+  EDBObjMessage padstack_def = 4;
+  ValueMessage rotation = 5;
+  EDBObjMessage top_layer = 6;
+  EDBObjMessage bottom_layer = 7;
+  EDBObjMessage solder_ball_layer = 8;
+  EDBObjMessage layer_map = 9;
+}
+
+message PadstackInstSetNameMessage {
+  EDBObjMessage target = 1;
+  string name = 2;
+}
+
+message PadstackInstPositionAndRotationMessage {
+  ValueMessage x = 1;
+  ValueMessage y = 2;
+  ValueMessage rotation = 3;
+}
+
+message PadstackInstSetPositionAndRotationMessage {
+  EDBObjMessage target = 1;
+  PadstackInstPositionAndRotationMessage params = 2;
+}
+
+message PadstackInstLayerRangeMessage {
+  EDBObjMessage top_layer = 1;
+  EDBObjMessage bottom_layer = 2;
+}
+
+message PadstackInstSetLayerRangeMessage {
+  EDBObjMessage target = 1;
+  PadstackInstLayerRangeMessage range = 2;
+}
+
+message PadstackInstSetSolderBallLayerMessage {
+  EDBObjMessage target = 1;
+  EDBObjMessage layer = 2;
+}
+
+message PadstackInstHoleOverridesMessage {
+  bool is_hole_override = 1;
+  ValueMessage hole_override = 2;
+}
+
+message PadstackInstSetHoleOverridesMessage {
+  EDBObjMessage target = 1;
+  PadstackInstHoleOverridesMessage hole_override_msg = 2;
+}
+
+message PadstackInstBackDrillTypeMessage {
+  BackDrillType type = 1;
+}
+
+message PadstackInstSetIsLayoutPinMessage {
+  EDBObjMessage target = 1;
+  bool is_layout_pin = 2;
+}
+
+message PadstackInstGetBackDrillMessage {
+  EDBObjMessage target = 1;
+  bool from_bottom = 2;
+}
+
+message PadstackInstBackDrillByLayerMessage {
+  EDBObjMessage drill_to_layer = 1;
+  ValueMessage diameter = 2;
+  ValueMessage offset = 3;
+}
+
+message PadstackInstBackDrillByDepthMessage {
+  ValueMessage drill_depth = 1;
+  ValueMessage diameter = 2;
+}
+
+message PadstackInstSetBackDrillByLayerMessage {
+  EDBObjMessage target = 1;
+  EDBObjMessage drill_to_layer = 2;
+  ValueMessage offset = 3;
+  ValueMessage diameter = 4;
+  bool from_bottom = 5;
+}
+
+message PadstackInstSetBackDrillByDepthMessage {
+  EDBObjMessage target = 1;
+  ValueMessage drill_depth = 2;
+  ValueMessage diameter = 3;
+  bool from_bottom = 4;
+}
+
+message PadstackInstIsInPinGroupMessage{
+  EDBObjMessage target = 1;
+  EDBObjMessage pin_group = 2;
+}

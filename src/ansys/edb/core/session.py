@@ -35,6 +35,7 @@ from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
 from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
 from ansys.api.edb.v1.padstack_def_pb2_grpc import PadstackDefServiceStub
 from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTerminalServiceStub
+from ansys.api.edb.v1.padstack_instance_pb2_grpc import PadstackInstanceServiceStub
 from ansys.api.edb.v1.path_pb2_grpc import PathServiceStub
 from ansys.api.edb.v1.pin_group_pb2_grpc import PinGroupServiceStub
 from ansys.api.edb.v1.pin_group_term_pb2_grpc import PinGroupTerminalServiceStub
@@ -290,6 +291,7 @@ class StubType(Enum):
     layer_map = LayerMapServiceStub
     point_data = PointDataServiceStub
     arc_data = ArcDataServiceStub
+    padstack_instance = PadstackInstanceServiceStub
 
 
 # Dictionary for storing local server error code exception messages

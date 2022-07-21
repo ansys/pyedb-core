@@ -13,8 +13,6 @@ from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 class _CellInstanceQueryBuilder:
     """Class for creating cell instance messages."""
 
-    layout_type = LayoutObjType.CELL_INSTANCE
-
     @staticmethod
     def create(layout, name, ref_layout):
         """
@@ -33,6 +31,8 @@ class _CellInstanceQueryBuilder:
 
 class CellInstance(HierarchyObj):
     """Class for representing cell instance hierarchy object."""
+
+    layout_type = LayoutObjType.CELL_INSTANCE
 
     @staticmethod
     @handle_grpc_exception

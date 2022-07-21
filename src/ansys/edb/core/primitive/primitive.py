@@ -42,8 +42,6 @@ class PrimitiveType(Enum):
     BOARD_BEND = primitive_pb2.BOARD_BEND
     INVALID_TYPE = primitive_pb2.INVALID_TYPE
 
-    layout_type = LayoutObjType.PRIMITIVE
-
 
 class _PrimitiveQueryBuilder:
     @staticmethod
@@ -71,6 +69,8 @@ class _PrimitiveQueryBuilder:
 
 class Primitive(ConnObj):
     """Base class representing primitive objects."""
+
+    layout_type = LayoutObjType.PRIMITIVE
 
     @staticmethod
     @handle_grpc_exception

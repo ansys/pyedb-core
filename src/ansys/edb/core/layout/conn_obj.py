@@ -13,7 +13,9 @@ from ansys.edb.core.utility.edb_errors import handle_grpc_exception
 class _QueryBuilder:
     @staticmethod
     def find_id_layout_obj_message(layout, type, id):
-        return connectable_pb2.FindByIdLayoutObjMessage(layout=layout.msg, type=type.value, id=id)
+        return connectable_pb2.FindByIdLayoutObjMessage(
+            layout=layout.msg, type=type.value, id_msg=messages.edb_internal_id_message(id)
+        )
 
     @staticmethod
     def set_net_message(target, net):
@@ -27,11 +29,11 @@ class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
     __stub = StubAccessor(StubType.connectable)
-    layout_type = LayoutObjType(None)
+    layout_type = None
 
     @property
     @handle_grpc_exception
-    def obj_type(self):
+    def layout_obj_type(self):
         """Get the layout object type.
 
         Returns
@@ -56,17 +58,18 @@ class ConnObj(LayoutObj):
         -------
             Connectable object (Net/Cell/Primitive/etc.) of given ID.
         """
-        conn_type = cls.layout_type
         response_message = None
-        if type is None:
-            response_message = ConnObj.__stub.FindById(
-                messages.int_property_message(target=layout, value=uid)
+        if cls.layout_type:
+            response_message = cls.__stub.FindByIdAndType(
+                _QueryBuilder.find_id_layout_obj_message(
+                    layout=layout, type=cls.layout_type, id=uid
+                )
             )
         else:
-            response_message = ConnObj.__stub.FindByIdAndType(
-                _QueryBuilder.find_id_layout_obj_message(layout, conn_type, uid)
+            response_message = cls.__stub.FindById(
+                messages.int_property_message(target=layout, value=uid)
             )
-        if response_message is not None:
+        if response_message:
             return cls(response_message)
         return None
 

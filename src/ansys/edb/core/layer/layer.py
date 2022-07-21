@@ -77,7 +77,7 @@ class LayerVisibility(Enum):
 class Layer(ObjBase):
     """Base class representing a layer."""
 
-    layout_type = layout_type = LayoutObjType.LAYER
+    layout_type = LayoutObjType.LAYER
 
     @staticmethod
     @handle_grpc_exception

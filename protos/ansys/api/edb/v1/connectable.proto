@@ -48,7 +48,7 @@ message LayoutObjTypeMessage {
 message FindByIdLayoutObjMessage {
   EDBObjMessage layout = 1;
   LayoutObjType type = 2;
-  uint64 id = 3;
+  EDBInternalIdMessage id_msg = 3;
 }
 
 message SetNetMessage {

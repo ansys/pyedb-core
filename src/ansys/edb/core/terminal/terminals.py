@@ -5,11 +5,10 @@ from enum import Enum
 import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
-from ansys.edb.core.core import ObjBase, TypeField, handle_grpc_exception, messages
+from ansys.edb.core.core import ConnObj, ObjBase, TypeField, handle_grpc_exception, messages
 from ansys.edb.core.geometry import ArcData
 from ansys.edb.core.hierarchy import CellInstance, PinGroup
 from ansys.edb.core.layer import Layer
-from ansys.edb.core.layout import ConnObj
 from ansys.edb.core.primitive import PadstackInstance, Primitive
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import PortPostProcessingProp, Rlc, Value

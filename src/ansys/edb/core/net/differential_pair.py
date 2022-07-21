@@ -1,6 +1,6 @@
 """Differential pair."""
 
-from ansys.edb.core.net import NetClass
+from ansys.edb.core.net.net_class import NetClass
 
 
 class DifferentialPair(NetClass):

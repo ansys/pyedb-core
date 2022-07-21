@@ -10,7 +10,8 @@ from ansys.edb.core.core.messages import (
     get_product_property_message,
     set_product_property_message,
 )
-from ansys.edb.core.layer import Layer, LayerType, StackupLayer
+from ansys.edb.core.layer.layer import Layer, LayerType
+from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.session import get_layer_collection_stub
 
 

@@ -1,10 +1,5 @@
 """Import layout classes."""
 
-# isort: off
-from ansys.edb.core.layout.layout_obj import LayoutObj, LayoutObjType
-from ansys.edb.core.layout.conn_obj import ConnObj
-from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
-from ansys.edb.core.layout.layout import Layout
 from ansys.edb.core.layout.cell import Cell, CellType, DesignMode
-
-# isort: on
+from ansys.edb.core.layout.layout import Layout
+from ansys.edb.core.layout.voltage_regulator import VoltageRegulator

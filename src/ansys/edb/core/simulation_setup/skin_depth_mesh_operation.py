@@ -1,6 +1,6 @@
 """Skin Depth Mesh Operation."""
 
-from ansys.edb.core.simulation_setup import MeshOperation
+from ansys.edb.core.simulation_setup.mesh_operation import MeshOperation
 
 
 class SkinDepthMeshOperation(MeshOperation):

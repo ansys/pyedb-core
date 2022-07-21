@@ -11,5 +11,4 @@ Classes
    
    CellInstance
    Group
-   HierarchyObj
    ViaGroup

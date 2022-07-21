@@ -2,8 +2,7 @@
 
 import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
-from ansys.edb.core.core import handle_grpc_exception, messages
-from ansys.edb.core.layout import LayoutObj
+from ansys.edb.core.core import LayoutObj, handle_grpc_exception, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 

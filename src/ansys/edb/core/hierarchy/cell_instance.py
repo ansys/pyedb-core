@@ -3,8 +3,8 @@
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
 from ansys.edb.core import layout
-from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
-from ansys.edb.core.interface.grpc import messages
+from ansys.edb.core.core import messages
+from ansys.edb.core.hierarchy import HierarchyObj
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.transform3d import Transform3D
 from ansys.edb.core.utility.value import Value

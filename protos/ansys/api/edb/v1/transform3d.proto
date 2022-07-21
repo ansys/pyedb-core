@@ -1,0 +1,28 @@
+// Proto file for 3D Transforms
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+message Point3DMessage {
+  ValueMessage x = 1;
+  ValueMessage y = 2;
+  ValueMessage z = 3;
+}
+
+message Transform3DMessage {
+  Point3DMessage anchor = 1;
+  Point3DMessage rotAxisFrom = 2;
+  Point3DMessage rotAxisTo = 3;
+  ValueMessage rotAngle = 4;
+  Point3DMessage offset = 5;
+}
+
+message Transform3DPropertyMessage {
+  EDBObjMessage target = 1;
+  Transform3DMessage t3d = 2;
+}

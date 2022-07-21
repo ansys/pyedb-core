@@ -1,18 +1,58 @@
-// Proto file representing the EDB Cell class
+// Proto file representing the Cell Instance class
 
 syntax = "proto3";
 
+// Package
 package ansys.api.edb.v1;
 
+// Imports
 import "edb_messages.proto";
+import "hierarchy_obj.proto";
+import "transform3d.proto";
 
+// CellInstance Service definition
 service CellInstanceService {
-  // Creates a cell instance
-  rpc Create (CellInstanceCreationMessage) returns (EDBObjMessage) {}
+  // Create a cellinstance with ref layout
+  rpc Create(CellInstanceCreationMessage) returns (EDBObjMessage) {}
+
+  // Create a cellinstance with component
+  rpc CreateWithComponent(CellInstanceCreationMessage) returns (EDBObjMessage) {}
+
+  // Finds a cellinstance by name in the given layout
+  rpc FindByName(ObjectNameInLayoutMessage) returns (EDBObjMessage) {}
+
+  // Get the reference layout
+  rpc GetReferenceLayout(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Terminal Instances
+  rpc GetTermInsts(EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  // Get if component is 3dplaced
+  rpc GetIs3DPlacement(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Set if component is 3dplaced
+  rpc Set3DPlacement(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get 3d transform values
+  rpc Get3DTransform(EDBObjMessage) returns (Transform3DMessage) {}
+
+  // Set 3d transform values
+  rpc Set3DTransform(Transform3DPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get Parameter Override
+  rpc GetParameterOverride(StringPropertyMessage) returns (ValueMessage) {}
+
+  // Set Parameter Override
+  rpc SetParameterOverride(CellInstanceParameterOverride) returns (google.protobuf.Empty) {}
 }
 
 message CellInstanceCreationMessage {
-  EDBObjMessage layout = 1;
-  EDBObjMessage ref_layout = 2;
-  string name = 3;
+  ObjectNameInLayoutMessage target = 1;
+  EDBObjMessage ref = 2;
+}
+
+message CellInstanceParameterOverride {
+  EDBObjMessage target = 1;
+  string pname = 2;
+  ValueMessage pval = 3;
 }

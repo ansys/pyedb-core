@@ -14,5 +14,6 @@ Classes
    Rlc
    TemperatureSettings
    Transform
+   Transform3D
    Value
 

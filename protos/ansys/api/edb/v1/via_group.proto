@@ -7,14 +7,36 @@ package ansys.api.edb.v1;
 import "edb_messages.proto";
 import "point_data.proto";
 import "refs.proto";
+import "hierarchy_obj.proto";
 
 // ViaGroup service definition
 service ViaGroupService {
-  // Creates a ViaGroup
-  rpc Create (ViaGroupCreationMessage) returns (EDBObjMessage) {}
+  // Creates ViaGroups
+  rpc CreateWithPrimitives(ViaGroupCreateWithPrimitivesMessage) returns (EDBObjCollectionMessage) {}
+
+  // Creates a ViaGroup with outline
+  rpc CreateWithOutline(ViaGroupCreateWithOutlineMessage) returns (EDBObjMessage) {}
+
+  // Find the ViaGroup by name in the given layout
+  rpc FindByName(ObjectNameInLayoutMessage) returns (EDBObjMessage) {}
+
+  // Get the ViaGroup outline
+  rpc GetOutline(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get conductor percentage of the ViaGroup
+  rpc GetConductorPercentage(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+
+  // Check if the ViaGroup is persistent
+  rpc IsPersistent(EDBObjMessage) returns (google.protobuf.BoolValue) {}
 }
 
-message ViaGroupCreationMessage {
+message ViaGroupCreateWithPrimitivesMessage {
+  EDBObjMessage layout = 1;
+  EDBObjCollectionMessage primitives = 2;
+  bool is_persistent = 3;
+}
+
+message ViaGroupCreateWithOutlineMessage {
   EDBObjMessage layout = 1;
   PointsMessage points = 2;
   double conductivity_ratio = 3;

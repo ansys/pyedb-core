@@ -4,6 +4,10 @@ from typing import List, Tuple
 
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
 from ansys.api.edb.v1.arc_data_pb2 import ArcMessage
+from ansys.api.edb.v1.cell_instance_pb2 import (
+    CellInstanceCreationMessage,
+    CellInstanceParameterOverride,
+)
 from ansys.api.edb.v1.cell_pb2 import (
     CellAddSimSetupMessage,
     CellCutOutMessage,
@@ -96,7 +100,16 @@ from ansys.api.edb.v1.term_pb2 import (
     TermSetRefMessage,
     TermSetSolverOptionMessage,
 )
+from ansys.api.edb.v1.transform3d_pb2 import (
+    Point3DMessage,
+    Transform3DMessage,
+    Transform3DPropertyMessage,
+)
 from ansys.api.edb.v1.transform_pb2 import TransformMessage, TransformPropertyMessage
+from ansys.api.edb.v1.via_group_pb2 import (
+    ViaGroupCreateWithOutlineMessage,
+    ViaGroupCreateWithPrimitivesMessage,
+)
 from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
 
 from ansys.edb.core.utility import conversions
@@ -206,6 +219,42 @@ def group_modify_member_message(target, member):
     return GroupModifyMemberMessage(target=target.msg, member=member.msg)
 
 
+def via_group_create_with_primitives_message(layout, primitives, is_persistent):
+    """Convert to ViaGroupCreateWithPrimitivesMessage."""
+    return ViaGroupCreateWithPrimitivesMessage(
+        layout=layout.msg,
+        primitives=edb_obj_collection_message(primitives),
+        is_persistent=is_persistent,
+    )
+
+
+def via_group_create_with_outline_message(layout, outline, conductivity_ratio, layer, net=None):
+    """Convert to ViaGroupCreateWithOutlineMessage."""
+    return ViaGroupCreateWithOutlineMessage(
+        layout=layout.msg,
+        points=points_message(outline),
+        conductivity_ratio=conductivity_ratio,
+        layer=layer_ref_message(layer),
+        net=net_ref_message(net),
+    )
+
+
+def cell_instance_creation_message(layout, name, ref):
+    """Convert to CellInstanceCreationMessage."""
+    return CellInstanceCreationMessage(
+        target=object_name_in_layout_message(layout, name), ref=edb_obj_message(ref)
+    )
+
+
+def cell_instance_parameter_override_message(target, param_name, param_value):
+    """Convert to CellInstanceParameterOverrideMessage."""
+    return CellInstanceParameterOverride(
+        target=edb_obj_message(target),
+        pname=param_name,
+        pval=value_message(param_value),
+    )
+
+
 def transform_message(transform):
     """Convert to TransformMessage."""
     if transform is None:
@@ -223,6 +272,35 @@ def transform_message(transform):
 def transform_property_message(target, transform):
     """Convert to TransformPropertyMessage."""
     return TransformPropertyMessage(target=target.msg, transf=transform_message(transform))
+
+
+def point3d_message(point3d):
+    """Convert to Point3DMessage."""
+    if point3d is None:
+        return None
+    else:
+        return Point3DMessage(
+            x=value_message(point3d[0]), y=value_message(point3d[1]), z=value_message(point3d[2])
+        )
+
+
+def transform3d_message(transform3d):
+    """Convert to Transform3DMessage."""
+    if transform3d is None:
+        return None
+    else:
+        return Transform3DMessage(
+            anchor=point3d_message(transform3d.anchor),
+            rotAxisFrom=point3d_message(transform3d.rot_axis_from),
+            rotAxisTo=point3d_message(transform3d.rot_axis_to),
+            rotAngle=value_message(transform3d.rot_angle),
+            offset=point3d_message(transform3d.offset),
+        )
+
+
+def transform3d_property_message(target, transform3d):
+    """Convert to Transform3DPropertyMessage."""
+    return Transform3DPropertyMessage(target=target.msg, t3d=transform3d_message(transform3d))
 
 
 def layout_get_items_message(layout, item_type):

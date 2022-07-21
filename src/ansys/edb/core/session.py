@@ -9,6 +9,7 @@ from sys import modules
 from typing import Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
+from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
 from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
     ApdBondwireDefServiceStub,
     BondwireDefServiceStub,
@@ -274,6 +275,7 @@ class StubType(Enum):
     netclass = NetClassServiceStub
     layer_map = LayerMapServiceStub
     point_data = PointDataServiceStub
+    arc_data = ArcDataServiceStub
 
 
 # Dictionary for storing local server error code exception messages

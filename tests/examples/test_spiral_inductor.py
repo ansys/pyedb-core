@@ -125,8 +125,8 @@ class BaseExample:
             polygon_data,
         )
 
-    def create_point_terminal(self, net_name, name, x, y, layer_name):
-        return PointTerminal.create(self.layout, self.net(net_name), layer_name, name, (x, y))
+    def create_point_terminal(self, net_name, name, point, layer_name):
+        return PointTerminal.create(self.layout, self.net(net_name), layer_name, name, point)
 
     def set_hfss_extents(self, **extents):
         self.cell.set_hfss_extent_info(**extents)
@@ -251,10 +251,10 @@ coils = [
 ]
 
 terminals = [
-    (("SPIRAL", "P1", um(270.1), um(110), "M9"), ("SPIRAL", "P1ref", um(270.1), um(110), "M8")),
+    (("SPIRAL", "P1", um(270.1, 110), "M9"), ("SPIRAL", "P1ref", um(270.1, 110), "M8")),
     (
-        ("SPIRAL", "P2", (um(265.1) + um(275.1)) / 2, um(430), "OVERPASS"),
-        ("SPIRAL", "P2ref", (um(265.1) + um(275.1)) / 2, um(430), "M9"),
+        ("SPIRAL", "P2", um((265.1 + 275.1) / 2, 430), "OVERPASS"),
+        ("SPIRAL", "P2ref", um((265.1 + 275.1) / 2, 430), "M9"),
     ),
 ]
 

@@ -1,4 +1,5 @@
 """Value Class."""
+import math
 
 from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
@@ -38,7 +39,7 @@ class Value:
             self.msg.constant.real = val.real
             self.msg.constant.imag = val.imag
         else:
-            assert False, "Invalid Value"
+            raise TypeError(f"invalid value. Received '{val}'")
 
     def __str__(self):
         """Generate a readable string for the value.
@@ -65,11 +66,7 @@ class Value:
         -------
         bool
         """
-        try:
-            other = conversions.to_value(other)
-            return self._value == other._value
-        except TypeError:
-            return False
+        return self.equals(other)
 
     def __add__(self, other):
         """Perform addition of two values.
@@ -83,7 +80,7 @@ class Value:
         Value
         """
         other = conversions.to_value(other)
-        return self.__class__(self._value + other._value)
+        return self.__class__(self.value + other.value)
 
     def __sub__(self, other):
         """Perform subtraction of two values.
@@ -97,7 +94,7 @@ class Value:
         Value
         """
         other = conversions.to_value(other)
-        return self.__class__(self._value - other._value)
+        return self.__class__(self.value - other.value)
 
     def __mul__(self, other):
         """Perform multiplication of two values.
@@ -111,7 +108,7 @@ class Value:
         Value
         """
         other = conversions.to_value(other)
-        return self.__class__(self._value * other._value)
+        return self.__class__(self.value * other.value)
 
     def __truediv__(self, other):
         """Perform floating-point division of two values.
@@ -125,7 +122,7 @@ class Value:
         Value
         """
         other = conversions.to_value(other)
-        return self.__class__(self._value / other._value)
+        return self.__class__(self.value / other.value)
 
     def __floordiv__(self, other):
         """Perform division of two values and return its floor (integer part).
@@ -139,7 +136,7 @@ class Value:
         Value
         """
         other = conversions.to_value(other)
-        return self.__class__(self._value // other._value)
+        return self.__class__(self.value // other.value)
 
     def __pow__(self, power, modulo=None):
         """Raise a value to the power of another value.
@@ -152,7 +149,65 @@ class Value:
         -------
         Value
         """
-        return self.__class__(self._value**power)
+        return self.__class__(self.value**power)
+
+    def __neg__(self):
+        """Flip the sign.
+
+        Returns
+        -------
+        Value
+        """
+        return self.__class__(-self.value)
+
+    def __gt__(self, other):
+        """Compare if this value is greater than another value.
+
+        Parameters
+        ----------
+        other : ansys.edb.core.typing.ValueLike
+
+        Returns
+        -------
+        bool
+        """
+        return self.value > other.value
+
+    def __lt__(self, other):
+        """Compare if this value is less than another value.
+
+        Parameters
+        ----------
+        other : ansys.edb.core.typing.ValueLike
+
+        Returns
+        -------
+        bool
+        """
+        return self.value < other.value
+
+    def equals(self, other, tolerance=1e-9):
+        """Check if two values are equivalent when evaluated.
+
+        Parameters
+        ----------
+        other : ansys.edb.core.typing.ValueLike
+        tolerance : float, optional
+
+        Returns
+        -------
+        bool
+        """
+        try:
+            other = conversions.to_value(other)
+            diff = self.value - other.value
+
+            if type(diff) == complex:
+                return math.fabs(diff.real) <= tolerance and math.fabs(diff.imag) <= tolerance
+            else:
+                return math.fabs(diff) <= tolerance
+        except TypeError:
+            return False
 
     @property
     def is_parametric(self):
@@ -172,7 +227,7 @@ class Value:
         -------
         bool
         """
-        return type(self._value) == complex
+        return type(self.value) == complex
 
     @property
     def double(self):
@@ -182,7 +237,7 @@ class Value:
         -------
         double
         """
-        evaluated = self._value
+        evaluated = self.value
         return evaluated.real if type(evaluated) == complex else evaluated
 
     @property
@@ -193,11 +248,11 @@ class Value:
         -------
         double
         """
-        return complex(self._value)
+        return complex(self.value)
 
     @property
     @edb_errors.handle_grpc_exception
-    def _value(self):
+    def value(self):
         """Evaluate parametric value, if any, and return as number.
 
         Returns

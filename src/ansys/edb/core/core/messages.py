@@ -2,8 +2,8 @@
 
 from typing import List, Tuple
 
+from ansys.api.edb.v1 import arc_data_pb2
 from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
-from ansys.api.edb.v1.arc_data_pb2 import ArcMessage
 from ansys.api.edb.v1.cell_instance_pb2 import (
     CellInstanceCreationMessage,
     CellInstanceParameterOverride,
@@ -110,8 +110,9 @@ from ansys.api.edb.v1.via_group_pb2 import (
     ViaGroupCreateWithOutlineMessage,
     ViaGroupCreateWithPrimitivesMessage,
 )
-from google.protobuf.wrappers_pb2 import BoolValue, Int64Value, StringValue
+from google.protobuf.wrappers_pb2 import BoolValue, FloatValue, Int64Value, StringValue
 
+from ansys.edb.core import utility
 from ansys.edb.core.utility import conversions
 
 
@@ -128,6 +129,11 @@ def bool_message(b: bool):
 def int64_message(i: int):
     """Convert to Int64Value."""
     return Int64Value(value=i) if i is not None else None
+
+
+def float_message(v: float):
+    """Convert to FloatValue."""
+    return FloatValue(value=v)
 
 
 def points_message(points):
@@ -177,11 +183,42 @@ def point_data_with_line_message(point, line_start, line_end):
     )
 
 
+def _arc_rotation_dir(dir):
+    if dir.value == "cw":
+        return arc_data_pb2.ROTATION_DIRECTION_CW
+    elif dir.value == "ccw":
+        return arc_data_pb2.ROTATION_DIRECTION_CCW
+    elif dir.value == "colinear":
+        return arc_data_pb2.ROTATION_DIRECTION_COLINEAR
+
+
 def arc_message(arc):
     """Convert to ArcMessage."""
-    if isinstance(arc, tuple) and len(arc) == 2:
-        return ArcMessage(start=point_message(arc[0]), end=point_message(arc[1]))
-    raise RuntimeError("arc must be of a tuple containing start and end point.")
+    message = arc_data_pb2.ArcMessage(start=point_message(arc.start), end=point_message(arc.end))
+    h, opts = arc._height, arc._height_options  # noqa
+    if h is not None:
+        message.height.value = h
+    elif "radius" in opts and "direction" in opts and "is_big" in opts:
+        message.radius.radius = opts["radius"]
+        message.radius.dir = _arc_rotation_dir(opts["direction"])
+        message.radius.is_big = opts["is_big"]
+    elif "center" in opts and "direction" in opts:
+        message.center.point.CopyFrom(point_message(opts["center"]))
+        message.center.dir = _arc_rotation_dir(opts["direction"])
+    elif "thru" in opts:
+        message.thru.CopyFrom(point_message(opts["thru"]))
+    else:
+        raise TypeError(
+            "ArcData was not initialized with correct parameters to compute height."
+            f"Received '{opts}'"
+        )
+
+    return message
+
+
+def arc_data_two_points(arc1, arc2):
+    """Convert to ArcDataTwoArcsMessage."""
+    return arc_data_pb2.ArcDataTwoArcsMessage(arc1=arc_message(arc1), arc2=arc_message(arc2))
 
 
 def int_property_message(target, value):
@@ -775,13 +812,13 @@ def value_message(val):
 
     Parameters
     ----------
-    val : str, int, float, complex, Value
+    val : str, int, float, complex, utility.Value
 
     Returns
     -------
     ValueMessage
     """
-    if hasattr(val, "msg") and isinstance(val.msg, ValueMessage):
+    if isinstance(val, utility.Value):
         return val.msg
 
     msg = ValueMessage()
@@ -795,7 +832,7 @@ def value_message(val):
         msg.constant.real = val.real
         msg.constant.imag = val.imag
     else:
-        assert False, "Invalid Value"
+        raise TypeError(f"Invalid Value. Received {val}")
     return msg
 
 

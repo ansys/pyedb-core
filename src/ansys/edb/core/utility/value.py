@@ -5,7 +5,7 @@ from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
 from ansys.edb.core import session
-from ansys.edb.core.core import edb_errors, messages
+from ansys.edb.core.core import messages
 from ansys.edb.core.utility import conversions
 
 
@@ -14,7 +14,6 @@ class Value:
 
     __stub: value_pb2_grpc.ValueServiceStub = session.StubAccessor(session.StubType.value)
 
-    @edb_errors.handle_grpc_exception
     def __init__(self, val, _owner=None):
         """Initialize Value object.
 
@@ -251,7 +250,6 @@ class Value:
         return complex(self.value)
 
     @property
-    @edb_errors.handle_grpc_exception
     def value(self):
         """Evaluate parametric value, if any, and return as number.
 

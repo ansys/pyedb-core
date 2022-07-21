@@ -10,7 +10,7 @@ import ansys.api.edb.v1.primitive_pb2 as primitive_pb2
 import ansys.api.edb.v1.rectangle_pb2 as rectangle_pb2
 import ansys.api.edb.v1.text_pb2 as text_pb2
 
-from ansys.edb.core.core import ConnObj, handle_grpc_exception, messages
+from ansys.edb.core.core import ConnObj, messages
 from ansys.edb.core.core.edb_iterator import EDBIterator
 from ansys.edb.core.layer import Layer
 from ansys.edb.core.session import (
@@ -68,7 +68,6 @@ class Primitive(ConnObj):
     """Base class representing primitive objects."""
 
     @staticmethod
-    @handle_grpc_exception
     def _create(msg):
         prim_type = Primitive(msg).get_primitive_type()
         if prim_type == PrimitiveType.RECTANGLE:
@@ -82,7 +81,6 @@ class Primitive(ConnObj):
         else:
             return None
 
-    @handle_grpc_exception
     def get_primitive_type(self):
         """Get the type of a primitive.
 
@@ -96,7 +94,6 @@ class Primitive(ConnObj):
             .type
         )
 
-    @handle_grpc_exception
     def add_void(self, hole):
         """Add a void to primitive.
 
@@ -106,7 +103,6 @@ class Primitive(ConnObj):
         """
         return get_primitive_stub().AddVoid(_PrimitiveQueryBuilder.add_void(self, hole)).value
 
-    @handle_grpc_exception
     def set_hfss_prop(self, material, solve_inside):
         """Set HFSS properties.
 
@@ -125,7 +121,6 @@ class Primitive(ConnObj):
             .value
         )
 
-    @handle_grpc_exception
     def get_layer(self):
         """Get a layer on which this primitive exists.
 
@@ -136,7 +131,6 @@ class Primitive(ConnObj):
         layer_msg = get_primitive_stub().GetLayer(self.msg)
         return Layer._create(layer_msg)
 
-    @handle_grpc_exception
     def set_layer(self, layer) -> bool:
         """Set the layer.
 
@@ -150,7 +144,6 @@ class Primitive(ConnObj):
         """
         return get_primitive_stub().SetLayer(_PrimitiveQueryBuilder.set_layer(self, layer)).value
 
-    @handle_grpc_exception
     def get_is_negative(self):
         """Get if the primitive is negative.
 
@@ -160,7 +153,6 @@ class Primitive(ConnObj):
         """
         return get_primitive_stub().GetIsNegative(self.msg).value
 
-    @handle_grpc_exception
     def set_is_negative(self, is_negative):
         """Update if negative.
 
@@ -178,7 +170,6 @@ class Primitive(ConnObj):
             .value
         )
 
-    @handle_grpc_exception
     def is_void(self):
         """Determine if a primitive is a void.
 
@@ -188,7 +179,6 @@ class Primitive(ConnObj):
         """
         return get_primitive_stub().IsVoid(self.msg).value
 
-    @handle_grpc_exception
     def has_voids(self):
         """
         Determine if a primitive contains voids inside.
@@ -200,7 +190,6 @@ class Primitive(ConnObj):
         return get_primitive_stub().HasVoids(self.msg).value
 
     @property
-    @handle_grpc_exception
     def voids(self):
         """
         Get list of voids inside a primitive.
@@ -211,7 +200,6 @@ class Primitive(ConnObj):
         """
         return EDBIterator(get_primitive_stub().Voids(self.msg), Primitive._create)
 
-    @handle_grpc_exception
     def get_owner(self):
         """
         Get an owner of a primitive.
@@ -222,7 +210,6 @@ class Primitive(ConnObj):
         """
         return Primitive._create(get_primitive_stub().GetOwner(self.msg))
 
-    @handle_grpc_exception
     def is_parameterized(self):
         """
         Determine if a primitive is parametrized.
@@ -233,7 +220,6 @@ class Primitive(ConnObj):
         """
         return get_primitive_stub().IsParameterized(self.msg).value
 
-    @handle_grpc_exception
     def get_hfss_prop(self):
         """
         Get HFSS properties.
@@ -246,7 +232,6 @@ class Primitive(ConnObj):
         prop_msg = get_primitive_stub().GetHfssProp(self.msg)
         return prop_msg.material_name, prop_msg.solve_inside
 
-    @handle_grpc_exception
     def remove_hfss_prop(self):
         """
         Remove HFSS properties.
@@ -257,7 +242,6 @@ class Primitive(ConnObj):
         """
         return get_primitive_stub().RemoveHfssProp(self.msg).value
 
-    @handle_grpc_exception
     def is_zone_primitive(self):
         """
         Determine if a primitive is a zone.
@@ -290,7 +274,6 @@ class Rectangle(Primitive):
         LOWER_LEFT_UPPER_RIGHT = rectangle_pb2.LOWER_LEFT_UPPER_RIGHT
 
     @staticmethod
-    @handle_grpc_exception
     def create(layout, layer, net, rep_type, param1, param2, param3, param4, corner_rad, rotation):
         """Create a rectangle.
 
@@ -328,7 +311,6 @@ class Rectangle(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_parameters(self):
         """Get coordinates parameters."""
         rect_param_msg = get_rectangle_stub().GetParameters(self.msg)
@@ -342,7 +324,6 @@ class Rectangle(Primitive):
             Value(rect_param_msg.rotation),
         )
 
-    @handle_grpc_exception
     def set_parameters(self, rep_type, param1, param2, param3, param4, corner_rad, rot):
         """Set coordinates parameters.
 
@@ -398,7 +379,6 @@ class Rectangle(Primitive):
         return Rectangle.render(self, *self.get_parameters())
 
     @staticmethod
-    @handle_grpc_exception
     def render(
         rep_type,
         x_lower_left_or_center_x,
@@ -463,7 +443,6 @@ class Circle(Primitive):
     """Class representing a circle object."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(layout, layer, net, center_x, center_y, radius):
         """Create a circle.
 
@@ -494,7 +473,6 @@ class Circle(Primitive):
         )
 
     @staticmethod
-    @handle_grpc_exception
     def render(center_x, center_y, radius, is_hole):
         """Render a circle.
 
@@ -518,7 +496,6 @@ class Circle(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_parameters(self):
         """Get parameters of a circle.
 
@@ -533,7 +510,6 @@ class Circle(Primitive):
             Value(circle_param_msg.radius),
         )
 
-    @handle_grpc_exception
     def set_parameters(self, center_x, center_y, radius):
         """Set parameters of a circle.
 
@@ -585,7 +561,6 @@ class Text(Primitive):
     """Class representing a text object."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(layout, layer, center_x, center_y, text):
         """Create a text object.
 
@@ -619,7 +594,6 @@ class Text(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_text_data(self):
         """Get the text data of a text.
 
@@ -638,7 +612,6 @@ class Text(Primitive):
             text_data_msg.text,
         )
 
-    @handle_grpc_exception
     def set_text_data(self, center_x, center_y, text):
         """Set the text data of a text.
 
@@ -686,7 +659,6 @@ class Polygon(Primitive):
     """Class representing a polygon object."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(layout, layer_name, net, polygon_data):
         """Create a polygon.
 
@@ -707,7 +679,6 @@ class Polygon(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_polygon_data(self):
         """Get a PolygonData object for this Polygon.
 
@@ -718,7 +689,6 @@ class Polygon(Primitive):
         """
         return get_polygon_stub().GetPolygonData(self.msg)
 
-    @handle_grpc_exception
     def set_polygon_data(self, poly):
         """Set PolygonData object for this Polygon.
 
@@ -783,7 +753,6 @@ class Path(Primitive):
     """Class representing a path object."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
         """Create a path.
 
@@ -811,7 +780,6 @@ class Path(Primitive):
         )
 
     @staticmethod
-    @handle_grpc_exception
     def render(width, end_cap1, end_cap2, corner_style, path):
         """Render a Path object.
 
@@ -843,7 +811,6 @@ class Path(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_center_line(self):
         """Get center line of the path.
 
@@ -854,7 +821,6 @@ class Path(Primitive):
         """
         return get_path_stub().GetCenterLine(self.msg)
 
-    @handle_grpc_exception
     def set_center_line(self, center_line):
         """Set center line of the path.
 
@@ -878,7 +844,6 @@ class Path(Primitive):
             .value
         )
 
-    @handle_grpc_exception
     def get_end_cap_style(self):
         """Get path end cap styles.
 
@@ -891,7 +856,6 @@ class Path(Primitive):
         end_cap_msg = get_path_stub().GetEndCapStyle(self.msg)
         return (PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2))
 
-    @handle_grpc_exception
     def set_end_cap_style(self, end_cap1, end_cap2) -> bool:
         """Set path end cap styles.
 
@@ -920,7 +884,6 @@ class Path(Primitive):
             .value
         )
 
-    @handle_grpc_exception
     def get_clip_info(self):
         """Get data used to clip the path.
 
@@ -933,7 +896,6 @@ class Path(Primitive):
         clip_info_msg = get_path_stub().GetClipInfo(self.msg)
         return (clip_info_msg.clipping_poly, clip_info_msg.keep_inside)
 
-    @handle_grpc_exception
     def set_clip_info(self, clipping_poly, keep_inside=True):
         """Set data used to clip the path.
 
@@ -961,7 +923,6 @@ class Path(Primitive):
             .value
         )
 
-    @handle_grpc_exception
     def get_corner_style(self):
         """Get path corner style.
 
@@ -972,7 +933,6 @@ class Path(Primitive):
         """
         return PathCornerType(get_path_stub().GetCornerStyle(self.msg).corner_style)
 
-    @handle_grpc_exception
     def set_corner_style(self, corner_type):
         """Set path corner style.
 
@@ -997,7 +957,6 @@ class Path(Primitive):
             .value
         )
 
-    @handle_grpc_exception
     def get_width(self):
         """Get path width.
 
@@ -1008,7 +967,6 @@ class Path(Primitive):
         """
         return Value(get_path_stub().GetWidth(self.msg).width)
 
-    @handle_grpc_exception
     def set_width(self, width):
         """Set path width.
 
@@ -1033,7 +991,6 @@ class Path(Primitive):
             .value
         )
 
-    @handle_grpc_exception
     def get_miter_ratio(self):
         """Get miter ratio.
 
@@ -1044,7 +1001,6 @@ class Path(Primitive):
         """
         return Value(get_path_stub().GetMiterRatio(self.msg).miter_ratio)
 
-    @handle_grpc_exception
     def set_miter_ratio(self, miter_ratio):
         """Set miter ratio.
 
@@ -1214,7 +1170,6 @@ class Bondwire(Primitive):
         INVALID = bondwire_pb2.INVALID_BONDWIRE_CROSS_SECTION_TYPE
 
     @staticmethod
-    @handle_grpc_exception
     def create(
         layout,
         bondwire_type,
@@ -1278,7 +1233,6 @@ class Bondwire(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_material(self, evaluated=True):
         """Get material of the bondwire.
 
@@ -1295,7 +1249,6 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
         )
 
-    @handle_grpc_exception
     def set_material(self, material):
         """Set the material of a bondwire.
 
@@ -1306,7 +1259,6 @@ class Bondwire(Primitive):
         get_bondwire_stub().SetMaterial(_BondwireQueryBuilder.set_material_message(self, material))
 
     @property
-    @handle_grpc_exception
     def type(self):
         """Get bondwire-type of a bondwire object.
 
@@ -1318,7 +1270,6 @@ class Bondwire(Primitive):
         return Bondwire.BondwireType(btype_msg.type)
 
     @type.setter
-    @handle_grpc_exception
     def type(self, bondwire_type):
         """Set the bondwire-type of a bondwire.
 
@@ -1331,7 +1282,6 @@ class Bondwire(Primitive):
         )
 
     @property
-    @handle_grpc_exception
     def cross_section_type(self):
         """Get bondwire-cross-section-type of a bondwire object.
 
@@ -1344,7 +1294,6 @@ class Bondwire(Primitive):
         )
 
     @cross_section_type.setter
-    @handle_grpc_exception
     def cross_section_type(self, bondwire_type):
         """Set the bondwire-cross-section-type of a bondwire.
 
@@ -1357,7 +1306,6 @@ class Bondwire(Primitive):
         )
 
     @property
-    @handle_grpc_exception
     def cross_section_height(self):
         """Get bondwire-cross-section height of a bondwire object.
 
@@ -1368,7 +1316,6 @@ class Bondwire(Primitive):
         return Value(get_bondwire_stub().GetCrossSectionHeight(self.msg))
 
     @cross_section_height.setter
-    @handle_grpc_exception
     def cross_section_height(self, height):
         """Set the cross-section-height value of a bondwire.
 
@@ -1380,7 +1327,6 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.set_cross_section_height_message(self, height)
         )
 
-    @handle_grpc_exception
     def get_definition_name(self, evaluated=True):
         """Get definition name of a bondwire object.
 
@@ -1398,7 +1344,6 @@ class Bondwire(Primitive):
             .value
         )
 
-    @handle_grpc_exception
     def set_definition_name(self, definition_name):
         """Set the definition name of a bondwire.
 
@@ -1411,7 +1356,6 @@ class Bondwire(Primitive):
         )
 
     @property
-    @handle_grpc_exception
     def traj(self):
         """Get trajectory parameters of a bondwire object.
 
@@ -1428,7 +1372,6 @@ class Bondwire(Primitive):
         )
 
     @traj.setter
-    @handle_grpc_exception
     def traj(self, x1, y1, x2, y2):
         """Set the parameters of the trajectory of a bondwire.
 
@@ -1444,7 +1387,6 @@ class Bondwire(Primitive):
         )
 
     @property
-    @handle_grpc_exception
     def width(self):
         """Get width of a bondwire object.
 
@@ -1456,7 +1398,6 @@ class Bondwire(Primitive):
         return Value(val)
 
     @width.setter
-    @handle_grpc_exception
     def width(self, width):
         """Set the width of a bondwire.
 
@@ -1466,7 +1407,6 @@ class Bondwire(Primitive):
         """
         get_bondwire_stub().SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
 
-    @handle_grpc_exception
     def get_start_elevation(self, start_context):
         """Get the start elevation layer of a bondwire object.
 
@@ -1484,7 +1424,6 @@ class Bondwire(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def set_start_elevation(self, start_context, layer):
         """Set the set start elevation of a bondwire.
 
@@ -1497,7 +1436,6 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.set_elevation_message(self, start_context, layer)
         )
 
-    @handle_grpc_exception
     def get_end_elevation(self, end_context):
         """Get the end elevation layer of a bondwire object.
 
@@ -1515,7 +1453,6 @@ class Bondwire(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def set_end_elevation(self, end_context, layer):
         """Set the set end elevation of a bondwire.
 

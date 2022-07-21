@@ -6,7 +6,7 @@ import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import ansys.api.edb.v1.simulation_setup_pb2 as simulation_setup_pb2
 
 from ansys.edb.core import simulation_setup
-from ansys.edb.core.core import ObjBase, handle_grpc_exception, messages
+from ansys.edb.core.core import ObjBase, messages
 from ansys.edb.core.session import get_simulation_setup_stub
 
 
@@ -53,7 +53,6 @@ class SimulationSetup(ObjBase):
     """Simulation Setup."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(cell, name, sim_type):
         """Create a simulation setup.
 
@@ -72,7 +71,6 @@ class SimulationSetup(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def simulation_setup_info(self):
         """Get simulation setup info.
 
@@ -86,7 +84,6 @@ class SimulationSetup(ObjBase):
             )
         )
 
-    @handle_grpc_exception
     def adaptive_frequency(self, frequency, max_delta_s, max_pass):
         """Add an adaptive frequency to this simulation setup.
 
@@ -104,7 +101,6 @@ class SimulationSetup(ObjBase):
             .value
         )
 
-    @handle_grpc_exception
     def mesh_operation(self, name, net_layers, num_layers):
         """Add a mesh operation to this simulation setup.
 

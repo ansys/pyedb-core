@@ -2,7 +2,7 @@
 
 import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
-from ansys.edb.core.core import LayoutObj, handle_grpc_exception, messages
+from ansys.edb.core.core import LayoutObj, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -18,7 +18,6 @@ class NetClass(LayoutObj):
     __stub = StubAccessor(StubType.netclass)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, name):
         """
         Create net class.
@@ -35,7 +34,6 @@ class NetClass(LayoutObj):
         return NetClass(cls.__stub.Create(_QueryBuilder.create(layout, name)))
 
     @classmethod
-    @handle_grpc_exception
     def find(cls, layout, name):
         """
         Find net class by name.
@@ -74,7 +72,6 @@ class NetClass(LayoutObj):
         return self.__stub.GetDescription(self.msg).value
 
     @name.setter
-    @handle_grpc_exception
     def name(self, newname):
         """
         Set name of net class.
@@ -87,7 +84,6 @@ class NetClass(LayoutObj):
         return self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
 
     @description.setter
-    @handle_grpc_exception
     def description(self, newdesc):
         """
         Set description of net class.
@@ -109,7 +105,6 @@ class NetClass(LayoutObj):
         """
         return self.__stub.IsPowerGround(messages.edb_obj_message(self.msg)).value
 
-    @handle_grpc_exception
     def add_net(self, net):
         """
         Add net to netclass.
@@ -121,7 +116,6 @@ class NetClass(LayoutObj):
         """
         return self.__stub.AddNet(nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg))
 
-    @handle_grpc_exception
     def remove_net(self, net):
         """
         Remove net from netclass.
@@ -133,7 +127,6 @@ class NetClass(LayoutObj):
         """
         self.__stub.RemoveNet(nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg))
 
-    @handle_grpc_exception
     def contains_net(self, net):
         """
         Find if net exists in netclass.

@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_collection_pb2 as layer_collection_pb2
 
-from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.core import ObjBase
 from ansys.edb.core.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,
@@ -52,7 +52,6 @@ class LayerCollection(ObjBase):
     """Layer Collection."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(mode=LayerCollectionMode.LAMINATE):
         """Create a layer collection.
 
@@ -70,7 +69,6 @@ class LayerCollection(ObjBase):
             )
         )
 
-    @handle_grpc_exception
     def clone(self):
         """Create a clone of the layer collection.
 
@@ -81,7 +79,6 @@ class LayerCollection(ObjBase):
         return LayerCollection(get_layer_collection_stub().Clone(self.msg))
 
     @property
-    @handle_grpc_exception
     def mode(self):
         """Get the mode the layer collection.
 
@@ -92,7 +89,6 @@ class LayerCollection(ObjBase):
         return LayerCollectionMode(get_layer_collection_stub().GetMode(self.msg).mode)
 
     @mode.setter
-    @handle_grpc_exception
     def mode(self, mode):
         """Set the mode the layer collection.
 
@@ -106,7 +102,6 @@ class LayerCollection(ObjBase):
             )
         )
 
-    @handle_grpc_exception
     def add_layers(self, layers):
         """Add layers to a layer collection.
 
@@ -119,7 +114,6 @@ class LayerCollection(ObjBase):
             layer_collection_pb2.AddLayersMessage(layer_collection=self.msg, layers=layer_msgs)
         )
 
-    @handle_grpc_exception
     def import_from_control_file(self, control_file_path, schema_file_path=None):
         """Import layers from the provided control file and optional XML schema.
 
@@ -153,7 +147,6 @@ class LayerCollection(ObjBase):
         """Add a layer above or below another layer."""
         return self._add_layer(layer, (relative_layer_name, add_above))
 
-    @handle_grpc_exception
     def add_layer_above(self, layer_to_add, layer_to_add_above_name):
         """Add a new layer above the specified layer.
 
@@ -170,7 +163,6 @@ class LayerCollection(ObjBase):
         """
         return self._add_layer_relative(layer_to_add, layer_to_add_above_name, True)
 
-    @handle_grpc_exception
     def add_layer_below(self, layer_to_add, layer_to_add_below_name):
         """Add a new layer below the specified layer.
 
@@ -187,7 +179,6 @@ class LayerCollection(ObjBase):
         """
         return self._add_layer_relative(layer_to_add, layer_to_add_below_name, False)
 
-    @handle_grpc_exception
     def add_layer_top(self, layer_to_add):
         """Add a new layer to the top of the LayerCollection.
 
@@ -203,7 +194,6 @@ class LayerCollection(ObjBase):
         """
         return self._add_layer(layer_to_add, add_top=True)
 
-    @handle_grpc_exception
     def add_layer_bottom(self, layer_to_add):
         """Add a new layer to the bottom of the LayerCollection.
 
@@ -219,7 +209,6 @@ class LayerCollection(ObjBase):
         """
         return self._add_layer(layer_to_add, add_top=False)
 
-    @handle_grpc_exception
     def add_stackup_layer_at_elevation(self, stackup_layer_to_add):
         """Add a stackup layer at user specified elevation.
 
@@ -235,7 +224,6 @@ class LayerCollection(ObjBase):
         """
         return self._add_layer(stackup_layer_to_add)
 
-    @handle_grpc_exception
     def add_via_layer(self, via_layer_to_add):
         """Add a via layer to the layer collection.
 
@@ -249,7 +237,6 @@ class LayerCollection(ObjBase):
         """
         return self._add_layer(via_layer_to_add)
 
-    @handle_grpc_exception
     def is_valid(self):
         """Check if the layer collection is  in a valid state.
 
@@ -262,7 +249,6 @@ class LayerCollection(ObjBase):
         """
         return get_layer_collection_stub().IsValid(self.msg).value
 
-    @handle_grpc_exception
     def find_by_name(self, layer_name):
         """Find a layer in the layer collection.
 
@@ -312,7 +298,6 @@ class LayerCollection(ObjBase):
 
         return LayerCollection._get_layer_filter(_get_layer_type_list())
 
-    @handle_grpc_exception
     def get_top_bottom_stackup_layers(self, layer_type_set):
         """Get the top and bottom stackup layers of specific type and their elevations.
 
@@ -339,7 +324,6 @@ class LayerCollection(ObjBase):
             response.bottom_layer_elevation,
         )
 
-    @handle_grpc_exception
     def get_layers(self, layer_filter):
         """Retrieve a list of layer in the LayerCollection filtered by the given layer filter.
 
@@ -365,7 +349,6 @@ class LayerCollection(ObjBase):
 
         return [Layer._create(msg) for msg in response.items]
 
-    @handle_grpc_exception
     def get_product_property(self, prod_id, attr_it):
         """Get the product property of the layer associated with the given product and attribute ids.
 
@@ -384,7 +367,6 @@ class LayerCollection(ObjBase):
             .value
         )
 
-    @handle_grpc_exception
     def set_product_property(self, prod_id, attr_it, prop_value):
         """Set the product property of the layer associated with the given product and attribute ids.
 
@@ -398,7 +380,6 @@ class LayerCollection(ObjBase):
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
-    @handle_grpc_exception
     def get_product_property_ids(self, prod_id):
         """Get a list of attribute ids corresponding to the provided product id for the layer.
 
@@ -417,7 +398,6 @@ class LayerCollection(ObjBase):
         )
         return [attr_id for attr_id in attr_ids]
 
-    @handle_grpc_exception
     def merge_dielectrics(
         self,
         layout,
@@ -457,7 +437,6 @@ class LayerCollection(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def zone_ids(self):
         """Get a list of all zones in the LayerCollection.
 
@@ -468,7 +447,6 @@ class LayerCollection(ObjBase):
         zones = get_layer_collection_stub().GetZoneIds(self.msg).zones
         return [zone for zone in zones]
 
-    @handle_grpc_exception
     def get_zone_name(self, zone):
         """Get the name corresponding to the specified zone.
 
@@ -486,7 +464,6 @@ class LayerCollection(ObjBase):
             .value
         )
 
-    @handle_grpc_exception
     def set_zone_name(self, zone, name):
         """Set the name corresponding to the specified zone.
 
@@ -500,7 +477,6 @@ class LayerCollection(ObjBase):
         )
         get_layer_collection_stub().SetZoneName(request)
 
-    @handle_grpc_exception
     def insert_zone(self, copy_zone=-1):
         """Insert a new zone.
 
@@ -520,7 +496,6 @@ class LayerCollection(ObjBase):
         )
         return get_layer_collection_stub().InsertZone(request).value
 
-    @handle_grpc_exception
     def remove_zone(self, zone):
         """Remove the specified zone.
 
@@ -530,7 +505,6 @@ class LayerCollection(ObjBase):
         """
         get_layer_collection_stub().RemoveZone(_layer_collection_zone_message(self, zone))
 
-    @handle_grpc_exception
     def simplify_dielectrics_for_phi(
         self,
         database,
@@ -564,7 +538,6 @@ class LayerCollection(ObjBase):
         )
         return [StackupLayer(simplified_lyr) for simplified_lyr in simplified_lyrs]
 
-    @handle_grpc_exception
     def add_zone_to_layer(self, layer, zone, in_zone):
         """Set the zone to the layer and update the layer in the collection.
 

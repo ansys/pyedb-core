@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.material_def_pb2 as pb
 
-from ansys.edb.core.core import ObjBase, handle_grpc_exception, messages
+from ansys.edb.core.core import ObjBase, messages
 from ansys.edb.core.session import get_material_def_stub
 
 
@@ -45,7 +45,6 @@ class MaterialDef(ObjBase):
     """Class representing a material definition."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(database, name, **kwargs):
         """Create a material definition.
 
@@ -62,7 +61,6 @@ class MaterialDef(ObjBase):
             get_material_def_stub().Create(_QueryBuilder.create(database.msg, name, **kwargs))
         )
 
-    @handle_grpc_exception
     def set_property(self, material_property, value):
         """Set a property value of a material.
 

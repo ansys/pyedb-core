@@ -7,7 +7,7 @@ from ansys.api.edb.v1.simulation_setup_info_pb2 import (
 )
 
 from ansys.edb.core import simulation_setup
-from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.core import ObjBase
 from ansys.edb.core.session import get_simulation_setup_info_stub
 
 
@@ -38,7 +38,6 @@ class SimulationSetupInfo(ObjBase):
     """Class representing a simulation setup info."""
 
     @property
-    @handle_grpc_exception
     def simulation_settings(self):
         """Get simulation settings.
 
@@ -54,7 +53,6 @@ class SimulationSetupInfo(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def sweep_data_list(self):
         """Get sweep data list.
 

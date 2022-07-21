@@ -2,7 +2,7 @@
 
 import ansys.api.edb.v1.padstack_def_pb2 as pb
 
-from ansys.edb.core.core import ObjBase, handle_grpc_exception
+from ansys.edb.core.core import ObjBase
 from ansys.edb.core.definition.padstack_def_data import PadstackDefData
 from ansys.edb.core.session import get_padstack_def_stub
 
@@ -47,7 +47,6 @@ class PadstackDef(ObjBase):
     """Class representing a padstack definition."""
 
     @staticmethod
-    @handle_grpc_exception
     def create(db, name):
         """Create a PadstackDef object.
 
@@ -68,13 +67,11 @@ class PadstackDef(ObjBase):
             )
         )
 
-    @handle_grpc_exception
     def delete(self):
         """Delete a PadstackDef."""
         get_padstack_def_stub().Delete(self.msg)
 
     @staticmethod
-    @handle_grpc_exception
     def find_by_name(db, name):
         """Find a PadstackDef by name.
 
@@ -95,7 +92,6 @@ class PadstackDef(ObjBase):
         )
 
     @property
-    @handle_grpc_exception
     def name(self):
         """Get Name of a PadstackDef.
 
@@ -106,7 +102,6 @@ class PadstackDef(ObjBase):
         return get_padstack_def_stub().GetName(self.msg).value
 
     @property
-    @handle_grpc_exception
     def data(self):
         """Get PadstackDefData of a PadstackDef.
 
@@ -117,7 +112,6 @@ class PadstackDef(ObjBase):
         return PadstackDefData(get_padstack_def_stub().GetData(self.msg))
 
     @data.setter
-    @handle_grpc_exception
     def data(self, data):
         """Set PadstackDefData of a PadstackDef.
 

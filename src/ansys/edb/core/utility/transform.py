@@ -1,13 +1,11 @@
 """Transform Class."""
 
-from ansys.edb.core.core.edb_errors import handle_grpc_exception
 from ansys.edb.core.utility.value import Value
 
 
 class Transform:
     """Class representing a transformation."""
 
-    @handle_grpc_exception
     def __init__(self, scale, angle, mirror, offset_x, offset_y):
         """Initialize transform object.
 

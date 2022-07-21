@@ -5,7 +5,7 @@ from enum import Enum
 import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
-from ansys.edb.core.core import ConnObj, ObjBase, TypeField, handle_grpc_exception, messages
+from ansys.edb.core.core import ConnObj, ObjBase, TypeField, messages
 from ansys.edb.core.geometry import ArcData
 from ansys.edb.core.hierarchy import CellInstance, PinGroup
 from ansys.edb.core.layer import Layer
@@ -87,17 +87,14 @@ class Edge(ObjBase):
             return PadEdge(self.msg)
 
     @classmethod
-    @handle_grpc_exception
     def _create(cls, **params):
         return cls.__stub.Create(messages.edge_creation_message(cls.type, **params))
 
     @property
-    @handle_grpc_exception
     def _type(self):
         return EdgeType(self.__stub.GetType(self.msg))
 
     @property
-    @handle_grpc_exception
     def _params(self):
         res = self.__stub.GetParameters(self.msg)
         if self.type == EdgeType.PRIMITIVE:
@@ -205,7 +202,6 @@ class Terminal(ObjBase):
     __stub = StubAccessor(StubType.terminal)
     type = TypeField(None)
 
-    @handle_grpc_exception
     def cast(self, term_type=None):
         """Cast the terminal object to correct concrete type. Fetch the type if necessary.
 
@@ -237,7 +233,6 @@ class Terminal(ObjBase):
             return PinGroupTerminal(self.msg)
 
     @classmethod
-    @handle_grpc_exception
     def find(cls, layout, name):
         """Find a terminal by name.
 
@@ -255,12 +250,10 @@ class Terminal(ObjBase):
         ).cast(cls.type)
 
     @property
-    @handle_grpc_exception
     def _params(self):
         return self.__stub.GetParams(self.msg)
 
     @_params.setter
-    @handle_grpc_exception
     def _params(self, values):
         self.__stub.SetParams(messages.term_set_params_message(self, **values))
 
@@ -599,7 +592,6 @@ class Terminal(ObjBase):
         """
         self._params = {"port_post_processing_prop": value}
 
-    @handle_grpc_exception
     def _product_solvers(self, product_id):
         return self.__stub.GetProductSolvers(
             messages.term_get_product_solver_message(self, product_id)
@@ -652,7 +644,6 @@ class TerminalInstance(ConnObj):
     __stub = StubAccessor(StubType.terminal_instance)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, cell_instance, name, net_ref=None):
         """Create a terminal instance object.
 
@@ -674,7 +665,6 @@ class TerminalInstance(ConnObj):
         )
 
     @property
-    @handle_grpc_exception
     def owning_cell_instance(self):
         """Return an cell instance that owns this terminal.
 
@@ -685,7 +675,6 @@ class TerminalInstance(ConnObj):
         return CellInstance(self.__stub.GetOwningCellInstance(self.msg))
 
     @property
-    @handle_grpc_exception
     def definition_terminal(self):
         """Return a definition terminal, if any.
 
@@ -696,7 +685,6 @@ class TerminalInstance(ConnObj):
         return Terminal(self.__stub.GetDefinitionTerminal(self.msg)).cast()
 
     @property
-    @handle_grpc_exception
     def definition_terminal_name(self):
         """Return a name of definition terminal.
 
@@ -714,7 +702,6 @@ class TerminalInstanceTerminal(Terminal):
     type = TypeField(TerminalType.TERM_INST)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, term_instance, name, net_ref=None, is_ref=False):
         """Create a terminal instance terminal.
 
@@ -739,7 +726,6 @@ class TerminalInstanceTerminal(Terminal):
         )
 
     @property
-    @handle_grpc_exception
     def terminal_instance(self):
         """Return the terminal instance.
 
@@ -750,7 +736,6 @@ class TerminalInstanceTerminal(Terminal):
         return TerminalInstance(self.__stub.GetTerminalInstance(self.msg))
 
     @terminal_instance.setter
-    @handle_grpc_exception
     def terminal_instance(self, value):
         """Set the terminal instance.
 
@@ -768,7 +753,6 @@ class BundleTerminal(Terminal):
     type = TypeField(TerminalType.BUNDLE)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, terminals):
         """
         Create a bundle terminal.
@@ -784,7 +768,6 @@ class BundleTerminal(Terminal):
         return BundleTerminal(cls.__stub.Create(messages.edb_obj_collection_message(terminals)))
 
     @property
-    @handle_grpc_exception
     def terminals(self):
         """Get list of terminals grouped in this terminal.
 
@@ -794,7 +777,6 @@ class BundleTerminal(Terminal):
         """
         return [Terminal(msg).cast() for msg in self.__stub.GetTerminals(self.msg)]
 
-    @handle_grpc_exception
     def ungroup(self):
         """Delete this grouping."""
         self.__stub.Ungroup(self.msg)
@@ -808,7 +790,6 @@ class PointTerminal(Terminal):
     type = TypeField(TerminalType.POINT)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, net, layer, name, point):
         """
         Create a point terminal.
@@ -830,7 +811,6 @@ class PointTerminal(Terminal):
         )
 
     @property
-    @handle_grpc_exception
     def params(self):
         """Get x, y coordinates and the layer this point terminal is placed on.
 
@@ -867,7 +847,6 @@ class PointTerminal(Terminal):
         return self.params[1]
 
     @params.setter
-    @handle_grpc_exception
     def params(self, params):
         """Set x, y coordinates and the layer this point terminal is placed on.
 
@@ -885,7 +864,6 @@ class PadstackInstanceTerminal(Terminal):
     type = TypeField(TerminalType.PADSTACK_INST)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, name, padstack_instance, layer, net=None, is_ref=False):
         """Create a padstack instance terminal.
 
@@ -911,7 +889,6 @@ class PadstackInstanceTerminal(Terminal):
         )
 
     @property
-    @handle_grpc_exception
     def params(self):
         """Return padstack instance and layer.
 
@@ -925,7 +902,6 @@ class PadstackInstanceTerminal(Terminal):
         return padstack_instance, layer
 
     @params.setter
-    @handle_grpc_exception
     def params(self, params):
         """Set padstack instance and layer for this terminal.
 
@@ -966,7 +942,6 @@ class PinGroupTerminal(Terminal):
     type = TypeField(TerminalType.PIN_GROUP)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, name, pin_group, net_ref=None, is_ref=False):
         """Create a pin group terminal.
 
@@ -989,7 +964,6 @@ class PinGroupTerminal(Terminal):
         )
 
     @property
-    @handle_grpc_exception
     def pin_group(self):
         """Return the pin group of this terminal.
 
@@ -1000,7 +974,6 @@ class PinGroupTerminal(Terminal):
         return PinGroup(self.__stub.GetPinGroup(self.msg))
 
     @pin_group.setter
-    @handle_grpc_exception
     def pin_group(self, value):
         """Set the pin group of this terminal.
 
@@ -1011,7 +984,6 @@ class PinGroupTerminal(Terminal):
         self.__stub.SetPinGroup(messages.pin_group_term_set_pin_group_message(self, value))
 
     @property
-    @handle_grpc_exception
     def layer(self):
         """Return the layer.
 
@@ -1022,7 +994,6 @@ class PinGroupTerminal(Terminal):
         return Layer(self.__stub.GetLayer(self.msg))
 
     @layer.setter
-    @handle_grpc_exception
     def layer(self, value):
         """Set the layer.
 
@@ -1040,7 +1011,6 @@ class EdgeTerminal(Terminal):
     type = TypeField(TerminalType.EDGE)
 
     @classmethod
-    @handle_grpc_exception
     def create(cls, layout, name, edges, net_ref, is_ref=False):
         """Create an edge terminal.
 
@@ -1063,7 +1033,6 @@ class EdgeTerminal(Terminal):
         )
 
     @property
-    @handle_grpc_exception
     def edges(self):
         """Return the edges on this terminal.
 
@@ -1074,7 +1043,6 @@ class EdgeTerminal(Terminal):
         return [Edge(msg).cast() for msg in self.__stub.GetEdges(self.msg)]
 
     @edges.setter
-    @handle_grpc_exception
     def edges(self, edges):
         """Set the edges on this terminal.
 

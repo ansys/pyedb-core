@@ -4,10 +4,8 @@ from enum import Enum
 
 from ansys.api.edb.v1 import layer_map_pb2 as pb
 
-from ansys.edb.core.core import messages
-from ansys.edb.core.core.base import ObjBase
+from ansys.edb.core.core import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
-from .edb_errors import handle_grpc_exception
 
 
 class _QueryBuilder:

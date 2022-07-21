@@ -11,11 +11,11 @@ import ansys.api.edb.v1.primitive_pb2 as primitive_pb2
 import ansys.api.edb.v1.rectangle_pb2 as rectangle_pb2
 import ansys.api.edb.v1.text_pb2 as text_pb2
 
+from ansys.edb.core import hierarchy, terminal
 from ansys.edb.core.core import ConnObj, messages
 from ansys.edb.core.core.edb_iterator import EDBIterator
-from ansys.edb.core.layer import Layer
-from ansys.edb.core import hierarchy
 from ansys.edb.core.definition.padstack_def import PadstackDef
+from ansys.edb.core.layer import Layer
 from ansys.edb.core.session import (
     StubAccessor,
     StubType,
@@ -27,8 +27,6 @@ from ansys.edb.core.session import (
     get_rectangle_stub,
     get_text_stub,
 )
-from ansys.edb.core.terminal import TerminalInstance
-from ansys.edb.core.core.edb_errors import handle_grpc_exception
 from ansys.edb.core.utility.layer_map import LayerMap
 from ansys.edb.core.utility.value import Value
 
@@ -1636,7 +1634,6 @@ class PadstackInstance(Primitive):
         DEPTH_DRILL = padstack_instance_pb2.DEPTH_DRILL
 
     @classmethod
-    @handle_grpc_exception
     def create(
         cls,
         layout,
@@ -1656,13 +1653,12 @@ class PadstackInstance(Primitive):
         layout: Layout,
         net: Net,
         name: str,
-        placement_layer: str,
         padstack_def: PadstackDef,
         rotation: float,
-        top_layer: LayerRef,
-        bottom_layer: LayerRef,
-        solder_ball_layer: LayerRef,
-        layer_map: LayerMap?
+        top_layer: Layer,
+        bottom_layer: Layer,
+        solder_ball_layer: Layer,
+        layer_map: LayerMap
 
         Returns
         -------
@@ -1685,7 +1681,6 @@ class PadstackInstance(Primitive):
         )
 
     @property
-    @handle_grpc_exception
     def padstack_def(self):
         """Get PadstackDef of a Padstack Instance.
 
@@ -1696,7 +1691,6 @@ class PadstackInstance(Primitive):
         return PadstackDef(self.__stub.GetPadstackDef(self.msg))
 
     @property
-    @handle_grpc_exception
     def name(self):
         """Get Name of a Padstack Instance.
 
@@ -1708,7 +1702,6 @@ class PadstackInstance(Primitive):
         return self.__stub.GetName(self.msg).value
 
     @name.setter
-    @handle_grpc_exception
     def name(self, name):
         """Set the Name of a Padstack Instance.
 
@@ -1719,17 +1712,13 @@ class PadstackInstance(Primitive):
         """
         self.__stub.SetName(_PadstackInstanceQueryBuilder.set_name_message(self, name))
 
-    @handle_grpc_exception
     def get_position_and_rotation(self):
-        """Get the position and rotation of a PadstackInst.
+        """Get the position and rotation of a Padstack Instance.
 
         Returns
         -------
-        Tuple[Value, Value, Value]
-            Tuple contains x, y, rotation
-            X
-            Y
-            Rotation
+        tuple[Value, Value, Value]
+            Tuple contains (x, y) coordinates in meters and rotation in radians.
         """
         params = self.__stub.GetPositionAndRotation(self.msg)
         return (
@@ -1738,13 +1727,11 @@ class PadstackInstance(Primitive):
             Value(params.rotation),
         )
 
-    @handle_grpc_exception
     def set_position_and_rotation(self, x, y, rotation):
-        """Set the Name of a PadstackInst.
+        """Set the position and rotation of a Padstack Instance.
 
         Parameters
         ----------
-        name : Value
         x : Value
         y : Value
         rotation : Value
@@ -1753,16 +1740,13 @@ class PadstackInstance(Primitive):
             _PadstackInstanceQueryBuilder.set_position_and_rotation_message(self, x, y, rotation)
         )
 
-    @handle_grpc_exception
     def get_layer_range(self):
-        """Get the position and rotation of a PadstackInst.
+        """Get the top and bottom layers of a Padstack Instance.
 
         Returns
         -------
-        Tuple[LayerRef, LayerRef]
+        tuple[Layer, Layer]
             Tuple contains top_layer, bottom_layer
-            top_layer
-            bottom_layer
         """
         params = self.__stub.GetLayerRange(self.msg)
         return (
@@ -1770,46 +1754,42 @@ class PadstackInstance(Primitive):
             Layer(params.bottom_layer),
         )
 
-    @handle_grpc_exception
     def set_layer_range(self, top_layer, bottom_layer):
-        """Set the Name of a Padstack Instance.
+        """Set the top and bottom layers of a Padstack Instance.
 
         Parameters
         ----------
-        top_layer : LayerRef
-        bottom_layer : LayerRef
+        top_layer : Layer
+        bottom_layer : Layer
         """
         self.__stub.SetLayerRange(
             _PadstackInstanceQueryBuilder.set_layer_range_message(self, top_layer, bottom_layer)
         )
 
     @property
-    @handle_grpc_exception
     def solderball_layer(self):
-        """Get the SolderBall Layer of PadstackInst.
+        """Get the SolderBall Layer of Padstack Instance.
 
         Returns
         -------
-        LayerRef
+        Layer
             SolderBall Layer of PadstackInst
         """
         return Layer(self.__stub.GetSolderBallLayer(self.msg))
 
     @solderball_layer.setter
-    @handle_grpc_exception
     def solderball_layer(self, solderball_layer):
-        """Set the SolderBall Layer of PadstackInst.
+        """Set the SolderBall Layer of Padstack Instance.
 
         Parameters
         ----------
-        solderball_layer : LayerRef
+        solderball_layer : Layer
         """
-        return self.__stub.SetSolderBallLayer(
+        self.__stub.SetSolderBallLayer(
             _PadstackInstanceQueryBuilder.set_solderball_layer_message(self, solderball_layer)
         )
 
     @property
-    @handle_grpc_exception
     def layer_map(self):
         """Get the Layer Map of Padstack Instance.
 
@@ -1821,26 +1801,22 @@ class PadstackInstance(Primitive):
         return LayerMap(self.__stub.GetLayerMap(self.msg))
 
     @layer_map.setter
-    @handle_grpc_exception
     def layer_map(self, layer_map):
         """Set the Layer Map of Padstack Instance.
 
         Parameters
         -------
-        LayerMap
+        layer_map : LayerMap
             Layer Map to be set
         """
         self.__stub.SetLayerMap(messages.pointer_property_message(self, layer_map))
 
-    @handle_grpc_exception
     def get_hole_overrides(self):
-        """Get the Hole overrides Layer of Padstack Instance.
+        """Get the hole overrides of Padstack Instance.
 
         Returns
         -------
-        Tuple[bool, Value]
-            bool is_hole_override
-            Value hole_override
+        tuple[bool, Value]
         """
         params = self.__stub.GetHoleOverrides(self.msg)
         return (
@@ -1848,9 +1824,8 @@ class PadstackInstance(Primitive):
             Value(params.hole_override),
         )
 
-    @handle_grpc_exception
     def set_hole_overrides(self, is_hole_override, hole_override):
-        """Set the SolderBall Layer of Padstack Instance.
+        """Set the hole overrides of Padstack Instance.
 
         Parameters
         ----------
@@ -1864,21 +1839,18 @@ class PadstackInstance(Primitive):
         )
 
     @property
-    @handle_grpc_exception
     def is_layout_pin(self):
-        """Check if PadstackInst is layout pin.
+        """Check if a Padstack Instance is layout pin.
 
         Returns
         -------
         bool
-            Boolean value of the result of the check
         """
         return self.__stub.GetIsLayoutPin(self.msg).value
 
     @is_layout_pin.setter
-    @handle_grpc_exception
     def is_layout_pin(self, is_layout_pin):
-        """Set PadstackInst's is layout pin.
+        """Set if a Padstack Instance is layout pin.
 
         Parameters
         ----------
@@ -1888,7 +1860,6 @@ class PadstackInstance(Primitive):
             _PadstackInstanceQueryBuilder.set_is_layout_pin_message(self, is_layout_pin)
         )
 
-    @handle_grpc_exception
     def get_back_drill_type(self, from_bottom):
         """Get the back drill type of Padstack Instance.
 
@@ -1898,7 +1869,7 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        BackDrillType
+        PadstackInstance.BackDrillType
             Back-Drill Type of padastack instance
         """
         return PadstackInstance.BackDrillType(
@@ -1907,9 +1878,8 @@ class PadstackInstance(Primitive):
             ).type
         )
 
-    @handle_grpc_exception
     def get_back_drill_by_layer(self, from_bottom):
-        """Get the back drill by Layer.
+        """Get the back drill by layer.
 
         Parameters
         ----------
@@ -1917,7 +1887,7 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        Tuple[bool, Value]
+        tuple[bool, Value]
             Layer drill_to_layer
             Value hole_override
             Value offset
@@ -1926,18 +1896,18 @@ class PadstackInstance(Primitive):
             _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
         )
 
-        return [
+        return (
             Layer(params.drill_to_layer),
             Value(params.diameter),
             Value(params.offset),
-        ]
+        )
 
-    @handle_grpc_exception
     def set_back_drill_by_layer(self, drill_to_layer, offset, diameter, from_bottom):
-        """Set the back drill by Layer.
+        """Set the back drill by layer.
 
         Parameters
         ----------
+        drill_to_layer : Layer
         offset : Value
         diameter : Value
         from_bottom : bool
@@ -1948,9 +1918,8 @@ class PadstackInstance(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_back_drill_by_depth(self, from_bottom):
-        """Get the back drill by Depth.
+        """Get the back drill by depth.
 
         Parameters
         ----------
@@ -1958,16 +1927,15 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        Tuple[bool, Value]
+        tuple[bool, Value]
             Value drill_depth
             Value diameter
         """
         params = self.__stub.GetBackDrillByDepth(
             _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
         )
-        return [Value(params.drill_depth), Value(params.diameter)]
+        return Value(params.drill_depth), Value(params.diameter)
 
-    @handle_grpc_exception
     def set_back_drill_by_depth(self, drill_depth, diameter, from_bottom):
         """Set the back drill by Depth.
 
@@ -1983,18 +1951,16 @@ class PadstackInstance(Primitive):
             )
         )
 
-    @handle_grpc_exception
     def get_padstack_instance_terminal(self):
         """Get the Padstack Instance terminal.
 
         Returns
         -------
-        TerminalInstance
+        terminal.TerminalInstance
             Padstack Instance's terminal
         """
-        return TerminalInstance(self.__stub.GetPadstackInstanceTerminal(self.msg))
+        return terminal.TerminalInstance(self.__stub.GetPadstackInstanceTerminal(self.msg))
 
-    @handle_grpc_exception
     def is_in_pin_group(self, pin_group):
         """Check if PadstackInst is in the Pin Group.
 
@@ -2012,7 +1978,6 @@ class PadstackInstance(Primitive):
         ).value
 
     @property
-    @handle_grpc_exception
     def pin_groups(self):
         """Get the Ping groups of PadstackInst.
 

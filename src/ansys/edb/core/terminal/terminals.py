@@ -5,11 +5,10 @@ from enum import Enum
 import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
+from ansys.edb.core import hierarchy, primitive
 from ansys.edb.core.core import ConnObj, ObjBase, TypeField, messages
 from ansys.edb.core.geometry import ArcData
-from ansys.edb.core.hierarchy import CellInstance, PinGroup
 from ansys.edb.core.layer import Layer
-from ansys.edb.core.primitive import PadstackInstance, Primitive
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import PortPostProcessingProp, Rlc, Value
 
@@ -132,7 +131,7 @@ class PadEdge(Edge):
         -------
         PadstackInstance
         """
-        return PadstackInstance(self._params.padstack_instance)
+        return primitive.PadstackInstance(self._params.padstack_instance)
 
     @property
     def layer(self):
@@ -161,12 +160,12 @@ class PrimitiveEdge(Edge):
     type = TypeField(EdgeType.PRIMITIVE)
 
     @classmethod
-    def create(cls, primitive, point):
+    def create(cls, prim, point):
         """Create a primitive edge.
 
         Parameters
         ----------
-        primitive : Primitive
+        prim : Primitive
         point : (float, float)
 
         Returns
@@ -183,7 +182,7 @@ class PrimitiveEdge(Edge):
         -------
         Primitive
         """
-        return Primitive(self._params.primitive)
+        return primitive.Primitive(self._params.primitive)
 
     @property
     def point(self):
@@ -672,7 +671,7 @@ class TerminalInstance(ConnObj):
         -------
         CellInstance
         """
-        return CellInstance(self.__stub.GetOwningCellInstance(self.msg))
+        return hierarchy.CellInstance(self.__stub.GetOwningCellInstance(self.msg))
 
     @property
     def definition_terminal(self):
@@ -897,7 +896,7 @@ class PadstackInstanceTerminal(Terminal):
         (PadstackInstance, Layer)
         """
         res = self.__stub.GetParameters(self.msg)
-        padstack_instance = PadstackInstance(res.padstack_instance)
+        padstack_instance = primitive.PadstackInstance(res.padstack_instance)
         layer = Layer(res.layer)
         return padstack_instance, layer
 
@@ -971,7 +970,7 @@ class PinGroupTerminal(Terminal):
         -------
         PinGroup
         """
-        return PinGroup(self.__stub.GetPinGroup(self.msg))
+        return hierarchy.PinGroup(self.__stub.GetPinGroup(self.msg))
 
     @pin_group.setter
     def pin_group(self, value):

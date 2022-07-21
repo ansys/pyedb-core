@@ -9,6 +9,7 @@ Classes
 .. autosummary::
    :toctree: _autosummary
    
+   CellInstance
    Group
    HierarchyObj
    ViaGroup

@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 
-from ansys.edb.core.core import ObjBase
+from ansys.edb.core.core import LayoutObjType, ObjBase
 from ansys.edb.core.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,
@@ -74,6 +74,8 @@ class LayerVisibility(Enum):
 
 class Layer(ObjBase):
     """Base class representing a layer."""
+
+    layout_type = LayoutObjType.LAYER
 
     @staticmethod
     def _create(msg):

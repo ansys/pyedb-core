@@ -9,6 +9,7 @@ from ansys.edb.core.core import ObjBase
 class LayoutObjType(enum.Enum):
     """Layout Object type."""
 
+    INVALID_LAYOUT_OBJ = layout_obj_pb2.INVALID_LAYOUT_OBJ
     PRIMITIVE = layout_obj_pb2.PRIMITIVE
     PADSTACK_INSTANCE = layout_obj_pb2.PADSTACK_INST
     TERMINAL = layout_obj_pb2.TERM

@@ -1,6 +1,6 @@
 """Pin Group."""
 
-from ansys.edb.core.core import ObjBase, messages
+from ansys.edb.core.core import LayoutObjType, ObjBase, messages
 from ansys.edb.core.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
 
@@ -9,6 +9,7 @@ class PinGroup(ObjBase):
     """Class representing a pin group."""
 
     __stub = StubAccessor(StubType.pin_group)
+    layout_type = LayoutObjType.PIN_GROUP
 
     @classmethod
     def create(cls, layout, name, padstack_instances):

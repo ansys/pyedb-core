@@ -147,3 +147,7 @@ message GetProductPropertyIdsMessage {
 message ProductPropertyIdsMessage {
   repeated uint64 ids = 1;
 }
+
+message EDBInternalIdMessage{
+  uint64 id = 1;
+}

@@ -16,6 +16,7 @@ class NetClass(LayoutObj):
     """Net class."""
 
     __stub = StubAccessor(StubType.netclass)
+    layout_type = LayoutObjType.NET_CLASS
 
     @classmethod
     def create(cls, layout, name):

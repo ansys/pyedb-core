@@ -75,6 +75,8 @@ class LayerVisibility(Enum):
 class Layer(ObjBase):
     """Base class representing a layer."""
 
+    layout_type = LayoutObjType.LAYER
+
     @staticmethod
     def _create(msg):
         from ansys.edb.layer import StackupLayer, ViaLayer

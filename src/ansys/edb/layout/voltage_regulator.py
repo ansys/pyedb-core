@@ -19,6 +19,7 @@ class VoltageRegulator(ConnObj):
     """Voltage regulator."""
 
     __stub = StubAccessor(StubType.voltage_regulator)
+    layout_type = LayoutObjType.VOLTAGE_REGULATOR
 
     @classmethod
     def create(cls, layout, name, active, voltage, lrc, lrp):

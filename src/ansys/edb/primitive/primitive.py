@@ -73,6 +73,8 @@ class _PrimitiveQueryBuilder:
 class Primitive(ConnObj):
     """Base class representing primitive objects."""
 
+    layout_type = LayoutObjType.PRIMITIVE
+
     @staticmethod
     def _create(msg):
         prim_type = Primitive(msg).get_primitive_type()
@@ -1625,6 +1627,7 @@ class PadstackInstance(Primitive):
     """Class representing a Padstack Instance object."""
 
     __stub = StubAccessor(StubType.padstack_instance)
+    layout_type = LayoutObjType.PADSTACK_INSTANCE
 
     class BackDrillType(Enum):
         """Enum representing possible Back Drill types."""

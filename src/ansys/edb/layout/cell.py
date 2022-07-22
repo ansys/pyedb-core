@@ -63,6 +63,7 @@ class Cell(ObjBase, VariableServer):
     """Class representing a cell object."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
+    layout_type = LayoutObjType.CELL
 
     def __init__(self, msg):
         """Initialize a new cell object.

@@ -21,6 +21,7 @@ from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
+from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edb_iterator_pb2_grpc import EDBIteratorServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
@@ -294,6 +295,7 @@ class StubType(Enum):
     arc_data = ArcDataServiceStub
     padstack_instance = PadstackInstanceServiceStub
     voltage_regulator = VoltageRegulatorServiceStub
+    connectable = ConnectableServiceStub
 
 
 # Dictionary for storing local server error code exception messages

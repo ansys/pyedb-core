@@ -13,6 +13,7 @@ class CellInstance(HierarchyObj):
     """Class for representing cell instance hierarchy object."""
 
     __stub: CellInstanceServiceStub = StubAccessor(StubType.cell_instance)
+    layout_type = LayoutObjType.CELL_INSTANCE
 
     @classmethod
     def create(cls, layout, name, ref):

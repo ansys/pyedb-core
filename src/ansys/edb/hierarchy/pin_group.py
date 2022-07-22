@@ -9,6 +9,7 @@ class PinGroup(ObjBase):
     """Class representing a pin group."""
 
     __stub = StubAccessor(StubType.pin_group)
+    layout_type = LayoutObjType.PIN_GROUP
 
     @classmethod
     def create(cls, layout, name, padstack_instances):

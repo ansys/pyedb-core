@@ -17,6 +17,7 @@ from ansys.api.edb.v1.cell_pb2 import (
 from ansys.api.edb.v1.edb_messages_pb2 import (
     BoolPropertyMessage,
     DesignModePropertyMessage,
+    EDBInternalIdMessage,
     EDBObjCollectionMessage,
     EDBObjMessage,
     EDBObjNameMessage,
@@ -866,3 +867,8 @@ def get_product_property_message(obj, prod_id, att_id):
 def get_product_property_ids_message(obj, prod_id):
     """Convert to GetProductPropertyIdsMessage."""
     return GetProductPropertyIdsMessage(edb_obj=obj.msg, product_id=prod_id.value)
+
+
+def edb_internal_id_message(id):
+    """Convert to EDBInternalIdMessage."""
+    return EDBInternalIdMessage(id=id)

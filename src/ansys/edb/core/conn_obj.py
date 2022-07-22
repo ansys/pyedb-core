@@ -6,6 +6,11 @@ import ansys.edb.core.messages as messages
 from ansys.edb.session import ConnectableServiceStub, StubAccessor, StubType
 
 
+from ansys.edb.core.layout_obj import LayoutObj, LayoutObjType
+import ansys.edb.core.messages as messages
+from ansys.edb.session import StubAccessor, StubType
+
+
 class _QueryBuilder:
     @staticmethod
     def find_id_layout_obj_message(layout, type, id):
@@ -25,6 +30,7 @@ class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
     __stub: ConnectableServiceStub = StubAccessor(StubType.connectable)
+    layout_obj_type = LayoutObjType.INVALID_LAYOUT_OBJ
 
     @classmethod
     def _validate_edb_obj_type(cls, edb_obj_msg):
@@ -32,7 +38,6 @@ class ConnObj(LayoutObj):
         client_obj = cls(edb_obj_msg)
         if cls.layout_obj_type == LayoutObjType.PRIMITIVE:
             import ansys.edb.primitive as primitive
-
             def get_client_prim_type_from_class():
                 if cls == primitive.Circle:
                     return primitive.PrimitiveType.CIRCLE
@@ -63,7 +68,6 @@ class ConnObj(LayoutObj):
         else:
             return client_obj
         return cls(None)
-
     @classmethod
     def find_by_id(cls, layout, uid):
         """Find a Connectable object by Database ID.

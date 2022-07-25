@@ -19,7 +19,7 @@ html_short_title = html_title = "ansys-edb-core"
 
 # specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/pyedb-core",
+    "github_url": "https://github.com/pyansys/pyedb",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "additional_breadcrumbs": [

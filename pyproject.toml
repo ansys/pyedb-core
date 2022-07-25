@@ -33,7 +33,7 @@ dependencies = [
 name = "ansys.edb.core"
 
 [project.urls]
-Source = "https://github.com/pyansys/pyedb-core"
+Source = "https://github.com/pyansys/pyedb"
 
 [tool.black]
 line-length = 100

@@ -1,5 +1,5 @@
-Pyedb core
-==========
+Pyedb
+=====
 
 Ansys Electronics Database Python Client
 
@@ -14,7 +14,7 @@ At least two installation modes are provided: user and developer.
 
 <This instruction does not work until this package is released to PyPI. Go to "For developers" section instead.>
 
-In order to install Pyedb core, make sure you
+In order to install Pyedb, make sure you
 have the required build system tool. To do so, run:
 
 .. code:: bash
@@ -25,12 +25,12 @@ Then, you can simply execute:
 
 .. code:: bash
 
-    python -m pip install ansys-edb-core
+    python -m pip install ansys-edb
 
 For developers
 ^^^^^^^^^^^^^^
 
-Installing Pyedb core in developer mode allows
+Installing Pyedb in developer mode allows
 you to modify the source and enhance it.
 
 Before contributing to the project, please refer to the `PyAnsys Developer's guide`_. You will 
@@ -40,8 +40,8 @@ need to follow these steps:
 
     .. code:: bash
 
-        git clone https://github.com/pyansys/pyedb-core
-        cd pyedb-core
+        git clone https://github.com/pyansys/pyedb
+        cd pyedb
 
 2. Create a fresh-clean Python environment and activate it:
 
@@ -96,7 +96,7 @@ order to guarantee project's integrity. The following environments commands are 
 - **tox -e style**: will check for coding style quality.
 - **tox -e test**: checks for unit tests. Replace X with the minor version of your Python environment. Pass pytest flags after "--". For example, `tox -e py3X -- -s` to show stdout from pytest
 - **tox -e coverage**: checks for code coverage.
-- **tox -e doc**: checs for documentation building process.
+- **tox -e doc**: checks for documentation building process.
 
 
 Raw testing

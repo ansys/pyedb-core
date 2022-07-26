@@ -1,10 +1,8 @@
 """ConnObj."""
 from ansys.api.edb.v1 import connectable_pb2
 
-from ansys.edb.core.core import LayoutObj, LayoutObjType, messages
-import ansys.edb.core.hierarchy as hierarchy
-from ansys.edb.core.hierarchy.component_group import ComponentGroup
-from ansys.edb.core.net import Net
+from ansys.edb.core.core.layout_obj import LayoutObj, LayoutObjType
+import ansys.edb.core.core.messages as messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 from ansys.edb.core.layout_obj import LayoutObj
@@ -80,6 +78,8 @@ class ConnObj(LayoutObj):
             ComponentGroup
                 Component group of the connectable object.
         """
+        from ansys.edb.core.hierarchy.component_group import ComponentGroup
+
         return ComponentGroup(self.__stub.GetComponent(self.msg))
 
     @property
@@ -91,7 +91,9 @@ class ConnObj(LayoutObj):
         hierarchy.Group
             Group of the connectable object.
         """
-        return hierarchy.Group(self.__stub.GetGroup(self.msg))
+        from ansys.edb.core.hierarchy.group import Group
+
+        return Group(self.__stub.GetGroup(self.msg))
 
     @group.setter
     def group(self, group):
@@ -113,6 +115,8 @@ class ConnObj(LayoutObj):
         Net
             Net of the connectable object.
         """
+        from ansys.edb.core.net import Net
+
         return Net(self.__stub.GetNet(self.msg))
 
     @net.setter

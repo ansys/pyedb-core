@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/pyedb-core.iml" filepath="$PROJECT_DIR$/.idea/pyedb-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pyedb.iml" filepath="$PROJECT_DIR$/.idea/pyedb.iml" />
     </modules>
   </component>
 </project>

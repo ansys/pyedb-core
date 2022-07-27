@@ -1,7 +1,7 @@
 import ansys.api.edb.v1.edb_messages_pb2 as edb_messages_pb2
 
-import ansys.edb.core.geometry.point_data as point_data
-import ansys.edb.core.utility.value as value
+import ansys.edb.geometry.point_data as point_data
+import ansys.edb.utility.value as value
 from utils.fixtures import *  # noqa
 
 

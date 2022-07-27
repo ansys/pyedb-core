@@ -4,7 +4,7 @@ Definition
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.definition
+.. currentmodule:: ansys.edb.definition
 
 .. autosummary::
    :toctree: _autosummary

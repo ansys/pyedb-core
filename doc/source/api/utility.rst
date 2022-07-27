@@ -4,7 +4,7 @@ Utility
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.utility
+.. currentmodule:: ansys.edb.utility
 
 .. autosummary::
    :toctree: _autosummary

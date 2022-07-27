@@ -4,7 +4,7 @@ Layers
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.layer
+.. currentmodule:: ansys.edb.layer
 
 .. autosummary::
    :toctree: _autosummary

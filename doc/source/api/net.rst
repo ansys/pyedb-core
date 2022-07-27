@@ -4,7 +4,7 @@ Nets
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.net
+.. currentmodule:: ansys.edb.net
 
 .. autosummary::
    :toctree: _autosummary

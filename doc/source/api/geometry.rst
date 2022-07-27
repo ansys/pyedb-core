@@ -4,7 +4,7 @@ Geometry
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.geometry
+.. currentmodule:: ansys.edb.geometry
 
 .. autosummary::
    :toctree: _autosummary

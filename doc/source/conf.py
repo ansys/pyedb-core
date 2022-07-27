@@ -3,10 +3,10 @@ from datetime import datetime
 
 from pyansys_sphinx_theme import pyansys_logo_black
 
-from ansys.edb.core import __version__
+from ansys.edb import __version__
 
 # Project information
-project = "ansys-edb-core"
+project = "ansys-edb"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
@@ -15,7 +15,7 @@ release = version = __version__
 html_logo = pyansys_logo_black
 html_theme = "pyansys_sphinx_theme"
 
-html_short_title = html_title = "ansys-edb-core"
+html_short_title = html_title = "ansys-edb"
 
 # specify the location of your github repo
 html_theme_options = {

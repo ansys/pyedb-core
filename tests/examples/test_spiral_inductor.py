@@ -2,29 +2,23 @@ import os
 import platform
 import tempfile
 
-from ansys.edb.core.database import Database
-from ansys.edb.core.definition import MaterialDef, MaterialProperty
-from ansys.edb.core.geometry import PolygonData
-from ansys.edb.core.hierarchy import ViaGroup
-from ansys.edb.core.layer import (
-    LayerCollection,
-    LayerCollectionMode,
-    LayerType,
-    StackupLayer,
-    ViaLayer,
-)
-from ansys.edb.core.layout import Cell, CellType
-from ansys.edb.core.net import Net
-from ansys.edb.core.primitive import Path, PathCornerType, PathEndCapType, Polygon, Rectangle
-from ansys.edb.core.session import session
-from ansys.edb.core.simulation_setup import (
+from ansys.edb.database import Database
+from ansys.edb.definition import MaterialDef, MaterialProperty
+from ansys.edb.geometry import PolygonData
+from ansys.edb.hierarchy import ViaGroup
+from ansys.edb.layer import LayerCollection, LayerCollectionMode, LayerType, StackupLayer, ViaLayer
+from ansys.edb.layout import Cell, CellType
+from ansys.edb.net import Net
+from ansys.edb.primitive import Path, PathCornerType, PathEndCapType, Polygon, Rectangle
+from ansys.edb.session import session
+from ansys.edb.simulation_setup import (
     AdaptiveFrequencyData,
     SimulationSetup,
     SimulationSetupType,
     SweepData,
 )
-import ansys.edb.core.simulation_setup.skin_depth_mesh_operation
-from ansys.edb.core.terminal import PointTerminal
+import ansys.edb.simulation_setup.skin_depth_mesh_operation
+from ansys.edb.terminal import PointTerminal
 import settings
 
 
@@ -408,7 +402,7 @@ class SpiralInductor(BaseExample):
             adaptive_settings.adaptive_frequency_data_list + [afd]
         )
 
-        skin_depth_mesh_operation = ansys.edb.core.simulation_setup.skin_depth_mesh_operation
+        skin_depth_mesh_operation = ansys.edb.simulation_setup.skin_depth_mesh_operation
 
         settings.mesh_operations = [
             skin_depth_mesh_operation.SkinDepthMeshOperation(

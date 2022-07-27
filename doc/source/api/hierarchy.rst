@@ -4,7 +4,7 @@ Hierarchy
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.hierarchy
+.. currentmodule:: ansys.edb.hierarchy
 
 .. autosummary::
    :toctree: _autosummary

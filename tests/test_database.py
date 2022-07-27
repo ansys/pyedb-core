@@ -1,8 +1,8 @@
 from typing import List
 
-from ansys.edb.core.core.messages import bool_message, int64_message, str_message
-from ansys.edb.core.database import Database, database_pb2
-from ansys.edb.core.layout import Cell
+from ansys.edb.core.messages import bool_message, int64_message, str_message
+from ansys.edb.database import Database, database_pb2
+from ansys.edb.layout import Cell
 from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_collection_msg, equals, patch_stub
 
@@ -34,7 +34,7 @@ def _patch_database_stub(mocker, test_method_name, expected_response):
     unittest.mock.Mock
     """
     return patch_stub(
-        "ansys.edb.core.database.get_database_stub",
+        "ansys.edb.database.get_database_stub",
         mocker,
         test_method_name,
         expected_response,

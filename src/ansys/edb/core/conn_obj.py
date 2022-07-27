@@ -9,7 +9,9 @@ from ansys.edb.core.layout_obj import LayoutObj
 class _QueryBuilder:
     @staticmethod
     def find_id_layout_obj_message(layout, type, id):
-        return connectable_pb2.FindByIdLayoutObjMessage(layout=layout.msg, type=type.value, id=id)
+        return connectable_pb2.FindByIdLayoutObjMessage(
+            layout=layout.msg, type=type.value, id_msg=messages.edb_internal_id_message(id)
+        )
 
     @staticmethod
     def set_net_message(target, net):

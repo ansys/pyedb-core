@@ -4,7 +4,7 @@ Terminals
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.terminal
+.. currentmodule:: ansys.edb.terminal
 
 .. autosummary::
    :toctree: _autosummary

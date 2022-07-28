@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
-name = "ansys-edb-core"
+name = "ansys-edb"
 version = "0.1"
 description = "Ansys electronics database python client"
 readme = "README.rst"
@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [tool.flit.module]
-name = "ansys.edb.core"
+name = "ansys.edb"
 
 [project.urls]
 Source = "https://github.com/pyansys/pyedb"

@@ -4,6 +4,6 @@ Session
 Functions
 ---------
 
-.. currentmodule:: ansys.edb.core.session
+.. currentmodule:: ansys.edb.session
 
 .. autofunction:: launch_session

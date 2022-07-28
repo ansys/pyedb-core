@@ -4,7 +4,7 @@ Layout
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.layout
+.. currentmodule:: ansys.edb.layout
 
 .. autosummary::
    :toctree: _autosummary

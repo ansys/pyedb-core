@@ -1,8 +1,8 @@
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
-from ansys.edb.core import terminal
-from ansys.edb.core.core import messages
-from ansys.edb.core.utility import PortPostProcessingProp, Rlc
+from ansys.edb import terminal
+from ansys.edb.core import messages
+from ansys.edb.utility import PortPostProcessingProp, Rlc
 from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_msgs, equals
 
@@ -11,7 +11,7 @@ from utils.test_utils import create_edb_obj_msgs, equals
 def patch(mocker):
     def _patch(cls):
         mock = mocker.Mock()
-        path = f"ansys.edb.core.terminal.terminals.{cls.__name__}._{cls.__name__}__stub"
+        path = f"ansys.edb.terminal.terminals.{cls.__name__}._{cls.__name__}__stub"
         mocker.patch(path, mock)
         return mock
 

@@ -4,7 +4,7 @@ from ansys.api.edb.v1 import edb_messages_pb2, point_data_pb2
 from google.protobuf import wrappers_pb2
 import pytest
 
-from ansys.edb.core import geometry, utility
+from ansys.edb import geometry, utility
 from utils.fixtures import *  # noqa
 
 

@@ -30,6 +30,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     StringPropertyMessage,
     TemperatureSettingsMessage,
     ValueMessage,
+    ValuePropertyMessage,
 )
 from ansys.api.edb.v1.edge_term_pb2 import (
     EdgeCreationMessage,
@@ -234,6 +235,11 @@ def bool_property_message(target, value):
 def string_property_message(target, value):
     """Convert to StringPropertyMessage."""
     return StringPropertyMessage(target=target.msg, value=value)
+
+
+def value_property_message(target, value):
+    """Convert to ValuePropertyMessage."""
+    return ValuePropertyMessage(target=edb_obj_message(target), value=value)
 
 
 def pointer_property_message(target, value):

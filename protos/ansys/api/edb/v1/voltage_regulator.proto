@@ -1,0 +1,53 @@
+// Proto file representing the EDB Circle class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "refs.proto";
+
+service VoltageRegulatorService {
+  rpc Create (VoltageRegulatorMessage) returns (EDBObjMessage) {}
+  
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetName(EDBObjNameMessage) returns (google.protobuf.Empty) {}
+
+  rpc IsActive(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIsActive(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetVoltage(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetVoltage(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetLoadRegulationCurrent(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetLoadRegulationCurrent(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetLoadRegulationPercent(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetLoadRegulationPercent(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetNPowerModules(EDBObjMessage) returns (google.protobuf.Int64Value){}
+
+  rpc GetNActivePowerModules(EDBObjMessage) returns (google.protobuf.Int64Value) {}
+
+  rpc GetPosRemoteSensePin(EDBObjMessage) returns (EDBObjMessage) {}
+  rpc SetPosRemoteSensePin(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetNegRemoteSensePin(EDBObjMessage) returns (EDBObjMessage) {}
+  rpc SetNegRemoteSensePin(EDBObjCollectionMessage) returns (google.protobuf.Empty) {} 
+
+  rpc AddPowerModule(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+  rpc RemovePowerModule(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+
+  rpc AddPowerModules(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+  rpc RemovePowerModules(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+}
+
+message VoltageRegulatorMessage {
+  EDBObjMessage layout = 1;
+  string name = 2; 
+  bool active = 3;
+  ValueMessage voltage = 4;
+  ValueMessage lrc = 5;
+  ValueMessage lrp = 6;
+}
+

@@ -57,6 +57,7 @@ from ansys.api.edb.v1.value_pb2_grpc import ValueServiceStub
 from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
+from ansys.api.edb.v1.voltage_regulator_pb2_grpc import VoltageRegulatorServiceStub
 import grpc
 
 from ansys.edb.core import edb_errors
@@ -292,6 +293,7 @@ class StubType(Enum):
     point_data = PointDataServiceStub
     arc_data = ArcDataServiceStub
     padstack_instance = PadstackInstanceServiceStub
+    voltage_regulator = VoltageRegulatorServiceStub
 
 
 # Dictionary for storing local server error code exception messages

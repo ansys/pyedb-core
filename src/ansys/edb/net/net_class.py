@@ -2,7 +2,7 @@
 
 import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
-from ansys.edb.core import LayoutObj, messages
+from ansys.edb.core import LayoutObj, LayoutObjType, messages
 from ansys.edb.session import StubAccessor, StubType
 
 

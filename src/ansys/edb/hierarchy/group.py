@@ -2,7 +2,7 @@
 
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 
-from ansys.edb.core import ConnObj, messages
+from ansys.edb.core import ConnObj, LayoutObjType, messages
 from ansys.edb.hierarchy.hierarchy_obj import HierarchyObj
 from ansys.edb.session import StubAccessor, StubType
 

@@ -1,5 +1,6 @@
 """Extended Net."""
 
+from ansys.edb.core import LayoutObjType
 from ansys.edb.net.net_class import NetClass
 
 

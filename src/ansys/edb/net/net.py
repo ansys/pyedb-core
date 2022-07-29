@@ -2,8 +2,7 @@
 
 import ansys.api.edb.v1.net_pb2 as net_pb2
 
-
-from ansys.edb.core import LayoutObj
+from ansys.edb.core import LayoutObj, LayoutObjType
 from ansys.edb.session import get_net_stub
 
 

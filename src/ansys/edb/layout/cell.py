@@ -6,7 +6,7 @@ import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core import ObjBase, VariableServer, messages
+from ansys.edb.core import LayoutObjType, ObjBase, VariableServer, messages
 from ansys.edb.layout.layout import Layout
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.simulation_setup import SimulationSetup

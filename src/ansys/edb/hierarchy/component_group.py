@@ -1,5 +1,5 @@
 """Component Group."""
-from ansys.edb.core.core import ObjBase
+from ansys.edb.core import ObjBase
 
 
 class ComponentGroup(ObjBase):

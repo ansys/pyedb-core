@@ -1,11 +1,11 @@
 """ConnObj."""
 from ansys.api.edb.v1 import connectable_pb2
 
-from ansys.edb.core.core.layout_obj import LayoutObj, LayoutObjType
-import ansys.edb.core.core.messages as messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.layout_obj import LayoutObj, LayoutObjType
+import ansys.edb.core.messages as messages
+from ansys.edb.session import StubAccessor, StubType
 
-from ansys.edb.core.layout_obj import LayoutObj
+
 class _QueryBuilder:
     @staticmethod
     def find_id_layout_obj_message(layout, type, id):

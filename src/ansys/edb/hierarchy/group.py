@@ -11,7 +11,7 @@ class Group(HierarchyObj):
     """Class representing group object."""
 
     __stub: GroupServiceStub = StubAccessor(StubType.group)
-    layout_type = LayoutObjType.GROUP
+    layout_obj_type = LayoutObjType.GROUP
 
     @classmethod
     def create(cls, layout, name):

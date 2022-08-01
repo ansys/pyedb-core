@@ -19,7 +19,7 @@ class _QueryBuilder:
 class Net(LayoutObj):
     """Class representing net."""
 
-    layout_type = LayoutObjType.NET_CLASS
+    layout_obj_type = LayoutObjType.NET_CLASS
 
     @staticmethod
     def create(layout, name):

@@ -25,17 +25,7 @@ class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
     __stub = StubAccessor(StubType.connectable)
-    layout_type = LayoutObjType.INVALID_LAYOUT_OBJ
-
-    @property
-    def obj_type(self):
-        """Get the layout object type.
-
-        Returns
-        -------
-            LayoutObjType enum of the connectable.
-        """
-        return LayoutObjType(self.__stub.GetObjType(self.msg).type)
+    layout_obj_type = LayoutObjType.INVALID_LAYOUT_OBJ
 
     @classmethod
     def find_by_id(cls, layout, uid):
@@ -54,7 +44,7 @@ class ConnObj(LayoutObj):
         return cls(
             cls.__stub.FindByIdAndType(
                 _QueryBuilder.find_id_layout_obj_message(
-                    layout=layout, type=cls.layout_type, id=uid
+                    layout=layout, type=cls.layout_obj_type, id=uid
                 )
             )
         )
@@ -77,10 +67,10 @@ class ConnObj(LayoutObj):
 
         Returns
         -------
-            ComponentGroup
+            ansys.edb.hierarchy.ComponentGroup
                 Component group of the connectable object.
         """
-        from ansys.edb.core.hierarchy.component_group import ComponentGroup
+        from ansys.edb.hierarchy import ComponentGroup
 
         return ComponentGroup(self.__stub.GetComponent(self.msg))
 
@@ -90,10 +80,10 @@ class ConnObj(LayoutObj):
 
         Returns
         -------
-        hierarchy.Group
+        ansys.edb.hierarchy.Group
             Group of the connectable object.
         """
-        from ansys.edb.core.hierarchy.group import Group
+        from ansys.edb.hierarchy import Group
 
         return Group(self.__stub.GetGroup(self.msg))
 
@@ -103,7 +93,7 @@ class ConnObj(LayoutObj):
 
         Parameters
         ----------
-        group: hierarchy.Group
+        group: ansys.edb.hierarchy.Group
             Group of the layout object.
         """
         self.__stub.SetGroup(messages.pointer_property_message(target=self, value=group))
@@ -114,10 +104,10 @@ class ConnObj(LayoutObj):
 
         Returns
         -------
-        Net
+        ansys.edb.net.Net
             Net of the connectable object.
         """
-        from ansys.edb.core.net import Net
+        from ansys.edb.net import Net
 
         return Net(self.__stub.GetNet(self.msg))
 
@@ -127,7 +117,7 @@ class ConnObj(LayoutObj):
 
         Parameters
         ----------
-        net: Net or str
+        net: ansys.edb.net.Net or str
             A Net object(or Net name) to associate this connectable with.
         """
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))

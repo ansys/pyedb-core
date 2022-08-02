@@ -28,6 +28,42 @@ class ConnObj(LayoutObj):
     layout_obj_type = LayoutObjType.INVALID_LAYOUT_OBJ
 
     @classmethod
+    def _validate_edb_obj_type(cls, edb_obj_msg):
+        """Verify that the object type received from the server matches the object type requested by the client."""
+        client_obj = cls(edb_obj_msg)
+        if cls.layout_obj_type == LayoutObjType.PRIMITIVE:
+            import ansys.edb.primitive as primitive
+
+            def get_client_prim_type_from_class():
+                if cls == primitive.Circle:
+                    return primitive.PrimitiveType.CIRCLE
+                if cls == primitive.Rectangle:
+                    return primitive.PrimitiveType.RECTANGLE
+                if cls == primitive.Polygon:
+                    return primitive.PrimitiveType.POLYGON
+                if cls == primitive.Path:
+                    return primitive.PrimitiveType.PATH
+                if cls == primitive.Bondwire:
+                    return primitive.PrimitiveType.BONDWIRE
+                if cls == primitive.BoardBendDef:
+                    return primitive.PrimitiveType.BOARD_BEND
+
+            if (
+                get_client_prim_type_from_class()
+                == primitive.Primitive(edb_obj_msg).get_primitive_type()
+            ):
+                return client_obj
+        elif cls.layout_obj_type == LayoutObjType.TERMINAL:
+            import ansys.edb.terminal as terminal
+
+            server_term_type = terminal.Terminal(edb_obj_msg).type
+            if client_obj.type == server_term_type:
+                return client_obj
+        else:
+            return client_obj
+        return cls(None)
+
+    @classmethod
     def find_by_id(cls, layout, uid):
         """Find a Connectable object by Database ID.
 
@@ -41,13 +77,12 @@ class ConnObj(LayoutObj):
         -------
             Connectable object (Net/Cell/Primitive/etc.) of given ID.
         """
-        return cls(
-            cls.__stub.FindByIdAndType(
-                _QueryBuilder.find_id_layout_obj_message(
-                    layout=layout, type=cls.layout_obj_type, id=uid
-                )
+        found_edb_obj_msg = cls.__stub.FindByIdAndType(
+            _QueryBuilder.find_id_layout_obj_message(
+                layout=layout, type=cls.layout_obj_type, id=uid
             )
         )
+        return cls._validate_edb_obj_type(found_edb_obj_msg)
 
     @property
     def edb_uid(self):

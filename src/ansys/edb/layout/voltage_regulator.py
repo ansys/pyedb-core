@@ -1,7 +1,7 @@
 """Voltage regulator."""
 import ansys.api.edb.v1.voltage_regulator_pb2 as vr_pb2
 
-from ansys.edb.core import ConnObj, messages
+from ansys.edb.core import ConnObj, LayoutObjType, messages
 from ansys.edb.primitive import PadstackInstance
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
@@ -19,6 +19,7 @@ class VoltageRegulator(ConnObj):
     """Voltage regulator."""
 
     __stub = StubAccessor(StubType.voltage_regulator)
+    layout_obj_type = LayoutObjType.VOLTAGE_REGULATOR
 
     @classmethod
     def create(cls, layout, name, active, voltage, lrc, lrp):

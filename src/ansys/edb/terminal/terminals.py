@@ -6,7 +6,7 @@ import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb import hierarchy, primitive
-from ansys.edb.core import ConnObj, ObjBase, TypeField, messages
+from ansys.edb.core import ConnObj, LayoutObjType, ObjBase, TypeField, messages
 from ansys.edb.geometry import ArcData
 from ansys.edb.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
@@ -195,11 +195,12 @@ class PrimitiveEdge(Edge):
         return self._params.point
 
 
-class Terminal(ObjBase):
+class Terminal(ConnObj):
     """Class representing a terminal object."""
 
     __stub = StubAccessor(StubType.terminal)
     type = TypeField(None)
+    layout_obj_type = LayoutObjType.TERMINAL
 
     def cast(self, term_type=None):
         """Cast the terminal object to correct concrete type. Fetch the type if necessary.
@@ -641,6 +642,7 @@ class TerminalInstance(ConnObj):
     """Class representing a terminal instance."""
 
     __stub = StubAccessor(StubType.terminal_instance)
+    layout_obj_type = LayoutObjType.TERMINAL_INSTANCE
 
     @classmethod
     def create(cls, layout, cell_instance, name, net_ref=None):

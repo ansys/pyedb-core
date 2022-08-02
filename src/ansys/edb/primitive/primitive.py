@@ -12,7 +12,7 @@ import ansys.api.edb.v1.rectangle_pb2 as rectangle_pb2
 import ansys.api.edb.v1.text_pb2 as text_pb2
 
 from ansys.edb import hierarchy, terminal
-from ansys.edb.core import ConnObj, messages
+from ansys.edb.core import ConnObj, LayoutObjType, messages
 from ansys.edb.core.edb_iterator import EDBIterator
 from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.layer import Layer
@@ -72,6 +72,8 @@ class _PrimitiveQueryBuilder:
 
 class Primitive(ConnObj):
     """Base class representing primitive objects."""
+
+    layout_obj_type = LayoutObjType.PRIMITIVE
 
     @staticmethod
     def _create(msg):
@@ -1625,6 +1627,7 @@ class PadstackInstance(Primitive):
     """Class representing a Padstack Instance object."""
 
     __stub = StubAccessor(StubType.padstack_instance)
+    layout_obj_type = LayoutObjType.PADSTACK_INSTANCE
 
     class BackDrillType(Enum):
         """Enum representing possible Back Drill types."""

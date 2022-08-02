@@ -1,0 +1,50 @@
+// Proto file representing the Cell Instance class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+import "refs.proto";
+import "layout_obj.proto";
+
+// Connectable Service definition
+service ConnectableService {
+  // Find a Connectable object by Database ID and type.
+  rpc FindByIdAndType(FindByIdLayoutObjMessage) returns (EDBObjMessage) {}
+
+  // Get the unique, persistent ID for the Connectable object.
+  rpc GetId(EDBObjMessage) returns (EDBInternalIdMessage) {}
+  
+  // Gets the Component of the connectable object.
+  rpc GetComponent(EDBObjMessage) returns (EDBObjMessage) {}
+  
+  // Gets the group of the connectable object.
+  rpc GetGroup(EDBObjMessage) returns (EDBObjMessage) {}
+  
+  // Sets the group of the connectable object.
+  rpc SetGroup(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Gets the net of the connectable object.
+  rpc GetNet(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Sets the net of the connectable object.
+  rpc SetNet(SetNetMessage) returns (google.protobuf.Empty) {}
+  }
+
+message LayoutObjTypeMessage {
+  LayoutObjType type = 1;
+}
+
+message FindByIdLayoutObjMessage {
+  EDBObjMessage layout = 1;
+  LayoutObjType type = 2;
+  EDBInternalIdMessage id_msg = 3;
+}
+
+message SetNetMessage {
+  EDBObjMessage target = 1;
+  NetRefMessage net = 2;
+}

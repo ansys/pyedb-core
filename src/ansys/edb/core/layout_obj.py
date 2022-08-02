@@ -30,4 +30,6 @@ class LayoutObjType(enum.Enum):
 class LayoutObj(ObjBase):
     """Layout Object class."""
 
+    layout_obj_type = LayoutObjType.INVALID_LAYOUT_OBJ
+
     pass

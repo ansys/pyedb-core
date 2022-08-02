@@ -25,7 +25,6 @@ class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
     __stub = StubAccessor(StubType.connectable)
-    layout_obj_type = LayoutObjType.INVALID_LAYOUT_OBJ
 
     @classmethod
     def _validate_edb_obj_type(cls, edb_obj_msg):
@@ -47,6 +46,8 @@ class ConnObj(LayoutObj):
                     return primitive.PrimitiveType.BONDWIRE
                 if cls == primitive.BoardBendDef:
                     return primitive.PrimitiveType.BOARD_BEND
+                if cls == primitive.Text:
+                    return primitive.PrimitiveType.TEXT
 
             if (
                 get_client_prim_type_from_class()

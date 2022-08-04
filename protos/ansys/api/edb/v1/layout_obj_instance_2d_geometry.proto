@@ -1,0 +1,19 @@
+// Proto file representing the layout obj instance 2d geometry class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "layout_obj_instance_geometry.proto";
+
+service LayoutObjInstance2DGeometryService {
+  rpc IsNegative(LayoutObjInstanceGeometryMessage) returns (google.protobuf.BoolValue) {}
+
+  rpc GetPolygonData(GetPolygonDataMessage) returns (EDBObjMessage) {}
+}
+
+message GetPolygonDataMessage {
+  LayoutObjInstanceGeometryMessage layout_obj_inst_geom = 1;
+  bool apply_neg = 2;
+}

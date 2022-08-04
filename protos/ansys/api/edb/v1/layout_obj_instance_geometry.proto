@@ -1,0 +1,19 @@
+// Proto file representing the layout obj instance geometry class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service LayoutObjInstanceGeometryService {
+  rpc GetMaterial(LayoutObjInstanceGeometryMessage) returns (google.protobuf.StringValue) {}
+
+  rpc GetColor(LayoutObjInstanceGeometryMessage) returns (google.protobuf.Int64Value) {}
+}
+
+message LayoutObjInstanceGeometryMessage {
+  EDBObjMessage geometry = 1;
+  EDBObjMessage owning_drawing = 2;
+  EDBObjMessage placement_layer = 3;
+}

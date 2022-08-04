@@ -6,7 +6,7 @@ from ansys.edb import layout
 from ansys.edb.core import LayoutObjType, messages
 from ansys.edb.hierarchy.hierarchy_obj import HierarchyObj
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Transform3D, Value
+from ansys.edb.utility import CellInstanceTransform3D, Value
 
 
 class CellInstance(HierarchyObj):
@@ -119,10 +119,10 @@ class CellInstance(HierarchyObj):
 
         Returns
         -------
-        Transform3D
+        CellInstanceTransform3D
         """
         t3d_message = self.__stub.Get3DTransform(self.msg)
-        return Transform3D(
+        return CellInstanceTransform3D(
             [t3d_message.anchor.x, t3d_message.anchor.y, t3d_message.anchor.z],
             [t3d_message.rotAxisFrom.x, t3d_message.rotAxisFrom.y, t3d_message.rotAxisFrom.z],
             [t3d_message.rotAxisTo.x, t3d_message.rotAxisTo.y, t3d_message.rotAxisTo.z],
@@ -136,7 +136,7 @@ class CellInstance(HierarchyObj):
 
         Parameters
         ----------
-        value : Transform3D
+        value : CellInstanceTransform3D
         """
         self.__stub.Set3DTransform(messages.transform3d_property_message(self, value))
 

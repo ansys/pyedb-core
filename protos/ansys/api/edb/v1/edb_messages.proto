@@ -148,6 +148,15 @@ message ProductPropertyIdsMessage {
   repeated uint64 ids = 1;
 }
 
-message EDBInternalIdMessage{
+message EDBInternalIdMessage {
   uint64 id = 1;
+}
+
+message StringsMessage {
+  repeated string strings = 1;
+}
+
+message EDBObjPairMessage {
+  EDBObjMessage edb_obj_0 = 1;
+  EDBObjMessage edb_obj_1 = 2;
 }

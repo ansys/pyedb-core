@@ -3,7 +3,7 @@ from ansys.api.edb.v1 import connectable_pb2
 
 from ansys.edb.core.layout_obj import LayoutObj, LayoutObjType
 import ansys.edb.core.messages as messages
-from ansys.edb.session import StubAccessor, StubType
+from ansys.edb.session import ConnectableServiceStub, StubAccessor, StubType
 
 
 class _QueryBuilder:
@@ -24,7 +24,7 @@ class _QueryBuilder:
 class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
-    __stub = StubAccessor(StubType.connectable)
+    __stub: ConnectableServiceStub = StubAccessor(StubType.connectable)
 
     @classmethod
     def _validate_edb_obj_type(cls, edb_obj_msg):

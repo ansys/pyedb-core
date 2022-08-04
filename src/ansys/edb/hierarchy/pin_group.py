@@ -1,6 +1,7 @@
 """Pin Group."""
 
-from ansys.edb.core import LayoutObjType, ObjBase, messages
+from ansys.edb.core import ObjBase, messages
+from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.primitive import PadstackInstance
 from ansys.edb.session import StubAccessor, StubType
 

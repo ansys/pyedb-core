@@ -2,7 +2,8 @@
 
 import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
-from ansys.edb.core import LayoutObj, LayoutObjType, messages
+from ansys.edb.core import layout_obj, messages
+from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.session import StubAccessor, StubType
 
 
@@ -12,7 +13,7 @@ class _QueryBuilder:
         return nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name)
 
 
-class NetClass(LayoutObj):
+class NetClass(layout_obj.LayoutObj):
     """Net class."""
 
     __stub = StubAccessor(StubType.netclass)

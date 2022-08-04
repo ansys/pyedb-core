@@ -1,13 +1,13 @@
 """Hierarchy Obj."""
 
-from ansys.edb.core import ConnObj, messages
+from ansys.edb.core import conn_obj, messages
 from ansys.edb.definition import ComponentDef
 from ansys.edb.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Transform, Value
 
 
-class HierarchyObj(ConnObj):
+class HierarchyObj(conn_obj.ConnObj):
     """Base class representing hierarchy object."""
 
     __stub = StubAccessor(StubType.hierarchy_obj)

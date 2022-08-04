@@ -4,12 +4,13 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 
-from ansys.edb.core import LayoutObjType, ObjBase
+from ansys.edb.core import ObjBase
 from ansys.edb.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,
     set_product_property_message,
 )
+from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.session import get_layer_stub
 
 

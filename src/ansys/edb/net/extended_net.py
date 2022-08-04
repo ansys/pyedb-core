@@ -1,10 +1,10 @@
 """Extended Net."""
 
-from ansys.edb.core import LayoutObjType
-from ansys.edb.net.net_class import NetClass
+from ansys.edb.edb_defs import LayoutObjType
+from ansys.edb.net import net_class
 
 
-class ExtendedNet(NetClass):
+class ExtendedNet(net_class.NetClass):
     """Extended net class."""
 
     layout_obj_type = LayoutObjType.EXTENDED_NET

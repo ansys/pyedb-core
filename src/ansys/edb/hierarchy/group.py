@@ -2,7 +2,8 @@
 
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 
-from ansys.edb.core import ConnObj, LayoutObjType, messages
+from ansys.edb.core import conn_obj, messages
+from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.hierarchy.hierarchy_obj import HierarchyObj
 from ansys.edb.session import StubAccessor, StubType
 
@@ -79,4 +80,4 @@ class Group(HierarchyObj):
         list of ConnObjs
         """
         objs = self.__stub.GetMembers(self.msg).items
-        return [ConnObj(co) for co in objs]
+        return [conn_obj.ConnObj(co) for co in objs]

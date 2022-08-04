@@ -6,8 +6,9 @@ import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core import LayoutObjType, ObjBase, VariableServer, messages
-from ansys.edb.layout.layout import Layout
+from ansys.edb.core import ObjBase, messages, variable_server
+from ansys.edb.edb_defs import LayoutObjType
+from ansys.edb.layout import layout
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.simulation_setup import SimulationSetup
 from ansys.edb.utility import HfssExtentInfo, TemperatureSettings
@@ -59,7 +60,7 @@ class _QueryBuilder:
         return cell_pb2.CellSetHfssExtentsMessage(cell=cell.msg, **extents)
 
 
-class Cell(ObjBase, VariableServer):
+class Cell(ObjBase, variable_server.VariableServer):
     """Class representing a cell object."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
@@ -73,7 +74,7 @@ class Cell(ObjBase, VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        VariableServer.__init__(self, msg)
+        variable_server.VariableServer.__init__(self, msg)
 
     @classmethod
     def create(cls, db, cell_type, cell_name):
@@ -99,7 +100,7 @@ class Cell(ObjBase, VariableServer):
         -------
         Layout
         """
-        return Layout(self.__stub.GetLayout(self.msg))
+        return layout.Layout(self.__stub.GetLayout(self.msg))
 
     @property
     def flattened_layout(self):
@@ -109,7 +110,7 @@ class Cell(ObjBase, VariableServer):
         -------
         Layout
         """
-        return Layout(self.__stub.GetFlattenedLayout(self.msg))
+        return layout.Layout(self.__stub.GetFlattenedLayout(self.msg))
 
     @classmethod
     def find(cls, database, cell_type, name=None, cell_id=None):

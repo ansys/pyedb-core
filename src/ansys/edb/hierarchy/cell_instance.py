@@ -3,13 +3,14 @@
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
 from ansys.edb import layout
-from ansys.edb.core import LayoutObjType, messages
-from ansys.edb.hierarchy.hierarchy_obj import HierarchyObj
+from ansys.edb.core import messages
+from ansys.edb.edb_defs import LayoutObjType
+from ansys.edb.hierarchy import hierarchy_obj
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Transform3D, Value
 
 
-class CellInstance(HierarchyObj):
+class CellInstance(hierarchy_obj.HierarchyObj):
     """Class for representing cell instance hierarchy object."""
 
     __stub: CellInstanceServiceStub = StubAccessor(StubType.cell_instance)

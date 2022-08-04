@@ -1,13 +1,10 @@
 """ConnObj."""
 from ansys.api.edb.v1 import connectable_pb2
 
-from ansys.edb.core.layout_obj import LayoutObj, LayoutObjType
+from ansys.edb.core import layout_obj
 import ansys.edb.core.messages as messages
 from ansys.edb.session import ConnectableServiceStub, StubAccessor, StubType
-
-
-from ansys.edb.core.layout_obj import LayoutObj, LayoutObjType
-import ansys.edb.core.messages as messages
+from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.session import StubAccessor, StubType
 
 
@@ -26,7 +23,7 @@ class _QueryBuilder:
         )
 
 
-class ConnObj(LayoutObj):
+class ConnObj(layout_obj.LayoutObj):
     """Base class representing ConnObj."""
 
     __stub: ConnectableServiceStub = StubAccessor(StubType.connectable)
@@ -38,6 +35,7 @@ class ConnObj(LayoutObj):
         client_obj = cls(edb_obj_msg)
         if cls.layout_obj_type == LayoutObjType.PRIMITIVE:
             import ansys.edb.primitive as primitive
+
             def get_client_prim_type_from_class():
                 if cls == primitive.Circle:
                     return primitive.PrimitiveType.CIRCLE
@@ -68,6 +66,7 @@ class ConnObj(LayoutObj):
         else:
             return client_obj
         return cls(None)
+
     @classmethod
     def find_by_id(cls, layout, uid):
         """Find a Connectable object by Database ID.

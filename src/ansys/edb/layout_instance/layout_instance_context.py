@@ -1,10 +1,9 @@
 """Layout Instance Context."""
 
 from ansys.edb.core import ObjBase, parser
-from ansys.edb.core.messages import bool_property_message, edb_obj_pair_message
+from ansys.edb.core.messages import bool_property_message
 import ansys.edb.layout as layout
 from ansys.edb.session import LayoutInstanceContextServiceStub, StubAccessor, StubType
-from ansys.edb.utility import Transform3D
 
 
 class LayoutInstanceContext(ObjBase):
@@ -85,30 +84,3 @@ class LayoutInstanceContext(ObjBase):
         bool
         """
         return self.__stub.Is3DPlacement(bool_property_message(self, local)).value
-
-    @property
-    def transformation(self):
-        """Get the overall 3D transformation of this layout instance context.
-
-        Returns
-        -------
-        Transform3D
-        """
-        return Transform3D(self.__stub.GetTransformation(self.msg))
-
-    def get_transformation_between_contexts(self, other_lyt_inst_ctxt):
-        """Get the transformation between this layout instance context and another layout instance context.
-
-        Parameters
-        ----------
-        other_lyt_inst_ctxt : LayoutInstanceContext
-
-        Returns
-        -------
-        Transform3D
-        """
-        return Transform3D(
-            self.__stub.GetTransformationBetweenContexts(
-                edb_obj_pair_message(self, other_lyt_inst_ctxt)
-            )
-        )

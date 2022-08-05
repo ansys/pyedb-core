@@ -1,11 +1,10 @@
 """Transform 3D Class."""
 
-from ansys.edb.core import ObjBase
 from ansys.edb.utility.value import Value
 
 
-class CellInstanceTransform3D:
-    """Class representing a 3d transformation of a Cell Instance object."""
+class Transform3D:
+    """Class representing a 3d transformation."""
 
     def __init__(self, anchor, rot_axis_from, rot_axis_to, rot_angle, offset):
         """Initialize a transform 3d object.
@@ -23,9 +22,3 @@ class CellInstanceTransform3D:
         self.rot_axis_to = [Value(val) for val in rot_axis_to]
         self.rot_angle = Value(rot_angle)
         self.offset = [Value(val) for val in offset]
-
-
-class Transform3D(ObjBase):
-    """Class representing a general 3d transform."""
-
-    pass

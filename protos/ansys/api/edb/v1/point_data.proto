@@ -23,17 +23,8 @@ message PointMessage {
   ValueMessage y = 2;
 }
 
-message PathPointsMessage {
-  repeated PointMessage data = 1;
-  bool closed = 2;
-  PolySense sense = 3;
-}
-
 message PointsMessage {
-  oneof shape {
-    PathPointsMessage points_data = 1;
-    EDBObjMessage polygon_data = 2;
-  }
+  repeated PointMessage points = 1;
 }
 
 message PointPropertyMessage {
@@ -56,4 +47,9 @@ message PointDataWithLineMessage {
 message BoxMessage {
   PointMessage lower_left = 1;
   PointMessage upper_right = 2;
+}
+
+message CircleMessage {
+  PointMessage center = 1;
+  ValueMessage radius = 2;
 }

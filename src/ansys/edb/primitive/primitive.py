@@ -659,7 +659,7 @@ class _PolygonQueryBuilder:
             layout=layout.msg,
             layer=messages.layer_ref_message(layer),
             net=messages.net_ref_message(net),
-            points=messages.points_message(points),
+            points=messages.polygon_data_message(points),
         )
 
 
@@ -710,7 +710,9 @@ class Polygon(Primitive):
             Returns true if the contour of Polygon is set correctly and false if not.
         """
         return get_polygon_stub().SetPolygonData(
-            polygon_pb2.SetPolygonDataMessage(target=self.msg, poly=messages.points_message(poly))
+            polygon_pb2.SetPolygonDataMessage(
+                target=self.msg, poly=messages.polygon_data_message(poly)
+            )
         )
 
     def can_be_zone_primitive(self):
@@ -753,7 +755,7 @@ class _PathQueryBuilder:
             end_cap1=end_cap1.value,
             end_cap2=end_cap2.value,
             corner=corner.value,
-            points=messages.points_message(points),
+            points=messages.polygon_data_message(points),
         )
 
 
@@ -815,7 +817,7 @@ class Path(Primitive):
                 end_cap1=end_cap1.value,
                 end_cap2=end_cap2.value,
                 corner_style=corner_style.value,
-                path=messages.points_message(path),
+                path=messages.polygon_data_message(path),
             )
         )
 
@@ -846,7 +848,7 @@ class Path(Primitive):
             get_path_stub()
             .SetCenterLine(
                 path_pb2.SetCenterLineMessage(
-                    target=self.msg, center_line=messages.points_message(center_line)
+                    target=self.msg, center_line=messages.polygon_data_message(center_line)
                 )
             )
             .value
@@ -924,7 +926,7 @@ class Path(Primitive):
             .SetClipInfo(
                 path_pb2.SetClipInfoMessage(
                     target=self.msg,
-                    clipping_poly=messages.points_message(clipping_poly),
+                    clipping_poly=messages.polygon_data_message(clipping_poly),
                     keep_inside=keep_inside,
                 )
             )

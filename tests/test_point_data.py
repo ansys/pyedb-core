@@ -59,13 +59,13 @@ def test_is_parametric(mocked_stub, coord, expected):
 @pytest.mark.parametrize("coord, magnitude", [[(3, 4), 5], [1, 0]])
 def test_magnitude(coord, magnitude):
     p = point_data.PointData(coord)
-    assert p.magnitude == magnitude
+    assert p.magnitude() == magnitude
 
 
 @pytest.mark.parametrize("coord, normalized_coord", [[(3, 4), (3 / 5, 4 / 5)], [1, 0]])
 def test_normalized(coord, normalized_coord):
     p = point_data.PointData(coord)
-    assert p.normalized == point_data.PointData(normalized_coord)
+    assert p.normalized() == point_data.PointData(normalized_coord)
 
 
 @pytest.mark.parametrize("coord1, coord2, dist", [[(1, 2), (4, 6), 5], [1, (1, 1), 0]])

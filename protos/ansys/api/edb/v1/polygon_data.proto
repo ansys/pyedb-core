@@ -6,12 +6,128 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 import "point_data.proto";
+import "arc_data.proto";
 
+enum IntersectionType
+{
+    NO_INTERSECTION = 0;
+	THIS_INSIDE_OTHER = 1;
+	OTHER_INSIDE_THIS = 2;
+	COMMON_INTERSECTION = 3;
+	UNDEFINED_INTERSECTION = 4;
+};
 
 // Polygon Data service definition
 service PolygonDataService {
-  // Creates a polygon data from array of points and polygon options
-  rpc Create (PathPointsMessage) returns (EDBObjMessage) {}
-  // Destroy a polygon Data
-  rpc Cleanup (EDBObjMessage) returns (google.protobuf.Empty) {}
+  rpc GetNormalizedPoints (PolygonDataMessage) returns (PointsMessage) {}
+  rpc IsCircle (PolygonDataMessage) returns (google.protobuf.BoolValue) {}
+  rpc IsBox (PolygonDataMessage) returns (google.protobuf.BoolValue) {}
+  rpc HasSelfIntersections (PolygonDataWithToleranceMessage) returns (google.protobuf.BoolValue) {}
+  rpc RemoveSelfIntersections (PolygonDataWithToleranceMessage) returns (PolygonDataListMessage) {}
+  rpc IsConvex (PolygonDataMessage) returns (google.protobuf.BoolValue) {}
+  rpc GetArea (PolygonDataMessage) returns (google.protobuf.FloatValue) {}
+  rpc Transform (PolygonDataTransformMessage) returns (PolygonDataMessage) {}
+  rpc GetBBox (PolygonDataListMessage) returns (BoxMessage) {}
+  rpc GetConvexHull (PolygonDataListMessage) returns (PolygonDataMessage) {}
+  rpc RemoveArcs (PolygonDataRemoveArcMessage) returns (PolygonDataMessage) {}
+  rpc Defeature (PolygonDataWithToleranceMessage) returns (PolygonDataMessage) {}
+  rpc GetBoundingCircle (PolygonDataMessage) returns (CircleMessage) {}
+  rpc IsInside (PolygonDataWithPointMessage) returns (google.protobuf.BoolValue) {}
+  rpc DoesIntersect (PolygonDataDoesIntersectMessage) returns (google.protobuf.BoolValue) {}
+  rpc GetIntersectionType (PolygonDataPairWithToleranceMessage) returns (IntersectionTypeMessage) {}
+  rpc GetClosestPoints (PolygonDataWithPointsMessage) returns (PointsMessage) {}
+  rpc GetUnion (PolygonDataListMessage) returns (PolygonDataListMessage) {}
+  rpc GetIntersection (PolygonDataPairMessage) returns (PolygonDataListMessage) {}
+  rpc Subtract (PolygonDataPairMessage) returns (PolygonDataListMessage) {}
+  rpc Xor (PolygonDataPairMessage) returns (PolygonDataListMessage) {}
+  rpc Expand (PolygonDataExpandMessage) returns (PolygonDataListMessage) {}
+  rpc Get2DAlphaShape (PolygonDataGetAlphaShapeMessage) returns (PolygonDataListMessage) {}
+}
+
+message PolygonDataMessage {
+  message PolygonDataPoints {
+    repeated PointMessage items = 1;
+    bool closed = 2;
+    PolySense sense = 3;
+  }
+  
+  PolygonDataPoints points = 1;
+  repeated PolygonDataMessage holes = 2;
+}
+
+message PolygonDataListMessage {
+  repeated PolygonDataMessage polygons = 1;
+}
+
+message PolygonDataWithToleranceMessage {
+  PolygonDataMessage polygon = 1;
+  float tol = 2;
+}
+
+message PolygonDataPairMessage {
+  PolygonDataListMessage first = 1;
+  PolygonDataListMessage second = 2;
+}
+
+message PolygonDataPairWithToleranceMessage {
+  PolygonDataMessage first = 1;
+  PolygonDataMessage second = 2;
+  float tol = 3;
+}
+
+message PolygonDataTransformMessage {
+  message PointValueMessage {
+    PointMessage point = 1;
+	float value = 2;
+  }
+  
+  PolygonDataMessage polygon = 1;
+  oneof op {
+    PointMessage move = 2;
+	PointValueMessage rotate = 3;
+	PointValueMessage scale = 4;
+	float mirror_x = 5;
+  }
+}
+
+message PolygonDataRemoveArcMessage {
+  PolygonDataMessage polygon = 1;
+  float max_chord_error = 2;
+  float max_arc_angle = 3;
+  int64 max_points = 4;
+}
+
+message PolygonDataDoesIntersectMessage {
+  PolygonDataMessage polygon = 1;
+  CircleMessage circle = 2;
+}
+
+message PolygonDataWithPointMessage {
+  PolygonDataMessage target = 1;
+  PointMessage point = 2;
+}
+
+message PolygonDataWithPointsMessage {
+  PolygonDataMessage target = 1;
+  oneof coord {
+    PointMessage point = 2;
+	PolygonDataMessage polygon = 3;
+  }
+}
+
+message PolygonDataExpandMessage {
+  PolygonDataMessage polygon = 1;
+  float offset = 2;
+  float tol = 3;
+  bool round_corner = 4;
+  float max_corner_extension = 5;
+}
+
+message PolygonDataGetAlphaShapeMessage {
+  repeated PointMessage points = 1;
+  float alpha = 2;
+}
+
+message IntersectionTypeMessage {
+  IntersectionType intersection_type = 1;
 }

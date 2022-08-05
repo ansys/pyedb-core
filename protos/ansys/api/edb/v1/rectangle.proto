@@ -6,6 +6,7 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 import "refs.proto";
+import "polygon_data.proto";
 
 enum RectangleRepresentationType {
   INVALID_RECT_TYPE = 0;
@@ -24,7 +25,7 @@ service RectangleService {
   rpc SetParameters (SetRectangleParametersMessage) returns (google.protobuf.BoolValue) {}
 
   // Render Geometry PolygonData
-  rpc Render(RectanglePolygonDataMessage) returns (EDBObjMessage) {}
+  rpc Render(RectanglePolygonDataMessage) returns (PolygonDataMessage) {}
 }
 
 // Message for Create

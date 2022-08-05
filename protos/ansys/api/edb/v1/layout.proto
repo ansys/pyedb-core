@@ -11,6 +11,7 @@ import "edb_iterator.proto";
 import "refs.proto";
 import "layout_obj.proto";
 import "edb_defs.proto";
+import "polygon_data.proto";
 
 // Cell service definition
 service LayoutService {
@@ -27,7 +28,7 @@ service LayoutService {
   rpc GetItems (LayoutGetItemsMessage) returns (EDBObjCollectionMessage) {}
 
   // Get expanded extent from nets
-  rpc GetExpandedExtentFromNets (LayoutExpandedExtentMessage) returns (EDBObjMessage) {}
+  rpc GetExpandedExtentFromNets (LayoutExpandedExtentMessage) returns (PolygonDataMessage) {}
 
   // Convert primitives to via
   rpc ConvertPrimitivesToVias(LayoutConvertP2VMessage) returns (google.protobuf.Empty) {}

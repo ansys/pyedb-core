@@ -471,16 +471,6 @@ def get_polygon_stub():
     return StubAccessor(StubType.polygon).__get__()
 
 
-def get_polygon_data_stub():
-    """Get Polygon data stub.
-
-    Returns
-    -------
-    PolygonDataServiceStub
-    """
-    return StubAccessor(StubType.polygon_data).__get__()
-
-
 def get_path_stub():
     """Get Path stub.
 

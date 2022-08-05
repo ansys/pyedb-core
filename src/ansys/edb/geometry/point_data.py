@@ -187,7 +187,6 @@ class PointData:
         """
         return any(val.is_parametric for val in self._matrix_values)
 
-    @property
     def magnitude(self):
         """Return the magnitude of point vector.
 
@@ -199,7 +198,6 @@ class PointData:
             return 0
         return math.sqrt(sum([v**2 for v in self._matrix_values], utility.Value(0)).value)
 
-    @property
     def normalized(self):
         """Normalize the point vector.
 
@@ -207,10 +205,11 @@ class PointData:
         -------
         PointData
         """
-        mag = self.magnitude
+        mag = self.magnitude()
         n = [0] * len(self) if mag == 0 else [v / mag for v in self._matrix_values]
         return self.__class__(n)
 
+    @parser.to_point_data
     def closest(self, start, end):
         """Return the closest point on the line segment [start, end] from the point.
 
@@ -226,8 +225,7 @@ class PointData:
         typing.Optional[PointData]
         """
         if not self.is_arc:
-            pm = self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
-            return parser.to_point_data(pm)
+            return self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
 
     def distance(self, start, end=None):
         """Compute the shortest distance from the point to the line segment [start, end] when end point is given, \
@@ -243,7 +241,7 @@ class PointData:
         float
         """
         if end is None:
-            return (self - start).magnitude
+            return (self - start).magnitude()
         else:
             return self.__stub.Distance(
                 messages.point_data_with_line_message(self, start, end)
@@ -283,6 +281,7 @@ class PointData:
         if not self.is_arc and not vector.is_arc:
             return self + vector
 
+    @parser.to_point_data
     def rotate(self, angle, center):
         """Rotate a point at the specified center by the specified angle.
 
@@ -299,8 +298,7 @@ class PointData:
         typing.Optional[PointData]
         """
         if not self.is_arc:
-            pm = self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))
-            return parser.to_point_data(pm)
+            return self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))
 
     def dot(self, other):
         """Perform per-component multiplication (dot product) of two points.
@@ -328,4 +326,4 @@ class PointData:
             angle in radian.
         """
         other = conversions.to_point(other)
-        return math.acos(self.dot(other) / (self.magnitude * other.magnitude))
+        return math.acos(self.dot(other) / (self.magnitude() * other.magnitude()))

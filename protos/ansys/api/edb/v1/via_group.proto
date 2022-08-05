@@ -5,7 +5,7 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "point_data.proto";
+import "polygon_data.proto";
 import "refs.proto";
 import "hierarchy_obj.proto";
 
@@ -21,7 +21,7 @@ service ViaGroupService {
   rpc FindByName(ObjectNameInLayoutMessage) returns (EDBObjMessage) {}
 
   // Get the ViaGroup outline
-  rpc GetOutline(EDBObjMessage) returns (EDBObjMessage) {}
+  rpc GetOutline(EDBObjMessage) returns (PolygonDataMessage) {}
 
   // Get conductor percentage of the ViaGroup
   rpc GetConductorPercentage(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
@@ -38,7 +38,7 @@ message ViaGroupCreateWithPrimitivesMessage {
 
 message ViaGroupCreateWithOutlineMessage {
   EDBObjMessage layout = 1;
-  PointsMessage points = 2;
+  PolygonDataMessage points = 2;
   double conductivity_ratio = 3;
   LayerRefMessage layer = 4;
   NetRefMessage net = 5;

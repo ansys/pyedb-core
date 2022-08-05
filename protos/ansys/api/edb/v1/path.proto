@@ -5,7 +5,7 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "point_data.proto";
+import "polygon_data.proto";
 import "refs.proto";
 
 enum PathEndCapStyle {
@@ -26,43 +26,43 @@ service PathService {
   rpc Create (PathCreationMessage) returns (EDBObjMessage) {}
 
   // Render Path
-  rpc Render (PathRenderMessage) returns (EDBObjMessage) {}
+  rpc Render (PathRenderMessage) returns (PolygonDataMessage) {}
 
   // Get Center Line
-  rpc GetCenterLine (EDBObjMessage) returns (EDBObjMessage) {}
+  rpc GetCenterLine (EDBObjMessage) returns (PolygonDataMessage) {}
 
   // Set Center Line
-  rpc SetCenterLine (SetCenterLineMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetCenterLine (SetCenterLineMessage) returns (google.protobuf.Empty) {}
   
   // Get End Cap Style
   rpc GetEndCapStyle (EDBObjMessage) returns (EndCapStyleMessage) {}
   
   // Set End Cap Style
-  rpc SetEndCapStyle (SetEndCapStyleMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetEndCapStyle (SetEndCapStyleMessage) returns (google.protobuf.Empty) {}
   
   // Get Clip Info
   rpc GetClipInfo (EDBObjMessage) returns (ClipInfoMessage) {}
   
   // Set Clip Info
-  rpc SetClipInfo (SetClipInfoMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetClipInfo (SetClipInfoMessage) returns (google.protobuf.Empty) {}
 
   // Get Corner Style
   rpc GetCornerStyle (EDBObjMessage) returns (CornerStyleMessage) {}
   
   // Set Corner Style
-  rpc SetCornerStyle (SetCornerStyleMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetCornerStyle (SetCornerStyleMessage) returns (google.protobuf.Empty) {}
 
   // Get Width
   rpc GetWidth (EDBObjMessage) returns (WidthMessage) {}
   
   // Set Width
-  rpc SetWidth (SetWidthMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetWidth (SetWidthMessage) returns (google.protobuf.Empty) {}
 
   // Get Miter Ratio
   rpc GetMiterRatio (EDBObjMessage) returns (MiterRatioMessage) {}
   
   // Set Miter Ratio
-  rpc SetMiterRatio (SetMiterRatioMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetMiterRatio (SetMiterRatioMessage) returns (google.protobuf.Empty) {}
 }
 
 // Message for Create
@@ -74,7 +74,7 @@ message PathCreationMessage {
   PathEndCapStyle end_cap1 = 5;
   PathEndCapStyle end_cap2 = 6;
   PathCornerStyle corner = 7;
-  PointsMessage points = 8;
+  PolygonDataMessage points = 8;
 }
 
 // Message for Render
@@ -83,13 +83,13 @@ message PathRenderMessage {
   PathEndCapStyle end_cap1 = 2;
   PathEndCapStyle end_cap2 = 3;
   PathCornerStyle corner_style = 4;
-  PointsMessage path = 5;
+  PolygonDataMessage path = 5;
 }
 
 // Message for Setting Center Line
 message SetCenterLineMessage{
   EDBObjMessage target = 1;
-  PointsMessage center_line = 2;
+  PolygonDataMessage center_line = 2;
 }
 
 // Message for Get EndCapStyle
@@ -106,14 +106,14 @@ message SetEndCapStyleMessage{
 
 // Message for Get ClipInfo
 message ClipInfoMessage{
-  EDBObjMessage clipping_poly = 1;
+  PolygonDataMessage clipping_poly = 1;
   bool keep_inside = 2;
 }
 
 // Message for Set ClipInfo
 message SetClipInfoMessage{
   EDBObjMessage target = 1;
-  PointsMessage clipping_poly = 2;
+  PolygonDataMessage clipping_poly = 2;
   bool keep_inside = 3;
 }
 

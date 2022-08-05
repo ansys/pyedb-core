@@ -61,3 +61,7 @@ message ArcDataTwoArcsMessage {
   ArcMessage arc1 = 1;
   ArcMessage arc2 = 2;
 }
+
+message ArcsMessage {
+  repeated ArcMessage items = 1;
+}

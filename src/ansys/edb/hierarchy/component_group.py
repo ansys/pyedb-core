@@ -6,7 +6,7 @@ from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
 from ansys.edb.core import messages
-from ansys.edb.hierarchy.group import Group
+from ansys.edb.hierarchy import Group
 from ansys.edb.session import StubAccessor, StubType
 
 

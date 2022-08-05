@@ -75,6 +75,13 @@ message HfssExtentInfoMessage {
 }
 
 //------------------------------------------------------------------------------
+// Component
+
+message ComponentTypeMessage {
+  ComponentType comp_type = 1;
+}
+
+//------------------------------------------------------------------------------
 // Helpers
 
 message EDBObjMessage {
@@ -148,6 +155,6 @@ message ProductPropertyIdsMessage {
   repeated uint64 ids = 1;
 }
 
-message EDBInternalIdMessage{
+message EDBInternalIdMessage {
   uint64 id = 1;
 }

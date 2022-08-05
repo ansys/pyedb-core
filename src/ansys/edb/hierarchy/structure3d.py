@@ -6,7 +6,7 @@ import ansys.api.edb.v1.structure3d_pb2 as structure3d_pb2
 from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 
 from ansys.edb.core import messages
-from ansys.edb.hierarchy.group import Group
+from ansys.edb.hierarchy import Group
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 
@@ -40,28 +40,28 @@ class Structure3D(Group):
         """
         return Structure3D(cls.__stub.Create(messages.object_name_in_layout_message(layout, name)))
 
-    def get_material(self, value):
+    def get_material(self, evaluate):
         """Get material for the structure3d.
 
         Parameters
         ----------
-        value : bool
-            material name is evaluated if true.
+        evaluate : bool
+            Any references in the material name will be resolved if True.
 
         Returns
         -------
         str
         """
-        return self.__stub.GetMaterial(messages.bool_property_message(self, value)).value
+        return self.__stub.GetMaterial(messages.bool_property_message(self, evaluate)).value
 
-    def set_material(self, value):
+    def set_material(self, mat_name):
         """Set material for the structure3d.
 
         Parameters
         ----------
-        value : str
+        mat_name : str
         """
-        self.__stub.SetMaterial(messages.string_property_message(self, value))
+        self.__stub.SetMaterial(messages.string_property_message(self, mat_name))
 
     @property
     def thickness(self):

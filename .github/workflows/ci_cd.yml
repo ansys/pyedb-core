@@ -48,7 +48,7 @@ jobs:
           python -m pip install --upgrade pip flit tox tox-gh-actions
       - name: Test with tox
         # Only the tox environment specified in the tox.ini gh-actions is run
-        run: tox -e test -- --ignore=tests/examples
+        run: tox -e test -- --ignore=tests/examples --junitxml=junit/test-results.xml
 
 
   docs:

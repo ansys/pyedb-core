@@ -14,7 +14,7 @@ class LayoutInstanceContext(ObjBase):
 
     @property
     def layout(self):
-        """Get the mode the layout of the layout instance context.
+        """Get the layout of the layout instance context.
 
         Returns
         -------
@@ -43,7 +43,7 @@ class LayoutInstanceContext(ObjBase):
         -------
         bool
         """
-        return self.__stub.IsTopOrBlackBox(self.msg)
+        return self.__stub.IsTopOrBlackBox(self.msg).value
 
     @property
     def top_or_black_box(self):
@@ -63,9 +63,14 @@ class LayoutInstanceContext(ObjBase):
 
         Returns
         -------
-        LayoutInstanceContext
+        float or None
+            If this layout instance context has 3d placement is enabled, None is returned because the placement of the
+            context is dictated by the underlying 3d transformation. Otherwise, the placement elevation of the layout
+            instance context is returned.
         """
-        return self.__stub.GetPlacementElevation(self.msg).value
+        return (
+            self.__stub.GetPlacementElevation(self.msg).value if not self.is_3d_placement else None
+        )
 
     @property
     def is_3d_placement(self, local=False):
@@ -79,7 +84,7 @@ class LayoutInstanceContext(ObjBase):
         -------
         bool
         """
-        return self.__stub.Is3DPlacement(bool_property_message(self, local))
+        return self.__stub.Is3DPlacement(bool_property_message(self, local)).value
 
     @property
     def transformation(self):

@@ -93,21 +93,25 @@ class LayoutInstance(ObjBase):
             )
         )
 
-    def get_connected_objects(self, layout_obj, touching_only):
-        """Get the layout obj instance of the given ConnObj in the provided context.
+    def get_connected_objects(self, origin_layout_obj_inst, touching_only):
+        """Get the layout obj instances connected to the origin layout obj instance.
 
         Parameters
         ----------
-        layout_obj : ansys.edb.core.ConnObj
+        origin_layout_obj_inst : LayoutObjInstance
         touching_only : bool
-
+            If touching_only is true, only layout obj instances touching origin_layout_obj_inst on the placement
+            lyr of origin_layout_obj_inst will be returned. Otherwise, all layout obj instances across all layers
+            that are electrically connected to origin_layout_obj will be returned.
         Returns
         -------
         list[LayoutObjInstance]
         """
         hits = self.__stub.GetConnectedObjects(
             layout_instance_pb2.GetConnectedObjectsMessage(
-                layout_inst=self.msg, layout_obj=layout_obj.msg, touching_only=touching_only
+                layout_inst=self.msg,
+                layout_obj=origin_layout_obj_inst.msg,
+                touching_only=touching_only,
             )
         )
         return utils.map_list(hits.items, LayoutObjInstance)

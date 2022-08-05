@@ -24,8 +24,7 @@ class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
         """
         return self.__stub.IsNegative(self.msg).value
 
-    @property
-    def polygon_data(self, apply_negatives=False):
+    def get_polygon_data(self, apply_negatives=False):
         """Get the underlying polygon data of the layout obj instance geometry.
 
         Returns

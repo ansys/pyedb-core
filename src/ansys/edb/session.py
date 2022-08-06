@@ -24,7 +24,6 @@ from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
-from ansys.api.edb.v1.edb_iterator_pb2_grpc import EDBIteratorServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
@@ -263,7 +262,6 @@ class StubType(Enum):
 
     cell = CellServiceStub
     database = DatabaseServiceStub
-    iterator = EDBIteratorServiceStub
     layer_collection = LayerCollectionServiceStub
     layer = LayerServiceStub
     stackup_layer = StackupLayerServiceStub
@@ -385,16 +383,6 @@ def get_database_stub():
     DatabaseServiceStub
     """
     return StubAccessor(StubType.database).__get__()
-
-
-def get_edb_iterator_stub():
-    """Get Iterator stub.
-
-    Returns
-    -------
-    EDBIteratorServiceStub
-    """
-    return StubAccessor(StubType.iterator).__get__()
 
 
 def get_layer_collection_stub():

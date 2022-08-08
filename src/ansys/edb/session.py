@@ -30,6 +30,18 @@ from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
+from ansys.api.edb.v1.layout_instance_context_pb2_grpc import LayoutInstanceContextServiceStub
+from ansys.api.edb.v1.layout_instance_pb2_grpc import LayoutInstanceServiceStub
+from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2_grpc import (
+    LayoutObjInstance2DGeometryServiceStub,
+)
+from ansys.api.edb.v1.layout_obj_instance_3d_geometry_pb2_grpc import (
+    LayoutObjInstance3DGeometryServiceStub,
+)
+from ansys.api.edb.v1.layout_obj_instance_geometry_pb2_grpc import (
+    LayoutObjInstanceGeometryServiceStub,
+)
+from ansys.api.edb.v1.layout_obj_instance_pb2_grpc import LayoutObjInstanceServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
@@ -296,6 +308,12 @@ class StubType(Enum):
     padstack_instance = PadstackInstanceServiceStub
     voltage_regulator = VoltageRegulatorServiceStub
     connectable = ConnectableServiceStub
+    layout_instance = LayoutInstanceServiceStub
+    layout_instance_context = LayoutInstanceContextServiceStub
+    layout_obj_instance = LayoutObjInstanceServiceStub
+    layout_obj_instance_geometry = LayoutObjInstanceGeometryServiceStub
+    layout_obj_instance_2d_geometry = LayoutObjInstance2DGeometryServiceStub
+    layout_obj_instance_3d_geometry = LayoutObjInstance3DGeometryServiceStub
 
 
 # Dictionary for storing local server error code exception messages

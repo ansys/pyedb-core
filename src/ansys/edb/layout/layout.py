@@ -8,6 +8,7 @@ from ansys.edb.geometry import PolygonData
 from ansys.edb.hierarchy import CellInstance, Group, PinGroup
 from ansys.edb.layer import LayerCollection
 from ansys.edb.layout.voltage_regulator import VoltageRegulator
+from ansys.edb.layout_instance import LayoutInstance
 from ansys.edb.net import DifferentialPair, ExtendedNet, Net, NetClass
 from ansys.edb.primitive import BoardBendDef, PadstackInstance, Primitive
 from ansys.edb.session import StubAccessor, StubType
@@ -331,3 +332,13 @@ class Layout(ObjBase, VariableServer):
     def synchronize_bend_manager(self):
         """Synchronize bend manager."""
         self.__stub.SynchronizeBendManager(self.msg)
+
+    @property
+    def layout_instance(self):
+        """Get layout instance.
+
+        Returns
+        -------
+        ansys.edb.layout_instance.LayoutInstance
+        """
+        return LayoutInstance(self.__stub.GetLayoutInstance(self.msg))

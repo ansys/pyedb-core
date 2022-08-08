@@ -1,6 +1,6 @@
 """Transform 3D Class."""
 
-from ..utility.value import Value
+from ansys.edb.utility.value import Value
 
 
 class Transform3D:

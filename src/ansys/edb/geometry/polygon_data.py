@@ -7,7 +7,7 @@ import math
 from ansys.api.edb.v1 import point_data_pb2, polygon_data_pb2_grpc
 
 from ansys.edb import session
-from ansys.edb.core import decorators, messages, parser
+from ansys.edb.core import messages, parser
 from ansys.edb.geometry.arc_data import ArcData
 from ansys.edb.utility import conversions
 
@@ -460,17 +460,32 @@ class PolygonData:
         return self.__stub.GetUnion(messages.polygon_data_list_message([self, *others]))
 
     @parser.to_polygon_data_list
-    @decorators.self_as_param
+    def intersect(self, other_polygons):
+        """Compute an intersection of polygons.
+
+        Intersection between this polygon and another set of polygons.
+
+        Parameters
+        ----------
+        other_polygons : list[PolygonData] or PolygonData
+
+        Returns
+        -------
+        list[PolygonData]
+        """
+        return PolygonData.intersect(self, other_polygons)
+
+    @classmethod
+    @parser.to_polygon_data_list
     def intersect(cls, polygons1, polygons2):
         """Compute an intersection of polygons.
 
-        Intersection between a set of polygons and another set of polygons when called on a class.
-        Intersection between this polygon and another set of polygons when called on an instance.
+        Intersection between a set of polygons and another set of polygons.
 
         Parameters
         ----------
         polygons1 : list[PolygonData] or PolygonData
-        polygons2 : list[PolygonData] or PolygonData, optional
+        polygons2 : list[PolygonData] or PolygonData
 
         Returns
         -------
@@ -479,18 +494,34 @@ class PolygonData:
         return cls.__stub.GetIntersection(messages.polygon_data_pair_message(polygons1, polygons2))
 
     @parser.to_polygon_data_list
-    @decorators.self_as_param
+    def subtract(self, other_polygons):
+        """Compute geometric subtraction of polygons.
+
+        Subtract a set of polygons from this polygon.
+
+        Parameters
+        ----------
+        other_polygons : list[PolygonData], PolygonData
+            base polygons.
+
+        Returns
+        -------
+        list[PolygonData]
+        """
+        return PolygonData.Subtract(self, other_polygons)
+
+    @classmethod
+    @parser.to_polygon_data_list
     def subtract(cls, polygons1, polygons2):
         """Compute geometric subtraction of polygons.
 
-        Subtract a set of polygons from this polygon when called on an instance.
-        Subtract a set of polygons from another set of polygons when called on a class.
+        Subtract a set of polygons from another set of polygons.
 
         Parameters
         ----------
         polygons1 : list[PolygonData], PolygonData
             base polygons.
-        polygons2 : list[PolygonData], PolygonData, optional
+        polygons2 : list[PolygonData], PolygonData
             polygons to subtract.
 
         Returns
@@ -500,17 +531,32 @@ class PolygonData:
         return cls.__stub.Subtract(messages.polygon_data_pair_message(polygons1, polygons2))
 
     @parser.to_polygon_data_list
-    @decorators.self_as_param
+    def xor(self, other_polygons):
+        """Compute an exclusive OR of polygons.
+
+        Exclusive OR between this polygon and another set of polygons.
+
+        Parameters
+        ----------
+        other_polygons : list[PolygonData], PolygonData
+
+        Returns
+        -------
+        list[PolygonData]
+        """
+        return PolygonData.Xor(self, other_polygons)
+
+    @classmethod
+    @parser.to_polygon_data_list
     def xor(cls, polygons1, polygons2):
         """Compute an exclusive OR of polygons.
 
-        Exclusive OR between a set of polygons and another set of polygons when called on a class.
-        Exclusive OR between this polygon and another set of polygons when called on an instance.
+        Exclusive OR between a set of polygons and another set of polygons.
 
         Parameters
         ----------
         polygons1 : list[PolygonData], PolygonData
-        polygons2 : list[PolygonData], PolygonData, optional
+        polygons2 : list[PolygonData], PolygonData
 
         Returns
         -------

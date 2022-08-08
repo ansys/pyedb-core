@@ -26,6 +26,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     EDBObjCollectionMessage,
     EDBObjMessage,
     EDBObjNameMessage,
+    EDBObjPairMessage,
     GetProductPropertyIdsMessage,
     GetProductPropertyMessage,
     HfssExtentMessage,
@@ -34,6 +35,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
     StringPropertyMessage,
+    StringsMessage,
     TemperatureSettingsMessage,
     ValueMessage,
     ValuePropertyMessage,
@@ -86,7 +88,7 @@ from ansys.api.edb.v1.point_term_pb2 import (
     PointTermSetParamsMessage,
 )
 from ansys.api.edb.v1.port_post_processing_prop_pb2 import PortPostProcessingPropMessage
-from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, NetRefMessage
+from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, LayerRefPropertyMessage, NetRefMessage
 from ansys.api.edb.v1.rlc_pb2 import RlcMessage
 from ansys.api.edb.v1.simulation_settings_pb2 import (
     MeshOperationMessage,
@@ -685,6 +687,8 @@ def edb_obj_message(obj):
         return None
     elif isinstance(obj, EDBObjMessage):
         return obj
+    elif isinstance(obj, int):
+        return EDBObjMessage(id=obj)
     else:
         return obj.msg
 
@@ -899,3 +903,18 @@ def set_closure_message(obj, closure_type):
     return SetClosureMessage(
         target=obj.msg, closure_type=ClosureMessage(closure_type=closure_type.value)
     )
+
+def strings_message(strings):
+    """Convert to StringsMessage."""
+    return StringsMessage(strings=strings)
+
+
+def edb_obj_pair_message(edb_obj_0, edb_obj_1):
+    """Convert to EDBObjPairMessage."""
+    return EDBObjPairMessage(edb_obj_0=edb_obj_0.msg, edb_obj_1=edb_obj_1.msg)
+
+
+def layer_ref_property_message(edb_obj, layer_ref):
+    """Convert to LayerRefPropertyMessage."""
+    return LayerRefPropertyMessage(edb_obj=edb_obj.msg, layer_ref=layer_ref_message(layer_ref))
+

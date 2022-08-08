@@ -13,6 +13,11 @@ message LayerRefMessage {
   }
 }
 
+message LayerRefPropertyMessage {
+  EDBObjMessage edb_obj = 1;
+  LayerRefMessage layer_ref = 2;
+}
+
 message NetRefMessage {
   oneof ref {
     EDBObjMessage id = 1;

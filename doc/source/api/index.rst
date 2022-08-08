@@ -23,6 +23,7 @@ Modules
    hierarchy
    layer
    layout
+   layout_instance
    net
    primitive
    session

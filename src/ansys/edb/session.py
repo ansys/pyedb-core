@@ -43,6 +43,7 @@ from ansys.api.edb.v1.layout_obj_instance_geometry_pb2_grpc import (
     LayoutObjInstanceGeometryServiceStub,
 )
 from ansys.api.edb.v1.layout_obj_instance_pb2_grpc import LayoutObjInstanceServiceStub
+from ansys.api.edb.v1.layout_obj_pb2_grpc import LayoutObjServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
@@ -311,6 +312,7 @@ class StubType(Enum):
     voltage_regulator = VoltageRegulatorServiceStub
     connectable = ConnectableServiceStub
     component_group = ComponentGroupServiceStub
+    layout_obj = LayoutObjServiceStub
     structure3d = Structure3DServiceStub
     layout_instance = LayoutInstanceServiceStub
     layout_instance_context = LayoutInstanceContextServiceStub

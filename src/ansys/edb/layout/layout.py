@@ -3,11 +3,12 @@
 import ansys.api.edb.v1.layout_pb2 as layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
-from ansys.edb.core import LayoutObjType, ObjBase, VariableServer, messages
+from ansys.edb.core import ObjBase, messages, variable_server
+from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.geometry import PolygonData
 from ansys.edb.hierarchy import CellInstance, Group, PinGroup
 from ansys.edb.layer import LayerCollection
-from ansys.edb.layout.voltage_regulator import VoltageRegulator
+from ansys.edb.layout import layout
 from ansys.edb.layout_instance import LayoutInstance
 from ansys.edb.net import DifferentialPair, ExtendedNet, Net, NetClass
 from ansys.edb.primitive import BoardBendDef, PadstackInstance, Primitive
@@ -15,7 +16,7 @@ from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.terminal import Terminal
 
 
-class Layout(ObjBase, VariableServer):
+class Layout(ObjBase, variable_server.VariableServer):
     """Class representing layout object."""
 
     __stub: LayoutServiceStub = StubAccessor(StubType.layout)
@@ -28,7 +29,7 @@ class Layout(ObjBase, VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        VariableServer.__init__(self, msg)
+        variable_server.VariableServer.__init__(self, msg)
 
     @property
     def cell(self):
@@ -213,7 +214,7 @@ class Layout(ObjBase, VariableServer):
         list[VoltageRegulator]
         """
         return [
-            VoltageRegulator(msg)
+            layout.VoltageRegulator(msg)
             for msg in self.__stub.GetItems(
                 messages.layout_get_items_message(self, LayoutObjType.VOLTAGE_REGULATOR)
             )

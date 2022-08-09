@@ -120,6 +120,16 @@ class PolygonData:
         """
         return self._is_closed
 
+    @property
+    def sense(self):
+        """Return the polygon sense type.
+
+        Returns
+        -------
+        PolygonSenseType
+        """
+        return self._sense
+
     def is_hole(self):
         """Return whether a polygon is a hole.
 

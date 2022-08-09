@@ -362,7 +362,7 @@ def via_group_create_with_outline_message(layout, outline, conductivity_ratio, l
     """Convert to ViaGroupCreateWithOutlineMessage."""
     return ViaGroupCreateWithOutlineMessage(
         layout=layout.msg,
-        points=points_message(outline),
+        points=polygon_data_message(outline),
         conductivity_ratio=conductivity_ratio,
         layer=layer_ref_message(layer),
         net=net_ref_message(net),

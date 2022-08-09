@@ -45,14 +45,10 @@ service PolygonDataService {
 }
 
 message PolygonDataMessage {
-  message PolygonDataPoints {
-    repeated PointMessage items = 1;
-    bool closed = 2;
-    PolySense sense = 3;
-  }
-  
-  PolygonDataPoints points = 1;
-  repeated PolygonDataMessage holes = 2;
+  repeated PointMessage points = 1;
+  bool closed = 2;
+  PolySense sense = 3;
+  repeated PolygonDataMessage holes = 4;
 }
 
 message PolygonDataListMessage {

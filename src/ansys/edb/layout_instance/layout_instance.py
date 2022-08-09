@@ -6,7 +6,7 @@ from ansys.edb.core.messages import (
     layer_ref_message,
     net_ref_message,
     point_message,
-    points_message,
+    polygon_data_message,
     strings_message,
 )
 from ansys.edb.geometry import PointData
@@ -55,7 +55,9 @@ class LayoutInstance(ObjBase):
             is_point_filter = isinstance(spatial_filter, PointData)
             spatial_filter_field = "point_filter" if is_point_filter else "region_filter"
             spatial_filter_msg = (
-                point_message(spatial_filter) if is_point_filter else points_message(spatial_filter)
+                point_message(spatial_filter)
+                if is_point_filter
+                else polygon_data_message(spatial_filter)
             )
             msg_params[spatial_filter_field] = spatial_filter_msg
 

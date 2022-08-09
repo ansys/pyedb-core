@@ -365,7 +365,7 @@ class SpiralInductor(BaseExample):
         print("creating coil feed")
         self.create_rectangle("OVERPASS", "SPIRAL", um(265.1), um(330), um(275.1), um(430))
         polygon = PolygonData(
-            um([(265.1, 330), (265.1, 340), (275.1, 340), (275.1, 330)]), closed=True
+            [um(265.1, 330), um(265.1, 340), um(275.1, 340), um(275.1, 330)], closed=True
         )
         ViaGroup.create_with_outline(self.layout, polygon, 0.5, "VOVERPASS")
         self.create_point_terminals()

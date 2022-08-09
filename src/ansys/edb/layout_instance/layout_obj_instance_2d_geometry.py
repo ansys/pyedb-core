@@ -2,7 +2,7 @@
 
 from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2 import GetPolygonDataMessage
 
-from ansys.edb.geometry import PolygonData
+from ansys.edb.core.parser import to_polygon_data
 from ansys.edb.layout_instance.layout_obj_instance_geometry import LayoutObjInstanceGeometry
 from ansys.edb.session import LayoutObjInstance2DGeometryServiceStub, StubAccessor, StubType
 
@@ -24,15 +24,14 @@ class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
         """
         return self.__stub.IsNegative(self.msg).value
 
+    @to_polygon_data
     def get_polygon_data(self, apply_negatives=False):
         """Get the underlying polygon data of the layout obj instance geometry.
 
         Returns
         -------
-        PolygonData
+        ansys.edb.geometry.PolygonData
         """
-        return PolygonData(
-            msg=self.__stub.GetPolygonData(
-                GetPolygonDataMessage(layout_obj_inst_geom=self.msg, apply_neg=apply_negatives)
-            )
+        return self.__stub.GetPolygonData(
+            GetPolygonDataMessage(layout_obj_inst_geom=self.msg, apply_neg=apply_negatives)
         )

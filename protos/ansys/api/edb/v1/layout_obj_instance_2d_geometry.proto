@@ -6,11 +6,12 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 import "layout_obj_instance_geometry.proto";
+import "polygon_data.proto";
 
 service LayoutObjInstance2DGeometryService {
   rpc IsNegative(LayoutObjInstanceGeometryMessage) returns (google.protobuf.BoolValue) {}
 
-  rpc GetPolygonData(GetPolygonDataMessage) returns (EDBObjMessage) {}
+  rpc GetPolygonData(GetPolygonDataMessage) returns (PolygonDataMessage) {}
 }
 
 message GetPolygonDataMessage {

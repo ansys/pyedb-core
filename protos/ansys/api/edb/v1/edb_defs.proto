@@ -48,3 +48,14 @@ enum HfssExtentsOpenRegionType {
 }
 
 //------------------------------------------------------------------------------ 
+// Component
+
+enum ComponentType {
+  OTHER = 0;
+  RESISTOR = 1;
+  INDUCTOR = 2;
+  CAPACITOR = 3;
+  IC = 4;
+  IO = 5;
+  INVALID = -1;
+}

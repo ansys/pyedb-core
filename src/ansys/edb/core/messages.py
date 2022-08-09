@@ -14,8 +14,13 @@ from ansys.api.edb.v1.cell_pb2 import (
     CellFindMessage,
     CellSetTemperatureSettingsMessage,
 )
+from ansys.api.edb.v1.component_group_pb2 import (
+    ComponentGroupCreateMessage,
+    SetComponentGroupTypeMessage,
+)
 from ansys.api.edb.v1.edb_messages_pb2 import (
     BoolPropertyMessage,
+    ComponentTypeMessage,
     DesignModePropertyMessage,
     EDBInternalIdMessage,
     EDBObjCollectionMessage,
@@ -91,6 +96,7 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
+from ansys.api.edb.v1.structure3d_pb2 import ClosureMessage, SetClosureMessage
 from ansys.api.edb.v1.term_inst_pb2 import TermInstCreationMessage
 from ansys.api.edb.v1.term_inst_term_pb2 import (
     TermInstTermCreationMessage,
@@ -876,6 +882,27 @@ def get_product_property_ids_message(obj, prod_id):
 def edb_internal_id_message(id):
     """Convert to EDBInternalIdMessage."""
     return EDBInternalIdMessage(id=id)
+
+
+def component_group_create_message(layout, name, comp_name):
+    """Convert to ComponentGroupCreateMessage."""
+    return ComponentGroupCreateMessage(
+        target=object_name_in_layout_message(layout, name), comp=comp_name
+    )
+
+
+def set_component_group_type_message(obj, comp_type):
+    """Convert to SetComponentGroupTypeMessage."""
+    return SetComponentGroupTypeMessage(
+        target=obj.msg, comp_type=ComponentTypeMessage(comp_type=comp_type.value)
+    )
+
+
+def set_closure_message(obj, closure_type):
+    """Convert to SetClosureMessage."""
+    return SetClosureMessage(
+        target=obj.msg, closure_type=ClosureMessage(closure_type=closure_type.value)
+    )
 
 
 def strings_message(strings):

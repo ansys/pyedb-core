@@ -75,6 +75,13 @@ message HfssExtentInfoMessage {
 }
 
 //------------------------------------------------------------------------------
+// Component
+
+message ComponentTypeMessage {
+  ComponentType comp_type = 1;
+}
+
+//------------------------------------------------------------------------------
 // Helpers
 
 message EDBObjMessage {
@@ -160,3 +167,4 @@ message EDBObjPairMessage {
   EDBObjMessage edb_obj_0 = 1;
   EDBObjMessage edb_obj_1 = 2;
 }
+

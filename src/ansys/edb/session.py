@@ -21,6 +21,7 @@ from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
+from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edb_iterator_pb2_grpc import EDBIteratorServiceStub
@@ -62,6 +63,7 @@ from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsS
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
+from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
@@ -308,6 +310,8 @@ class StubType(Enum):
     padstack_instance = PadstackInstanceServiceStub
     voltage_regulator = VoltageRegulatorServiceStub
     connectable = ConnectableServiceStub
+    component_group = ComponentGroupServiceStub
+    structure3d = Structure3DServiceStub
     layout_instance = LayoutInstanceServiceStub
     layout_instance_context = LayoutInstanceContextServiceStub
     layout_obj_instance = LayoutObjInstanceServiceStub

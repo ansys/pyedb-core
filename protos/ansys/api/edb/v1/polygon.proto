@@ -5,7 +5,7 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "point_data.proto";
+import "polygon_data.proto";
 import "refs.proto";
 
 // Polygon service definition
@@ -14,10 +14,10 @@ service PolygonService {
   rpc Create (PolygonCreationMessage) returns (EDBObjMessage) {}
   
   // Get PolygonData
-  rpc GetPolygonData (EDBObjMessage) returns (EDBObjMessage) {}
+  rpc GetPolygonData (EDBObjMessage) returns (PolygonDataMessage) {}
   
   // Set PolygonData
-  rpc SetPolygonData (SetPolygonDataMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetPolygonData (SetPolygonDataMessage) returns (google.protobuf.Empty) {}
 }
 
 // Message for Create
@@ -25,11 +25,11 @@ message PolygonCreationMessage {
   EDBObjMessage layout = 1;
   LayerRefMessage layer = 2;
   NetRefMessage net = 3;
-  PointsMessage points = 4;
+  PolygonDataMessage points = 4;
 }
 
 // Message for Set PolygonData
 message SetPolygonDataMessage {
   EDBObjMessage target = 1;
-  PointsMessage poly = 2;
+  PolygonDataMessage poly = 2;
 }

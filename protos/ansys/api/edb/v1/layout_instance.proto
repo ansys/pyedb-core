@@ -7,6 +7,7 @@ package ansys.api.edb.v1;
 import "edb_messages.proto";
 import "point_data.proto";
 import "refs.proto";
+import "polygon_data.proto";
 
 service LayoutInstanceService {
   rpc Refresh(EDBObjMessage) returns (google.protobuf.Empty) {}
@@ -22,7 +23,7 @@ message LayoutObjInstancesQueryMessage {
   EDBObjMessage layout_inst = 1;
   oneof spatial_filter {
     PointMessage point_filter = 2;
-	  PointsMessage region_filter = 3;
+	  PolygonDataMessage region_filter = 3;
   }
   repeated LayerRefMessage layer_filter = 4;
   repeated NetRefMessage net_filter = 5;

@@ -73,20 +73,13 @@ from ansys.api.edb.v1.pin_group_term_pb2 import (
     PinGroupTermSetLayerMessage,
     PinGroupTermSetPinGroupMessage,
 )
-from ansys.api.edb.v1.point_data_pb2 import (
-    SENSE_CCW,
-    PathPointsMessage,
-    PointDataRotateMessage,
-    PointDataWithLineMessage,
-    PointMessage,
-    PointPropertyMessage,
-    PointsMessage,
-)
+from ansys.api.edb.v1.point_data_pb2 import *  # noqa
 from ansys.api.edb.v1.point_term_pb2 import (
     PointTermCreationMessage,
     PointTermParamsMessage,
     PointTermSetParamsMessage,
 )
+from ansys.api.edb.v1.polygon_data_pb2 import *  # noqa
 from ansys.api.edb.v1.port_post_processing_prop_pb2 import PortPostProcessingPropMessage
 from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, LayerRefPropertyMessage, NetRefMessage
 from ansys.api.edb.v1.rlc_pb2 import RlcMessage
@@ -146,26 +139,6 @@ def float_message(v: float):
     return FloatValue(value=v)
 
 
-def points_message(points):
-    """Convert to PointsMessage."""
-    if points is None:
-        return None
-    elif isinstance(points, list) or isinstance(points, tuple):
-        return PointsMessage(points_data=points_data_message(points))
-    else:
-        return PointsMessage(polygon_data=edb_obj_message(points.msg))
-
-
-def points_data_message(points):
-    """Convert to PathPointsMessage."""
-    is_tuple = isinstance(points, tuple)
-    points_data = points[0] if is_tuple else points
-    closed = points[1] if is_tuple and len(points) > 1 and points[1] is not None else True
-    sense = points[2] if is_tuple and len(points) > 2 and points[2] is not None else SENSE_CCW
-    data = [point_message(p) for p in points_data]
-    return PathPointsMessage(data=data, closed=closed, sense=sense)
-
-
 def point_message(point):
     """Convert to PointMessage."""
     point = conversions.to_point(point)
@@ -191,6 +164,117 @@ def point_data_with_line_message(point, line_start, line_end):
         line_start=point_message(line_start),
         line_end=point_message(line_end),
     )
+
+
+def box_message(ll, ur):
+    """Convert to BoxMessage."""
+    return BoxMessage(lower_left=point_message(ll), upper_right=point_message(ur))
+
+
+def circle_message(center, radius):
+    """Convert to CircleMessage."""
+    return CircleMessage(center=point_message(center), radius=value_message(radius))
+
+
+def polygon_data_message(pd):
+    """Convert to PolygonDataMessage."""
+    return PolygonDataMessage(
+        points=[point_message(pt) for pt in pd.points],
+        closed=pd.is_closed,
+        sense=pd.sense.value,
+        holes=[polygon_data_message(h) for h in pd.holes],
+    )
+
+
+def polygon_data_list_message(pds):
+    """Convert to PolygonDataListMessage."""
+    return PolygonDataListMessage(polygons=[polygon_data_message(pd) for pd in pds])
+
+
+def polygon_data_with_tol_message(pd, tol):
+    """Convert to PolygonDataWithToleranceMessage."""
+    return PolygonDataWithToleranceMessage(polygon=polygon_data_message(pd), tol=tol)
+
+
+def polygon_data_pair_message(pd1, pd2):
+    """Convert to PolygonDataPairMessage."""
+    return PolygonDataPairMessage(first=polygon_data_message(pd1), second=polygon_data_message(pd2))
+
+
+def polygon_data_pair_with_tolerance_message(pd1, pd2, tol):
+    """Convert to PolygonDataPairWithToleranceMessage."""
+    return PolygonDataPairWithToleranceMessage(
+        first=polygon_data_message(pd1), second=polygon_data_message(pd2), tol=tol
+    )
+
+
+def _polygon_data_transform_message_point_value(point, value):
+    """Convert to PolygonDataTransformMessage."""
+    return PolygonDataTransformMessage.PointValueMessage(point=point_message(point), value=value)
+
+
+def polygon_data_transform_message(op, pd, *args):
+    """Convert to PolygonDataTransformMessage."""
+    payload = {}
+    if op == "move":
+        payload["move"] = point_message(args[0])
+    elif op == "rotate":
+        payload["rotate"] = _polygon_data_transform_message_point_value(*args)
+    elif op == "scale":
+        payload["scale"] = _polygon_data_transform_message_point_value(*args)
+    elif op == "mirror_x":
+        payload["mirror_x"] = args[0]
+
+    return PolygonDataTransformMessage(polygon=polygon_data_message(pd), **payload)
+
+
+def polygon_data_remove_arc_message(pd, max_chord_error, max_arc_angle, max_points):
+    """Convert to PolygonDataRemoveArcMessage."""
+    return PolygonDataRemoveArcMessage(
+        polygon=polygon_data_message(pd),
+        max_chord_error=max_chord_error,
+        max_arc_angle=max_arc_angle,
+        max_points=max_points,
+    )
+
+
+def polygon_data_does_intersect_message(pd, center, radius):
+    """Convert to PolygonDataDoesIntersectMessage."""
+    return PolygonDataDoesIntersectMessage(
+        polygon=polygon_data_message(pd), circle=circle_message(center, radius)
+    )
+
+
+def polygon_data_with_point_message(pd, point):
+    """Convert to PolygonDataWithPointMessage."""
+    return PolygonDataWithPointMessage(polygon=polygon_data_message(pd), point=point_message(point))
+
+
+def polygon_data_with_points_message(pd, point=None, polygon=None):
+    """Convert to PolygonDataWithPointsMessage."""
+    payload = {}
+    if point is not None:
+        payload["point"] = point_message(point)
+    elif polygon is not None:
+        payload["polygon"] = polygon_data_message(polygon)
+
+    return PolygonDataWithPointsMessage(polygon=polygon_data_message(pd), **payload)
+
+
+def polygon_data_expand_message(pd, offset, tol, round_corner, max_corner_expansion):
+    """Convert to PolygonDataExpandMessage."""
+    return PolygonDataExpandMessage(
+        polygon=polygon_data_message(pd),
+        offset=offset,
+        tol=tol,
+        round_corner=round_corner,
+        max_corner_expansion=max_corner_expansion,
+    )
+
+
+def polygon_data_get_alpha_shape_message(pd, alpha):
+    """Convert to PolygonDataGetAlphaShapeMessage."""
+    return PolygonDataGetAlphaShapeMessage(polygon=polygon_data_message(pd), alpha=alpha)
 
 
 def _arc_rotation_dir(dir):
@@ -284,7 +368,7 @@ def via_group_create_with_outline_message(layout, outline, conductivity_ratio, l
     """Convert to ViaGroupCreateWithOutlineMessage."""
     return ViaGroupCreateWithOutlineMessage(
         layout=layout.msg,
-        points=points_message(outline),
+        points=polygon_data_message(outline),
         conductivity_ratio=conductivity_ratio,
         layer=layer_ref_message(layer),
         net=net_ref_message(net),

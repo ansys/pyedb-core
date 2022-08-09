@@ -6,6 +6,7 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 import "refs.proto";
+import "polygon_data.proto";
 
 // Circle service definition
 service CircleService {
@@ -13,7 +14,7 @@ service CircleService {
   rpc Create (CircleCreationMessage) returns (EDBObjMessage) {}
   
   // Render Circle
-  rpc Render(CircleRenderMessage) returns (EDBObjMessage) {}
+  rpc Render(CircleRenderMessage) returns (PolygonDataMessage) {}
 
   // Get Parameters
   rpc GetParameters(EDBObjMessage) returns (CircleParametersMessage) {}

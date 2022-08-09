@@ -119,6 +119,7 @@ class ArcData:
         return math.fabs(self.height) <= tolerance
 
     @property
+    @parser.to_point_data
     def center(self):
         """Get the center point of arc.
 
@@ -126,10 +127,10 @@ class ArcData:
         -------
         geometry.PointData
         """
-        c = self.__stub.GetCenter(messages.arc_message(self))
-        return parser.to_point_data(c)
+        return self.__stub.GetCenter(messages.arc_message(self))
 
     @property
+    @parser.to_point_data
     def midpoint(self):
         """Get the midpoint of arc.
 
@@ -137,8 +138,7 @@ class ArcData:
         -------
         geometry.PointData
         """
-        mid = self.__stub.GetMidpoint(messages.arc_message(self))
-        return parser.to_point_data(mid)
+        return self.__stub.GetMidpoint(messages.arc_message(self))
 
     @property
     def radius(self):
@@ -151,6 +151,7 @@ class ArcData:
         return self.__stub.GetRadius(messages.arc_message(self)).value
 
     @property
+    @parser.to_polygon_data
     def bbox(self):
         """Get the rectangular bounding box of arc.
 
@@ -158,8 +159,7 @@ class ArcData:
         -------
         geometry.PolygonData
         """
-        box = self.__stub.GetBoundingBox(messages.arc_message(self))
-        return parser.to_polygon_data(box)
+        return self.__stub.GetBoundingBox(messages.arc_message(self))
 
     def is_big(self):
         """Get if the arc is big.
@@ -282,6 +282,7 @@ class ArcData:
         else:
             return geometry.PointData(vec.y, -vec.x)
 
+    @parser.to_box
     def closest_points(self, other):
         """Get the closest point from one arc to another, and vice versa.
 
@@ -293,7 +294,4 @@ class ArcData:
         -------
         tuple[geometry.PointData, geometry.PointData]
         """
-        points = self.__stub.ClosestPoints(messages.arc_data_two_points(self, other))
-        point1 = parser.to_point_data(points.lower_left)
-        point2 = parser.to_point_data(points.upper_right)
-        return point1, point2
+        return self.__stub.ClosestPoints(messages.arc_data_two_points(self, other))

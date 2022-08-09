@@ -94,11 +94,8 @@ class BaseExample:
             0.0,
         )
 
-    def create_polygon_data(self, vertices, closed):
-        return PolygonData.create(vertices, closed)
-
     def create_polygon(self, layer_name, net_name, vertices, holes=[]):
-        polygon_data = self.create_polygon_data(vertices, True)
+        polygon_data = PolygonData(vertices, closed=True)
         polygon = Polygon.create(self.layout, layer_name, self.net(net_name), polygon_data)
         if len(holes):
             hole_polygon = self.create_polygon(layer_name, net_name, holes)
@@ -107,7 +104,7 @@ class BaseExample:
         return polygon
 
     def create_path(self, layer_name, net_name, width, vertices):
-        polygon_data = self.create_polygon_data(vertices, True)
+        polygon_data = PolygonData(vertices, closed=True)
         return Path.create(
             self.layout,
             layer_name,
@@ -367,8 +364,8 @@ class SpiralInductor(BaseExample):
     def create_coil_feed(self):
         print("creating coil feed")
         self.create_rectangle("OVERPASS", "SPIRAL", um(265.1), um(330), um(275.1), um(430))
-        polygon = self.create_polygon_data(
-            [um(265.1, 330), um(265.1, 340), um(275.1, 340), um(275.1, 330)], True
+        polygon = PolygonData(
+            [um(265.1, 330), um(265.1, 340), um(275.1, 340), um(275.1, 330)], closed=True
         )
         ViaGroup.create_with_outline(self.layout, polygon, 0.5, "VOVERPASS")
         self.create_point_terminals()

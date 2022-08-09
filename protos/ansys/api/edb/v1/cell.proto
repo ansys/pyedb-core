@@ -6,6 +6,7 @@ package ansys.api.edb.v1;
 
 import "edb_defs.proto";
 import "edb_messages.proto";
+import "polygon_data.proto";
 
 
 service CellService {
@@ -106,7 +107,7 @@ service CellService {
   rpc GenerateAutoHFSSRegions (EDBObjMessage) returns (google.protobuf.Empty) {}
 
   // Generate via smart box
-  rpc GenerateViaSmartBox (StringPropertyMessage) returns (EDBObjCollectionMessage) {}
+  rpc GenerateViaSmartBox (StringPropertyMessage) returns (PolygonDataListMessage) {}
 }
 
 message CellCreationMessage {
@@ -128,7 +129,7 @@ message CellCutOutMessage {
   EDBObjMessage cell = 1;
   EDBObjCollectionMessage included_nets = 2;
   EDBObjCollectionMessage clipped_nets = 3;
-  EDBObjMessage clipping_polygon = 4;
+  PolygonDataMessage clipping_polygon = 4;
   bool clean_clipping = 5;
 }
 

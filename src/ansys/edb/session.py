@@ -32,7 +32,6 @@ from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStu
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 from ansys.api.edb.v1.layout_instance_context_pb2_grpc import LayoutInstanceContextServiceStub
-from ansys.api.edb.v1.layout_obj_pb2_grpc import LayoutObjServiceStub
 from ansys.api.edb.v1.layout_instance_pb2_grpc import LayoutInstanceServiceStub
 from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2_grpc import (
     LayoutObjInstance2DGeometryServiceStub,

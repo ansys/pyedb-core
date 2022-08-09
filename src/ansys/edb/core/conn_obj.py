@@ -3,9 +3,8 @@ from ansys.api.edb.v1 import connectable_pb2
 
 from ansys.edb.core import layout_obj
 import ansys.edb.core.messages as messages
-from ansys.edb.session import ConnectableServiceStub, StubAccessor, StubType
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.session import StubAccessor, StubType
+from ansys.edb.session import ConnectableServiceStub, StubAccessor, StubType
 
 
 class _QueryBuilder:

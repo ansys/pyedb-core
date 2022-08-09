@@ -1,6 +1,6 @@
 """This module allows for the creating of objects while avoid circular imports."""
 
-from ansys.edb.core import LayoutObjType
+from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.hierarchy import CellInstance, Group, PinGroup
 import ansys.edb.layout as layout
 from ansys.edb.primitive import PadstackInstance, Primitive

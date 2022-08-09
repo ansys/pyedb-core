@@ -1,0 +1,48 @@
+// Proto file representing the EDB Component Group class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+import "hierarchy_obj.proto";
+
+
+// Component Group service definition
+service ComponentGroupService {
+  // Create a component group
+  rpc Create(ComponentGroupCreateMessage) returns (EDBObjMessage) {}
+
+  // Get number of pins in the component group
+  rpc GetNumberOfPins(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+
+  // Get component property
+  rpc GetComponentProperty(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Set component property
+  rpc SetComponentProperty(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get component types
+  rpc GetComponentType(EDBObjMessage) returns (ComponentTypeMessage) {}
+
+  // Set component type
+  rpc SetComponentType(SetComponentGroupTypeMessage) returns (google.protobuf.Empty) {}
+
+  // Find component group by component definition
+  rpc FindByDef(ObjectNameInLayoutMessage) returns (EDBObjCollectionMessage) {}
+}
+
+message ComponentGroupCreateMessage {
+  ObjectNameInLayoutMessage target = 1;
+  string comp = 2;
+}
+
+message SetComponentGroupTypeMessage {
+  EDBObjMessage target = 1;
+  ComponentTypeMessage comp_type = 2;
+}
+
+
+

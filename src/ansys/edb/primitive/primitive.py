@@ -13,7 +13,6 @@ import ansys.api.edb.v1.text_pb2 as text_pb2
 
 from ansys.edb import hierarchy, terminal
 from ansys.edb.core import conn_obj, messages
-from ansys.edb.core.edb_iterator import EDBIterator
 from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layer import Layer
@@ -205,9 +204,9 @@ class Primitive(conn_obj.ConnObj):
 
         Returns
         -------
-        EDBIterator
+        list[Primitive]
         """
-        return EDBIterator(get_primitive_stub().Voids(self.msg), Primitive._create)
+        return [Primitive._create(msg) for msg in get_primitive_stub().Voids(self.msg).items]
 
     def get_owner(self):
         """

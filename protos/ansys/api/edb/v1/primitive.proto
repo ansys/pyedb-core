@@ -6,7 +6,6 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 // Imports
-import "edb_iterator.proto";
 import "edb_messages.proto";
 import "refs.proto";
 
@@ -54,7 +53,7 @@ service PrimitiveService {
   rpc HasVoids(EDBObjMessage) returns (google.protobuf.BoolValue) {}
 
   // Gets an iterator of the voids in the Primitive
-  rpc Voids(EDBObjMessage) returns (EDBIteratorMessage) {}
+  rpc Voids(EDBObjMessage) returns (EDBObjCollectionMessage) {}
 
   // Get Owner
   rpc GetOwner(EDBObjMessage) returns (EDBObjMessage) {}

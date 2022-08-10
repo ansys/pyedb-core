@@ -7,7 +7,6 @@ package ansys.api.edb.v1;
 
 // Imports
 import "edb_messages.proto";
-import "edb_iterator.proto";
 import "refs.proto";
 import "layout_obj.proto";
 import "edb_defs.proto";
@@ -50,9 +49,6 @@ service LayoutService {
 
   // Synchronize bend manager
   rpc SynchronizeBendManager (EDBObjMessage) returns (google.protobuf.Empty) {}
-
-  // Gets an iterator of the primitives in the layout
-  rpc GetPrimitiveIter(EDBObjMessage) returns (EDBIteratorMessage) {}
 
   // Get the layout instance of the layout
   rpc GetLayoutInstance(EDBObjMessage) returns (EDBObjMessage) {}

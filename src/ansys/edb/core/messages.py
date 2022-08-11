@@ -113,6 +113,7 @@ from ansys.api.edb.v1.via_group_pb2 import (
     ViaGroupCreateWithOutlineMessage,
     ViaGroupCreateWithPrimitivesMessage,
 )
+from google.protobuf.empty_pb2 import Empty
 from google.protobuf.wrappers_pb2 import BoolValue, FloatValue, Int64Value, StringValue
 
 from ansys.edb import utility
@@ -137,6 +138,11 @@ def int64_message(i: int):
 def float_message(v: float):
     """Convert to FloatValue."""
     return FloatValue(value=v)
+
+
+def empty_message():
+    """Get Empty message."""
+    return Empty()
 
 
 def point_message(point):

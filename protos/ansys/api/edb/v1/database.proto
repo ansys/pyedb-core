@@ -5,6 +5,14 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
+import "bondwire.proto";
+import "definition_obj.proto";
+
+enum AccessLevel {
+  ACCESS_LEVEL_NO_ACCESS = 0;
+  ACCESS_LEVEL_READ_ACCESS = 1;
+  ACCESS_LEVEL_WRITE_ACCESS = 2;
+}
 
 service DatabaseService {
   // Creates a database
@@ -14,13 +22,13 @@ service DatabaseService {
   rpc Open (OpenDatabaseMessage) returns (EDBObjMessage) {}
 
   // Deletes a database
-  rpc Delete (google.protobuf.StringValue) returns (google.protobuf.BoolValue) {}
+  rpc Delete (google.protobuf.StringValue) returns (google.protobuf.Empty) {}
   
   // Saves a database
-  rpc Save (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc Save (EDBObjMessage) returns (google.protobuf.Empty) {}
   
   // Closes a database
-  rpc Close (EDBObjMessage) returns (google.protobuf.BoolValue) {} 
+  rpc Close (EDBObjMessage) returns (google.protobuf.Empty) {} 
 
   // Determines whether the database is read only
   rpc IsReadOnly(EDBObjMessage) returns (google.protobuf.BoolValue) {}
@@ -33,6 +41,40 @@ service DatabaseService {
 
   // Finds a database with the provided id
   rpc FindById (google.protobuf.Int64Value) returns (EDBObjMessage) {}
+  
+  // Save the database to new location and optionaly to older edb version
+  rpc SaveAs (SaveAsDatabaseMessage) returns (google.protobuf.Empty) {}
+  
+  // Get EDB version by release name
+  rpc GetVersionByRelease (google.protobuf.StringValue) returns (google.protobuf.StringValue) {}
+  
+  // Get the directory of the Database
+  rpc GetDirectory (EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  rpc GetProductProperty(GetProductPropertyMessage) returns (google.protobuf.StringValue) {}
+  rpc SetProductProperty(SetProductPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc GetProductPropertyIds(GetProductPropertyIdsMessage) returns (ProductPropertyIdsMessage) {}
+
+  rpc ImportMaterialFromControlFile(ImportMaterialFromControlFileMessage) returns (google.protobuf.Empty) {}
+  rpc GetVersion(EDBObjMessage) returns (GetVersionMessage) {}
+  rpc Scale(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetSource(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetSource(EDBObjNameMessage) returns (google.protobuf.Empty) {}
+  rpc GetSourceVersion(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetSourceVersion(EDBObjNameMessage) returns (google.protobuf.Empty) {}
+
+  // copy cells
+  rpc CopyCells (CopyCellsMessage) returns (EDBObjCollectionMessage) {}
+
+  // Get defs
+  rpc GetDefinitionObjs (GetDefinitionObjsMessage) returns (EDBObjCollectionMessage) {}
+  
+  // get cells
+  rpc TopCircuitCells (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+  rpc GetCircuits (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+  rpc GetFootprints (EDBObjMessage) returns (EDBObjCollectionMessage) {}
+  
 }
 
 // Message for Open
@@ -41,3 +83,38 @@ message OpenDatabaseMessage {
   google.protobuf.BoolValue read_only = 2;
 }
 
+// Message for SaveAs
+message SaveAsDatabaseMessage {
+  EDBObjMessage db = 1;
+  google.protobuf.StringValue new_location = 2;
+  google.protobuf.StringValue version = 3;
+}
+
+// Message for ImportMaterialFromControlFile
+message ImportMaterialFromControlFileMessage {
+  EDBObjMessage target = 1;
+  google.protobuf.StringValue file = 2;
+  oneof optional_schema_path {
+    string schema_path = 3;
+  }
+  google.protobuf.BoolValue append = 4;
+}
+
+// Message for GetVersion
+message GetVersionMessage {
+  EDBInternalIdMessage major = 1;
+  EDBInternalIdMessage minor = 2;
+}
+
+// Message for CopyCells
+message CopyCellsMessage {
+  EDBObjMessage target = 1;
+  EDBObjCollectionMessage cells = 2;
+}
+
+// Message for CopyCells
+message GetDefinitionObjsMessage {
+  EDBObjMessage target = 1;
+  DefinitionObjType type = 2;
+  BondwireType subtype = 3;
+}

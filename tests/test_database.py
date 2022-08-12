@@ -1,6 +1,6 @@
 from typing import List
 
-from ansys.edb.core.messages import bool_message, int64_message, str_message
+from ansys.edb.core.messages import bool_message, empty_message, int64_message, str_message
 from ansys.edb.database import Database, database_pb2
 from ansys.edb.layout import Cell
 from utils.fixtures import *  # noqa
@@ -105,13 +105,13 @@ def test_delete(random_str, bool_val, mocker):
     mocker : pytest_mock.MockerFixture
         Mocker used to patch primitive stub with the mock server
     """
-    mock_server = _patch_database_stub(mocker, "Delete", bool_message(bool_val))
+    mock_server = _patch_database_stub(mocker, "Delete", empty_message())
 
-    success = Database.delete(random_str)
+    result = Database.delete(random_str)
 
     mock_server.assert_called_once_with(str_message(random_str))
 
-    assert success == bool_val
+    assert result is None
 
 
 def test_save(db_obj, bool_val, mocker):
@@ -126,13 +126,13 @@ def test_save(db_obj, bool_val, mocker):
     mocker : pytest_mock.MockerFixture
         Mocker used to patch primitive stub with the mock server
     """
-    mock_server = _patch_database_stub(mocker, "Save", bool_message(bool_val))
+    mock_server = _patch_database_stub(mocker, "Save", empty_message())
 
-    success = db_obj.save()
+    result = db_obj.save()
 
     mock_server.assert_called_once_with(db_obj.msg)
 
-    assert success == bool_val
+    assert result is None
 
 
 def test_close(db_obj, bool_val, mocker):
@@ -147,15 +147,15 @@ def test_close(db_obj, bool_val, mocker):
     mocker : pytest_mock.MockerFixture
         Mocker used to patch primitive stub with the mock server
     """
-    mock_server = _patch_database_stub(mocker, "Close", bool_message(bool_val))
+    mock_server = _patch_database_stub(mocker, "Close", empty_message())
 
     expected_message = db_obj.msg
-    success = db_obj.close()
+    result = db_obj.close()
 
     mock_server.assert_called_once_with(expected_message)
 
-    assert success == bool_val
-    assert (db_obj.is_null()) == success
+    assert result is None
+    assert db_obj.is_null()
 
 
 @pytest.mark.parametrize("expected_num_top_cells", list(range(3)))

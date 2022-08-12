@@ -77,33 +77,17 @@ class Database(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         db_path : str
-
-        Returns
-        -------
-        bool
         """
-        return get_database_stub().Delete(proto_wrappers.StringValue(value=db_path)).value
+        get_database_stub().Delete(proto_wrappers.StringValue(value=db_path))
 
     def save(self):
-        """Persist any changes into a file.
-
-        Returns
-        -------
-        bool
-        """
-        return get_database_stub().Save(self.msg).value
+        """Persist any changes into a file."""
+        get_database_stub().Save(self.msg)
 
     def close(self):
-        """Close the database. Unsaved changes will be lost.
-
-        Returns
-        -------
-        bool
-        """
-        close_success = get_database_stub().Close(self.msg).value
-        if close_success:
-            self.msg = None
-        return close_success
+        """Close the database. Unsaved changes will be lost."""
+        get_database_stub().Close(self.msg)
+        self.msg = None
 
     @property
     def top_circuit_cells(self):

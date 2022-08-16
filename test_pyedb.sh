@@ -32,7 +32,6 @@ fi
 
 # Run tox
 python -m pip install --upgrade -r requirements/requirements_tox.txt
-python -m pip install --upgrade tox-gh-actions
 python -m tox -e test
 
 popd

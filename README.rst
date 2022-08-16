@@ -3,6 +3,7 @@ Pyedb
 
 Ansys Electronics Database Python Client
 
+.. image:: https://github.com/pyansys/pyedb/actions/workflows/ci_cd.yml/badge.svg?branch=develop
 
 How to install
 --------------

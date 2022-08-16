@@ -67,6 +67,35 @@ jobs:
       - name: Generate the documentation with tox
         run: tox -e doc
 
+      - name: Zip documentation
+        run: |
+          cd .tox/doc_out
+          zip -r pyedb_documentation.zip *
+
+      - name: Upload HTML Documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: HTML-Documentation
+          path: .tox/doc_out/pyedb_documentation.zip
+          retention-days: 7
+
+      - name: Get Bot Application Token
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@v1
+        with:
+          application_id: ${{ secrets.BOT_APPLICATION_ID }}
+          application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
+
+      - name: Deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          repository-name: pyansys/pyedb-dev-docs
+          token: ${{ steps.get_workflow_token.outputs.token }}
+          branch: gh-pages
+          folder: .tox/doc_out
+          clean: true
 
   build:
     name: Build library

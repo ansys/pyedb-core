@@ -22,6 +22,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     BoolPropertyMessage,
     ComponentTypeMessage,
     DesignModePropertyMessage,
+    DoublePropertyMessage,
     EDBInternalIdMessage,
     EDBObjCollectionMessage,
     EDBObjMessage,
@@ -1008,3 +1009,8 @@ def edb_obj_pair_message(edb_obj_0, edb_obj_1):
 def layer_ref_property_message(edb_obj, layer_ref):
     """Convert to LayerRefPropertyMessage."""
     return LayerRefPropertyMessage(edb_obj=edb_obj.msg, layer_ref=layer_ref_message(layer_ref))
+
+
+def double_property_message(edb_obj, double):
+    """Convert to DoublePropertyMessage."""
+    return DoublePropertyMessage(target=edb_obj.msg, value=double)

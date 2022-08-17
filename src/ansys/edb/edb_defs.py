@@ -2,6 +2,7 @@
 
 import enum
 
+import ansys.api.edb.v1.definition_obj_pb2 as definition_obj_pb2
 import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 
 
@@ -24,3 +25,16 @@ class LayoutObjType(enum.Enum):
     PIN_GROUP = layout_obj_pb2.PIN_GROUP
     VOLTAGE_REGULATOR = layout_obj_pb2.VOLTAGE_REGULATOR
     EXTENDED_NET = layout_obj_pb2.EXTENDED_NET
+
+
+class DefinitionObjType(enum.Enum):
+    """Definition Object Type."""
+
+    INVALID_DEFINITION_TYPE = definition_obj_pb2.INVALID_DEFINITION_TYPE
+    PADSTACK_DEF = definition_obj_pb2.PADSTACK_DEF
+    COMPONENT_DEF = definition_obj_pb2.COMPONENT_DEF
+    BONDWIRE_DEF = definition_obj_pb2.BONDWIRE_DEF
+    MATERIAL_DEF = definition_obj_pb2.MATERIAL_DEF
+    DATASET_DEF = definition_obj_pb2.DATASET_DEF
+    PACKAGE_DEF = definition_obj_pb2.PACKAGE_DEF
+    DEFINITION_TYPE_COUNT = definition_obj_pb2.DEFINITION_TYPE_COUNT

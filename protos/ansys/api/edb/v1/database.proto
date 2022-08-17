@@ -79,25 +79,25 @@ service DatabaseService {
 
 // Message for Open
 message OpenDatabaseMessage {
-  google.protobuf.StringValue edb_path = 1;
-  google.protobuf.BoolValue read_only = 2;
+  string edb_path = 1;
+  bool read_only = 2;
 }
 
 // Message for SaveAs
 message SaveAsDatabaseMessage {
   EDBObjMessage db = 1;
-  google.protobuf.StringValue new_location = 2;
-  google.protobuf.StringValue version = 3;
+  string new_location = 2;
+  string version = 3;
 }
 
 // Message for ImportMaterialFromControlFile
 message ImportMaterialFromControlFileMessage {
   EDBObjMessage target = 1;
-  google.protobuf.StringValue file = 2;
+  string file = 2;
   oneof optional_schema_path {
     string schema_path = 3;
   }
-  google.protobuf.BoolValue append = 4;
+  bool append = 4;
 }
 
 // Message for GetVersion

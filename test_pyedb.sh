@@ -21,8 +21,12 @@ if [ ! -f "${env_test}" ]; then
   echo "Creating ${env_test} file"
   cp .env.test.example "${env_test}" -rp
   if [[ -z "${RPC_SERVER_ROOT}" ]]; then
-    echo "***[ERROR]: Environment variable \$RPC_SERVER_ROOT is not set. Please add this to ${env_test} ***";
-    exit 1
+    if ${isWindows} && [[ ! -z "${ANSYSEM_ROOT231}" ]]; then
+      RPC_SERVER_ROOT="${ANSYSEM_ROOT231}"
+    else
+      echo "***[ERROR]: Environment variable \$RPC_SERVER_ROOT is not set. Please add this to ${env_test} ***";
+      exit 1
+    fi
   fi
   if ${isWindows}; then
     RPC_SERVER_ROOT="${RPC_SERVER_ROOT//\\//}/"

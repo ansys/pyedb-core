@@ -69,6 +69,9 @@ numpydoc_validation_checks = {
     # type, unless multiple values are being returned"
 }
 
+# notfound.extension
+notfound_template = "404.rst"
+notfound_urls_prefix = "/../"
 
 # static path
 html_static_path = ["_static"]

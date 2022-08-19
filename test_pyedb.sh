@@ -36,6 +36,8 @@ fi
 
 # Run tox
 python -m pip install --upgrade -r requirements/requirements_tox.txt
-python -m tox -e test
+# Need the -r to make tox recompile proto files, since they are typically changed commit-to-commit and sometimes we end
+# up with failing tests
+python -m tox -re test
 
 popd

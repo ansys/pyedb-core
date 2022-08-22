@@ -25,6 +25,7 @@ from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
+from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
@@ -318,6 +319,7 @@ class StubType(Enum):
     layout_obj_instance_geometry = LayoutObjInstanceGeometryServiceStub
     layout_obj_instance_2d_geometry = LayoutObjInstance2DGeometryServiceStub
     layout_obj_instance_3d_geometry = LayoutObjInstance3DGeometryServiceStub
+    extended_net = ExtendedNetServiceStub
 
 
 # Dictionary for storing local server error code exception messages
@@ -633,6 +635,16 @@ def get_padstack_def_stub():
     PadstackDefServiceStub
     """
     return StubAccessor(StubType.padstack_def).__get__()
+
+
+def get_extended_net_stub():
+    """Get ExtendedNet stub.
+
+    Returns
+    -------
+    ExtendedNetServiceStub
+    """
+    return StubAccessor(StubType.extended_net).__get__()
 
 
 class EDBSessionException(Exception):

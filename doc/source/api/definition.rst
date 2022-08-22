@@ -9,13 +9,15 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
+   ApdBondwireDef
    BondwireDefType
    BondwireDef
-   ApdBondwireDef
+   ComponentDef
+   DatasetDef
    Jedec4BondwireDef
    Jedec5BondwireDef
-   ComponentDef
-   MaterialProperty
    MaterialDef
+   MaterialProperty
+   PackageDef
    PadstackDef
    PadstackDefData

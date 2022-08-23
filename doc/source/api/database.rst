@@ -11,4 +11,5 @@ Classes
    :toctree: _autosummary
 
    Database
+   ProductIdType
 

@@ -15,7 +15,12 @@ from ansys.edb.definition.component_model import (
 )
 from ansys.edb.definition.component_pin import ComponentPin
 from ansys.edb.definition.dataset_def import DatasetDef
-from ansys.edb.definition.material_def import MaterialDef, MaterialProperty
+from ansys.edb.definition.material_def import (
+    DielectricMaterialModel,
+    MaterialDef,
+    MaterialProperty,
+    ThermalModifier,
+)
 from ansys.edb.definition.package_def import PackageDef
 from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.definition.padstack_def_data import PadstackDefData

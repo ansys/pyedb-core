@@ -26,8 +26,48 @@ enum MaterialPropertyID {
 
 service MaterialDefService {
   rpc Create(MaterialDefCreationMessage) returns (EDBObjMessage) {}
+
   // DEPRECATED: use Create instead
-  rpc SetProperty(MaterialDefSetPropertyMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetProperty(MaterialDefSetPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Find Material Definition by name
+  rpc FindByName(EDBObjNameMessage) returns (EDBObjMessage) {}
+
+  // Delete Material Definition
+  rpc Delete(EDBObjMessage) returns (google.protobuf.Empty) {}
+
+  // Get Property
+  rpc GetProperty(MaterialDefGetPropertyMessage) returns (ValueMessage) {}
+
+  // Get All Properties
+  rpc GetAllProperties(EDBObjMessage) returns (MaterialDefGetAllPropertiesMessage) {}
+
+  // Remove Property
+  rpc RemoveProperty(MaterialDefGetPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get Name of Material Def
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  // Get Dielectric Material Model
+  rpc GetDielectricMaterialModel(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Set Dielectric Material Model
+  rpc SetDielectricMaterialModel(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get Dimensions
+  rpc GetDimensions(MaterialDefPropertyMessage) returns (MaterialDefGetDimensionMessage) {}
+
+  // Set Thermal Modifier
+  rpc SetThermalModifier(SetMaterialDefPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Set Anisotropic Thermal Modifier
+  rpc SetAnisotropicThermalModifier(SetMaterialDefPropertyComponentMessage) returns (google.protobuf.Empty) {}
+
+  // Get Thermal Modifier
+  rpc GetThermalModifier(MaterialDefPropertyMessage) returns (EDBObjMessage) {}
+
+  // Get Anisotropic Thermal Modifier
+  rpc GetAnisotropicThermalModifier(MaterialDefPropertyComponentMessage) returns (EDBObjMessage) {}
 }
 
 message MaterialDefCreationMessage {
@@ -36,10 +76,28 @@ message MaterialDefCreationMessage {
   MaterialDefPropertiesMessage properties = 3;
 }
 
+message TensorPositionMessage {
+  uint64 col = 1;
+  uint64 row = 2;
+}
+
 message MaterialDefSetPropertyMessage {
   EDBObjMessage materialDef = 1;
   MaterialPropertyID propertyId = 2;
   ValueMessage value = 3;
+  oneof select{
+    EDBInternalIdMessage component = 4;
+    TensorPositionMessage tensor = 5;
+  }
+}
+
+message MaterialDefGetPropertyMessage {
+  EDBObjMessage materialDef = 1;
+  MaterialPropertyID propertyId = 2;
+  oneof select{
+    EDBInternalIdMessage component = 3;
+    TensorPositionMessage tensor = 4;
+  }
 }
 
 message MaterialDefPropertiesMessage {
@@ -54,4 +112,41 @@ message MaterialDefPropertiesMessage {
   ValueMessage youngs_modulus = 9;
   ValueMessage poissons_ratio = 10;
   ValueMessage thermal_expansion_coefficient = 11;
+}
+
+message MaterialDefGetAllPropertiesMessage{
+  repeated MaterialPropertyID properties= 1;
+}
+
+message MaterialDefGetDimensionMessage {
+  TensorPositionMessage tensor = 1;
+}
+
+message SetAnisotropicThermalModifierMessage {
+  MaterialDefSetPropertyMessage material_prop = 1;
+  uint64 component = 2;
+}
+
+message SetMaterialDefPropertyMessage {
+  EDBObjMessage materialDef = 1;
+  MaterialPropertyID propertyId = 2;
+  EDBObjMessage thermal_modifier = 3;
+}
+
+message SetMaterialDefPropertyComponentMessage {
+  EDBObjMessage materialDef = 1;
+  MaterialPropertyID propertyId = 2;
+  EDBObjMessage thermal_modifier = 3;
+  uint64 component = 4;
+}
+
+message MaterialDefPropertyMessage {
+  EDBObjMessage materialDef = 1;
+  MaterialPropertyID propertyId = 2;
+}
+
+message MaterialDefPropertyComponentMessage {
+  EDBObjMessage materialDef = 1;
+  MaterialPropertyID propertyId = 2;
+  uint64 component = 3;
 }

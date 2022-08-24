@@ -1,0 +1,34 @@
+// Proto file representing the Extended Net class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service ExtendedNetService {
+  rpc Create (ExtendedNetCreationMessage) returns (EDBObjMessage) {}
+  
+  rpc FindByName(ExtendedNetLookupMessage) returns (EDBObjMessage) {}
+
+  rpc RemoveNet(ExtendedNetModifyMessage) returns (google.protobuf.Empty) {}
+
+  rpc AddNet(ExtendedNetModifyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc RemoveAllNets(EDBObjMessage) returns (google.protobuf.Empty) {}  
+}
+
+message ExtendedNetCreationMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+}
+
+message ExtendedNetLookupMessage {
+  EDBObjMessage layout = 1;
+  string name = 2;
+}
+
+message ExtendedNetModifyMessage {
+  EDBObjMessage ext_net = 1;
+  EDBObjMessage net = 2;
+}

@@ -1,7 +1,7 @@
 """Hierarchy Obj."""
 
 from ansys.edb.core import conn_obj, messages
-from ansys.edb.definition import ComponentDef
+from ansys.edb.definition import component_def
 from ansys.edb.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Transform, Value
@@ -67,7 +67,7 @@ class HierarchyObj(conn_obj.ConnObj):
         -------
         ComponentDef
         """
-        return ComponentDef(self.__stub.GetComponent(self.msg))
+        return component_def.ComponentDef(self.__stub.GetComponent(self.msg))
 
     @property
     def placement_layer(self):

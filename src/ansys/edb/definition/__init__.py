@@ -8,6 +8,12 @@ from ansys.edb.definition.bondwire_def import (
     Jedec5BondwireDef,
 )
 from ansys.edb.definition.component_def import ComponentDef
+from ansys.edb.definition.component_model import (
+    ComponentModel,
+    DynamicLinkComponentModel,
+    NPortComponentModel,
+)
+from ansys.edb.definition.component_pin import ComponentPin
 from ansys.edb.definition.dataset_def import DatasetDef
 from ansys.edb.definition.material_def import MaterialDef, MaterialProperty
 from ansys.edb.definition.package_def import PackageDef

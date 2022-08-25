@@ -13,6 +13,10 @@ Classes
    BondwireDefType
    BondwireDef
    ComponentDef
+   ComponentPin
+   ComponentModel
+   NPortComponentModel
+   DynamicLinkComponentModel
    DatasetDef
    Jedec4BondwireDef
    Jedec5BondwireDef

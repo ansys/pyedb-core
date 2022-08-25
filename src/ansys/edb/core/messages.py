@@ -14,6 +14,7 @@ from ansys.api.edb.v1.cell_pb2 import (
     CellFindMessage,
     CellSetTemperatureSettingsMessage,
 )
+from ansys.api.edb.v1.component_def_pb2 import ComponentDefCreateMessage
 from ansys.api.edb.v1.component_group_pb2 import (
     ComponentGroupCreateMessage,
     SetComponentGroupTypeMessage,
@@ -396,6 +397,11 @@ def cell_instance_parameter_override_message(target, param_name, param_value):
         pname=param_name,
         pval=value_message(param_value),
     )
+
+
+def component_def_creation_message(db, comp_name, fp):
+    """Convert to ComponentDefCreateMessage."""
+    return ComponentDefCreateMessage(db=db.msg, comp_name=comp_name, fp=fp.msg)
 
 
 def transform_message(transform):

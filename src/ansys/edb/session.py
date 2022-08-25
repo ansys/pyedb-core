@@ -21,7 +21,14 @@ from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
+from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
+from ansys.api.edb.v1.component_model_pb2_grpc import (
+    ComponentModelServiceStub,
+    DynamicLinkComponentModelServiceStub,
+    NPortComponentModelServiceStub,
+)
+from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
@@ -318,6 +325,11 @@ class StubType(Enum):
     layout_obj_instance_geometry = LayoutObjInstanceGeometryServiceStub
     layout_obj_instance_2d_geometry = LayoutObjInstance2DGeometryServiceStub
     layout_obj_instance_3d_geometry = LayoutObjInstance3DGeometryServiceStub
+    component_def = ComponentDefServiceStub
+    component_pin = ComponentPinServiceStub
+    component_model = ComponentModelServiceStub
+    nport_component_model = NPortComponentModelServiceStub
+    dyn_link_component_model = DynamicLinkComponentModelServiceStub
 
 
 # Dictionary for storing local server error code exception messages

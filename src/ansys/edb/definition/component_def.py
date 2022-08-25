@@ -2,6 +2,7 @@
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
 from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.utils import map_list
 from ansys.edb.definition import component_model, component_pin
 from ansys.edb.layout import cell
 from ansys.edb.session import StubAccessor, StubType
@@ -100,7 +101,7 @@ class ComponentDef(ObjBase):
             List of component models.
         """
         objs = self.__stub.GetComponentModels(self.msg).items
-        return [component_model.ComponentModel(co) for co in objs]
+        return map_list(objs, component_model.ComponentModel)
 
     @property
     def component_pins(self):
@@ -112,4 +113,4 @@ class ComponentDef(ObjBase):
             List of component pins.
         """
         objs = self.__stub.GetComponentPins(self.msg).items
-        return [component_pin.ComponentPin(co) for co in objs]
+        return map_list(objs, component_pin.ComponentPin)

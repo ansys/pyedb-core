@@ -14,7 +14,6 @@ Classes
    BondwireDef
    ComponentDef
    ComponentPin
-   ComponentModel
    NPortComponentModel
    DynamicLinkComponentModel
    DatasetDef

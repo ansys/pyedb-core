@@ -77,7 +77,7 @@ class DynamicLinkComponentModel(ComponentModel):
 
         Returns
         -------
-        NPortComponentModel
+        DynamicLinkComponentModel
             Newly created dynamic link component model.
 
         Notes

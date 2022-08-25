@@ -1,0 +1,43 @@
+// Proto file representing the Component definition class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+// Component Definition Service
+service ComponentDefService {
+  // Create a component def in the given database
+  rpc Create(ComponentDefCreateMessage) returns (EDBObjMessage) {}
+
+  // Find a component def in the given database
+  rpc FindByName(EDBObjNameMessage) returns (EDBObjMessage) {}
+
+  // Set the name of the component def
+  rpc SetName(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get the name of the component def
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  // Set the footprint name for the component def
+  rpc SetFootprintCell(EDBObjPairMessage) returns (google.protobuf.Empty) {}
+
+  // Get the footprint name of the component def
+  rpc GetFootprintCell(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get the component models owned by this component def
+  rpc GetComponentModels(EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  // Get the component pins owned by this component def.
+  rpc GetComponentPins(EDBObjMessage) returns (EDBObjCollectionMessage) {}
+}
+
+
+message ComponentDefCreateMessage {
+  EDBObjMessage db = 1;
+  string comp_name = 2;
+  EDBObjMessage fp = 3;
+}

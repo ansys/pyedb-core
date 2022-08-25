@@ -1,0 +1,35 @@
+// Proto file representing the Component Model class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+// Component Definition Service
+service ComponentModelService {
+  // Set reference file
+  rpc SetReferenceFile(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get reference file
+  rpc GetReferenceFile(EDBObjMessage) returns (google.protobuf.StringValue) {}
+}
+
+service NPortComponentModelService {
+  // Create nport component model
+  rpc Create(google.protobuf.StringValue) returns (EDBObjMessage) {}
+}
+
+service DynamicLinkComponentModelService {
+  // Create dynamic link component model
+  rpc Create(google.protobuf.StringValue) returns (EDBObjMessage) {}
+  
+  // Set design name
+  rpc SetDesignName(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get design name
+  rpc GetDesignName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+}
+

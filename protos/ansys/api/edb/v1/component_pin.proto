@@ -1,0 +1,30 @@
+// Proto file representing the Component Pin class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+// Component Pin Service
+service ComponentPinService {
+  // Create a component pin inside the given component def
+  rpc Create(EDBObjNameMessage) returns (EDBObjMessage) {}
+
+  // Find component pin by name in the given component def
+  rpc FindByName(EDBObjNameMessage) returns (EDBObjMessage) {}
+
+  // Set component pin name
+  rpc SetName(StringPropertyMessage) returns (google.protobuf.Empty) {}
+  
+  // Get component pin name
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+
+  // Get the number of the pin in the component def it belongs to
+  rpc GetNumber(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+
+  // Get component def this pin belongs to
+  rpc GetComponentDef(EDBObjMessage) returns (EDBObjMessage) {}
+}

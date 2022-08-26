@@ -119,31 +119,37 @@ class MaterialDef(ObjBase):
 
     @classmethod
     def create(cls, database, name, **kwargs):
-        """Create a material definition.
+        """Create a material definition into the given database.
 
         Parameters
         ----------
-        database : Database
+        database : :class:`Database <ansys.edb.database.Database>`
+            Database that will own the material definition.
         name : str
+            Name of the material definition being created.
 
         Returns
         -------
         MaterialDef
+            The new material definition object.
         """
         return MaterialDef(cls.__stub.Create(_QueryBuilder.create(database, name, **kwargs)))
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a material definition by Name.
+        """Find a material definition in the database with given name.
 
         Parameters
         ----------
-        database : Database
+        database : :class:`Database <ansys.edb.database.Database>`
+            Database that owns the material definition.
         name : str
+            Name of the material definition.
 
         Returns
         -------
         MaterialDef
+            The material definition object found.
         """
         return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))
 
@@ -157,10 +163,15 @@ class MaterialDef(ObjBase):
         Parameters
         ----------
         material_property : MaterialProperty
-        value : float
+            Property id.
+        value : :class:`Value <ansys.edb.utility.Value>`
+            Property value returned.
         component : int, optional
+            Component id
         row : int, optional
+            Tensor row.
         col : int, optional
+            Tensor column.
         """
         self.__stub.SetProperty(
             _QueryBuilder.set_property(self, material_property, value, component, col, row)
@@ -172,13 +183,18 @@ class MaterialDef(ObjBase):
         Parameters
         ----------
         material_property : MaterialProperty
+            Property id.
         component : int, optional
+            Component id
         row : int, optional
+            Tensor row.
         col : int, optional
+            Tensor column.
 
         Returns
         -------
-        Value
+        Value : :class:`Value <ansys.edb.utility.Value>`
+            Value of the material property
         """
         return Value(
             self.__stub.GetProperty(
@@ -191,7 +207,8 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        List[Value]
+        list [MaterialProperty]
+            List with Material Properties of the material definition
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
         return [MaterialProperty(i) for i in msg.properties]
@@ -202,8 +219,11 @@ class MaterialDef(ObjBase):
         Parameters
         ----------
         material_property : MaterialProperty
+            Property id.
         row : int, optional
+            Tensor row.
         col : int, optional
+            Tensor column.
         """
         self.__stub.RemoveProperty(
             _QueryBuilder.get_property(
@@ -213,21 +233,23 @@ class MaterialDef(ObjBase):
 
     @property
     def name(self):
-        """Remove a property value of a material def.
+        """Get name of the material definition.
 
         Returns
         ----------
         name : str
+            Name of the material definition
         """
         return self.__stub.GetName(messages.edb_obj_message(self))
 
     @property
     def dielectric_material_model(self):
-        """Remove a property value of a material def.
+        """Get Dielectric material model of the material definition.
 
         Returns
         ----------
         DielectricMaterialModel
+            Dielectric material model of the material definition
         """
         return DielectricMaterialModel(
             self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
@@ -236,24 +258,27 @@ class MaterialDef(ObjBase):
     @property
     @dielectric_material_model.setter
     def dielectric_material_model(self, dielectric):
-        """Remove a property value of a material def.
+        """Set Dielectric material model of the material definition.
 
         Parameters
         ----------
         dielectric : DielectricMaterialModel
+            Dielectric material model to be set to the material definition
         """
         self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
 
     def get_dimensions(self, material_property_id):
-        """Remove a property value of a material def.
+        """Get dimensions of a material definition Simple 1x1, Anisotropic 3x1, Tensor 3x3.
 
         Parameters
         ----------
         material_property_id : MaterialProperty
+            Property id.
 
         Returns
         ----------
         Tuple[Int, Int]
+            Tuple with number of rows and columns of the material property.
         """
         msg = self.__stub.GetDimensions(
             _QueryBuilder.material_def_get_property_message(self, material_property_id)
@@ -261,15 +286,17 @@ class MaterialDef(ObjBase):
         return [msg.tensor.col, msg.tensor.row]
 
     def get_thermal_modifier(self, material_property_id):
-        """Remove a property value of a material def.
+        """Get thermal modifier of the material definition.
 
         Parameters
         ----------
         material_property_id : MaterialProperty
+            Property id.
 
         Returns
         ----------
-        DielectricMaterialModel
+        ThermalModifier
+            Thermal modifier of the material definition
         """
         return ThermalModifier(
             self.__stub.GetThermalModifier(
@@ -278,12 +305,14 @@ class MaterialDef(ObjBase):
         )
 
     def set_thermal_modifier(self, material_property_id, thermal_modifier):
-        """Remove a property value of a material def.
+        """Set thermal modifier of the material definition.
 
         Parameters
         ----------
         material_property_id : MaterialProperty
+            Property id.
         thermal_modifier : ThermalModifier
+            Thermal modifier to be set to the material definition
         """
         self.__stub.SetThermalModifier(
             _QueryBuilder.material_def_set_property_message(
@@ -297,11 +326,14 @@ class MaterialDef(ObjBase):
         Parameters
         ----------
         material_property_id : MaterialProperty
-        component: int
+            Property id.
+        component : int
+            Component id
 
         Returns
         ----------
         ThermalModifier
+            Anisotropic thermal modifier of the material definition
         """
         return ThermalModifier(
             self.__stub.GetAnisotropicThermalModifier(
@@ -317,8 +349,11 @@ class MaterialDef(ObjBase):
         Parameters
         ----------
         material_property_id : MaterialProperty
-        component: int
+            Property id.
+        component : int
+            Component id
         thermal_modifier : ThermalModifier
+            Anisotropic thermal modifier to be set to the material definition
         """
         self.__stub.SetAnisotropicThermalModifier(
             _QueryBuilder.material_def_set_anisotropic_property_message(

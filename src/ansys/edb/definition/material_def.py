@@ -193,7 +193,7 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        Value : :class:`Value <ansys.edb.utility.Value>`
+        :class:`Value <ansys.edb.utility.Value>`
             Value of the material property
         """
         return Value(
@@ -255,7 +255,6 @@ class MaterialDef(ObjBase):
             self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
         )
 
-    @property
     @dielectric_material_model.setter
     def dielectric_material_model(self, dielectric):
         """Set Dielectric material model of the material definition.

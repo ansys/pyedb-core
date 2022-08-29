@@ -11,7 +11,7 @@ from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import layout
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.simulation_setup import SimulationSetup
-from ansys.edb.utility import HfssExtentInfo, TemperatureSettings
+from ansys.edb.utility import TemperatureSettings
 
 
 class CellType(Enum):
@@ -272,9 +272,30 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Returns
         -------
-        HfssExtentInfo
+        DefaultDict
         """
-        return HfssExtentInfo(self.__stub.GetHfssExtentInfo(self.msg))
+        msg = self.__stub.GetHfssExtentInfo(self.msg)
+        prop_list = [
+            "airbox_horizontal_extent",
+            "airbox_vertical_negative_extent",
+            "airbox_vertical_positive_extent",
+            "base_polygon",
+            "dielectric_base_polygon",
+            "dielectric_extent_type",
+            "extent_size",
+            "extent_type",
+            "honor_user_dielectric",
+            "is_pml_visible",
+            "open_region_type",
+            "operating_frequency",
+            "radiation_level",
+            "sync_airbox_vertical_extent",
+            "truncate_airbox_at_ground",
+            "use_open_region",
+            "user_xy_data_extent_for_vertical_expansion",
+        ]
+        dictr = {prop: getattr(msg, prop) if getattr(msg, prop) else None for prop in prop_list}
+        return dictr
 
     def set_hfss_extent_info(self, **extents):
         """Set HFSS Extents of this cell.

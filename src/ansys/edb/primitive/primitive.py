@@ -1988,7 +1988,10 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        tuple[:class:`Layer <ansys.edb.layer.Layer>`, :class:`Layer <ansys.edb.layer.Layer>`]
+        tuple[
+            :class:`Layer <ansys.edb.layer.Layer>`,
+            :class:`Layer <ansys.edb.layer.Layer>`
+        ]
             Returns a tuple of the following format:
             (top_layer, bottom_layer)
             top_layer : Top layer of the Padstack instance
@@ -1996,7 +1999,7 @@ class PadstackInstance(Primitive):
         """
         params = self.__stub.GetLayerRange(self.msg)
         return (
-            Layer(params.top_layer),  # or maybe Layer._create(
+            Layer(params.top_layer),
             Layer(params.bottom_layer),
         )
 

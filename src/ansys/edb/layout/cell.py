@@ -30,12 +30,42 @@ class DesignMode(Enum):
 
 # dict representing options of HFSS Extents available via API.
 HFSS_EXTENT_ARGS = {
-    "dielectric": messages.hfss_extent_message,
-    "airbox_horizontal": messages.hfss_extent_message,
-    "airbox_vertical": messages.hfss_extent_message,
-    "airbox_vertical_positive": messages.hfss_extent_message,
-    "airbox_vertical_negative": messages.hfss_extent_message,
-    "airbox_truncate_at_ground": messages.bool_message,
+    "dielectric": "HfssExtentMessage",
+    "airbox_horizontal": "HfssExtentMessage",
+    "airbox_vertical": "HfssExtentMessage",
+    "airbox_vertical_positive": "HfssExtentMessage",
+    "airbox_vertical_negative": "HfssExtentMessage",
+    "airbox_truncate_at_ground": "BoolValueMessage",
+}
+
+
+def translate_bool_value(bool_value):
+    """Convert BoolValue Message to tuple of expected values."""
+    if bool_value and bool_value.value:
+        return bool_value.value
+
+
+def translate_hfss_extent(hfss_extent_msg):
+    """Convert HfssExtentMessage to tuple of expected values."""
+    if hfss_extent_msg:
+        number = None
+        try:
+            number = int(hfss_extent_msg.value)
+        except ValueError:
+            number = float(hfss_extent_msg.value)
+        return (number, bool(hfss_extent_msg.absolute))
+
+
+# dictionary describing message type and functions to translate them
+MESSAGE_HELPER = {
+    "HfssExtentMessage": {
+        "msg": messages.hfss_extent_message,
+        "val": translate_hfss_extent,
+    },
+    "BoolValueMessage": {
+        "msg": messages.bool_message,
+        "val": translate_bool_value,
+    },
 }
 
 
@@ -44,9 +74,20 @@ HFSS_EXTENT_ARGS = {
 def sanitize_args(args):
     """Extract valid extent options and convert them into messages."""
     return {
-        k: HFSS_EXTENT_ARGS[k](args[k])
+        k: MESSAGE_HELPER[HFSS_EXTENT_ARGS[k]]["msg"](args[k])
         for k in filter(lambda k: k in args, HFSS_EXTENT_ARGS.keys())
     }
+
+
+def sanitize_args_reverse(msg):
+    """Extract extent options values from option message and add them into a dictionary."""
+    res = {}
+    for attribute in HFSS_EXTENT_ARGS.keys():
+        if hasattr(msg, attribute):
+            value = getattr(msg, attribute)
+            msg_type = HFSS_EXTENT_ARGS[attribute]
+            res[attribute] = MESSAGE_HELPER[msg_type]["val"](value)
+    return res
 
 
 class _QueryBuilder:
@@ -275,27 +316,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         DefaultDict
         """
         msg = self.__stub.GetHfssExtentInfo(self.msg)
-        prop_list = [
-            "airbox_horizontal_extent",
-            "airbox_vertical_negative_extent",
-            "airbox_vertical_positive_extent",
-            "base_polygon",
-            "dielectric_base_polygon",
-            "dielectric_extent_type",
-            "extent_size",
-            "extent_type",
-            "honor_user_dielectric",
-            "is_pml_visible",
-            "open_region_type",
-            "operating_frequency",
-            "radiation_level",
-            "sync_airbox_vertical_extent",
-            "truncate_airbox_at_ground",
-            "use_open_region",
-            "user_xy_data_extent_for_vertical_expansion",
-        ]
-        dictr = {prop: getattr(msg, prop) if getattr(msg, prop) else None for prop in prop_list}
-        return dictr
+        return sanitize_args_reverse(msg)
 
     def set_hfss_extent_info(self, **extents):
         """Set HFSS Extents of this cell.

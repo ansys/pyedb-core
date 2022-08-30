@@ -5,10 +5,28 @@ from ansys.edb.utility.value import Value
 
 
 class Rlc(ObjBase):
-    """Class representing RLC."""
+    """Class representing RLC.
+
+    Parameters
+    ----------
+    r : str, int, float, complex, Value
+        Resistance value. Only used if r_enabled is True
+    r_enabled : bool
+        Resistance enabled.
+    l : str, int, float, complex, Value
+        Inductance value. Only used if c-l_enabled is True
+    l_enabled : bool
+        Inductance enabled.
+    c : str, int, float, complex, Value
+        Capacitance value.  Only used if c_enabled is True
+    c_enabled : bool
+        Capacitance enabled.
+    is_parallel : bool
+        True means r,l,c elements are in parallel. Otherwise they are in series.
+    """
 
     def __init__(self, **kwargs):
-        """Construct RLC object from message."""
+        """Construct a Rlc object using given values."""
         if "msg" in kwargs:
             self._msg = kwargs.get("msg")
         else:
@@ -27,7 +45,8 @@ class Rlc(ObjBase):
 
         Returns
         -------
-        float
+        Value
+            Resistance value in Ohms
         """
         return self._r if self._msg is None else Value(self._msg.r)
 
@@ -37,7 +56,8 @@ class Rlc(ObjBase):
 
         Returns
         -------
-        float
+        Value
+            Impedance value in Henries.
         """
         return self._l if self._msg is None else Value(self._msg.l)
 
@@ -47,7 +67,8 @@ class Rlc(ObjBase):
 
         Returns
         -------
-        float
+        Value
+            Capacitance value in Farads.
         """
         return self._c if self._msg is None else Value(self._msg.c)
 

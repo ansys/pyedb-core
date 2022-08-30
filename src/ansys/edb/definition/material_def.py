@@ -83,7 +83,9 @@ class _QueryBuilder:
         )
 
     @staticmethod
-    def material_def_set_property_message(material_def, material_property_id, thermal_modifier):
+    def material_def_set_thermal_modifier_message(
+        material_def, material_property_id, thermal_modifier
+    ):
         return pb.SetMaterialDefPropertyMessage(
             materialDef=messages.edb_obj_message(material_def),
             propertyId=material_property_id.value,
@@ -91,7 +93,7 @@ class _QueryBuilder:
         )
 
     @staticmethod
-    def material_def_get_anisotropic_property_message(
+    def material_def_get_anisotropic_thermal_modifier_message(
         material_def, material_property_id, component
     ):
         return pb.MaterialDefPropertyComponentMessage(
@@ -101,7 +103,7 @@ class _QueryBuilder:
         )
 
     @staticmethod
-    def material_def_set_anisotropic_property_message(
+    def material_def_set_anisotropic_thermal_modifier_message(
         material_def, material_property_id, component, thermal_modifier
     ):
         return pb.SetMaterialDefPropertyComponentMessage(
@@ -157,7 +159,7 @@ class MaterialDef(ObjBase):
         """Delete a material definition."""
         self.__stub.Delete(messages.edb_obj_message(self))
 
-    def set_property(self, material_property, value, component=-1, col=-1, row=-1):
+    def set_property(self, material_property, value, component=None, col=None, row=None):
         """Set a property value of a material.
 
         Parameters
@@ -220,10 +222,6 @@ class MaterialDef(ObjBase):
         ----------
         material_property : MaterialProperty
             Property id.
-        row : int, optional
-            Tensor row.
-        col : int, optional
-            Tensor column.
         """
         self.__stub.RemoveProperty(
             _QueryBuilder.get_property(
@@ -276,8 +274,11 @@ class MaterialDef(ObjBase):
 
         Returns
         ----------
-        Tuple[Int, Int]
-            Tuple with number of rows and columns of the material property.
+        tuple[Int, Int]
+            Returns a tuple of the following format:
+            (col, row)
+            col : Number of rows of the material property.
+            row : Number of columns of the material property.
         """
         msg = self.__stub.GetDimensions(
             _QueryBuilder.material_def_get_property_message(self, material_property_id)
@@ -314,7 +315,7 @@ class MaterialDef(ObjBase):
             Thermal modifier to be set to the material definition
         """
         self.__stub.SetThermalModifier(
-            _QueryBuilder.material_def_set_property_message(
+            _QueryBuilder.material_def_set_thermal_modifier_message(
                 self, material_property_id, thermal_modifier
             )
         )
@@ -336,7 +337,7 @@ class MaterialDef(ObjBase):
         """
         return ThermalModifier(
             self.__stub.GetAnisotropicThermalModifier(
-                _QueryBuilder.material_def_get_anisotropic_property_message(
+                _QueryBuilder.material_def_get_anisotropic_thermal_modifier_message(
                     self, material_property_id, component
                 )
             )
@@ -355,7 +356,7 @@ class MaterialDef(ObjBase):
             Anisotropic thermal modifier to be set to the material definition
         """
         self.__stub.SetAnisotropicThermalModifier(
-            _QueryBuilder.material_def_set_anisotropic_property_message(
+            _QueryBuilder.material_def_set_anisotropic_thermal_modifier_message(
                 self, material_property_id, component, thermal_modifier
             )
         )

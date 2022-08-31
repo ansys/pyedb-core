@@ -20,7 +20,7 @@ service CircleService {
   rpc GetParameters(EDBObjMessage) returns (CircleParametersMessage) {}
 
   // Set Parameters
-  rpc SetParameters(SetCircleParametersMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetParameters(SetCircleParametersMessage) returns (google.protobuf.Empty) {}
 }
 
 // Message for Create

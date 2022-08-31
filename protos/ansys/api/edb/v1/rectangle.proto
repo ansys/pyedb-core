@@ -22,7 +22,7 @@ service RectangleService {
   rpc GetParameters (EDBObjMessage) returns (RectangleParametersMessage) {}
   
   // Recieve Rectangle Parameters
-  rpc SetParameters (SetRectangleParametersMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetParameters (SetRectangleParametersMessage) returns (google.protobuf.Empty) {}
 
   // Render Geometry PolygonData
   rpc Render(RectanglePolygonDataMessage) returns (PolygonDataMessage) {}

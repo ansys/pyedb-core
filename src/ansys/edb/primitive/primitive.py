@@ -2,31 +2,31 @@
 
 from enum import Enum
 
-import ansys.api.edb.v1.bondwire_pb2 as bondwire_pb2
-import ansys.api.edb.v1.circle_pb2 as circle_pb2
-import ansys.api.edb.v1.padstack_instance_pb2 as padstack_instance_pb2
-import ansys.api.edb.v1.path_pb2 as path_pb2
-import ansys.api.edb.v1.polygon_pb2 as polygon_pb2
-import ansys.api.edb.v1.primitive_pb2 as primitive_pb2
-import ansys.api.edb.v1.rectangle_pb2 as rectangle_pb2
-import ansys.api.edb.v1.text_pb2 as text_pb2
+from ansys.api.edb.v1 import (
+    bondwire_pb2,
+    bondwire_pb2_grpc,
+    circle_pb2,
+    circle_pb2_grpc,
+    padstack_instance_pb2,
+    padstack_instance_pb2_grpc,
+    path_pb2,
+    path_pb2_grpc,
+    polygon_pb2,
+    polygon_pb2_grpc,
+    primitive_pb2,
+    primitive_pb2_grpc,
+    rectangle_pb2,
+    rectangle_pb2_grpc,
+    text_pb2,
+    text_pb2_grpc,
+)
 
 from ansys.edb import hierarchy, terminal
 from ansys.edb.core import conn_obj, messages
 from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layer import Layer
-from ansys.edb.session import (
-    StubAccessor,
-    StubType,
-    get_bondwire_stub,
-    get_circle_stub,
-    get_path_stub,
-    get_polygon_stub,
-    get_primitive_stub,
-    get_rectangle_stub,
-    get_text_stub,
-)
+from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 from ansys.edb.utility.layer_map import LayerMap
 
@@ -85,11 +85,12 @@ class _PrimitiveQueryBuilder:
 class Primitive(conn_obj.ConnObj):
     """Base class representing primitive objects."""
 
+    __stub: primitive_pb2_grpc.PrimitiveServiceStub = StubAccessor(StubType.primitive)
     layout_obj_type = LayoutObjType.PRIMITIVE
 
     @staticmethod
     def _create(msg):
-        prim_type = Primitive(msg).get_primitive_type()
+        prim_type = Primitive(msg).primitive_type
         if prim_type == PrimitiveType.RECTANGLE:
             return Rectangle(msg)
         elif prim_type == PrimitiveType.POLYGON:
@@ -101,7 +102,8 @@ class Primitive(conn_obj.ConnObj):
         else:
             return None
 
-    def get_primitive_type(self):
+    @property
+    def primitive_type(self):
         """Get the type of a primitive.
 
         Returns
@@ -110,9 +112,7 @@ class Primitive(conn_obj.ConnObj):
             Primitive type of the primitive.
         """
         return PrimitiveType(
-            get_primitive_stub()
-            .GetPrimitiveType(_PrimitiveQueryBuilder.get_primitive_type(self))
-            .type
+            self.__stub.GetPrimitiveType(_PrimitiveQueryBuilder.get_primitive_type(self)).type
         )
 
     def add_void(self, hole):
@@ -123,7 +123,7 @@ class Primitive(conn_obj.ConnObj):
         hole : Primitive
             Void to be added to the primitive.
         """
-        return get_primitive_stub().AddVoid(_PrimitiveQueryBuilder.add_void(self, hole)).value
+        self.__stub.AddVoid(_PrimitiveQueryBuilder.add_void(self, hole))
 
     def set_hfss_prop(self, material, solve_inside):
         """Set HFSS properties.
@@ -134,18 +134,11 @@ class Primitive(conn_obj.ConnObj):
             Material property name to be set.
         solve_inside : bool
             Whether to do solve inside.
-
-        Returns
-        -------
-        bool
         """
-        return (
-            get_primitive_stub()
-            .SetHfssProp(_PrimitiveQueryBuilder.set_hfss_prop(self, material, solve_inside))
-            .value
-        )
+        self.__stub.SetHfssProp(_PrimitiveQueryBuilder.set_hfss_prop(self, material, solve_inside))
 
-    def get_layer(self):
+    @property
+    def layer(self):
         """Get a layer on which this primitive exists.
 
         Returns
@@ -153,24 +146,22 @@ class Primitive(conn_obj.ConnObj):
         :class:`Layer <ansys.edb.layer.Layer>`
             Layer that the primitive is on.
         """
-        layer_msg = get_primitive_stub().GetLayer(self.msg)
+        layer_msg = self.__stub.GetLayer(self.msg)
         return Layer._create(layer_msg)
 
-    def set_layer(self, layer):
+    @layer.setter
+    def layer(self, layer):
         """Set the layer.
 
         Parameters
         ----------
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             Layer that the primitive will be on.
-
-        Returns
-        -------
-        bool
         """
-        return get_primitive_stub().SetLayer(_PrimitiveQueryBuilder.set_layer(self, layer)).value
+        self.__stub.SetLayer(_PrimitiveQueryBuilder.set_layer(self, layer))
 
-    def get_is_negative(self):
+    @property
+    def is_negative(self):
         """Get if the primitive is negative.
 
         Returns
@@ -178,25 +169,20 @@ class Primitive(conn_obj.ConnObj):
         bool
             Represents if primitive is negative.
         """
-        return get_primitive_stub().GetIsNegative(self.msg).value
+        return self.__stub.GetIsNegative(self.msg).value
 
-    def set_is_negative(self, is_negative):
+    @is_negative.setter
+    def is_negative(self, is_negative):
         """Update if negative.
 
         Parameters
         ----------
         is_negative : bool
             Value that will be set. It represents if primitive is negative.
-        Returns
-        -------
-        bool
         """
-        return (
-            get_primitive_stub()
-            .SetIsNegative(_PrimitiveQueryBuilder.set_is_negative(self, is_negative))
-            .value
-        )
+        self.__stub.SetIsNegative(_PrimitiveQueryBuilder.set_is_negative(self, is_negative))
 
+    @property
     def is_void(self):
         """Determine if a primitive is a void.
 
@@ -205,8 +191,9 @@ class Primitive(conn_obj.ConnObj):
         bool
             True if a primitive is a void
         """
-        return get_primitive_stub().IsVoid(self.msg).value
+        return self.__stub.IsVoid(self.msg).value
 
+    @property
     def has_voids(self):
         """
         Determine if a primitive contains voids inside.
@@ -216,7 +203,7 @@ class Primitive(conn_obj.ConnObj):
         bool
             True if a primitive has voids.
         """
-        return get_primitive_stub().HasVoids(self.msg).value
+        return self.__stub.HasVoids(self.msg).value
 
     @property
     def voids(self):
@@ -228,9 +215,10 @@ class Primitive(conn_obj.ConnObj):
         list[Primitive]
             List of void primitive objects inside the primitive.
         """
-        return [Primitive._create(msg) for msg in get_primitive_stub().Voids(self.msg).items]
+        return [Primitive._create(msg) for msg in self.__stub.Voids(self.msg).items]
 
-    def get_owner(self):
+    @property
+    def owner(self):
         """
         Get an owner of a primitive.
 
@@ -239,8 +227,9 @@ class Primitive(conn_obj.ConnObj):
         Primitive
             Owner of the primitive object.
         """
-        return Primitive._create(get_primitive_stub().GetOwner(self.msg))
+        return Primitive._create(self.__stub.GetOwner(self.msg))
 
+    @property
     def is_parameterized(self):
         """
         Determine if a primitive is parametrized.
@@ -250,9 +239,10 @@ class Primitive(conn_obj.ConnObj):
         bool
             Primitive's parametrization.
         """
-        return get_primitive_stub().IsParameterized(self.msg).value
+        return self.__stub.IsParameterized(self.msg).value
 
-    def get_hfss_prop(self):
+    @property
+    def hfss_prop(self):
         """
         Get HFSS properties.
 
@@ -263,19 +253,14 @@ class Primitive(conn_obj.ConnObj):
         solve_inside : bool
             If solve inside.
         """
-        prop_msg = get_primitive_stub().GetHfssProp(self.msg)
+        prop_msg = self.__stub.GetHfssProp(self.msg)
         return prop_msg.material_name, prop_msg.solve_inside
 
     def remove_hfss_prop(self):
-        """
-        Remove HFSS properties.
+        """Remove HFSS properties."""
+        self.__stub.RemoveHfssProp(self.msg)
 
-        Returns
-        -------
-        bool
-        """
-        return get_primitive_stub().RemoveHfssProp(self.msg).value
-
+    @property
     def is_zone_primitive(self):
         """
         Determine if a primitive is a zone.
@@ -285,8 +270,9 @@ class Primitive(conn_obj.ConnObj):
         bool
             If primitive object is zone primitive.
         """
-        return get_primitive_stub().IsZonePrimitive(self.msg).value
+        return self.__stub.IsZonePrimitive(self.msg).value
 
+    @property
     def can_be_zone_primitive(self):
         """
         Determine if a primitive can be a zone.
@@ -301,6 +287,8 @@ class Primitive(conn_obj.ConnObj):
 
 class Rectangle(Primitive):
     """Class representing a rectangle object."""
+
+    __stub: rectangle_pb2_grpc.RectangleServiceStub = StubAccessor(StubType.rectangle)
 
     class RectangleRepresentationType(Enum):
         """Enum representing possible rectangle types.
@@ -317,8 +305,10 @@ class Rectangle(Primitive):
         CENTER_WIDTH_HEIGHT = rectangle_pb2.CENTER_WIDTH_HEIGHT
         LOWER_LEFT_UPPER_RIGHT = rectangle_pb2.LOWER_LEFT_UPPER_RIGHT
 
-    @staticmethod
-    def create(layout, layer, net, rep_type, param1, param2, param3, param4, corner_rad, rotation):
+    @classmethod
+    def create(
+        cls, layout, layer, net, rep_type, param1, param2, param3, param4, corner_rad, rotation
+    ):
         """Create a rectangle.
 
         Parameters
@@ -350,7 +340,7 @@ class Rectangle(Primitive):
             Rectangle that was created.
         """
         return Rectangle(
-            get_rectangle_stub().Create(
+            cls.__stub.Create(
                 rectangle_pb2.RectangleCreationMessage(
                     layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
@@ -390,7 +380,7 @@ class Rectangle(Primitive):
             corner_radius : Corner radius.
             rotation : Rotation.
         """
-        rect_param_msg = get_rectangle_stub().GetParameters(self.msg)
+        rect_param_msg = self.__stub.GetParameters(self.msg)
         return (
             Rectangle.RectangleRepresentationType(rect_param_msg.representation_type),
             Value(rect_param_msg.parameter1),
@@ -420,30 +410,23 @@ class Rectangle(Primitive):
             Corner radius.
         rotation : :class:`Value <ansys.edb.utility.Value>`
             Rotation.
-
-        Returns
-        -------
-        bool
         """
-        return (
-            get_rectangle_stub()
-            .SetParameters(
-                rectangle_pb2.SetRectangleParametersMessage(
-                    target=self.msg,
-                    parameters=rectangle_pb2.RectangleParametersMessage(
-                        representation_type=rep_type.value,
-                        parameter1=messages.value_message(param1),
-                        parameter2=messages.value_message(param2),
-                        parameter3=messages.value_message(param3),
-                        parameter4=messages.value_message(param4),
-                        corner_radius=messages.value_message(corner_rad),
-                        rotation=messages.value_message(rotation),
-                    ),
-                )
+        self.__stub.SetParameters(
+            rectangle_pb2.SetRectangleParametersMessage(
+                target=self.msg,
+                parameters=rectangle_pb2.RectangleParametersMessage(
+                    representation_type=rep_type.value,
+                    parameter1=messages.value_message(param1),
+                    parameter2=messages.value_message(param2),
+                    parameter3=messages.value_message(param3),
+                    parameter4=messages.value_message(param4),
+                    corner_radius=messages.value_message(corner_rad),
+                    rotation=messages.value_message(rotation),
+                ),
             )
-            .value
         )
 
+    @property
     def can_be_zone_primitive(self):
         """Determine if a rectangle can be a zone.
 
@@ -454,7 +437,8 @@ class Rectangle(Primitive):
         """
         return True
 
-    def get_polygon_data(self):
+    @property
+    def polygon_data(self):
         """Get polygon data of a rectangle.
 
         Returns
@@ -464,8 +448,9 @@ class Rectangle(Primitive):
         """
         return Rectangle.render(*self.get_parameters())
 
-    @staticmethod
+    @classmethod
     def render(
+        cls,
         rep_type,
         x_lower_left_or_center_x,
         y_lower_left_or_center_y,
@@ -506,7 +491,7 @@ class Rectangle(Primitive):
             height = y_upper_right_or_height - y_lower_left_or_center_y
             center_x = x_lower_left_or_center_x + width / 2.0
             center_y = y_lower_left_or_center_y + height / 2.0
-            polygon_data = get_rectangle_stub().Render(
+            polygon_data = cls.__stub.Render(
                 rectangle_pb2.RectanglePolygonDataMessage(
                     center_x=messages.value_message(center_x),
                     center_y=messages.value_message(center_y),
@@ -518,7 +503,7 @@ class Rectangle(Primitive):
                 )
             )
         elif rep_type == Rectangle.RectangleRepresentationType.CENTER_WIDTH_HEIGHT:
-            polygon_data = get_rectangle_stub().Render(
+            polygon_data = cls.__stub.Render(
                 rectangle_pb2.RectanglePolygonDataMessage(
                     center_x=messages.value_message(x_lower_left_or_center_x),
                     center_y=messages.value_message(y_lower_left_or_center_y),
@@ -537,8 +522,10 @@ class Rectangle(Primitive):
 class Circle(Primitive):
     """Class representing a circle object."""
 
-    @staticmethod
-    def create(layout, layer, net, center_x, center_y, radius):
+    __stub: circle_pb2_grpc.CircleServiceStub = StubAccessor(StubType.circle)
+
+    @classmethod
+    def create(cls, layout, layer, net, center_x, center_y, radius):
         """Create a circle.
 
         Parameters
@@ -562,7 +549,7 @@ class Circle(Primitive):
             Circle object created.
         """
         return Circle(
-            get_circle_stub().Create(
+            cls.__stub.Create(
                 circle_pb2.CircleCreationMessage(
                     layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
@@ -574,8 +561,8 @@ class Circle(Primitive):
             )
         )
 
-    @staticmethod
-    def render(center_x, center_y, radius, is_hole):
+    @classmethod
+    def render(cls, center_x, center_y, radius, is_hole):
         """Render a circle.
 
         Parameters
@@ -594,7 +581,7 @@ class Circle(Primitive):
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Polygon data object created.
         """
-        return get_circle_stub().Render(
+        return cls.__stub.Render(
             circle_pb2.CircleRenderMessage(
                 center_x=messages.value_message(center_x),
                 center_y=messages.value_message(center_y),
@@ -619,7 +606,7 @@ class Circle(Primitive):
             center_y : Y value of center point.
             radius : Radius value of the circle.
         """
-        circle_param_msg = get_circle_stub().GetParameters(self.msg)
+        circle_param_msg = self.__stub.GetParameters(self.msg)
         return (
             Value(circle_param_msg.center_x),
             Value(circle_param_msg.center_y),
@@ -637,24 +624,16 @@ class Circle(Primitive):
             Y value of center point.
         radius: :class:`Value <ansys.edb.utility.Value>`
             Radius value of the circle.
-
-        Returns
-        -------
-        bool
         """
-        return (
-            get_circle_stub()
-            .SetParameters(
-                circle_pb2.SetCircleParametersMessage(
-                    target=self.msg,
-                    parameters=circle_pb2.CircleParametersMessage(
-                        center_x=messages.value_message(center_x),
-                        center_y=messages.value_message(center_y),
-                        radius=messages.value_message(radius),
-                    ),
-                )
+        self.__stub.SetParameters(
+            circle_pb2.SetCircleParametersMessage(
+                target=self.msg,
+                parameters=circle_pb2.CircleParametersMessage(
+                    center_x=messages.value_message(center_x),
+                    center_y=messages.value_message(center_y),
+                    radius=messages.value_message(radius),
+                ),
             )
-            .value
         )
 
     def get_polygon_data(self):
@@ -665,7 +644,7 @@ class Circle(Primitive):
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Polygon data object created.
         """
-        return Circle.render(*self.get_parameters(), self.is_void())
+        return Circle.render(*self.get_parameters(), self.is_void)
 
     def can_be_zone_primitive(self):
         """Determine if a circle can be a zone.
@@ -681,8 +660,10 @@ class Circle(Primitive):
 class Text(Primitive):
     """Class representing a text object."""
 
-    @staticmethod
-    def create(layout, layer, center_x, center_y, text):
+    __stub: text_pb2_grpc.TextServiceStub = StubAccessor(StubType.text)
+
+    @classmethod
+    def create(cls, layout, layer, center_x, center_y, text):
         """Create a text object.
 
         Parameters
@@ -704,7 +685,7 @@ class Text(Primitive):
             The text Object that was created.
         """
         return Text(
-            get_text_stub().Create(
+            cls.__stub.Create(
                 text_pb2.TextCreationMessage(
                     layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
@@ -731,7 +712,7 @@ class Text(Primitive):
             center_y : Y value of center point.
             radius : Text object's String value.
         """
-        text_data_msg = get_text_stub().GetTextData(self.msg)
+        text_data_msg = self.__stub.GetTextData(self.msg)
         return (
             Value(text_data_msg.center_x),
             Value(text_data_msg.center_y),
@@ -749,24 +730,16 @@ class Text(Primitive):
             Y value of center point.
         text: str
             Text object's String value.
-        Returns
-        -------
-        bool
-            Boolean value that represents the result of the creation.
         """
-        return (
-            get_text_stub()
-            .SetTextData(
-                text_pb2.SetTextDataMessage(
-                    target=self.msg,
-                    data=text_pb2.TextDataMessage(
-                        center_x=messages.value_message(center_x),
-                        center_y=messages.value_message(center_y),
-                        text=text,
-                    ),
-                )
+        self.__stub.SetTextData(
+            text_pb2.SetTextDataMessage(
+                target=self.msg,
+                data=text_pb2.TextDataMessage(
+                    center_x=messages.value_message(center_x),
+                    center_y=messages.value_message(center_y),
+                    text=text,
+                ),
             )
-            .value
         )
 
 
@@ -784,8 +757,10 @@ class _PolygonQueryBuilder:
 class Polygon(Primitive):
     """Class representing a polygon object."""
 
-    @staticmethod
-    def create(layout, layer, net, polygon_data):
+    __stub: polygon_pb2_grpc.PolygonServiceStub = StubAccessor(StubType.polygon)
+
+    @classmethod
+    def create(cls, layout, layer, net, polygon_data):
         """Create a polygon.
 
         Parameters
@@ -805,10 +780,11 @@ class Polygon(Primitive):
             Polygon object created.
         """
         return Polygon(
-            get_polygon_stub().Create(_PolygonQueryBuilder.create(layout, layer, net, polygon_data))
+            cls.__stub.Create(_PolygonQueryBuilder.create(layout, layer, net, polygon_data))
         )
 
-    def get_polygon_data(self):
+    @property
+    def polygon_data(self):
         """Get a PolygonData object for this Polygon.
 
         Returns
@@ -816,26 +792,24 @@ class Polygon(Primitive):
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             PolygonData objects that represent outer contour of the Polygon.
         """
-        return get_polygon_stub().GetPolygonData(self.msg)
+        return self.__stub.GetPolygonData(self.msg)
 
-    def set_polygon_data(self, poly):
+    @polygon_data.setter
+    def polygon_data(self, poly):
         """Set PolygonData object for this Polygon.
 
         Parameters
         ----------
         poly : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Outer contour of the Polygon.
-        Returns
-        -------
-        bool
-            Returns true if the contour of Polygon is set correctly and false if not.
         """
-        return get_polygon_stub().SetPolygonData(
+        self.__stub.SetPolygonData(
             polygon_pb2.SetPolygonDataMessage(
                 target=self.msg, poly=messages.polygon_data_message(poly)
             )
         )
 
+    @property
     def can_be_zone_primitive(self):
         """
         Determine if a polygon can be a zone.
@@ -896,8 +870,10 @@ class _PathQueryBuilder:
 class Path(Primitive):
     """Class representing a path object."""
 
-    @staticmethod
-    def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
+    __stub: path_pb2_grpc.PathServiceStub = StubAccessor(StubType.path)
+
+    @classmethod
+    def create(cls, layout, layer, net, width, end_cap1, end_cap2, corner_style, points):
         """Create a path.
 
         Parameters
@@ -925,15 +901,15 @@ class Path(Primitive):
             Path object created.
         """
         return Path(
-            get_path_stub().Create(
+            cls.__stub.Create(
                 _PathQueryBuilder.create(
-                    layout, layer, net, width, end_cap1, end_cap2, corner, points
+                    layout, layer, net, width, end_cap1, end_cap2, corner_style, points
                 )
             )
         )
 
-    @staticmethod
-    def render(width, end_cap1, end_cap2, corner_style, path):
+    @classmethod
+    def render(cls, width, end_cap1, end_cap2, corner_style, path):
         """Render a Path object.
 
         Parameters
@@ -954,7 +930,7 @@ class Path(Primitive):
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             PolygonData object created.
         """
-        return get_path_stub().Render(
+        return cls.__stub.Render(
             path_pb2.PathRenderMessage(
                 width=messages.value_message(width),
                 end_cap1=end_cap1.value,
@@ -964,7 +940,8 @@ class Path(Primitive):
             )
         )
 
-    def get_center_line(self):
+    @property
+    def center_line(self):
         """Get center line of the path.
 
         Returns
@@ -972,29 +949,19 @@ class Path(Primitive):
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             PolygonData containing the center line for this Path.
         """
-        return get_path_stub().GetCenterLine(self.msg)
+        return self.__stub.GetCenterLine(self.msg)
 
-    def set_center_line(self, center_line):
+    @center_line.setter
+    def center_line(self, center_line):
         """Set center line of the path.
 
         Parameters
         ----------
         center_line: :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             PolygonData containing the center line for this Path.
-
-        Returns
-        -------
-        bool
-            True if succeeds.
         """
-        return (
-            get_path_stub()
-            .SetCenterLine(
-                path_pb2.SetCenterLineMessage(
-                    target=self.msg, center_line=messages.polygon_data_message(center_line)
-                )
-            )
-            .value
+        path_pb2.SetCenterLineMessage(
+            target=self.msg, center_line=messages.polygon_data_message(center_line)
         )
 
     def get_end_cap_style(self):
@@ -1011,8 +978,8 @@ class Path(Primitive):
             end_cap1 : End cap style of path start end cap.
             end_cap2 : End cap style of path end end cap.
         """
-        end_cap_msg = get_path_stub().GetEndCapStyle(self.msg)
-        return (PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2))
+        end_cap_msg = self.__stub.GetEndCapStyle(self.msg)
+        return PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2)
 
     def set_end_cap_style(self, end_cap1, end_cap2):
         """Set path end cap styles.
@@ -1023,23 +990,14 @@ class Path(Primitive):
             End cap style of path start end cap.
         end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
             End cap style of path end end cap.
-
-        Returns
-        -------
-        bool
-            True if succeeds.
         """
-        return (
-            get_path_stub()
-            .SetEndCapStyle(
-                path_pb2.SetEndCapStyleMessage(
-                    target=self.msg,
-                    end_cap=path_pb2.EndCapStyleMessage(
-                        end_cap1=end_cap1.value, end_cap2=end_cap2.value
-                    ),
-                )
+        self.__stub.SetEndCapStyle(
+            path_pb2.SetEndCapStyleMessage(
+                target=self.msg,
+                end_cap=path_pb2.EndCapStyleMessage(
+                    end_cap1=end_cap1.value, end_cap2=end_cap2.value
+                ),
             )
-            .value
         )
 
     def get_clip_info(self):
@@ -1053,8 +1011,8 @@ class Path(Primitive):
             clipping_poly : PolygonData used to clip the path.
             keep_inside : Indicates whether the part of the path inside the polygon is preserved.
         """
-        clip_info_msg = get_path_stub().GetClipInfo(self.msg)
-        return (clip_info_msg.clipping_poly, clip_info_msg.keep_inside)
+        clip_info_msg = self.__stub.GetClipInfo(self.msg)
+        return clip_info_msg.clipping_poly, clip_info_msg.keep_inside
 
     def set_clip_info(self, clipping_poly, keep_inside=True):
         """Set data used to clip the path.
@@ -1065,25 +1023,17 @@ class Path(Primitive):
             PolygonData used to clip the path.
         keep_inside: bool
             Indicates whether the part of the path inside the polygon should be preserved.
-
-        Returns
-        -------
-        bool
-            True if succeeds.
         """
-        return (
-            get_path_stub()
-            .SetClipInfo(
-                path_pb2.SetClipInfoMessage(
-                    target=self.msg,
-                    clipping_poly=messages.polygon_data_message(clipping_poly),
-                    keep_inside=keep_inside,
-                )
+        self.__stub.SetClipInfo(
+            path_pb2.SetClipInfoMessage(
+                target=self.msg,
+                clipping_poly=messages.polygon_data_message(clipping_poly),
+                keep_inside=keep_inside,
             )
-            .value
         )
 
-    def get_corner_style(self):
+    @property
+    def corner_style(self):
         """Get path corner style.
 
         Returns
@@ -1091,33 +1041,26 @@ class Path(Primitive):
         PathCornerType
             Corner style.
         """
-        return PathCornerType(get_path_stub().GetCornerStyle(self.msg).corner_style)
+        return PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
 
-    def set_corner_style(self, corner_type):
+    @corner_style.setter
+    def corner_style(self, corner_type):
         """Set path corner style.
 
         Parameters
         ----------
         corner_type: PathCornerType
             Corner style.
-
-        Returns
-        -------
-        bool
-            True if succeeds.
         """
-        return (
-            get_path_stub()
-            .SetCornerStyle(
-                path_pb2.SetCornerStyleMessage(
-                    target=self.msg,
-                    corner_style=path_pb2.CornerStyleMessage(corner_style=corner_type.value),
-                )
+        self.__stub.SetCornerStyle(
+            path_pb2.SetCornerStyleMessage(
+                target=self.msg,
+                corner_style=path_pb2.CornerStyleMessage(corner_style=corner_type.value),
             )
-            .value
         )
 
-    def get_width(self):
+    @property
+    def width(self):
         """Get path width.
 
         Returns
@@ -1125,33 +1068,26 @@ class Path(Primitive):
         :class:`Value <ansys.edb.utility.Value>`
             Width.
         """
-        return Value(get_path_stub().GetWidth(self.msg).width)
+        return Value(self.__stub.GetWidth(self.msg).width)
 
-    def set_width(self, width):
+    @width.setter
+    def width(self, width):
         """Set path width.
 
         Parameters
         ----------
         width: :class:`Value <ansys.edb.utility.Value>`
             Width.
-
-        Returns
-        -------
-        bool
-            True if succeeds.
         """
-        return (
-            get_path_stub()
-            .SetWidth(
-                path_pb2.SetWidthMessage(
-                    target=self.msg,
-                    width=path_pb2.WidthMessage(width=messages.value_message(width)),
-                )
+        self.__stub.SetWidth(
+            path_pb2.SetWidthMessage(
+                target=self.msg,
+                width=path_pb2.WidthMessage(width=messages.value_message(width)),
             )
-            .value
         )
 
-    def get_miter_ratio(self):
+    @property
+    def miter_ratio(self):
         """Get miter ratio.
 
         Returns
@@ -1159,34 +1095,27 @@ class Path(Primitive):
         :class:`Value <ansys.edb.utility.Value>`
             Miter Ratio.
         """
-        return Value(get_path_stub().GetMiterRatio(self.msg).miter_ratio)
+        return Value(self.__stub.GetMiterRatio(self.msg).miter_ratio)
 
-    def set_miter_ratio(self, miter_ratio):
+    @miter_ratio.setter
+    def miter_ratio(self, miter_ratio):
         """Set miter ratio.
 
         Parameters
         ----------
         miter_ratio: :class:`Value <ansys.edb.utility.Value>`
             Miter Ratio Value.
-
-        Returns
-        -------
-        bool
-            True if succeeds.
         """
-        return (
-            get_path_stub()
-            .SetMiterRatio(
-                path_pb2.SetMiterRatioMessage(
-                    target=self.msg,
-                    miter_ratio=path_pb2.MiterRatioMessage(
-                        miter_ratio=messages.value_message(miter_ratio)
-                    ),
-                )
+        self.__stub.SetMiterRatio(
+            path_pb2.SetMiterRatioMessage(
+                target=self.msg,
+                miter_ratio=path_pb2.MiterRatioMessage(
+                    miter_ratio=messages.value_message(miter_ratio)
+                ),
             )
-            .value
         )
 
+    @property
     def can_be_zone_primitive(self):
         """Check if a path can be a zone.
 
@@ -1302,6 +1231,8 @@ class _BondwireQueryBuilder:
 class Bondwire(Primitive):
     """Class representing a bondwire object."""
 
+    __stub: bondwire_pb2_grpc.BondwireServiceStub = StubAccessor(StubType.bondwire)
+
     class BondwireType(Enum):
         """Enum representing possible bondwire types.
 
@@ -1330,8 +1261,9 @@ class Bondwire(Primitive):
         RECTANGLE = bondwire_pb2.BONDWIRE_RECTANGLE
         INVALID = bondwire_pb2.INVALID_BONDWIRE_CROSS_SECTION_TYPE
 
-    @staticmethod
+    @classmethod
     def create(
+        cls,
         layout,
         bondwire_type,
         definition_name,
@@ -1389,7 +1321,7 @@ class Bondwire(Primitive):
             Bondwire object created.
         """
         return Bondwire(
-            get_bondwire_stub().Create(
+            cls.__stub.Create(
                 _BondwireQueryBuilder.create(
                     layout,
                     net,
@@ -1423,9 +1355,7 @@ class Bondwire(Primitive):
         str
             Material name.
         """
-        return get_bondwire_stub().GetMaterial(
-            _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
-        )
+        return self.__stub.GetMaterial(_BondwireQueryBuilder.bondwire_bool_message(self, evaluated))
 
     def set_material(self, material):
         """Set the material of a bondwire.
@@ -1435,7 +1365,7 @@ class Bondwire(Primitive):
         material : str
             Material name.
         """
-        get_bondwire_stub().SetMaterial(_BondwireQueryBuilder.set_material_message(self, material))
+        self.__stub.SetMaterial(_BondwireQueryBuilder.set_material_message(self, material))
 
     @property
     def type(self):
@@ -1446,7 +1376,7 @@ class Bondwire(Primitive):
         :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
             Bondwire object's bondwire type.
         """
-        btype_msg = get_bondwire_stub().GetType(self.msg)
+        btype_msg = self.__stub.GetType(self.msg)
         return Bondwire.BondwireType(btype_msg.type)
 
     @type.setter
@@ -1458,9 +1388,7 @@ class Bondwire(Primitive):
         bondwire_type : :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
             BondwireType to be set to the bondwire.
         """
-        get_bondwire_stub().SetType(
-            _BondwireQueryBuilder.set_bondwire_type_message(self, bondwire_type)
-        )
+        self.__stub.SetType(_BondwireQueryBuilder.set_bondwire_type_message(self, bondwire_type))
 
     @property
     def cross_section_type(self):
@@ -1471,9 +1399,7 @@ class Bondwire(Primitive):
         :class:`BondwireCrossSectionType <ansys.edb.primitive.Bondwire.BondwireCrossSectionType>`
             Bondwire object's bondwire-cross-section-type.
         """
-        return Bondwire.BondwireCrossSectionType(
-            get_bondwire_stub().GetCrossSectionType(self.msg).type
-        )
+        return Bondwire.BondwireCrossSectionType(self.__stub.GetCrossSectionType(self.msg).type)
 
     @cross_section_type.setter
     def cross_section_type(self, bondwire_type):
@@ -1484,7 +1410,7 @@ class Bondwire(Primitive):
         bondwire_type : :class:`BondwireCrossSectionType <ansys.edb.primitive.Bondwire.BondwireCrossSectionType>`
             Bondwire-cross-section-type to be set to the bondwire.
         """
-        get_bondwire_stub().SetCrossSectionType(
+        self.__stub.SetCrossSectionType(
             _BondwireQueryBuilder.set_cross_section_type_message(self, bondwire_type)
         )
 
@@ -1497,7 +1423,7 @@ class Bondwire(Primitive):
         :class:`Value <ansys.edb.utility.Value>`
             Height of the bondwire object.
         """
-        return Value(get_bondwire_stub().GetCrossSectionHeight(self.msg))
+        return Value(self.__stub.GetCrossSectionHeight(self.msg))
 
     @cross_section_height.setter
     def cross_section_height(self, height):
@@ -1508,7 +1434,7 @@ class Bondwire(Primitive):
         height : :class:`Value <ansys.edb.utility.Value>`
             Height to be set to the bondwire object.
         """
-        get_bondwire_stub().SetCrossSectionHeight(
+        self.__stub.SetCrossSectionHeight(
             _BondwireQueryBuilder.set_cross_section_height_message(self, height)
         )
 
@@ -1524,11 +1450,9 @@ class Bondwire(Primitive):
         str
             Bondwire name.
         """
-        return (
-            get_bondwire_stub()
-            .GetDefinitionName(_BondwireQueryBuilder.bondwire_bool_message(self, evaluated))
-            .value
-        )
+        return self.__stub.GetDefinitionName(
+            _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
+        ).value
 
     def set_definition_name(self, definition_name):
         """Set the definition name of a bondwire.
@@ -1538,7 +1462,7 @@ class Bondwire(Primitive):
         definition_name : str
             Bondwire name to be set.
         """
-        get_bondwire_stub().SetDefinitionName(
+        self.__stub.SetDefinitionName(
             _BondwireQueryBuilder.set_definition_name_message(self, definition_name)
         )
 
@@ -1560,7 +1484,7 @@ class Bondwire(Primitive):
             x1 : X value of the end point.
             y1 : Y value of the end point.
         """
-        traj_msg = get_bondwire_stub().GetTraj(self.msg)
+        traj_msg = self.__stub.GetTraj(self.msg)
         return (
             Value(traj_msg.x1),
             Value(traj_msg.y1),
@@ -1582,9 +1506,7 @@ class Bondwire(Primitive):
         y2 : :class:`Value <ansys.edb.utility.Value>`
             Y value of the end point.
         """
-        get_bondwire_stub().SetTraj(
-            _BondwireQueryBuilder.set_bondwire_traj_message(self, x1, y1, x2, y2)
-        )
+        self.__stub.SetTraj(_BondwireQueryBuilder.set_bondwire_traj_message(self, x1, y1, x2, y2))
 
     @property
     def width(self):
@@ -1595,7 +1517,7 @@ class Bondwire(Primitive):
         :class:`Value <ansys.edb.utility.Value>`
             Width of the bondwire object.
         """
-        val = get_bondwire_stub().GetWidthValue(self.msg)
+        val = self.__stub.GetWidthValue(self.msg)
         return Value(val)
 
     @width.setter
@@ -1607,7 +1529,7 @@ class Bondwire(Primitive):
         width : :class:`Value <ansys.edb.utility.Value>`
             Width to be set bondwire object.
         """
-        get_bondwire_stub().SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
+        self.__stub.SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
 
     def get_start_elevation(self, start_context):
         """Get the start elevation layer of a bondwire object.
@@ -1623,7 +1545,7 @@ class Bondwire(Primitive):
             Start context of the bondwire.
         """
         return Layer(
-            get_bondwire_stub().GetStartElevation(
+            self.__stub.GetStartElevation(
                 _BondwireQueryBuilder.get_elevation_message(self, start_context)
             )
         )
@@ -1638,7 +1560,7 @@ class Bondwire(Primitive):
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             Start layer of the bondwire.
         """
-        get_bondwire_stub().SetStartElevation(
+        self.__stub.SetStartElevation(
             _BondwireQueryBuilder.set_elevation_message(self, start_context, layer)
         )
 
@@ -1656,7 +1578,7 @@ class Bondwire(Primitive):
             End context of the bondwire.
         """
         return Layer(
-            get_bondwire_stub().GetEndElevation(
+            self.__stub.GetEndElevation(
                 _BondwireQueryBuilder.get_elevation_message(self, end_context)
             )
         )
@@ -1671,7 +1593,7 @@ class Bondwire(Primitive):
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             End layer of the bondwire.
         """
-        get_bondwire_stub().SetEndElevation(
+        self.__stub.SetEndElevation(
             _BondwireQueryBuilder.set_elevation_message(self, end_context, layer)
         )
 
@@ -1828,7 +1750,9 @@ class _PadstackInstanceQueryBuilder:
 class PadstackInstance(Primitive):
     """Class representing a Padstack Instance object."""
 
-    __stub = StubAccessor(StubType.padstack_instance)
+    __stub: padstack_instance_pb2_grpc.PadstackInstanceServiceStub = StubAccessor(
+        StubType.padstack_instance
+    )
     layout_obj_type = LayoutObjType.PADSTACK_INSTANCE
 
     class BackDrillType(Enum):
@@ -2247,7 +2171,7 @@ class PadstackInstance(Primitive):
         Returns
         -------
         bool
-            Boolean value of the result of the set method.
+            True if padstack instance is in pin group.
         """
         return self.__stub.IsInPinGroup(
             _PadstackInstanceQueryBuilder.is_in_pin_group_message(self, pin_group)

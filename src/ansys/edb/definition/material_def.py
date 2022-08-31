@@ -129,14 +129,11 @@ class MaterialDef(ObjBase):
             Database that will own the material definition.
         name : str
             Name of the material definition being created.
-        kwargs : dict
-            Dictionary to be converted to MaterialDefPropertiesMessage.
-            Holding
-                key : str
-                    Material property name.
-                value : Value
-                    Material property value.
-            Expected keys:
+        kwargs : dict{ str : :class:`Value <ansys.edb.utility.Value>` }
+            Dictionary to be converted to MaterialDefPropertiesMessage.\
+            Dict key is the material property name.\
+            Dict value is the material property value.\
+            Expected keys for kwargs:
              - permittivity
              - permeability
              - conductivity
@@ -253,7 +250,7 @@ class MaterialDef(ObjBase):
         """Get name of the material definition.
 
         Returns
-        ----------
+        -------
         name : str
             Name of the material definition.
         """
@@ -264,7 +261,7 @@ class MaterialDef(ObjBase):
         """Get Dielectric material model of the material definition.
 
         Returns
-        ----------
+        -------
         DielectricMaterialModel
             Dielectric material model of the material definition.
         """
@@ -292,7 +289,7 @@ class MaterialDef(ObjBase):
             Property id.
 
         Returns
-        ----------
+        -------
         tuple[int, int]
             Returns a tuple of the following format:
             (col, row)
@@ -313,7 +310,7 @@ class MaterialDef(ObjBase):
             Property id.
 
         Returns
-        ----------
+        -------
         ThermalModifier
             Thermal modifier of the material definition.
         """
@@ -350,7 +347,7 @@ class MaterialDef(ObjBase):
             Component id.
 
         Returns
-        ----------
+        -------
         ThermalModifier
             Anisotropic thermal modifier of the material definition.
         """

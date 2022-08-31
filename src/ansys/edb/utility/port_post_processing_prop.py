@@ -5,10 +5,28 @@ from ansys.edb.utility.value import Value
 
 
 class PortPostProcessingProp(ObjBase):
-    """Class representing Port Post Processing Prop."""
+    """Represents Port Post Processing Prop.
+
+    Parameters
+    ----------
+    voltage_magnitude : str, int, float, complex, Value
+        Excitation voltage magnitude.
+    voltage_phase : str, int, float, complex, Value
+        Excitation voltage phase.
+    deembed_length : str, int, float, complex, Value
+        Dembeed distance. Only applied if do_deembed is True.
+    renormalization_impedance : str, int, float, complex, Value
+        Renormalization impedance. Only applied if do_renormalize is True.
+    do_deembed : bool
+        Enable port to be deembedded.
+    do_renormalize : bool
+        Enable port impedance renormalization.
+    do_deembed_gap_l : bool
+        Enable the gap port inductance to be deembedded.
+    """
 
     def __init__(self, **kwargs):
-        """Construct a port post processing prop from message."""
+        """Construct a PortPostProcessingProp object using given values."""
         if "msg" in kwargs:
             self._msg = kwargs.get("msg")
         else:
@@ -24,44 +42,44 @@ class PortPostProcessingProp(ObjBase):
     @property
     def voltage_magnitude(self):
         """
-        Voltage magnitude.
+        Excitation voltage magnitude.
 
         Returns
         -------
-        float
+        Value
         """
         return self._voltage_magnitude if self._msg is None else Value(self._msg.voltage_magnitude)
 
     @property
     def voltage_phase(self):
         """
-        Voltage phase.
+        Excitation voltage phase.
 
         Returns
         -------
-        float
+        Value
         """
         return self._voltage_phase if self._msg is None else Value(self._msg.voltage_phase)
 
     @property
     def deembed_length(self):
         """
-        Deembed Length.
+        Deembed Length. Only applied if do_deembed is True.
 
         Returns
         -------
-        float
+        Value
         """
         return self._deembed_length if self._msg is None else Value(self._msg.deembed_length)
 
     @property
     def renormalization_impedance(self):
         """
-        Renormalization Impedance.
+        Renormalization Impedance. Only applied if do_renormalize is True.
 
         Returns
         -------
-        float
+        Value
         """
         return (
             self._renormalization_impedance
@@ -72,7 +90,7 @@ class PortPostProcessingProp(ObjBase):
     @property
     def do_deembed(self):
         """
-        Whether to deembed or not.
+        Enable port to be deembedded.
 
         Returns
         -------
@@ -83,7 +101,7 @@ class PortPostProcessingProp(ObjBase):
     @property
     def do_deembed_gap_l(self):
         """
-        Whether to deembed gap length or not.
+        Enable the gap port inductance to be deembedded.
 
         Returns
         -------
@@ -94,7 +112,7 @@ class PortPostProcessingProp(ObjBase):
     @property
     def do_renormalize(self):
         """
-        Whether to renormalize or not.
+        Enable port impedance renormalization.
 
         Returns
         -------

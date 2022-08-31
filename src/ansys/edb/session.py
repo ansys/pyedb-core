@@ -439,16 +439,6 @@ def get_via_layer_stub():
     return StubAccessor(StubType.via_layer).__get__()
 
 
-def get_material_def_stub():
-    """Get Material definition stub.
-
-    Returns
-    -------
-    MaterialDefServiceStub
-    """
-    return StubAccessor(StubType.material).__get__()
-
-
 def get_net_stub():
     """Get Net stub.
 

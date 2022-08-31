@@ -58,7 +58,7 @@ class _QueryBuilder:
             "value": messages.value_message(value),
         }
         if component is not None:
-            msg_params["component"]: messages.edb_internal_id_message(component)
+            msg_params["component"] = messages.edb_internal_id_message(component)
         elif row is not None and col is not None:
             msg_params["tensor"] = _QueryBuilder.tensor_pos_message(col, row)
         return pb.MaterialDefSetPropertyMessage(**msg_params)
@@ -70,7 +70,7 @@ class _QueryBuilder:
             "propertyId": material_property.value,
         }
         if component is not None:
-            msg_params["component"]: messages.edb_internal_id_message(component)
+            msg_params["component"] = messages.edb_internal_id_message(component)
         elif row is not None and col is not None:
             msg_params["tensor"] = _QueryBuilder.tensor_pos_message(col, row)
         return pb.MaterialDefGetPropertyMessage(**msg_params)
@@ -129,6 +129,25 @@ class MaterialDef(ObjBase):
             Database that will own the material definition.
         name : str
             Name of the material definition being created.
+        kwargs : dict
+            Dictionary to be converted to MaterialDefPropertiesMessage
+            Holding
+                key : str
+                    Material property name
+                value : Value
+                    Material property value
+            Expected keys:
+             - permittivity
+             - permeability
+             - conductivity
+             - dielectric_loss_tangent
+             - magnetic_loss_tangent
+             - thermal_conductivity
+             - mass_density
+             - specific_heat
+             - youngs_modulus
+             - poissons_ratio
+             - thermal_expansion_coefficient
 
         Returns
         -------
@@ -159,7 +178,7 @@ class MaterialDef(ObjBase):
         """Delete a material definition."""
         self.__stub.Delete(messages.edb_obj_message(self))
 
-    def set_property(self, material_property, value, component=None, col=None, row=None):
+    def set_property(self, material_property, value, component_id=None, col=None, row=None):
         """Set a property value of a material.
 
         Parameters
@@ -168,7 +187,7 @@ class MaterialDef(ObjBase):
             Property id.
         value : :class:`Value <ansys.edb.utility.Value>`
             Property value returned.
-        component : int, optional
+        component_id : int, optional
             Component id
         row : int, optional
             Tensor row.
@@ -176,17 +195,17 @@ class MaterialDef(ObjBase):
             Tensor column.
         """
         self.__stub.SetProperty(
-            _QueryBuilder.set_property(self, material_property, value, component, col, row)
+            _QueryBuilder.set_property(self, material_property, value, component_id, col, row)
         )
 
-    def get_property(self, material_property, component=None, row=None, col=None):
+    def get_property(self, material_property, component_id=None, row=None, col=None):
         """Set a property value of a material.
 
         Parameters
         ----------
         material_property : MaterialProperty
             Property id.
-        component : int, optional
+        component_id : int, optional
             Component id
         row : int, optional
             Tensor row.
@@ -200,7 +219,7 @@ class MaterialDef(ObjBase):
         """
         return Value(
             self.__stub.GetProperty(
-                _QueryBuilder.get_property(self, material_property, component, col, row)
+                _QueryBuilder.get_property(self, material_property, component_id, col, row)
             )
         )
 
@@ -238,7 +257,7 @@ class MaterialDef(ObjBase):
         name : str
             Name of the material definition
         """
-        return self.__stub.GetName(messages.edb_obj_message(self))
+        return self.__stub.GetName(messages.edb_obj_message(self)).value
 
     @property
     def dielectric_material_model(self):
@@ -274,7 +293,7 @@ class MaterialDef(ObjBase):
 
         Returns
         ----------
-        tuple[Int, Int]
+        tuple[int, int]
             Returns a tuple of the following format:
             (col, row)
             col : Number of rows of the material property.
@@ -320,14 +339,14 @@ class MaterialDef(ObjBase):
             )
         )
 
-    def get_anisotropic_thermal_modifier(self, material_property_id, component):
+    def get_anisotropic_thermal_modifier(self, material_property_id, component_id):
         """Get anisotropic thermal modifier of a material def.
 
         Parameters
         ----------
         material_property_id : MaterialProperty
             Property id.
-        component : int
+        component_id : int
             Component id
 
         Returns
@@ -338,25 +357,27 @@ class MaterialDef(ObjBase):
         return ThermalModifier(
             self.__stub.GetAnisotropicThermalModifier(
                 _QueryBuilder.material_def_get_anisotropic_thermal_modifier_message(
-                    self, material_property_id, component
+                    self, material_property_id, component_id
                 )
             )
         )
 
-    def set_anisotropic_thermal_modifier(self, material_property_id, component, thermal_modifier):
+    def set_anisotropic_thermal_modifier(
+        self, material_property_id, component_id, thermal_modifier
+    ):
         """Set anisotropic thermal modifier of a material def.
 
         Parameters
         ----------
         material_property_id : MaterialProperty
             Property id.
-        component : int
+        component_id : int
             Component id
         thermal_modifier : ThermalModifier
             Anisotropic thermal modifier to be set to the material definition
         """
         self.__stub.SetAnisotropicThermalModifier(
             _QueryBuilder.material_def_set_anisotropic_thermal_modifier_message(
-                self, material_property_id, component, thermal_modifier
+                self, material_property_id, component_id, thermal_modifier
             )
         )

@@ -106,7 +106,7 @@ class Primitive(conn_obj.ConnObj):
 
         Returns
         -------
-        PrimitiveType
+        :class:`PrimitiveType <ansys.edb.primitive.PrimitiveType>`
             Primitive type of the primitive.
         """
         return PrimitiveType(
@@ -121,12 +121,12 @@ class Primitive(conn_obj.ConnObj):
         Parameters
         ----------
         hole : Primitive
-            Void to be added to the primitive
+            Void to be added to the primitive.
         """
         return get_primitive_stub().AddVoid(_PrimitiveQueryBuilder.add_void(self, hole)).value
 
     def set_hfss_prop(self, material, solve_inside):
-        """Set HFSS material property.
+        """Set HFSS properties.
 
         Parameters
         ----------
@@ -259,7 +259,7 @@ class Primitive(conn_obj.ConnObj):
         Returns
         -------
         material : str
-            Material property name
+            Material property name.
         solve_inside : bool
             If solve inside.
         """
@@ -294,7 +294,7 @@ class Primitive(conn_obj.ConnObj):
         Returns
         -------
         bool
-            If primitive object can be zone primitive
+            If primitive can be zone primitive.
         """
         return True
 
@@ -329,7 +329,7 @@ class Rectangle(Primitive):
             Layer this rectangle will be on.
         net : str or :class:`Net <ansys.edb.net.Net>`
             Net this rectangle will have.
-        rep_type : RectangleRepresentationType
+        rep_type : :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`
             Type that defines given parameters meaning.
         param1 : :class:`Value <ansys.edb.utility.Value>`
             X value of lower left point or center point.
@@ -347,7 +347,7 @@ class Rectangle(Primitive):
         Returns
         -------
         Rectangle
-            Object that was created.
+            Rectangle that was created.
         """
         return Rectangle(
             get_rectangle_stub().Create(
@@ -372,7 +372,7 @@ class Rectangle(Primitive):
         Returns
         -------
         tuple[
-            RectangleRepresentationType,
+            :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`,
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
@@ -406,7 +406,7 @@ class Rectangle(Primitive):
 
         Parameters
         ----------
-        rep_type : RectangleRepresentationType
+        rep_type : :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`
             Type that defines given parameters meaning.
         param1 : :class:`Value <ansys.edb.utility.Value>`
             X value of lower left point or center point.
@@ -445,12 +445,12 @@ class Rectangle(Primitive):
         )
 
     def can_be_zone_primitive(self):
-        """Determine if rectangle can be a zone.
+        """Determine if a rectangle can be a zone.
 
         Returns
         -------
         bool
-            If primitive object can be zone primitive
+            If rectangle can be zone primitive.
         """
         return True
 
@@ -479,7 +479,7 @@ class Rectangle(Primitive):
 
         Parameters
         ----------
-        rep_type : Rectangle.RectangleRepresentationType
+        rep_type : :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`
             Type that defines given parameters meaning.
         x_lower_left_or_center_x : :class:`Value <ansys.edb.utility.Value>`
             X value of lower left point or center point.
@@ -545,7 +545,8 @@ class Circle(Primitive):
         ----------
         layout: :class:`Layout <ansys.edb.layout.Layout>`
             Layout this circle will be in.
-        layer: str or :class:`Layout <ansys.edb.layout.Layout>`
+        layer: str or :class:`Layer <ansys.edb.layer.Layer>`
+            Layer this circle will be on.
         net: str or :class:`Net <ansys.edb.net.Net>`
             Net this circle will have.
         center_x: :class:`Value <ansys.edb.utility.Value>`
@@ -586,7 +587,7 @@ class Circle(Primitive):
         radius: :class:`Value <ansys.edb.utility.Value>`
             Radius value of the circle.
         is_hole: bool
-            If circle object is hole.
+            If circle object is a hole.
 
         Returns
         -------
@@ -667,12 +668,12 @@ class Circle(Primitive):
         return Circle.render(*self.get_parameters(), self.is_void())
 
     def can_be_zone_primitive(self):
-        """Determine if circle can be a zone.
+        """Determine if a circle can be a zone.
 
         Returns
         -------
         bool
-            If primitive object can be zone primitive
+            If circle can be zone primitive.
         """
         return True
 
@@ -784,15 +785,15 @@ class Polygon(Primitive):
     """Class representing a polygon object."""
 
     @staticmethod
-    def create(layout, layer_name, net, polygon_data):
+    def create(layout, layer, net, polygon_data):
         """Create a polygon.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
             Layout the polygon will be in.
-        layer_name : str
-            Name of the Polygon object.
+        layer : str or :class:`Layer <ansys.edb.layer.Layer>`
+            Layer this Polygon will be in.
         net : str
             Net of the Polygon object.
         polygon_data : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
@@ -804,9 +805,7 @@ class Polygon(Primitive):
             Polygon object created.
         """
         return Polygon(
-            get_polygon_stub().Create(
-                _PolygonQueryBuilder.create(layout, layer_name, net, polygon_data)
-            )
+            get_polygon_stub().Create(_PolygonQueryBuilder.create(layout, layer, net, polygon_data))
         )
 
     def get_polygon_data(self):
@@ -839,12 +838,12 @@ class Polygon(Primitive):
 
     def can_be_zone_primitive(self):
         """
-        Determine if a primitive can be a zone.
+        Determine if a polygon can be a zone.
 
         Returns
         -------
         bool
-            If primitive object can be zone primitive
+            If polygon can be zone primitive.
         """
         return True
 
@@ -911,11 +910,11 @@ class Path(Primitive):
             Net this Path will have.
         width: :class:`Value <ansys.edb.utility.Value>`
             Path width.
-        end_cap1: path_pb2.PathEndCapStyle
+        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
             End cap style of path start end cap.
-        end_cap2: path_pb2.PathEndCapStyle
+        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
             End cap style of path end end cap.
-        corner_style: path_pb2.PathCornerStyle
+        corner_style: :class:`PathCornerStyle <ansys.edb.primitive.PathCornerStyle>`
             Corner style.
         points : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Centerline polygonData to set.
@@ -941,11 +940,11 @@ class Path(Primitive):
         ----------
         width: :class:`Value <ansys.edb.utility.Value>`
             Path width.
-        end_cap1: path_pb2.PathEndCapStyle
+        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
             End cap style of path start end cap.
-        end_cap2: path_pb2.PathEndCapStyle
+        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
             End cap style of path end end cap.
-        corner_style: path_pb2.PathCornerStyle
+        corner_style: :class:`PathCornerStyle <ansys.edb.primitive.PathCornerStyle>`
             Corner style.
         path: :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             PolygonData to set.
@@ -1003,7 +1002,10 @@ class Path(Primitive):
 
         Returns
         -------
-        tuple[path_pb2.PathEndCapStyle, path_pb2.PathEndCapStyle]
+        tuple[
+            :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`,
+            :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+        ]
             Returns a tuple of the following format:
             (end_cap1,end_cap2)
             end_cap1 : End cap style of path start end cap.
@@ -1017,9 +1019,9 @@ class Path(Primitive):
 
         Parameters
         ----------
-        end_cap1: path_pb2.PathEndCapStyle
+        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
             End cap style of path start end cap.
-        end_cap2: path_pb2.PathEndCapStyle
+        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
             End cap style of path end end cap.
 
         Returns
@@ -1186,12 +1188,12 @@ class Path(Primitive):
         )
 
     def can_be_zone_primitive(self):
-        """Check if this primitive can be a zone primitive or not.
+        """Check if a path can be a zone.
 
         Returns
         -------
         bool
-            If primitive object can be zone primitive
+            If path can be zone primitive.
         """
         return True
 
@@ -1301,14 +1303,20 @@ class Bondwire(Primitive):
     """
     Class representing a bondwire object.
 
-        Attributes:
-            :param material: str
-            :param type: BondwireType
-            :param cross_section_type: BondwireCrossSectionType
-            :param cross_section_height: :class:`Value <ansys.edb.utility.Value>`
-            :param definition_name: str
-            :param traj: tuple[Value, Value, Value, Value]
-            :param width: :class:`Value <ansys.edb.utility.Value>`
+        Properties:
+            :material: str
+            :type: :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
+            :cross_section_type: :class:`BondwireCrossSectionType\
+            <ansys.edb.primitive.Bondwire.BondwireCrossSectionType>`
+            :cross_section_height: :class:`Value <ansys.edb.utility.Value>`
+            :definition_name: str
+            :traj: tuple[\
+                :class:`Value <ansys.edb.utility.Value>`,\
+                :class:`Value <ansys.edb.utility.Value>`,\
+                :class:`Value <ansys.edb.utility.Value>`,\
+                :class:`Value <ansys.edb.utility.Value>`\
+                ]
+            :width: :class:`Value <ansys.edb.utility.Value>`
     """
 
     class BondwireType(Enum):
@@ -1363,7 +1371,7 @@ class Bondwire(Primitive):
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
             Layout this bondwire will be in.
-        bondwire_type : Bondwire.BondwireType
+        bondwire_type : :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
             Type of bondwire: kAPDBondWire or kJDECBondWire types.
         definition_name : str
             Bondwire definition name.
@@ -1452,7 +1460,7 @@ class Bondwire(Primitive):
 
         Returns
         -------
-        Bondwire.BondwireType
+        :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
             Bondwire object's bondwire type.
         """
         btype_msg = get_bondwire_stub().GetType(self.msg)
@@ -1464,7 +1472,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        bondwire_type : Bondwire.BondwireType
+        bondwire_type : :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
             BondwireType to be set to the bondwire.
         """
         get_bondwire_stub().SetType(
@@ -1477,7 +1485,7 @@ class Bondwire(Primitive):
 
         Returns
         -------
-        Bondwire.BondwireCrossSectionType
+        :class:`BondwireCrossSectionType <ansys.edb.primitive.Bondwire.BondwireCrossSectionType>`
             Bondwire object's bondwire-cross-section-type.
         """
         return Bondwire.BondwireCrossSectionType(
@@ -1490,7 +1498,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        bondwire_type : Bondwire.BondwireCrossSectionType
+        bondwire_type : :class:`BondwireCrossSectionType <ansys.edb.primitive.Bondwire.BondwireCrossSectionType>`
             Bondwire-cross-section-type to be set to the bondwire.
         """
         get_bondwire_stub().SetCrossSectionType(
@@ -1559,9 +1567,9 @@ class Bondwire(Primitive):
         -------
         tuple[
             :class:`Value <ansys.edb.utility.Value>`,
-            Value,
-            Value,
-            Value
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
         ]
             Returns a tuple of the following format:
             (x1, y1, x2, y2)
@@ -1631,7 +1639,7 @@ class Bondwire(Primitive):
         Returns
         -------
         :class:`Layer <ansys.edb.layer.Layer>`
-            Start layer of the bondwire.
+            Start context of the bondwire.
         """
         return Layer(
             get_bondwire_stub().GetStartElevation(
@@ -1664,7 +1672,7 @@ class Bondwire(Primitive):
         Returns
         -------
         :class:`Layer <ansys.edb.layer.Layer>`
-            End layer of the bondwire.
+            End context of the bondwire.
         """
         return Layer(
             get_bondwire_stub().GetEndElevation(
@@ -1680,7 +1688,7 @@ class Bondwire(Primitive):
         end_context : CellInstance
             End cell context of the bondwire.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
-            Start layer of the bondwire.
+            End layer of the bondwire.
         """
         get_bondwire_stub().SetEndElevation(
             _BondwireQueryBuilder.set_elevation_message(self, end_context, layer)
@@ -1887,7 +1895,7 @@ class PadstackInstance(Primitive):
             Bottom layer of this padstack instance.
         solder_ball_layer : :class:`Layer <ansys.edb.layer.Layer>`
             Solder ball layer of this padstack instance, or null for none.
-        layer_map : LayerMap
+        layer_map : :class:`LayerMap <ansys.edb.utility.LayerMap>`
             Layer map of this padstack instance. Null or empty means do auto-mapping.
 
         Returns
@@ -1956,8 +1964,8 @@ class PadstackInstance(Primitive):
         ]
             Returns a tuple of the following format:
             (x, y, rotation)
-            x : Coordinate in meters.
-            y : Coordinate in meters.
+            x : X coordinate.
+            y : Y coordinate.
             rotation : Rotation in radians.
         """
         params = self.__stub.GetPositionAndRotation(self.msg)
@@ -1973,9 +1981,9 @@ class PadstackInstance(Primitive):
         Parameters
         ----------
         x : :class:`Value <ansys.edb.utility.Value>`
-            x : Coordinate in meters.
+            x : X coordinate.
         y : :class:`Value <ansys.edb.utility.Value>`
-            y : Coordinate in meters.
+            y : Y coordinate.
         rotation : :class:`Value <ansys.edb.utility.Value>`
             rotation : Rotation in radians.
         """
@@ -2047,7 +2055,7 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        LayerMap
+        :class:`LayerMap <ansys.edb.utility.LayerMap>`
             Layer Map of the Padstack Instance.
         """
         return LayerMap(self.__stub.GetLayerMap(self.msg))
@@ -2058,7 +2066,7 @@ class PadstackInstance(Primitive):
 
         Parameters
         -------
-        layer_map : LayerMap
+        layer_map : :class:`LayerMap <ansys.edb.utility.LayerMap>`
             Layer Map to be set.
         """
         self.__stub.SetLayerMap(messages.pointer_property_message(self, layer_map))
@@ -2106,7 +2114,7 @@ class PadstackInstance(Primitive):
         Returns
         -------
         bool
-            If padstack instance is layout pin
+            If padstack instance is layout pin.
         """
         return self.__stub.GetIsLayoutPin(self.msg).value
 
@@ -2117,7 +2125,7 @@ class PadstackInstance(Primitive):
         Parameters
         ----------
         is_layout_pin : bool
-            Value to be set to is layout pin of padstack instance
+            Value to be set to is layout pin of padstack instance.
         """
         self.__stub.SetIsLayoutPin(
             _PadstackInstanceQueryBuilder.set_is_layout_pin_message(self, is_layout_pin)
@@ -2133,7 +2141,7 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        PadstackInstance.BackDrillType
+        :class:`BackDrillType <ansys.edb.primitive.PadstackInstance.BackDrillType>`
             Back-Drill Type of padastack instance.
         """
         return PadstackInstance.BackDrillType(
@@ -2162,7 +2170,7 @@ class PadstackInstance(Primitive):
             drill_to_layer : Layer drills to. If drill from top, drill stops at the upper elevation of the layer.
             If from bottom, drill stops at the lower elevation of the layer.
             diameter : Drilling diameter.
-            offset : True to get drill parameters from bottom.
+            offset : Layer offset (or depth if layer is empty).
         """
         params = self.__stub.GetBackDrillByLayer(
             _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
@@ -2185,7 +2193,7 @@ class PadstackInstance(Primitive):
         diameter : :class:`Value <ansys.edb.utility.Value>`
             Drilling diameter.
         offset : :class:`Value <ansys.edb.utility.Value>`
-            True to get drill parameters from bottom.
+            Layer offset (or depth if layer is empty).
         from_bottom : bool
             True to set drill type from bottom.
         """
@@ -2270,7 +2278,7 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        list[:class:`PinGroup <ansys.edb.hierarchy.PinGroup>`] pins
+        list[:class:`PinGroup <ansys.edb.hierarchy.PinGroup>`]
             Ping groups of Padstack instance object.
         """
         pins = self.__stub.GetPinGroups(self.msg).items

@@ -451,16 +451,6 @@ def get_material_def_stub():
     return StubAccessor(StubType.material).__get__()
 
 
-def get_net_stub():
-    """Get Net stub.
-
-    Returns
-    -------
-    NetServiceStub
-    """
-    return StubAccessor(StubType.net).__get__()
-
-
 def get_primitive_stub():
     """Get Primitive stub.
 

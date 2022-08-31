@@ -130,12 +130,12 @@ class MaterialDef(ObjBase):
         name : str
             Name of the material definition being created.
         kwargs : dict
-            Dictionary to be converted to MaterialDefPropertiesMessage
+            Dictionary to be converted to MaterialDefPropertiesMessage.
             Holding
                 key : str
-                    Material property name
+                    Material property name.
                 value : Value
-                    Material property value
+                    Material property value.
             Expected keys:
              - permittivity
              - permeability
@@ -188,7 +188,7 @@ class MaterialDef(ObjBase):
         value : :class:`Value <ansys.edb.utility.Value>`
             Property value returned.
         component_id : int, optional
-            Component id
+            Component id.
         row : int, optional
             Tensor row.
         col : int, optional
@@ -206,7 +206,7 @@ class MaterialDef(ObjBase):
         material_property : MaterialProperty
             Property id.
         component_id : int, optional
-            Component id
+            Component id.
         row : int, optional
             Tensor row.
         col : int, optional
@@ -215,7 +215,7 @@ class MaterialDef(ObjBase):
         Returns
         -------
         :class:`Value <ansys.edb.utility.Value>`
-            Value of the material property
+            Value of the material property.
         """
         return Value(
             self.__stub.GetProperty(
@@ -229,7 +229,7 @@ class MaterialDef(ObjBase):
         Returns
         -------
         list [MaterialProperty]
-            List with Material Properties of the material definition
+            List with Material Properties of the material definition.
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
         return [MaterialProperty(i) for i in msg.properties]
@@ -255,7 +255,7 @@ class MaterialDef(ObjBase):
         Returns
         ----------
         name : str
-            Name of the material definition
+            Name of the material definition.
         """
         return self.__stub.GetName(messages.edb_obj_message(self)).value
 
@@ -266,7 +266,7 @@ class MaterialDef(ObjBase):
         Returns
         ----------
         DielectricMaterialModel
-            Dielectric material model of the material definition
+            Dielectric material model of the material definition.
         """
         return DielectricMaterialModel(
             self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
@@ -279,7 +279,7 @@ class MaterialDef(ObjBase):
         Parameters
         ----------
         dielectric : DielectricMaterialModel
-            Dielectric material model to be set to the material definition
+            Dielectric material model to be set to the material definition.
         """
         self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
 
@@ -315,7 +315,7 @@ class MaterialDef(ObjBase):
         Returns
         ----------
         ThermalModifier
-            Thermal modifier of the material definition
+            Thermal modifier of the material definition.
         """
         return ThermalModifier(
             self.__stub.GetThermalModifier(
@@ -331,7 +331,7 @@ class MaterialDef(ObjBase):
         material_property_id : MaterialProperty
             Property id.
         thermal_modifier : ThermalModifier
-            Thermal modifier to be set to the material definition
+            Thermal modifier to be set to the material definition.
         """
         self.__stub.SetThermalModifier(
             _QueryBuilder.material_def_set_thermal_modifier_message(
@@ -347,12 +347,12 @@ class MaterialDef(ObjBase):
         material_property_id : MaterialProperty
             Property id.
         component_id : int
-            Component id
+            Component id.
 
         Returns
         ----------
         ThermalModifier
-            Anisotropic thermal modifier of the material definition
+            Anisotropic thermal modifier of the material definition.
         """
         return ThermalModifier(
             self.__stub.GetAnisotropicThermalModifier(

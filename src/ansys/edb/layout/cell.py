@@ -75,10 +75,9 @@ def parse_args(msg):
     """Extract extent options values from Hgss Extent message and add them into a dictionary."""
     res = {}
     for attribute in HFSS_EXTENT_ARGS.keys():
-        if hasattr(msg, attribute):
-            value = getattr(msg, attribute)
-            msg_type = HFSS_EXTENT_ARGS[attribute]
-            res[attribute] = _HFSS_EXTENT_MESSAGE_HELPER[msg_type]["val"](value)
+        value = getattr(msg, attribute)
+        msg_type = HFSS_EXTENT_ARGS[attribute]
+        res[attribute] = _HFSS_EXTENT_MESSAGE_HELPER[msg_type]["val"](value)
     return res
 
 

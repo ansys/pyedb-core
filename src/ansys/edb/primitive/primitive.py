@@ -110,7 +110,7 @@ class Primitive(conn_obj.ConnObj):
         :class:`PrimitiveType <ansys.edb.primitive.PrimitiveType>`
             Primitive type of the primitive.
         """
-        return PrimitiveType(
+        return Primitive.PrimitiveType(
             self.__stub.GetPrimitiveType(_PrimitiveQueryBuilder.get_primitive_type(self)).type
         )
 

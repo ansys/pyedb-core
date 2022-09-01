@@ -9,7 +9,7 @@ from ansys.edb.hierarchy import ViaGroup
 from ansys.edb.layer import LayerCollection, LayerCollectionMode, LayerType, StackupLayer, ViaLayer
 from ansys.edb.layout import Cell, CellType
 from ansys.edb.net import Net
-from ansys.edb.primitive import Path, PathCornerType, PathEndCapType, Polygon, Rectangle
+from ansys.edb.primitive import Path, Polygon, Rectangle
 from ansys.edb.session import session
 from ansys.edb.simulation_setup import (
     AdaptiveFrequencyData,
@@ -110,9 +110,9 @@ class BaseExample:
             layer_name,
             self.net(net_name),
             width,
-            PathEndCapType.FLAT,
-            PathEndCapType.FLAT,
-            PathCornerType.SHARP,
+            Path.PathEndCapType.FLAT,
+            Path.PathEndCapType.FLAT,
+            Path.PathCornerType.SHARP,
             polygon_data,
         )
 

@@ -4,19 +4,24 @@ from ansys.edb.utility.value import Value
 
 
 class Transform3D:
-    """Class representing a 3d transformation."""
+    """Represents a 3d transformation.
+
+    Parameters
+    ----------
+    anchor : list[str, int, float, complex, Value]
+        Triple of Values for x, y, z
+    rot_axis_from : list[str, int, float, complex, Value]
+        Triple of Values for x, y, z
+    rot_axis_to : list[str, int, float, complex, Value]
+        Triple of Values for x, y, z
+    rot_angle : str, int, float, complex, Value
+        Rotation angle, specified CCW in radians, from rot_axis_from towards rot_axis_to
+    offset : list[str, int, float, complex, Value]
+        Triple of Values for x, y, z
+    """
 
     def __init__(self, anchor, rot_axis_from, rot_axis_to, rot_angle, offset):
-        """Initialize a transform 3d object.
-
-        Parameters
-        ----------
-        anchor : triple of Values
-        rot_axis_from : triple of Values
-        rot_axis_to : triple of Values
-        rot_angle : Value
-        offset : triple of Values
-        """
+        """Construct a Transform3D."""
         self.anchor = [Value(val) for val in anchor]
         self.rot_axis_from = [Value(val) for val in rot_axis_from]
         self.rot_axis_to = [Value(val) for val in rot_axis_to]

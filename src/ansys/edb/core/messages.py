@@ -59,6 +59,7 @@ from ansys.api.edb.v1.layout_pb2 import (
     LayoutGetItemsMessage,
 )
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
+from ansys.api.edb.v1.net_pb2 import NetGetLayoutObjMessage
 from ansys.api.edb.v1.padstack_inst_term_pb2 import (
     PadstackInstTermCreationsMessage,
     PadstackInstTermParamsMessage,
@@ -1020,3 +1021,8 @@ def layer_ref_property_message(edb_obj, layer_ref):
 def double_property_message(edb_obj, double):
     """Convert to DoublePropertyMessage."""
     return DoublePropertyMessage(target=edb_obj.msg, value=double)
+
+
+def net_get_layout_obj_message(obj, layout_obj_type):
+    """Convert to NetGetLayoutObjMessage."""
+    return NetGetLayoutObjMessage(net=edb_obj_message(obj), obj_type=layout_obj_type.value)

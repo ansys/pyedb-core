@@ -2,28 +2,32 @@
 
 syntax = "proto3";
 
-// Package
 package ansys.api.edb.v1;
 
-// Imports
 import "edb_messages.proto";
+import "layout_obj.proto";
 
 // Net service definition
 service NetService {
   // Creates a net
-  rpc Create (NetCreationMessage) returns (EDBObjMessage) {}
+  rpc Create (StringPropertyMessage) returns (EDBObjMessage) {}
 
   // Finds a net on a layer by name
-  rpc FindByName(NetLookupMessage) returns (EDBObjMessage) {}
+  rpc FindByName (StringPropertyMessage) returns (EDBObjMessage) {}
+
+  // name accessors
+  rpc GetName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetName (StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // is_power_ground accessors
+  rpc GetIsPowerGround (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIsPowerGround (BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // layout objects getter
+  rpc GetLayoutObjects (NetGetLayoutObjMessage) returns (EDBObjCollectionMessage) {}
 }
 
-// Message for Create
-message NetCreationMessage {
-  EDBObjMessage layout = 1;
-  string name = 2;
-}
-
-message NetLookupMessage {
-	EDBObjMessage layout = 1;
-	string name = 2;
+message NetGetLayoutObjMessage {
+  EDBObjMessage net = 1;
+  LayoutObjType obj_type = 2;
 }

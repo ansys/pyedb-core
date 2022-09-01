@@ -4,19 +4,24 @@ from ansys.edb.utility.value import Value
 
 
 class Transform:
-    """Class representing a transformation."""
+    """Represents a transformation.
+
+    Parameters
+    ----------
+    scale : str, int, float, complex, Value
+        Scale parameter
+    angle : str, int, float, complex, Value
+        Rotation angle, specified CCW in radians.
+    mirror : bool
+        Mirror about Y-axis
+    offset_x : str, int, float, complex, Value
+        X offset
+    offset_y : str, int, float, complex, Value
+        Y offset
+    """
 
     def __init__(self, scale, angle, mirror, offset_x, offset_y):
-        """Initialize transform object.
-
-        Parameters
-        ----------
-        scale - scale parameter
-        angle - rotation angle, specified CCW in radians.
-        mirror - mirror about Y-axis
-        offset_x - X offset
-        offset_y - Y offset
-        """
+        """Construct a transform object."""
         self.scale = Value(scale)
         self.angle = Value(angle)
         self.mirror = mirror

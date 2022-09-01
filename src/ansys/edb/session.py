@@ -55,6 +55,7 @@ from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
 from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
+from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
 from ansys.api.edb.v1.padstack_def_pb2_grpc import PadstackDefServiceStub
 from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTerminalServiceStub
 from ansys.api.edb.v1.padstack_instance_pb2_grpc import PadstackInstanceServiceStub
@@ -332,6 +333,7 @@ class StubType(Enum):
     nport_component_model = NPortComponentModelServiceStub
     dyn_link_component_model = DynamicLinkComponentModelServiceStub
     extended_net = ExtendedNetServiceStub
+    padstack_def_data = PadstackDefDataServiceStub
 
 
 # Dictionary for storing local server error code exception messages
@@ -437,16 +439,6 @@ def get_via_layer_stub():
     ViaLayerServiceStub
     """
     return StubAccessor(StubType.via_layer).__get__()
-
-
-def get_net_stub():
-    """Get Net stub.
-
-    Returns
-    -------
-    NetServiceStub
-    """
-    return StubAccessor(StubType.net).__get__()
 
 
 def get_primitive_stub():

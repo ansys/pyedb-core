@@ -10,17 +10,68 @@ from ansys.edb.utility import conversions
 
 
 class Value:
-    """Class representing a number or an expression."""
+    r"""Represents a number or an expression.
+
+    Parameters
+    ----------
+    val : str, int, float, complex, Value
+        The value assigned to the new Value
+    _owner :    None, :class:`Database <ansys.edb.database.Database>`, :class:`Cell <ansys.edb.layout.Cell>`,
+                :class:`Layout <ansys.edb.layout.Layout>`, :class:`ComponentDef <ansys.edb.definition.ComponentDef>`
+
+    Notes
+    -----
+    Values can be either constant (e.g. 1, 2.35, 7+0.3i, 23mm) or parametric (e.g. w1 + w2)
+
+    if the Value is parametric, it needs _owner set to the object that hosts the variables used. If the owner is
+    Cell or Layout, the expression can reference both Database variables and Cell variables. A better way to create
+    parametric values is to call obj_with_variables.create_value(str) which will automatically set the _owner to
+    the correct object.
+
+    Values can be used in expressions with the following operators:
+
+    .. list-table:: Mathematical operators supported by Values
+       :widths: 25 25 25
+       :header-rows: 1
+
+       * - Operator
+         - Operation
+         - Return Value
+       * - \+
+         - addition
+         - Value
+       * - \-
+         - subtraction or negation
+         - Value
+       * - \*
+         - multiplication
+         - Value
+       * - /
+         - division
+         - Value
+       * - //
+         - floor division
+         - integer
+       * - \*\*
+         - power
+         - Value
+       * - ==
+         - equality
+         - bool
+       * - \<
+         - less than
+         - bool
+       * - >
+         - greater than
+         - bool
+
+    The Value will be evaluated to a constant (if it is parametric) before applying the operators.
+    """
 
     __stub: value_pb2_grpc.ValueServiceStub = session.StubAccessor(session.StubType.value)
 
     def __init__(self, val, _owner=None):
-        """Initialize Value object.
-
-        Parameters
-        ----------
-        val : str, int, float, complex, ValueMessage
-        """
+        """Construct a Value object."""
         self.msg = ValueMessage()
         if isinstance(val, ValueMessage):
             self.msg = val
@@ -60,6 +111,7 @@ class Value:
         Parameters
         ----------
         other : Value
+            Value that will be compared to self
 
         Returns
         -------
@@ -72,11 +124,12 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
 
         Returns
         -------
         Value
+            this is a constant Value wrapping either real or complex number
         """
         other = conversions.to_value(other)
         return self.__class__(self.value + other.value)
@@ -86,11 +139,12 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
 
         Returns
         -------
         Value
+            this is a constant Value wrapping either real or complex number
         """
         other = conversions.to_value(other)
         return self.__class__(self.value - other.value)
@@ -100,11 +154,12 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
 
         Returns
         -------
         Value
+            this is a constant Value wrapping either real or complex number
         """
         other = conversions.to_value(other)
         return self.__class__(self.value * other.value)
@@ -114,11 +169,12 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
 
         Returns
         -------
         Value
+            this is a constant Value wrapping either real or complex number
         """
         other = conversions.to_value(other)
         return self.__class__(self.value / other.value)
@@ -128,11 +184,12 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
 
         Returns
         -------
         Value
+            this is a constant Value wrapping an integer number
         """
         other = conversions.to_value(other)
         return self.__class__(self.value // other.value)
@@ -143,10 +200,12 @@ class Value:
         Parameters
         ----------
         power : int, float
+            the exponent applied to this Value.
 
         Returns
         -------
         Value
+            this is a constant Value wrapping either real or complex number
         """
         return self.__class__(self.value**power)
 
@@ -156,6 +215,7 @@ class Value:
         Returns
         -------
         Value
+            this is a constant Value wrapping either real or complex number
         """
         return self.__class__(-self.value)
 
@@ -164,7 +224,7 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
 
         Returns
         -------
@@ -177,7 +237,7 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
 
         Returns
         -------
@@ -190,7 +250,7 @@ class Value:
 
         Parameters
         ----------
-        other : ansys.edb.typing.ValueLike
+        other : str, int, float, complex, Value
         tolerance : float, optional
 
         Returns
@@ -220,7 +280,7 @@ class Value:
 
     @property
     def is_complex(self):
-        """Is Value a complex number.
+        """Is Value a complex number (has a non-zero imaginary part).
 
         Returns
         -------
@@ -230,28 +290,30 @@ class Value:
 
     @property
     def double(self):
-        """Get double from Value object.
+        """Get float from Value object.
 
         Returns
         -------
-        double
+        float
+            If number is complex, this returns real part.
         """
         evaluated = self.value
         return evaluated.real if type(evaluated) == complex else evaluated
 
     @property
     def complex(self):
-        """Get imaginary value from Value object.
+        """Get complex value from Value object.
 
         Returns
         -------
-        double
+        complex
+            If number is real, the imaginary part will be 0.
         """
         return complex(self.value)
 
     @property
     def value(self):
-        """Evaluate parametric value, if any, and return as number.
+        """Evaluate to a constant and return as a float or complex.
 
         Returns
         -------
@@ -273,7 +335,7 @@ class Value:
 
     @property
     def sqrt(self):
-        """Compute square root of this value.
+        """Compute square root of this value as a constant Value.
 
         Returns
         -------

@@ -857,12 +857,10 @@ def layer_ref_message(layer):
 
 def net_ref_message(net):
     """Convert to NetRefMessage."""
-    if net is None:
-        return None
-    elif type(net) == str:
+    if type(net) == str:
         return NetRefMessage(name=str_message(net))
     else:
-        return NetRefMessage(id=edb_obj_message(net.msg))
+        return NetRefMessage(id=edb_obj_message(net.msg if net is not None else 0))
 
 
 def adaptive_frequency_message(frequency: str, max_delta_s: float, max_passes: int):

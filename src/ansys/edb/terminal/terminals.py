@@ -799,7 +799,7 @@ class PointTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
-        net : str or Net
+        net : str or Net or None
         layer : str or Layer
         name : str
         point : PointLike
@@ -950,7 +950,7 @@ class PinGroupTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
-        net_ref : Net or str
+        net_ref : Net or str or None
         name : str
         pin_group : PinGroup
         is_ref : bool, optional
@@ -1013,7 +1013,7 @@ class EdgeTerminal(Terminal):
     type = TypeField(TerminalType.EDGE)
 
     @classmethod
-    def create(cls, layout, name, edges, net_ref, is_ref=False):
+    def create(cls, layout, name, edges, net_ref=None, is_ref=False):
         """Create an edge terminal.
 
         Parameters

@@ -289,7 +289,7 @@ class Rectangle(Primitive):
         ----------
         layout : Layout
         layer : str or Layer
-        net : str or Net
+        net : str or Net or None
         rep_type : Rectangle.RectangleRepresentationType
         param1 : float
         param2 : float
@@ -456,11 +456,11 @@ class Circle(Primitive):
 
         Parameters
         ----------
-        layout: Layout,
-        layer: str or Layer,
-        net: str or Net,
-        center_x: Value,
-        center_y: Value,
+        layout: Layout
+        layer: str or Layer
+        net: str or Net or None
+        center_x: Value
+        center_y: Value
         radius: Value
 
         Returns
@@ -674,7 +674,7 @@ class Polygon(Primitive):
         ----------
         layout : Layout
         layer_name : str
-        net : str
+        net : Net or str or None
         polygon_data : PolygonData
 
         Returns
@@ -770,7 +770,7 @@ class Path(Primitive):
         ----------
         layout : Layout
         layer : str or Layer
-        net : str or Net
+        net : str or Net or None
         width : Value
         end_cap1 : PathEndCapType
         end_cap2 : PathEndCapType
@@ -1215,7 +1215,7 @@ class Bondwire(Primitive):
         end_layer_name: str
         end_x: Value
         end_y: Value
-        net: Net, optional
+        net: Net or str, optional
 
         Returns
         -------

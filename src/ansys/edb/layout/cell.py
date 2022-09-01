@@ -72,7 +72,7 @@ def sanitize_args(args):
 
 
 def parse_args(msg):
-    """Extract extent options values from Hgss Extent message and add them into a dictionary."""
+    """Extract extent options values from Hfss Extent message and add them into a dictionary."""
     res = {}
     for attribute in HFSS_EXTENT_ARGS.keys():
         value = getattr(msg, attribute)

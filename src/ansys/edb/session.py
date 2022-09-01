@@ -541,16 +541,6 @@ def get_jedec5_bondwire_def_stub():
     return StubAccessor(StubType.jedec5_bondwire_def).__get__()
 
 
-def get_bondwire_stub():
-    """Get Bondwire stub.
-
-    Returns
-    -------
-    BondwireServiceStub
-    """
-    return StubAccessor(StubType.bondwire).__get__()
-
-
 def get_cell_instance_stub():
     """Get CellInstance stub.
 

@@ -462,7 +462,7 @@ class Rectangle(Primitive):
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Polygon data object created.
         """
-        return Rectangle.render(self, *self.get_parameters())
+        return Rectangle.render(*self.get_parameters())
 
     @staticmethod
     def render(
@@ -1300,24 +1300,7 @@ class _BondwireQueryBuilder:
 
 
 class Bondwire(Primitive):
-    """
-    Class representing a bondwire object.
-
-        Properties:
-            :material: str
-            :type: :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
-            :cross_section_type: :class:`BondwireCrossSectionType\
-            <ansys.edb.primitive.Bondwire.BondwireCrossSectionType>`
-            :cross_section_height: :class:`Value <ansys.edb.utility.Value>`
-            :definition_name: str
-            :traj: tuple[\
-                :class:`Value <ansys.edb.utility.Value>`,\
-                :class:`Value <ansys.edb.utility.Value>`,\
-                :class:`Value <ansys.edb.utility.Value>`,\
-                :class:`Value <ansys.edb.utility.Value>`\
-                ]
-            :width: :class:`Value <ansys.edb.utility.Value>`
-    """
+    """Class representing a bondwire object."""
 
     class BondwireType(Enum):
         """Enum representing possible bondwire types.
@@ -1559,8 +1542,7 @@ class Bondwire(Primitive):
             _BondwireQueryBuilder.set_definition_name_message(self, definition_name)
         )
 
-    @property
-    def traj(self):
+    def get_traj(self):
         """Get trajectory parameters of a bondwire object.
 
         Returns
@@ -1586,8 +1568,7 @@ class Bondwire(Primitive):
             Value(traj_msg.y2),
         )
 
-    @traj.setter
-    def traj(self, x1, y1, x2, y2):
+    def set_traj(self, x1, y1, x2, y2):
         """Set the parameters of the trajectory of a bondwire.
 
         Parameters
@@ -2182,7 +2163,7 @@ class PadstackInstance(Primitive):
             Value(params.offset),
         )
 
-    def set_back_drill_by_layer(self, drill_to_layer, diameter, offset, from_bottom):
+    def set_back_drill_by_layer(self, drill_to_layer, offset, diameter, from_bottom):
         """Set the back drill by layer.
 
         Parameters

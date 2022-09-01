@@ -31,33 +31,6 @@ from ansys.edb.utility import Value
 from ansys.edb.utility.layer_map import LayerMap
 
 
-class PrimitiveType(Enum):
-    """Enum representing available primitive types.
-
-    - RECTANGLE
-    - CIRCLE
-    - POLYGON
-    - PATH
-    - BONDWIRE
-    - PRIM_PLUGIN
-    - TEXT
-    - PATH_3D
-    - BOARD_BEND
-    - INVALID_TYPE
-    """
-
-    RECTANGLE = primitive_pb2.RECTANGLE
-    CIRCLE = primitive_pb2.CIRCLE
-    POLYGON = primitive_pb2.POLYGON
-    PATH = primitive_pb2.PATH
-    BONDWIRE = primitive_pb2.BONDWIRE
-    PRIM_PLUGIN = primitive_pb2.PRIM_PLUGIN
-    TEXT = primitive_pb2.TEXT
-    PATH_3D = primitive_pb2.PATH_3D
-    BOARD_BEND = primitive_pb2.BOARD_BEND
-    INVALID_TYPE = primitive_pb2.INVALID_TYPE
-
-
 class _PrimitiveQueryBuilder:
     @staticmethod
     def get_primitive_type(p):
@@ -88,16 +61,42 @@ class Primitive(conn_obj.ConnObj):
     __stub: primitive_pb2_grpc.PrimitiveServiceStub = StubAccessor(StubType.primitive)
     layout_obj_type = LayoutObjType.PRIMITIVE
 
+    class PrimitiveType(Enum):
+        """Enum representing available primitive types.
+
+        - RECTANGLE
+        - CIRCLE
+        - POLYGON
+        - PATH
+        - BONDWIRE
+        - PRIM_PLUGIN
+        - TEXT
+        - PATH_3D
+        - BOARD_BEND
+        - INVALID_TYPE
+        """
+
+        RECTANGLE = primitive_pb2.RECTANGLE
+        CIRCLE = primitive_pb2.CIRCLE
+        POLYGON = primitive_pb2.POLYGON
+        PATH = primitive_pb2.PATH
+        BONDWIRE = primitive_pb2.BONDWIRE
+        PRIM_PLUGIN = primitive_pb2.PRIM_PLUGIN
+        TEXT = primitive_pb2.TEXT
+        PATH_3D = primitive_pb2.PATH_3D
+        BOARD_BEND = primitive_pb2.BOARD_BEND
+        INVALID_TYPE = primitive_pb2.INVALID_TYPE
+
     @staticmethod
     def _create(msg):
         prim_type = Primitive(msg).primitive_type
-        if prim_type == PrimitiveType.RECTANGLE:
+        if prim_type == Primitive.PrimitiveType.RECTANGLE:
             return Rectangle(msg)
-        elif prim_type == PrimitiveType.POLYGON:
+        elif prim_type == Primitive.PrimitiveType.POLYGON:
             return Polygon(msg)
-        elif prim_type == PrimitiveType.PATH:
+        elif prim_type == Primitive.PrimitiveType.PATH:
             return Path(msg)
-        elif prim_type == PrimitiveType.BONDWIRE:
+        elif prim_type == Primitive.PrimitiveType.BONDWIRE:
             return Bondwire(msg)
         else:
             return None
@@ -241,8 +240,7 @@ class Primitive(conn_obj.ConnObj):
         """
         return self.__stub.IsParameterized(self.msg).value
 
-    @property
-    def hfss_prop(self):
+    def get_hfss_prop(self):
         """
         Get HFSS properties.
 
@@ -822,36 +820,6 @@ class Polygon(Primitive):
         return True
 
 
-class PathEndCapType(Enum):
-    """Enum representing possible end cap types.
-
-    - ROUND
-    - FLAT
-    - EXTENDED
-    - CLIPPED
-    - INVALID
-    """
-
-    ROUND = path_pb2.ROUND
-    FLAT = path_pb2.FLAT
-    EXTENDED = path_pb2.EXTENDED
-    CLIPPED = path_pb2.CLIPPED
-    INVALID = path_pb2.INVALID_END_CAP
-
-
-class PathCornerType(Enum):
-    """Enum representing possible corner types.
-
-    - ROUND
-    - SHARP
-    - MITER
-    """
-
-    ROUND = path_pb2.ROUND_CORNER
-    SHARP = path_pb2.SHARP_CORNER
-    MITER = path_pb2.MITER_CORNER
-
-
 class _PathQueryBuilder:
     @staticmethod
     def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
@@ -871,6 +839,34 @@ class Path(Primitive):
     """Class representing a path object."""
 
     __stub: path_pb2_grpc.PathServiceStub = StubAccessor(StubType.path)
+
+    class PathEndCapType(Enum):
+        """Enum representing possible end cap types.
+
+        - ROUND
+        - FLAT
+        - EXTENDED
+        - CLIPPED
+        - INVALID
+        """
+
+        ROUND = path_pb2.ROUND
+        FLAT = path_pb2.FLAT
+        EXTENDED = path_pb2.EXTENDED
+        CLIPPED = path_pb2.CLIPPED
+        INVALID = path_pb2.INVALID_END_CAP
+
+    class PathCornerType(Enum):
+        """Enum representing possible corner types.
+
+        - ROUND
+        - SHARP
+        - MITER
+        """
+
+        ROUND = path_pb2.ROUND_CORNER
+        SHARP = path_pb2.SHARP_CORNER
+        MITER = path_pb2.MITER_CORNER
 
     @classmethod
     def create(cls, layout, layer, net, width, end_cap1, end_cap2, corner_style, points):
@@ -979,7 +975,7 @@ class Path(Primitive):
             end_cap2 : End cap style of path end end cap.
         """
         end_cap_msg = self.__stub.GetEndCapStyle(self.msg)
-        return PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2)
+        return Path.PathEndCapType(end_cap_msg.end_cap1), Path.PathEndCapType(end_cap_msg.end_cap2)
 
     def set_end_cap_style(self, end_cap1, end_cap2):
         """Set path end cap styles.
@@ -1041,7 +1037,7 @@ class Path(Primitive):
         PathCornerType
             Corner style.
         """
-        return PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
+        return Path.PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
 
     @corner_style.setter
     def corner_style(self, corner_type):

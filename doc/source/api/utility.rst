@@ -9,7 +9,6 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
-   HfssExtentInfo
    PortPostProcessingProp
    Rlc
    TemperatureSettings

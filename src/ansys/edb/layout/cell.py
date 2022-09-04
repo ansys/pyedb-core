@@ -11,7 +11,7 @@ from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import layout
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.simulation_setup import SimulationSetup
-from ansys.edb.utility import HfssExtentInfo, TemperatureSettings
+from ansys.edb.utility import TemperatureSettings
 
 
 class CellType(Enum):
@@ -30,12 +30,34 @@ class DesignMode(Enum):
 
 # dict representing options of HFSS Extents available via API.
 HFSS_EXTENT_ARGS = {
-    "dielectric": messages.hfss_extent_message,
-    "airbox_horizontal": messages.hfss_extent_message,
-    "airbox_vertical": messages.hfss_extent_message,
-    "airbox_vertical_positive": messages.hfss_extent_message,
-    "airbox_vertical_negative": messages.hfss_extent_message,
-    "airbox_truncate_at_ground": messages.bool_message,
+    "dielectric": "HfssExtentMessage",
+    "airbox_horizontal": "HfssExtentMessage",
+    "airbox_vertical_positive": "HfssExtentMessage",
+    "airbox_vertical_negative": "HfssExtentMessage",
+    "airbox_truncate_at_ground": "BoolValueMessage",
+}
+
+
+def _translate_bool_value(bool_value):
+    """Convert BoolValue Message to tuple of expected values."""
+    return bool_value.value
+
+
+def _translate_hfss_extent(hfss_extent_msg):
+    """Convert HfssExtentMessage to tuple of expected values."""
+    return hfss_extent_msg.value, hfss_extent_msg.absolute
+
+
+# dictionary describing message type and functions to translate them
+_HFSS_EXTENT_MESSAGE_HELPER = {
+    "HfssExtentMessage": {
+        "msg": messages.hfss_extent_message,
+        "val": _translate_hfss_extent,
+    },
+    "BoolValueMessage": {
+        "msg": messages.bool_message,
+        "val": _translate_bool_value,
+    },
 }
 
 
@@ -44,9 +66,19 @@ HFSS_EXTENT_ARGS = {
 def sanitize_args(args):
     """Extract valid extent options and convert them into messages."""
     return {
-        k: HFSS_EXTENT_ARGS[k](args[k])
+        k: _HFSS_EXTENT_MESSAGE_HELPER[HFSS_EXTENT_ARGS[k]]["msg"](args[k])
         for k in filter(lambda k: k in args, HFSS_EXTENT_ARGS.keys())
     }
+
+
+def parse_args(msg):
+    """Extract extent options values from Hfss Extent message and add them into a dictionary."""
+    res = {}
+    for attribute in HFSS_EXTENT_ARGS.keys():
+        value = getattr(msg, attribute)
+        msg_type = HFSS_EXTENT_ARGS[attribute]
+        res[attribute] = _HFSS_EXTENT_MESSAGE_HELPER[msg_type]["val"](value)
+    return res
 
 
 class _QueryBuilder:
@@ -272,9 +304,10 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Returns
         -------
-        HfssExtentInfo
+        dict
         """
-        return HfssExtentInfo(self.__stub.GetHfssExtentInfo(self.msg))
+        msg = self.__stub.GetHfssExtentInfo(self.msg)
+        return parse_args(msg)
 
     def set_hfss_extent_info(self, **extents):
         """Set HFSS Extents of this cell.

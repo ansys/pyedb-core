@@ -61,12 +61,12 @@ message HfssExtentInfoMessage {
   EDBObjMessage base_polygon = 4;
   HfssExtentsType dielectric_extent_type = 5;
   EDBObjMessage dielectric_base_polygon = 6;
-  HfssExtentMessage extent_size = 7;
+  HfssExtentMessage dielectric = 7;
   bool honor_user_dielectric = 8;
-  bool truncate_airbox_at_ground = 9;
-  HfssExtentMessage airbox_horizontal_extent = 10;
-  HfssExtentMessage airbox_vertical_positive_extent = 11;
-  HfssExtentMessage airbox_vertical_negative_extent = 12;
+  bool airbox_truncate_at_ground = 9;
+  HfssExtentMessage airbox_horizontal = 10;
+  HfssExtentMessage airbox_vertical_positive = 11;
+  HfssExtentMessage airbox_vertical_negative = 12;
   bool sync_airbox_vertical_extent = 13;
   bool is_pml_visible = 14;
   ValueMessage operating_frequency = 15;
@@ -167,4 +167,3 @@ message EDBObjPairMessage {
   EDBObjMessage edb_obj_0 = 1;
   EDBObjMessage edb_obj_1 = 2;
 }
-

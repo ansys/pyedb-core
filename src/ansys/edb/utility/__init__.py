@@ -1,6 +1,5 @@
 """This package contains utility classes and functions available to users."""
 
-from ansys.edb.utility.hfss_extent_info import HfssExtentInfo
 from ansys.edb.utility.port_post_processing_prop import PortPostProcessingProp
 from ansys.edb.utility.rlc import Rlc
 from ansys.edb.utility.temperature_settings import TemperatureSettings

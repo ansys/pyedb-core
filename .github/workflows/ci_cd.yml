@@ -113,6 +113,7 @@ jobs:
       - name: Build API
         run: |
           cd protos
+          python setup.py develop
           python setup.py bdist_wheel
           cp -a dist/. ../dist/
       - name: Build Core

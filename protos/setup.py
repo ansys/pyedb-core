@@ -7,7 +7,7 @@ import re
 from setuptools import setup
 from setuptools.command.develop import develop
 
-install_requires = ["grpcio>=1.46.0", "grpcio-tools>=1.46.0", "protobuf>=3.20,<4"]
+install_requires = ["grpcio==1.39.0", "grpcio-tools==1.39.0", "protobuf>=3.20,<4"]
 
 # Get the long description from the README file
 HERE = os.path.abspath(os.path.dirname(__file__))

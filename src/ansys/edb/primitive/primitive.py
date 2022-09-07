@@ -1365,7 +1365,7 @@ class Bondwire(Primitive):
         material : str
             Bondwire material name.
         start_context : CellInstance
-            Start context: Null means top level.
+            Start context: None means top level.
         start_layer_name : str
             Name of start layer.
         start_x : :class:`Value <ansys.edb.utility.Value>`
@@ -1373,7 +1373,7 @@ class Bondwire(Primitive):
         start_y : :class:`Value <ansys.edb.utility.Value>`
             Y value of start point.
         end_context : CellInstance
-            End context: Null means top level.
+            End context: None means top level.
         end_layer_name : str
             Name of end layer.
         end_x : :class:`Value <ansys.edb.utility.Value>`
@@ -1634,7 +1634,7 @@ class Bondwire(Primitive):
         Parameters
         ----------
         start_context : CellInstance
-            Start cell context of the bondwire.
+            Start cell context of the bondwire. None means top level.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             Start layer of the bondwire.
         """
@@ -1667,7 +1667,7 @@ class Bondwire(Primitive):
         Parameters
         ----------
         end_context : CellInstance
-            End cell context of the bondwire.
+            End cell context of the bondwire. None means top level.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             End layer of the bondwire.
         """
@@ -1875,9 +1875,9 @@ class PadstackInstance(Primitive):
         bottom_layer : :class:`Layer <ansys.edb.layer.Layer>`
             Bottom layer of this padstack instance.
         solder_ball_layer : :class:`Layer <ansys.edb.layer.Layer>`
-            Solder ball layer of this padstack instance, or null for none.
+            Solder ball layer of this padstack instance, or None for none.
         layer_map : :class:`LayerMap <ansys.edb.utility.LayerMap>`
-            Layer map of this padstack instance. Null or empty means do auto-mapping.
+            Layer map of this padstack instance. None or empty means do auto-mapping.
 
         Returns
         -------

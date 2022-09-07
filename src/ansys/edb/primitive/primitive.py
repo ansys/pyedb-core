@@ -2147,11 +2147,11 @@ class PadstackInstance(Primitive):
             :class:`Value <ansys.edb.utility.Value>`
         ]
             Returns a tuple of the following format:
-            (drill_to_layer, diameter, offset)
+            (drill_to_layer, offset, diameter)
             drill_to_layer : Layer drills to. If drill from top, drill stops at the upper elevation of the layer.
             If from bottom, drill stops at the lower elevation of the layer.
-            diameter : Drilling diameter.
             offset : Layer offset (or depth if layer is empty).
+            diameter : Drilling diameter.
         """
         params = self.__stub.GetBackDrillByLayer(
             _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
@@ -2159,8 +2159,8 @@ class PadstackInstance(Primitive):
 
         return (
             Layer(params.drill_to_layer),
-            Value(params.diameter),
             Value(params.offset),
+            Value(params.diameter),
         )
 
     def set_back_drill_by_layer(self, drill_to_layer, offset, diameter, from_bottom):
@@ -2171,10 +2171,10 @@ class PadstackInstance(Primitive):
         drill_to_layer : :class:`Layer <ansys.edb.layer.Layer>`
             Layer drills to. If drill from top, drill stops at the upper elevation of the layer.
             If from bottom, drill stops at the lower elevation of the layer.
-        diameter : :class:`Value <ansys.edb.utility.Value>`
-            Drilling diameter.
         offset : :class:`Value <ansys.edb.utility.Value>`
             Layer offset (or depth if layer is empty).
+        diameter : :class:`Value <ansys.edb.utility.Value>`
+            Drilling diameter.
         from_bottom : bool
             True to set drill type from bottom.
         """

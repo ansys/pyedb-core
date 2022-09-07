@@ -21,3 +21,8 @@ Classes
    Polygon
    Rectangle
    Text
+
+.. autoclass:: ansys.edb.primitive.Bondwire.BondwireCrossSectionType
+.. autoclass:: ansys.edb.primitive.Bondwire.BondwireType
+.. autoclass:: ansys.edb.primitive.PadstackInstance.BackDrillType
+.. autoclass:: ansys.edb.primitive.Rectangle.RectangleRepresentationType

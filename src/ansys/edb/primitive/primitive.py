@@ -1195,7 +1195,7 @@ class Bondwire(Primitive):
         end_layer_name,
         end_x,
         end_y,
-        net=None,
+        net,
     ):
         """Create a bondwire object.
 
@@ -1215,7 +1215,7 @@ class Bondwire(Primitive):
         end_layer_name: str
         end_x: Value
         end_y: Value
-        net: Net or str, optional
+        net: Net or str or None
 
         Returns
         -------

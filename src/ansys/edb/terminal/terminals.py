@@ -646,7 +646,7 @@ class TerminalInstance(conn_obj.ConnObj):
     layout_obj_type = LayoutObjType.TERMINAL_INSTANCE
 
     @classmethod
-    def create(cls, layout, cell_instance, name, net_ref=None):
+    def create(cls, layout, cell_instance, name, net_ref):
         """Create a terminal instance object.
 
         Parameters
@@ -654,7 +654,7 @@ class TerminalInstance(conn_obj.ConnObj):
         layout : Layout
         cell_instance : CellInstance
         name : str
-        net_ref : Net or str, optional
+        net_ref : Net or str or None
 
         Returns
         -------
@@ -704,7 +704,7 @@ class TerminalInstanceTerminal(Terminal):
     type = TypeField(TerminalType.TERM_INST)
 
     @classmethod
-    def create(cls, layout, term_instance, name, net_ref=None, is_ref=False):
+    def create(cls, layout, term_instance, name, net_ref, is_ref=False):
         """Create a terminal instance terminal.
 
         Parameters
@@ -712,7 +712,7 @@ class TerminalInstanceTerminal(Terminal):
         layout : Layout
         term_instance : TerminalInstance
         name
-        net_ref : Net or str, optional
+        net_ref : Net or str or None
         is_ref : bool, optional
 
         Returns
@@ -866,7 +866,7 @@ class PadstackInstanceTerminal(Terminal):
     type = TypeField(TerminalType.PADSTACK_INST)
 
     @classmethod
-    def create(cls, layout, name, padstack_instance, layer, net=None, is_ref=False):
+    def create(cls, layout, name, padstack_instance, layer, net, is_ref=False):
         """Create a padstack instance terminal.
 
         Parameters
@@ -875,7 +875,7 @@ class PadstackInstanceTerminal(Terminal):
         name : str
         padstack_instance : PadstackInstance
         layer : Layer or str
-        net : Net or str, optional
+        net : Net or str or None
         is_ref : bool, optional
 
         Returns
@@ -944,7 +944,7 @@ class PinGroupTerminal(Terminal):
     type = TypeField(TerminalType.PIN_GROUP)
 
     @classmethod
-    def create(cls, layout, name, pin_group, net_ref=None, is_ref=False):
+    def create(cls, layout, name, pin_group, net_ref, is_ref=False):
         """Create a pin group terminal.
 
         Parameters
@@ -1013,7 +1013,7 @@ class EdgeTerminal(Terminal):
     type = TypeField(TerminalType.EDGE)
 
     @classmethod
-    def create(cls, layout, name, edges, net_ref=None, is_ref=False):
+    def create(cls, layout, name, edges, net_ref, is_ref=False):
         """Create an edge terminal.
 
         Parameters
@@ -1021,7 +1021,7 @@ class EdgeTerminal(Terminal):
         layout : Layout
         name : str
         edges : list of Edge
-        net_ref : Net or str, optional
+        net_ref : Net or str or None
         is_ref : bool, optional
 
         Returns

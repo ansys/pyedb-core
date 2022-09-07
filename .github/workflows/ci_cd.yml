@@ -110,15 +110,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip flit
           python -m pip install -r requirements/requirements_build.txt
+      - name: Build Core
+        run: |
+          flit build
       - name: Build API
         run: |
           cd protos
           python setup.py develop
           python setup.py bdist_wheel
           cp -a dist/. ../dist/
-      - name: Build Core
-        run: |
-          flit build
       - name: Validate libraries
         run: |
           python -m twine check dist/*

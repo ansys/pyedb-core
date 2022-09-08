@@ -427,6 +427,48 @@ class PadstackDefData(ObjBase):
             Value(params.rotation),
         )
 
+    def get_hole_parameters(self):
+        """
+        Get hole parameter in its original value in database.
+
+        Returns
+        -------
+        tuple[
+            :class:`PolygonData <ansys.edb.geometry.PolygonData>`,
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
+        ]
+            Returns a tuple of the following format:
+            (fp, offset_x, offset_y, rotation)
+            fp : Polygon geometry.
+            offset_x : X offset.
+            offset_y : Y offset.
+            rotation : Rotation.
+        """
+        return self.get_pad_parameters(None, PadstackDefData.PadType.HOLE)
+
+    def set_hole_parameters(self, type_geom, sizes, offset_x, offset_y, rotation):
+        """
+        Set hole parameters.
+
+        Parameters
+        ----------
+        type_geom : PadstackDefData.PadGeometryType
+            Pad geometry type.
+        sizes : List[:class:`Value <ansys.edb.utility.Value>`]
+            Pad parameters.
+        offset_x : :class:`Value <ansys.edb.utility.Value>`
+            X offset.
+        offset_y : :class:`Value <ansys.edb.utility.Value>`
+            Y offset.
+        rotation : :class:`Value <ansys.edb.utility.Value>`
+            Rotation.
+        """
+        return self.set_pad_parameters(
+            -1, PadstackDefData.PadType.HOLE, type_geom, sizes, offset_x, offset_y, rotation
+        )
+
     def set_polygonal_pad_parameters(self, layer, pad_type, fp, offset_x, offset_y, rotation):
         """
         Set polygonal pad parameters by layer id and pad type in its original value in database.

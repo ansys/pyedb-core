@@ -3,12 +3,12 @@
 import ansys.api.edb.v1.layout_pb2 as layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
-from ansys.edb.core import ObjBase, messages, variable_server
+from ansys.edb.core import ObjBase, messages, utils, variable_server
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.geometry import PolygonData
 from ansys.edb.hierarchy import CellInstance, Group, PinGroup
 from ansys.edb.layer import LayerCollection
-from ansys.edb.layout import layout
+import ansys.edb.layout as layout
 from ansys.edb.layout_instance import LayoutInstance
 from ansys.edb.net import DifferentialPair, ExtendedNet, Net, NetClass
 from ansys.edb.primitive import BoardBendDef, PadstackInstance, Primitive
@@ -69,6 +69,13 @@ class Layout(ObjBase, variable_server.VariableServer):
             )
         )
 
+    def _get_items(self, obj_type, lyt_obj_type_enum):
+        """Get list of layout objects."""
+        return utils.map_list(
+            self.__stub.GetItems(messages.layout_get_items_message(self, lyt_obj_type_enum)).items,
+            obj_type,
+        )
+
     @property
     def primitives(self):
         """
@@ -78,12 +85,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[Primitive]
         """
-        return [
-            Primitive(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.PRIMITIVE)
-            )
-        ]
+        return self._get_items(Primitive, LayoutObjType.PRIMITIVE)
 
     @property
     def padstack_instances(self):
@@ -93,12 +95,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[PadstackInstance]
         """
-        return [
-            PadstackInstance(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.PADSTACK_INSTANCE)
-            )
-        ]
+        return self._get_items(PadstackInstance, LayoutObjType.PADSTACK_INSTANCE)
 
     @property
     def terminals(self):
@@ -108,12 +105,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[Terminal]
         """
-        return [
-            Terminal(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.TERMINAL)
-            )
-        ]
+        return self._get_items(Terminal, LayoutObjType.TERMINAL)
 
     @property
     def cell_instances(self):
@@ -123,12 +115,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[CellInstance]
         """
-        return [
-            CellInstance(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.CELL_INSTANCE)
-            )
-        ]
+        return self._get_items(CellInstance, LayoutObjType.CELL_INSTANCE)
 
     @property
     def nets(self):
@@ -138,12 +125,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[Net]
         """
-        return [
-            Net(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.NET)
-            )
-        ]
+        return self._get_items(Net, LayoutObjType.NET)
 
     @property
     def groups(self):
@@ -153,12 +135,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[Net]
         """
-        return [
-            Group(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.GROUP)
-            )
-        ]
+        return self._get_items(Group, LayoutObjType.GROUP)
 
     @property
     def net_classes(self):
@@ -168,12 +145,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[NetClass]
         """
-        return [
-            NetClass(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.NET_CLASS)
-            )
-        ]
+        return self._get_items(NetClass, LayoutObjType.NET_CLASS)
 
     @property
     def differential_pairs(self):
@@ -183,12 +155,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[DifferentialPair]
         """
-        return [
-            DifferentialPair(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.DIFFERENTIAL_PAIR)
-            )
-        ]
+        return self._get_items(DifferentialPair, LayoutObjType.DIFFERENTIAL_PAIR)
 
     @property
     def pin_groups(self):
@@ -198,12 +165,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[PinGroup]
         """
-        return [
-            PinGroup(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.PIN_GROUP)
-            )
-        ]
+        return self._get_items(PinGroup, LayoutObjType.PIN_GROUP)
 
     @property
     def voltage_regulators(self):
@@ -213,12 +175,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[VoltageRegulator]
         """
-        return [
-            layout.VoltageRegulator(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.VOLTAGE_REGULATOR)
-            )
-        ]
+        return self._get_items(layout.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
 
     @property
     def extended_nets(self):
@@ -228,12 +185,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[ExtendedNet]
         """
-        return [
-            ExtendedNet(msg)
-            for msg in self.__stub.GetItems(
-                messages.layout_get_items_message(self, LayoutObjType.EXTENDED_NET)
-            )
-        ]
+        return self._get_items(ExtendedNet, LayoutObjType.EXTENDED_NET)
 
     def expanded_extent(
         self, nets, extent, expansion_factor, expansion_unitless, use_round_corner, num_increments

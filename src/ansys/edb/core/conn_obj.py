@@ -155,7 +155,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        net: ansys.edb.net.Net or str
+        net: ansys.edb.net.Net or str or None
             A Net object(or Net name) to associate this connectable with.
         """
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))

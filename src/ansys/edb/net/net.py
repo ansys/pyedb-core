@@ -13,6 +13,7 @@ class Net(layout_obj.LayoutObj):
     """Class representing net."""
 
     layout_obj_type = LayoutObjType.NET_CLASS
+    no_net_name = "<NO-NET>"
     __stub: NetServiceStub = StubAccessor(StubType.net)
 
     def _layout_objs(self, obj_type):

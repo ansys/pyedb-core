@@ -327,7 +327,7 @@ class Rectangle(Primitive):
             Layout this rectangle will be in.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             Layer this rectangle will be on.
-        net : str or :class:`Net <ansys.edb.net.Net>`
+        net : str or :class:`Net <ansys.edb.net.Net>` or None
             Net this rectangle will have.
         rep_type : :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`
             Type that defines given parameters meaning.
@@ -547,7 +547,7 @@ class Circle(Primitive):
             Layout this circle will be in.
         layer: str or :class:`Layer <ansys.edb.layer.Layer>`
             Layer this circle will be on.
-        net: str or :class:`Net <ansys.edb.net.Net>`
+        net: str or :class:`Net <ansys.edb.net.Net>` or None
             Net this circle will have.
         center_x: :class:`Value <ansys.edb.utility.Value>`
             X value of center point.
@@ -794,7 +794,7 @@ class Polygon(Primitive):
             Layout the polygon will be in.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             Layer this Polygon will be in.
-        net : str
+        net : str or :class:`Net <ansys.edb.net.Net>` or None
             Net of the Polygon object.
         polygon_data : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             The outer contour of the Polygon.
@@ -906,7 +906,7 @@ class Path(Primitive):
             Layout this Path will be in.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             Layer this Path will be on.
-        net : str or :class:`Net <ansys.edb.net.Net>`
+        net : str or :class:`Net <ansys.edb.net.Net>` or None
             Net this Path will have.
         width: :class:`Value <ansys.edb.utility.Value>`
             Path width.
@@ -1346,7 +1346,7 @@ class Bondwire(Primitive):
         end_layer_name,
         end_x,
         end_y,
-        net=None,
+        net,
     ):
         """Create a bondwire object.
 
@@ -1380,7 +1380,7 @@ class Bondwire(Primitive):
             X value of end point.
         end_y : :class:`Value <ansys.edb.utility.Value>`
             Y value of end point.
-        net : Net, optional
+        net : str or :class:`Net <ansys.edb.net.Net>` or None
             Net of the Bondwire.
 
         Returns

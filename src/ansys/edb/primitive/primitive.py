@@ -880,9 +880,7 @@ class PathCornerType(Enum):
 
 class _PathQueryBuilder:
     @staticmethod
-    def create(layout, layer, 
-    
-    , width, end_cap1, end_cap2, corner, points):
+    def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
         return path_pb2.PathCreationMessage(
             layout=layout.msg,
             layer=messages.layer_ref_message(layer),

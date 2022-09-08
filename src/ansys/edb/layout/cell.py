@@ -315,6 +315,21 @@ class Cell(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         extents : dict
+        Possible keys:Values
+        "dielectric": (float, bool)
+            Dielectric extent size. First parameter is the value and second parameter
+            indicates if the value is a multiple.
+        "airbox_horizontal": (float, bool)
+            Airbox horizontal extent size. First parameter is the value and second parameter \
+            indicates if the value is a multiple.
+        "airbox_vertical_positive": (float, bool)
+            Airbox positive vertical extent size. First parameter is the value and second parameter \
+            indicates if the value is a multiple.
+        "airbox_vertical_negative": (float, bool)
+            Airbox negative vertical extent size. First parameter is the value and second parameter indicates \
+            if the value is a multiple.
+        "airbox_truncate_at_ground": bool
+            Whether airbox will be truncated at the ground layers.
         """
         self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, **extents))
 

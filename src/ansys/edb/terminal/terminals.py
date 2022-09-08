@@ -1013,7 +1013,7 @@ class EdgeTerminal(Terminal):
     type = TypeField(TerminalType.EDGE)
 
     @classmethod
-    def create(cls, layout, name, edges, net_ref, is_ref=False):
+    def create(cls, layout, name, edges, net_ref=None, is_ref=False):
         """Create an edge terminal.
 
         Parameters

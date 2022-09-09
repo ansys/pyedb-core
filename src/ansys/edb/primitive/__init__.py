@@ -6,11 +6,8 @@ from ansys.edb.primitive.primitive import (
     Circle,
     PadstackInstance,
     Path,
-    PathCornerType,
-    PathEndCapType,
     Polygon,
     Primitive,
-    PrimitiveType,
     Rectangle,
     Text,
 )

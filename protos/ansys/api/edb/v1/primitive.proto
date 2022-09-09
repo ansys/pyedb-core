@@ -29,23 +29,23 @@ service PrimitiveService {
   rpc GetPrimitiveType (EDBObjMessage) returns (PrimitiveTypeMessage) {}
 
   // Adds a void
-  rpc AddVoid (PrimitiveVoidCreationMessage) returns (google.protobuf.BoolValue) {}
+  rpc AddVoid (PrimitiveVoidCreationMessage) returns (google.protobuf.Empty) {}
 
   // Sets HFSS Properties
-  rpc SetHfssProp (PrimitiveHfssPropMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetHfssProp (PrimitiveHfssPropMessage) returns (google.protobuf.Empty) {}
 
   // Get Layer
   rpc GetLayer (EDBObjMessage) returns (EDBObjMessage) {}
-  
+
   // Set Layer
-  rpc SetLayer (SetLayerMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetLayer (SetLayerMessage) returns (google.protobuf.Empty) {}
 
   // Get IsNegative
   rpc GetIsNegative (EDBObjMessage) returns (google.protobuf.BoolValue) {}
-  
+
   // Set IsNegative
-  rpc SetIsNegative (SetIsNegativeMessage) returns (google.protobuf.BoolValue) {}
-  
+  rpc SetIsNegative (SetIsNegativeMessage) returns (google.protobuf.Empty) {}
+
   // Get isVoid
   rpc IsVoid (EDBObjMessage) returns (google.protobuf.BoolValue) {}
 
@@ -65,7 +65,7 @@ service PrimitiveService {
   rpc GetHfssProp (EDBObjMessage) returns (GetPrimitiveHfssPropMessage) {}
   
   // Remove HFSS Properties
-  rpc RemoveHfssProp (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc RemoveHfssProp (EDBObjMessage) returns (google.protobuf.Empty) {}
   
   // Get Is Zone Primitive
   rpc IsZonePrimitive (EDBObjMessage) returns (google.protobuf.BoolValue) {}

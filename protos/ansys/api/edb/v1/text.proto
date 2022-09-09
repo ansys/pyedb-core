@@ -16,7 +16,7 @@ service TextService {
   rpc GetTextData (EDBObjMessage) returns (TextDataMessage) {}
   
   // Set text values
-  rpc SetTextData (SetTextDataMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetTextData (SetTextDataMessage) returns (google.protobuf.Empty) {}
 }
 
 // Message for Create

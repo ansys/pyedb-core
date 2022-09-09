@@ -441,46 +441,6 @@ def get_via_layer_stub():
     return StubAccessor(StubType.via_layer).__get__()
 
 
-def get_primitive_stub():
-    """Get Primitive stub.
-
-    Returns
-    -------
-    PrimitiveServiceStub
-    """
-    return StubAccessor(StubType.primitive).__get__()
-
-
-def get_polygon_stub():
-    """Get Polygon stub.
-
-    Returns
-    -------
-    PolygonServiceStub
-    """
-    return StubAccessor(StubType.polygon).__get__()
-
-
-def get_path_stub():
-    """Get Path stub.
-
-    Returns
-    -------
-    PathServiceStub
-    """
-    return StubAccessor(StubType.path).__get__()
-
-
-def get_rectangle_stub():
-    """Get Rectangle stub.
-
-    Returns
-    -------
-    RectangleServiceStub
-    """
-    return StubAccessor(StubType.rectangle).__get__()
-
-
 def get_adaptive_settings_stub():
     """Get Adaptive settings stub.
 
@@ -531,26 +491,6 @@ def get_via_group_stub():
     return StubAccessor(StubType.via_group).__get__()
 
 
-def get_circle_stub():
-    """Get Circle stub.
-
-    Returns
-    -------
-    CircleServiceStub
-    """
-    return StubAccessor(StubType.circle).__get__()
-
-
-def get_text_stub():
-    """Get Text stub.
-
-    Returns
-    -------
-    TextServiceStub
-    """
-    return StubAccessor(StubType.text).__get__()
-
-
 def get_bondwire_def_stub():
     """Get Bondwire Def stub.
 
@@ -599,16 +539,6 @@ def get_jedec5_bondwire_def_stub():
     Jedec5BondwireDefServiceStub
     """
     return StubAccessor(StubType.jedec5_bondwire_def).__get__()
-
-
-def get_bondwire_stub():
-    """Get Bondwire stub.
-
-    Returns
-    -------
-    BondwireServiceStub
-    """
-    return StubAccessor(StubType.bondwire).__get__()
 
 
 def get_cell_instance_stub():

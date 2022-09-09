@@ -331,7 +331,7 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        layer : Union[str, int]
+        layer : Union[str, int, None]
         pad_type : PadstackDefData.PadType
 
         Returns
@@ -370,7 +370,7 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        layer : Union[str, int] or None
+        layer : Union[str, int, None]
             Layer name.
         pad_type : PadstackDefData.PadType
             Pad type.
@@ -397,7 +397,7 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        layer : Union[str, int] or None
+        layer : Union[str, int]
         pad_type : PadstackDefData.PadType
 
         Returns

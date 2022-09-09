@@ -882,9 +882,9 @@ class Path(Primitive):
             Net this Path will have.
         width: :class:`Value <ansys.edb.utility.Value>`
             Path width.
-        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
             End cap style of path start end cap.
-        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
             End cap style of path end end cap.
         corner_style: :class:`PathCornerStyle <ansys.edb.primitive.PathCornerStyle>`
             Corner style.
@@ -912,9 +912,9 @@ class Path(Primitive):
         ----------
         width: :class:`Value <ansys.edb.utility.Value>`
             Path width.
-        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
             End cap style of path start end cap.
-        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
             End cap style of path end end cap.
         corner_style: :class:`PathCornerStyle <ansys.edb.primitive.PathCornerStyle>`
             Corner style.
@@ -966,8 +966,8 @@ class Path(Primitive):
         Returns
         -------
         tuple[
-            :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`,
-            :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+            :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`,
+            :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
         ]
             Returns a tuple of the following format:
             (end_cap1,end_cap2)
@@ -982,9 +982,9 @@ class Path(Primitive):
 
         Parameters
         ----------
-        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+        end_cap1: :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
             End cap style of path start end cap.
-        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.PathEndCapStyle>`
+        end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
             End cap style of path end end cap.
         """
         self.__stub.SetEndCapStyle(

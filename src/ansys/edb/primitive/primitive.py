@@ -916,7 +916,7 @@ class Path(Primitive):
             End cap style of path start end cap.
         end_cap2: :class:`PathEndCapStyle <ansys.edb.primitive.Path.PathEndCapStyle>`
             End cap style of path end end cap.
-        corner_style: :class:`PathCornerStyle <ansys.edb.primitive.Path.PathCornerStyle>`
+        corner_style: :class:`PathCornerStyle <ansys.edb.primitive.Path.PathCornerType>`
             Corner style.
         path: :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             PolygonData to set.

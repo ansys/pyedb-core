@@ -1034,7 +1034,7 @@ class Path(Primitive):
 
         Returns
         -------
-        PathCornerType
+        :class:`PathCornerType <ansys.edb.utility.Path.PathCornerType>`
             Corner style.
         """
         return Path.PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
@@ -1045,7 +1045,7 @@ class Path(Primitive):
 
         Parameters
         ----------
-        corner_type: PathCornerType
+        corner_type: :class:`PathCornerType <ansys.edb.utility.Path.PathCornerType>`
             Corner style.
         """
         self.__stub.SetCornerStyle(

@@ -581,7 +581,16 @@ class Terminal(conn_obj.ConnObj):
         -------
         PortPostProcessingProp
         """
-        return PortPostProcessingProp(msg=self._params.port_post_processing_prop)
+        msg = self._params.port_post_processing_prop
+        return PortPostProcessingProp(
+            voltage_magnitude=msg.voltage_magnitude,
+            voltage_phase=msg.voltage_phase,
+            deembed_length=msg.deembed_length,
+            renormalization_impedance=msg.renormalization_impedance,
+            do_deembed=msg.do_deembed,
+            do_deembed_gap_l=msg.do_deembed_gap_length,
+            do_renormalize=msg.do_renormalize,
+        )
 
     @port_post_processing_prop.setter
     def port_post_processing_prop(self, value):

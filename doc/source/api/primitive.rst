@@ -14,10 +14,7 @@ Classes
    Circle
    PadstackInstance
    Path
-   PathCornerType
-   PathEndCapType
    Primitive
-   PrimitiveType
    Polygon
    Rectangle
    Text

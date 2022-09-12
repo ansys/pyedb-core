@@ -19,6 +19,10 @@ from ansys.api.edb.v1.component_group_pb2 import (
     ComponentGroupCreateMessage,
     SetComponentGroupTypeMessage,
 )
+from ansys.api.edb.v1.differential_pair_pb2 import (
+    DifferentialPairCreationMessage,
+    DifferentialPairNetRefsMessage,
+)
 from ansys.api.edb.v1.edb_messages_pb2 import (
     BoolPropertyMessage,
     ComponentTypeMessage,
@@ -1024,3 +1028,20 @@ def double_property_message(edb_obj, double):
 def net_get_layout_obj_message(obj, layout_obj_type):
     """Convert to NetGetLayoutObjMessage."""
     return NetGetLayoutObjMessage(net=edb_obj_message(obj), obj_type=layout_obj_type.value)
+
+
+def differential_pair_creation_message(layout, name, pos_net, neg_net):
+    """Convert to DifferentialPairCreationMessage."""
+    return DifferentialPairCreationMessage(
+        layout=edb_obj_message(layout),
+        name=name,
+        pos_net=net_ref_message(pos_net),
+        neg_net=net_ref_message(neg_net),
+    )
+
+
+def differential_pair_net_refs_message(dp, pos_net, neg_net):
+    """Convert to DifferentialPairNetRefsMessage."""
+    return DifferentialPairNetRefsMessage(
+        dp=edb_obj_message(dp), pos_net=net_ref_message(pos_net), neg_net=net_ref_message(neg_net)
+    )

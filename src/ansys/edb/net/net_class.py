@@ -62,6 +62,18 @@ class NetClass(layout_obj.LayoutObj):
         """
         return self.__stub.GetName(self.msg).value
 
+    @name.setter
+    def name(self, newname):
+        """
+        Set name of net class.
+
+        Parameters
+        ----------
+        newname : str
+
+        """
+        self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
+
     @property
     def description(self):
         """
@@ -73,18 +85,6 @@ class NetClass(layout_obj.LayoutObj):
         """
         return self.__stub.GetDescription(self.msg).value
 
-    @name.setter
-    def name(self, newname):
-        """
-        Set name of net class.
-
-        Parameters
-        ----------
-        newname : str
-
-        """
-        return self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
-
     @description.setter
     def description(self, newdesc):
         """
@@ -95,7 +95,7 @@ class NetClass(layout_obj.LayoutObj):
         newdesc : str
 
         """
-        return self.__stub.SetDescription(messages.string_property_message(self, newdesc))
+        self.__stub.SetDescription(messages.string_property_message(self, newdesc))
 
     @property
     def is_power_ground(self):

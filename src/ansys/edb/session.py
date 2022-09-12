@@ -31,6 +31,7 @@ from ansys.api.edb.v1.component_model_pb2_grpc import (
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
+from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
@@ -334,6 +335,7 @@ class StubType(Enum):
     dyn_link_component_model = DynamicLinkComponentModelServiceStub
     extended_net = ExtendedNetServiceStub
     padstack_def_data = PadstackDefDataServiceStub
+    differential_pair = DifferentialPairServiceStub
 
 
 # Dictionary for storing local server error code exception messages

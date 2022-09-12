@@ -1,10 +1,9 @@
 """RLC."""
 
-from ansys.edb.core import ObjBase
 from ansys.edb.utility.value import Value
 
 
-class Rlc(ObjBase):
+class Rlc:
     """Class representing RLC.
 
     Parameters
@@ -28,9 +27,23 @@ class Rlc(ObjBase):
     def __init__(self, **kwargs):
         """Construct a Rlc object using given values."""
         if "msg" in kwargs:
-            self._msg = kwargs.get("msg")
+            rlc_msg = kwargs["msg"]
+            self._r = Value(rlc_msg.r) if rlc_msg.r is not None else 0.0
+            self._l = Value(rlc_msg.l) if rlc_msg.l is not None else 0.0
+            self._c = Value(rlc_msg.c) if rlc_msg.c is not None else 0.0
+            self._r_enabled = (
+                bool(rlc_msg.r_enabled.value) if rlc_msg.r_enabled is not None else False
+            )
+            self._l_enabled = (
+                bool(rlc_msg.l_enabled.value) if rlc_msg.l_enabled is not None else False
+            )
+            self._c_enabled = (
+                bool(rlc_msg.c_enabled.value) if rlc_msg.c_enabled is not None else False
+            )
+            self._is_parallel = (
+                bool(rlc_msg.is_parallel.value) if rlc_msg.c_enabled is not None else False
+            )
         else:
-            self._msg = None
             self._r = kwargs.get("r", 0)
             self._l = kwargs.get("l", 0)
             self._c = kwargs.get("c", 0)
@@ -52,13 +65,7 @@ class Rlc(ObjBase):
 
     @r.setter
     def r(self, resistance):
-        """Set resistance value.
-
-        Parameters
-        ----------
-        resistance
-            Resistance to be set.
-        """
+        """Set resistance value."""
         self._r = resistance
 
     @property
@@ -74,13 +81,7 @@ class Rlc(ObjBase):
 
     @l.setter
     def l(self, induction):
-        """Set induction value.
-
-        Parameters
-        ----------
-        induction
-            Induction to be set.
-        """
+        """Set induction value."""
         self._l = induction
 
     @property
@@ -96,13 +97,7 @@ class Rlc(ObjBase):
 
     @c.setter
     def c(self, capacitance):
-        """Set capacitance value.
-
-        Parameters
-        ----------
-        capacitance
-            Capacitance to be set.
-        """
+        """Set capacitance value."""
         self._c = capacitance
 
     @property
@@ -117,13 +112,7 @@ class Rlc(ObjBase):
 
     @r_enabled.setter
     def r_enabled(self, resistance_enabled):
-        """Set whether resistance is_enabled value.
-
-        Parameters
-        ----------
-        resistance_enabled : bool
-            Enabled/Disable resistance.
-        """
+        """Set resistance is enabled or not."""
         self._r_enabled = resistance_enabled
 
     @property
@@ -138,13 +127,7 @@ class Rlc(ObjBase):
 
     @l_enabled.setter
     def l_enabled(self, induction_enabled):
-        """Set whether induction is_enabled value.
-
-        Parameters
-        ----------
-        induction_enabled : bool
-            Enabled/Disable induction.
-        """
+        """Set induction is enabled or not."""
         self._l_enabled = induction_enabled
 
     @property
@@ -159,13 +142,7 @@ class Rlc(ObjBase):
 
     @c_enabled.setter
     def c_enabled(self, capacitance_enabled):
-        """Set whether capacitance is_enabled value.
-
-        Parameters
-        ----------
-        capacitance_enabled : bool
-            Enabled/Disable capacitance.
-        """
+        """Set capacitance is enabled or not."""
         self._c_enabled = capacitance_enabled
 
     @property
@@ -180,11 +157,5 @@ class Rlc(ObjBase):
 
     @is_parallel.setter
     def is_parallel(self, is_parallel):
-        """Set parallel.
-
-        Parameters
-        ----------
-        is_parallel : bool
-            Define is_parallel.
-        """
+        """Set parallel or not."""
         self._is_parallel = is_parallel

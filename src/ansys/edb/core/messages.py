@@ -41,6 +41,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     EDBObjPairMessage,
     GetProductPropertyIdsMessage,
     GetProductPropertyMessage,
+    HfssExtentInfoMessage,
     HfssExtentMessage,
     IntPropertyMessage,
     PointerPropertyMessage,
@@ -515,6 +516,11 @@ def hfss_extent_message(val):
         value, absolute = val
 
     return HfssExtentMessage(value=value, absolute=absolute)
+
+
+def hfss_extent_info_message(**val):
+    """Convert to HfssExtentInfoMessage."""
+    return HfssExtentInfoMessage(**val)
 
 
 def design_mode_property_message(target, mode):

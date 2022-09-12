@@ -118,11 +118,7 @@ message CellCreationMessage {
 
 message CellSetHfssExtentsMessage {
   EDBObjMessage cell = 1;
-  oneof optional_dielectric { HfssExtentMessage dielectric = 2; }
-  oneof optional_airbox_horizontal { HfssExtentMessage airbox_horizontal = 3; }
-  oneof optional_airbox_vertical_positive { HfssExtentMessage airbox_vertical_positive = 4; }
-  oneof optional_airbox_vertical_negative { HfssExtentMessage airbox_vertical_negative = 5; }
-  oneof optional_airbox_truncate_at_ground { google.protobuf.BoolValue airbox_truncate_at_ground = 6; }
+  HfssExtentInfoMessage info = 2;
 }
 
 message CellCutOutMessage {

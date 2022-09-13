@@ -1,10 +1,11 @@
 """Padstack Definition."""
 
+from ansys.api.edb.v1 import padstack_def_pb2_grpc
 import ansys.api.edb.v1.padstack_def_pb2 as pb
 
 from ansys.edb.core import ObjBase
 from ansys.edb.definition.padstack_def_data import PadstackDefData
-from ansys.edb.session import get_padstack_def_stub
+from ansys.edb.session import StubAccessor, StubType
 
 
 class _PadstackDefQueryBuilder:
@@ -16,7 +17,7 @@ class _PadstackDefQueryBuilder:
 
         Parameters
         ----------
-        target: Database or PadstackDef
+        target: :class:`Database <ansys.edb.database.Database>` or PadstackDef
         name : str
 
         Returns
@@ -33,7 +34,7 @@ class _PadstackDefQueryBuilder:
         ----------
         target: PadstackDef
             PadstackDef target to change.
-        data : PadstackDefData
+        data : :class:`PadstackDefData <ansys.edb.definition.padstack_def_data.PadstackDefData>`
             PadstackDefData data to be set on the PadstackDef
 
         Returns
@@ -46,38 +47,40 @@ class _PadstackDefQueryBuilder:
 class PadstackDef(ObjBase):
     """Class representing a padstack definition."""
 
-    @staticmethod
-    def create(db, name):
+    __stub: padstack_def_pb2_grpc.PadstackDefServiceStub = StubAccessor(StubType.padstack_def)
+
+    @classmethod
+    def create(cls, db, name):
         """Create a PadstackDef object.
 
         Parameters
         ----------
-        db: Database
+        db: :class:`Database <ansys.edb.database.Database>`
             Database object which will create the PadstackDef.
         name : str
-            Data to be set on the PadstackDef
+            Data to be set on the PadstackDef.
 
         Returns
         -------
         PadstackDef
+            PadstackDef that was created in the given database.
         """
         return PadstackDef(
-            get_padstack_def_stub().Create(
-                _PadstackDefQueryBuilder.padstack_def_string_message(db, name)
-            )
+            cls.__stub.Create(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
         )
 
     def delete(self):
         """Delete a PadstackDef."""
-        get_padstack_def_stub().Delete(self.msg)
+        self.__stub.Delete(self.msg)
 
-    @staticmethod
-    def find_by_name(db, name):
+    @classmethod
+    def find_by_name(cls, db, name):
         """Find a PadstackDef by name.
 
         Parameters
         ----------
-        db: Database.
+        db: :class:`Database <ansys.edb.database.Database>`.
+            Database in which we search for the PadstackDef.
         name : str
             Name of PadstackDef.
 
@@ -86,9 +89,7 @@ class PadstackDef(ObjBase):
         PadstackDef
         """
         return PadstackDef(
-            get_padstack_def_stub().FindByName(
-                _PadstackDefQueryBuilder.padstack_def_string_message(db, name)
-            )
+            cls.__stub.FindByName(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
         )
 
     @property
@@ -98,8 +99,9 @@ class PadstackDef(ObjBase):
         Returns
         -------
         str
+            Name of the PadstackDef.
         """
-        return get_padstack_def_stub().GetName(self.msg).value
+        return self.__stub.GetName(self.msg).value
 
     @property
     def data(self):
@@ -107,19 +109,12 @@ class PadstackDef(ObjBase):
 
         Returns
         -------
-        PadstackDefData
+        :class:`PadstackDefData <ansys.edb.definition.padstack_def_data.PadstackDefData>`
+            PadstackDefData of the PadstackDef.
         """
-        return PadstackDefData(get_padstack_def_stub().GetData(self.msg))
+        return PadstackDefData(self.__stub.GetData(self.msg))
 
     @data.setter
     def data(self, data):
-        """Set PadstackDefData of a PadstackDef.
-
-        Parameters
-        ----------
-        data : PadstackDefData
-            PadstackDefData data object to be set on the PadstackDef.
-        """
-        get_padstack_def_stub().SetData(
-            _PadstackDefQueryBuilder.padstack_def_set_data_message(self, data)
-        )
+        """Set PadstackDefData of a PadstackDef."""
+        self.__stub.SetData(_PadstackDefQueryBuilder.padstack_def_set_data_message(self, data))

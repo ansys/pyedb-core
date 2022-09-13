@@ -493,26 +493,6 @@ def get_via_group_stub():
     return StubAccessor(StubType.via_group).__get__()
 
 
-def get_bondwire_def_stub():
-    """Get Bondwire Def stub.
-
-    Returns
-    -------
-    BondwireDefServiceStub
-    """
-    return StubAccessor(StubType.bondwire_def).__get__()
-
-
-def get_apd_bondwire_def_stub():
-    """Get Apd Bondwire Def stub.
-
-    Returns
-    -------
-    ApdBondwireDefServiceStub
-    """
-    return StubAccessor(StubType.apd_bondwire_def).__get__()
-
-
 def get_variable_server_stub():
     """Get VariableServer stub.
 
@@ -523,26 +503,6 @@ def get_variable_server_stub():
     return StubAccessor(StubType.variable_server).__get__()
 
 
-def get_jedec4_bondwire_def_stub():
-    """Get Jedec4 Bondwire Def stub.
-
-    Returns
-    -------
-    Jedec4BondwireDefServiceStub
-    """
-    return StubAccessor(StubType.jedec4_bondwire_def).__get__()
-
-
-def get_jedec5_bondwire_def_stub():
-    """Get Jedec5 Bondwire Def stub.
-
-    Returns
-    -------
-    Jedec5BondwireDefServiceStub
-    """
-    return StubAccessor(StubType.jedec5_bondwire_def).__get__()
-
-
 def get_cell_instance_stub():
     """Get CellInstance stub.
 
@@ -551,16 +511,6 @@ def get_cell_instance_stub():
     CellInstanceServiceStub
     """
     return StubAccessor(StubType.cell_instance).__get__()
-
-
-def get_padstack_def_stub():
-    """Get Jedec5 Bondwire Def stub.
-
-    Returns
-    -------
-    PadstackDefServiceStub
-    """
-    return StubAccessor(StubType.padstack_def).__get__()
 
 
 def get_extended_net_stub():

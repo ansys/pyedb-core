@@ -2,24 +2,12 @@
 
 from enum import Enum
 
+from ansys.api.edb.v1 import bondwire_def_pb2_grpc
 import ansys.api.edb.v1.bondwire_def_pb2 as pb
 
 from ansys.edb.core import ObjBase, messages
-from ansys.edb.session import (
-    get_apd_bondwire_def_stub,
-    get_bondwire_def_stub,
-    get_jedec4_bondwire_def_stub,
-    get_jedec5_bondwire_def_stub,
-)
+from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
-
-
-class BondwireDefType(Enum):
-    """Enum representing bondwire types."""
-
-    APD_BONDWIRE_DEF = pb.APD_BONDWIRE_DEF
-    JEDEC4_BONDWIRE_DEF = pb.JEDEC4_BONDWIRE_DEF
-    JEDEC5_BONDWIRE_DEF = pb.JEDEC5_BONDWIRE_DEF
 
 
 class _QueryBuilder:
@@ -58,9 +46,26 @@ class _QueryBuilder:
 class BondwireDef(ObjBase):
     """Class representing a bondwire definition."""
 
+    class BondwireDefType(Enum):
+        """Enum representing bondwire types.
+
+        - APD_BONDWIRE_DEF
+           APD bondwire.
+        - JEDEC4_BONDWIRE_DEF
+           JEDEC4 bondwire.
+        - JEDEC5_BONDWIRE_DEF
+           JEDEC5 bondwire.
+        """
+
+        APD_BONDWIRE_DEF = pb.APD_BONDWIRE_DEF
+        JEDEC4_BONDWIRE_DEF = pb.JEDEC4_BONDWIRE_DEF
+        JEDEC5_BONDWIRE_DEF = pb.JEDEC5_BONDWIRE_DEF
+
+    __stub: bondwire_def_pb2_grpc.BondwireDefServiceStub = StubAccessor(StubType.bondwire_def)
+
     def delete(self):
         """Delete a bondwire definition."""
-        get_bondwire_def_stub().Delete(self.msg)
+        self.__stub.Delete(self.msg)
 
     @property
     def name(self):
@@ -70,58 +75,66 @@ class BondwireDef(ObjBase):
         -------
         str
         """
-        return get_bondwire_def_stub().GetName(self.msg)
+        return self.__stub.GetName(self.msg)
 
 
 class ApdBondwireDef(BondwireDef):
     """Class representing an apd bondwire definition."""
 
-    @staticmethod
-    def create(database, name):
+    __stub: bondwire_def_pb2_grpc.ApdBondwireDefServiceStub = StubAccessor(
+        StubType.apd_bondwire_def
+    )
+
+    @classmethod
+    def create(cls, database, name):
         """Create an apd bondwire definition.
 
         Parameters
         ----------
-        database: Database,
-        name: str
+        database : :class:`Database <ansys.edb.Database>`.
+            Database in which Apd Bondwire definition will be searched.
+        name : str
+            Name of the Apd Bondwire definition.
 
         Returns
         -------
         ApdBondwireDef
+            Apd Bondwire definition created.
         """
-        bw_msg = get_apd_bondwire_def_stub().Create(
-            _QueryBuilder.bondwire_def_str_message(database, name)
-        )
+        bw_msg = cls.__stub.Create(_QueryBuilder.bondwire_def_str_message(database, name))
         return ApdBondwireDef(bw_msg)
 
-    def load_definitions_from_file(database, name):
-        """Create an apd bondwire definition.
+    @classmethod
+    def load_definitions_from_file(cls, database, name):
+        """Load APD bondwire definition into the given database.
 
         Parameters
         ----------
-        database: Database,
-        name: str
+        database : :class:`Database <ansys.edb.Database>`
+            Database in which Apd Bondwire definition will be load.
+        name : str
+            Name of the Apd Bondwire definition.
         """
-        get_apd_bondwire_def_stub().LoadDefinitionsFromFile(
-            _QueryBuilder.bondwire_def_str_message(database, name)
-        )
+        cls.__stub.LoadDefinitionsFromFile(_QueryBuilder.bondwire_def_str_message(database, name))
 
-    def find_by_name(database, name):
-        """Find an apd bondwire definition by name.
+    @classmethod
+    def find_by_name(cls, database, name):
+        """Find an apd bondwire definition by name into the given database.
 
         Parameters
         ----------
-        database: Database,
-        name: str
+        database : :class:`Database <ansys.edb.Database>`
+            Database in which Apd Bondwire definition will be searched.
+        name : str
+            Name of the Apd Bondwire definition.
 
         Returns
         -------
         ApdBondwireDef
+            Apd Bondwire definition found.
         """
         return ApdBondwireDef(
-            get_apd_bondwire_def_stub().FindByName(
-                _QueryBuilder.bondwire_def_str_message(database, name)
-            )
+            cls.__stub.FindByName(_QueryBuilder.bondwire_def_str_message(database, name))
         )
 
     def get_parameters(self):
@@ -130,19 +143,19 @@ class ApdBondwireDef(BondwireDef):
         Returns
         -------
         str
+            String block of bondwire parameters.
         """
-        return get_apd_bondwire_def_stub().GetParameters(self.msg)
+        return self.__stub.GetParameters(self.msg)
 
     def set_parameters(self, name):
         """Set parameters of an apd bondwire definition.
 
         Parameters
         ----------
-        name: str
+        name : str
+            String block of bondwire parameters.
         """
-        get_apd_bondwire_def_stub().SetParameters(
-            _QueryBuilder.bondwire_def_str_message(self, name)
-        )
+        self.__stub.SetParameters(_QueryBuilder.bondwire_def_str_message(self, name))
 
     @property
     def bondwire_type(self):
@@ -150,9 +163,10 @@ class ApdBondwireDef(BondwireDef):
 
         Returns
         -------
-        BondwireDefType
+        :class:`BondwireDefType <ansys.edb.BondwireDef.BondwireDefType>`
+            Type of the bondwire.
         """
-        return BondwireDefType.APD_BONDWIRE_DEF
+        return BondwireDef.BondwireDefType.APD_BONDWIRE_DEF
 
 
 class _Jedec4QueryBuilder:
@@ -167,41 +181,48 @@ class _Jedec4QueryBuilder:
 class Jedec4BondwireDef(ObjBase):
     """Class representing a jedec 4 bondwire definition."""
 
-    @staticmethod
-    def create(database, name):
+    __stub: bondwire_def_pb2_grpc.Jedec4BondwireDefServiceStub = StubAccessor(
+        StubType.jedec4_bondwire_def
+    )
+
+    @classmethod
+    def create(cls, database, name):
         """Create a jedec 4 bondwire definition.
 
         Parameters
         ----------
-        database: Database,
-        name: str
+        database : :class:`Database <ansys.edb.Database>`
+            Database in which Jedec4 Bondwire definition will be created.
+        name : str
+            Name of the Jedec4 Bondwire definition.
 
         Returns
         -------
         Jedec4BondwireDef
+            Jedec4 Bondwire definition created.
         """
         return Jedec4BondwireDef(
-            get_jedec4_bondwire_def_stub().Create(
-                _QueryBuilder.bondwire_def_str_message(database, name)
-            )
+            cls.__stub.Create(_QueryBuilder.bondwire_def_str_message(database, name))
         )
 
-    def find_by_name(database, name):
+    @classmethod
+    def find_by_name(cls, database, name):
         """Find a jedec 4 bondwire definition by name.
 
         Parameters
         ----------
-        database: Database,
-        name: str
+        database : :class:`Database <ansys.edb.Database>`
+            Database in which Jedec4 Bondwire definition will be searched.
+        name : str
+            Name of the Jedec4 Bondwire definition.
 
         Returns
         -------
         Jedec4BondwireDef
+            Jedec4 Bondwire definition found.
         """
         return Jedec4BondwireDef(
-            get_jedec4_bondwire_def_stub().FindByName(
-                _QueryBuilder.bondwire_def_str_message(database, name)
-            )
+            cls.__stub.FindByName(_QueryBuilder.bondwire_def_str_message(database, name))
         )
 
     def get_parameters(self):
@@ -209,19 +230,23 @@ class Jedec4BondwireDef(ObjBase):
 
         Returns
         -------
-        Value
+        :class:`Value <ansys.edb.utility.Value>`
+            Bondwire top to die distance.
         """
-        return Value(get_jedec4_bondwire_def_stub().GetParameters(self.msg))
+        return Value(self.__stub.GetParameters(self.msg))
 
-    def set_parameters(self, parameter):
+    def set_parameters(self, top_to_die_distance):
         """Set parameters of a jedec 4 bondwire definition.
 
         Parameters
         ----------
-        parameter: Value
+        top_to_die_distance : :class:`Value <ansys.edb.utility.Value>`
+            Bondwire top to die distance.
         """
-        get_jedec4_bondwire_def_stub().SetParameters(
-            _Jedec4QueryBuilder.jedec4_bondwire_def_set_parameters_message(self, parameter)
+        self.__stub.SetParameters(
+            _Jedec4QueryBuilder.jedec4_bondwire_def_set_parameters_message(
+                self, top_to_die_distance
+            )
         )
 
     @property
@@ -230,9 +255,10 @@ class Jedec4BondwireDef(ObjBase):
 
         Returns
         -------
-        BondwireDefType
+        :class:`BondwireDefType <ansys.edb.BondwireDef.BondwireDefType>`
+            Type of the bondwire.
         """
-        return BondwireDefType.JEDEC4_BONDWIRE_DEF
+        return BondwireDef.BondwireDefType.JEDEC4_BONDWIRE_DEF
 
 
 class _Jedec5QueryBuilder:
@@ -260,43 +286,50 @@ class _Jedec5QueryBuilder:
 
 
 class Jedec5BondwireDef(BondwireDef):
-    """Class representing a jedec 4 bondwire definition."""
+    """Class representing a jedec 5 bondwire definition."""
 
-    @staticmethod
-    def create(database, name):
+    __stub: bondwire_def_pb2_grpc.Jedec5BondwireDefServiceStub = StubAccessor(
+        StubType.jedec5_bondwire_def
+    )
+
+    @classmethod
+    def create(cls, database, name):
         """Create a jedec 5 bondwire definition.
 
         Parameters
         ----------
-        database: Database,
-        name: str
+        database : :class:`Database <ansys.edb.Database>`
+            Database in which Jedec5 Bondwire definition will be created.
+        name : str
+            Name of the Jedec5 Bondwire definition.
 
         Returns
         -------
         Jedec5BondwireDef
+            Jedec5 Bondwire definition created.
         """
         return Jedec5BondwireDef(
-            get_jedec5_bondwire_def_stub().Create(
-                _QueryBuilder.bondwire_def_str_message(database, name)
-            )
+            cls.__stub.Create(_QueryBuilder.bondwire_def_str_message(database, name))
         )
 
-    def find_by_name(database, name):
+    @classmethod
+    def find_by_name(cls, database, name):
         """Find a jedec 5 bondwire definition by name.
 
         Parameters
         ----------
-        database: Database,
-        name: str
+        database : :class:`Database <ansys.edb.Database>`
+            Database in which Jedec5 Bondwire definition will be searched.
+        name : str
+            Name of the Jedec5 Bondwire definition.
 
         Returns
         -------
         Jedec5BondwireDef
+            Jedec5 Bondwire definition found.
         """
         return Jedec5BondwireDef(
-            get_jedec5_bondwire_def_stub().FindByName(
-                _QueryBuilder.bondwire_def_str_message(database, name)
-            )
+            cls.__stub.FindByName(_QueryBuilder.bondwire_def_str_message(database, name))
         )
 
     def get_parameters(self):
@@ -304,37 +337,47 @@ class Jedec5BondwireDef(BondwireDef):
 
         Returns
         -------
-        Tuple[Value, Value, Value]
+        tuple[
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
+        ]
+            Returns a tuple of the following format:
+            (top_to_die_distance,die_pad_angle,lead_pad_angle)
+            top_to_die_distance : Bondwire top to die distance.
+            die_pad_angle : Bondwire die pad angle.
+            lead_pad_angle : Bondwire lead pad angle.
         """
-        get_parameters_msg = get_jedec5_bondwire_def_stub().GetParameters(self.msg)
+        get_parameters_msg = self.__stub.GetParameters(self.msg)
         return (
             Value(get_parameters_msg.top_to_die_distance),
             Value(get_parameters_msg.die_pad_angle),
             Value(get_parameters_msg.lead_pad_angle),
         )
 
-    def set_parameters(self, ttd, dpa, lpa):
+    def set_parameters(self, top_to_die_distance, die_pad_angle, lead_pad_angle):
         """Set parameters of a jedec 5 bondwire definition.
 
         Parameters
         ----------
-        ttd: Value
-            Value for top to die distance parameter
-        dpa: Value
-            Value for die pad angle parameter
-        lpa: Value
-            Value for lead pad angle parameter
+        top_to_die_distance: :class:`Value <ansys.edb.utility.Value>`
+            Bondwire top to die distance.
+        die_pad_angle: :class:`Value <ansys.edb.utility.Value>`
+            Bondwire die pad angle.
+        lead_pad_angle: :class:`Value <ansys.edb.utility.Value>`
+            Bondwire lead pad angle.
         """
-        get_jedec5_bondwire_def_stub().SetParameters(
+        self.__stub.SetParameters(
             _Jedec5QueryBuilder.jedec5_bondwire_def_set_parameters_message(self, ttd, dpa, lpa)
         )
 
     @property
-    def get_bondwire_type(self):
+    def bondwire_type(self):
         """Return jedec 5 bondwire type.
 
         Returns
         -------
-        BondwireDefType
+        :class:`BondwireDefType <ansys.edb.BondwireDef.BondwireDefType>`
+            Type of the bondwire.
         """
-        return BondwireDefType.JEDEC5_BONDWIRE_DEF
+        return BondwireDef.BondwireDefType.JEDEC5_BONDWIRE_DEF

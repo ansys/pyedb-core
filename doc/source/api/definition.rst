@@ -12,6 +12,7 @@ Classes
    ApdBondwireDef
    BondwireDef
    ComponentDef
+   ComponentModel
    ComponentPin
    DielectricMaterialModel
    DynamicLinkComponentModel

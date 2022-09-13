@@ -642,7 +642,10 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple[ :class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`]
+        tuple[
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
+        ]
             Returns a tuple of the following format:
             (d1, d2)
             d1 : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
@@ -661,7 +664,10 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        tuple [:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`]
+        tuple[
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
+        ]
             Returns a tuple of the following format:
             (d1, d2)
             d1 : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.

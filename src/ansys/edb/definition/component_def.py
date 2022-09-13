@@ -97,7 +97,9 @@ class ComponentDef(ObjBase):
 
         Returns
         -------
-        list[:class:`ComponentModel <ansys.edb.definition.component_model.ComponentModel>`]
+        list[
+            :class:`ComponentModel <ansys.edb.definition.component_model.ComponentModel>`
+        ]
             List of component models.
         """
         objs = self.__stub.GetComponentModels(self.msg).items

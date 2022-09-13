@@ -91,7 +91,7 @@ class ApdBondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.Database>`.
+        database : :class:`Database <ansys.edb.database.Database>`.
             Database in which Apd Bondwire definition will be searched.
         name : str
             Name of the Apd Bondwire definition.
@@ -110,7 +110,7 @@ class ApdBondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.Database>`
+        database : :class:`Database <ansys.edb.database.Database>`
             Database in which Apd Bondwire definition will be load.
         name : str
             Name of the Apd Bondwire definition.
@@ -123,7 +123,7 @@ class ApdBondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.Database>`
+        database : :class:`Database <ansys.edb.database.Database>`
             Database in which Apd Bondwire definition will be searched.
         name : str
             Name of the Apd Bondwire definition.
@@ -163,7 +163,7 @@ class ApdBondwireDef(BondwireDef):
 
         Returns
         -------
-        :class:`BondwireDefType <ansys.edb.BondwireDef.BondwireDefType>`
+        :class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`
             Type of the bondwire.
         """
         return BondwireDef.BondwireDefType.APD_BONDWIRE_DEF
@@ -191,7 +191,7 @@ class Jedec4BondwireDef(ObjBase):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.Database>`
+        database : :class:`Database <ansys.edb.database.Database>`
             Database in which Jedec4 Bondwire definition will be created.
         name : str
             Name of the Jedec4 Bondwire definition.
@@ -211,7 +211,7 @@ class Jedec4BondwireDef(ObjBase):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.Database>`
+        database : :class:`Database <ansys.edb.database.Database>`
             Database in which Jedec4 Bondwire definition will be searched.
         name : str
             Name of the Jedec4 Bondwire definition.
@@ -255,7 +255,7 @@ class Jedec4BondwireDef(ObjBase):
 
         Returns
         -------
-        :class:`BondwireDefType <ansys.edb.BondwireDef.BondwireDefType>`
+        :class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`
             Type of the bondwire.
         """
         return BondwireDef.BondwireDefType.JEDEC4_BONDWIRE_DEF
@@ -298,7 +298,7 @@ class Jedec5BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.Database>`
+        database : :class:`Database <ansys.edb.database.Database>`
             Database in which Jedec5 Bondwire definition will be created.
         name : str
             Name of the Jedec5 Bondwire definition.
@@ -318,7 +318,7 @@ class Jedec5BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.Database>`
+        database : :class:`Database <ansys.edb.database.Database>`
             Database in which Jedec5 Bondwire definition will be searched.
         name : str
             Name of the Jedec5 Bondwire definition.
@@ -360,11 +360,11 @@ class Jedec5BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        top_to_die_distance: :class:`Value <ansys.edb.utility.Value>`
+        top_to_die_distance : :class:`Value <ansys.edb.utility.Value>`
             Bondwire top to die distance.
-        die_pad_angle: :class:`Value <ansys.edb.utility.Value>`
+        die_pad_angle : :class:`Value <ansys.edb.utility.Value>`
             Bondwire die pad angle.
-        lead_pad_angle: :class:`Value <ansys.edb.utility.Value>`
+        lead_pad_angle : :class:`Value <ansys.edb.utility.Value>`
             Bondwire lead pad angle.
         """
         self.__stub.SetParameters(
@@ -377,7 +377,7 @@ class Jedec5BondwireDef(BondwireDef):
 
         Returns
         -------
-        :class:`BondwireDefType <ansys.edb.BondwireDef.BondwireDefType>`
+        :class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`
             Type of the bondwire.
         """
         return BondwireDef.BondwireDefType.JEDEC5_BONDWIRE_DEF

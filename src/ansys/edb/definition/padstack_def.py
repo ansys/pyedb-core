@@ -55,7 +55,7 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        db: :class:`Database <ansys.edb.database.Database>`
+        db : :class:`Database <ansys.edb.database.Database>`
             Database object which will create the PadstackDef.
         name : str
             Data to be set on the PadstackDef.
@@ -79,7 +79,7 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        db: :class:`Database <ansys.edb.database.Database>`.
+        db : :class:`Database <ansys.edb.database.Database>`.
             Database in which we search for the PadstackDef.
         name : str
             Name of PadstackDef.

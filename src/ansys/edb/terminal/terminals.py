@@ -7,11 +7,12 @@ import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb import hierarchy, primitive
 from ansys.edb.core import ObjBase, TypeField, conn_obj, messages
+from ansys.edb.core.parser import _to_rlc
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.geometry import ArcData
 from ansys.edb.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import PortPostProcessingProp, Rlc, Value
+from ansys.edb.utility import PortPostProcessingProp, Value
 
 
 class TerminalType(Enum):
@@ -561,7 +562,7 @@ class Terminal(conn_obj.ConnObj):
         -------
         Rlc
         """
-        return Rlc(msg=self._params.rlc)
+        return _to_rlc(message=self._params.rlc)
 
     @rlc_boundary_parameters.setter
     def rlc_boundary_parameters(self, value):

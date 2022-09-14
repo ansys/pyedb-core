@@ -24,25 +24,42 @@ class Rlc:
         True means r,l,c elements are in parallel. Otherwise they are in series.
     """
 
-    def __init__(self, **kwargs):
-        """Construct a Rlc object using given values."""
-        if "msg" in kwargs:
-            rlc_msg = kwargs["msg"]
-            self.r = Value(rlc_msg.r)
-            self.l = Value(rlc_msg.l)
-            self.c = Value(rlc_msg.c)
-            self.r_enabled = bool(rlc_msg.r_enabled.value)
-            self.l_enabled = bool(rlc_msg.l_enabled.value)
-            self.c_enabled = bool(rlc_msg.c_enabled.value)
-            self.is_parallel = bool(rlc_msg.is_parallel.value)
-        else:
-            self.r = kwargs.get("r", 0)
-            self.l = kwargs.get("l", 0)
-            self.c = kwargs.get("c", 0)
-            self.r_enabled = kwargs.get("r_enabled", False)
-            self.l_enabled = kwargs.get("l_enabled", False)
-            self.c_enabled = kwargs.get("c_enabled", False)
-            self.is_parallel = kwargs.get("is_parallel", True)
+    def __init__(
+        self,
+        r=Value(0),
+        r_enabled=False,
+        l=Value(0),
+        l_enabled=False,
+        c=Value(0),
+        c_enabled=False,
+        is_parallel=False,
+    ):
+        """Construct a Rlc object using given values.
+
+        Parameters
+        ----------
+        r : str, int, float, complex, Value, optional
+            Resistance value. Only used if r_enabled is True
+        r_enabled : bool, optional
+            Resistance enabled.
+        l : str, int, float, complex, Value, optional
+            Inductance value. Only used if c-l_enabled is True
+        l_enabled : bool, optional
+            Inductance enabled.
+        c : str, int, float, complex, Value, optional
+            Capacitance value.  Only used if c_enabled is True
+        c_enabled : bool, optional
+            Capacitance enabled.
+        is_parallel : bool, optional
+            True means r,l,c elements are in parallel. Otherwise they are in series.
+        """
+        self.r = Value(r)
+        self.l = Value(l)
+        self.c = Value(c)
+        self.r_enabled = bool(r_enabled)
+        self.l_enabled = bool(l_enabled)
+        self.c_enabled = bool(c_enabled)
+        self.is_parallel = bool(is_parallel)
 
 
 class PinPair:

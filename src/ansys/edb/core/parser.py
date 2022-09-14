@@ -135,3 +135,27 @@ def _to_circle(message):
     """
     if hasattr(message, "center") and hasattr(message, "radius"):
         return _to_point_data(message.center), utility.Value(message.radius)
+
+
+def _to_rlc(message):
+    """Convert message to rlc containing values related to resistance inductance capacitance.
+
+    Parameters
+    ----------
+    message : ansys.api.edb.v1.rlc_pb2.RlcMessage
+
+    Returns
+    -------
+    Rlc
+    """
+    if "msg" in message:
+        rlc_msg = message["msg"]
+        return utility.Rlc(
+            utility.Value(rlc_msg.r),
+            bool(rlc_msg.r_enabled.value),
+            utility.Value(rlc_msg.l),
+            bool(rlc_msg.l_enabled.value),
+            utility.Value(rlc_msg.c),
+            bool(rlc_msg.c_enabled.value),
+            bool(rlc_msg.is_parallel.value),
+        )

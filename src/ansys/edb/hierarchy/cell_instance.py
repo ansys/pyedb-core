@@ -11,24 +11,28 @@ from ansys.edb.utility import Transform3D, Value
 
 
 class CellInstance(hierarchy_obj.HierarchyObj):
-    """Class for representing cell instance hierarchy object."""
+    """Class representing a cell instance object."""
 
     __stub: CellInstanceServiceStub = StubAccessor(StubType.cell_instance)
     layout_obj_type = LayoutObjType.CELL_INSTANCE
 
     @classmethod
     def create(cls, layout, name, ref):
-        """Create a cell instance object with layout.
+        """Create a cell instance object with a layout.
 
         Parameters
         ----------
-        layout: Layout
-        name: str
-        ref: Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the cell instance.
+        name : str
+            Name of cell instance to be created.
+        ref : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that the cell instance refers to.
 
         Returns
         -------
         CellInstance
+            Newly created cell instance.
         """
         return CellInstance(
             cls.__stub.Create(messages.cell_instance_creation_message(layout, name, ref))
@@ -36,17 +40,21 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @classmethod
     def create_with_component(cls, layout, name, ref):
-        """Create a cell instance object with component.
+        """Create a cell instance object with a component definition.
 
         Parameters
         ----------
-        layout: Layout
-        name: str
-        ref: Component
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the cell instance
+        name : str
+            Name of the cell instance to be created.
+        ref : :class:`Component <ansys.edb.definition.component_def.Component>`
+            The component this cell instance refers to.
 
         Returns
         -------
         CellInstance
+            Newly created cell instance.
         """
         return CellInstance(
             cls.__stub.CreateWithComponent(
@@ -56,16 +64,19 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @classmethod
     def find(cls, layout, name):
-        """Find a cell instance by name in the given layout.
+        """Find a cell instance in layout.
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout to search the cell instance in.
         name : str
+            Name of the cell instance to be searched.
 
         Returns
         -------
         CellInstance
+            Cell instance that is found, None otherwise.
         """
         return CellInstance(
             cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name))
@@ -77,7 +88,8 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Returns
         -------
-        Layout
+        :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that the cell instance refers to.
         """
         return layout.Layout(self.__stub.GetReferenceLayout(self.msg))
 
@@ -87,7 +99,8 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Returns
         -------
-        list of ansys.edb.terminal.TerminalInstances
+        list[:class:`TerminalInstance <ansys.edb.terminal.TerminalInstances>`]
+            List of terminal instances.
         """
         from ansys.edb.terminal import TerminalInstance
 
@@ -98,9 +111,12 @@ class CellInstance(hierarchy_obj.HierarchyObj):
     def placement_3d(self):
         """Get if cell instance is 3D placed in the owning layout.
 
+        This property can also be used to set the 3D placement property.
+
         Returns
         -------
         bool
+            True if 3D placed, False otherwise.
         """
         return self.__stub.GetIs3DPlacement(self.msg).value
 
@@ -118,9 +134,11 @@ class CellInstance(hierarchy_obj.HierarchyObj):
     def transform3d(self):
         """Get the 3D transformation of this cell instance inside the owning layout.
 
+        This property can also be used to set the 3D transform.
+
         Returns
         -------
-        Transform3D
+        :class:`Transform3D <ansys.edb.utility.transform3d.Transform3D>`
         """
         t3d_message = self.__stub.Get3DTransform(self.msg)
         return Transform3D(
@@ -137,33 +155,36 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Parameters
         ----------
-        value : Transform3D
+        value : :class:`Transform3D <ansys.edb.utility.transform3d.Transform3D>`
         """
         self.__stub.Set3DTransform(messages.transform3d_property_message(self, value))
 
-    def get_parameter_override(self, value):
-        """Get value of the queried parameter.
-
-        Parameters
-        ----------
-        value : str
-
-        Returns
-        -------
-        Value
-            value of the queried parameter
-        """
-        return Value(
-            self.__stub.GetParameterOverride(messages.string_property_message(self, value))
-        )
-
-    def set_parameter_override(self, param_name, param_value):
-        """Set override value for the given parameter.
+    def get_parameter_override(self, param_name):
+        """Get the override of the cell instance parameter by name.
 
         Parameters
         ----------
         param_name : str
-        param_value : value
+            Name of the parameter to override.
+
+        Returns
+        -------
+        :class:`Value <ansys.edb.utility.value.Value>`
+            Override value for the parameter.
+        """
+        return Value(
+            self.__stub.GetParameterOverride(messages.string_property_message(self, param_name))
+        )
+
+    def set_parameter_override(self, param_name, param_value):
+        """Set override value for the given cell instance parameter.
+
+        Parameters
+        ----------
+        param_name : str
+            Name of the parameter to override.
+        param_value : :class:`Value <ansys.edb.utility.value.Value>`
+            Value to override with.
         """
         self.__stub.SetParameterOverride(
             messages.cell_instance_parameter_override_message(self, param_name, param_value)

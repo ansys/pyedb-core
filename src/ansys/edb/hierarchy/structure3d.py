@@ -12,7 +12,13 @@ from ansys.edb.utility import Value
 
 
 class MeshClosure(Enum):
-    """Enum representing mesh closure types."""
+    """Enum representing mesh closure types.
+
+    - OPEN_ENDED
+    - ENDS_CLOSED
+    - FILLED_CLOSED
+    - UNDEFINED_CLOSURE
+    """
 
     OPEN_ENDED = structure3d_pb2.OPEN_ENDED
     ENDS_CLOSED = structure3d_pb2.ENDS_CLOSED
@@ -21,7 +27,7 @@ class MeshClosure(Enum):
 
 
 class Structure3D(Group):
-    """Class representing a Structure3D."""
+    """Class representing a structure3d object."""
 
     __stub: Structure3DServiceStub = StubAccessor(StubType.structure3d)
 
@@ -31,17 +37,22 @@ class Structure3D(Group):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the structure3d.
         name : str
+            Name of the structure3d object.
 
         Returns
         -------
         Structure3D
+            Newly created structure3d.
         """
         return Structure3D(cls.__stub.Create(messages.object_name_in_layout_message(layout, name)))
 
     def get_material(self, evaluate):
         """Get material for the structure3d.
+
+        This property can also be used to set the material.
 
         Parameters
         ----------
@@ -67,9 +78,11 @@ class Structure3D(Group):
     def thickness(self):
         """Get thickness for the structure3d.
 
+        This property can also be used to set the thickness.
+
         Returns
         -------
-        Value
+        :class:`Value <ansys.edb.utility.value.Value>`
         """
         return Value(self.__stub.GetThickness(self.msg))
 
@@ -79,7 +92,7 @@ class Structure3D(Group):
 
         Parameters
         ----------
-        value : Value
+        value : :class:`Value <ansys.edb.utility.value.Value>`
         """
         self.__stub.SetThickness(
             messages.value_property_message(self, messages.value_message(value))
@@ -88,6 +101,8 @@ class Structure3D(Group):
     @property
     def mesh_closure(self):
         """Get mesh closure property for the structure3d.
+
+        This property can also be used to set the mesh closure property.
 
         Returns
         -------

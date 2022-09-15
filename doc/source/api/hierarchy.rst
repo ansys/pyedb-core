@@ -10,5 +10,10 @@ Classes
    :toctree: _autosummary
    
    CellInstance
+   ComponentType
+   ComponentGroup
    Group
+   PinGroup
+   MeshClosure
+   Structure3D   
    ViaGroup

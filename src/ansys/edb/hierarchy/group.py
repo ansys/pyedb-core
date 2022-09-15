@@ -9,7 +9,7 @@ from ansys.edb.session import StubAccessor, StubType
 
 
 class Group(HierarchyObj):
-    """Class representing group object."""
+    """Class representing a group object."""
 
     __stub: GroupServiceStub = StubAccessor(StubType.group)
     layout_obj_type = LayoutObjType.GROUP
@@ -20,12 +20,15 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+           Layout that owns the group.
         name : str
+            Name of group to be created.
 
         Returns
         -------
         Group
+            Newly created group.
         """
         return Group(cls.__stub.Create(messages.object_name_in_layout_message(layout, name)))
 
@@ -35,12 +38,15 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout to search the group in.
         name : str
+            Name of the group to be searched.
 
         Returns
         -------
         Group
+            Group that is found, None otherwise.
         """
         return Group(cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name)))
 
@@ -49,7 +55,8 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        member : ConnObj to be added
+        member : :class:`ConnObj <ansys.edb.core.conn_obj.ConnObj>`
+            Object to be added to the group.
         """
         self.__stub.AddMember(messages.group_modify_member_message(self, member))
 
@@ -58,16 +65,18 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        member : ConnObj to be removed
+        member : :class:`ConnObj <ansys.edb.core.conn_obj.ConnObj>`
+            Object to be removed from the group.
         """
         self.__stub.RemoveMember(messages.group_modify_member_message(self, member))
 
     def ungroup(self, recursive):
-        """Ungroup the group.
+        """Dissolves the group.
 
         Parameters
         ----------
         recursive : bool
+            True if all containing groups should also be dissolved, False otherwise.
         """
         self.__stub.Ungroup(messages.bool_property_message(self, recursive))
 
@@ -77,7 +86,8 @@ class Group(HierarchyObj):
 
         Returns
         -------
-        list of ConnObjs
+        list[:class:`ConnObj <ansys.edb.core.conn_obj.ConnObj>`]
+            Members of the group.
         """
         objs = self.__stub.GetMembers(self.msg).items
         return [conn_obj.ConnObj(co) for co in objs]

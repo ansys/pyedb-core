@@ -14,11 +14,13 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def transform(self):
-        """Get transform.
+        """Get the transformation information of the object.
+
+        This property can also be used to set the transform.
 
         Returns
         -------
-        Transform
+        :class:`Transform <ansys.edb.utility.transform.Transform>`
         """
         transform_msg = self.__stub.GetTransform(self.msg)
         return Transform(
@@ -35,13 +37,15 @@ class HierarchyObj(conn_obj.ConnObj):
 
         Parameters
         ----------
-        value : Transform
+        value : :class:`Transform <ansys.edb.utility.transform.Transform>`
         """
-        return self.__stub.SetTransform(messages.transform_property_message(self, value))
+        self.__stub.SetTransform(messages.transform_property_message(self, value))
 
     @property
     def name(self):
         """Get name of the hierarchy object.
+
+        This property can also be used to set the name.
 
         Returns
         -------
@@ -57,25 +61,28 @@ class HierarchyObj(conn_obj.ConnObj):
         ----------
         value : str
         """
-        return self.__stub.SetName(messages.edb_obj_name_message(self, value))
+        self.__stub.SetName(messages.edb_obj_name_message(self, value))
 
     @property
     def component(self):
-        """Get underlying component on the hierarchy object.
+        """Get the component definition for this hierarchy object.
 
         Returns
         -------
-        ComponentDef
+        :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>`
+            Component definition if it exists, None otherwise.
         """
         return component_def.ComponentDef(self.__stub.GetComponent(self.msg))
 
     @property
     def placement_layer(self):
-        """Get placement layer.
+        """Get placement layer for this hierarchy object.
+
+        This property can also be used to set the placement layer.
 
         Returns
         -------
-        layer
+        :class:`Layer <ansys.edb.layer.Layer>`
         """
         return Layer(self.__stub.GetPlacementLayer(self.msg))
 
@@ -85,38 +92,51 @@ class HierarchyObj(conn_obj.ConnObj):
 
         Parameters
         ----------
-        value : Layer
+        value : :class:`Layer <ansys.edb.layer.Layer>`
         """
-        return self.__stub.SetPlacementLayer(messages.pointer_property_message(self, value))
+        self.__stub.SetPlacementLayer(messages.pointer_property_message(self, value))
 
     @property
     def location(self):
-        """Get location.
+        """Get the location on placement layer.
+
+        This property can also be used to set the location.
 
         Returns
         -------
-        [value x, value y]
+        tuple[:class:`Value <ansys.edb.utility.value.Value>`]
+            The [x, y] location of the object on placement layer.
         """
         pnt_msg = self.__stub.GetLocation(self.msg)
         return [Value(pnt_msg.x), Value(pnt_msg.y)]
 
     @location.setter
     def location(self, value):
-        """Set location.
+        """Set the location on placement layer.
 
         Parameters
         ----------
-        value : [value x, value y]
+        value : tuple[:class:`Value <ansys.edb.utility.value.Value>`]
         """
-        return self.__stub.SetLocation(messages.point_property_message(self, value))
+        self.__stub.SetLocation(messages.point_property_message(self, value))
 
     @property
     def solve_independent_preference(self):
-        """Get solve independent preference.
+        """Get whether the object is assigned to solve independent of its parent context.
+
+        This property can also be used to set the solve-independent preference.
 
         Returns
         -------
         bool
+            True if solving independently, False if embedded.
+
+        Notes
+        -----
+        For a :class:`ComponentModel <ansys.edb.definition.component_model.ComponentModel>`, this flag indicates if the
+        model is embedded with the field-solver or not, when applicable.
+        For a :class:`CellInstance <ansys.edb.hierarchy.cell_instance.CellInstance>`, it indicates if the design's
+        geometry is flattened/meshed with the parent or not, when applicable.
         """
         return self.__stub.GetSolveIndependentPreference(self.msg).value
 
@@ -128,6 +148,4 @@ class HierarchyObj(conn_obj.ConnObj):
         ----------
         value : bool
         """
-        return self.__stub.SetSolveIndependentPreference(
-            messages.bool_property_message(self, value)
-        )
+        self.__stub.SetSolveIndependentPreference(messages.bool_property_message(self, value))

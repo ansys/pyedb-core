@@ -11,7 +11,16 @@ from ansys.edb.session import StubAccessor, StubType
 
 
 class ComponentType(Enum):
-    """Enum representing component types."""
+    """Enum representing component types.
+
+    - OTHER
+    - RESISTOR
+    - INDUCTOR
+    - CAPACITOR
+    - IC
+    - IO
+    - INVALID
+    """
 
     OTHER = edb_defs_pb2.OTHER
     RESISTOR = edb_defs_pb2.RESISTOR
@@ -23,7 +32,7 @@ class ComponentType(Enum):
 
 
 class ComponentGroup(Group):
-    """Class representing a Component group."""
+    """Class representing a component group object."""
 
     __stub: ComponentGroupServiceStub = StubAccessor(StubType.component_group)
 
@@ -33,13 +42,18 @@ class ComponentGroup(Group):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the component group.
         name : str
+            Name of the component group to be created.
         comp_name : str
+            Name of the :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>` the component group \
+            refers to.
 
         Returns
         -------
         ComponentGroup
+            Newly created component group.
         """
         return ComponentGroup(
             cls.__stub.Create(messages.component_group_create_message(layout, name, comp_name))
@@ -57,7 +71,9 @@ class ComponentGroup(Group):
 
     @property
     def component_property(self):
-        """Component property of the component group.
+        """Get the component property of the component group.
+
+        This property can also be used to set the component property.
 
         Returns
         -------
@@ -77,7 +93,9 @@ class ComponentGroup(Group):
 
     @property
     def component_type(self):
-        """Component type of the component group.
+        """Get the component type of the component group.
+
+        This property can also be used to set the component type.
 
         Returns
         -------
@@ -87,7 +105,7 @@ class ComponentGroup(Group):
 
     @component_type.setter
     def component_type(self, value):
-        """Set the component property on the component group.
+        """Set the component type on the component group.
 
         Parameters
         ----------
@@ -97,16 +115,19 @@ class ComponentGroup(Group):
 
     @classmethod
     def find(cls, layout, comp_def_name):
-        """Find all components by the given component definition name.
+        """Find all the components belonging to a specific component definition.
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout to search the component group(s) in.
         comp_def_name : str
+            Name of the :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>`.
 
         Returns
         -------
-        list of ComponentGroups
+        list[ComponentGroup]
+            List of component group(s) that are found.
         """
         objs = cls.__stub.FindByDef(
             messages.object_name_in_layout_message(layout, comp_def_name)

@@ -2,6 +2,8 @@ import os
 import platform
 import tempfile
 
+import settings
+
 from ansys.edb.database import Database
 from ansys.edb.definition import MaterialDef, MaterialProperty
 from ansys.edb.geometry import PolygonData
@@ -19,7 +21,6 @@ from ansys.edb.simulation_setup import (
 )
 import ansys.edb.simulation_setup.skin_depth_mesh_operation
 from ansys.edb.terminal import PointTerminal
-import settings
 
 
 # Wrapper class over Database

@@ -43,7 +43,7 @@ class Rlc:
         r_enabled : bool, optional
             Resistance enabled.
         l : str, int, float, complex, Value, optional
-            Inductance value. Only used if c-l_enabled is True
+            Inductance value. Only used if l_enabled is True
         l_enabled : bool, optional
             Inductance enabled.
         c : str, int, float, complex, Value, optional
@@ -53,13 +53,13 @@ class Rlc:
         is_parallel : bool, optional
             True means r,l,c elements are in parallel. Otherwise they are in series.
         """
-        self.r = Value(r)
-        self.l = Value(l)
-        self.c = Value(c)
-        self.r_enabled = bool(r_enabled)
-        self.l_enabled = bool(l_enabled)
-        self.c_enabled = bool(c_enabled)
-        self.is_parallel = bool(is_parallel)
+        self.r = r
+        self.l = l
+        self.c = c
+        self.r_enabled = r_enabled
+        self.l_enabled = l_enabled
+        self.c_enabled = c_enabled
+        self.is_parallel = is_parallel
 
 
 class PinPair:
@@ -93,7 +93,7 @@ class PinPairRlc:
     Attributes
     ----------
     pin_pair : PinPair
-            Pin pair property.
+        Pin pair property.
     rlc : Rlc
         Rlc value
     """

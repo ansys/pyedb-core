@@ -25,6 +25,11 @@ def to_polygon_data_list(fn):
     return _wraps(fn, _to_polygon_data_list)
 
 
+def to_rlc(fn):
+    """Decorate a function that returns a message to return as RLC."""
+    return _wraps(fn, _to_rlc)
+
+
 def to_box(fn):
     """Decorate a function that returns a message to return as (lower_left, upper_right)."""
     return _wraps(fn, _to_box)
@@ -152,10 +157,10 @@ def _to_rlc(message):
         rlc_msg = message["msg"]
         return utility.Rlc(
             utility.Value(rlc_msg.r),
-            bool(rlc_msg.r_enabled.value),
+            rlc_msg.r_enabled.value,
             utility.Value(rlc_msg.l),
-            bool(rlc_msg.l_enabled.value),
+            rlc_msg.l_enabled.value,
             utility.Value(rlc_msg.c),
-            bool(rlc_msg.c_enabled.value),
-            bool(rlc_msg.is_parallel.value),
+            rlc_msg.c_enabled.value,
+            rlc_msg.is_parallel.value,
         )

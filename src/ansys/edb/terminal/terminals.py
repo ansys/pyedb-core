@@ -6,8 +6,7 @@ import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb import hierarchy, primitive
-from ansys.edb.core import ObjBase, TypeField, conn_obj, messages
-from ansys.edb.core.parser import _to_rlc
+from ansys.edb.core import ObjBase, TypeField, conn_obj, messages, parser
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.geometry import ArcData
 from ansys.edb.layer import Layer
@@ -555,6 +554,7 @@ class Terminal(conn_obj.ConnObj):
         self._params = {"s_param_model": value}
 
     @property
+    @parser.to_rlc
     def rlc_boundary_parameters(self):
         """Return the RLC boundary parameters.
 
@@ -562,7 +562,7 @@ class Terminal(conn_obj.ConnObj):
         -------
         Rlc
         """
-        return _to_rlc(message=self._params.rlc)
+        return self._params.rlc
 
     @rlc_boundary_parameters.setter
     def rlc_boundary_parameters(self, value):

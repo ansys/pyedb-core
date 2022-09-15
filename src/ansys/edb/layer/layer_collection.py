@@ -271,6 +271,8 @@ class LayerCollection(ObjBase):
     @staticmethod
     def _get_layer_filter(layer_types):
         """Convert a list of layer types to an integer representation of a layer filter."""
+        if not isinstance(layer_types, list):
+            layer_types = [layer_types]
         layer_filter = 0
         for layer_type in layer_types:
             layer_type_value = layer_type.value
@@ -324,12 +326,12 @@ class LayerCollection(ObjBase):
             response.bottom_layer_elevation,
         )
 
-    def get_layers(self, layer_filter):
+    def get_layers(self, layer_filter=LayerTypeSet.ALL_LAYER_SET):
         """Retrieve a list of layer in the LayerCollection filtered by the given layer filter.
 
         Parameters
         ----------
-        layer_filter : LayerTypeSet, list[LayerType]
+        layer_filter : LayerTypeSet, LayerType, list[LayerType], optional
 
         Returns
         -------

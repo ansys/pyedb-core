@@ -49,7 +49,7 @@ jobs:
           python -m pip install --upgrade tox-gh-actions
       - name: Test with tox
         # Only the tox environment specified in the tox.ini gh-actions is run
-        run: tox -e test -- --ignore=tests/examples --ignore=tests/e2e
+        run: tox -e test -- --ignore=tests/e2e
 
 
   docs:

@@ -1,10 +1,11 @@
 from typing import List
 
+from utils.fixtures import *  # noqa
+from utils.test_utils import create_edb_obj_collection_msg, equals
+
 from ansys.edb import database as database
 from ansys.edb.core.messages import bool_message, empty_message, int64_message, str_message
 from ansys.edb.layout import Cell
-from utils.fixtures import *  # noqa
-from utils.test_utils import create_edb_obj_collection_msg, equals
 
 # Helper fixtures and functions
 

@@ -1,7 +1,7 @@
-def test_get_database(circuit_cell, database):
+def test_get_database(circuit_cell, new_database):
     cell_db = circuit_cell.database
     assert not cell_db.is_null()
-    assert cell_db.id == database.id
+    assert cell_db.id == new_database.id
 
 
 def test_get_layout(circuit_cell):

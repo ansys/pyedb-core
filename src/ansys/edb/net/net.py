@@ -139,4 +139,4 @@ class Net(layout_obj.LayoutObj):
         :class:`ExtendedNet <ansys.edb.net.ExtendedNet>`
         """
         en = ExtendedNet(self._layout_objs(LayoutObjType.NET_CLASS)[0])
-        return None if en.is_null() else en
+        return None if en.is_null else en

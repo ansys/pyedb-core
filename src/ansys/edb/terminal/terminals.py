@@ -77,7 +77,7 @@ class Edge(ObjBase):
         -------
         Edge
         """
-        if self.is_null():
+        if self.is_null:
             return
 
         tp = self.type
@@ -213,7 +213,7 @@ class Terminal(conn_obj.ConnObj):
         -------
         Terminal
         """
-        if self.is_null():
+        if self.is_null:
             return
 
         tt = self.type

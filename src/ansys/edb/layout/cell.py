@@ -160,7 +160,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         Cell
         """
         cell = Cell(cls.__stub.Find(messages.cell_find_message(database, cell_type, name, cell_id)))
-        return None if cell.is_null() else cell
+        return None if cell.is_null else cell
 
     def delete(self):
         """Delete a cell."""

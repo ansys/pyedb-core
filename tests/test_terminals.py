@@ -38,7 +38,7 @@ def test_bundle_terminal_create(mocked_stub, point_terminal, bundle_terminal, ed
         messages.edb_obj_collection_message([point_terminal, bundle_terminal])
     )
     assert isinstance(bt, terminal.BundleTerminal)
-    assert not bt.is_null()
+    assert not bt.is_null
     assert bt.id == edb_obj_msg.id
 
 
@@ -72,7 +72,7 @@ def test_bundle_terminal_ungroup(mocked_stub, bundle_terminal):
 
     bundle_terminal.ungroup()
     mock.assert_called_once_with(expected)
-    assert bundle_terminal.is_null()
+    assert bundle_terminal.is_null
 
 
 def test_point_terminal_create(mocked_stub, layout, net, layer, edb_obj_msg):
@@ -85,7 +85,7 @@ def test_point_terminal_create(mocked_stub, layout, net, layer, edb_obj_msg):
         messages.point_term_creation_message(layout, net, layer, "test-point-term", (1, 2))
     )
     assert isinstance(pt, terminal.PointTerminal)
-    assert not pt.is_null()
+    assert not pt.is_null
     assert pt.id == edb_obj_msg.id
 
 

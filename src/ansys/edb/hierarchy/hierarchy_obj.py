@@ -77,7 +77,7 @@ class HierarchyObj(conn_obj.ConnObj):
         -------
         layer
         """
-        return Layer(self.__stub.GetPlacementLayer(self.msg))
+        return Layer(self.__stub.GetPlacementLayer(self.msg)).cast()
 
     @placement_layer.setter
     def placement_layer(self, value):

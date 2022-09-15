@@ -88,7 +88,7 @@ class Net(layout_obj.LayoutObj):
         -------
         list[:class:`Primitive <ansys.edb.primitive.Primitive>`]
         """
-        return [Primitive(lo) for lo in self._layout_objs(LayoutObjType.PRIMITIVE)]
+        return [Primitive(lo).cast() for lo in self._layout_objs(LayoutObjType.PRIMITIVE)]
 
     @property
     def padstack_instances(self):
@@ -108,7 +108,7 @@ class Net(layout_obj.LayoutObj):
         -------
         list[:class:`Terminal <ansys.edb.terminal.Terminal>`]
         """
-        return [Terminal(lo) for lo in self._layout_objs(LayoutObjType.TERMINAL)]
+        return [Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
 
     @property
     def terminal_instances(self):

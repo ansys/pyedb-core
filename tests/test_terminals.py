@@ -1,7 +1,9 @@
+import ansys.api.edb.v1.layer_pb2 as layer_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb import terminal
 from ansys.edb.core import messages
+import ansys.edb.layer as layer_api
 from ansys.edb.utility import PortPostProcessingProp, Rlc
 from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_msgs, equals
@@ -26,6 +28,15 @@ def bundle_terminal(edb_obj_msg):
 @pytest.fixture
 def point_terminal(edb_obj_msg):
     return terminal.PointTerminal(edb_obj_msg)
+
+
+@pytest.fixture
+def lyr_type_mock(mocked_stub):
+    lyr_mock = mocked_stub(layer_api, layer_api.Layer)
+    lyr_mock.GetLayerType.return_value = layer_pb2.LayerTypeMessage(
+        type=layer_api.LayerType.USER_LAYER.value
+    )
+    return lyr_mock
 
 
 def test_bundle_terminal_create(mocked_stub, point_terminal, bundle_terminal, edb_obj_msg):
@@ -89,7 +100,7 @@ def test_point_terminal_create(mocked_stub, layout, net, layer, edb_obj_msg):
     assert pt.id == edb_obj_msg.id
 
 
-def test_point_terminal_get_params(mocked_stub, point_terminal, layer):
+def test_point_terminal_get_params(mocked_stub, point_terminal, layer, lyr_type_mock):
     point = (1e-9, 2e-9)
     mock = mocked_stub(terminal, terminal.PointTerminal).GetParameters
     mock.return_value = messages.point_term_params_message(layer, point)
@@ -125,7 +136,7 @@ def test_point_terminal_set_params(mocked_stub, point_terminal, layer_ref, point
     )
 
 
-def test_terminal_get_params(mocked_stub, point_terminal, bundle_terminal, layer):
+def test_terminal_get_params(mocked_stub, point_terminal, bundle_terminal, layer, lyr_type_mock):
     mock = mocked_stub(terminal, terminal.Terminal)
     mock.GetParams.return_value = term_pb2.TermParamsMessage(
         term_type=term_pb2.TerminalType.POINT_TERM,

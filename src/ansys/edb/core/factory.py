@@ -21,7 +21,7 @@ def create_conn_obj(msg):
     """
     type = LayoutObjType(StubAccessor(StubType.connectable).__get__().GetObjType(msg).type)
     if type == LayoutObjType.PRIMITIVE:
-        return Primitive._create(msg)
+        return Primitive(msg).cast()
     elif type == LayoutObjType.PADSTACK_INSTANCE:
         return PadstackInstance(msg)
     elif type == LayoutObjType.TERMINAL:
@@ -31,7 +31,7 @@ def create_conn_obj(msg):
     elif type == LayoutObjType.CELL_INSTANCE:
         return CellInstance(msg)
     elif type == LayoutObjType.GROUP:
-        return Group(msg)
+        return Group(msg).cast()
     elif type == LayoutObjType.PIN_GROUP:
         return PinGroup(Group)
     elif type == LayoutObjType.VOLTAGE_REGULATOR:

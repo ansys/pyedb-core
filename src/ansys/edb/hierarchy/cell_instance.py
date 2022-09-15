@@ -45,10 +45,10 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
-            Layout that owns the cell instance
+            Layout that owns the cell instance.
         name : str
             Name of the cell instance to be created.
-        ref : :class:`Component <ansys.edb.definition.component_def.Component>`
+        ref : :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>`
             The component this cell instance refers to.
 
         Returns
@@ -111,7 +111,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
     def placement_3d(self):
         """Get if cell instance is 3D placed in the owning layout.
 
-        This property can also be used to set the 3D placement property.
+        This property can also be used to set 3D placement.
 
         Returns
         -------

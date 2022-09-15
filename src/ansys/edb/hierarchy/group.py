@@ -55,7 +55,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        member : :class:`ConnObj <ansys.edb.core.conn_obj.ConnObj>`
+        member : :class:`ConnObj <ansys.edb.core.ConnObj>`
             Object to be added to the group.
         """
         self.__stub.AddMember(messages.group_modify_member_message(self, member))
@@ -65,7 +65,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        member : :class:`ConnObj <ansys.edb.core.conn_obj.ConnObj>`
+        member : :class:`ConnObj <ansys.edb.core.ConnObj>`
             Object to be removed from the group.
         """
         self.__stub.RemoveMember(messages.group_modify_member_message(self, member))
@@ -86,7 +86,7 @@ class Group(HierarchyObj):
 
         Returns
         -------
-        list[:class:`ConnObj <ansys.edb.core.conn_obj.ConnObj>`]
+        list[:class:`ConnObj <ansys.edb.core.ConnObj>`]
             Members of the group.
         """
         objs = self.__stub.GetMembers(self.msg).items

@@ -102,7 +102,7 @@ class Structure3D(Group):
     def mesh_closure(self):
         """Get mesh closure property for the structure3d.
 
-        This property can also be used to set the mesh closure property.
+        This property can also be used to set mesh closure.
 
         Returns
         -------

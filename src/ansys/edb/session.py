@@ -413,16 +413,6 @@ def get_layer_collection_stub():
     return StubAccessor(StubType.layer_collection).__get__()
 
 
-def get_layer_stub():
-    """Get Layer stub.
-
-    Returns
-    -------
-    LayerServiceStub
-    """
-    return StubAccessor(StubType.layer).__get__()
-
-
 def get_stackup_layer_stub():
     """Get Stackup layer stub.
 

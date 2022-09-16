@@ -69,12 +69,13 @@ class Layout(ObjBase, variable_server.VariableServer):
             )
         )
 
-    def _get_items(self, obj_type, lyt_obj_type_enum):
+    def _get_items(self, obj_type, lyt_obj_type_enum, do_cast=False):
         """Get list of layout objects."""
-        return utils.map_list(
+        items = utils.map_list(
             self.__stub.GetItems(messages.layout_get_items_message(self, lyt_obj_type_enum)).items,
             obj_type,
         )
+        return items if not do_cast else [item.cast() for item in items]
 
     @property
     def primitives(self):
@@ -85,7 +86,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[Primitive]
         """
-        return self._get_items(Primitive, LayoutObjType.PRIMITIVE)
+        return self._get_items(Primitive, LayoutObjType.PRIMITIVE, True)
 
     @property
     def padstack_instances(self):
@@ -105,7 +106,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[Terminal]
         """
-        return self._get_items(Terminal, LayoutObjType.TERMINAL)
+        return self._get_items(Terminal, LayoutObjType.TERMINAL, True)
 
     @property
     def cell_instances(self):
@@ -135,7 +136,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         list[Net]
         """
-        return self._get_items(Group, LayoutObjType.GROUP)
+        return self._get_items(Group, LayoutObjType.GROUP, True)
 
     @property
     def net_classes(self):
@@ -260,7 +261,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         Primitive
         """
         msg = self.__stub.GetFixedZonePrimitive(self.msg)
-        return None if msg is None else Primitive(msg)
+        return None if msg is None else Primitive(msg).cast()
 
     @fixed_zone_primitive.setter
     def fixed_zone_primitive(self, value):

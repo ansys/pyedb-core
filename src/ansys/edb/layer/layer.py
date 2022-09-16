@@ -3,6 +3,7 @@
 from enum import Enum
 
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
+from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 
 from ansys.edb.core import ObjBase
 from ansys.edb.core.messages import (
@@ -11,7 +12,7 @@ from ansys.edb.core.messages import (
     set_product_property_message,
 )
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.session import get_layer_stub
+from ansys.edb.session import StubAccessor, StubType
 
 
 # Message creation helper method
@@ -77,23 +78,23 @@ class Layer(ObjBase):
     """Base class representing a layer."""
 
     layout_obj_type = LayoutObjType.LAYER
+    __stub: LayerServiceStub = StubAccessor(StubType.layer)
 
-    @staticmethod
-    def _create(msg):
-        from ansys.edb.layer import StackupLayer, ViaLayer
-
-        """Create a layer.
+    def cast(self):
+        """Cast the layer object to correct concrete type.
 
         Returns
         -------
-        Layer, StackupLayer, ViaLayer
+        Layer
         """
-        lyr = Layer(msg)
+        from ansys.edb.layer import StackupLayer, ViaLayer
+
+        lyr = Layer(self.msg)
         if lyr.is_stackup_layer():
             if lyr.is_via_layer():
-                return ViaLayer(msg)
+                return ViaLayer(self.msg)
             else:
-                return StackupLayer(msg)
+                return StackupLayer(self.msg)
         else:
             return lyr
 
@@ -111,7 +112,7 @@ class Layer(ObjBase):
         Layer
         """
         return Layer(
-            get_layer_stub().Create(layer_pb2.LayerCreationMessage(name=name, type=lyr_type.value))
+            Layer.__stub.Create(layer_pb2.LayerCreationMessage(name=name, type=lyr_type.value))
         )
 
     @property
@@ -122,7 +123,7 @@ class Layer(ObjBase):
         -------
         LayerType
         """
-        return LayerType(get_layer_stub().GetLayerType(self.msg).type)
+        return LayerType(self.__stub.GetLayerType(self.msg).type)
 
     @type.setter
     def type(self, lyr_type):
@@ -132,9 +133,7 @@ class Layer(ObjBase):
         ----------
         lyr_type : LayerType
         """
-        get_layer_stub().SetLayerType(
-            layer_pb2.SetLayerTypeMessage(layer=self.msg, type=lyr_type.value)
-        )
+        self.__stub.SetLayerType(layer_pb2.SetLayerTypeMessage(layer=self.msg, type=lyr_type.value))
 
     def is_stackup_layer(self):
         """Determine if the layer is a stackup layer.
@@ -157,7 +156,7 @@ class Layer(ObjBase):
         -------
         bool
         """
-        return get_layer_stub().IsViaLayer(self.msg).value
+        return self.__stub.IsViaLayer(self.msg).value
 
     @property
     def name(self):
@@ -167,7 +166,7 @@ class Layer(ObjBase):
         -------
         str
         """
-        return get_layer_stub().GetName(self.msg).value
+        return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, name):
@@ -177,7 +176,7 @@ class Layer(ObjBase):
         ----------
         name : str
         """
-        get_layer_stub().SetName(layer_pb2.SetNameMessage(layer=self.msg, name=name))
+        self.__stub.SetName(layer_pb2.SetNameMessage(layer=self.msg, name=name))
 
     def clone(self, copy_id=True):
         """Create a clone of the layer.
@@ -190,9 +189,7 @@ class Layer(ObjBase):
         -------
         Layer
         """
-        return Layer(
-            get_layer_stub().Clone(layer_pb2.CloneMessage(layer=self.msg, copy_id=copy_id))
-        )
+        return Layer(self.__stub.Clone(layer_pb2.CloneMessage(layer=self.msg, copy_id=copy_id)))
 
     @property
     def layer_id(self):
@@ -202,7 +199,7 @@ class Layer(ObjBase):
         -------
         int
         """
-        return get_layer_stub().GetLayerId(self.msg).value
+        return self.__stub.GetLayerId(self.msg).value
 
     @property
     def top_bottom_association(self):
@@ -213,7 +210,7 @@ class Layer(ObjBase):
         TopBottomAssociation
         """
         return TopBottomAssociation(
-            get_layer_stub().GetTopBottomAssociation(self.msg).top_bottom_association
+            self.__stub.GetTopBottomAssociation(self.msg).top_bottom_association
         )
 
     @top_bottom_association.setter
@@ -224,7 +221,7 @@ class Layer(ObjBase):
         ----------
         top_bottom_association : TopBottomAssociation
         """
-        get_layer_stub().SetTopBottomAssociation(
+        self.__stub.SetTopBottomAssociation(
             layer_pb2.SetTopBottomAssociationMessage(
                 layer=self.msg, top_bottom_association=top_bottom_association.value
             )
@@ -239,7 +236,7 @@ class Layer(ObjBase):
         tuple[int, int, int]
             Tuple containing the color RGB values in the format (R,G,B)
         """
-        color_int = get_layer_stub().GetColor(self.msg).value
+        color_int = self.__stub.GetColor(self.msg).value
         r = color_int & 0x000000FF
         g = (color_int & 0x0000FF00) >> 8
         b = (color_int & 0x00FF0000) >> 16
@@ -257,7 +254,7 @@ class Layer(ObjBase):
         r = rgb[0] & 0x000000FF
         g = (rgb[1] << 8) & 0x0000FF00
         b = (rgb[2] << 16) & 0x00FF0000
-        get_layer_stub().SetColor(layer_pb2.SetColorMessage(layer=self.msg, color=b | g | r))
+        self.__stub.SetColor(layer_pb2.SetColorMessage(layer=self.msg, color=b | g | r))
 
     @property
     def visibility_mask(self):
@@ -267,7 +264,7 @@ class Layer(ObjBase):
         -------
         int
         """
-        return get_layer_stub().GetVisibilityMask(self.msg).value
+        return self.__stub.GetVisibilityMask(self.msg).value
 
     @visibility_mask.setter
     def visibility_mask(self, visibility_mask):
@@ -286,7 +283,7 @@ class Layer(ObjBase):
             if isinstance(visibility_mask, LayerVisibility)
             else visibility_mask
         )
-        get_layer_stub().SetVisibilityMask(
+        self.__stub.SetVisibilityMask(
             layer_pb2.SetVisibilityMaskMessage(layer=self.msg, visibility_mask=vis_mask_int)
         )
 
@@ -298,7 +295,7 @@ class Layer(ObjBase):
         -------
         bool
         """
-        return get_layer_stub().GetLocked(self.msg).value
+        return self.__stub.GetLocked(self.msg).value
 
     @locked.setter
     def locked(self, locked):
@@ -308,7 +305,7 @@ class Layer(ObjBase):
         ----------
         locked : bool
         """
-        get_layer_stub().SetLocked(layer_pb2.SetLockedMessage(layer=self.msg, is_locked=locked))
+        self.__stub.SetLocked(layer_pb2.SetLockedMessage(layer=self.msg, is_locked=locked))
 
     @property
     def transparency(self):
@@ -318,7 +315,7 @@ class Layer(ObjBase):
         -------
         int
         """
-        return get_layer_stub().GetTransparency(self.msg).value
+        return self.__stub.GetTransparency(self.msg).value
 
     @transparency.setter
     def transparency(self, transparency):
@@ -328,7 +325,7 @@ class Layer(ObjBase):
         ----------
         transparency : int
         """
-        get_layer_stub().SetTransparency(
+        self.__stub.SetTransparency(
             layer_pb2.SetTransparencyMessage(layer=self.msg, transparency=transparency)
         )
 
@@ -340,7 +337,7 @@ class Layer(ObjBase):
         -------
         DrawOverride
         """
-        return DrawOverride(get_layer_stub().GetDrawOverride(self.msg).draw_override)
+        return DrawOverride(self.__stub.GetDrawOverride(self.msg).draw_override)
 
     @draw_override.setter
     def draw_override(self, draw_override):
@@ -350,7 +347,7 @@ class Layer(ObjBase):
         ----------
         draw_override : DrawOverride
         """
-        get_layer_stub().SetDrawOverride(
+        self.__stub.SetDrawOverride(
             layer_pb2.SetDrawOverrideMessage(layer=self.msg, draw_override=draw_override.value)
         )
 
@@ -366,11 +363,9 @@ class Layer(ObjBase):
         -------
         str
         """
-        return (
-            get_layer_stub()
-            .GetProductProperty(get_product_property_message(self, prod_id, attr_it))
-            .value
-        )
+        return self.__stub.GetProductProperty(
+            get_product_property_message(self, prod_id, attr_it)
+        ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
         """Set the product property of the layer associated with the given product and attribute ids.
@@ -381,7 +376,7 @@ class Layer(ObjBase):
         attr_it : int
         prop_value : str
         """
-        get_layer_stub().SetProductProperty(
+        self.__stub.SetProductProperty(
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
@@ -396,11 +391,9 @@ class Layer(ObjBase):
         -------
         list[int]
         """
-        attr_ids = (
-            get_layer_stub()
-            .GetProductPropertyIds(get_product_property_ids_message(self, prod_id))
-            .ids
-        )
+        attr_ids = self.__stub.GetProductPropertyIds(
+            get_product_property_ids_message(self, prod_id)
+        ).ids
         return [attr_id for attr_id in attr_ids]
 
     def is_in_zone(self, zone):
@@ -414,7 +407,7 @@ class Layer(ObjBase):
         -------
         bool
         """
-        return get_layer_stub().IsInZone(_is_in_zone_message(self, zone)).value
+        return self.__stub.IsInZone(_is_in_zone_message(self, zone)).value
 
     def set_is_in_zone(self, zone, in_zone=True):
         """Set whether the layer exists in the specified zone.
@@ -424,7 +417,7 @@ class Layer(ObjBase):
         zone : int
         in_zone : bool
         """
-        return get_layer_stub().SetIsInZone(
+        return self.__stub.SetIsInZone(
             layer_pb2.SetIsInZoneMessage(zone_msg=_is_in_zone_message(self, zone), in_zone=in_zone)
         )
 
@@ -436,7 +429,7 @@ class Layer(ObjBase):
         -------
         list[int]
         """
-        return [zone for zone in get_layer_stub().GetZones(self.msg).zones]
+        return [zone for zone in self.__stub.GetZones(self.msg).zones]
 
     @property
     def zone(self):
@@ -448,4 +441,4 @@ class Layer(ObjBase):
         -------
         int
         """
-        return get_layer_stub().GetZone(self.msg).value
+        return self.__stub.GetZone(self.msg).value

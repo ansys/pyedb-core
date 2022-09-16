@@ -87,19 +87,29 @@ class Primitive(conn_obj.ConnObj):
         BOARD_BEND = primitive_pb2.BOARD_BEND
         INVALID_TYPE = primitive_pb2.INVALID_TYPE
 
-    @staticmethod
-    def _create(msg):
-        prim_type = Primitive(msg).primitive_type
+    def cast(self):
+        """Cast the primitive object to correct concrete type.
+
+        Returns
+        -------
+        Primitive
+        """
+        if self.is_null():
+            return
+
+        prim_type = self.primitive_type
         if prim_type == Primitive.PrimitiveType.RECTANGLE:
-            return Rectangle(msg)
+            return Rectangle(self.msg)
         elif prim_type == Primitive.PrimitiveType.POLYGON:
-            return Polygon(msg)
+            return Polygon(self.msg)
         elif prim_type == Primitive.PrimitiveType.PATH:
-            return Path(msg)
+            return Path(self.msg)
         elif prim_type == Primitive.PrimitiveType.BONDWIRE:
-            return Bondwire(msg)
-        else:
-            return None
+            return Bondwire(self.msg)
+        elif prim_type == Primitive.PrimitiveType.TEXT:
+            return Text(self.msg)
+        elif prim_type == Primitive.PrimitiveType.CIRCLE:
+            return Circle(self.msg)
 
     @property
     def primitive_type(self):
@@ -146,7 +156,7 @@ class Primitive(conn_obj.ConnObj):
             Layer that the primitive is on.
         """
         layer_msg = self.__stub.GetLayer(self.msg)
-        return Layer._create(layer_msg)
+        return Layer(layer_msg).cast()
 
     @layer.setter
     def layer(self, layer):
@@ -214,7 +224,7 @@ class Primitive(conn_obj.ConnObj):
         list[Primitive]
             List of void primitive objects inside the primitive.
         """
-        return [Primitive._create(msg) for msg in self.__stub.Voids(self.msg).items]
+        return [Primitive(msg).cast() for msg in self.__stub.Voids(self.msg).items]
 
     @property
     def owner(self):
@@ -226,7 +236,7 @@ class Primitive(conn_obj.ConnObj):
         Primitive
             Owner of the primitive object.
         """
-        return Primitive._create(self.__stub.GetOwner(self.msg))
+        return Primitive(self.__stub.GetOwner(self.msg)).cast()
 
     @property
     def is_parameterized(self):
@@ -1544,7 +1554,7 @@ class Bondwire(Primitive):
             self.__stub.GetStartElevation(
                 _BondwireQueryBuilder.get_elevation_message(self, start_context)
             )
-        )
+        ).cast()
 
     def set_start_elevation(self, start_context, layer):
         """Set the start elevation of a bondwire.
@@ -1577,7 +1587,7 @@ class Bondwire(Primitive):
             self.__stub.GetEndElevation(
                 _BondwireQueryBuilder.get_elevation_message(self, end_context)
             )
-        )
+        ).cast()
 
     def set_end_elevation(self, end_context, layer):
         """Set the end elevation of a bondwire.
@@ -1908,8 +1918,8 @@ class PadstackInstance(Primitive):
         """
         params = self.__stub.GetLayerRange(self.msg)
         return (
-            Layer(params.top_layer),
-            Layer(params.bottom_layer),
+            Layer(params.top_layer).cast(),
+            Layer(params.bottom_layer).cast(),
         )
 
     def set_layer_range(self, top_layer, bottom_layer):
@@ -1935,7 +1945,7 @@ class PadstackInstance(Primitive):
         :class:`Layer <ansys.edb.layer.Layer>`
             SolderBall Layer of PadstackInst.
         """
-        return Layer(self.__stub.GetSolderBallLayer(self.msg))
+        return Layer(self.__stub.GetSolderBallLayer(self.msg)).cast()
 
     @solderball_layer.setter
     def solderball_layer(self, solderball_layer):
@@ -2078,7 +2088,7 @@ class PadstackInstance(Primitive):
         )
 
         return (
-            Layer(params.drill_to_layer),
+            Layer(params.drill_to_layer).cast(),
             Value(params.offset),
             Value(params.diameter),
         )

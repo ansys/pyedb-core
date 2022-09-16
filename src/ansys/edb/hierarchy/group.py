@@ -1,5 +1,6 @@
 """Group."""
 
+from ansys.api.edb.v1.group_pb2 import GroupTypeMessage
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 
 from ansys.edb.core import conn_obj, messages
@@ -13,6 +14,28 @@ class Group(HierarchyObj):
 
     __stub: GroupServiceStub = StubAccessor(StubType.group)
     layout_obj_type = LayoutObjType.GROUP
+
+    def cast(self):
+        """Cast the group object to correct concrete type.
+
+        Returns
+        -------
+        Group
+        """
+        from ansys.edb.hierarchy import ComponentGroup, Structure3D, ViaGroup
+
+        if self.is_null():
+            return
+
+        group_type = self.__stub.GetGroupType(self.msg).group_type
+        if group_type == GroupTypeMessage.GroupType.GROUP:
+            return Group(self.msg)
+        elif group_type == GroupTypeMessage.GroupType.COMPONENT:
+            return ComponentGroup(self.msg)
+        elif group_type == GroupTypeMessage.GroupType.STRUCTURE_3D:
+            return Structure3D(self.msg)
+        elif group_type == GroupTypeMessage.GroupType.VIA_GROUP:
+            return ViaGroup(self.msg)
 
     @classmethod
     def create(cls, layout, name):
@@ -42,7 +65,9 @@ class Group(HierarchyObj):
         -------
         Group
         """
-        return Group(cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name)))
+        return Group(
+            cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name))
+        ).cast()
 
     def add_member(self, member):
         """Add an object to the group.

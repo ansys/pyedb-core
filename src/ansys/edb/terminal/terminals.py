@@ -142,7 +142,7 @@ class PadEdge(Edge):
         -------
         Layer
         """
-        return Layer(self._params.layer.id)
+        return Layer(self._params.layer.id).cast()
 
     @property
     def arc(self):
@@ -183,7 +183,7 @@ class PrimitiveEdge(Edge):
         -------
         Primitive
         """
-        return primitive.Primitive(self._params.primitive)
+        return primitive.Primitive(self._params.primitive).cast()
 
     @property
     def point(self):
@@ -301,7 +301,7 @@ class Terminal(conn_obj.ConnObj):
         -------
         Layer
         """
-        return Layer(self._params.ref_layer)
+        return Layer(self._params.ref_layer).cast()
 
     @reference_layer.setter
     def reference_layer(self, value):
@@ -834,7 +834,7 @@ class PointTerminal(Terminal):
             Value(res.point.x),
             Value(res.point.y),
         )
-        layer = Layer(res.layer.id)
+        layer = Layer(res.layer.id).cast()
         return layer, point
 
     @property
@@ -909,7 +909,7 @@ class PadstackInstanceTerminal(Terminal):
         """
         res = self.__stub.GetParameters(self.msg)
         padstack_instance = primitive.PadstackInstance(res.padstack_instance)
-        layer = Layer(res.layer)
+        layer = Layer(res.layer).cast()
         return padstack_instance, layer
 
     @params.setter
@@ -1002,7 +1002,7 @@ class PinGroupTerminal(Terminal):
         -------
         Layer
         """
-        return Layer(self.__stub.GetLayer(self.msg))
+        return Layer(self.__stub.GetLayer(self.msg)).cast()
 
     @layer.setter
     def layer(self, value):

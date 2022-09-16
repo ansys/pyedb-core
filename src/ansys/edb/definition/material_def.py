@@ -17,23 +17,6 @@ class ThermalModifier(ObjBase):
     """Class representing a thermal modifier model."""
 
 
-class MaterialProperty(Enum):
-    """Enum representing property types."""
-
-    PERMITTIVITY = pb.PERMITTIVITY
-    PERMEABILITY = pb.PERMEABILITY
-    CONDUCTIVITY = pb.CONDUCTIVITY
-    DIELECTRIC_LOSS_TANGENT = pb.DIELECTRIC_LOSS_TANGENT
-    MAGNETIC_LOSS_TANGENT = pb.MAGNETIC_LOSS_TANGENT
-    THERMAL_CONDUCTIVITY = pb.THERMAL_CONDUCTIVITY
-    MASS_DENSITY = pb.MASS_DENSITY
-    SPECIFIC_HEAT = pb.SPECIFIC_HEAT
-    YOUNGS_MODULUS = pb.YOUNGS_MODULUS
-    POISSONS_RATIO = pb.POISSONS_RATIO
-    THERMAL_EXPANSION_COEFFICIENT = pb.THERMAL_EXPANSION_COEFFICIENT
-    INVALID_PROPERTY = pb.INVALID_PROPERTY
-
-
 class _QueryBuilder:
     @staticmethod
     def create(database, name, **kwargs):
@@ -117,6 +100,48 @@ class _QueryBuilder:
 class MaterialDef(ObjBase):
     """Class representing a material definition."""
 
+    class MaterialProperty(Enum):
+        """Enum representing property types.
+
+        - PERMITTIVITY
+           Permittivity property.
+        - PERMEABILITY
+           Permeability property.
+        - CONDUCTIVITY
+           Conductivity property.
+        - DIELECTRIC_LOSS_TANGENT
+           Dielectric loss tangent property.
+        - MAGNETIC_LOSS_TANGENT
+           Magnetic loss tangent property.
+        - THERMAL_CONDUCTIVITY
+           Thermal conductivity property.
+        - MASS_DENSITY
+           Mass density property.
+        - SPECIFIC_HEAT
+           Specific Heat property.
+        - YOUNGS_MODULUS
+           Youngs Modulus property.
+        - POISSONS_RATIO
+           Poissons Ratio property.
+        - THERMAL_EXPANSION_COEFFICIENT
+           Thermal expansion coefficient property.
+        - INVALID_PROPERTY
+           Invalid property.
+        """
+
+        PERMITTIVITY = pb.PERMITTIVITY
+        PERMEABILITY = pb.PERMEABILITY
+        CONDUCTIVITY = pb.CONDUCTIVITY
+        DIELECTRIC_LOSS_TANGENT = pb.DIELECTRIC_LOSS_TANGENT
+        MAGNETIC_LOSS_TANGENT = pb.MAGNETIC_LOSS_TANGENT
+        THERMAL_CONDUCTIVITY = pb.THERMAL_CONDUCTIVITY
+        MASS_DENSITY = pb.MASS_DENSITY
+        SPECIFIC_HEAT = pb.SPECIFIC_HEAT
+        YOUNGS_MODULUS = pb.YOUNGS_MODULUS
+        POISSONS_RATIO = pb.POISSONS_RATIO
+        THERMAL_EXPANSION_COEFFICIENT = pb.THERMAL_EXPANSION_COEFFICIENT
+        INVALID_PROPERTY = pb.INVALID_PROPERTY
+
     __stub: MaterialDefServiceStub = StubAccessor(StubType.material)
 
     @classmethod
@@ -180,7 +205,7 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property : MaterialProperty
+        material_property : :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
         value : :class:`Value <ansys.edb.utility.Value>`
             Property value returned.
@@ -200,7 +225,7 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property : MaterialProperty
+        material_property : :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
         component_id : int, optional
             Component id.
@@ -225,7 +250,7 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        list [MaterialProperty]
+        list [:class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`]
             List with Material Properties of the material definition.
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
@@ -236,7 +261,7 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property : MaterialProperty
+        material_property : :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
         """
         self.__stub.RemoveProperty(
@@ -262,7 +287,7 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        DielectricMaterialModel
+        :class:`DielectricMaterialModel <ansys.edb.definition.material_def.DielectricMaterialModel>`
             Dielectric material model of the material definition.
         """
         return DielectricMaterialModel(
@@ -275,7 +300,7 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        dielectric : DielectricMaterialModel
+        dielectric : :class:`DielectricMaterialModel <ansys.edb.definition.material_def.DielectricMaterialModel>`
             Dielectric material model to be set to the material definition.
         """
         self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
@@ -285,7 +310,8 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property_id : MaterialProperty
+        material_property_id : \
+        :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
 
         Returns
@@ -306,7 +332,8 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property_id : MaterialProperty
+        material_property_id : \
+        :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
 
         Returns
@@ -325,7 +352,8 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property_id : MaterialProperty
+        material_property_id : \
+        :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
         thermal_modifier : ThermalModifier
             Thermal modifier to be set to the material definition.
@@ -341,14 +369,15 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property_id : MaterialProperty
+        material_property_id : \
+        :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
         component_id : int
             Component id.
 
         Returns
         -------
-        ThermalModifier
+        :class:`ThermalModifier <ansys.edb.definition.material_def.ThermalModifier>`
             Anisotropic thermal modifier of the material definition.
         """
         return ThermalModifier(
@@ -366,11 +395,12 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property_id : MaterialProperty
+        material_property_id : \
+        :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
             Property id.
         component_id : int
             Component id
-        thermal_modifier : ThermalModifier
+        thermal_modifier : :class:`ThermalModifier <ansys.edb.definition.material_def.ThermalModifier>`
             Anisotropic thermal modifier to be set to the material definition
         """
         self.__stub.SetAnisotropicThermalModifier(

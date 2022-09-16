@@ -153,14 +153,12 @@ def _to_rlc(message):
     -------
     Rlc
     """
-    if "msg" in message:
-        rlc_msg = message["msg"]
-        return utility.Rlc(
-            utility.Value(rlc_msg.r),
-            rlc_msg.r_enabled.value,
-            utility.Value(rlc_msg.l),
-            rlc_msg.l_enabled.value,
-            utility.Value(rlc_msg.c),
-            rlc_msg.c_enabled.value,
-            rlc_msg.is_parallel.value,
-        )
+    return utility.Rlc(
+        utility.Value(message.r),
+        message.r_enabled.value,
+        utility.Value(message.l),
+        message.l_enabled.value,
+        utility.Value(message.c),
+        message.c_enabled.value,
+        message.is_parallel.value,
+    )

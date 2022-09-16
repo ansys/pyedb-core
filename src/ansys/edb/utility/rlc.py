@@ -32,7 +32,7 @@ class Rlc:
         l_enabled=False,
         c=Value(0),
         c_enabled=False,
-        is_parallel=False,
+        is_parallel=True,
     ):
         """Construct a Rlc object using given values.
 

@@ -72,7 +72,7 @@ class PinGroup(ObjBase):
 
     @property
     def name(self):
-        """:obj:`str`: Name of the object.
+        """:obj:`str`: Name of the pin group.
 
         Read-Only.
         """

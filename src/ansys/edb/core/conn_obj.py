@@ -68,7 +68,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @classmethod
     def find_by_id(cls, layout, uid):
-        """Find a :term:`Connectable` object by Database id.
+        """Find a :term:`Connectable` object by Database ID.
 
         Parameters
         ----------

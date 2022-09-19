@@ -47,7 +47,7 @@ class ComponentGroup(Group):
         name : str
             Name of the component group to be created.
         comp_name : str
-            Name of the :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>` the component group \
+            Name of the :class:`ComponentDef <ansys.edb.definition.ComponentDef>` the component group \
             refers to.
 
         Returns
@@ -61,56 +61,30 @@ class ComponentGroup(Group):
 
     @property
     def num_pins(self):
-        """Get the number of pins in the component group.
+        """:obj:`int`: Number of pins in the component group.
 
-        Returns
-        -------
-        int
+        Read-Only.
         """
         return self.__stub.GetNumberOfPins(self.msg).value
 
     @property
     def component_property(self):
-        """Get the component property of the component group.
-
-        This property can also be used to set the component property.
-
-        Returns
-        -------
-        ComponentProperty
-        """
+        """:obj:`ComponentProperty`: Component property of the component group."""
         return self.__stub.GetComponentProperty(self.msg)
 
     @component_property.setter
     def component_property(self, value):
-        """Set the component property on the component group.
-
-        Parameters
-        ----------
-        value : ComponentProperty
-        """
+        """Set the component property on the component group."""
         self.__stub.SetComponentProperty(messages.point_property_message(self, value))
 
     @property
     def component_type(self):
-        """Get the component type of the component group.
-
-        This property can also be used to set the component type.
-
-        Returns
-        -------
-        ComponentType
-        """
+        """:obj:`ComponentType`: Component type of the component group."""
         return ComponentType(self.__stub.GetComponentType(self.msg).comp_type)
 
     @component_type.setter
     def component_type(self, value):
-        """Set the component type on the component group.
-
-        Parameters
-        ----------
-        value : ComponentType
-        """
+        """Set the component type on the component group."""
         self.__stub.SetComponentType(messages.set_component_group_type_message(self, value))
 
     @classmethod
@@ -122,7 +96,7 @@ class ComponentGroup(Group):
         layout : :class:`Layout <ansys.edb.layout.Layout>`
             Layout to search the component group(s) in.
         comp_def_name : str
-            Name of the :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>`.
+            Name of the :class:`ComponentDef <ansys.edb.definition.ComponentDef>`.
 
         Returns
         -------

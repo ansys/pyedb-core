@@ -44,21 +44,17 @@ class LayoutObj(ObjBase):
 
     @property
     def obj_type(self):
-        """Get the layout object type.
+        """:class:`LayoutObjType <ansys.edb.edb_defs.LayoutObjType>`: Layout object type.
 
-        Returns
-        -------
-            :class:`LayoutObjType <ansys.edb.edb_defs.LayoutObjType>`
+        Read-Only.
         """
         return self.layout_obj_type
 
     @property
     def layout(self):
-        """Get the Layout of the layout object.
+        """:class:`Layout <ansys.edb.layout.Layout>`: Owning layout of the object.
 
-        Returns
-        -------
-            :class:`Layout <ansys.edb.layout.Layout>`
+        Read-Only.
         """
         return layout.Layout(
             self.__stub.GetLayout(_QueryBuilder.layout_obj_target_msg(self, self.layout_obj_type))

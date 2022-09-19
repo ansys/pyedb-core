@@ -48,7 +48,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
             Layout that owns the cell instance.
         name : str
             Name of the cell instance to be created.
-        ref : :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>`
+        ref : :class:`ComponentDef <ansys.edb.definition.ComponentDef>`
             The component this cell instance refers to.
 
         Returns
@@ -64,7 +64,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @classmethod
     def find(cls, layout, name):
-        """Find a cell instance in layout.
+        """Find a cell instance in layout by name.
 
         Parameters
         ----------
@@ -84,23 +84,18 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def reference_layout(self):
-        """Get the reference layout of the cell instance.
+        """:class:`Layout <ansys.edb.layout.Layout>`: Reference layout of the cell instance.
 
-        Returns
-        -------
-        :class:`Layout <ansys.edb.layout.Layout>`
-            Layout that the cell instance refers to.
+        Read-Only.
         """
         return layout.Layout(self.__stub.GetReferenceLayout(self.msg))
 
     @property
     def term_instances(self):
-        """Get the list of terminal instances associated with this cell instance.
+        """:obj:`list` of :class:`TerminalInstances <ansys.edb.terminal.TerminalInstances>`: List of terminal \
+        instances associated with this cell instance.
 
-        Returns
-        -------
-        list[:class:`TerminalInstance <ansys.edb.terminal.TerminalInstances>`]
-            List of terminal instances.
+        Read-Only.
         """
         from ansys.edb.terminal import TerminalInstance
 
@@ -109,36 +104,22 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def placement_3d(self):
-        """Get if cell instance is 3D placed in the owning layout.
+        """:obj:`bool`: Determine if this cell instance is 3D placed in the owning layout.
 
-        This property can also be used to set 3D placement.
-
-        Returns
-        -------
-        bool
-            True if 3D placed, False otherwise.
+        If True, transformation can be set using :obj:`transform3d`.
         """
         return self.__stub.GetIs3DPlacement(self.msg).value
 
     @placement_3d.setter
     def placement_3d(self, value):
-        """Set the cell instance as 3D placed in the owning layout.
-
-        Parameters
-        ----------
-        value : bool
-        """
+        """Set the cell instance as 3D placed in the owning layout."""
         self.__stub.Set3DPlacement(messages.bool_property_message(self, value))
 
     @property
     def transform3d(self):
-        """Get the 3D transformation of this cell instance inside the owning layout.
+        """:class:`Transform3D <ansys.edb.utility.Transform3D>`: 3D transformation information of this cell instance.
 
-        This property can also be used to set the 3D transform.
-
-        Returns
-        -------
-        :class:`Transform3D <ansys.edb.utility.transform3d.Transform3D>`
+        :obj:`placement_3d` must be True for the transformation to be applied.
         """
         t3d_message = self.__stub.Get3DTransform(self.msg)
         return Transform3D(
@@ -151,12 +132,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @transform3d.setter
     def transform3d(self, value):
-        """Set the 3D transformation for this cell instance. The cell instance must be 3D placed.
-
-        Parameters
-        ----------
-        value : :class:`Transform3D <ansys.edb.utility.transform3d.Transform3D>`
-        """
+        """Set the 3D transformation for this cell instance. The cell instance must be 3D placed."""
         self.__stub.Set3DTransform(messages.transform3d_property_message(self, value))
 
     def get_parameter_override(self, param_name):
@@ -169,7 +145,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Returns
         -------
-        :class:`Value <ansys.edb.utility.value.Value>`
+        :class:`Value <ansys.edb.utility.Value>`
             Override value for the parameter.
         """
         return Value(
@@ -183,7 +159,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         ----------
         param_name : str
             Name of the parameter to override.
-        param_value : :class:`Value <ansys.edb.utility.value.Value>`
+        param_value : :class:`Value <ansys.edb.utility.Value>`
             Value to override with.
         """
         self.__stub.SetParameterOverride(

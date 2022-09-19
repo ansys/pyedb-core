@@ -24,3 +24,4 @@ Classes
    PackageDef
    PadstackDef
    PadstackDefData
+   ComponentModel

@@ -14,14 +14,7 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def transform(self):
-        """Get the transformation information of the object.
-
-        This property can also be used to set the transform.
-
-        Returns
-        -------
-        :class:`Transform <ansys.edb.utility.transform.Transform>`
-        """
+        """:class:`Transform <ansys.edb.utility.Transform>`: Transformation information of the object."""
         transform_msg = self.__stub.GetTransform(self.msg)
         return Transform(
             transform_msg.scale,
@@ -33,119 +26,66 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @transform.setter
     def transform(self, value):
-        """Set transform.
-
-        Parameters
-        ----------
-        value : :class:`Transform <ansys.edb.utility.transform.Transform>`
-        """
+        """Set transform."""
         self.__stub.SetTransform(messages.transform_property_message(self, value))
 
     @property
     def name(self):
-        """Get name of the hierarchy object.
-
-        This property can also be used to set the name.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str`: Name of the object."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, value):
-        """Set name of the hierarchy object.
-
-        Parameters
-        ----------
-        value : str
-        """
+        """Set name of the object."""
         self.__stub.SetName(messages.edb_obj_name_message(self, value))
 
     @property
-    def component(self):
-        """Get the component definition for this hierarchy object.
+    def component_def(self):
+        """:class:`ComponentDef <ansys.edb.definition.ComponentDef>`: Component definition for this \
+        object if it exists, None otherwise.
 
-        Returns
-        -------
-        :class:`ComponentDef <ansys.edb.definition.component_def.ComponentDef>`
-            Component definition if it exists, None otherwise.
+        Read-Only.
         """
         return component_def.ComponentDef(self.__stub.GetComponent(self.msg))
 
     @property
     def placement_layer(self):
-        """Get placement layer for this hierarchy object.
-
-        This property can also be used to set the placement layer.
-
-        Returns
-        -------
-        :class:`Layer <ansys.edb.layer.Layer>`
-        """
+        """:class:`Layer <ansys.edb.layer.Layer>`: Placement layer for this object."""
         return Layer(self.__stub.GetPlacementLayer(self.msg))
 
     @placement_layer.setter
     def placement_layer(self, value):
-        """Set placement layer.
-
-        Parameters
-        ----------
-        value : :class:`Layer <ansys.edb.layer.Layer>`
-        """
+        """Set placement layer."""
         self.__stub.SetPlacementLayer(messages.pointer_property_message(self, value))
 
     @property
     def location(self):
-        """Get the location on placement layer.
-
-        This property can also be used to set the location.
-
-        Returns
-        -------
-        tuple[:class:`Value <ansys.edb.utility.value.Value>`]
-            The [x, y] location of the object on placement layer.
-        """
+        """:obj:`tuple` (:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`): \
+         [x, y] location of the object on the :obj:`placement_layer`."""
         pnt_msg = self.__stub.GetLocation(self.msg)
         return [Value(pnt_msg.x), Value(pnt_msg.y)]
 
     @location.setter
     def location(self, value):
-        """Set the location on placement layer.
-
-        Parameters
-        ----------
-        value : tuple[:class:`Value <ansys.edb.utility.value.Value>`]
-        """
+        """Set the location on placement layer."""
         self.__stub.SetLocation(messages.point_property_message(self, value))
 
     @property
     def solve_independent_preference(self):
-        """Get whether the object is assigned to solve independent of its parent context.
+        """:obj:`bool`: Determine whether the object is assigned to solve independent of its parent context.
 
-        This property can also be used to set the solve-independent preference.
-
-        Returns
-        -------
-        bool
-            True if solving independently, False if embedded.
+        True if solving independently, False if embedded.
 
         Notes
         -----
-        For a :class:`ComponentModel <ansys.edb.definition.component_model.ComponentModel>`, this flag indicates if the
+        For a :class:`ComponentModel <ansys.edb.definition.ComponentModel>`, this flag indicates if the
         model is embedded with the field-solver or not, when applicable.
-        For a :class:`CellInstance <ansys.edb.hierarchy.cell_instance.CellInstance>`, it indicates if the design's
+        For a :class:`CellInstance <ansys.edb.hierarchy.CellInstance>`, it indicates if the design's
         geometry is flattened/meshed with the parent or not, when applicable.
         """
         return self.__stub.GetSolveIndependentPreference(self.msg).value
 
     @solve_independent_preference.setter
     def solve_independent_preference(self, value):
-        """Set solve independent preference.
-
-        Parameters
-        ----------
-        value : bool
-        """
+        """Set solve independent preference."""
         self.__stub.SetSolveIndependentPreference(messages.bool_property_message(self, value))

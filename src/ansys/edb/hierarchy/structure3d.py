@@ -52,8 +52,6 @@ class Structure3D(Group):
     def get_material(self, evaluate):
         """Get material for the structure3d.
 
-        This property can also be used to set the material.
-
         Parameters
         ----------
         evaluate : bool
@@ -76,46 +74,22 @@ class Structure3D(Group):
 
     @property
     def thickness(self):
-        """Get thickness for the structure3d.
-
-        This property can also be used to set the thickness.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.value.Value>`
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Thickness for the structure3d."""
         return Value(self.__stub.GetThickness(self.msg))
 
     @thickness.setter
     def thickness(self, value):
-        """Set thickness for the structure3d.
-
-        Parameters
-        ----------
-        value : :class:`Value <ansys.edb.utility.value.Value>`
-        """
+        """Set thickness for the structure3d."""
         self.__stub.SetThickness(
             messages.value_property_message(self, messages.value_message(value))
         )
 
     @property
     def mesh_closure(self):
-        """Get mesh closure property for the structure3d.
-
-        This property can also be used to set mesh closure.
-
-        Returns
-        -------
-        MeshClosure
-        """
+        """:obj:`MeshClosure`: Mesh closure property for the structure3d."""
         return MeshClosure(self.__stub.GetMeshClosureProp(self.msg).closure_type)
 
     @mesh_closure.setter
     def mesh_closure(self, value):
-        """Set mesh closure property for the structure3d.
-
-        Parameters
-        ----------
-        value : MeshClosure
-        """
+        """Set mesh closure property for the structure3d."""
         self.__stub.SetMeshClosureProp(messages.set_closure_message(self, value))

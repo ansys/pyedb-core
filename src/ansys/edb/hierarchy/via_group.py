@@ -15,7 +15,7 @@ class ViaGroup(Group):
 
     @classmethod
     def create_with_primitives(cls, layout, primitives, is_persistent):
-        """Create a via group with primitives.
+        """Create a via group(s) with primitives.
 
         Parameters
         ----------
@@ -86,30 +86,24 @@ class ViaGroup(Group):
 
     @property
     def outline(self):
-        """Get the via group outline.
+        """:class:`PolygonData <ansys.edb.polygon_data.PolygonData>`: Via group outline.
 
-        Returns
-        -------
-        :class:`PolygonData <ansys.edb.polygon_data.PolygonData>`
+        Read-Only.
         """
         return PolygonData(self.__stub.GetOutline(self.msg))
 
     @property
     def conductor_percentage(self):
-        """Get the conductor percentage of the via group.
+        """:obj:`float`: Conductor percentage of the via group.
 
-        Returns
-        -------
-        double
+        Read-Only.
         """
         return self.__stub.GetConductorPercentage(self.msg).value
 
     @property
     def persistent(self):
-        """Get if the primitives in the via group are persistent.
+        """:obj:`bool`: Determine whether the primitives in the via group are persistent.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsPersistent(self.msg).value

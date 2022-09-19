@@ -21,7 +21,7 @@ class Group(HierarchyObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
-           Layout that owns the group.
+            Layout that owns the group.
         name : str
             Name of group to be created.
 
@@ -55,7 +55,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        member : :class:`ConnObj <ansys.edb.core.ConnObj>`
+        member : :term:`Connectable`
             Object to be added to the group.
         """
         self.__stub.AddMember(messages.group_modify_member_message(self, member))
@@ -65,7 +65,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        member : :class:`ConnObj <ansys.edb.core.ConnObj>`
+        member : :term:`Connectable`
             Object to be removed from the group.
         """
         self.__stub.RemoveMember(messages.group_modify_member_message(self, member))
@@ -82,12 +82,9 @@ class Group(HierarchyObj):
 
     @property
     def members(self):
-        """Get the list of group members.
+        """:obj:`list` of :term:`Connectables <Connectable>`: List of all the group members.
 
-        Returns
-        -------
-        list[:class:`ConnObj <ansys.edb.core.ConnObj>`]
-            Members of the group.
+        Read-Only.
         """
         objs = self.__stub.GetMembers(self.msg).items
         return [conn_obj.ConnObj(co) for co in objs]

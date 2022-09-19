@@ -72,22 +72,17 @@ class PinGroup(ObjBase):
 
     @property
     def name(self):
-        """Get the name.
+        """:obj:`str`: Name of the object.
 
-        Returns
-        -------
-        str
+        Read-Only.
         """
         return self.__stub.GetName(self.msg).value
 
     @property
     def pins(self):
-        """Get the list of padstack instances.
+        """:obj:`list` of :class:`PadstackInstances <ansys.edb.primitive.PadstackInstance>`: List of padstack instances.
 
-        Returns
-        -------
-        list[:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`]
-            Get all the pins in this pin group.
+        Read-Only.
         """
         ps = self.__stub.GetPins(self.msg).items
         return [PadstackInstance(p) for p in ps]

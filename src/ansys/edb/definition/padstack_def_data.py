@@ -52,8 +52,9 @@ class _PadstackDefDataQueryBuilder:
 
     @staticmethod
     def padstack_def_data_get_pad_parameters_parameters_message(
-        geometry_type: PadstackDefData.PadGeometryType, sizes, offset_x, offset_y, rotation
+        geometry_type, sizes, offset_x, offset_y, rotation
     ):
+        print(geometry_type)
         return pb.PadstackDefDataGetPadParametersParametersMessage(
             geometry_type=geometry_type.value,
             sizes=[messages.value_message(val) for val in sizes],
@@ -64,43 +65,35 @@ class _PadstackDefDataQueryBuilder:
 
     @staticmethod
     def padstack_def_data_set_pad_parameters_message(
-        target, layer, pad_type, type_geom, sizes, offset_x, offset_y, rotation
+        target, layer, pad_type, offset_x, offset_y, rotation, type_geom, sizes, fp
     ):
         p1 = _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
-            target, layer, pad_type
+            target=target, layer=layer, pad_type=pad_type
         )
-        p2 = _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_parameters_message(
-            type_geom, sizes, offset_x, offset_y, rotation
-        )
-        return pb.PadstackDefDataSetPadParametersMessage(
-            params1=p1,
-            params2=p2,
-        )
-
-    @staticmethod
-    def padstack_def_data_get_polygonal_pad_parameters_parameters_message(
-        fp, offset_x, offset_y, rotation
-    ):
-        return pb.PadstackDefDataGetPolygonalPadParametersParametersMessage(
-            fp=fp.msg,
-            offset_x=offset_x,
-            offset_y=offset_y,
-            rotation=rotation,
-        )
-
-    @staticmethod
-    def padstack_def_data_set_polygonal_pad_parameters_message(
-        target, layer, pad_type, fp, offset_x, offset_y, rotation
-    ):
-        return pb.PadstackDefDataSetPolygonalPadParametersMessage(
-            params1=_PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
-                target, layer, pad_type
-            ),
-            fp=messages.polygon_data_message(fp),
-            offset_x=messages.value_message(offset_x),
-            offset_y=messages.value_message(offset_y),
-            rotation=messages.value_message(rotation),
-        )
+        if fp is None:
+            p2 = _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_parameters_message(
+                geometry_type=type_geom,
+                sizes=sizes,
+                offset_x=offset_x,
+                offset_y=offset_y,
+                rotation=rotation,
+            )
+            return pb.PadstackDefDataPadParametersSetMessage(
+                generic=pb.PadstackDefDataSetPadParametersMessage(
+                    params1=p1,
+                    params2=p2,
+                )
+            )
+        else:
+            return pb.PadstackDefDataPadParametersSetMessage(
+                polygon=pb.PadstackDefDataSetPolygonalPadParametersMessage(
+                    params1=p1,
+                    fp=messages.polygon_data_message(fp),
+                    offset_x=messages.value_message(offset_x),
+                    offset_y=messages.value_message(offset_y),
+                    rotation=messages.value_message(rotation),
+                )
+            )
 
     @staticmethod
     def padstack_def_data_padstack_hole_range_message(hole_range):
@@ -365,35 +358,51 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple[
-            PadstackDefData.PadGeometryType,
-            List[:class:`Value <ansys.edb.utility.Value>`],
+        tuple[:class:`PadGeometryType <ansys.edb.definition.padstack_def_data.PadstackDefData.PadGeometryType>`,
+            list[:class:`Value <ansys.edb.utility.Value>`],
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
-            :class:`Value <ansys.edb.utility.Value>`
-        ]
+            :class:`Value <ansys.edb.utility.Value>`]
+            or if geometry shape is polygon then
+        tuple[:class:`PolygonData <ansys.edb.geometry.PolygonData>`,
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`]
             Returns a tuple of the following format:
             (pad_type, sizes, offset_x, offset_y, rotation)
+            or accordingly
+            (fp, offset_x, offset_y, rotation)
             pad_type : Pad type.
             sizes : Pad parameters.
             offset_x : X offset.
             offset_y : Y offset.
             rotation : Rotation.
+            fp : Polygon geometry.
         """
-        params = self.__stub.GetPadParameters(
+        message = self.__stub.GetPadParameters(
             _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
                 self, layer, pad_type
             )
         )
-        return (
-            PadstackDefData.PadGeometryType(params.geometry_type),
-            [Value(s) for s in params.sizes],
-            Value(params.offset_x),
-            Value(params.offset_y),
-            Value(params.rotation),
-        )
+        if message.HasField("generic"):
+            return (
+                PadstackDefData.PadGeometryType(message.generic.geometry_type),
+                [Value(s) for s in message.generic.sizes],
+                Value(message.generic.offset_x),
+                Value(message.generic.offset_y),
+                Value(message.generic.rotation),
+            )
+        else:
+            return (
+                message.polygon.fp,
+                Value(message.polygon.offset_x),
+                Value(message.polygon.offset_y),
+                Value(message.polygon.rotation),
+            )
 
-    def set_pad_parameters(self, layer, pad_type, type_geom, sizes, offset_x, offset_y, rotation):
+    def set_pad_parameters(
+        self, layer, pad_type, offset_x, offset_y, rotation, type_geom=None, sizes=None, fp=None
+    ):
         """
         Set a pad's parameters by layer name and pad type in its original value in database.
 
@@ -403,57 +412,23 @@ class PadstackDefData(ObjBase):
             Layer name.
         pad_type : PadstackDefData.PadType
             Pad type.
-        type_geom : PadstackDefData.PadGeometryType
-            Pad geometry type.
-        sizes : List[:class:`Value <ansys.edb.utility.Value>`]
-            Pad parameters.
         offset_x : :class:`Value <ansys.edb.utility.Value>`
             X offset.
         offset_y : :class:`Value <ansys.edb.utility.Value>`
             Y offset.
         rotation : :class:`Value <ansys.edb.utility.Value>`
             Rotation.
+        type_geom : PadstackDefData.PadGeometryType
+            Pad geometry type.
+        sizes : List[:class:`Value <ansys.edb.utility.Value>`]
+            Pad parameters.
+        fp : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
+            Polygon geometry.
         """
         self.__stub.SetPadParameters(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_pad_parameters_message(
-                self, layer, pad_type, type_geom, sizes, offset_x, offset_y, rotation
+                self, layer, pad_type, offset_x, offset_y, rotation, type_geom, sizes, fp
             )
-        )
-
-    def get_polygonal_pad_parameters(self, layer, pad_type):
-        """
-        Get polygonal pad parameters by layer name and pad type in its original value in database.
-
-        Parameters
-        ----------
-        layer : Union[str, int]
-        pad_type : PadstackDefData.PadType
-
-        Returns
-        -------
-        tuple[
-            :class:`PolygonData <ansys.edb.geometry.PolygonData>`,
-            :class:`Value <ansys.edb.utility.Value>`,
-            :class:`Value <ansys.edb.utility.Value>`,
-            :class:`Value <ansys.edb.utility.Value>`
-        ]
-            Returns a tuple of the following format:
-            (fp, offset_x, offset_y, rotation)
-            fp : Polygon geometry.
-            offset_x : X offset.
-            offset_y : Y offset.
-            rotation : Rotation.
-        """
-        params = self.__stub.GetPolygonalPadParameters(
-            _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
-                self, layer, pad_type
-            )
-        )
-        return (
-            params.fp,
-            Value(params.offset_x),
-            Value(params.offset_y),
-            Value(params.rotation),
         )
 
     def get_hole_parameters(self):
@@ -477,7 +452,7 @@ class PadstackDefData(ObjBase):
         """
         return self.get_pad_parameters(None, PadstackDefData.PadType.HOLE)
 
-    def set_hole_parameters(self, type_geom, sizes, offset_x, offset_y, rotation):
+    def set_hole_parameters(self, offset_x, offset_y, rotation, type_geom, sizes):
         """
         Set hole parameters.
 
@@ -495,32 +470,7 @@ class PadstackDefData(ObjBase):
             Rotation.
         """
         return self.set_pad_parameters(
-            -1, PadstackDefData.PadType.HOLE, type_geom, sizes, offset_x, offset_y, rotation
-        )
-
-    def set_polygonal_pad_parameters(self, layer, pad_type, fp, offset_x, offset_y, rotation):
-        """
-        Set polygonal pad parameters by layer id and pad type in its original value in database.
-
-        Parameters
-        ----------
-        layer : Union[str, int]
-            Layer id.
-        pad_type : PadstackDefData.PadType
-            Pad type.
-        fp : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
-            Polygon geometry.
-        offset_x : :class:`Value <ansys.edb.utility.Value>`
-            X offset.
-        offset_y : :class:`Value <ansys.edb.utility.Value>`
-            Y offset.
-        rotation : :class:`Value <ansys.edb.utility.Value>`
-            Rotation.
-        """
-        self.__stub.SetPolygonalPadParameters(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_polygonal_pad_parameters_message(
-                self, layer, pad_type, fp, offset_x, offset_y, rotation
-            )
+            -1, PadstackDefData.PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes
         )
 
     @property

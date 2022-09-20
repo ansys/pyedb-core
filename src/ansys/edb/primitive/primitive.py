@@ -22,7 +22,7 @@ from ansys.api.edb.v1 import (
 )
 
 from ansys.edb import hierarchy, terminal
-from ansys.edb.core import conn_obj, messages
+from ansys.edb.core import conn_obj, messages, parser
 from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layer import Layer
@@ -446,6 +446,7 @@ class Rectangle(Primitive):
         return True
 
     @property
+    @parser.to_polygon_data
     def polygon_data(self):
         """Get polygon data of a rectangle.
 
@@ -457,6 +458,7 @@ class Rectangle(Primitive):
         return Rectangle.render(*self.get_parameters())
 
     @classmethod
+    @parser.to_polygon_data
     def render(
         cls,
         rep_type,
@@ -570,6 +572,7 @@ class Circle(Primitive):
         )
 
     @classmethod
+    @parser.to_polygon_data
     def render(cls, center_x, center_y, radius, is_hole):
         """Render a circle.
 
@@ -644,6 +647,7 @@ class Circle(Primitive):
             )
         )
 
+    @parser.to_polygon_data
     def get_polygon_data(self):
         """Get polygon data of a circle.
 
@@ -792,6 +796,7 @@ class Polygon(Primitive):
         )
 
     @property
+    @parser.to_polygon_data
     def polygon_data(self):
         """Get a PolygonData object for this Polygon.
 
@@ -915,6 +920,7 @@ class Path(Primitive):
         )
 
     @classmethod
+    @parser.to_polygon_data
     def render(cls, width, end_cap1, end_cap2, corner_style, path):
         """Render a Path object.
 
@@ -947,6 +953,7 @@ class Path(Primitive):
         )
 
     @property
+    @parser.to_polygon_data
     def center_line(self):
         """Get center line of the path.
 
@@ -1018,7 +1025,7 @@ class Path(Primitive):
             keep_inside : Indicates whether the part of the path inside the polygon is preserved.
         """
         clip_info_msg = self.__stub.GetClipInfo(self.msg)
-        return clip_info_msg.clipping_poly, clip_info_msg.keep_inside
+        return parser.to_polygon_data(clip_info_msg.clipping_poly), clip_info_msg.keep_inside
 
     def set_clip_info(self, clipping_poly, keep_inside=True):
         """Set data used to clip the path.

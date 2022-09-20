@@ -25,6 +25,11 @@ def to_polygon_data_list(fn):
     return _wraps(fn, _to_polygon_data_list)
 
 
+def to_rlc(fn):
+    """Decorate a function that returns a message to return as RLC."""
+    return _wraps(fn, _to_rlc)
+
+
 def to_box(fn):
     """Decorate a function that returns a message to return as (lower_left, upper_right)."""
     return _wraps(fn, _to_box)
@@ -135,3 +140,25 @@ def _to_circle(message):
     """
     if hasattr(message, "center") and hasattr(message, "radius"):
         return _to_point_data(message.center), utility.Value(message.radius)
+
+
+def _to_rlc(message):
+    """Convert message to rlc containing values related to resistance inductance capacitance.
+
+    Parameters
+    ----------
+    message : ansys.api.edb.v1.rlc_pb2.RlcMessage
+
+    Returns
+    -------
+    Rlc
+    """
+    return utility.Rlc(
+        utility.Value(message.r),
+        message.r_enabled.value,
+        utility.Value(message.l),
+        message.l_enabled.value,
+        utility.Value(message.c),
+        message.c_enabled.value,
+        message.is_parallel.value,
+    )

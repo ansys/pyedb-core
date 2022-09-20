@@ -10,18 +10,27 @@ Classes
    :toctree: _autosummary
 
    ApdBondwireDef
-   BondwireDefType
    BondwireDef
    ComponentDef
+   ComponentModel
    ComponentPin
-   NPortComponentModel
+   DielectricMaterialModel
    DynamicLinkComponentModel
    DatasetDef
    Jedec4BondwireDef
    Jedec5BondwireDef
    MaterialDef
-   MaterialProperty
+   NPortComponentModel
    PackageDef
    PadstackDef
    PadstackDefData
-   ComponentModel
+   ThermalModifier
+
+.. autoclass:: ansys.edb.definition.BondwireDef.BondwireDefType
+.. autoclass:: ansys.edb.definition.MaterialDef.MaterialProperty
+.. autoclass:: ansys.edb.definition.PadstackDefData.PadType
+.. autoclass:: ansys.edb.definition.PadstackDefData.PadGeometryType
+.. autoclass:: ansys.edb.definition.PadstackDefData.PadstackHoleRange
+.. autoclass:: ansys.edb.definition.PadstackDefData.SolderballShape
+.. autoclass:: ansys.edb.definition.PadstackDefData.SolderballPlacement
+

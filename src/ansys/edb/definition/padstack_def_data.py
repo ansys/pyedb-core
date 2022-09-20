@@ -164,10 +164,15 @@ class PadstackDefData(ObjBase):
         """Enum representing Pad types.
 
         - REGULAR_PAD
+            Regular pad.
         - ANTI_PAD
+            Anti pad.
         - THERMAL_PAD
+             Thermal pad.
         - HOLE
+            Hole.
         - UNKNOWN_GEOM_TYPE
+            Undefined pad type.
         """
 
         REGULAR_PAD = pb.REGULAR_PAD
@@ -180,17 +185,29 @@ class PadstackDefData(ObjBase):
         """Enum representing Pad Geometry types.
 
         - PADGEOMTYPE_NO_GEOMETRY
+            No geometry.
         - PADGEOMTYPE_CIRCLE
+            Circle shape.
         - PADGEOMTYPE_SQUARE
+            Square shape.
         - PADGEOMTYPE_OVAL
+            Oval shape.
         - PADGEOMTYPE_BULLET
+            Bullet shape.
         - PADGEOMTYPE_NSIDED_POLYGON
+            N-sided polygon.
         - PADGEOMTYPE_POLYGON
+            Polygonal shape.
         - PADGEOMTYPE_ROUND45
+            Round gap with 45 degree thermal ties.
         - PADGEOMTYPE_ROUND90
+            Round gap with 90 degree thermal ties.
         - PADGEOMTYPE_SQUARE45
+            Square gap with 45 degree thermal ties.
         - PADGEOMTYPE_SQUARE90
+            Square gap with 90 degree thermal ties.
         - PADGEOMTYPE_INVALID_GEOMETRY
+            Invalid geometry.
         """
 
         PADGEOMTYPE_NO_GEOMETRY = pb.PADGEOMTYPE_NO_GEOMETRY
@@ -210,10 +227,15 @@ class PadstackDefData(ObjBase):
         """Enum representing Pad Hole ranges.
 
         - THROUGH
+            Hole through all layers of the board.
         - BEGIN_ON_UPPER_PAD
+            Hole from upper pad to the bottom of the board.
         - END_ON_LOWER_PAD
+            Hole from top of board to lower pad.
         - UPPER_PAD_TO_LOWER_PAD
+            Hole from upper pad to lower pad.
         - UNKNOWN_RANGE
+            Undefined hole range.
         """
 
         THROUGH = pb.THROUGH
@@ -226,9 +248,13 @@ class PadstackDefData(ObjBase):
         """Enum representing Solderball shapes.
 
         - NO_SOLDERBALL
+            No solder ball.
         - SOLDERBALL_CYLINDER
+            Cylinder solder ball.
         - SOLDERBALL_SPHEROID
+            Spheroid solder ball.
         - UNKNOWN_SOLDERBALL_SHAPE
+            Undefined solder ball shape.
         """
 
         NO_SOLDERBALL = pb.NO_SOLDERBALL
@@ -240,8 +266,11 @@ class PadstackDefData(ObjBase):
         """Enum representing Solderball placement.
 
         - ABOVE_PADSTACK
+            Solder ball is placed above the padstack.
         - BELOW_PADSTACK
+            Solder ball is placed below the padstack.
         - UNKNOWN_PLACEMENT
+            Undefined solder ball placement type.
         """
 
         ABOVE_PADSTACK = pb.ABOVE_PADSTACK
@@ -613,7 +642,10 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple [:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`]
+        tuple[
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
+        ]
             Returns a tuple of the following format:
             (d1, d2)
             d1 : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
@@ -632,7 +664,10 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        tuple [:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`]
+        tuple[
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
+        ]
             Returns a tuple of the following format:
             (d1, d2)
             d1 : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.

@@ -45,7 +45,7 @@ class NPortComponentModel(ComponentModel):
 
         Parameters
         ----------
-        name: str
+        name : str
             Name of the nport component model.
 
         Returns
@@ -72,7 +72,7 @@ class DynamicLinkComponentModel(ComponentModel):
 
         Parameters
         ----------
-        name: str
+        name : str
             Name of the dynamic link component model.
 
         Returns

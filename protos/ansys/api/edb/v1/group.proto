@@ -28,6 +28,9 @@ service GroupService {
 
   // Get iterable for group members
   rpc GetMembers(EDBObjMessage) returns (EDBObjCollectionMessage) {}
+
+  // Get the type of the group
+  rpc GetGroupType(EDBObjMessage) returns (GroupTypeMessage) {}
 }
 
 message GroupModifyMemberMessage {
@@ -35,3 +38,12 @@ message GroupModifyMemberMessage {
   EDBObjMessage member = 2;
 }
 
+message GroupTypeMessage {
+  enum GroupType {
+    GROUP = 0;
+    COMPONENT = 1;
+    STRUCTURE_3D = 2;
+    VIA_GROUP = 3;
+  }
+  GroupType group_type = 1;
+}

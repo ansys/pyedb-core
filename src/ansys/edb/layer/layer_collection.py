@@ -141,7 +141,7 @@ class LayerCollection(ObjBase):
             add_layer_msg.above_below_msg.CopyFrom(above_below_msg)
         elif add_top is not None:
             add_layer_msg.add_top = add_top
-        return Layer._create(get_layer_collection_stub().AddLayer(add_layer_msg))
+        return Layer(get_layer_collection_stub().AddLayer(add_layer_msg)).cast()
 
     def _add_layer_relative(self, layer, relative_layer_name, add_above):
         """Add a layer above or below another layer."""
@@ -260,17 +260,19 @@ class LayerCollection(ObjBase):
         -------
         Layer
         """
-        return Layer._create(
+        return Layer(
             get_layer_collection_stub().FindByName(
                 layer_collection_pb2.FindLayerByNameMessage(
                     layer_collection=self.msg, name=layer_name
                 )
             )
-        )
+        ).cast()
 
     @staticmethod
     def _get_layer_filter(layer_types):
         """Convert a list of layer types to an integer representation of a layer filter."""
+        if not isinstance(layer_types, list):
+            layer_types = [layer_types]
         layer_filter = 0
         for layer_type in layer_types:
             layer_type_value = layer_type.value
@@ -318,18 +320,18 @@ class LayerCollection(ObjBase):
         )
         response = get_layer_collection_stub().GetTopBottomStackupLayers(request)
         return (
-            Layer._create(response.top_layer),
+            Layer(response.top_layer).cast(),
             response.top_layer_elevation,
-            Layer._create(response.bottom_layer),
+            Layer(response.bottom_layer).cast(),
             response.bottom_layer_elevation,
         )
 
-    def get_layers(self, layer_filter):
+    def get_layers(self, layer_filter=LayerTypeSet.ALL_LAYER_SET):
         """Retrieve a list of layer in the LayerCollection filtered by the given layer filter.
 
         Parameters
         ----------
-        layer_filter : LayerTypeSet, list[LayerType]
+        layer_filter : LayerTypeSet, LayerType, list[LayerType], optional
 
         Returns
         -------
@@ -347,7 +349,7 @@ class LayerCollection(ObjBase):
             )
         )
 
-        return [Layer._create(msg) for msg in response.items]
+        return [Layer(msg).cast() for msg in response.items]
 
     def get_product_property(self, prod_id, attr_it):
         """Get the product property of the layer associated with the given product and attribute ids.

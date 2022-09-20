@@ -1,13 +1,12 @@
 """RLC."""
 
-from ansys.edb.core import ObjBase
 from ansys.edb.utility.value import Value
 
 
-class Rlc(ObjBase):
+class Rlc:
     """Class representing RLC.
 
-    Parameters
+    Attributes
     ----------
     r : str, int, float, complex, Value
         Resistance value. Only used if r_enabled is True
@@ -25,89 +24,89 @@ class Rlc(ObjBase):
         True means r,l,c elements are in parallel. Otherwise they are in series.
     """
 
-    def __init__(self, **kwargs):
-        """Construct a Rlc object using given values."""
-        if "msg" in kwargs:
-            self._msg = kwargs.get("msg")
-        else:
-            self._msg = None
-            self._r = kwargs.get("r", 0)
-            self._l = kwargs.get("l", 0)
-            self._c = kwargs.get("c", 0)
-            self._r_enabled = kwargs.get("r_enabled", False)
-            self._l_enabled = kwargs.get("l_enabled", False)
-            self._c_enabled = kwargs.get("c_enabled", False)
-            self._is_parallel = kwargs.get("is_parallel", True)
+    def __init__(
+        self,
+        r=Value(0),
+        r_enabled=False,
+        l=Value(0),
+        l_enabled=False,
+        c=Value(0),
+        c_enabled=False,
+        is_parallel=True,
+    ):
+        """Construct a Rlc object using given values.
 
-    @property
-    def r(self):
-        """Return resistance value.
-
-        Returns
-        -------
-        Value
-            Resistance value in Ohms
+        Parameters
+        ----------
+        r : str, int, float, complex, Value, optional
+            Resistance value. Only used if r_enabled is True
+        r_enabled : bool, optional
+            Resistance enabled.
+        l : str, int, float, complex, Value, optional
+            Inductance value. Only used if l_enabled is True
+        l_enabled : bool, optional
+            Inductance enabled.
+        c : str, int, float, complex, Value, optional
+            Capacitance value.  Only used if c_enabled is True
+        c_enabled : bool, optional
+            Capacitance enabled.
+        is_parallel : bool, optional
+            True means r,l,c elements are in parallel. Otherwise they are in series.
         """
-        return self._r if self._msg is None else Value(self._msg.r)
+        self.r = r
+        self.l = l
+        self.c = c
+        self.r_enabled = r_enabled
+        self.l_enabled = l_enabled
+        self.c_enabled = c_enabled
+        self.is_parallel = is_parallel
 
-    @property
-    def l(self):
-        """Return induction value.
 
-        Returns
-        -------
-        Value
-            Impedance value in Henries.
+class PinPair:
+    """Class representing PinPair.
+
+    Attributes
+    ----------
+    pin1: str
+        Name of the first pin.
+    pin2: str
+        Name of the second pin.
+    """
+
+    def __init__(self, pin1, pin2):
+        """Construct a pin pair object.
+
+        Parameters
+        ----------
+        pin1: str
+            Name of the first pin.
+        pin2: str
+            Name of the second pin.
         """
-        return self._l if self._msg is None else Value(self._msg.l)
+        self.pin1 = pin1
+        self.pin2 = pin2
 
-    @property
-    def c(self):
-        """Return capacitance value.
 
-        Returns
-        -------
-        Value
-            Capacitance value in Farads.
+class PinPairRlc:
+    """Class representing PinPairRlc.
+
+    Attributes
+    ----------
+    pin_pair : PinPair
+        Pin pair property.
+    rlc : Rlc
+        Rlc value
+    """
+
+    def __init__(self, pin_pair, rlc):
+        """Construct a pin pair rlc object.
+
+        Parameters
+        ----------
+        pin_pair: PinPair
+            Pin pair property.
+        rlc: Rlc
+            Rlc property
         """
-        return self._c if self._msg is None else Value(self._msg.c)
-
-    @property
-    def r_enabled(self):
-        """Return whether resistance is enabled.
-
-        Returns
-        -------
-        bool
-        """
-        return self._r_enabled if self._msg is None else self._msg.r_enabled.value
-
-    @property
-    def l_enabled(self):
-        """Return whether induction is enabled.
-
-        Returns
-        -------
-        bool
-        """
-        return self._l_enabled if self._msg is None else self._msg.l_enabled.value
-
-    @property
-    def c_enabled(self):
-        """Return whether capacitance is enabled.
-
-        Returns
-        -------
-        bool
-        """
-        return self._c_enabled if self._msg is None else self._msg.c_enabled.value
-
-    @property
-    def is_parallel(self):
-        """Return if parallel.
-
-        Returns
-        -------
-        bool
-        """
-        return self._is_parallel if self._msg is None else self._msg.is_parallel.value
+        self.pin_pair = pin_pair
+        self.rlc = rlc

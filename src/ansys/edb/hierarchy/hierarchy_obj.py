@@ -51,7 +51,7 @@ class HierarchyObj(conn_obj.ConnObj):
     @property
     def placement_layer(self):
         """:class:`Layer <ansys.edb.layer.Layer>`: Placement layer for this object."""
-        return Layer(self.__stub.GetPlacementLayer(self.msg))
+        return Layer(self.__stub.GetPlacementLayer(self.msg)).cast()
 
     @placement_layer.setter
     def placement_layer(self, value):

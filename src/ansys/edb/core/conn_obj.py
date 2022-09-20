@@ -112,7 +112,7 @@ class ConnObj(layout_obj.LayoutObj):
         """:class:`Group <ansys.edb.hierarchy.Group>`: Group of the :term:`Connectable` object."""
         from ansys.edb.hierarchy import Group
 
-        return Group(self.__stub.GetGroup(self.msg))
+        return Group(self.__stub.GetGroup(self.msg)).cast()
 
     @group.setter
     def group(self, group):

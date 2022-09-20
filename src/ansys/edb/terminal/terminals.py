@@ -6,12 +6,12 @@ import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb import hierarchy, primitive
-from ansys.edb.core import ObjBase, TypeField, conn_obj, messages
+from ansys.edb.core import ObjBase, TypeField, conn_obj, messages, parser
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.geometry import ArcData
 from ansys.edb.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import PortPostProcessingProp, Rlc, Value
+from ansys.edb.utility import PortPostProcessingProp, Value
 
 
 class TerminalType(Enum):
@@ -142,7 +142,7 @@ class PadEdge(Edge):
         -------
         Layer
         """
-        return Layer(self._params.layer.id)
+        return Layer(self._params.layer.id).cast()
 
     @property
     def arc(self):
@@ -183,7 +183,7 @@ class PrimitiveEdge(Edge):
         -------
         Primitive
         """
-        return primitive.Primitive(self._params.primitive)
+        return primitive.Primitive(self._params.primitive).cast()
 
     @property
     def point(self):
@@ -301,7 +301,7 @@ class Terminal(conn_obj.ConnObj):
         -------
         Layer
         """
-        return Layer(self._params.ref_layer)
+        return Layer(self._params.ref_layer).cast()
 
     @reference_layer.setter
     def reference_layer(self, value):
@@ -554,6 +554,7 @@ class Terminal(conn_obj.ConnObj):
         self._params = {"s_param_model": value}
 
     @property
+    @parser.to_rlc
     def rlc_boundary_parameters(self):
         """Return the RLC boundary parameters.
 
@@ -561,7 +562,7 @@ class Terminal(conn_obj.ConnObj):
         -------
         Rlc
         """
-        return Rlc(msg=self._params.rlc)
+        return self._params.rlc
 
     @rlc_boundary_parameters.setter
     def rlc_boundary_parameters(self, value):
@@ -834,7 +835,7 @@ class PointTerminal(Terminal):
             Value(res.point.x),
             Value(res.point.y),
         )
-        layer = Layer(res.layer.id)
+        layer = Layer(res.layer.id).cast()
         return layer, point
 
     @property
@@ -909,7 +910,7 @@ class PadstackInstanceTerminal(Terminal):
         """
         res = self.__stub.GetParameters(self.msg)
         padstack_instance = primitive.PadstackInstance(res.padstack_instance)
-        layer = Layer(res.layer)
+        layer = Layer(res.layer).cast()
         return padstack_instance, layer
 
     @params.setter
@@ -1002,7 +1003,7 @@ class PinGroupTerminal(Terminal):
         -------
         Layer
         """
-        return Layer(self.__stub.GetLayer(self.msg))
+        return Layer(self.__stub.GetLayer(self.msg)).cast()
 
     @layer.setter
     def layer(self, value):

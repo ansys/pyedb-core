@@ -9,7 +9,7 @@ import ansys.api.edb.v1.padstack_def_data_pb2 as pb
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core import ObjBase, messages
+from ansys.edb.core import ObjBase, messages, parser
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 
@@ -54,7 +54,6 @@ class _PadstackDefDataQueryBuilder:
     def padstack_def_data_get_pad_parameters_parameters_message(
         geometry_type, sizes, offset_x, offset_y, rotation
     ):
-        print(geometry_type)
         return pb.PadstackDefDataGetPadParametersParametersMessage(
             geometry_type=geometry_type.value,
             sizes=[messages.value_message(val) for val in sizes],
@@ -363,21 +362,33 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`]
-            or if geometry shape is polygon then
+
+            or
+
         tuple[:class:`PolygonData <ansys.edb.geometry.PolygonData>`,
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`]
+
             Returns a tuple of the following format:
-            (pad_type, sizes, offset_x, offset_y, rotation)
-            or accordingly
-            (fp, offset_x, offset_y, rotation)
-            pad_type : Pad type.
-            sizes : Pad parameters.
-            offset_x : X offset.
-            offset_y : Y offset.
-            rotation : Rotation.
-            fp : Polygon geometry.
+
+            **(pad_type, sizes, offset_x, offset_y, rotation)**
+
+            or accordingly if geometry shape is polygon then
+
+            **(fp, offset_x, offset_y, rotation)**
+
+            **pad_type** : Pad type.
+
+            **sizes** : Pad parameters.
+
+            **offset_x** : X offset.
+
+            **offset_y** : Y offset.
+
+            **rotation** : Rotation.
+
+            **fp** : Polygon geometry.
         """
         message = self.__stub.GetPadParameters(
             _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
@@ -394,7 +405,7 @@ class PadstackDefData(ObjBase):
             )
         else:
             return (
-                message.polygon.fp,
+                parser.to_polygon_data(message.polygon.fp),
                 Value(message.polygon.offset_x),
                 Value(message.polygon.offset_y),
                 Value(message.polygon.rotation),
@@ -443,12 +454,18 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (fp, offset_x, offset_y, rotation)
-            fp : Polygon geometry.
-            offset_x : X offset.
-            offset_y : Y offset.
-            rotation : Rotation.
+
+            **(fp, offset_x, offset_y, rotation)**
+
+            **fp** : Polygon geometry.
+
+            **offset_x** : X offset.
+
+            **offset_y** : Y offset.
+
+            **rotation** : Rotation.
         """
         return self.get_pad_parameters(None, PadstackDefData.PadType.HOLE)
 
@@ -596,10 +613,13 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (d1, d2)
-            d1 : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
-            d2 : Middle diameter for spheroid solder ball. Not used for cylinder solder ball.
+            **(d1, d2)**
+
+            **d1** : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
+
+            **d2** : Middle diameter for spheroid solder ball. Not used for cylinder solder ball.
         """
         params = self.__stub.GetSolderBallParam(self.msg)
         return (
@@ -618,10 +638,14 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (d1, d2)
-            d1 : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
-            d2 : Middle diameter for spheroid solder ball. Not used for cylinder solder ball.
+
+            **(d1, d2)**
+
+            **d1** : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
+
+            **d2** : Middle diameter for spheroid solder ball. Not used for cylinder solder ball.
         """
         self.__stub.SetSolderBallParam(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solder_ball_param_message(

@@ -430,11 +430,11 @@ class PadstackDefData(ObjBase):
         rotation : :class:`Value <ansys.edb.utility.Value>`
             Rotation.
         type_geom : PadstackDefData.PadGeometryType
-            Pad geometry type.
+            Pad geometry type. None if setting polygonal pad parameters.
         sizes : List[:class:`Value <ansys.edb.utility.Value>`]
-            Pad parameters.
+            Pad parameters. None if setting polygonal pad parameters.
         fp : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
-            Polygon geometry.
+            Polygon geometry. None if not setting polygonal pad parameters.
         """
         self.__stub.SetPadParameters(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_pad_parameters_message(

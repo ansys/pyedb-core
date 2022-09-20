@@ -322,15 +322,24 @@ class Rectangle(Primitive):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (representation_type,parameter1,parameter2,parameter3,parameter4,corner_radius,rotation)
-            representation_type : Type that defines given parameters meaning.
-            parameter1 : X value of lower left point or center point.
-            parameter2 : Y value of lower left point or center point.
-            parameter3 : X value of upper right point or width.
-            parameter4 : Y value of upper right point or height.
-            corner_radius : Corner radius.
-            rotation : Rotation.
+
+            **(representation_type,parameter1,parameter2,parameter3,parameter4,corner_radius,rotation)**
+
+            **representation_type** : Type that defines given parameters meaning.
+
+            **parameter1** : X value of lower left point or center point.
+
+            **parameter2** : Y value of lower left point or center point.
+
+            **parameter3** : X value of upper right point or width.
+
+            **parameter4** : Y value of upper right point or height.
+
+            **corner_radius** : Corner radius.
+
+            **rotation** : Rotation.
         """
         rect_param_msg = self.__stub.GetParameters(self.msg)
         return (
@@ -546,11 +555,16 @@ class Circle(Primitive):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (center_x,center_y,radius)
-            center_x : X value of center point.
-            center_y : Y value of center point.
-            radius : Radius value of the circle.
+
+            **(center_x,center_y,radius)**
+
+            **center_x** : X value of center point.
+
+            **center_y** : Y value of center point.
+
+            **radius** : Radius value of the circle.
         """
         circle_param_msg = self.__stub.GetParameters(self.msg)
         return (
@@ -641,10 +655,14 @@ class Text(Primitive):
             str
         ]
             Returns a tuple of the following format:
-            (center_x, center_y, text)
-            center_x : X value of center point.
-            center_y : Y value of center point.
-            radius : Text object's String value.
+
+            **(center_x, center_y, text)**
+
+            **center_x** : X value of center point.
+
+            **center_y** : Y value of center point.
+
+            **radius** : Text object's String value.
         """
         text_data_msg = self.__stub.GetTextData(self.msg)
         return (
@@ -877,10 +895,14 @@ class Path(Primitive):
             :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`,
             :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
         ]
+
             Returns a tuple of the following format:
-            (end_cap1,end_cap2)
-            end_cap1 : End cap style of path start end cap.
-            end_cap2 : End cap style of path end end cap.
+
+            **(end_cap1,end_cap2)**
+
+            **end_cap1** : End cap style of path start end cap.
+
+            **end_cap2** : End cap style of path end end cap.
         """
         end_cap_msg = self.__stub.GetEndCapStyle(self.msg)
         return Path.PathEndCapType(end_cap_msg.end_cap1), Path.PathEndCapType(end_cap_msg.end_cap2)
@@ -910,10 +932,14 @@ class Path(Primitive):
         Returns
         -------
         tuple[:class:`PolygonData <ansys.edb.geometry.PolygonData>`, bool]
+
             Returns a tuple of the following format:
-            (clipping_poly, keep_inside)
-            clipping_poly : PolygonData used to clip the path.
-            keep_inside : Indicates whether the part of the path inside the polygon is preserved.
+
+            **(clipping_poly, keep_inside)**
+
+            **clipping_poly** : PolygonData used to clip the path.
+
+            **keep_inside** : Indicates whether the part of the path inside the polygon is preserved.
         """
         clip_info_msg = self.__stub.GetClipInfo(self.msg)
         return clip_info_msg.clipping_poly, clip_info_msg.keep_inside
@@ -1307,12 +1333,18 @@ class Bondwire(Primitive):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (x1, y1, x2, y2)
-            x1 : X value of the start point.
-            y1 : Y value of the start point.
-            x1 : X value of the end point.
-            y1 : Y value of the end point.
+
+            **(x1, y1, x2, y2)**
+
+            **x1** : X value of the start point.
+
+            **y1** : Y value of the start point.
+
+            **x1** : X value of the end point.
+
+            **y1** : Y value of the end point.
         """
         traj_msg = self.__stub.GetTraj(self.msg)
         return (
@@ -1667,11 +1699,16 @@ class PadstackInstance(Primitive):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (x, y, rotation)
-            x : X coordinate.
-            y : Y coordinate.
-            rotation : Rotation in radians.
+
+            **(x, y, rotation)**
+
+            **x** : X coordinate.
+
+            **y** : Y coordinate.
+
+            **rotation** : Rotation in radians.
         """
         params = self.__stub.GetPositionAndRotation(self.msg)
         return (
@@ -1705,10 +1742,14 @@ class PadstackInstance(Primitive):
             :class:`Layer <ansys.edb.layer.Layer>`,
             :class:`Layer <ansys.edb.layer.Layer>`
         ]
+
             Returns a tuple of the following format:
-            (top_layer, bottom_layer)
-            top_layer : Top layer of the Padstack instance
-            bottom_layer : Bottom layer of the Padstack instance
+
+            **(top_layer, bottom_layer)**
+
+            **top_layer** : Top layer of the Padstack instance
+
+            **bottom_layer** : Bottom layer of the Padstack instance
         """
         params = self.__stub.GetLayerRange(self.msg)
         return (
@@ -1761,10 +1802,14 @@ class PadstackInstance(Primitive):
             bool,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (is_hole_override, hole_override)
-            is_hole_override : If padstack instance is hole override.
-            hole_override : Hole override diameter of this padstack instance.
+
+            **(is_hole_override, hole_override)**
+
+            **is_hole_override** : If padstack instance is hole override.
+
+            **hole_override** : Hole override diameter of this padstack instance.
         """
         params = self.__stub.GetHoleOverrides(self.msg)
         return (
@@ -1834,12 +1879,17 @@ class PadstackInstance(Primitive):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (drill_to_layer, offset, diameter)
-            drill_to_layer : Layer drills to. If drill from top, drill stops at the upper elevation of the layer.
+
+            **(drill_to_layer, offset, diameter)**
+
+            **drill_to_layer** : Layer drills to. If drill from top, drill stops at the upper elevation of the layer.\
             If from bottom, drill stops at the lower elevation of the layer.
-            offset : Layer offset (or depth if layer is empty).
-            diameter : Drilling diameter.
+
+            **offset** : Layer offset (or depth if layer is empty).
+
+            **diameter** : Drilling diameter.
         """
         params = self.__stub.GetBackDrillByLayer(
             _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
@@ -1887,9 +1937,12 @@ class PadstackInstance(Primitive):
             :class:`Value <ansys.edb.utility.Value>`
         ]
             Returns a tuple of the following format:
-            (drill_depth, diameter)
-            drill_depth : Drilling depth, may not align with layer.
-            diameter : Drilling diameter.
+
+            **(drill_depth, diameter)**
+
+            **drill_depth** : Drilling depth, may not align with layer.
+
+            **diameter** : Drilling diameter.
         """
         params = self.__stub.GetBackDrillByDepth(
             _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)

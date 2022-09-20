@@ -17,15 +17,7 @@ class ComponentModel(ObjBase):
 
     @property
     def reference_file(self):
-        """Get reference file associated with this component model.
-
-        This attribute is also used to set the reference file.
-
-        Returns
-        -------
-        str
-            Name of the reference file.
-        """
+        """:obj:`str`: Name of the reference file associated with this component model."""
         return self.__stub.GetReferenceFile(self.msg).value
 
     @reference_file.setter
@@ -89,15 +81,7 @@ class DynamicLinkComponentModel(ComponentModel):
 
     @property
     def design_name(self):
-        """Get design name associated with the dynamic link component model.
-
-        This attribute is also used to set the design name.
-
-        Returns
-        -------
-        str
-            Name of the design.
-        """
+        """:obj:`str`: Name of the design associated with the dynamic link component model."""
         return self.__stub.GetDesignName(self.msg).value
 
     @design_name.setter

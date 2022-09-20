@@ -69,11 +69,9 @@ class BondwireDef(ObjBase):
 
     @property
     def name(self):
-        """Return the name of the bondwire definition.
+        """:obj:`str`: Name of the bondwire definition.
 
-        Returns
-        -------
-        str
+        Read-Only.
         """
         return self.__stub.GetName(self.msg)
 
@@ -159,12 +157,10 @@ class ApdBondwireDef(BondwireDef):
 
     @property
     def bondwire_type(self):
-        """Return apd bondwire type.
+        """:class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`: \
+        Type of the apd bondwire definition.
 
-        Returns
-        -------
-        :class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`
-            Type of the bondwire.
+        Read-Only.
         """
         return BondwireDef.BondwireDefType.APD_BONDWIRE_DEF
 
@@ -251,12 +247,10 @@ class Jedec4BondwireDef(ObjBase):
 
     @property
     def bondwire_type(self):
-        """Return jedec 4 bondwire type.
+        """:class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`: \
+        Type of the jedec 4 bondwire definition.
 
-        Returns
-        -------
-        :class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`
-            Type of the bondwire.
+        Read-Only.
         """
         return BondwireDef.BondwireDefType.JEDEC4_BONDWIRE_DEF
 
@@ -342,11 +336,16 @@ class Jedec5BondwireDef(BondwireDef):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (top_to_die_distance,die_pad_angle,lead_pad_angle)
-            top_to_die_distance : Bondwire top to die distance.
-            die_pad_angle : Bondwire die pad angle.
-            lead_pad_angle : Bondwire lead pad angle.
+
+            **(top_to_die_distance,die_pad_angle,lead_pad_angle)**
+
+            **top_to_die_distance** : Bondwire top to die distance.
+
+            **die_pad_angle** : Bondwire die pad angle.
+
+            **lead_pad_angle** : Bondwire lead pad angle.
         """
         get_parameters_msg = self.__stub.GetParameters(self.msg)
         return (
@@ -368,16 +367,16 @@ class Jedec5BondwireDef(BondwireDef):
             Bondwire lead pad angle.
         """
         self.__stub.SetParameters(
-            _Jedec5QueryBuilder.jedec5_bondwire_def_set_parameters_message(self, ttd, dpa, lpa)
+            _Jedec5QueryBuilder.jedec5_bondwire_def_set_parameters_message(
+                self, top_to_die_distance, die_pad_angle, lead_pad_angle
+            )
         )
 
     @property
     def bondwire_type(self):
-        """Return jedec 5 bondwire type.
+        """:class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`: \
+        Type of the jedec 5 bondwire definition.
 
-        Returns
-        -------
-        :class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`
-            Type of the bondwire.
+        Read-Only.
         """
         return BondwireDef.BondwireDefType.JEDEC5_BONDWIRE_DEF

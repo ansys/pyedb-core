@@ -22,7 +22,7 @@ from ansys.api.edb.v1 import (
 )
 
 from ansys.edb import hierarchy, terminal
-from ansys.edb.core import conn_obj, messages, parser
+from ansys.edb.core import conn_obj, messages
 from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layer import Layer
@@ -392,7 +392,7 @@ class Rectangle(Primitive):
 
         Read-Only.
         """
-        return parser.to_polygon_data(Rectangle.render(*self.get_parameters()))
+        return Rectangle.render(*self.get_parameters())
 
     @classmethod
     def render(

@@ -9,24 +9,27 @@ from ansys.edb.session import StubAccessor, StubType
 
 
 class ViaGroup(Group):
-    """Class representing a via group."""
+    """Class representing a via group object."""
 
     __stub: ViaGroupServiceStub = StubAccessor(StubType.via_group)
 
     @classmethod
     def create_with_primitives(cls, layout, primitives, is_persistent):
-        """Create a via group with primitives.
+        """Create a via group(s) with primitives.
 
         Parameters
         ----------
-        layout : Layout
-        primitives : list of Primitives
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the via group.
+        primitives : list[:class:`Primitive <ansys.edb.primitive.Primitive>`]
+            List of primitives that will be used to create the via groups.
         is_persistent : bool
-            should primitives be persistent
+            Primitives are preserved during via group creation if True, deleted otherwise.
 
         Returns
         -------
-        list of ViaGroups
+        list[ViaGroup]
+            List of newly created via group(s).
         """
         via_groups = cls.__stub.CreateWithPrimitives(
             messages.via_group_create_with_primitives_message(layout, primitives, is_persistent)
@@ -39,15 +42,21 @@ class ViaGroup(Group):
 
         Parameters
         ----------
-        layout : Layout
-        outline : list of Point2D or PolygonData
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the via group.
+        outline : list[:class:`Point2D <ansys.edb.geometry.PointData>`] or \
+            list[:class:`PolygonData <ansys.edb.geometry.PolygonData>`]
+            List of primitives that will be used to create the via groups.
         conductivity_ratio : float
-        layer : str or Layer
-        net : str or Net, optional
+        layer : str or :class:`Layer <ansys.edb.layer.Layer>`
+            Placement layer for the via group.
+        net : str or :class:`Net <ansys.edb.net.Net>`, optional
+            Net the via group should belong to.
 
         Returns
         -------
         ViaGroup
+            Newly created via group.
         """
         return ViaGroup(
             cls.__stub.CreateWithOutline(
@@ -63,41 +72,38 @@ class ViaGroup(Group):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout to search the via group in.
         name : str
+            Name of the via group.
 
         Returns
         -------
         ViaGroup
+            ViaGroup that is found, None otherwise.
         """
         return ViaGroup(cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name)))
 
     @property
     def outline(self):
-        """Get the via group outline.
+        """:class:`PolygonData <ansys.edb.polygon_data.PolygonData>`: Via group outline.
 
-        Returns
-        -------
-        PolygonData
+        Read-Only.
         """
         return PolygonData(self.__stub.GetOutline(self.msg))
 
     @property
     def conductor_percentage(self):
-        """Get the conductor percentage of the via group.
+        """:obj:`float`: Conductor percentage of the via group.
 
-        Returns
-        -------
-        double
+        Read-Only.
         """
         return self.__stub.GetConductorPercentage(self.msg).value
 
     @property
     def persistent(self):
-        """Get if the primitives in the via group are persistent.
+        """:obj:`bool`: Determine whether the primitives in the via group are persistent.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsPersistent(self.msg).value

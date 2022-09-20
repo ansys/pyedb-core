@@ -17,42 +17,31 @@ class ObjBase:
 
     @property
     def is_null(self):
-        """Determine whether this object exists in EDB.
+        """:obj:`bool`: Determine whether this object exists in EDB.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.id == 0
 
     @property
     def id(self):
-        """Return unique ID of an EDB object. 0 indicates invalid object.
+        """:obj:`int`: The unique ID of an EDB object. 0 indicates invalid object.
 
-        Returns
-        -------
-        int
+        Read-Only.
         """
         return self._id
 
     @property
     def msg(self):
-        """Return protobuf message that represents this object's ID.
+        """:obj:`EDBObjMessage` : Protobuf message that represents this object's ID.
 
-        Returns
-        -------
-        EDBObjMessage
+        This property can only be set to None.
         """
         return EDBObjMessage(id=self.id)
 
     @msg.setter
     def msg(self, val):
-        """Modify protobuf message that represents this object's ID. can only be used to reset ID to None.
-
-        Parameters
-        ----------
-        val : EDBObjMessage
-        """
+        """Modify protobuf message that represents this object's ID. can only be used to reset ID to None."""
         if val is None:
             self._id = 0
 

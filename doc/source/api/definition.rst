@@ -33,3 +33,4 @@ Classes
 .. autoclass:: ansys.edb.definition.PadstackDefData.PadstackHoleRange
 .. autoclass:: ansys.edb.definition.PadstackDefData.SolderballShape
 .. autoclass:: ansys.edb.definition.PadstackDefData.SolderballPlacement
+

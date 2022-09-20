@@ -12,7 +12,13 @@ from ansys.edb.utility import Value
 
 
 class MeshClosure(Enum):
-    """Enum representing mesh closure types."""
+    """Enum representing mesh closure types.
+
+    - OPEN_ENDED
+    - ENDS_CLOSED
+    - FILLED_CLOSED
+    - UNDEFINED_CLOSURE
+    """
 
     OPEN_ENDED = structure3d_pb2.OPEN_ENDED
     ENDS_CLOSED = structure3d_pb2.ENDS_CLOSED
@@ -21,7 +27,7 @@ class MeshClosure(Enum):
 
 
 class Structure3D(Group):
-    """Class representing a Structure3D."""
+    """Class representing a structure3d object."""
 
     __stub: Structure3DServiceStub = StubAccessor(StubType.structure3d)
 
@@ -31,12 +37,15 @@ class Structure3D(Group):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the structure3d.
         name : str
+            Name of the structure3d object.
 
         Returns
         -------
         Structure3D
+            Newly created structure3d.
         """
         return Structure3D(cls.__stub.Create(messages.object_name_in_layout_message(layout, name)))
 
@@ -65,42 +74,22 @@ class Structure3D(Group):
 
     @property
     def thickness(self):
-        """Get thickness for the structure3d.
-
-        Returns
-        -------
-        Value
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Thickness for the structure3d."""
         return Value(self.__stub.GetThickness(self.msg))
 
     @thickness.setter
     def thickness(self, value):
-        """Set thickness for the structure3d.
-
-        Parameters
-        ----------
-        value : Value
-        """
+        """Set thickness for the structure3d."""
         self.__stub.SetThickness(
             messages.value_property_message(self, messages.value_message(value))
         )
 
     @property
     def mesh_closure(self):
-        """Get mesh closure property for the structure3d.
-
-        Returns
-        -------
-        MeshClosure
-        """
+        """:obj:`MeshClosure`: Mesh closure property for the structure3d."""
         return MeshClosure(self.__stub.GetMeshClosureProp(self.msg).closure_type)
 
     @mesh_closure.setter
     def mesh_closure(self, value):
-        """Set mesh closure property for the structure3d.
-
-        Parameters
-        ----------
-        value : MeshClosure
-        """
+        """Set mesh closure property for the structure3d."""
         self.__stub.SetMeshClosureProp(messages.set_closure_message(self, value))

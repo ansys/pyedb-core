@@ -68,17 +68,19 @@ class ConnObj(layout_obj.LayoutObj):
 
     @classmethod
     def find_by_id(cls, layout, uid):
-        """Find a Connectable object by Database ID.
+        """Find a :term:`Connectable` object by Database ID.
 
         Parameters
         ----------
-        layout
-             The owning Layout.
-        uid
-            Database ID
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            The owning Layout.
+        uid : int
+             Database ID
+
         Returns
         -------
-            Connectable object (Net/Cell/Primitive/etc.) of given ID.
+        :term:`Connectable`
+            Connectable of the given uid.
         """
         found_edb_obj_msg = cls.__stub.FindByIdAndType(
             _QueryBuilder.find_id_layout_obj_message(
@@ -89,61 +91,39 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def edb_uid(self):
-        """Get the unique, persistent ID for the Connectable object.
+        """:obj:`int`: The unique, persistent ID for the :term:`Connectable` object.
 
-        Returns
-        -------
-            int
-                This id is unique across the all Connectable objects in the cell
-                and persistent across closing and reopening the database.
+        This id is unique across the all :term:`Connectable` objects in the cell and persistent across closing and \
+        reopening the database.
+
+        Read-Only.
         """
         return self.__stub.GetId(self.msg).id
 
     @property
     def component(self):
-        """Get the Component of the connectable object.
-
-        Returns
-        -------
-            ansys.edb.hierarchy.ComponentGroup
-                Component group of the connectable object.
-        """
+        """:class:`ComponentGroup <ansys.edb.hierarchy.ComponentGroup>`: Component of the :term:`Connectable` object."""
         from ansys.edb.hierarchy import ComponentGroup
 
         return ComponentGroup(self.__stub.GetComponent(self.msg))
 
     @property
     def group(self):
-        """Get the group of the connectable object.
-
-        Returns
-        -------
-        ansys.edb.hierarchy.Group
-            Group of the connectable object.
-        """
+        """:class:`Group <ansys.edb.hierarchy.Group>`: Group of the :term:`Connectable` object."""
         from ansys.edb.hierarchy import Group
 
         return Group(self.__stub.GetGroup(self.msg)).cast()
 
     @group.setter
     def group(self, group):
-        """Set the group of the connectable object.
-
-        Parameters
-        ----------
-        group: ansys.edb.hierarchy.Group
-            Group of the layout object.
-        """
+        """Set the group of the connectable object."""
         self.__stub.SetGroup(messages.pointer_property_message(target=self, value=group))
 
     @property
     def net(self):
-        """Get the net of the connectable object.
+        """:class:`Net <ansys.edb.net.Net>`: Net of the :term:`Connectable` object.
 
-        Returns
-        -------
-        ansys.edb.net.Net
-            Net of the connectable object.
+        This property can be set with :class:`Net <ansys.edb.net.Net>`, str, None.
         """
         from ansys.edb.net import Net
 
@@ -151,11 +131,5 @@ class ConnObj(layout_obj.LayoutObj):
 
     @net.setter
     def net(self, net):
-        """Set the net of the connectable object.
-
-        Parameters
-        ----------
-        net: ansys.edb.net.Net or str or None
-            A Net object(or Net name) to associate this connectable with.
-        """
+        """Set the net of the connectable object."""
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))

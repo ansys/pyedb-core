@@ -7,7 +7,7 @@ from ansys.edb.session import StubAccessor, StubType
 
 
 class PinGroup(ObjBase):
-    """Class representing a pin group."""
+    """Class representing a pin group object."""
 
     __stub = StubAccessor(StubType.pin_group)
     layout_obj_type = LayoutObjType.PIN_GROUP
@@ -18,13 +18,16 @@ class PinGroup(ObjBase):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout that owns the pin group.
         name : str
-        padstack_instances : list of PadstackInstance
+            Name of pin group to be created.
+        padstack_instances : list[:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`]
 
         Returns
         -------
         PinGroup
+            Newly created pin group.
         """
         return PinGroup(
             cls.__stub.Create(messages.pin_group_creation_message(layout, name, padstack_instances))
@@ -36,23 +39,28 @@ class PinGroup(ObjBase):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout to search the pin group in.
         name : str
+            Name of the pin group.
 
         Returns
         -------
         PinGroup
+            Pin group that is found, None otherwise.
         """
         return PinGroup(cls.__stub.FindByName(messages.pin_group_lookup_message(layout, name)))
 
     @classmethod
     def unique_name(cls, layout, prefix):
-        """Return a unique pin group name in the layout.
+        """Return a unique pin group name in the layout using the given prefix.
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout to search the pin group in.
         prefix : str
+            Prefix of the unique name.
 
         Returns
         -------
@@ -64,21 +72,17 @@ class PinGroup(ObjBase):
 
     @property
     def name(self):
-        """Get the name.
+        """:obj:`str`: Name of the pin group.
 
-        Returns
-        -------
-        str
+        Read-Only.
         """
         return self.__stub.GetName(self.msg).value
 
     @property
     def pins(self):
-        """Get the list of padstack instances.
+        """:obj:`list` of :class:`PadstackInstances <ansys.edb.primitive.PadstackInstance>`: List of padstack instances.
 
-        Returns
-        -------
-        list of PadstackInstance
+        Read-Only.
         """
         ps = self.__stub.GetPins(self.msg).items
         return [PadstackInstance(p) for p in ps]
@@ -88,7 +92,7 @@ class PinGroup(ObjBase):
 
         Parameters
         ----------
-        pins : list of PadstackInstance
+        pins : list[:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`]
         """
         self.__stub.AddPins(messages.pin_group_pins_modify_message(self, pins))
 
@@ -97,6 +101,6 @@ class PinGroup(ObjBase):
 
         Parameters
         ----------
-        pins : list of PadstackInstance
+        pins : list[:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`]
         """
         self.__stub.RemovePins(messages.pin_group_pins_modify_message(self, pins))

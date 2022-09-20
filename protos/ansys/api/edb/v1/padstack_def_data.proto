@@ -74,17 +74,11 @@ service PadstackDefDataService {
   rpc AddLayers(PadstackDefDataAddLayersMessage) returns (google.protobuf.Empty) {}
   
   // get PadParameters of PadstackDefData
-  rpc GetPadParameters(PadstackDefDataGetPadParametersMessage) returns (PadstackDefDataGetPadParametersParametersMessage) {}
+  rpc GetPadParameters(PadstackDefDataGetPadParametersMessage) returns (PadstackDefDataPadParametersMessage) {}
 
   // set PadParameters of PadstackDefData
-  rpc SetPadParameters(PadstackDefDataSetPadParametersMessage) returns (google.protobuf.Empty) {}
-  
-  // get polygonal PadParameters of PadstackDefData
-  rpc GetPolygonalPadParameters(PadstackDefDataGetPadParametersMessage) returns (PadstackDefDataGetPolygonalPadParametersParametersMessage) {}
+  rpc SetPadParameters(PadstackDefDataPadParametersSetMessage) returns (google.protobuf.Empty) {}
 
-  // set polygonal PadParameters of PadstackDefData
-  rpc SetPolygonalPadParameters(PadstackDefDataSetPolygonalPadParametersMessage) returns (google.protobuf.Empty) {}
-  
   // get PadstackHoleRange of PadstackDefData
   rpc GetHoleRange(EDBObjMessage) returns (PadstackDefDataPadstackHoleRangeMessage) {}
   
@@ -181,6 +175,20 @@ message PadstackDefDataSetPolygonalPadParametersMessage{
   ValueMessage offset_x = 3;
   ValueMessage offset_y = 4;
   ValueMessage rotation = 5;
+}
+
+message PadstackDefDataPadParametersMessage{
+  oneof pad_message {
+	  PadstackDefDataGetPadParametersParametersMessage generic = 1;
+	  PadstackDefDataGetPolygonalPadParametersParametersMessage polygon = 2;
+  }
+}
+
+message PadstackDefDataPadParametersSetMessage{
+  oneof pad_message {
+	  PadstackDefDataSetPadParametersMessage generic = 1;
+	  PadstackDefDataSetPolygonalPadParametersMessage polygon = 2;
+  }
 }
 
 message PadstackDefDataPadstackHoleRangeMessage{

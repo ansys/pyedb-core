@@ -62,7 +62,6 @@ class ComponentDef(ObjBase):
 
     @name.setter
     def name(self, value):
-        """Set the name of the component definition."""
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property
@@ -72,7 +71,6 @@ class ComponentDef(ObjBase):
 
     @footprint.setter
     def footprint(self, value):
-        """Set the footprint cell on the component definition."""
         self.__stub.SetFootprintCell(messages.edb_obj_pair_message(self, value))
 
     @property

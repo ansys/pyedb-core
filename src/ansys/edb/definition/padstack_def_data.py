@@ -287,8 +287,7 @@ class PadstackDefData(ObjBase):
         return self.__stub.GetMaterial(self.msg)
 
     @material.setter
-    def material(self, name: str):
-        """Set the hole material of the PadstackDefData object."""
+    def material(self, name):
         self.__stub.SetMaterial(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_material_message(self, name)
         )
@@ -432,8 +431,24 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
-
             Returns a tuple of the following format:
+            (fp, offset_x, offset_y, rotation)
+            fp : Polygon geometry.
+            offset_x : X offset.
+            offset_y : Y offset.
+            rotation : Rotation.
+        """
+        params = self.__stub.GetPolygonalPadParameters(
+            _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
+                self, layer, pad_type
+            )
+        )
+        return (
+            params.fp,
+            Value(params.offset_x),
+            Value(params.offset_y),
+            Value(params.rotation),
+        )
 
             **(fp, offset_x, offset_y, rotation)**
 
@@ -475,7 +490,6 @@ class PadstackDefData(ObjBase):
 
     @hole_range.setter
     def hole_range(self, hole_range):
-        """Set hole range type."""
         self.__stub.SetHoleRange(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_hole_range_message(self, hole_range)
         )
@@ -487,7 +501,6 @@ class PadstackDefData(ObjBase):
 
     @plating_percentage.setter
     def plating_percentage(self, plating_percentage):
-        """Set hole plating percentage."""
         self.__stub.SetPlatingPercentage(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_plating_percentage(
                 self, plating_percentage
@@ -503,7 +516,6 @@ class PadstackDefData(ObjBase):
 
     @solder_ball_shape.setter
     def solder_ball_shape(self, solderball_shape):
-        """Set solder ball shape."""
         self.__stub.SetSolderBallShape(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_shape_message(
                 self, solderball_shape
@@ -517,7 +529,6 @@ class PadstackDefData(ObjBase):
 
     @solder_ball_placement.setter
     def solder_ball_placement(self, solderball_placement):
-        """Set solder ball placement/orientation."""
         self.__stub.SetSolderBallPlacement(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_placement_message(
                 self, solderball_placement
@@ -535,7 +546,6 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
-
             Returns a tuple of the following format:
             **(d1, d2)**
 
@@ -551,24 +561,6 @@ class PadstackDefData(ObjBase):
 
     @solder_ball_param.setter
     def solder_ball_param(self, params):
-        """
-        Set solder ball parameters.
-
-        Parameters
-        ----------
-        tuple[
-            :class:`Value <ansys.edb.utility.Value>`,
-            :class:`Value <ansys.edb.utility.Value>`
-        ]
-
-            Returns a tuple of the following format:
-
-            **(d1, d2)**
-
-            **d1** : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
-
-            **d2** : Middle diameter for spheroid solder ball. Not used for cylinder solder ball.
-        """
         self.__stub.SetSolderBallParam(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solder_ball_param_message(
                 self, params[0], params[1]
@@ -582,7 +574,6 @@ class PadstackDefData(ObjBase):
 
     @solder_ball_material.setter
     def solder_ball_material(self, material):
-        """Set solder ball material."""
         self.__stub.SetSolderBallMaterial(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solder_ball_material_message(
                 self, material

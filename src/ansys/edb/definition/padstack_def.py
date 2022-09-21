@@ -108,5 +108,4 @@ class PadstackDef(ObjBase):
 
     @data.setter
     def data(self, data):
-        """Set PadstackDefData of a PadstackDef."""
         self.__stub.SetData(_PadstackDefQueryBuilder.padstack_def_set_data_message(self, data))

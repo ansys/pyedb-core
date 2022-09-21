@@ -288,7 +288,6 @@ class MaterialDef(ObjBase):
 
     @dielectric_material_model.setter
     def dielectric_material_model(self, dielectric):
-        """Set Dielectric material model of the material definition."""
         self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
 
     def get_dimensions(self, material_property_id):

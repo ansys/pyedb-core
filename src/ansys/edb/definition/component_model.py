@@ -22,7 +22,6 @@ class ComponentModel(ObjBase):
 
     @reference_file.setter
     def reference_file(self, value):
-        """Set reference file for this component model."""
         self.__stub.SetReferenceFile(messages.string_property_message(self, value))
 
 
@@ -86,5 +85,4 @@ class DynamicLinkComponentModel(ComponentModel):
 
     @design_name.setter
     def design_name(self, value):
-        """Set the design name for the dynamic link component model."""
         self.__stub.SetDesignName(messages.string_property_message(self, value))

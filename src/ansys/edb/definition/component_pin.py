@@ -54,10 +54,6 @@ class ComponentPin(ObjBase):
 
     @name.setter
     def name(self, value):
-        """Set the name of the component pin.
-
-        Read-Only.
-        """
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property

@@ -446,7 +446,6 @@ class Rectangle(Primitive):
         return True
 
     @property
-    @parser.to_polygon_data
     def polygon_data(self):
         """Get polygon data of a rectangle.
 
@@ -1025,7 +1024,10 @@ class Path(Primitive):
             keep_inside : Indicates whether the part of the path inside the polygon is preserved.
         """
         clip_info_msg = self.__stub.GetClipInfo(self.msg)
-        return parser.to_polygon_data(clip_info_msg.clipping_poly), clip_info_msg.keep_inside
+        return (
+            parser.to_polygon_data(lambda a: a(clip_info_msg.clipping_poly)),
+            clip_info_msg.keep_inside,
+        )
 
     def set_clip_info(self, clipping_poly, keep_inside=True):
         """Set data used to clip the path.

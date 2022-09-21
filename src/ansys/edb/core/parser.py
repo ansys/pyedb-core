@@ -81,20 +81,33 @@ def _to_polygon_data(message):
 
     Parameters
     ----------
-    message : ansys.api.edb.v1.point_data_pb2.BoxMessage
-
+    message : ansys.api.edb.v1.point_data_pb2.BoxMessage or ansys.api.edb.v1.polygon_data_pb2.PolygonDataMessage
     Returns
     -------
     geometry.PolygonData
     """
-    b = _to_box(message)
-    if b is not None:
-        return geometry.PolygonData(lower_left=b[0], upper_right=b[1])
+    from ansys.api.edb.v1.point_data_pb2 import BoxMessage
+
+    if isinstance(message, BoxMessage):
+        b = _to_box(message)
+        if b is not None:
+            return geometry.PolygonData(lower_left=b[0], upper_right=b[1])
+        else:
+            raise TypeError(
+                "BoxMessage must respond to 'lower_left/upper_right' to be able to convert to PolygonData."
+                f"A message of type {type(message)} received."
+            )
     else:
-        raise TypeError(
-            "message must respond to 'lower_left/upper_right' to be able to convert to PolygonData."
-            f"A message of type {type(message)} received."
-        )
+        from ansys.edb.geometry import polygon_data
+
+        pd = polygon_data.PolygonData(points=_to_point_data_list(message.points))
+        if pd is not None:
+            return pd
+        else:
+            raise TypeError(
+                "PolygonDataMessage must respond to 'points' to be able to convert to PolygonData."
+                f"A message of type {type(message)} received."
+            )
 
 
 def _to_polygon_data_list(message):

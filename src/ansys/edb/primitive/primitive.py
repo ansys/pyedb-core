@@ -151,7 +151,6 @@ class Primitive(conn_obj.ConnObj):
 
     @layer.setter
     def layer(self, layer):
-        """Set the layer."""
         self.__stub.SetLayer(_PrimitiveQueryBuilder.set_layer(self, layer))
 
     @property
@@ -161,7 +160,6 @@ class Primitive(conn_obj.ConnObj):
 
     @is_negative.setter
     def is_negative(self, is_negative):
-        """Set is negative."""
         self.__stub.SetIsNegative(_PrimitiveQueryBuilder.set_is_negative(self, is_negative))
 
     @property
@@ -325,7 +323,7 @@ class Rectangle(Primitive):
 
             Returns a tuple of the following format:
 
-            **(representation_type,parameter1,parameter2,parameter3,parameter4,corner_radius,rotation)**
+            **(representation_type, parameter1, parameter2, parameter3, parameter4, corner_radius, rotation)**
 
             **representation_type** : Type that defines given parameters meaning.
 
@@ -558,7 +556,7 @@ class Circle(Primitive):
 
             Returns a tuple of the following format:
 
-            **(center_x,center_y,radius)**
+            **(center_x, center_y, radius)**
 
             **center_x** : X value of center point.
 
@@ -742,7 +740,6 @@ class Polygon(Primitive):
 
     @polygon_data.setter
     def polygon_data(self, poly):
-        """Set PolygonData object representing the outer contour for this Polygon."""
         self.__stub.SetPolygonData(
             polygon_pb2.SetPolygonDataMessage(
                 target=self.msg, poly=messages.polygon_data_message(poly)
@@ -881,7 +878,6 @@ class Path(Primitive):
 
     @center_line.setter
     def center_line(self, center_line):
-        """Set center line of the path."""
         path_pb2.SetCenterLineMessage(
             target=self.msg, center_line=messages.polygon_data_message(center_line)
         )
@@ -898,7 +894,7 @@ class Path(Primitive):
 
             Returns a tuple of the following format:
 
-            **(end_cap1,end_cap2)**
+            **(end_cap1, end_cap2)**
 
             **end_cap1** : End cap style of path start end cap.
 
@@ -969,7 +965,6 @@ class Path(Primitive):
 
     @corner_style.setter
     def corner_style(self, corner_type):
-        """Set path corner style."""
         self.__stub.SetCornerStyle(
             path_pb2.SetCornerStyleMessage(
                 target=self.msg,
@@ -984,7 +979,6 @@ class Path(Primitive):
 
     @width.setter
     def width(self, width):
-        """Set path width."""
         self.__stub.SetWidth(
             path_pb2.SetWidthMessage(
                 target=self.msg,
@@ -999,7 +993,6 @@ class Path(Primitive):
 
     @miter_ratio.setter
     def miter_ratio(self, miter_ratio):
-        """Set miter ratio."""
         self.__stub.SetMiterRatio(
             path_pb2.SetMiterRatioMessage(
                 target=self.msg,
@@ -1187,7 +1180,7 @@ class Bondwire(Primitive):
             Bondwire width.
         material : str
             Bondwire material name.
-        start_context : CellInstance
+        start_context : :class:`CellInstance <ansys.edb.hierarchy.CellInstance>`
             Start context: None means top level.
         start_layer_name : str
             Name of start layer.
@@ -1195,7 +1188,7 @@ class Bondwire(Primitive):
             X value of start point.
         start_y : :class:`Value <ansys.edb.utility.Value>`
             Y value of start point.
-        end_context : CellInstance
+        end_context : :class:`CellInstance <ansys.edb.hierarchy.CellInstance>`
             End context: None means top level.
         end_layer_name : str
             Name of end layer.
@@ -1266,7 +1259,6 @@ class Bondwire(Primitive):
 
     @type.setter
     def type(self, bondwire_type):
-        """Set the bondwire-type of a bondwire."""
         self.__stub.SetType(_BondwireQueryBuilder.set_bondwire_type_message(self, bondwire_type))
 
     @property
@@ -1277,7 +1269,6 @@ class Bondwire(Primitive):
 
     @cross_section_type.setter
     def cross_section_type(self, bondwire_type):
-        """Set the bondwire-cross-section-type of a bondwire."""
         self.__stub.SetCrossSectionType(
             _BondwireQueryBuilder.set_cross_section_type_message(self, bondwire_type)
         )
@@ -1289,7 +1280,6 @@ class Bondwire(Primitive):
 
     @cross_section_height.setter
     def cross_section_height(self, height):
-        """Set the cross-section-height value of a bondwire."""
         self.__stub.SetCrossSectionHeight(
             _BondwireQueryBuilder.set_cross_section_height_message(self, height)
         )
@@ -1378,7 +1368,6 @@ class Bondwire(Primitive):
 
     @width.setter
     def width(self, width):
-        """Set the width of a bondwire."""
         self.__stub.SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
 
     def get_start_elevation(self, start_context):
@@ -1386,7 +1375,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        start_context : CellInstance
+        start_context : :class:`CellInstance <ansys.edb.hierarchy.CellInstance>`
             Start cell context of the bondwire.
 
         Returns
@@ -1405,7 +1394,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        start_context : CellInstance
+        start_context : :class:`CellInstance <ansys.edb.hierarchy.CellInstance>`
             Start cell context of the bondwire. None means top level.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             Start layer of the bondwire.
@@ -1419,7 +1408,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        end_context : CellInstance
+        end_context : :class:`CellInstance <ansys.edb.hierarchy.CellInstance>`
             End cell context of the bondwire.
 
         Returns
@@ -1438,7 +1427,7 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        end_context : CellInstance
+        end_context : :class:`CellInstance <ansys.edb.hierarchy.CellInstance>`
             End cell context of the bondwire. None means top level.
         layer : str or :class:`Layer <ansys.edb.layer.Layer>`
             End layer of the bondwire.
@@ -1686,7 +1675,6 @@ class PadstackInstance(Primitive):
 
     @name.setter
     def name(self, name):
-        """Set the Name of a Padstack Instance."""
         self.__stub.SetName(_PadstackInstanceQueryBuilder.set_name_message(self, name))
 
     def get_position_and_rotation(self):
@@ -1778,7 +1766,6 @@ class PadstackInstance(Primitive):
 
     @solderball_layer.setter
     def solderball_layer(self, solderball_layer):
-        """Set the SolderBall Layer of Padstack Instance."""
         self.__stub.SetSolderBallLayer(
             _PadstackInstanceQueryBuilder.set_solderball_layer_message(self, solderball_layer)
         )
@@ -1790,7 +1777,6 @@ class PadstackInstance(Primitive):
 
     @layer_map.setter
     def layer_map(self, layer_map):
-        """Set the Layer Map of Padstack Instance."""
         self.__stub.SetLayerMap(messages.pointer_property_message(self, layer_map))
 
     def get_hole_overrides(self):
@@ -1840,7 +1826,6 @@ class PadstackInstance(Primitive):
 
     @is_layout_pin.setter
     def is_layout_pin(self, is_layout_pin):
-        """Set if a Padstack Instance is layout pin."""
         self.__stub.SetIsLayoutPin(
             _PadstackInstanceQueryBuilder.set_is_layout_pin_message(self, is_layout_pin)
         )
@@ -1977,7 +1962,7 @@ class PadstackInstance(Primitive):
         Parameters
         ----------
         pin_group : :class:`PinGroup <ansys.edb.hierarchy.PinGroup>`
-            Ping group to check if padstack instance is in.
+            Pin group to check if padstack instance is in.
 
         Returns
         -------

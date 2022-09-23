@@ -1025,7 +1025,7 @@ class Path(Primitive):
         """
         clip_info_msg = self.__stub.GetClipInfo(self.msg)
         return (
-            parser.to_polygon_data(lambda a: a(clip_info_msg.clipping_poly)),
+            parser.to_polygon_data((lambda a: a)(clip_info_msg.clipping_poly)),
             clip_info_msg.keep_inside,
         )
 

@@ -113,7 +113,7 @@ class Primitive(conn_obj.ConnObj):
 
     @property
     def primitive_type(self):
-        """:class:`PrimitiveType <ansys.edb.primitive.Primitive.PrimitiveType>`: Primitive type of the primitive.
+        """:class:`PrimitiveType`: Primitive type of the primitive.
 
         Read-Only.
         """
@@ -269,7 +269,7 @@ class Rectangle(Primitive):
             Layer this rectangle will be on.
         net : str or :class:`Net <ansys.edb.net.Net>` or None
             Net this rectangle will have.
-        rep_type : :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`
+        rep_type : :class:`RectangleRepresentationType`
             Type that defines given parameters meaning.
         param1 : :class:`Value <ansys.edb.utility.Value>`
             X value of lower left point or center point.
@@ -312,7 +312,7 @@ class Rectangle(Primitive):
         Returns
         -------
         tuple[
-            :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`,
+            :class:`RectangleRepresentationType`,
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
@@ -355,7 +355,7 @@ class Rectangle(Primitive):
 
         Parameters
         ----------
-        rep_type : :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`
+        rep_type : :class:`RectangleRepresentationType`
             Type that defines given parameters meaning.
         param1 : :class:`Value <ansys.edb.utility.Value>`
             X value of lower left point or center point.
@@ -417,7 +417,7 @@ class Rectangle(Primitive):
 
         Parameters
         ----------
-        rep_type : :class:`RectangleRepresentationType <ansys.edb.primitive.Rectangle.RectangleRepresentationType>`
+        rep_type : :class:`RectangleRepresentationType`
             Type that defines given parameters meaning.
         x_lower_left_or_center_x : :class:`Value <ansys.edb.utility.Value>`
             X value of lower left point or center point.
@@ -817,11 +817,11 @@ class Path(Primitive):
             Net this Path will have.
         width: :class:`Value <ansys.edb.utility.Value>`
             Path width.
-        end_cap1: :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
+        end_cap1: :class:`PathEndCapType`
             End cap style of path start end cap.
-        end_cap2: :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
+        end_cap2: :class:`PathEndCapType`
             End cap style of path end end cap.
-        corner_style: :class:`PathCornerStyle <ansys.edb.primitive.Path.PathCornerType>`
+        corner_style: :class:`PathCornerType`
             Corner style.
         points : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Centerline polygonData to set.
@@ -847,11 +847,11 @@ class Path(Primitive):
         ----------
         width: :class:`Value <ansys.edb.utility.Value>`
             Path width.
-        end_cap1: :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
+        end_cap1: :class:`PathEndCapType`
             End cap style of path start end cap.
-        end_cap2: :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
+        end_cap2: :class:`PathEndCapType`
             End cap style of path end end cap.
-        corner_style: :class:`PathCornerType <ansys.edb.primitive.Path.PathCornerType>`
+        corner_style: :class:`PathCornerType`
             Corner style.
         path: :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             PolygonData to set.
@@ -888,8 +888,8 @@ class Path(Primitive):
         Returns
         -------
         tuple[
-            :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`,
-            :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
+            :class:`PathEndCapType`,
+            :class:`PathEndCapType`
         ]
 
             Returns a tuple of the following format:
@@ -908,9 +908,9 @@ class Path(Primitive):
 
         Parameters
         ----------
-        end_cap1: :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
+        end_cap1: :class:`PathEndCapType`
             End cap style of path start end cap.
-        end_cap2: :class:`PathEndCapType <ansys.edb.primitive.Path.PathEndCapType>`
+        end_cap2: :class:`PathEndCapType`
             End cap style of path end end cap.
         """
         self.__stub.SetEndCapStyle(
@@ -960,7 +960,7 @@ class Path(Primitive):
 
     @property
     def corner_style(self):
-        """:class:`PathCornerType <ansys.edb.utility.Path.PathCornerType>`: Path's corner style."""
+        """:class:`PathCornerType`: Path's corner style."""
         return Path.PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
 
     @corner_style.setter
@@ -1170,7 +1170,7 @@ class Bondwire(Primitive):
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
             Layout this bondwire will be in.
-        bondwire_type : :class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`
+        bondwire_type : :class:`BondwireType`
             Type of bondwire: kAPDBondWire or kJDECBondWire types.
         definition_name : str
             Bondwire definition name.
@@ -1253,7 +1253,7 @@ class Bondwire(Primitive):
 
     @property
     def type(self):
-        """:class:`BondwireType <ansys.edb.primitive.Bondwire.BondwireType>`: Bondwire-type of a bondwire object."""
+        """:class:`BondwireType`: Bondwire-type of a bondwire object."""
         btype_msg = self.__stub.GetType(self.msg)
         return Bondwire.BondwireType(btype_msg.type)
 
@@ -1263,8 +1263,7 @@ class Bondwire(Primitive):
 
     @property
     def cross_section_type(self):
-        """:class:`BondwireCrossSectionType <ansys.edb.primitive.Bondwire.BondwireCrossSectionType>`: \
-        Bondwire-cross-section-type of a bondwire object."""
+        """:class:`BondwireCrossSectionType`: Bondwire-cross-section-type of a bondwire object."""
         return Bondwire.BondwireCrossSectionType(self.__stub.GetCrossSectionType(self.msg).type)
 
     @cross_section_type.setter
@@ -1291,6 +1290,7 @@ class Bondwire(Primitive):
         ----------
         evaluated : bool, optional
             True if an evaluated (in variable namespace) material name is wanted.
+
         Returns
         -------
         str
@@ -1840,7 +1840,7 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        :class:`BackDrillType <ansys.edb.primitive.PadstackInstance.BackDrillType>`
+        :class:`BackDrillType`
             Back-Drill Type of padastack instance.
         """
         return PadstackInstance.BackDrillType(

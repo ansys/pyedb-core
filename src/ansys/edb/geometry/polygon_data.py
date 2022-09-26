@@ -45,7 +45,7 @@ class PolygonData:
         arcs : list[ArcData], optional
         lower_left : ansys.edb.typing.PointLike, optional
         upper_right : ansys.edb.typing.PointLike, optional
-        holes : ansys.edb.geometry.PointData, optional
+        holes : List[ansys.edb.geometry.PolygonData]
         sense : ansys.edb.geometry.PolygonSenseType, optional
         closed : bool, optional
         """

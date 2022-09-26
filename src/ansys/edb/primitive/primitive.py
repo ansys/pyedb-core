@@ -646,7 +646,6 @@ class Circle(Primitive):
             )
         )
 
-    @parser.to_polygon_data
     def get_polygon_data(self):
         """Get polygon data of a circle.
 

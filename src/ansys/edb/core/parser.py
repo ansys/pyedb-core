@@ -97,9 +97,9 @@ def _to_polygon_data(message):
 
         pd = polygon_data.PolygonData(
             points=_to_point_data_list(message.points),
-            holes=_to_point_data_list(message.holes),
+            holes=_to_polygon_data_list(message.holes),
             sense=message.sense,
-            closed=message.closed if hasattr(message, "closed") else None,
+            closed=message.closed,
         )
         return pd
 

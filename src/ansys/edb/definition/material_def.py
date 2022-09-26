@@ -205,7 +205,7 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property : :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
+        material_property : :class:`MaterialProperty`
             Property id.
         value : :class:`Value <ansys.edb.utility.Value>`
             Property value returned.

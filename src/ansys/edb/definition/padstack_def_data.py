@@ -431,24 +431,8 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
-            (fp, offset_x, offset_y, rotation)
-            fp : Polygon geometry.
-            offset_x : X offset.
-            offset_y : Y offset.
-            rotation : Rotation.
-        """
-        params = self.__stub.GetPolygonalPadParameters(
-            _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
-                self, layer, pad_type
-            )
-        )
-        return (
-            params.fp,
-            Value(params.offset_x),
-            Value(params.offset_y),
-            Value(params.rotation),
-        )
 
             **(fp, offset_x, offset_y, rotation)**
 
@@ -546,6 +530,7 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`
         ]
+
             Returns a tuple of the following format:
             **(d1, d2)**
 

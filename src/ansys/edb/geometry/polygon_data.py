@@ -27,7 +27,16 @@ class PolygonData:
         session.StubType.polygon_data
     )
 
-    def __init__(self, points=None, arcs=None, lower_left=None, upper_right=None, closed=True):
+    def __init__(
+        self,
+        points=None,
+        arcs=None,
+        lower_left=None,
+        upper_right=None,
+        holes=None,
+        sense=PolygonSenseType.SENSE_CCW,
+        closed=None,
+    ):
         """Create a polygon.
 
         Parameters
@@ -36,8 +45,15 @@ class PolygonData:
         arcs : list[ArcData], optional
         lower_left : ansys.edb.typing.PointLike, optional
         upper_right : ansys.edb.typing.PointLike, optional
+        holes : ansys.edb.geometry.PointData, optional
+        sense : ansys.edb.geometry.PolygonSenseType, optional
+        closed : bool, optional
         """
-        self._holes, self._sense, self._is_closed = [], PolygonSenseType.SENSE_CCW, closed
+        self._holes, self._sense, self._is_closed = (
+            [] if holes is None else holes,
+            PolygonSenseType(sense),
+            True if closed is None else closed,
+        )
 
         if points is not None:
             self._points = [conversions.to_point(pt) for pt in points]

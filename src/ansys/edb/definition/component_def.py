@@ -57,62 +57,38 @@ class ComponentDef(ObjBase):
 
     @property
     def name(self):
-        """Get the name of the component definition.
-
-        This attribute is also used to set the name.
-
-        Returns
-        -------
-        str
-            Name of the component definition.
-        """
+        """:obj:`str`: Name of the component definition."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, value):
-        """Set the name of the component definition."""
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property
     def footprint(self):
-        """Get the footprint cell of the component definition.
-
-        This attribute is also used to set the footprint cell.
-
-        Returns
-        -------
-        :class:`Cell <ansys.edb.layout.Cell>`
-            Footprint of the component definition.
-        """
+        """:class:`Cell <ansys.edb.layout.Cell>`: Footprint of the component definition."""
         return cell.Cell(self.__stub.GetFootprintCell(self.msg))
 
     @footprint.setter
     def footprint(self, value):
-        """Set the footprint cell on the component definition."""
         self.__stub.SetFootprintCell(messages.edb_obj_pair_message(self, value))
 
     @property
     def component_models(self):
-        """Get a list of component models associated with this component definition.
+        """:obj:`list` of :class:`ComponentModel <ansys.edb.definition.component_model.ComponentModel>`: \
+        List of component models associated with this component definition.
 
-        Returns
-        -------
-        list[
-            :class:`ComponentModel <ansys.edb.definition.component_model.ComponentModel>`
-        ]
-            List of component models.
+        Read-Only.
         """
         objs = self.__stub.GetComponentModels(self.msg).items
         return map_list(objs, component_model.ComponentModel)
 
     @property
     def component_pins(self):
-        """Get a list of component pins of this component definition.
+        """:obj:`list` of :class:`ComponentPin <ansys.edb.definition.ComponentPin>`: \
+        List of component pins of this component definition.
 
-        Returns
-        -------
-        list[:class:`ComponentPin <ansys.edb.definition.ComponentPin>`]
-            List of component pins.
+        Read-Only.
         """
         objs = self.__stub.GetComponentPins(self.msg).items
         return map_list(objs, component_pin.ComponentPin)

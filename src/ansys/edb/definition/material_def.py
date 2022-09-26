@@ -205,7 +205,7 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property : :class:`MaterialProperty <ansys.edb.definition.material_def.MaterialDef.MaterialProperty>`
+        material_property : :class:`MaterialProperty`
             Property id.
         value : :class:`Value <ansys.edb.utility.Value>`
             Property value returned.
@@ -272,37 +272,22 @@ class MaterialDef(ObjBase):
 
     @property
     def name(self):
-        """Get name of the material definition.
+        """:obj:`str`: Name of the material definition.
 
-        Returns
-        -------
-        name : str
-            Name of the material definition.
+        Read-Only.
         """
         return self.__stub.GetName(messages.edb_obj_message(self)).value
 
     @property
     def dielectric_material_model(self):
-        """Get Dielectric material model of the material definition.
-
-        Returns
-        -------
-        :class:`DielectricMaterialModel <ansys.edb.definition.material_def.DielectricMaterialModel>`
-            Dielectric material model of the material definition.
-        """
+        """:class:`DielectricMaterialModel <ansys.edb.definition.material_def.DielectricMaterialModel>`: \
+        Dielectric material model of the material definition."""
         return DielectricMaterialModel(
             self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
         )
 
     @dielectric_material_model.setter
     def dielectric_material_model(self, dielectric):
-        """Set Dielectric material model of the material definition.
-
-        Parameters
-        ----------
-        dielectric : :class:`DielectricMaterialModel <ansys.edb.definition.material_def.DielectricMaterialModel>`
-            Dielectric material model to be set to the material definition.
-        """
         self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
 
     def get_dimensions(self, material_property_id):
@@ -317,10 +302,14 @@ class MaterialDef(ObjBase):
         Returns
         -------
         tuple[int, int]
+
             Returns a tuple of the following format:
-            (col, row)
-            col : Number of rows of the material property.
-            row : Number of columns of the material property.
+
+            **(col, row)**
+
+            **col** : Number of rows of the material property.
+
+            **row** : Number of columns of the material property.
         """
         msg = self.__stub.GetDimensions(
             _QueryBuilder.material_def_get_property_message(self, material_property_id)

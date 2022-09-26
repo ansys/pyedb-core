@@ -283,52 +283,29 @@ class PadstackDefData(ObjBase):
 
     @property
     def material(self):
-        """
-        Get the hole material of the PadstackDefData object.
-
-        Returns
-        -------
-        str
-            Material name.
-        """
+        """:obj:`str`: Material name of the hole of the PadstackDefData object."""
         return self.__stub.GetMaterial(self.msg)
 
     @material.setter
-    def material(self, name: str):
-        """
-        Set the hole material of the PadstackDefData object.
-
-        Parameters
-        ----------
-        name : str
-            Material name.
-        """
+    def material(self, name):
         self.__stub.SetMaterial(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_material_message(self, name)
         )
 
     @property
     def layer_names(self):
-        """
-        Get a list of layer names in the PadstackDefData object.
+        """:obj:`list` of :obj:`str`: List of layer names in the PadstackDefData object.
 
-        Returns
-        -------
-        List[str]
-            List of layer names.
+        Read-Only.
         """
         layer_names_msg = self.__stub.GetLayerNames(self.msg).names
         return layer_names_msg
 
     @property
     def layer_ids(self):
-        """
-        Get a list of layer ids in the PadstackDefData object.
+        """:obj:`list` of :obj:`int`: List of layer ids in the PadstackDefData object.
 
-        Returns
-        -------
-        List[int]
-            List of layer ids.
+        Read-Only.
         """
         layer_ids_msg = self.__stub.GetLayerIds(self.msg)
         return layer_ids_msg.ids
@@ -492,52 +469,22 @@ class PadstackDefData(ObjBase):
 
     @property
     def hole_range(self):
-        """
-        Get the hole range of the PadstackDefData.
-
-        Returns
-        -------
-        PadstackDefData.PadstackHoleRange
-            Hole range.
-        """
+        """PadstackDefData.PadstackHoleRange: Hole range of the PadstackDefData."""
         return PadstackDefData.PadstackHoleRange(self.__stub.GetHoleRange(self.msg).hole_range)
 
     @hole_range.setter
     def hole_range(self, hole_range):
-        """
-        Set hole range type.
-
-        Parameters
-        ----------
-        hole_range : PadstackDefData.PadstackHoleRange
-            Hole range.
-        """
         self.__stub.SetHoleRange(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_hole_range_message(self, hole_range)
         )
 
     @property
     def plating_percentage(self):
-        """
-        Get hole plating percentage.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-            Hole plating percentage.
-        """
+        """:class:`Value <ansys.edb.utility.Value>`:Hole plating percentage."""
         return Value(self.__stub.GetPlatingPercentage(self.msg))
 
     @plating_percentage.setter
     def plating_percentage(self, plating_percentage):
-        """
-        Set hole plating percentage.
-
-        Parameters
-        ----------
-        plating_percentage : :class:`Value <ansys.edb.utility.Value>`
-            Hole plating percentage.
-        """
         self.__stub.SetPlatingPercentage(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_plating_percentage(
                 self, plating_percentage
@@ -546,28 +493,13 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_shape(self):
-        """
-        Get solder ball shape.
-
-        Returns
-        -------
-        PadstackDefData.SolderballShape
-            Solder ball shape.
-        """
+        """PadstackDefData.SolderballShape: Solder ball shape."""
         return PadstackDefData.SolderballShape(
             self.__stub.GetSolderBallShape(self.msg).solderball_shape
         )
 
     @solder_ball_shape.setter
     def solder_ball_shape(self, solderball_shape):
-        """
-        Set solder ball shape.
-
-        Parameters
-        ----------
-        solderball_shape : PadstackDefData.SolderballShape
-            Solder ball shape.
-        """
         self.__stub.SetSolderBallShape(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_shape_message(
                 self, solderball_shape
@@ -576,26 +508,11 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_placement(self):
-        """
-        Get solder ball placement position/orientation.
-
-        Returns
-        -------
-        PadstackDefData.SolderballPlacement
-            Specifies solderball placement/orientation.
-        """
+        """PadstackDefData.SolderballPlacement: Solder ball placement/orientation."""
         return PadstackDefData.SolderballPlacement(self.__stub.GetSolderBallPlacement(self.msg))
 
     @solder_ball_placement.setter
     def solder_ball_placement(self, solderball_placement):
-        """
-        Set solder ball placement position.
-
-        Parameters
-        ----------
-        solderball_placement : PadstackDefData.SolderballPlacement
-            Specifies solderball placement/orientation.
-        """
         self.__stub.SetSolderBallPlacement(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_placement_message(
                 self, solderball_placement
@@ -629,24 +546,6 @@ class PadstackDefData(ObjBase):
 
     @solder_ball_param.setter
     def solder_ball_param(self, params):
-        """
-        Set solder ball parameters.
-
-        Parameters
-        ----------
-        tuple[
-            :class:`Value <ansys.edb.utility.Value>`,
-            :class:`Value <ansys.edb.utility.Value>`
-        ]
-
-            Returns a tuple of the following format:
-
-            **(d1, d2)**
-
-            **d1** : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
-
-            **d2** : Middle diameter for spheroid solder ball. Not used for cylinder solder ball.
-        """
         self.__stub.SetSolderBallParam(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solder_ball_param_message(
                 self, params[0], params[1]
@@ -655,26 +554,11 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_material(self):
-        """
-        Get solder ball material.
-
-        Returns
-        -------
-        str
-            Solderball material name.
-        """
+        """:obj:`str`: Solderball material name."""
         return self.__stub.GetSolderBallMaterial(self.msg)
 
     @solder_ball_material.setter
     def solder_ball_material(self, material):
-        """
-        Set solder ball material.
-
-        Parameters
-        ----------
-        material : str
-            Solderball material name.
-        """
         self.__stub.SetSolderBallMaterial(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_solder_ball_material_message(
                 self, material

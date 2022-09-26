@@ -94,27 +94,18 @@ class PadstackDef(ObjBase):
 
     @property
     def name(self):
-        """Get Name of a PadstackDef.
+        """:obj:`str`: Name of the PadstackDef.
 
-        Returns
-        -------
-        str
-            Name of the PadstackDef.
+        Read-Only.
         """
         return self.__stub.GetName(self.msg).value
 
     @property
     def data(self):
-        """Get PadstackDefData of a PadstackDef.
-
-        Returns
-        -------
-        :class:`PadstackDefData <ansys.edb.definition.padstack_def_data.PadstackDefData>`
-            PadstackDefData of the PadstackDef.
-        """
+        """:class:`PadstackDefData <ansys.edb.definition.padstack_def_data.PadstackDefData>`: \
+        PadstackDefData of the PadstackDef."""
         return PadstackDefData(self.__stub.GetData(self.msg))
 
     @data.setter
     def data(self, data):
-        """Set PadstackDefData of a PadstackDef."""
         self.__stub.SetData(_PadstackDefQueryBuilder.padstack_def_set_data_message(self, data))

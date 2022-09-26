@@ -49,40 +49,26 @@ class ComponentPin(ObjBase):
 
     @property
     def name(self):
-        """Get the name of the component pin.
-
-        This attribute is also used to set the name.
-
-        Returns
-        -------
-        str
-            Name of the component pin.
-        """
+        """:obj:`str`: Name of the component pin."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, value):
-        """Set the name of the component pin."""
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property
     def number(self):
-        """Get the serial number of the component pin inside its component definition.
+        """:obj:`int`: Serial number of the component pin inside its component definition.
 
-        Returns
-        -------
-        int
-            Number of the component pin.
+        Read-Only.
         """
         return self.__stub.GetNumber(self.msg).value
 
     @property
     def component_def(self):
-        """Get the component definition this component pin belongs to.
+        """:class:`ComponentDef <ansys.edb.definition.ComponentDef>`: Component definition this component pin \
+        belongs to.
 
-        Returns
-        -------
-        :class:`ComponentDef <ansys.edb.definition.ComponentDef>`
-            Owning component definition of this pin.
+        Read-Only.
         """
         return component_def.ComponentDef(self.__stub.GetComponentDef(self.msg))

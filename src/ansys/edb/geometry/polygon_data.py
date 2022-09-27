@@ -35,7 +35,7 @@ class PolygonData:
         upper_right=None,
         holes=None,
         sense=PolygonSenseType.SENSE_CCW,
-        closed=None,
+        closed=True,
     ):
         """Create a polygon.
 
@@ -52,7 +52,7 @@ class PolygonData:
         self._holes, self._sense, self._is_closed = (
             [] if holes is None else holes,
             PolygonSenseType(sense),
-            True if closed is None else closed,
+            closed,
         )
 
         if points is not None:

@@ -24,7 +24,7 @@ class Group(HierarchyObj):
         """
         from ansys.edb.hierarchy import ComponentGroup, Structure3D, ViaGroup
 
-        if self.is_null():
+        if self.is_null:
             return
 
         group_type = self.__stub.GetGroupType(self.msg).group_type

@@ -1,12 +1,12 @@
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
+from utils.fixtures import *  # noqa
+from utils.test_utils import create_edb_obj_msgs, equals
 
 from ansys.edb import terminal
 from ansys.edb.core import messages
 import ansys.edb.layer as layer_api
 from ansys.edb.utility import PortPostProcessingProp, Rlc
-from utils.fixtures import *  # noqa
-from utils.test_utils import create_edb_obj_msgs, equals
 
 
 @pytest.fixture

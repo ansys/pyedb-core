@@ -2,8 +2,10 @@ import os
 import platform
 import tempfile
 
+import settings
+
 from ansys.edb.database import Database
-from ansys.edb.definition import MaterialDef, MaterialProperty
+from ansys.edb.definition import MaterialDef
 from ansys.edb.geometry import PolygonData
 from ansys.edb.hierarchy import ViaGroup
 from ansys.edb.layer import LayerCollection, LayerCollectionMode, LayerType, StackupLayer, ViaLayer
@@ -19,7 +21,6 @@ from ansys.edb.simulation_setup import (
 )
 import ansys.edb.simulation_setup.skin_depth_mesh_operation
 from ansys.edb.terminal import PointTerminal
-import settings
 
 
 # Wrapper class over Database
@@ -289,10 +290,10 @@ class SpiralInductor(BaseExample):
             self.create_material(
                 name,
                 {
-                    MaterialProperty.CONDUCTIVITY: properties[0],
-                    MaterialProperty.PERMITTIVITY: properties[1],
-                    MaterialProperty.PERMEABILITY: properties[2],
-                    MaterialProperty.DIELECTRIC_LOSS_TANGENT: properties[3],
+                    MaterialDef.MaterialProperty.CONDUCTIVITY: properties[0],
+                    MaterialDef.MaterialProperty.PERMITTIVITY: properties[1],
+                    MaterialDef.MaterialProperty.PERMEABILITY: properties[2],
+                    MaterialDef.MaterialProperty.DIELECTRIC_LOSS_TANGENT: properties[3],
                 },
             )
 
@@ -353,10 +354,10 @@ class SpiralInductor(BaseExample):
         self.create_material(
             "Coil_Mat",
             {
-                MaterialProperty.CONDUCTIVITY: 3.7e7,
-                MaterialProperty.PERMITTIVITY: 1,
-                MaterialProperty.PERMEABILITY: 1,
-                MaterialProperty.DIELECTRIC_LOSS_TANGENT: 0,
+                MaterialDef.MaterialProperty.CONDUCTIVITY: 3.7e7,
+                MaterialDef.MaterialProperty.PERMITTIVITY: 1,
+                MaterialDef.MaterialProperty.PERMEABILITY: 1,
+                MaterialDef.MaterialProperty.DIELECTRIC_LOSS_TANGENT: 0,
             },
         )
         coil_path.set_hfss_prop("Coil_Mat", True)

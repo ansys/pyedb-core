@@ -1,8 +1,8 @@
 import ansys.api.edb.v1.edb_messages_pb2 as edb_messages_pb2
+from utils.fixtures import *  # noqa
 
 import ansys.edb.geometry.point_data as point_data
 import ansys.edb.utility.value as value
-from utils.fixtures import *  # noqa
 
 
 @pytest.mark.parametrize(

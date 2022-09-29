@@ -24,19 +24,23 @@ class LayoutInstance(ObjBase):
         self.__stub.Refresh(self.msg)
 
     def query_layout_obj_instances(self, layer_filter=None, net_filter=None, spatial_filter=None):
-        """Query the layout object instances allowed by the given filters.
+        """Query :class:`layout object instances <LayoutObjInstance>` using the provided filters.
 
         Parameters
         ----------
-        layer_filter : list[ansys.edb.layer.Layer or str]
-        net_filter : list[ansys.edb.net.Net or str]
-        spatial_filter : ansys.edb.geometry.PolygonData or PointData or
-            ansys.edb.typinglist[PointLike]
+        layer_filter : list[:class:`Layer <ansys.edb.layer.Layer>` or str or None], optional
+            Specifies which layers to query. If :obj:`None`, all layers will be queried.
+        net_filter : list[:class:`Net <ansys.edb.net.Net>` or str or None], optional
+            Specifies which nets to query. If :obj:`None`, all nets will be queried.
+        spatial_filter : :class:`PolygonData <ansys.edb.geometry.PolygonData>` or \
+         :class:`PointData <ansys.edb.geometry.PointData>` or None, optional
+            Specifies which area of the design to query. If :obj:`None`, the entire spatial domain of the design will \
+            be queried.
 
         Returns
         -------
         list[LayoutObjInstance] or tuple[list[LayoutObjInstance], list[LayoutObjInstance]]
-            If a polygonal spatial filter is specified, a tuple of lists of layout obj instances is returned of the
+            If a polygonal spatial filter is specified, a tuple of lists of hits is returned of the
             format [<hits_completely_enclosed_in_polygon_region>, <hits_partially_enclosed_in_polygon_region>].
             Otherwise, a list containing all hits is returned.
         """
@@ -74,12 +78,18 @@ class LayoutInstance(ObjBase):
             return utils.map_list(hits.hits.items, LayoutObjInstance)
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
-        """Get the layout obj instance of the given ConnObj in the provided context.
+        """Get the :class:`layout object instance <LayoutObjInstance>` of the given :term:`Connectable <Connectable>` \
+        in the provided context.
 
         Parameters
         ----------
-        layout_obj : ansys.edb.core.ConnObj
+        layout_obj : :term:`Connectable <Connectable>`
+            Layout object whose instances will be searched for.
         context : list[str]
+            list of strings specifying the :class:`context <LayoutInstanceContext>` that the instance of \
+            layout_obj will be retrieved from.
+
+            .. seealso:: :func:`LayoutObjInstance.context`
 
         Returns
         -------
@@ -96,15 +106,20 @@ class LayoutInstance(ObjBase):
         )
 
     def get_connected_objects(self, origin_layout_obj_inst, touching_only):
-        """Get the layout obj instances connected to the origin layout obj instance.
+        """Get the :class:`layout object instances <LayoutObjInstance>` connected to the origin \
+        layout object instance.
 
         Parameters
         ----------
         origin_layout_obj_inst : LayoutObjInstance
+            :class:`layout object instance <LayoutObjInstance>` that will act as the origin to get connected objects \
+            from.
         touching_only : bool
-            If touching_only is true, only layout obj instances touching origin_layout_obj_inst on the placement
-            lyr of origin_layout_obj_inst will be returned. Otherwise, all layout obj instances across all layers
-            that are electrically connected to origin_layout_obj will be returned.
+            If touching_only is true, only :class:`layout object instances <LayoutObjInstance>` touching \
+            origin_layout_obj_inst on the placement :class:`layer <ansys.edb.layer.Layer>` of origin_layout_obj_inst \
+            will be returned. Otherwise, all layout object instances across all layers that are electrically connected \
+            to origin_layout_obj_inst will be returned.
+
         Returns
         -------
         list[LayoutObjInstance]

@@ -8,7 +8,7 @@ from ansys.edb.session import LayoutObjInstanceGeometryServiceStub, StubAccessor
 
 
 class LayoutObjInstanceGeometry(ObjBase):
-    """Class representing layout obj instance geometry."""
+    """Class representing layout object instance geometry."""
 
     __stub: LayoutObjInstanceGeometryServiceStub = StubAccessor(
         StubType.layout_obj_instance_geometry
@@ -43,20 +43,16 @@ class LayoutObjInstanceGeometry(ObjBase):
 
     @property
     def material(self):
-        """Get the material of the layout obj instance geometry.
+        """:obj:`str`: The material of the geometry.
 
-        Returns
-        -------
-        str
+        Read-Only.
         """
         return self.__stub.GetMaterial(self.msg).value
 
     @property
     def color(self):
-        """Get the color of the layout obj instance geometry.
+        """:obj:`int`: The color of the geometry.
 
-        Returns
-        -------
-        int
+        Read-Only.
         """
         return self.__stub.GetColor(self.msg).value

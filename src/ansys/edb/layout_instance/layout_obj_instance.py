@@ -33,7 +33,7 @@ class LayoutObjInstance(ObjBase):
 
         Read-Only.
         """
-        return utils.map_list(self.__stub.GetLayers(self.msg).items, Layer._create)
+        return [Layer(msg).cast() for msg in self.__stub.GetLayers(self.msg).items]
 
     def get_geometries(self, layer):
         """Get the geometry that exists on the specified layer.

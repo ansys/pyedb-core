@@ -27,3 +27,6 @@ Enums
    LayerCollectionMode
    DCThicknessType
    RoughnessRegion
+   LayerCollectionMode
+   LayerTypeSet
+   DielectricMergingMethod

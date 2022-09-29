@@ -57,7 +57,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        mode : LayerCollectionMode, optional
+        mode : LayerCollectionMode
 
         Returns
         -------
@@ -80,7 +80,7 @@ class LayerCollection(ObjBase):
 
     @property
     def mode(self):
-        """Get the mode the layer collection.
+        """:class:`LayerCollectionMode`: Get the mode the layer collection.
 
         Returns
         -------
@@ -90,12 +90,6 @@ class LayerCollection(ObjBase):
 
     @mode.setter
     def mode(self, mode):
-        """Set the mode the layer collection.
-
-        Parameters
-        ----------
-        mode : LayerCollectionMode
-        """
         get_layer_collection_stub().SetMode(
             layer_collection_pb2.SetLayerCollectionModeMessage(
                 layer_collection=self.msg, mode=mode.value
@@ -210,7 +204,7 @@ class LayerCollection(ObjBase):
         return self._add_layer(layer_to_add, add_top=False)
 
     def add_stackup_layer_at_elevation(self, stackup_layer_to_add):
-        """Add a stackup layer at user specified elevation.
+        """Add a :class:`StackupLayer` at user specified elevation.
 
          Doesn't change other stackup layer's elevation.
 
@@ -225,7 +219,7 @@ class LayerCollection(ObjBase):
         return self._add_layer(stackup_layer_to_add)
 
     def add_via_layer(self, via_layer_to_add):
-        """Add a via layer to the layer collection.
+        """Add a :class:`ViaLayer` to the layer collection.
 
         Parameters
         ----------
@@ -301,7 +295,7 @@ class LayerCollection(ObjBase):
         return LayerCollection._get_layer_filter(_get_layer_type_list())
 
     def get_top_bottom_stackup_layers(self, layer_type_set):
-        """Get the top and bottom stackup layers of specific type and their elevations.
+        """Get the top and bottom :class:`StackupLayers <StackupLayer>` of specific type and their elevations.
 
         Parameters
         ----------
@@ -327,11 +321,11 @@ class LayerCollection(ObjBase):
         )
 
     def get_layers(self, layer_filter=LayerTypeSet.ALL_LAYER_SET):
-        """Retrieve a list of layer in the LayerCollection filtered by the given layer filter.
+        """Retrieve a list of :class:`Layers <Layer>` in the layer collection filtered by the given layer filter.
 
         Parameters
         ----------
-        layer_filter : LayerTypeSet, LayerType, list[LayerType], optional
+        layer_filter : LayerTypeSet or LayerType or list[LayerType]
 
         Returns
         -------
@@ -352,11 +346,11 @@ class LayerCollection(ObjBase):
         return [Layer(msg).cast() for msg in response.items]
 
     def get_product_property(self, prod_id, attr_it):
-        """Get the product property of the layer associated with the given product and attribute ids.
+        """Get the product property of the layer collection associated with the given product and attribute ids.
 
         Parameters
         ----------
-        prod_id : ProductIdType
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
         attr_it : int
 
         Returns
@@ -370,11 +364,11 @@ class LayerCollection(ObjBase):
         )
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property of the layer associated with the given product and attribute ids.
+        """Set the product property of the layer collection associated with the given product and attribute ids.
 
         Parameters
         ----------
-        prod_id : ProductIdType
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
         attr_it : int
         prop_value : str
         """
@@ -383,11 +377,11 @@ class LayerCollection(ObjBase):
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute ids corresponding to the provided product id for the layer.
+        """Get a list of attribute ids corresponding to the provided product id for the layer collection.
 
         Parameters
         ----------
-        prod_id : ProductIdType
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
 
         Returns
         -------
@@ -413,7 +407,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
         start_layer_name : str
         end_layer_name : str
         merging_method : DielectricMergingMethod
@@ -440,12 +434,7 @@ class LayerCollection(ObjBase):
 
     @property
     def zone_ids(self):
-        """Get a list of all zones in the LayerCollection.
-
-        Returns
-        -------
-        list[int]
-        """
+        r""":obj:`list`\[:obj:`int`\]: Get a list of all zones in the layer collection."""
         zones = get_layer_collection_stub().GetZoneIds(self.msg).zones
         return [zone for zone in zones]
 
@@ -484,7 +473,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        copy_zone : int, optional
+        copy_zone : int
             If valid the new zone is inserted as a copy of the specified
             zone, otherwise the new zone is empty
 
@@ -513,17 +502,17 @@ class LayerCollection(ObjBase):
         layer_thickness_thresh=-1,
         merging_method=DielectricMergingMethod.WEIGHTED_CAPACITANCE,
     ):
-        """Split dielectric layers at the boundaries of signal layers and merges them.
+        """Split dielectric layers at the boundaries of signal layers and merge them.
 
         Parameters
         ----------
-        database : Database
-        layer_thickness_thresh : float, optional
-        merging_method : DielectricMergingMethod, optional
+        database : :class:`Database <ansys.edb.database.Database>`
+        layer_thickness_thresh : float
+        merging_method : DielectricMergingMethod
 
         Returns
         -------
-        List[StackupLayer]
+        list[StackupLayer]
             returns a list of dielectric layers created during the dielectric simplification process
         """
         simplified_lyrs = (

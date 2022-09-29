@@ -147,127 +147,132 @@ class _PadstackDefDataQueryBuilder:
         return pb.PadstackDefDataSetSolderBallMaterialMessage(target=target.msg, material=material)
 
 
+class PadType(Enum):
+    """Enum representing Pad types.
+
+    - REGULAR_PAD
+        Regular pad.
+    - ANTI_PAD
+        Anti pad.
+    - THERMAL_PAD
+         Thermal pad.
+    - HOLE
+        Hole.
+    - UNKNOWN_GEOM_TYPE
+        Undefined pad type.
+    """
+
+    REGULAR_PAD = pb.REGULAR_PAD
+    ANTI_PAD = pb.ANTI_PAD
+    THERMAL_PAD = pb.THERMAL_PAD
+    HOLE = pb.HOLE
+    UNKNOWN_GEOM_TYPE = pb.UNKNOWN_GEOM_TYPE
+
+
+class PadGeometryType(Enum):
+    """Enum representing Pad Geometry types.
+
+    - PADGEOMTYPE_NO_GEOMETRY
+        No geometry.
+    - PADGEOMTYPE_CIRCLE
+        Circle shape.
+    - PADGEOMTYPE_SQUARE
+        Square shape.
+    - PADGEOMTYPE_OVAL
+        Oval shape.
+    - PADGEOMTYPE_BULLET
+        Bullet shape.
+    - PADGEOMTYPE_NSIDED_POLYGON
+        N-sided polygon.
+    - PADGEOMTYPE_POLYGON
+        Polygonal shape.
+    - PADGEOMTYPE_ROUND45
+        Round gap with 45 degree thermal ties.
+    - PADGEOMTYPE_ROUND90
+        Round gap with 90 degree thermal ties.
+    - PADGEOMTYPE_SQUARE45
+        Square gap with 45 degree thermal ties.
+    - PADGEOMTYPE_SQUARE90
+        Square gap with 90 degree thermal ties.
+    - PADGEOMTYPE_INVALID_GEOMETRY
+        Invalid geometry.
+    """
+
+    PADGEOMTYPE_NO_GEOMETRY = pb.PADGEOMTYPE_NO_GEOMETRY
+    PADGEOMTYPE_CIRCLE = pb.PADGEOMTYPE_CIRCLE
+    PADGEOMTYPE_SQUARE = pb.PADGEOMTYPE_SQUARE
+    PADGEOMTYPE_OVAL = pb.PADGEOMTYPE_OVAL
+    PADGEOMTYPE_BULLET = pb.PADGEOMTYPE_BULLET
+    PADGEOMTYPE_NSIDED_POLYGON = pb.PADGEOMTYPE_NSIDED_POLYGON
+    PADGEOMTYPE_POLYGON = pb.PADGEOMTYPE_POLYGON
+    PADGEOMTYPE_ROUND45 = pb.PADGEOMTYPE_ROUND45
+    PADGEOMTYPE_ROUND90 = pb.PADGEOMTYPE_ROUND90
+    PADGEOMTYPE_SQUARE45 = pb.PADGEOMTYPE_SQUARE45
+    PADGEOMTYPE_SQUARE90 = pb.PADGEOMTYPE_SQUARE90
+    PADGEOMTYPE_INVALID_GEOMETRY = pb.PADGEOMTYPE_INVALID_GEOMETRY
+
+
+class PadstackHoleRange(Enum):
+    """Enum representing Pad Hole ranges.
+
+    - THROUGH
+        Hole through all layers of the board.
+    - BEGIN_ON_UPPER_PAD
+        Hole from upper pad to the bottom of the board.
+    - END_ON_LOWER_PAD
+        Hole from top of board to lower pad.
+    - UPPER_PAD_TO_LOWER_PAD
+        Hole from upper pad to lower pad.
+    - UNKNOWN_RANGE
+        Undefined hole range.
+    """
+
+    THROUGH = pb.THROUGH
+    BEGIN_ON_UPPER_PAD = pb.BEGIN_ON_UPPER_PAD
+    END_ON_LOWER_PAD = pb.END_ON_LOWER_PAD
+    UPPER_PAD_TO_LOWER_PAD = pb.UPPER_PAD_TO_LOWER_PAD
+    UNKNOWN_RANGE = pb.UNKNOWN_RANGE
+
+
+class SolderballShape(Enum):
+    """Enum representing Solderball shapes.
+
+    - NO_SOLDERBALL
+        No solder ball.
+    - SOLDERBALL_CYLINDER
+        Cylinder solder ball.
+    - SOLDERBALL_SPHEROID
+        Spheroid solder ball.
+    - UNKNOWN_SOLDERBALL_SHAPE
+        Undefined solder ball shape.
+    """
+
+    NO_SOLDERBALL = pb.NO_SOLDERBALL
+    SOLDERBALL_CYLINDER = pb.SOLDERBALL_CYLINDER
+    SOLDERBALL_SPHEROID = pb.SOLDERBALL_SPHEROID
+    UNKNOWN_SOLDERBALL_SHAPE = pb.UNKNOWN_SOLDERBALL_SHAPE
+
+
+class SolderballPlacement(Enum):
+    """Enum representing Solderball placement.
+
+    - ABOVE_PADSTACK
+        Solder ball is placed above the padstack.
+    - BELOW_PADSTACK
+        Solder ball is placed below the padstack.
+    - UNKNOWN_PLACEMENT
+        Undefined solder ball placement type.
+    """
+
+    ABOVE_PADSTACK = pb.ABOVE_PADSTACK
+    BELOW_PADSTACK = pb.BELOW_PADSTACK
+    UNKNOWN_PLACEMENT = pb.UNKNOWN_PLACEMENT
+
+
 class PadstackDefData(ObjBase):
     """Class representing a padstack data definition."""
 
     __stub: PadstackDefDataServiceStub = StubAccessor(StubType.padstack_def_data)
-
-    class PadType(Enum):
-        """Enum representing Pad types.
-
-        - REGULAR_PAD
-            Regular pad.
-        - ANTI_PAD
-            Anti pad.
-        - THERMAL_PAD
-             Thermal pad.
-        - HOLE
-            Hole.
-        - UNKNOWN_GEOM_TYPE
-            Undefined pad type.
-        """
-
-        REGULAR_PAD = pb.REGULAR_PAD
-        ANTI_PAD = pb.ANTI_PAD
-        THERMAL_PAD = pb.THERMAL_PAD
-        HOLE = pb.HOLE
-        UNKNOWN_GEOM_TYPE = pb.UNKNOWN_GEOM_TYPE
-
-    class PadGeometryType(Enum):
-        """Enum representing Pad Geometry types.
-
-        - PADGEOMTYPE_NO_GEOMETRY
-            No geometry.
-        - PADGEOMTYPE_CIRCLE
-            Circle shape.
-        - PADGEOMTYPE_SQUARE
-            Square shape.
-        - PADGEOMTYPE_OVAL
-            Oval shape.
-        - PADGEOMTYPE_BULLET
-            Bullet shape.
-        - PADGEOMTYPE_NSIDED_POLYGON
-            N-sided polygon.
-        - PADGEOMTYPE_POLYGON
-            Polygonal shape.
-        - PADGEOMTYPE_ROUND45
-            Round gap with 45 degree thermal ties.
-        - PADGEOMTYPE_ROUND90
-            Round gap with 90 degree thermal ties.
-        - PADGEOMTYPE_SQUARE45
-            Square gap with 45 degree thermal ties.
-        - PADGEOMTYPE_SQUARE90
-            Square gap with 90 degree thermal ties.
-        - PADGEOMTYPE_INVALID_GEOMETRY
-            Invalid geometry.
-        """
-
-        PADGEOMTYPE_NO_GEOMETRY = pb.PADGEOMTYPE_NO_GEOMETRY
-        PADGEOMTYPE_CIRCLE = pb.PADGEOMTYPE_CIRCLE
-        PADGEOMTYPE_SQUARE = pb.PADGEOMTYPE_SQUARE
-        PADGEOMTYPE_OVAL = pb.PADGEOMTYPE_OVAL
-        PADGEOMTYPE_BULLET = pb.PADGEOMTYPE_BULLET
-        PADGEOMTYPE_NSIDED_POLYGON = pb.PADGEOMTYPE_NSIDED_POLYGON
-        PADGEOMTYPE_POLYGON = pb.PADGEOMTYPE_POLYGON
-        PADGEOMTYPE_ROUND45 = pb.PADGEOMTYPE_ROUND45
-        PADGEOMTYPE_ROUND90 = pb.PADGEOMTYPE_ROUND90
-        PADGEOMTYPE_SQUARE45 = pb.PADGEOMTYPE_SQUARE45
-        PADGEOMTYPE_SQUARE90 = pb.PADGEOMTYPE_SQUARE90
-        PADGEOMTYPE_INVALID_GEOMETRY = pb.PADGEOMTYPE_INVALID_GEOMETRY
-
-    class PadstackHoleRange(Enum):
-        """Enum representing Pad Hole ranges.
-
-        - THROUGH
-            Hole through all layers of the board.
-        - BEGIN_ON_UPPER_PAD
-            Hole from upper pad to the bottom of the board.
-        - END_ON_LOWER_PAD
-            Hole from top of board to lower pad.
-        - UPPER_PAD_TO_LOWER_PAD
-            Hole from upper pad to lower pad.
-        - UNKNOWN_RANGE
-            Undefined hole range.
-        """
-
-        THROUGH = pb.THROUGH
-        BEGIN_ON_UPPER_PAD = pb.BEGIN_ON_UPPER_PAD
-        END_ON_LOWER_PAD = pb.END_ON_LOWER_PAD
-        UPPER_PAD_TO_LOWER_PAD = pb.UPPER_PAD_TO_LOWER_PAD
-        UNKNOWN_RANGE = pb.UNKNOWN_RANGE
-
-    class SolderballShape(Enum):
-        """Enum representing Solderball shapes.
-
-        - NO_SOLDERBALL
-            No solder ball.
-        - SOLDERBALL_CYLINDER
-            Cylinder solder ball.
-        - SOLDERBALL_SPHEROID
-            Spheroid solder ball.
-        - UNKNOWN_SOLDERBALL_SHAPE
-            Undefined solder ball shape.
-        """
-
-        NO_SOLDERBALL = pb.NO_SOLDERBALL
-        SOLDERBALL_CYLINDER = pb.SOLDERBALL_CYLINDER
-        SOLDERBALL_SPHEROID = pb.SOLDERBALL_SPHEROID
-        UNKNOWN_SOLDERBALL_SHAPE = pb.UNKNOWN_SOLDERBALL_SHAPE
-
-    class SolderballPlacement(Enum):
-        """Enum representing Solderball placement.
-
-        - ABOVE_PADSTACK
-            Solder ball is placed above the padstack.
-        - BELOW_PADSTACK
-            Solder ball is placed below the padstack.
-        - UNKNOWN_PLACEMENT
-            Undefined solder ball placement type.
-        """
-
-        ABOVE_PADSTACK = pb.ABOVE_PADSTACK
-        BELOW_PADSTACK = pb.BELOW_PADSTACK
-        UNKNOWN_PLACEMENT = pb.UNKNOWN_PLACEMENT
 
     @classmethod
     def create(cls):
@@ -330,11 +335,11 @@ class PadstackDefData(ObjBase):
         Parameters
         ----------
         layer : Union[str, int, None]
-        pad_type : PadstackDefData.PadType
+        pad_type : PadType
 
         Returns
         -------
-        tuple[:class:`PadGeometryType <ansys.edb.definition.padstack_def_data.PadstackDefData.PadGeometryType>`,
+        tuple[:class:`PadGeometryType`,
             list[:class:`Value <ansys.edb.utility.Value>`],
             :class:`Value <ansys.edb.utility.Value>`,
             :class:`Value <ansys.edb.utility.Value>`,
@@ -374,7 +379,7 @@ class PadstackDefData(ObjBase):
         )
         if message.HasField("generic"):
             return (
-                PadstackDefData.PadGeometryType(message.generic.geometry_type),
+                PadGeometryType(message.generic.geometry_type),
                 [Value(s) for s in message.generic.sizes],
                 Value(message.generic.offset_x),
                 Value(message.generic.offset_y),
@@ -398,7 +403,7 @@ class PadstackDefData(ObjBase):
         ----------
         layer : Union[str, int, None]
             Layer name.
-        pad_type : PadstackDefData.PadType
+        pad_type : PadType
             Pad type.
         offset_x : :class:`Value <ansys.edb.utility.Value>`
             X offset.
@@ -406,7 +411,7 @@ class PadstackDefData(ObjBase):
             Y offset.
         rotation : :class:`Value <ansys.edb.utility.Value>`
             Rotation.
-        type_geom : PadstackDefData.PadGeometryType
+        type_geom : PadGeometryType
             Pad geometry type. None if setting polygonal pad parameters.
         sizes : List[:class:`Value <ansys.edb.utility.Value>`]
             Pad parameters. None if setting polygonal pad parameters.
@@ -444,7 +449,7 @@ class PadstackDefData(ObjBase):
 
             **rotation** : Rotation.
         """
-        return self.get_pad_parameters(None, PadstackDefData.PadType.HOLE)
+        return self.get_pad_parameters(None, PadType.HOLE)
 
     def set_hole_parameters(self, offset_x, offset_y, rotation, type_geom, sizes):
         """
@@ -452,7 +457,7 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        type_geom : PadstackDefData.PadGeometryType
+        type_geom : PadGeometryType
             Pad geometry type.
         sizes : List[:class:`Value <ansys.edb.utility.Value>`]
             Pad parameters.
@@ -464,13 +469,13 @@ class PadstackDefData(ObjBase):
             Rotation.
         """
         return self.set_pad_parameters(
-            -1, PadstackDefData.PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes
+            -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes
         )
 
     @property
     def hole_range(self):
-        """PadstackDefData.PadstackHoleRange: Hole range of the PadstackDefData."""
-        return PadstackDefData.PadstackHoleRange(self.__stub.GetHoleRange(self.msg).hole_range)
+        """:class:`PadstackHoleRange`: Hole range of the PadstackDefData."""
+        return PadstackHoleRange(self.__stub.GetHoleRange(self.msg).hole_range)
 
     @hole_range.setter
     def hole_range(self, hole_range):
@@ -493,10 +498,8 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_shape(self):
-        """PadstackDefData.SolderballShape: Solder ball shape."""
-        return PadstackDefData.SolderballShape(
-            self.__stub.GetSolderBallShape(self.msg).solderball_shape
-        )
+        """:class:`SolderballShape`: Solder ball shape."""
+        return SolderballShape(self.__stub.GetSolderBallShape(self.msg).solderball_shape)
 
     @solder_ball_shape.setter
     def solder_ball_shape(self, solderball_shape):
@@ -508,8 +511,8 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_placement(self):
-        """PadstackDefData.SolderballPlacement: Solder ball placement/orientation."""
-        return PadstackDefData.SolderballPlacement(self.__stub.GetSolderBallPlacement(self.msg))
+        """:class:`SolderballPlacement`: Solder ball placement/orientation."""
+        return SolderballPlacement(self.__stub.GetSolderBallPlacement(self.msg))
 
     @solder_ball_placement.setter
     def solder_ball_placement(self, solderball_placement):

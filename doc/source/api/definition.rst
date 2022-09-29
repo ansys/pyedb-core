@@ -26,11 +26,17 @@ Classes
    PadstackDefData
    ThermalModifier
 
-.. autoclass:: ansys.edb.definition.BondwireDef.BondwireDefType
-.. autoclass:: ansys.edb.definition.MaterialDef.MaterialProperty
-.. autoclass:: ansys.edb.definition.PadstackDefData.PadType
-.. autoclass:: ansys.edb.definition.PadstackDefData.PadGeometryType
-.. autoclass:: ansys.edb.definition.PadstackDefData.PadstackHoleRange
-.. autoclass:: ansys.edb.definition.PadstackDefData.SolderballShape
-.. autoclass:: ansys.edb.definition.PadstackDefData.SolderballPlacement
+Enums
+-----
+
+.. autosummary::
+   :toctree: _autosummary
+
+   BondwireDefType
+   MaterialProperty
+   PadType
+   PadGeometryType
+   PadstackHoleRange
+   SolderballShape
+   SolderballPlacement
 

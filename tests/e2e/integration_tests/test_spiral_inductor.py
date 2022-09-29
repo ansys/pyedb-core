@@ -5,13 +5,20 @@ import tempfile
 import settings
 
 from ansys.edb.database import Database
-from ansys.edb.definition import MaterialDef
+from ansys.edb.definition import MaterialDef, MaterialProperty
 from ansys.edb.geometry import PolygonData
 from ansys.edb.hierarchy import ViaGroup
 from ansys.edb.layer import LayerCollection, LayerCollectionMode, LayerType, StackupLayer, ViaLayer
 from ansys.edb.layout import Cell, CellType
 from ansys.edb.net import Net
-from ansys.edb.primitive import Path, Polygon, Rectangle
+from ansys.edb.primitive import (
+    Path,
+    PathCornerType,
+    PathEndCapType,
+    Polygon,
+    Rectangle,
+    RectangleRepresentationType,
+)
 from ansys.edb.session import session
 from ansys.edb.simulation_setup import (
     AdaptiveFrequencyData,
@@ -86,7 +93,7 @@ class BaseExample:
             self.layout,
             layer_name,
             self.net(net_name),
-            Rectangle.RectangleRepresentationType.LOWER_LEFT_UPPER_RIGHT,
+            RectangleRepresentationType.LOWER_LEFT_UPPER_RIGHT,
             llx,
             lly,
             urx,
@@ -111,9 +118,9 @@ class BaseExample:
             layer_name,
             self.net(net_name),
             width,
-            Path.PathEndCapType.FLAT,
-            Path.PathEndCapType.FLAT,
-            Path.PathCornerType.SHARP,
+            PathEndCapType.FLAT,
+            PathEndCapType.FLAT,
+            PathCornerType.SHARP,
             polygon_data,
         )
 
@@ -290,10 +297,10 @@ class SpiralInductor(BaseExample):
             self.create_material(
                 name,
                 {
-                    MaterialDef.MaterialProperty.CONDUCTIVITY: properties[0],
-                    MaterialDef.MaterialProperty.PERMITTIVITY: properties[1],
-                    MaterialDef.MaterialProperty.PERMEABILITY: properties[2],
-                    MaterialDef.MaterialProperty.DIELECTRIC_LOSS_TANGENT: properties[3],
+                    MaterialProperty.CONDUCTIVITY: properties[0],
+                    MaterialProperty.PERMITTIVITY: properties[1],
+                    MaterialProperty.PERMEABILITY: properties[2],
+                    MaterialProperty.DIELECTRIC_LOSS_TANGENT: properties[3],
                 },
             )
 
@@ -354,10 +361,10 @@ class SpiralInductor(BaseExample):
         self.create_material(
             "Coil_Mat",
             {
-                MaterialDef.MaterialProperty.CONDUCTIVITY: 3.7e7,
-                MaterialDef.MaterialProperty.PERMITTIVITY: 1,
-                MaterialDef.MaterialProperty.PERMEABILITY: 1,
-                MaterialDef.MaterialProperty.DIELECTRIC_LOSS_TANGENT: 0,
+                MaterialProperty.CONDUCTIVITY: 3.7e7,
+                MaterialProperty.PERMITTIVITY: 1,
+                MaterialProperty.PERMEABILITY: 1,
+                MaterialProperty.DIELECTRIC_LOSS_TANGENT: 0,
             },
         )
         coil_path.set_hfss_prop("Coil_Mat", True)

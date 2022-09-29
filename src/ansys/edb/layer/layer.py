@@ -22,7 +22,29 @@ def _is_in_zone_message(lyr, zone):
 
 
 class LayerType(Enum):
-    """Enum representing types of layers."""
+    """Enum representing types of layers.
+
+    - SIGNAL_LAYER
+    - DIELECTRIC_LAYER
+    - CONDUCTING_LAYER
+    - AIRLINES_LAYER
+    - AIRLINES_LAYER
+    - ERRORS_LAYER
+    - SYMBOL_LAYER
+    - MEASURE_LAYER
+    - ASSEMBLY_LAYER
+    - SILKSCREEN_LAYER
+    - SOLDER_MASK_LAYER
+    - SOLDER_PASTE_LAYER
+    - GLUE_LAYER
+    - WIREBOND_LAYER
+    - USER_LAYER
+    - SIWAVE_HFSS_SOLVER_REGIONS
+    - POST_PROCESSING_LAYER
+    - OUTLINE_LAYER
+    - LAYER_TYPES_COUNT
+    - UNDEFINED_LAYER_TYPE
+    """
 
     SIGNAL_LAYER = layer_pb2.SIGNAL_LAYER
     DIELECTRIC_LAYER = layer_pb2.DIELECTRIC_LAYER
@@ -46,7 +68,14 @@ class LayerType(Enum):
 
 
 class TopBottomAssociation(Enum):
-    """Enum representing the top-bottom association of layers."""
+    """Enum representing the top-bottom association of layers.
+
+    - TOP_ASSOCIATED
+    - NO_TOP_BOTTOM_ASSOCIATED
+    - BOTTOM_ASSOCIATED
+    - TOP_BOTTOM_ASSOCIATION_COUNT
+    - INVALID_TOP_BOTTOM_ASSOCIATION
+    """
 
     TOP_ASSOCIATED = layer_pb2.TOP_ASSOCIATED
     NO_TOP_BOTTOM_ASSOCIATED = layer_pb2.NO_TOP_BOTTOM_ASSOCIATED
@@ -56,7 +85,12 @@ class TopBottomAssociation(Enum):
 
 
 class DrawOverride(Enum):
-    """Enum representing draw override options for layers."""
+    """Enum representing draw override options for layers.
+
+    - NO_OVERRIDE
+    - FILL
+    - WIREFRAME
+    """
 
     NO_OVERRIDE = layer_pb2.NO_OVERRIDE
     FILL = layer_pb2.FILL
@@ -64,7 +98,15 @@ class DrawOverride(Enum):
 
 
 class LayerVisibility(Enum):
-    """Enum representing visibility options for layers."""
+    """Enum representing visibility options for layers.
+
+    - PRIMITIVE_VISIBLE
+    - PATH_VISIBLE
+    - PAD_VISIBLE
+    - HOLE_VISIBLE
+    - COMPONENT_VISIBLE
+    - ALL_VISIBLE
+    """
 
     PRIMITIVE_VISIBLE = layer_pb2.PRIMITIVE_VISIBLE
     PATH_VISIBLE = layer_pb2.PATH_VISIBLE
@@ -105,7 +147,7 @@ class Layer(ObjBase):
         Parameters
         ----------
         name : string
-        lyr_type : LayerType
+        lyr_type : :class:`LayerType`
 
         Returns
         -------
@@ -117,26 +159,15 @@ class Layer(ObjBase):
 
     @property
     def type(self):
-        """Get layer type.
-
-        Returns
-        -------
-        LayerType
-        """
+        """:class:`LayerType`: Layer type of the layer."""
         return LayerType(self.__stub.GetLayerType(self.msg).type)
 
     @type.setter
     def type(self, lyr_type):
-        """Set layer type.
-
-        Parameters
-        ----------
-        lyr_type : LayerType
-        """
         self.__stub.SetLayerType(layer_pb2.SetLayerTypeMessage(layer=self.msg, type=lyr_type.value))
 
     def is_stackup_layer(self):
-        """Determine if the layer is a stackup layer.
+        """Determine if the layer is a :class:`StackupLayer`.
 
         Returns
         -------
@@ -150,7 +181,7 @@ class Layer(ObjBase):
         )
 
     def is_via_layer(self):
-        """Determine if the layer is via layer.
+        """Determine if the layer is a :class:`ViaLayer`.
 
         Returns
         -------
@@ -160,22 +191,11 @@ class Layer(ObjBase):
 
     @property
     def name(self):
-        """Get the name of the layer.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str`: Name of the layer."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, name):
-        """Set the layer name.
-
-        Parameters
-        ----------
-        name : str
-        """
         self.__stub.SetName(layer_pb2.SetNameMessage(layer=self.msg, name=name))
 
     def clone(self, copy_id=True):
@@ -193,34 +213,18 @@ class Layer(ObjBase):
 
     @property
     def layer_id(self):
-        """Get the layer id of the layer.
-
-        Returns
-        -------
-        int
-        """
+        """:obj:`int`: Layer id of the layer."""
         return self.__stub.GetLayerId(self.msg).value
 
     @property
     def top_bottom_association(self):
-        """Get the top-bottom association of the layer.
-
-        Returns
-        -------
-        TopBottomAssociation
-        """
+        """:class:`TopBottomAssociation`: Top-bottom association of the layer."""
         return TopBottomAssociation(
             self.__stub.GetTopBottomAssociation(self.msg).top_bottom_association
         )
 
     @top_bottom_association.setter
     def top_bottom_association(self, top_bottom_association):
-        """Set the top-bottom association of the layer.
-
-        Parameters
-        ----------
-        top_bottom_association : TopBottomAssociation
-        """
         self.__stub.SetTopBottomAssociation(
             layer_pb2.SetTopBottomAssociationMessage(
                 layer=self.msg, top_bottom_association=top_bottom_association.value
@@ -229,12 +233,9 @@ class Layer(ObjBase):
 
     @property
     def color(self):
-        """Get the color of the layer.
+        r""":obj:`tuple`\[:obj:`int`, :obj:`int`, :obj:`int`\]: Color of the layer.
 
-        Returns
-        -------
-        tuple[int, int, int]
-            Tuple containing the color RGB values in the format (R,G,B)
+        Tuple contains the color RGB values in the format (R,G,B)
         """
         color_int = self.__stub.GetColor(self.msg).value
         r = color_int & 0x000000FF
@@ -244,13 +245,6 @@ class Layer(ObjBase):
 
     @color.setter
     def color(self, rgb):
-        """Set the color of the layer.
-
-        Parameters
-        ----------
-        tuple[int, int, int]
-            Tuple containing the color RGB values in the format (R,G,B)
-        """
         r = rgb[0] & 0x000000FF
         g = (rgb[1] << 8) & 0x0000FF00
         b = (rgb[2] << 16) & 0x00FF0000
@@ -258,26 +252,15 @@ class Layer(ObjBase):
 
     @property
     def visibility_mask(self):
-        """Get the visibility mask of the layer.
+        """:obj:`int`: Visibility mask of the layer.
 
-        Returns
-        -------
-        int
+        Setter can take either an :obj:`int` or :class:`LayerVisibility`.
         """
         return self.__stub.GetVisibilityMask(self.msg).value
 
     @visibility_mask.setter
     def visibility_mask(self, visibility_mask):
-        """Set the visibility mask of the layer.
-
-        Parameters
-        ----------
-        visibility_mask : int or LayerVisibility
-
-        Returns
-        -------
-        int
-        """
+        """Set the visibility mask of the layer."""
         vis_mask_int = (
             visibility_mask.value
             if isinstance(visibility_mask, LayerVisibility)
@@ -289,64 +272,35 @@ class Layer(ObjBase):
 
     @property
     def locked(self):
-        """Check if the layer is locked.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if the layer is locked."""
         return self.__stub.GetLocked(self.msg).value
 
     @locked.setter
     def locked(self, locked):
-        """Set the locked status of the layer.
-
-        Parameters
-        ----------
-        locked : bool
-        """
         self.__stub.SetLocked(layer_pb2.SetLockedMessage(layer=self.msg, is_locked=locked))
 
     @property
     def transparency(self):
-        """Get the transparency value of the layer.
+        """:obj:`int`: Transparency value of the layer.
 
-        Returns
-        -------
-        int
+        Transparency value falls between 0 and 100 where 0 indicates a completely opaque layer and 100 indicates a \
+        completely transparent layer.
         """
         return self.__stub.GetTransparency(self.msg).value
 
     @transparency.setter
     def transparency(self, transparency):
-        """Set the transparency value of the layer.
-
-        Parameters
-        ----------
-        transparency : int
-        """
         self.__stub.SetTransparency(
             layer_pb2.SetTransparencyMessage(layer=self.msg, transparency=transparency)
         )
 
     @property
     def draw_override(self):
-        """Get the draw override of the layer.
-
-        Returns
-        -------
-        DrawOverride
-        """
+        """:class:`DrawOverride`: Draw override of the layer."""
         return DrawOverride(self.__stub.GetDrawOverride(self.msg).draw_override)
 
     @draw_override.setter
     def draw_override(self, draw_override):
-        """Set the draw override of the layer.
-
-        Parameters
-        ----------
-        draw_override : DrawOverride
-        """
         self.__stub.SetDrawOverride(
             layer_pb2.SetDrawOverrideMessage(layer=self.msg, draw_override=draw_override.value)
         )
@@ -356,7 +310,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : ProductIdType
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
         attr_it : int
 
         Returns
@@ -372,7 +326,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : ProductIdType
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
         attr_it : int
         prop_value : str
         """
@@ -385,7 +339,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : ProductIdType
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
 
         Returns
         -------
@@ -423,22 +377,18 @@ class Layer(ObjBase):
 
     @property
     def zones(self):
-        """Retrieve the zone ids of all zones containing the layer.
+        r""":obj:`list`\[:obj:`int`\]: Zone ids of all zones containing the layer.
 
-        Returns
-        -------
-        list[int]
+        Read-Only.
         """
         return [zone for zone in self.__stub.GetZones(self.msg).zones]
 
     @property
     def zone(self):
-        """Return the zone index associated with owning layer collection.
+        """:obj:`int`: Zone index associated with owning layer collection.
 
-        If owner is invalid the index is 0, if owner is multizone the index is -1.
+        If owner is invalid the index is 0. If owner is multizone the index is -1.
 
-        Returns
-        -------
-        int
+        Read-Only.
         """
         return self.__stub.GetZone(self.msg).value

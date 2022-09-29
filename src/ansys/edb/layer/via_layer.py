@@ -46,7 +46,7 @@ class ViaLayer(StackupLayer):
         Parameters
         ----------
         upper_ref : bool
-            Flag indicating whether to retrieve the name of the upper or lower reference layer
+            Flag indicating whether to retrieve the name of the upper or lower reference layer.
 
         Returns
         -------
@@ -60,10 +60,10 @@ class ViaLayer(StackupLayer):
         Parameters
         ----------
         ref_layer : StackupLayer
-            Layer that will be set as the new reference layer of the via layer
+            Layer that will be set as the new reference layer of the via layer.
         upper_ref : bool
             Flag indicating whether to set the new reference layer as the
-            upper or lower reference layer
+            upper or lower reference layer.
         """
         get_via_layer_stub().SetRefLayer(
             via_layer_pb2.SetViaLayerRefLayerMessage(

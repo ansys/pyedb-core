@@ -8,7 +8,7 @@ from ansys.edb.session import LayoutObjInstance2DGeometryServiceStub, StubAccess
 
 
 class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
-    """Class representing layout obj instance 2D geometry."""
+    """Class representing layout object instance 2D geometry."""
 
     __stub: LayoutObjInstance2DGeometryServiceStub = StubAccessor(
         StubType.layout_obj_instance_2d_geometry
@@ -16,21 +16,19 @@ class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
 
     @property
     def is_negative(self):
-        """Get flag indicating if the layout obj instance geometry is negative.
+        """:obj:`bool`: Flag indicating if the geometry is negative.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsNegative(self.msg).value
 
     @to_polygon_data
     def get_polygon_data(self, apply_negatives=False):
-        """Get the underlying polygon data of the layout obj instance geometry.
+        """Get the underlying polygon data of the geometry.
 
         Returns
         -------
-        ansys.edb.geometry.PolygonData
+        :class:`PolygonData <ansys.edb.geometry.PolygonData>`
         """
         return self.__stub.GetPolygonData(
             GetPolygonDataMessage(layout_obj_inst_geom=self.msg, apply_neg=apply_negatives)

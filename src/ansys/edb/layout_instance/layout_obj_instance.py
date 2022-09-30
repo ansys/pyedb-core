@@ -23,26 +23,24 @@ def _parse_layout_obj_instance_geometry_message(lyt_obj_inst_geom_msg):
 
 
 class LayoutObjInstance(ObjBase):
-    """Class representing layout instance object."""
+    """Class representing layout object instance."""
 
     __stub: LayoutObjInstanceServiceStub = StubAccessor(StubType.layout_obj_instance)
 
     @property
     def layers(self):
-        """Get the layers this layout obj instance has geometry on.
+        r""":obj:`list`\[:class:`Layer <ansys.edb.layer.Layer>`\]: Layers this layout object instance has geometry on.
 
-        Returns
-        -------
-        list[Layer]
+        Read-Only.
         """
-        return utils.map_list(self.__stub.GetLayers(self.msg).items, Layer._create)
+        return [Layer(msg).cast() for msg in self.__stub.GetLayers(self.msg).items]
 
     def get_geometries(self, layer):
-        """Get the layout object instance geometry that exists on the specified layer.
+        """Get the geometry that exists on the specified layer.
 
         Parameters
         ----------
-        layer : Layer or str
+        layer : :class:`Layer <ansys.edb.layer.Layer>` or str
 
         Returns
         -------
@@ -53,47 +51,45 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def context(self):
-        """Get a list of strings representing the context of this layout obj instance.
+        r""":obj:`list`\[:obj:`str`\]: List of strings representing the context of the layout object instance.
 
-        The list of strings is a list of cell instance names representing the hierarchy level
-        this layout obj instances context resides on. The the first entry in the list represents the top level
-        context and the last entry represents the context the layout obj instance exists in.
+        The list of strings is a list of :class:`cell instance <ansys.edb.hierarchy.CellInstance>` names representing \
+        the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>` resides on. The the \
+        first entry in the list represents the top level context and the last entry represents the context the layout \
+        obj instance exists in.
 
-        Returns
-        -------
-        list[str]
+        Read-Only
         """
         return utils.map_list(self.__stub.GetContext(self.msg).strings)
 
     @property
     def layout_instance_context(self):
-        """Get the layout instance context this layout obj instance exists in.
+        """:class:`LayoutInstanceContext`: The context this layout object instance exists in.
 
-        Returns
-        -------
-        LayoutInstanceContext
+        Read-Only.
         """
         return LayoutInstanceContext(self.__stub.GetLayoutInstanceContext(self.msg))
 
     @property
     def layout_obj(self):
-        """Get the definition layout obj this layout obj instance is an instance of.
+        """:term:`Connectable <Connectable>`: The definition layout object this layout object instance \
+        is an instance of.
 
-        Returns
-        -------
-        ansys.edb.core.ConnObj
+        Read-Only.
         """
         return create_conn_obj(self.__stub.GetLayoutObj(self.msg))
 
     def get_bbox(self, local=False):
-        """Get the bounding box of the layout obj instance.
+        """Get the bounding box of the layout object instance.
 
         Parameters
         ----------
         local : bool
+            If true, return the bounding-box in the local :class:`context <LayoutInstanceContext>`.  Otherwise, \
+            return the bounding-box in the global context.
 
         Returns
         -------
-        ansys.edb.geometry.PolygonData
+        :class:`PolygonData <ansys.edb.geometry.PolygonData>`
         """
         return parser.to_polygon_data(self.__stub.GetBBox(bool_property_message(self, local)))

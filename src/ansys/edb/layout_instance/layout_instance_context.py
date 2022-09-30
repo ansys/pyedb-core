@@ -13,71 +13,67 @@ class LayoutInstanceContext(ObjBase):
 
     @property
     def layout(self):
-        """Get the layout of the layout instance context.
+        """:class:`Layout <ansys.edb.layout.Layout>`: Layout of the context.
 
-        Returns
-        -------
-        Layout
+        Read-Only.
         """
         return layout.Layout(self.__stub.GetLayout(self.msg))
 
-    def get_bbox(self, local=False):
-        """Get the bounding box of the layout instance context.
+    def get_bbox(self, local):
+        """Get the bounding box of the context.
 
         Parameters
         ----------
         local : bool
+            If true, return the bounding-box in the local :class:`context <LayoutInstanceContext>`.  Otherwise, \
+            return the bounding-box in the global context.
 
         Returns
         -------
-        ansys.edb.geometry.PolygonData
+        :class:`PolygonData <ansys.edb.geometry.PolygonData>`
         """
         return parser.to_polygon_data(self.__stub.GetBBox(bool_property_message(self, local)))
 
     @property
     def is_top_or_black_box(self):
-        """Get flag indicating if this is a top-level or blackbox layout instance context.
+        """:obj:`bool`: Flag indicating if this is a top-level or blackbox context.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsTopOrBlackBox(self.msg).value
 
     @property
     def top_or_black_box(self):
-        """Get the top-level or blackbox layout instance context.
+        """:class:`LayoutInstanceContext`: The top-level or blackbox :class:`context <LayoutInstanceContext>`.
 
-        Returns
-        -------
-        LayoutInstanceContext
+        Read-Only.
         """
         return LayoutInstanceContext(self.__stub.GetTopOrBlackBox(self.msg))
 
     @property
     def placement_elevation(self):
-        """Get the placement elevation of this layout instance context.
+        """:obj:`float`: The placement elevation of the context.
 
-        Only applies if this layout instance context doesn't have 3D placement.
+        Only applies if the context doesn't have 3D placement. \
+        If the context has 3D placement is enabled, :obj:`None` is returned because the placement of the context is \
+        dictated by the underlying 3d transformation. Otherwise, the placement elevation of the context is returned.
 
-        Returns
-        -------
-        float or None
-            If this layout instance context has 3d placement is enabled, None is returned because the placement of the
-            context is dictated by the underlying 3d transformation. Otherwise, the placement elevation of the layout
-            instance context is returned.
+        Read-Only.
         """
         return (
-            self.__stub.GetPlacementElevation(self.msg).value if not self.is_3d_placement else None
+            self.__stub.GetPlacementElevation(self.msg).value
+            if not self.get_is_3d_placement(False)
+            else None
         )
 
-    @property
-    def is_3d_placement(self, local=False):
-        """Check if this layout instance context has 3d placement is enabled.
+    def get_is_3d_placement(self, local):
+        """Check if the context has 3d placement enabled.
 
         Parameters
         ----------
         local : bool
+            If true, check the local :class:`context <LayoutInstanceContext>` only.  If false, check for a 3D \
+            Placement anywhere up the hierarchy.
 
         Returns
         -------

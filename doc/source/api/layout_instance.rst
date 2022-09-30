@@ -14,4 +14,3 @@ Classes
    LayoutObjInstance
    LayoutObjInstance2DGeometry
    LayoutObjInstance3DGeometry
-   LayoutObjInstanceGeometry

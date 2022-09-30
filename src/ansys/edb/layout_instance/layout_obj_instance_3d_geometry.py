@@ -7,7 +7,7 @@ from ansys.edb.utility import Value
 
 
 class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
-    """Class representing layout obj instance 3D geometry."""
+    """Class representing layout object instance 3D geometry."""
 
     __stub: LayoutObjInstance3DGeometryServiceStub = StubAccessor(
         StubType.layout_obj_instance_3d_geometry
@@ -15,11 +15,9 @@ class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
 
     @property
     def tesselation_data(self):
-        """Get the underlying tessellation data of the layout obj instance geometry.
+        r""":obj:`list`\[:term:`Triangle3DLike`\]: The underlying tessellation data of the geometry.
 
-        Returns
-        -------
-        list[ansys.edb.typing.Triangle3DLike]
+        Read-Only.
         """
         tesselation_data = self.__stub.GetTesselationData(self.msg)
 

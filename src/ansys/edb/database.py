@@ -19,7 +19,7 @@ from ansys.edb.core.messages import (
 from ansys.edb.core.utils import map_list
 from ansys.edb.definition import (
     ApdBondwireDef,
-    BondwireDef,
+    BondwireDefType,
     ComponentDef,
     DatasetDef,
     Jedec4BondwireDef,
@@ -421,9 +421,7 @@ class Database(ObjBase, variable_server.VariableServer):
         -------
         list[:class:`ApdBondwireDef <ansys.edb.definition.ApdBondwireDef>`]
         """
-        return self._get_bondwire_definition_objs(
-            ApdBondwireDef, BondwireDef.BondwireDefType.APD_BONDWIRE_DEF
-        )
+        return self._get_bondwire_definition_objs(ApdBondwireDef, BondwireDefType.APD_BONDWIRE_DEF)
 
     @property
     def jedec4_bondwire_defs(self):
@@ -434,7 +432,7 @@ class Database(ObjBase, variable_server.VariableServer):
         list[:class:`Jedec4BondwireDef <ansys.edb.definition.Jedec4BondwireDef>`]
         """
         return self._get_bondwire_definition_objs(
-            Jedec4BondwireDef, BondwireDef.BondwireDefType.JEDEC4_BONDWIRE_DEF
+            Jedec4BondwireDef, BondwireDefType.JEDEC4_BONDWIRE_DEF
         )
 
     @property
@@ -446,7 +444,7 @@ class Database(ObjBase, variable_server.VariableServer):
         list[:class:`Jedec5BondwireDef <ansys.edb.definition.Jedec5BondwireDef>`]
         """
         return self._get_bondwire_definition_objs(
-            Jedec5BondwireDef, BondwireDef.BondwireDefType.JEDEC5_BONDWIRE_DEF
+            Jedec5BondwireDef, BondwireDefType.JEDEC5_BONDWIRE_DEF
         )
 
     @property

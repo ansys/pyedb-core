@@ -55,37 +55,127 @@ class _PrimitiveQueryBuilder:
         return primitive_pb2.SetLayerMessage(target=p.msg, layer=messages.layer_ref_message(layer))
 
 
+class PrimitiveType(Enum):
+    """Enum representing available primitive types.
+
+    - RECTANGLE
+    - CIRCLE
+    - POLYGON
+    - PATH
+    - BONDWIRE
+    - PRIM_PLUGIN
+    - TEXT
+    - PATH_3D
+    - BOARD_BEND
+    - INVALID_TYPE
+    """
+
+    RECTANGLE = primitive_pb2.RECTANGLE
+    CIRCLE = primitive_pb2.CIRCLE
+    POLYGON = primitive_pb2.POLYGON
+    PATH = primitive_pb2.PATH
+    BONDWIRE = primitive_pb2.BONDWIRE
+    PRIM_PLUGIN = primitive_pb2.PRIM_PLUGIN
+    TEXT = primitive_pb2.TEXT
+    PATH_3D = primitive_pb2.PATH_3D
+    BOARD_BEND = primitive_pb2.BOARD_BEND
+    INVALID_TYPE = primitive_pb2.INVALID_TYPE
+
+
+class RectangleRepresentationType(Enum):
+    """Enum representing possible rectangle types.
+
+    - INVALID_RECT_TYPE
+       Undefined.
+    - CENTER_WIDTH_HEIGHT
+       Using center, width and height.
+    - LOWER_LEFT_UPPER_RIGHT
+       Using lower left point and upper right point.
+    """
+
+    INVALID_RECT_TYPE = rectangle_pb2.INVALID_RECT_TYPE
+    CENTER_WIDTH_HEIGHT = rectangle_pb2.CENTER_WIDTH_HEIGHT
+    LOWER_LEFT_UPPER_RIGHT = rectangle_pb2.LOWER_LEFT_UPPER_RIGHT
+
+
+class PathEndCapType(Enum):
+    """Enum representing possible end cap types.
+
+    - ROUND
+    - FLAT
+    - EXTENDED
+    - CLIPPED
+    - INVALID
+    """
+
+    ROUND = path_pb2.ROUND
+    FLAT = path_pb2.FLAT
+    EXTENDED = path_pb2.EXTENDED
+    CLIPPED = path_pb2.CLIPPED
+    INVALID = path_pb2.INVALID_END_CAP
+
+
+class PathCornerType(Enum):
+    """Enum representing possible corner types.
+
+    - ROUND
+    - SHARP
+    - MITER
+    """
+
+    ROUND = path_pb2.ROUND_CORNER
+    SHARP = path_pb2.SHARP_CORNER
+    MITER = path_pb2.MITER_CORNER
+
+
+class BondwireType(Enum):
+    """Enum representing possible bondwire types.
+
+    - APD
+    - JEDEC4
+    - JEDEC5
+    - NUM_OF_TYPE
+    - INVALID
+    """
+
+    APD = bondwire_pb2.APD_BONDWIRE
+    JEDEC4 = bondwire_pb2.JEDEC4_BONDWIRE
+    JEDEC5 = bondwire_pb2.JEDEC5_BONDWIRE
+    NUM_OF_TYPE = bondwire_pb2.NUM_OF_BONDWIRE_TYPE
+    INVALID = bondwire_pb2.INVALID_BONDWIRE_TYPE
+
+
+class BondwireCrossSectionType(Enum):
+    """Enum representing possible bondwire cross section types.
+
+    - ROUND
+    - RECTANGLE
+    - INVALID
+    """
+
+    ROUND = bondwire_pb2.BONDWIRE_ROUND
+    RECTANGLE = bondwire_pb2.BONDWIRE_RECTANGLE
+    INVALID = bondwire_pb2.INVALID_BONDWIRE_CROSS_SECTION_TYPE
+
+
+class BackDrillType(Enum):
+    """Enum representing possible Back Drill types.
+
+    - NO_DRILL
+    - LAYER_DRILL
+    - DEPTH_DRILL
+    """
+
+    NO_DRILL = padstack_instance_pb2.NO_DRILL
+    LAYER_DRILL = padstack_instance_pb2.LAYER_DRILL
+    DEPTH_DRILL = padstack_instance_pb2.DEPTH_DRILL
+
+
 class Primitive(conn_obj.ConnObj):
     """Base class representing primitive objects."""
 
     __stub: primitive_pb2_grpc.PrimitiveServiceStub = StubAccessor(StubType.primitive)
     layout_obj_type = LayoutObjType.PRIMITIVE
-
-    class PrimitiveType(Enum):
-        """Enum representing available primitive types.
-
-        - RECTANGLE
-        - CIRCLE
-        - POLYGON
-        - PATH
-        - BONDWIRE
-        - PRIM_PLUGIN
-        - TEXT
-        - PATH_3D
-        - BOARD_BEND
-        - INVALID_TYPE
-        """
-
-        RECTANGLE = primitive_pb2.RECTANGLE
-        CIRCLE = primitive_pb2.CIRCLE
-        POLYGON = primitive_pb2.POLYGON
-        PATH = primitive_pb2.PATH
-        BONDWIRE = primitive_pb2.BONDWIRE
-        PRIM_PLUGIN = primitive_pb2.PRIM_PLUGIN
-        TEXT = primitive_pb2.TEXT
-        PATH_3D = primitive_pb2.PATH_3D
-        BOARD_BEND = primitive_pb2.BOARD_BEND
-        INVALID_TYPE = primitive_pb2.INVALID_TYPE
 
     def cast(self):
         """Cast the primitive object to correct concrete type.
@@ -98,17 +188,17 @@ class Primitive(conn_obj.ConnObj):
             return
 
         prim_type = self.primitive_type
-        if prim_type == Primitive.PrimitiveType.RECTANGLE:
+        if prim_type == PrimitiveType.RECTANGLE:
             return Rectangle(self.msg)
-        elif prim_type == Primitive.PrimitiveType.POLYGON:
+        elif prim_type == PrimitiveType.POLYGON:
             return Polygon(self.msg)
-        elif prim_type == Primitive.PrimitiveType.PATH:
+        elif prim_type == PrimitiveType.PATH:
             return Path(self.msg)
-        elif prim_type == Primitive.PrimitiveType.BONDWIRE:
+        elif prim_type == PrimitiveType.BONDWIRE:
             return Bondwire(self.msg)
-        elif prim_type == Primitive.PrimitiveType.TEXT:
+        elif prim_type == PrimitiveType.TEXT:
             return Text(self.msg)
-        elif prim_type == Primitive.PrimitiveType.CIRCLE:
+        elif prim_type == PrimitiveType.CIRCLE:
             return Circle(self.msg)
 
     @property
@@ -117,7 +207,7 @@ class Primitive(conn_obj.ConnObj):
 
         Read-Only.
         """
-        return Primitive.PrimitiveType(
+        return PrimitiveType(
             self.__stub.GetPrimitiveType(_PrimitiveQueryBuilder.get_primitive_type(self)).type
         )
 
@@ -240,21 +330,6 @@ class Rectangle(Primitive):
 
     __stub: rectangle_pb2_grpc.RectangleServiceStub = StubAccessor(StubType.rectangle)
 
-    class RectangleRepresentationType(Enum):
-        """Enum representing possible rectangle types.
-
-        - INVALID_RECT_TYPE
-           Undefined.
-        - CENTER_WIDTH_HEIGHT
-           Using center, width and height.
-        - LOWER_LEFT_UPPER_RIGHT
-           Using lower left point and upper right point.
-        """
-
-        INVALID_RECT_TYPE = rectangle_pb2.INVALID_RECT_TYPE
-        CENTER_WIDTH_HEIGHT = rectangle_pb2.CENTER_WIDTH_HEIGHT
-        LOWER_LEFT_UPPER_RIGHT = rectangle_pb2.LOWER_LEFT_UPPER_RIGHT
-
     @classmethod
     def create(
         cls, layout, layer, net, rep_type, param1, param2, param3, param4, corner_rad, rotation
@@ -341,7 +416,7 @@ class Rectangle(Primitive):
         """
         rect_param_msg = self.__stub.GetParameters(self.msg)
         return (
-            Rectangle.RectangleRepresentationType(rect_param_msg.representation_type),
+            RectangleRepresentationType(rect_param_msg.representation_type),
             Value(rect_param_msg.parameter1),
             Value(rect_param_msg.parameter2),
             Value(rect_param_msg.parameter3),
@@ -440,7 +515,7 @@ class Rectangle(Primitive):
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Polygon data object created.
         """
-        if rep_type == Rectangle.RectangleRepresentationType.LOWER_LEFT_UPPER_RIGHT:
+        if rep_type == RectangleRepresentationType.LOWER_LEFT_UPPER_RIGHT:
             width = x_upper_right_or_width - x_lower_left_or_center_x
             height = y_upper_right_or_height - y_lower_left_or_center_y
             center_x = x_lower_left_or_center_x + width / 2.0
@@ -456,7 +531,7 @@ class Rectangle(Primitive):
                     ishole=is_hole,
                 )
             )
-        elif rep_type == Rectangle.RectangleRepresentationType.CENTER_WIDTH_HEIGHT:
+        elif rep_type == RectangleRepresentationType.CENTER_WIDTH_HEIGHT:
             polygon_data = cls.__stub.Render(
                 rectangle_pb2.RectanglePolygonDataMessage(
                     center_x=messages.value_message(x_lower_left_or_center_x),
@@ -778,34 +853,6 @@ class Path(Primitive):
 
     __stub: path_pb2_grpc.PathServiceStub = StubAccessor(StubType.path)
 
-    class PathEndCapType(Enum):
-        """Enum representing possible end cap types.
-
-        - ROUND
-        - FLAT
-        - EXTENDED
-        - CLIPPED
-        - INVALID
-        """
-
-        ROUND = path_pb2.ROUND
-        FLAT = path_pb2.FLAT
-        EXTENDED = path_pb2.EXTENDED
-        CLIPPED = path_pb2.CLIPPED
-        INVALID = path_pb2.INVALID_END_CAP
-
-    class PathCornerType(Enum):
-        """Enum representing possible corner types.
-
-        - ROUND
-        - SHARP
-        - MITER
-        """
-
-        ROUND = path_pb2.ROUND_CORNER
-        SHARP = path_pb2.SHARP_CORNER
-        MITER = path_pb2.MITER_CORNER
-
     @classmethod
     def create(cls, layout, layer, net, width, end_cap1, end_cap2, corner_style, points):
         """Create a path.
@@ -906,7 +953,7 @@ class Path(Primitive):
             **end_cap2** : End cap style of path end end cap.
         """
         end_cap_msg = self.__stub.GetEndCapStyle(self.msg)
-        return Path.PathEndCapType(end_cap_msg.end_cap1), Path.PathEndCapType(end_cap_msg.end_cap2)
+        return PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2)
 
     def set_end_cap_style(self, end_cap1, end_cap2):
         """Set path end cap styles.
@@ -969,7 +1016,7 @@ class Path(Primitive):
     @property
     def corner_style(self):
         """:class:`PathCornerType`: Path's corner style."""
-        return Path.PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
+        return PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
 
     @corner_style.setter
     def corner_style(self, corner_type):
@@ -1125,34 +1172,6 @@ class Bondwire(Primitive):
 
     __stub: bondwire_pb2_grpc.BondwireServiceStub = StubAccessor(StubType.bondwire)
 
-    class BondwireType(Enum):
-        """Enum representing possible bondwire types.
-
-        - APD
-        - JEDEC4
-        - JEDEC5
-        - NUM_OF_TYPE
-        - INVALID
-        """
-
-        APD = bondwire_pb2.APD_BONDWIRE
-        JEDEC4 = bondwire_pb2.JEDEC4_BONDWIRE
-        JEDEC5 = bondwire_pb2.JEDEC5_BONDWIRE
-        NUM_OF_TYPE = bondwire_pb2.NUM_OF_BONDWIRE_TYPE
-        INVALID = bondwire_pb2.INVALID_BONDWIRE_TYPE
-
-    class BondwireCrossSectionType(Enum):
-        """Enum representing possible bondwire cross section types.
-
-        - ROUND
-        - RECTANGLE
-        - INVALID
-        """
-
-        ROUND = bondwire_pb2.BONDWIRE_ROUND
-        RECTANGLE = bondwire_pb2.BONDWIRE_RECTANGLE
-        INVALID = bondwire_pb2.INVALID_BONDWIRE_CROSS_SECTION_TYPE
-
     @classmethod
     def create(
         cls,
@@ -1263,7 +1282,7 @@ class Bondwire(Primitive):
     def type(self):
         """:class:`BondwireType`: Bondwire-type of a bondwire object."""
         btype_msg = self.__stub.GetType(self.msg)
-        return Bondwire.BondwireType(btype_msg.type)
+        return BondwireType(btype_msg.type)
 
     @type.setter
     def type(self, bondwire_type):
@@ -1272,7 +1291,7 @@ class Bondwire(Primitive):
     @property
     def cross_section_type(self):
         """:class:`BondwireCrossSectionType`: Bondwire-cross-section-type of a bondwire object."""
-        return Bondwire.BondwireCrossSectionType(self.__stub.GetCrossSectionType(self.msg).type)
+        return BondwireCrossSectionType(self.__stub.GetCrossSectionType(self.msg).type)
 
     @cross_section_type.setter
     def cross_section_type(self, bondwire_type):
@@ -1602,18 +1621,6 @@ class PadstackInstance(Primitive):
     )
     layout_obj_type = LayoutObjType.PADSTACK_INSTANCE
 
-    class BackDrillType(Enum):
-        """Enum representing possible Back Drill types.
-
-        - NO_DRILL
-        - LAYER_DRILL
-        - DEPTH_DRILL
-        """
-
-        NO_DRILL = padstack_instance_pb2.NO_DRILL
-        LAYER_DRILL = padstack_instance_pb2.LAYER_DRILL
-        DEPTH_DRILL = padstack_instance_pb2.DEPTH_DRILL
-
     @classmethod
     def create(
         cls,
@@ -1851,7 +1858,7 @@ class PadstackInstance(Primitive):
         :class:`BackDrillType`
             Back-Drill Type of padastack instance.
         """
-        return PadstackInstance.BackDrillType(
+        return BackDrillType(
             self.__stub.GetBackDrillType(
                 _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
             ).type

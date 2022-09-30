@@ -43,23 +43,24 @@ class _QueryBuilder:
         return pb.BondwireDefStrMessage(object=obj.msg, name=string)
 
 
+class BondwireDefType(Enum):
+    """Enum representing bondwire types.
+
+    - APD_BONDWIRE_DEF
+       APD bondwire.
+    - JEDEC4_BONDWIRE_DEF
+       JEDEC4 bondwire.
+    - JEDEC5_BONDWIRE_DEF
+       JEDEC5 bondwire.
+    """
+
+    APD_BONDWIRE_DEF = pb.APD_BONDWIRE_DEF
+    JEDEC4_BONDWIRE_DEF = pb.JEDEC4_BONDWIRE_DEF
+    JEDEC5_BONDWIRE_DEF = pb.JEDEC5_BONDWIRE_DEF
+
+
 class BondwireDef(ObjBase):
     """Class representing a bondwire definition."""
-
-    class BondwireDefType(Enum):
-        """Enum representing bondwire types.
-
-        - APD_BONDWIRE_DEF
-           APD bondwire.
-        - JEDEC4_BONDWIRE_DEF
-           JEDEC4 bondwire.
-        - JEDEC5_BONDWIRE_DEF
-           JEDEC5 bondwire.
-        """
-
-        APD_BONDWIRE_DEF = pb.APD_BONDWIRE_DEF
-        JEDEC4_BONDWIRE_DEF = pb.JEDEC4_BONDWIRE_DEF
-        JEDEC5_BONDWIRE_DEF = pb.JEDEC5_BONDWIRE_DEF
 
     __stub: bondwire_def_pb2_grpc.BondwireDefServiceStub = StubAccessor(StubType.bondwire_def)
 
@@ -157,12 +158,11 @@ class ApdBondwireDef(BondwireDef):
 
     @property
     def bondwire_type(self):
-        """:class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`: \
-        Type of the apd bondwire definition.
+        """:class:`BondwireDefType`: Type of the apd bondwire definition.
 
         Read-Only.
         """
-        return BondwireDef.BondwireDefType.APD_BONDWIRE_DEF
+        return BondwireDefType.APD_BONDWIRE_DEF
 
 
 class _Jedec4QueryBuilder:
@@ -247,12 +247,11 @@ class Jedec4BondwireDef(ObjBase):
 
     @property
     def bondwire_type(self):
-        """:class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`: \
-        Type of the jedec 4 bondwire definition.
+        """:class:`BondwireDefType`: Type of the jedec 4 bondwire definition.
 
         Read-Only.
         """
-        return BondwireDef.BondwireDefType.JEDEC4_BONDWIRE_DEF
+        return BondwireDefType.JEDEC4_BONDWIRE_DEF
 
 
 class _Jedec5QueryBuilder:
@@ -374,9 +373,8 @@ class Jedec5BondwireDef(BondwireDef):
 
     @property
     def bondwire_type(self):
-        """:class:`BondwireDefType <ansys.edb.definition.bondwire_def.BondwireDef.BondwireDefType>`: \
-        Type of the jedec 5 bondwire definition.
+        """:class:`BondwireDefType`: Type of the jedec 5 bondwire definition.
 
         Read-Only.
         """
-        return BondwireDef.BondwireDefType.JEDEC5_BONDWIRE_DEF
+        return BondwireDefType.JEDEC5_BONDWIRE_DEF

@@ -1089,3 +1089,8 @@ def points_property_message(target, points):
     return PointsPropertyMessage(
         target=edb_obj_message(target), points=[point_message(point) for point in points]
     )
+
+
+def set_polygon_data_property_message(obj, polygon):
+    """Convert to PolygonDataPropertyMessage."""
+    return PolygonDataPropertyMessage(target=obj.msg, value=polygon_data_message(polygon))

@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "polygon_data.proto";
+
+enum HeatSinkOrientation {
+  X_ORIENTED = 0;
+  Y_ORIENTED = 1;
+  OTHER_ORIENTED = 2;
+}
+
+service PackageDefService {
+  rpc Create(StringPropertyMessage) returns (EDBObjMessage) {}
+  rpc Delete(EDBObjMessage) returns (google.protobuf.Empty) {}
+
+  rpc FindByName(StringPropertyMessage) returns (EDBObjMessage) {}
+  rpc FindByEDBUId(IntPropertyMessage) returns (EDBObjMessage) {}
+
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetName(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetExteriorBoundary(EDBObjMessage) returns (PolygonDataMessage) {}
+  rpc SetExteriorBoundary(PolygonDataPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetHeight(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetHeight(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetOperatingPower(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetOperatingPower(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMaximumPower(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetMaximumPower(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetTherm_Cond(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetTherm_Cond(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetTheta_JB(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetTheta_JB(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetTheta_JC(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetTheta_JC(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetHeatSink(EDBObjMessage) returns (HeatSinkMessage) {}
+  rpc SetHeatSink(SetHeatSinkMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetProductProperty (GetProductPropertyMessage) returns (google.protobuf.StringValue) {}
+  rpc SetProductProperty (SetProductPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetProductPropertyIds (GetProductPropertyIdsMessage) returns (ProductPropertyIdsMessage) {}
+}
+
+message HeatSinkMessage {
+  ValueMessage thickness = 1;
+  ValueMessage spacing  = 2;
+  ValueMessage base_height = 3;
+  ValueMessage height = 4;
+  HeatSinkOrientation orientation = 5;
+}
+
+message SetHeatSinkMessage {
+  EDBObjMessage target = 1;
+  HeatSinkMessage value = 2;
+}

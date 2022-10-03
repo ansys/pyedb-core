@@ -60,6 +60,7 @@ from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
 from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
+from ansys.api.edb.v1.package_def_pb2_grpc import PackageDefServiceStub
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
 from ansys.api.edb.v1.padstack_def_pb2_grpc import PadstackDefServiceStub
 from ansys.api.edb.v1.padstack_inst_term_pb2_grpc import PadstackInstanceTerminalServiceStub
@@ -348,6 +349,7 @@ class StubType(Enum):
     die_property = DiePropertyServiceStub
     port_property = PortPropertyServiceStub
     dataset_def = DatasetDefServiceStub
+    package_def = PackageDefServiceStub
 
 
 # Dictionary for storing local server error code exception messages

@@ -1,0 +1,40 @@
+// Proto file representing the EDB Database class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "point_data.proto";
+
+service DatasetDefService {
+  // Creates a database
+  rpc Create (StringPropertyMessage) returns (EDBObjMessage) {}
+
+  // Deletes a database
+  rpc Delete (EDBObjMessage) returns (google.protobuf.Empty) {}
+  
+  // Find Material Definition by name
+  rpc FindByName(EDBObjNameMessage) returns (EDBObjMessage) {}
+  
+  // Get Name of Dataset Def
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  
+  // Set Name of Dataset Def
+  rpc SetName(StringPropertyMessage) returns (google.protobuf.Empty) {}
+  
+  // Get Data
+  rpc GetData(EDBObjMessage) returns (DatasetDefDataMessage) {}
+  
+  // Set Data
+  rpc SetData(SetDatasetDefDataMessage) returns (google.protobuf.Empty) {}
+}
+
+message DatasetDefDataMessage {
+  repeated PointMessage points = 1;
+}
+
+message SetDatasetDefDataMessage {
+  EDBObjMessage target = 1;
+  DatasetDefDataMessage value = 2;
+}

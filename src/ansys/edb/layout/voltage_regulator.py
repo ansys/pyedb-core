@@ -25,20 +25,27 @@ class VoltageRegulator(conn_obj.ConnObj):
     @classmethod
     def create(cls, layout, name, active, voltage, lrc, lrp):
         """
-        Create voltage regulator class.
+        Create a voltage regulator.
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout the voltage regulator will be in.
         name : str
+            The name of the voltage regulator.
         active : bool
-        voltage : ValueLike
-        lrc : ValueLike
-        lrp : ValueLike
+            The voltage regulators active state.
+        voltage : :term:`ValueLike`
+            The voltage of the VoltageRegulator
+        lrc : :term:`ValueLike`
+            The load regulation current
+        lrp : :term:`ValueLike`
+            The load regulation percent.
 
         Returns
         -------
         VoltageRegulator
+            Newly created voltage regulator.
         """
         return VoltageRegulator(
             cls.__stub.Create(
@@ -55,167 +62,90 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def name(self):
-        """
-        Get name of theVoltage Regulator class.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str`: Name of the voltage regulator."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, newname):
-        """
-        Set name of the Voltage Regulator class.
-
-        Parameters
-        ----------
-        newname : str
-
-        """
-        return self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
+        """Set name of the Voltage Regulator class."""
+        self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
 
     @property
     def active(self):
-        """
-        Get active status of the Voltage Regulator class.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Active status of the Voltage Regulator."""
         return self.__stub.IsActive(self.msg).value
 
     @active.setter
     def active(self, newactive):
-        """
-        Set active status of the Voltage Regulator class.
-
-        Parameters
-        ----------
-        newactive : bool
-
-        """
-        return self.__stub.SetIsActive(messages.bool_property_message(self, newactive))
+        """Set active status of the Voltage Regulator class."""
+        self.__stub.SetIsActive(messages.bool_property_message(self, newactive))
 
     @property
     def voltage(self):
-        """
-        Get voltage of the Voltage Regulator class.
-
-        Returns
-        -------
-        Value
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Voltage of the Voltage Regulator class."""
         return Value(self.__stub.GetVoltage(self.msg))
 
     @voltage.setter
     def voltage(self, newvoltage):
-        """
-        Set name of the Voltage Regulator class.
-
-        Parameters
-        ----------
-        newvoltage : ValueLike
-
-        """
-        return self.__stub.SetVoltage(
+        """Set name of the Voltage Regulator class."""
+        self.__stub.SetVoltage(
             messages.value_property_message(self.msg, messages.value_message(newvoltage))
         )
 
     @property
     def lrc(self):
-        """
-        Get load regulation current of the Voltage Regulator class.
+        """:class:`Value <ansys.edb.utility.Value>`: Load regulation current of the Voltage Regulator.
 
-        Returns
-        -------
-        Value
+        Property can be set with :term:`ValueLike`
         """
         return Value(self.__stub.GetLoadRegulationCurrent(self.msg))
 
     @lrc.setter
     def lrc(self, newlrc):
-        """
-        Set load regulation current of the Voltage Regulator class.
-
-        Parameters
-        ----------
-        newlrc : ValueLike
-
-        """
-        return self.__stub.SetLoadRegulationCurrent(
+        """Set load regulation current of the Voltage Regulator class."""
+        self.__stub.SetLoadRegulationCurrent(
             messages.value_property_message(self.msg, messages.value_message(newlrc))
         )
 
     @property
     def lrp(self):
-        """
-        Get load regulation percent of the Voltage Regulator class.
+        """:class:`Value <ansys.edb.utility.Value>`: Load regulation percent of the Voltage Regulator.
 
-        Returns
-        -------
-        Value
+        Property can be set with :term:`ValueLike`
         """
         return Value(self.__stub.GetLoadRegulationPercent(self.msg))
 
     @lrp.setter
     def lrp(self, newlrp):
-        """
-        Set load regulation percent of the Voltage Regulator class.
-
-        Parameters
-        ----------
-        newlrp : ValueLike
-
-        """
-        return self.__stub.SetLoadRegulationPercent(
+        """Set load regulation percent of the Voltage Regulator class."""
+        self.__stub.SetLoadRegulationPercent(
             messages.value_property_message(self.msg, messages.value_message(newlrp))
         )
 
     @property
     def pos_remote_sense_pin(self):
-        """
-        Get positive remote sense pin of the Voltage Regulator class.
+        """:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`: Positive remote sense pin of the \
+        Voltage Regulator.
 
-        Returns
-        -------
-        PadstackInstance
+        .. seealso:: :obj:`neg_remote_sense_pin`
         """
         return PadstackInstance(self.__stub.GetPosRemoteSensePin(self.msg))
 
     @pos_remote_sense_pin.setter
     def pos_remote_sense_pin(self, newpin):
-        """
-        Set positive remote sense pin of Voltage Regulator class.
-
-        Parameters
-        ----------
-        newpin : PadstackInstance
-
-        """
-        return self.__stub.SetPosRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))
+        """Set positive remote sense pin of Voltage Regulator class."""
+        self.__stub.SetPosRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))
 
     @property
     def neg_remote_sense_pin(self):
-        """
-        Get negative remote sense pin of the Voltage Regulator class.
+        """:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`: Negative remote sense pin of the \
+        Voltage Regulator.
 
-        Returns
-        -------
-        PadstackInstance
+        .. seealso:: :obj:`pos_remote_sense_pin`
         """
         return PadstackInstance(self.__stub.GetNegRemoteSensePin(self.msg))
 
     @neg_remote_sense_pin.setter
     def neg_remote_sense_pin(self, newpin):
-        """
-        Set negative remote sense pin of Voltage Regulator class.
-
-        Parameters
-        ----------
-        newpin : PadstackInstance
-
-        """
-        return self.__stub.SetNegRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))
+        """Set negative remote sense pin of Voltage Regulator class."""
+        self.__stub.SetNegRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))

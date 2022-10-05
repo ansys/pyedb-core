@@ -15,14 +15,22 @@ from ansys.edb.utility import TemperatureSettings
 
 
 class CellType(Enum):
-    """Enum representing possible types of cells."""
+    """Enum representing possible types of cells.
+
+    - CIRCUIT_CELL
+    - FOOTPRINT_CELL
+    """
 
     CIRCUIT_CELL = edb_defs_pb2.CIRCUIT_CELL
     FOOTPRINT_CELL = edb_defs_pb2.FOOTPRINT_CELL
 
 
 class DesignMode(Enum):
-    """Enum representing possible modes."""
+    """Enum representing possible modes.
+
+    - GENERAL
+    - IC
+    """
 
     GENERAL = edb_defs_pb2.GENERAL_MODE
     IC = edb_defs_pb2.IC_MODE
@@ -93,7 +101,7 @@ class _QueryBuilder:
 
 
 class Cell(ObjBase, variable_server.VariableServer):
-    """Class representing a cell object."""
+    """Cell."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
     layout_obj_type = LayoutObjType.CELL
@@ -114,33 +122,33 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        db : Database
+        db : :class:`Database <ansys.edb.database.Database>`
+            Database to create the cell in.
         cell_type : CellType
+            Type of the cell to create.
         cell_name : str
+            Name of the cell.
 
         Returns
         -------
         Cell
+            Newly created cell.
         """
         return Cell(cls.__stub.Create(_QueryBuilder.create(db, cell_type, cell_name)))
 
     @property
     def layout(self):
-        """Get layout of a cell.
+        """:class:`Layout <ansys.edb.layout.Layout>` Layout of the cell.
 
-        Returns
-        -------
-        Layout
+        Read-Only.
         """
         return layout.Layout(self.__stub.GetLayout(self.msg))
 
     @property
     def flattened_layout(self):
-        """Get flattened layout of the cell.
+        """:class:`Layout <ansys.edb.layout.Layout>`: Flattened layout of the cell.
 
-        Returns
-        -------
-        Layout
+        Read-Only.
         """
         return layout.Layout(self.__stub.GetFlattenedLayout(self.msg))
 
@@ -150,14 +158,19 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        database : ansys.edb.database.Database
+        database : :class:`Database <ansys.edb.database.Database>`
+            Database to search for the cell in.
         cell_type : CellType
+            Type of the cell to create.
         name : str, optional
+            Name of the cell.
         cell_id : int, optional
+            ID of the cell.
 
         Returns
         -------
         Cell
+            Cell that was found, None otherwise.
         """
         cell = Cell(cls.__stub.Find(messages.cell_find_message(database, cell_type, name, cell_id)))
         return None if cell.is_null else cell
@@ -168,11 +181,9 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def database(self):
-        """Get the database of cell.
+        """:class:`Database <ansys.edb.database.Database>`: Owning database of cell.
 
-        Returns
-        -------
-        ansys.edb.database.Database
+        Read-Only.
         """
         from ansys.edb.database import Database
 
@@ -180,132 +191,82 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def is_footprint(self):
-        """Return if the cell is a footprint.
+        """:obj:`bool` : Flag to indicate if the cell is a footprint.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsFootprint(self.msg).value
 
     @property
     def is_blackbox(self):
-        """Return if the cell is a blackbox.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool` : Flag to indicate if the cell is a blackbox."""
         return self.__stub.IsBlackBox(self.msg).value
 
     @is_blackbox.setter
     def is_blackbox(self, value):
-        """Set if the cell is blackbox.
-
-        Parameters
-        ----------
-        value : bool
-        """
+        """Set if the cell is blackbox."""
         self.__stub.SetBlackBox(messages.bool_property_message(self, value))
 
     @property
     def anti_pads_always_on(self):
-        """Get if the anti pads is always on.
+        """:obj:`bool` : Determine whether antipads are always enabled.
 
-        Returns
-        -------
-        bool
+        True if enabled, false otherwise. If not enabled, they are triggered only when the via center point falls \
+        within fill from another net.
         """
         return self.__stub.GetAntiPadsAlwaysOn(self.msg).value
 
     @anti_pads_always_on.setter
     def anti_pads_always_on(self, value):
-        """Set the anti pads option to always-on.
-
-        Parameters
-        ----------
-        value : bool
-        """
+        """Set the anti pads option to always-on."""
         self.__stub.SetAntiPadsAlwaysOn(messages.bool_property_message(self, value))
 
     @property
     def anti_pads_option(self):
-        """Get the anti pads option.
+        """:obj:`int` : Determine how anti pads are activated.
 
-        Returns
-        -------
-        int
+        0 : Center-point Intersection
+        1 : Always On
+        2 : Pad Intersection.
         """
         return self.__stub.GetAntiPadsOption(self.msg)
 
     @anti_pads_option.setter
     def anti_pads_option(self, value):
-        """Set the anti pads option.
-
-        Parameters
-        ----------
-        value : int
-        """
+        """Set the anti pads option."""
         self.__stub.SetAntiPadsOption(messages.int_property_message(self, value))
 
     @property
     def is_symbolic_footprint(self):
-        """Get if the cell is symbolic footprint.
+        """:obj:`bool` : Flag to indicate if the cell is a symbolic footprint.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsSymbolicFootprint(self.msg).value
 
     @property
     def name(self):
-        """Get the name of cell.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str` : Name of the cell."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, value):
-        """Set the name of cell.
-
-        Parameters
-        ----------
-        value : str
-        """
+        """Set the name of cell."""
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property
     def design_mode(self):
-        """Get the design mode of cell.
-
-        Returns
-        -------
-        DesignMode
-        """
+        """:obj:`DesignMode` : Design mode of the cell."""
         return DesignMode(self.__stub.GetDesignMode(self.msg).mode)
 
     @design_mode.setter
     def design_mode(self, value):
-        """Set the design mode of cell.
-
-        Parameters
-        ----------
-        value : DesignMode
-        """
+        """Set the design mode of cell."""
         self.__stub.SetDesignMode(messages.design_mode_property_message(self, value))
 
     @property
     def hfss_extent_info(self):
-        """Get the HFSS extent info.
-
-        Returns
-        -------
-        dict
-        """
+        """:term:`HFSSExtents` : HFSS Extents for the cell."""
         msg = self.__stub.GetHfssExtentInfo(self.msg)
         return parse_args(msg)
 
@@ -314,49 +275,24 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        extents : dict
-        Possible keys:Values
-        "dielectric": (float, bool)
-            Dielectric extent size. First parameter is the value and second parameter
-            indicates if the value is a multiple.
-        "airbox_horizontal": (float, bool)
-            Airbox horizontal extent size. First parameter is the value and second parameter \
-            indicates if the value is a multiple.
-        "airbox_vertical_positive": (float, bool)
-            Airbox positive vertical extent size. First parameter is the value and second parameter \
-            indicates if the value is a multiple.
-        "airbox_vertical_negative": (float, bool)
-            Airbox negative vertical extent size. First parameter is the value and second parameter indicates \
-            if the value is a multiple.
-        "airbox_truncate_at_ground": bool
-            Whether airbox will be truncated at the ground layers.
+        extents : :term:`HFSSExtents`
         """
         self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, **extents))
 
     @property
     def temperature_settings(self):
-        """Get the temperature settings.
-
-        Returns
-        -------
-        TemperatureSettings
-        """
+        """:class:`TemperatureSettings <ansys.edb.utility.TemperatureSettings>` :Temperature settings."""
         return TemperatureSettings(self.__stub.GetTemperatureSettings(self.msg))
 
     @temperature_settings.setter
     def temperature_settings(self, value):
-        """Set the temperature settings.
-
-        Parameters
-        ----------
-        value : TemperatureSettings
-        """
+        """Set the temperature settings."""
         self.__stub.SetTemperatureSettings(
             messages.cell_set_temperature_settings_message(self, value)
         )
 
     def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True):
-        """Cut out an existing cell into a new cell.
+        """Cutout an existing cell into a new cell.
 
         Parameters
         ----------
@@ -364,14 +300,15 @@ class Cell(ObjBase, variable_server.VariableServer):
             Nets to be kept after cutout.
         clipped_nets : list[:class:`Net <ansys.edb.net.Net>`]
             Nets to be kept and clipped at the boundary after cutout.
-        clipping_polygon : ansys.edb.geometry.PolygonData
+        clipping_polygon : :class:`PolygonData <ansys.edb.geometry.PolygonData>`
             Clipping polygon.
         clean_clipping : bool, optional
-             Whether to perform clean clipping.
+            Whether to perform clean clipping.
 
         Returns
         -------
         Cell
+            The newly created cell.
         """
         return Cell(
             self.__stub.CutOut(
@@ -382,15 +319,17 @@ class Cell(ObjBase, variable_server.VariableServer):
         )
 
     def product_property_ids(self, product_id):
-        """Get product property ids for a given product.
+        """Get a list of property ids associated with the cell object for the given product.
 
         Parameters
         ----------
         product_id : int
+            Product ID.
 
         Returns
         -------
         list[int]
+            A list of property ids associated with the cell object.
         """
         ids = self.__stub.GetProductPropertyIds(
             messages.get_product_property_ids_message(self, product_id)
@@ -398,16 +337,19 @@ class Cell(ObjBase, variable_server.VariableServer):
         return [prop_id for prop_id in ids]
 
     def product_property(self, product_id, property_id):
-        """Get product property value.
+        """Get the product specific property of the cell.
 
         Parameters
         ----------
         product_id : int
+            Product ID.
         property_id : int
+            Property ID.
 
         Returns
         -------
-        int
+        str
+            Property value returned.
         """
         return self.__stub.GetProductProperty(
             messages.get_product_property_message(self, product_id, property_id)
@@ -419,8 +361,11 @@ class Cell(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         product_id : int
+            Product ID.
         property_id : int
+            Property ID.
         value : int
+            Product property value.
         """
         self.__stub.SetProductProperty(
             messages.set_product_property_message(self, product_id, property_id, value)
@@ -431,9 +376,12 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        setup_type : ansys.edb.simulation_setup.simulation_setup.SimulationSetupType
+        setup_type : :class:`SimulationSetupType <ansys.edb.simulation_setup.SimulationSetupType>`
+            Type of setup to be added.
         name : str
+            Name of the setup to be added.
         sim_setup : str
+            Name of :class:`SimulationSetupInfo <ansys.edb.simulation_setup.SimulationSetupInfo>`.
         """
         self.__stub.AddSimulationSetup(
             messages.cell_add_sim_setup_message(self, setup_type, name, sim_setup)
@@ -445,23 +393,42 @@ class Cell(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         name : str
+            Name of the setup to delete.
         """
         self.__stub.DeleteSimulationSetup(messages.string_property_message(self, name))
 
     @property
     def simulation_setups(self):
-        """Get all simulation setups of the cell.
+        """All simulation setups of the cell.
+
+        .. seealso:: :obj:`add_simulation_setup`, :obj:`delete_simulation_setup`
 
         Returns
         -------
-        list[SimulationSetup]
+        list[:class:`SimulationSetup <ansys.edb.simulation_setup.SimulationSetup>`]
         """
         return [SimulationSetup(msg) for msg in self.__stub.GetSimulationSetups(self.msg)]
 
     def generate_auto_hfss_regions(self):
-        """Generate auto HFSS regions."""
+        """Generate auto HFSS regions.
+
+        Automatically identifies areas for use as HFSS regions in SIwave simulations.
+        """
         self.__stub.GenerateAutoHFSSRegions(self.msg)
 
     def generate_via_smart_box(self, net_name):
-        """Generate via smart box."""
+        """Generate via smart box.
+
+        Automatically identifies the locations of vias and significant geometry around them.
+
+        Parameters
+        ----------
+        net_name: str
+            Name of the :class:`Net <ansys.edb.net.Net>` to be crawled in the search for vias.
+
+        Returns
+        -------
+        list[:class:`PolygonData <ansys.edb.geometry.PolygonData>`]
+            A list of boxes; one around each via discovered.
+        """
         self.__stub.GenerateViaSmartBox(messages.string_property_message(self, net_name))

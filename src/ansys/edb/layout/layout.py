@@ -16,7 +16,7 @@ from ansys.edb.terminal import Terminal
 
 
 class Layout(ObjBase, variable_server.VariableServer):
-    """Class representing layout object."""
+    """Layout."""
 
     __stub: LayoutServiceStub = StubAccessor(StubType.layout)
 
@@ -32,11 +32,9 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def cell(self):
-        """Get cell.
+        """:class:`Cell <ansys.edb.layout.Cell>`: Owning cell for this layout.
 
-        Returns
-        -------
-        ansys.edb.layout.Cell
+        Read-Only.
         """
         from ansys.edb.layout.cell import Cell
 
@@ -44,24 +42,12 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def layer_collection(self):
-        """
-        Get layer collection.
-
-        Returns
-        -------
-        LayerCollection
-        """
+        """:class:`LayerCollection <ansys.edb.layer.LayerCollection>` : Layer collection of this layout."""
         return LayerCollection(self.__stub.GetLayerCollection(self.msg))
 
     @layer_collection.setter
     def layer_collection(self, layer_collection):
-        """
-        Set layer collection.
-
-        Parameters
-        ----------
-        layer_collection : LayerCollection
-        """
+        """Set layer collection."""
         self.__stub.SetLayerCollection(
             layout_pb2.SetLayerCollectionMessage(
                 layout=self.msg, layer_collection=layer_collection.msg
@@ -78,112 +64,96 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def primitives(self):
-        """
-        Get list of primitives.
+        """:obj:`list` of :class:`Primitives <ansys.edb.primitive.Primitive>` : List of all the primitives in this \
+        layout.
 
-        Returns
-        -------
-        list[Primitive]
+        Read-Only.
         """
         return self._get_items(Primitive, LayoutObjType.PRIMITIVE, True)
 
     @property
     def padstack_instances(self):
-        """Get list of padstack instances.
+        """:obj:`list` of :class:`PadstackInstances <ansys.edb.primitive.PadstackInstance>` : List of all padstack \
+        instances in this layout.
 
-        Returns
-        -------
-        list[PadstackInstance]
+        Read-Only.
         """
         return self._get_items(PadstackInstance, LayoutObjType.PADSTACK_INSTANCE)
 
     @property
     def terminals(self):
-        """Get list of terminals.
+        """:obj:`list` of :class:`Terminals <ansys.edb.terminal.Terminal>` : List of all the terminals in this layout.
 
-        Returns
-        -------
-        list[Terminal]
+        Read-Only.
         """
         return self._get_items(Terminal, LayoutObjType.TERMINAL, True)
 
     @property
     def cell_instances(self):
-        """Get list of cell instances.
+        """:obj:`list` of :class:`CellInstances <ansys.edb.hierarchy.CellInstances>` : List of the cell instances in \
+        this layout.
 
-        Returns
-        -------
-        list[CellInstance]
+        Read-Only.
         """
         return self._get_items(CellInstance, LayoutObjType.CELL_INSTANCE)
 
     @property
     def nets(self):
-        """Get list of nets.
+        """:obj:`list` of :class:`Nets <ansys.edb.net.Net>` : List of all the nets in this layout.
 
-        Returns
-        -------
-        list[Net]
+        Read-Only.
         """
         return self._get_items(Net, LayoutObjType.NET)
 
     @property
     def groups(self):
-        """Get list of groups.
+        """:obj:`list` of :class:`Groups <ansys.edb.hierarchy.Group>` : List of all the groups in this layout.
 
-        Returns
-        -------
-        list[Net]
+        Read-Only.
         """
         return self._get_items(Group, LayoutObjType.GROUP, True)
 
     @property
     def net_classes(self):
-        """Get list of net classes.
+        """:obj:`list` of :class:`NetClasses <ansys.edb.net.NetClass>` : List of all the netclassses in this layout.
 
-        Returns
-        -------
-        list[NetClass]
+        Read-Only.
         """
         return self._get_items(NetClass, LayoutObjType.NET_CLASS)
 
     @property
     def differential_pairs(self):
-        """Get list of differential pairs.
+        """:obj:`list` of :class:`DifferentialPairs <ansys.edb.net.DifferentialPair>` : List of all the differential \
+         pairs in this layout.
 
-        Returns
-        -------
-        list[DifferentialPair]
+        Read-Only.
         """
         return self._get_items(DifferentialPair, LayoutObjType.DIFFERENTIAL_PAIR)
 
     @property
     def pin_groups(self):
-        """Get list of pin groups.
+        """:obj:`list` of :class:`PinGroups <ansys.edb.hierarchy.PinGroups>` : List of all the pin groups in this \
+        layout.
 
-        Returns
-        -------
-        list[PinGroup]
+        Read-Only.
         """
         return self._get_items(PinGroup, LayoutObjType.PIN_GROUP)
 
     @property
     def voltage_regulators(self):
-        """Get list of voltage regulators.
+        """:obj:`list` of :class:`VoltageRegulators <ansys.edb.hierarchy.VoltageRegulator>` : List of all the voltage \
+         regulators in this layout.
 
-        Returns
-        -------
-        list[VoltageRegulator]
+        Read-Only.
         """
         return self._get_items(layout.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
 
     @property
     def extended_nets(self):
-        """Get list of extended nets.
+        """:obj:`list` of :class:`ExtendedNets <ansys.edb.net.ExtendedNet>` : List of all the extended nets in this \
+        layout.
 
-        Returns
-        -------
-        list[ExtendedNet]
+        Read-Only.
         """
         return self._get_items(ExtendedNet, LayoutObjType.EXTENDED_NET)
 
@@ -191,7 +161,7 @@ class Layout(ObjBase, variable_server.VariableServer):
     def expanded_extent(
         self, nets, extent, expansion_factor, expansion_unitless, use_round_corner, num_increments
     ):
-        """Get expanded extent from nets.
+        """Get an expanded polygon for the Nets collection.
 
         Parameters
         ----------
@@ -200,19 +170,24 @@ class Layout(ObjBase, variable_server.VariableServer):
         extent : :class:`ExtentType <ansys.edb.geometry.ExtentType>`
             Geometry extent type for expansion.
         expansion_factor : float
-            Expansion factor for the polygon union.
+            Expansion factor for the polygon union. No expansion occurs if the `expansion_factor` is less than or \
+            equal to 0.
         expansion_unitless : bool
-             When unitless, the distance by which the extent expands is the factor multiplied by the longer dimension\
-             (X or Y distance) of the expanded object/net.
+            When unitless, the distance by which the extent expands is the factor multiplied by the longer dimension\
+            (X or Y distance) of the expanded object/net.
         use_round_corner : bool
             Whether to use round or sharp corners.
             For round corners, this returns a bounding box if its area is within 10% of the rounded expansion's area.
-        num_increments : num
-            Number of iteration desired to reach the full expansion.
+        num_increments : int
+            Number of iterations desired to reach the full expansion.
 
         Returns
         -------
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
+
+        Notes
+        -----
+        Method returns the expansion of the contour, so any voids within expanded objects are ignored.
         """
         return self.__stub.GetExpandedExtentFromNets(
             messages.layout_expanded_extent_message(
@@ -227,12 +202,14 @@ class Layout(ObjBase, variable_server.VariableServer):
         )
 
     def convert_primitives_to_vias(self, primitives, is_pins=False):
-        """Convert primitives to vias.
+        """Convert a list of primitives into vias or pins.
 
         Parameters
         ----------
-        primitives : list[Primitive]
+        primitives : list[:class:`Primitives <ansys.edb.primitive.Primitive>`]
+            List of primitives to convert.
         is_pins : bool, optional
+            True for pins, false for vias (default).
         """
         self.__stub.ConvertPrimitivesToVias(
             messages.layout_convert_p2v_message(self, primitives, is_pins)
@@ -240,52 +217,38 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def port_reference_terminals_connected(self):
-        """Get if the port reference terminals are connected.
+        """:obj:`bool`: Determine if port reference terminals are connected, applies to lumped ports and circuit ports.
 
-        Returns
-        -------
-        bool
+        True if they are connected, False otherwise.
         """
         return self.__stub.ArePortReferenceTerminalsConnected(self.msg).is_connected
 
     @property
     def zone_primitives(self):
-        """Get zone primitives.
+        """:obj:`list` of :class:`Primitives <ansys.edb.primitive.Primitive>` : List of all the primitives in \
+        :term:`zones <Zone>`.
 
-        Returns
-        -------
-        list[Primitive]
+        Read-Only.
         """
         return [Primitive(msg) for msg in self.__stub.GetZonePrimitives(self.msg)]
 
     @property
     def fixed_zone_primitive(self):
-        """Get fixed zone primitive.
-
-        Returns
-        -------
-        Primitive
-        """
+        """:class:`Primitive <ansys.edb.primitive.Primitive>` : Fixed :term:`zones <Zone>` primitive."""
         msg = self.__stub.GetFixedZonePrimitive(self.msg)
         return None if msg is None else Primitive(msg).cast()
 
     @fixed_zone_primitive.setter
     def fixed_zone_primitive(self, value):
-        """Set fixed zone primitive.
-
-        Parameters
-        ----------
-        value : Primitive
-        """
+        """Set fixed zone primitive."""
         self.__stub.SetFixedZonePrimitives(messages.pointer_property_message(self, value))
 
     @property
     def board_bend_defs(self):
-        """Get board bend definitions.
+        """:obj:`list` of :class:`BoardBendDefs <ansys.edb.primitive.BoardBendDef>` : List of all the board bend \
+        definitions in this layout.
 
-        Returns
-        -------
-        list[BoardBendDef]
+        Read-Only.
         """
         return [BoardBendDef(msg) for msg in self.__stub.GetBoardBendDefs(self.msg)]
 
@@ -295,10 +258,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def layout_instance(self):
-        """Get layout instance.
+        """:class:`LayoutInstance <ansys.edb.layout_instance.LayoutInstance>` : Layout instance of this layout.
 
-        Returns
-        -------
-        ansys.edb.layout_instance.LayoutInstance
+        Read-Only.
         """
         return LayoutInstance(self.__stub.GetLayoutInstance(self.msg))

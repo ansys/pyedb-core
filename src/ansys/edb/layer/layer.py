@@ -367,7 +367,7 @@ class Layer(ObjBase):
         Parameters
         ----------
         zone : int
-        in_zone : bool
+        in_zone : bool, optional
         """
         return self.__stub.SetIsInZone(
             layer_pb2.SetIsInZoneMessage(zone_msg=_is_in_zone_message(self, zone), in_zone=in_zone)

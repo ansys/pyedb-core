@@ -342,7 +342,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        layer_filter : LayerTypeSet or LayerType or list[LayerType]
+        layer_filter : LayerTypeSet or LayerType or list[LayerType], optional
 
         Returns
         -------
@@ -490,7 +490,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        copy_zone : int
+        copy_zone : int, optional
             If valid the new zone is inserted as a copy of the specified
             zone, otherwise the new zone is empty
 

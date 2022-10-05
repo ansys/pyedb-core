@@ -142,7 +142,7 @@ class StackupLayer(Layer):
 
         Parameters
         ----------
-        evaluated : bool
+        evaluated : bool, optional
 
         Returns
         -------
@@ -166,7 +166,7 @@ class StackupLayer(Layer):
 
         Parameters
         ----------
-        evaluated : bool
+        evaluated : bool, optional
             If true and the material name is parameterized, the material name will be evaluated.
 
         Returns

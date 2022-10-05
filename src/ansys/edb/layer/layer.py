@@ -132,8 +132,8 @@ class Layer(ObjBase):
         from ansys.edb.layer import StackupLayer, ViaLayer
 
         lyr = Layer(self.msg)
-        if lyr.is_stackup_layer():
-            if lyr.is_via_layer():
+        if lyr.is_stackup_layer:
+            if lyr.is_via_layer:
                 return ViaLayer(self.msg)
             else:
                 return StackupLayer(self.msg)

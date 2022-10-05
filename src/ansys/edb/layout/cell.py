@@ -355,15 +355,19 @@ class Cell(ObjBase, variable_server.VariableServer):
             messages.cell_set_temperature_settings_message(self, value)
         )
 
-    def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping):
-        """Cut out a cell.
+    def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True):
+        """Cut out an existing cell into a new cell.
 
         Parameters
         ----------
-        included_nets : list[ansys.edb.net.Net]
-        clipped_nets : list[ansys.edb.net.Net]
+        included_nets : list[:class:`Net <ansys.edb.net.Net>`]
+            Nets to be kept after cutout.
+        clipped_nets : list[:class:`Net <ansys.edb.net.Net>`]
+            Nets to be kept and clipped at the boundary after cutout.
         clipping_polygon : ansys.edb.geometry.PolygonData
-        clean_clipping : bool
+            Clipping polygon.
+        clean_clipping : bool, optional
+             Whether to perform clean clipping.
 
         Returns
         -------

@@ -105,7 +105,10 @@ class StackupLayer(Layer):
 
     @property
     def thickness(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Thickness value of the layer."""
+        """:class:`Value <ansys.edb.utility.Value>`: Thickness value of the layer.
+
+        Setter accepts a :term:`ValueLike`
+        """
         return Value(get_stackup_layer_stub().GetThickness(self.msg))
 
     @thickness.setter
@@ -114,7 +117,10 @@ class StackupLayer(Layer):
 
     @property
     def lower_elevation(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Lower elevation value of the layer."""
+        """:class:`Value <ansys.edb.utility.Value>`: Lower elevation value of the layer.
+
+        Setter accepts a :term:`ValueLike`
+        """
         return Value(get_stackup_layer_stub().GetLowerElevation(self.msg))
 
     @lower_elevation.setter
@@ -125,7 +131,10 @@ class StackupLayer(Layer):
 
     @property
     def upper_elevation(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Upper elevation value of the layer."""
+        """:class:`Value <ansys.edb.utility.Value>`: Upper elevation value of the layer.
+
+        Read-Only.
+        """
         return Value(get_stackup_layer_stub().GetUpperElevation(self.msg))
 
     def get_material(self, evaluated=True):
@@ -199,7 +208,7 @@ class StackupLayer(Layer):
 
         Returns
         -------
-        RoughnessModel
+        :term:`RoughnessModel`
         """
         request = _layer_roughness_region_message(self, region)
         response = get_stackup_layer_stub().GetRoughnessModel(request)
@@ -244,7 +253,10 @@ class StackupLayer(Layer):
 
     @property
     def etch_factor(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Etch factor of the layer."""
+        """:class:`Value <ansys.edb.utility.Value>`: Etch factor of the layer.
+
+        Setter accepts a :term:`ValueLike`
+        """
         return Value(get_stackup_layer_stub().GetEtchFactor(self.msg))
 
     @etch_factor.setter

@@ -24,7 +24,6 @@ Enums
    TopBottomAssociation
    DrawOverride
    LayerVisibility
-   LayerCollectionMode
    DCThicknessType
    RoughnessRegion
    LayerCollectionMode

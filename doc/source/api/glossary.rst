@@ -32,10 +32,10 @@
 		A Groisse roughness model is represented by a single value containing the roughness value.
 		A Huray roughness model is represented  by a tuple of the form [nodule_radius_value, surface_ratio_value]
 
-		:obj:`Union <typing.Union>`\[:class:`Value <ansys.edb.utility.Value>`, :obj:`tuple`\[:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`\]]
+		:obj:`Union <typing.Union>`\[:term:`ValueLike`, :obj:`tuple`\[:term:`ValueLike`, :term:`ValueLike`\]]
 
 	HFSSSolverProperties
 
 		HFSS solver properties are represented by a tuple of the form [dc_thickness_type, dc_thickness_value, solve_inside_enabled]
 
-		:obj:`tuple`\[:class:`DCThicknessType <ansys.edb.layer.DCThicknessType>`, :class:`Value <ansys.edb.utility.Value>`, :obj:`bool`\]
+		:obj:`tuple`\[:class:`DCThicknessType <ansys.edb.layer.DCThicknessType>`, :term:`ValueLike`, :obj:`bool`\]

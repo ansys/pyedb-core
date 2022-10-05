@@ -16,7 +16,12 @@ from ansys.edb.session import get_layer_collection_stub
 
 
 class LayerCollectionMode(Enum):
-    """Enum representing possible modes of layer collection."""
+    """Enum representing possible modes of layer collection.
+
+    - LAMINATE
+    - OVERLAPPING
+    - MULTIZONE
+    """
 
     LAMINATE = layer_collection_pb2.LAMINATE
     OVERLAPPING = layer_collection_pb2.OVERLAPPING
@@ -24,7 +29,14 @@ class LayerCollectionMode(Enum):
 
 
 class LayerTypeSet(Enum):
-    """Enum representing layer type sets used for filtering layers."""
+    """Enum representing layer type sets used for filtering layers.
+
+    - STACKUP_LAYER_SET
+    - SIGNAL_LAYER_SET
+    - DIELECTRIC_LAYER_SET
+    - NON_STACKUP_LAYER_SET
+    - ALL_LAYER_SET
+    """
 
     STACKUP_LAYER_SET = 0
     SIGNAL_LAYER_SET = 1
@@ -34,7 +46,12 @@ class LayerTypeSet(Enum):
 
 
 class DielectricMergingMethod(Enum):
-    """Enum representing dielectric merging method options."""
+    """Enum representing dielectric merging method options.
+
+    - WEIGHTED_AVERAGE
+    - KRASZEWSKI
+    - WEIGHTED_CAPACITANCE
+    """
 
     WEIGHTED_AVERAGE = layer_collection_pb2.WEIGHTED_AVERAGE
     KRASZEWSKI = layer_collection_pb2.KRASZEWSKI

@@ -166,12 +166,11 @@ class Layer(ObjBase):
     def type(self, lyr_type):
         self.__stub.SetLayerType(layer_pb2.SetLayerTypeMessage(layer=self.msg, type=lyr_type.value))
 
+    @property
     def is_stackup_layer(self):
-        """Determine if the layer is a :class:`StackupLayer`.
+        """:obj:`bool`: Flag indicating if the layer is a :class:`StackupLayer`.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         layer_type = self.type
         return (
@@ -180,12 +179,11 @@ class Layer(ObjBase):
             or layer_type == LayerType.SIGNAL_LAYER
         )
 
+    @property
     def is_via_layer(self):
-        """Determine if the layer is a :class:`ViaLayer`.
+        """:obj:`bool`: Flag indicating if the layer is a :class:`ViaLayer`.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsViaLayer(self.msg).value
 

@@ -4,6 +4,7 @@ import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
 from ansys.edb.core import layout_obj, messages
 from ansys.edb.edb_defs import LayoutObjType
+from ansys.edb.net import Net
 from ansys.edb.session import StubAccessor, StubType
 
 
@@ -106,6 +107,17 @@ class NetClass(layout_obj.LayoutObj):
         bool
         """
         return self.__stub.IsPowerGround(messages.edb_obj_message(self.msg)).value
+
+    @property
+    def nets(self):
+        """Return list of nets of netclass.
+
+        Returns
+        -------
+        list[Net]
+        """
+        nets = self.__stub.GetNets(self.msg).items
+        return [Net(n) for n in nets]
 
     def add_net(self, net):
         """

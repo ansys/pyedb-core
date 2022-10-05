@@ -4,7 +4,6 @@ import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
 from ansys.edb.core import layout_obj, messages
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.net import Net
 from ansys.edb.session import StubAccessor, StubType
 
 
@@ -110,12 +109,12 @@ class NetClass(layout_obj.LayoutObj):
 
     @property
     def nets(self):
-        """Return list of nets of netclass.
+        """:obj:`list`[Net] List of nets in this object.
 
-        Returns
-        -------
-        list[Net]
+        Read-Only.
         """
+        from ansys.edb.net.net import Net
+
         nets = self.__stub.GetNets(self.msg).items
         return [Net(n) for n in nets]
 

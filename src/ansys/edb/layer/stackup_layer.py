@@ -11,7 +11,12 @@ from ansys.edb.utility import Value
 
 
 class DCThicknessType(Enum):
-    """Enum representing DC thickness types of StackupLayers."""
+    """Enum representing DC thickness types of StackupLayers.
+
+    - EFFECTIVE
+    - LAYER
+    - MANUAL
+    """
 
     EFFECTIVE = stackup_layer_pb2.HFSSSolverPropertiesMessage.EFFECTIVE
     LAYER = stackup_layer_pb2.HFSSSolverPropertiesMessage.LAYER
@@ -19,7 +24,12 @@ class DCThicknessType(Enum):
 
 
 class RoughnessRegion(Enum):
-    """Enum representing regions for roughness models of StackupLayers."""
+    """Enum representing regions for roughness models of StackupLayers.
+
+    - TOP
+    - BOTTOM
+    - SIDE
+    """
 
     TOP = stackup_layer_pb2.LayerRoughnessRegionMessage.RoughnessRegion.TOP
     BOTTOM = stackup_layer_pb2.LayerRoughnessRegionMessage.RoughnessRegion.BOTTOM
@@ -58,10 +68,11 @@ class StackupLayer(Layer):
         """Create a stackup layer.
 
         Parameters
+        ----------
         name : str
         layer_type : LayerType
         thickness : float
-        thickness : float
+        elevation : float
         material : str
 
         Returns
@@ -83,75 +94,46 @@ class StackupLayer(Layer):
 
     @property
     def negative(self):
-        """Get the negative property of the layer.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if the layer is a negative layer."""
         return get_stackup_layer_stub().GetNegative(self.msg).value
 
     @negative.setter
     def negative(self, is_negative):
-        """Set the negative property of the layer.
-
-        Parameters
-        ----------
-        is_negative : bool
-        """
         get_stackup_layer_stub().SetNegative(
             stackup_layer_pb2.SetNegativeMessage(layer=self.msg, is_negative=is_negative)
         )
 
     @property
     def thickness(self):
-        """Get the thickness value of the layer.
+        """:class:`Value <ansys.edb.utility.Value>`: Thickness value of the layer.
 
-        Returns
-        -------
-        Value
+        Setter accepts a :term:`ValueLike`
         """
         return Value(get_stackup_layer_stub().GetThickness(self.msg))
 
     @thickness.setter
     def thickness(self, thickness):
-        """Set the thickness value of the layer.
-
-        Parameters
-        ----------
-        thickness : Value
-        """
         get_stackup_layer_stub().SetThickness(_stackup_layer_value_message(self, thickness))
 
     @property
     def lower_elevation(self):
-        """Get the lower elevation value of the layer.
+        """:class:`Value <ansys.edb.utility.Value>`: Lower elevation value of the layer.
 
-        Returns
-        -------
-        Value
+        Setter accepts a :term:`ValueLike`
         """
         return Value(get_stackup_layer_stub().GetLowerElevation(self.msg))
 
     @lower_elevation.setter
     def lower_elevation(self, lower_elevation):
-        """Set the lower elevation value of the layer.
-
-        Parameters
-        ----------
-        lower_elevation : Value
-        """
         get_stackup_layer_stub().SetLowerElevation(
             _stackup_layer_value_message(self, lower_elevation)
         )
 
     @property
     def upper_elevation(self):
-        """Get the upper elevation value of the layer.
+        """:class:`Value <ansys.edb.utility.Value>`: Upper elevation value of the layer.
 
-        Returns
-        -------
-        Value
+        Read-Only.
         """
         return Value(get_stackup_layer_stub().GetUpperElevation(self.msg))
 
@@ -160,7 +142,7 @@ class StackupLayer(Layer):
 
         Parameters
         ----------
-        evaluated : bool
+        evaluated : bool, optional
 
         Returns
         -------
@@ -180,11 +162,12 @@ class StackupLayer(Layer):
         get_stackup_layer_stub().SetMaterial(_set_layer_material_name_message(self, material_name))
 
     def get_fill_material(self, evaluated=True):
-        """Get the name of the material of the layer.
+        """Get the name of the fill material of the layer.
 
         Parameters
         ----------
-        evaluated : bool
+        evaluated : bool, optional
+            If true and the material name is parameterized, the material name will be evaluated.
 
         Returns
         -------
@@ -207,22 +190,11 @@ class StackupLayer(Layer):
 
     @property
     def roughness_enabled(self):
-        """Check if roughness models are used by the layer.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if roughness models are used by the layer."""
         return get_stackup_layer_stub().IsRoughnessEnabled(self.msg).value
 
     @roughness_enabled.setter
     def roughness_enabled(self, enable_roughness):
-        """Set if roughness models are used by the layer.
-
-        Parameters
-        ----------
-        enable_roughness : bool
-        """
         get_stackup_layer_stub().SetRoughnessEnabled(
             stackup_layer_pb2.SetLayerPropEnabledMessage(layer=self.msg, enabled=enable_roughness)
         )
@@ -236,11 +208,7 @@ class StackupLayer(Layer):
 
         Returns
         -------
-        Value or tuple[Value, Value]
-            If a Groisse roughness model is being used by the layer, a single Value
-            object is returned representing the roughness value. If a Huray roughness
-            model us being used,the returned value is a tuple of the form
-            [nodule_radius_value, surface_ratio_value]
+        :term:`RoughnessModel`
         """
         request = _layer_roughness_region_message(self, region)
         response = get_stackup_layer_stub().GetRoughnessModel(request)
@@ -256,12 +224,7 @@ class StackupLayer(Layer):
 
         Parameters
         ----------
-        roughness_model : Value or tuple[Value, Value]
-            If roughness_model is a single Value object, a Groisse roughness model
-            with a roughness value equal to the provided value will be assigned to
-            the layer. If roughness_model is a tuple of two Value objects, a Huray
-            roughness model will be assigned to the layer with a nodule radius value
-            equal to roughness_model[0] and a surface ratio value equal to roughness_model[1]
+        roughness_model : :term:`RoughnessModel`
         region : RoughnessRegion
         """
         roughness_model_msg = stackup_layer_pb2.RoughnessModelMessage()
@@ -279,64 +242,35 @@ class StackupLayer(Layer):
 
     @property
     def etch_factor_enabled(self):
-        """Check if etch factor is used by the layer.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if etch factor is used by the layer."""
         return get_stackup_layer_stub().IsEtchFactorEnabled(self.msg).value
 
     @etch_factor_enabled.setter
     def etch_factor_enabled(self, enable_etch_factor):
-        """Set if etch factor is used by the layer.
-
-        Parameters
-        ----------
-        enable_etch_factor : bool
-        """
         get_stackup_layer_stub().SetEtchFactorEnabled(
             stackup_layer_pb2.SetLayerPropEnabledMessage(layer=self.msg, enabled=enable_etch_factor)
         )
 
     @property
     def etch_factor(self):
-        """Get the etch factor of the layer.
+        """:class:`Value <ansys.edb.utility.Value>`: Etch factor of the layer.
 
-        Returns
-        -------
-        Value
+        Setter accepts a :term:`ValueLike`
         """
         return Value(get_stackup_layer_stub().GetEtchFactor(self.msg))
 
     @etch_factor.setter
     def etch_factor(self, etch_factor):
-        """Set the etch factor of the layer.
-
-        Parameters
-        ----------
-        etch_factor : Value
-        """
         get_stackup_layer_stub().SetEtchFactor(_stackup_layer_value_message(self, etch_factor))
 
     @property
     def use_solver_properties(self):
-        """Check if solver properties are used by the layer.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if solver properties are used by the layer."""
         return get_stackup_layer_stub().IsEtchFactorEnabled(self.msg).value
 
     @use_solver_properties.setter
     def use_solver_properties(self, use_solver_properties):
-        """Set if solver properties are used by the layer.
 
-        Parameters
-        ----------
-        use_solver_properties : bool
-        """
         get_stackup_layer_stub().SetUseSolverProperties(
             stackup_layer_pb2.SetLayerPropEnabledMessage(
                 layer=self.msg, enabled=use_solver_properties
@@ -345,13 +279,7 @@ class StackupLayer(Layer):
 
     @property
     def hfss_solver_properties(self):
-        """Get the solver properties of the layer.
-
-        Returns
-        -------
-        tuple[DCThicknessType, Value, bool]
-            Returns tuple of the form [dc_thickness_type, dc_thickness_value, solve_inside_enabled]
-        """
+        """:term:`HFSSSolverProperties`: The HFSS solver properties of the layer."""
         response = get_stackup_layer_stub().GetHFSSSolverProperties(self.msg)
         return (
             DCThicknessType(response.dc_thickness_type),
@@ -361,13 +289,6 @@ class StackupLayer(Layer):
 
     @hfss_solver_properties.setter
     def hfss_solver_properties(self, hfss_solver_props):
-        """Set the solver properties of the layer.
-
-        Parameters
-        ----------
-        tuple[DCThicknessType, Value, bool]
-            Tuple is of the form [dc_thickness_type, dc_thickness_value, solve_inside_enabled]
-        """
         hfss_solver_props_msg = stackup_layer_pb2.HFSSSolverPropertiesMessage(
             dc_thickness_type=hfss_solver_props[0].value,
             dc_thickness=messages.value_message(hfss_solver_props[1]),
@@ -381,11 +302,9 @@ class StackupLayer(Layer):
 
     @property
     def referencing_via_layer_ids(self):
-        """Retrieve the layer ids of all via layers referencing the layer.
+        r""":obj:`list`\[:obj:`int`\]: Retrieve the layer ids of all via layers referencing the layer.
 
-        Returns
-        -------
-        list[int]
+        Read-Only.
         """
         return [
             via_lyr_id

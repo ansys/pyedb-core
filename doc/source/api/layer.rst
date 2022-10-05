@@ -10,11 +10,22 @@ Classes
    :toctree: _autosummary
    
    Layer
+   StackupLayer
+   ViaLayer
+   LayerCollection
+
+Enums
+-----
+
+.. autosummary::
+   :toctree: _autosummary
+
    LayerType
    TopBottomAssociation
    DrawOverride
    LayerVisibility
-   StackupLayer
-   ViaLayer
-   LayerCollection
+   DCThicknessType
+   RoughnessRegion
    LayerCollectionMode
+   LayerTypeSet
+   DielectricMergingMethod

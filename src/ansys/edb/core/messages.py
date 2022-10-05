@@ -525,7 +525,7 @@ def cell_cutout_message(cell, included_nets, clipped_nets, clipping_polygon, cle
         cell=cell.msg,
         included_nets=edb_obj_collection_message(included_nets),
         clipped_nets=edb_obj_collection_message(clipped_nets),
-        clipping_polygon=edb_obj_message(clipping_polygon),
+        clipping_polygon=polygon_data_message(clipping_polygon),
         clean_clipping=clean_clipping,
     )
 

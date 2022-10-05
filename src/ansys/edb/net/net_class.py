@@ -109,7 +109,7 @@ class NetClass(layout_obj.LayoutObj):
 
     @property
     def nets(self):
-        """:obj:`list`[Net] List of nets in this object.
+        """:obj:`list` of :class:`Net <ansys.edb.net.Net>`: List of nets in this object.
 
         Read-Only.
         """

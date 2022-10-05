@@ -13,3 +13,11 @@ Classes
    PolygonData
    PointData
    
+Enums
+-----
+
+.. autosummary::
+   :toctree: _autosummary
+
+   ExtentType
+   PolygonSenseType

@@ -93,15 +93,12 @@ def _to_polygon_data(message):
         b = _to_box(message)
         return geometry.PolygonData(lower_left=b[0], upper_right=b[1])
     else:
-        from ansys.edb.geometry import polygon_data
-
-        pd = polygon_data.PolygonData(
+        return geometry.PolygonData(
             points=_to_point_data_list(message.points),
             holes=_to_polygon_data_list(message.holes),
             sense=message.sense,
             closed=message.closed,
         )
-        return pd
 
 
 def _to_polygon_data_list(message):

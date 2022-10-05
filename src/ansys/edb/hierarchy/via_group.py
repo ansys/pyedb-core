@@ -2,8 +2,7 @@
 
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 
-from ansys.edb.core import messages
-from ansys.edb.geometry import PolygonData
+from ansys.edb.core import messages, parser
 from ansys.edb.hierarchy.group import Group
 from ansys.edb.session import StubAccessor, StubType
 
@@ -85,12 +84,13 @@ class ViaGroup(Group):
         return ViaGroup(cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name)))
 
     @property
+    @parser.to_polygon_data
     def outline(self):
-        """:class:`PolygonData <ansys.edb.polygon_data.PolygonData>`: Via group outline.
+        """:class:`PolygonData <ansys.edb.geometry.PolygonData>`: Via group outline.
 
         Read-Only.
         """
-        return PolygonData(self.__stub.GetOutline(self.msg))
+        return self.__stub.GetOutline(self.msg)
 
     @property
     def conductor_percentage(self):

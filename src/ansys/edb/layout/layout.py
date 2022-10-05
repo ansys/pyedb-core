@@ -1,11 +1,10 @@
 """Layout."""
 
-import ansys.api.edb.v1.layout_pb2 as layout_pb2
+from ansys.api.edb.v1 import layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
-from ansys.edb.core import ObjBase, messages, utils, variable_server
+from ansys.edb.core import ObjBase, messages, parser, utils, variable_server
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.geometry import PolygonData
 from ansys.edb.hierarchy import CellInstance, Group, PinGroup
 from ansys.edb.layer import LayerCollection
 import ansys.edb.layout as layout
@@ -188,6 +187,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         """
         return self._get_items(ExtendedNet, LayoutObjType.EXTENDED_NET)
 
+    @parser.to_polygon_data
     def expanded_extent(
         self, nets, extent, expansion_factor, expansion_unitless, use_round_corner, num_increments
     ):
@@ -195,28 +195,34 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        nets : list[Net]
-        extent : GeometryExtentType
+        nets : list[:class:`Net <ansys.edb.net.Net>`]
+            A list of nets.
+        extent : :class:`ExtentType <ansys.edb.geometry.ExtentType>`
+            Geometry extent type for expansion.
         expansion_factor : float
+            Expansion factor for the polygon union.
         expansion_unitless : bool
+             When unitless, the distance by which the extent expands is the factor multiplied by the longer dimension\
+             (X or Y distance) of the expanded object/net.
         use_round_corner : bool
+            Whether to use round or sharp corners.
+            For round corners, this returns a bounding box if its area is within 10% of the rounded expansion's area.
         num_increments : num
+            Number of iteration desired to reach the full expansion.
 
         Returns
         -------
-        PolygonData
+        :class:`PolygonData <ansys.edb.geometry.PolygonData>`
         """
-        return PolygonData(
-            msg=self.__stub.GetExpandedExtentFromNets(
-                messages.layout_expanded_extent_message(
-                    self,
-                    nets,
-                    extent,
-                    expansion_factor,
-                    expansion_unitless,
-                    use_round_corner,
-                    num_increments,
-                )
+        return self.__stub.GetExpandedExtentFromNets(
+            messages.layout_expanded_extent_message(
+                self,
+                nets,
+                extent,
+                expansion_factor,
+                expansion_unitless,
+                use_round_corner,
+                num_increments,
             )
         )
 

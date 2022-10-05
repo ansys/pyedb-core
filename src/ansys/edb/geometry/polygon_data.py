@@ -4,7 +4,7 @@ from enum import Enum
 import itertools
 import math
 
-from ansys.api.edb.v1 import point_data_pb2, polygon_data_pb2_grpc
+from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2_grpc
 
 from ansys.edb import session
 from ansys.edb.core import messages, parser
@@ -13,11 +13,27 @@ from ansys.edb.utility import conversions
 
 
 class PolygonSenseType(Enum):
-    """Direction of polygon sense."""
+    """Direction of polygon sense.
+
+    - SENSE_UNKNOWN
+    - SENSE_CW
+    - SENSE_CCW
+    """
 
     SENSE_UNKNOWN = point_data_pb2.SENSE_UNKNOWN
     SENSE_CW = point_data_pb2.SENSE_CW
     SENSE_CCW = point_data_pb2.SENSE_CCW
+
+
+class ExtentType(Enum):
+    """Extent types for geometries.
+
+    - CONFORMING
+    - BOUNDING_BOX
+    """
+
+    CONFORMING = edb_defs_pb2.CONFORMING
+    BOUNDING_BOX = edb_defs_pb2.BOUNDING_BOX
 
 
 class PolygonData:

@@ -80,7 +80,7 @@ jobs:
           retention-days: 7
 
       - name: Get Bot Application Token
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release-23.1'
         id: get_workflow_token
         uses: peter-murray/workflow-application-token-action@v1
         with:
@@ -88,7 +88,7 @@ jobs:
           application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
 
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release-23.1'
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           repository-name: pyansys/pyedb-dev-docs
@@ -127,10 +127,18 @@ jobs:
         run: |
           cd dist
           zip -r pyedb.zip *
-      - name: Upload libraries
+      - name: Upload develop libraries
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         uses: actions/upload-artifact@v2
         with:
           name: pyedb
           path: dist/pyedb.zip
           retention-days: 14
+      - name: Upload libraries
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release-')
+        uses: actions/upload-artifact@v2
+        with:
+          name: pyedb
+          path: dist/pyedb.zip
+          retention-days: 90
 

@@ -51,8 +51,7 @@ Glossary
 
 	HFSSExtents
 		
-		Extent box around the design.
-		:obj:`dict` with the following key:values
+		Extent box around the design, represented by a :obj:`dict` with the following key:values
 		
 		| **dielectric**: (:obj:`float`, :obj:`bool`)
 		| 	Dielectric extent size. First parameter is the value and second parameter indicates if the value is a value is a multiple.

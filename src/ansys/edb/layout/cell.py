@@ -138,7 +138,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def layout(self):
-        """:class:`Layout <ansys.edb.layout.Layout>` Layout of the cell.
+        """:class:`Layout <ansys.edb.layout.Layout>`: Layout of the cell.
 
         Read-Only.
         """
@@ -223,11 +223,11 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def anti_pads_option(self):
-        """:obj:`int` : Determine how anti pads are activated.
+        """:obj:`int` : Mode for activating antipads.
 
-        0 : Center-point Intersection
-        1 : Always On
-        2 : Pad Intersection.
+        | 0 for Center-point Intersection
+        | 1 for Always On
+        | 2 for Pad Intersection.
         """
         return self.__stub.GetAntiPadsOption(self.msg)
 

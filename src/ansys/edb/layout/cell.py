@@ -417,7 +417,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        net_name: str
+        net_name : str
             Name of the :class:`Net <ansys.edb.net.Net>` to be crawled in the search for vias.
 
         Returns

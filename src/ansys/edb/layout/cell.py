@@ -204,7 +204,6 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @is_blackbox.setter
     def is_blackbox(self, value):
-        """Set if the cell is blackbox."""
         self.__stub.SetBlackBox(messages.bool_property_message(self, value))
 
     @property
@@ -218,7 +217,6 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @anti_pads_always_on.setter
     def anti_pads_always_on(self, value):
-        """Set the anti pads option to always-on."""
         self.__stub.SetAntiPadsAlwaysOn(messages.bool_property_message(self, value))
 
     @property
@@ -233,7 +231,6 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @anti_pads_option.setter
     def anti_pads_option(self, value):
-        """Set the anti pads option."""
         self.__stub.SetAntiPadsOption(messages.int_property_message(self, value))
 
     @property
@@ -251,7 +248,6 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @name.setter
     def name(self, value):
-        """Set the name of cell."""
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property
@@ -261,7 +257,6 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @design_mode.setter
     def design_mode(self, value):
-        """Set the design mode of cell."""
         self.__stub.SetDesignMode(messages.design_mode_property_message(self, value))
 
     @property
@@ -286,7 +281,6 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @temperature_settings.setter
     def temperature_settings(self, value):
-        """Set the temperature settings."""
         self.__stub.SetTemperatureSettings(
             messages.cell_set_temperature_settings_message(self, value)
         )
@@ -364,7 +358,7 @@ class Cell(ObjBase, variable_server.VariableServer):
             Product ID.
         property_id : int
             Property ID.
-        value : int
+        value : str
             Product property value.
         """
         self.__stub.SetProductProperty(

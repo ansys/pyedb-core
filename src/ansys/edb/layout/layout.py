@@ -206,7 +206,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        primitives : list[:class:`Primitives <ansys.edb.primitive.Primitive>`]
+        primitives : list[:class:`Primitive <ansys.edb.primitive.Primitive>`]
             List of primitives to convert.
         is_pins : bool, optional
             True for pins, false for vias (default).
@@ -240,7 +240,6 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @fixed_zone_primitive.setter
     def fixed_zone_primitive(self, value):
-        """Set fixed zone primitive."""
         self.__stub.SetFixedZonePrimitives(messages.pointer_property_message(self, value))
 
     @property

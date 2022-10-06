@@ -67,7 +67,6 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @name.setter
     def name(self, newname):
-        """Set name of the Voltage Regulator class."""
         self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
 
     @property
@@ -77,17 +76,18 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @active.setter
     def active(self, newactive):
-        """Set active status of the Voltage Regulator class."""
         self.__stub.SetIsActive(messages.bool_property_message(self, newactive))
 
     @property
     def voltage(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Voltage of the Voltage Regulator class."""
+        """:class:`Value <ansys.edb.utility.Value>`: Voltage of the Voltage Regulator.
+
+        Property can be set with :term:`ValueLike`
+        """
         return Value(self.__stub.GetVoltage(self.msg))
 
     @voltage.setter
     def voltage(self, newvoltage):
-        """Set name of the Voltage Regulator class."""
         self.__stub.SetVoltage(
             messages.value_property_message(self.msg, messages.value_message(newvoltage))
         )
@@ -102,7 +102,6 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @lrc.setter
     def lrc(self, newlrc):
-        """Set load regulation current of the Voltage Regulator class."""
         self.__stub.SetLoadRegulationCurrent(
             messages.value_property_message(self.msg, messages.value_message(newlrc))
         )
@@ -117,7 +116,6 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @lrp.setter
     def lrp(self, newlrp):
-        """Set load regulation percent of the Voltage Regulator class."""
         self.__stub.SetLoadRegulationPercent(
             messages.value_property_message(self.msg, messages.value_message(newlrp))
         )
@@ -133,7 +131,6 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @pos_remote_sense_pin.setter
     def pos_remote_sense_pin(self, newpin):
-        """Set positive remote sense pin of Voltage Regulator class."""
         self.__stub.SetPosRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))
 
     @property
@@ -147,5 +144,4 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @neg_remote_sense_pin.setter
     def neg_remote_sense_pin(self, newpin):
-        """Set negative remote sense pin of Voltage Regulator class."""
         self.__stub.SetNegRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))

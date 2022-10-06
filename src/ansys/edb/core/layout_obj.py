@@ -70,11 +70,14 @@ class LayoutObj(ObjBase):
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
+            ID representing a product that supports the EDB.
         attr_id : int
+            A user-defined id that identifies the string value stored in the property
 
         Returns
         -------
         str
+            The string stored in this property.
         """
         return self.__stub.GetProductProperty(
             _QueryBuilder.get_product_property_type_msg(
@@ -88,8 +91,11 @@ class LayoutObj(ObjBase):
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
+            ID representing a product that supports the EDB.
         attr_id : int
+            A user-defined id that identifies the string value stored in the property
         prop_value : str
+            The string stored in this property.
         """
         self.__stub.SetProductProperty(
             _QueryBuilder.set_product_property_type_msg(
@@ -103,10 +109,12 @@ class LayoutObj(ObjBase):
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
+            ID representing a product that supports the EDB.
 
         Returns
         -------
         list[int]
+            List of the user-defined attribute IDs for properties stored in this object
         """
         attr_ids = self.__stub.GetProductPropertyIds(
             _QueryBuilder.get_product_property_ids_type_msg(self, prod_id, self.layout_obj_type)

@@ -64,7 +64,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def primitives(self):
-        """:obj:`list` of :class:`Primitives <ansys.edb.primitive.Primitive>` : List of all the primitives in this \
+        """:obj:`list` of :class:`Primitive <ansys.edb.primitive.Primitive>` : List of all the primitives in this \
         layout.
 
         Read-Only.
@@ -73,7 +73,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def padstack_instances(self):
-        """:obj:`list` of :class:`PadstackInstances <ansys.edb.primitive.PadstackInstance>` : List of all padstack \
+        """:obj:`list` of :class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>` : List of all padstack \
         instances in this layout.
 
         Read-Only.
@@ -82,7 +82,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def terminals(self):
-        """:obj:`list` of :class:`Terminals <ansys.edb.terminal.Terminal>` : List of all the terminals in this layout.
+        """:obj:`list` of :class:`Terminal <ansys.edb.terminal.Terminal>` : List of all the terminals in this layout.
 
         Read-Only.
         """
@@ -90,7 +90,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def cell_instances(self):
-        """:obj:`list` of :class:`CellInstances <ansys.edb.hierarchy.CellInstances>` : List of the cell instances in \
+        """:obj:`list` of :class:`CellInstance <ansys.edb.hierarchy.CellInstances>` : List of the cell instances in \
         this layout.
 
         Read-Only.
@@ -99,7 +99,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def nets(self):
-        """:obj:`list` of :class:`Nets <ansys.edb.net.Net>` : List of all the nets in this layout.
+        """:obj:`list` of :class:`Net <ansys.edb.net.Net>` : List of all the nets in this layout.
 
         Read-Only.
         """
@@ -107,7 +107,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def groups(self):
-        """:obj:`list` of :class:`Groups <ansys.edb.hierarchy.Group>` : List of all the groups in this layout.
+        """:obj:`list` of :class:`Group <ansys.edb.hierarchy.Group>` : List of all the groups in this layout.
 
         Read-Only.
         """
@@ -115,7 +115,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def net_classes(self):
-        """:obj:`list` of :class:`NetClasses <ansys.edb.net.NetClass>` : List of all the netclassses in this layout.
+        """:obj:`list` of :class:`NetClass <ansys.edb.net.NetClass>` : List of all the netclassses in this layout.
 
         Read-Only.
         """
@@ -123,7 +123,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def differential_pairs(self):
-        """:obj:`list` of :class:`DifferentialPairs <ansys.edb.net.DifferentialPair>` : List of all the differential \
+        """:obj:`list` of :class:`DifferentialPair <ansys.edb.net.DifferentialPair>` : List of all the differential \
          pairs in this layout.
 
         Read-Only.
@@ -132,7 +132,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def pin_groups(self):
-        """:obj:`list` of :class:`PinGroups <ansys.edb.hierarchy.PinGroups>` : List of all the pin groups in this \
+        """:obj:`list` of :class:`PinGroup <ansys.edb.hierarchy.PinGroup>` : List of all the pin groups in this \
         layout.
 
         Read-Only.
@@ -141,7 +141,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def voltage_regulators(self):
-        """:obj:`list` of :class:`VoltageRegulators <ansys.edb.hierarchy.VoltageRegulator>` : List of all the voltage \
+        """:obj:`list` of :class:`VoltageRegulator <ansys.edb.hierarchy.VoltageRegulator>` : List of all the voltage \
          regulators in this layout.
 
         Read-Only.
@@ -150,7 +150,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def extended_nets(self):
-        """:obj:`list` of :class:`ExtendedNets <ansys.edb.net.ExtendedNet>` : List of all the extended nets in this \
+        """:obj:`list` of :class:`ExtendedNet <ansys.edb.net.ExtendedNet>` : List of all the extended nets in this \
         layout.
 
         Read-Only.
@@ -225,7 +225,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def zone_primitives(self):
-        """:obj:`list` of :class:`Primitives <ansys.edb.primitive.Primitive>` : List of all the primitives in \
+        """:obj:`list` of :class:`Primitive <ansys.edb.primitive.Primitive>` : List of all the primitives in \
         :term:`zones <Zone>`.
 
         Read-Only.
@@ -244,7 +244,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def board_bend_defs(self):
-        """:obj:`list` of :class:`BoardBendDefs <ansys.edb.primitive.BoardBendDef>` : List of all the board bend \
+        """:obj:`list` of :class:`BoardBendDef <ansys.edb.primitive.BoardBendDef>` : List of all the board bend \
         definitions in this layout.
 
         Read-Only.

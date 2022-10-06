@@ -5,22 +5,23 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "refs.proto";
 
 service NetClassService {
-  rpc Create (NetClassCreationMessage) returns (EDBObjMessage) {}
-  
+  rpc Create(NetClassCreationMessage) returns (EDBObjMessage) {}
+
   rpc FindByName(EDBObjNameMessage) returns (EDBObjMessage) {}
 
-  rpc GetName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
 
   rpc SetName(EDBObjNameMessage) returns (google.protobuf.Empty) {}
 
-  rpc GetDescription (EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc GetDescription(EDBObjMessage) returns (google.protobuf.StringValue) {}
 
   rpc SetDescription(StringPropertyMessage) returns (google.protobuf.Empty) {}
 
   rpc IsPowerGround(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  rpc GetNets(EDBObjMessage) returns (EDBObjCollectionMessage) {}
 
   rpc AddNet(NetClassEditMessage) returns (google.protobuf.Empty) {}
 

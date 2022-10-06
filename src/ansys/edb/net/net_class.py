@@ -107,6 +107,17 @@ class NetClass(layout_obj.LayoutObj):
         """
         return self.__stub.IsPowerGround(messages.edb_obj_message(self.msg)).value
 
+    @property
+    def nets(self):
+        """:obj:`list` of :class:`Net <ansys.edb.net.Net>`: List of nets in this object.
+
+        Read-Only.
+        """
+        from ansys.edb.net.net import Net
+
+        nets = self.__stub.GetNets(self.msg).items
+        return [Net(n) for n in nets]
+
     def add_net(self, net):
         """
         Add net to netclass.

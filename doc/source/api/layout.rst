@@ -9,8 +9,15 @@ Classes
 .. autosummary::
    :toctree: _autosummary
    
-   CellType
-   DesignMode
    Cell
    Layout
    VoltageRegulator
+
+Enums
+-----
+
+.. autosummary::
+   :toctree: _autosummary
+   
+   CellType
+   DesignMode

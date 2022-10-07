@@ -312,57 +312,57 @@ class Cell(ObjBase, variable_server.VariableServer):
             )
         )
 
-    def product_property_ids(self, product_id):
-        """Get a list of property ids associated with the cell object for the given product.
+    def get_product_property_ids(self, prod_id):
+        """Get a list of attribute ids corresponding to the provided product id for the cell.
 
         Parameters
         ----------
-        product_id : int
-            Product ID.
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
+            ID representing a product that supports the EDB.
 
         Returns
         -------
         list[int]
-            A list of property ids associated with the cell object.
+            List of the user-defined attribute IDs for properties stored in this object
         """
         ids = self.__stub.GetProductPropertyIds(
-            messages.get_product_property_ids_message(self, product_id)
+            messages.get_product_property_ids_message(self, prod_id)
         ).ids
         return [prop_id for prop_id in ids]
 
-    def product_property(self, product_id, property_id):
+    def get_product_property(self, prod_id, attr_id):
         """Get the product specific property of the cell.
 
         Parameters
         ----------
-        product_id : int
-            Product ID.
-        property_id : int
-            Property ID.
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
+            ID representing a product that supports the EDB.
+        attr_id : int
+            A user-defined id that identifies the string value stored in the property.
 
         Returns
         -------
         str
-            Property value returned.
+            The string stored in this property.
         """
         return self.__stub.GetProductProperty(
-            messages.get_product_property_message(self, product_id, property_id)
+            messages.get_product_property_message(self, prod_id, attr_id)
         )
 
-    def set_product_property(self, product_id, property_id, value):
-        """Set the product property value.
+    def set_product_property(self, prod_id, attr_id, prop_value):
+        """Set the product property of the cell associated with the given product and attribute ids.
 
         Parameters
         ----------
-        product_id : int
-            Product ID.
-        property_id : int
-            Property ID.
-        value : str
-            Product property value.
+        prod_id : :class:`ProductIdType <ansys.edb.database.ProductIdType>`
+            ID representing a product that supports the EDB.
+        attr_id : int
+            A user-defined id that identifies the string value stored in the property.
+        prop_value : str
+            The string stored in this property.
         """
         self.__stub.SetProductProperty(
-            messages.set_product_property_message(self, product_id, property_id, value)
+            messages.set_product_property_message(self, prod_id, attr_id, prop_value)
         )
 
     def add_simulation_setup(self, setup_type, name, sim_setup):

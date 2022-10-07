@@ -220,6 +220,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         """:obj:`bool`: Determine if port reference terminals are connected, applies to lumped ports and circuit ports.
 
         True if they are connected, False otherwise.
+        Read-Only.
         """
         return self.__stub.ArePortReferenceTerminalsConnected(self.msg).is_connected
 

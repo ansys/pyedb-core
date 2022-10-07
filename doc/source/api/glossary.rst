@@ -54,7 +54,7 @@ Glossary
 		Extent box around the design, represented by a :obj:`dict` with the following key:values
 		
 		| **dielectric**: (:obj:`float`, :obj:`bool`)
-		| 	Dielectric extent size. First parameter is the value and second parameter indicates if the value is a value is a multiple.
+		| 	Dielectric extent size. First parameter is the value and second parameter indicates if the value is a multiple.
 		| **airbox_horizontal**: (:obj:`float`, :obj:`bool`)
 		| 	Airbox horizontal extent size. First parameter is the value and second parameter indicates if the value is a multiple.
 		| **airbox_vertical_positive**: (:obj:`float`, :obj:`bool`)

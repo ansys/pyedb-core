@@ -88,7 +88,7 @@ class ComponentGroup(Group):
         self.__stub.SetComponentType(messages.set_component_group_type_message(self, value))
 
     @classmethod
-    def find(cls, layout, comp_def_name):
+    def find_by_def(cls, layout, comp_def_name):
         """Find all the components belonging to a specific component definition.
 
         Parameters

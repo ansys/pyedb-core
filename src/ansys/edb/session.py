@@ -355,7 +355,7 @@ def launch_session(ansys_em_root, port_num, ip_address=None):
     Parameters
     ----------
     ansys_em_root : str
-        The the installation directory of EDB_RPC_Server.exe
+        The installation directory of EDB_RPC_Server.exe
     port_num : int
         The port number to listen on
     ip_address : str, optional
@@ -382,7 +382,7 @@ def session(ansys_em_root, port_num, ip_address=None):
     Parameters
     ----------
     ansys_em_root : str
-        The the installation directory of EDB_RPC_Server.exe
+        The installation directory of EDB_RPC_Server.exe
     port_num : int
         The port number to listen on
     ip_address : str, optional

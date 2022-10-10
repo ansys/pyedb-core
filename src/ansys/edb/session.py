@@ -72,6 +72,7 @@ from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsServiceStub
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
+from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
@@ -336,6 +337,7 @@ class StubType(Enum):
     extended_net = ExtendedNetServiceStub
     padstack_def_data = PadstackDefDataServiceStub
     differential_pair = DifferentialPairServiceStub
+    solder_ball_property = SolderBallPropertyServiceStub
 
 
 # Dictionary for storing local server error code exception messages

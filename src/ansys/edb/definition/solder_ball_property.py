@@ -71,10 +71,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def material_name(self):
-        """:obj:`str`: Material name of the solder ball property.
-
-        Read-Only.
-        """
+        """:obj:`str`: Material name of the solder ball property."""
         return self.__stub.GetMaterialName(edb_obj_message(self)).value
 
     @material_name.setter
@@ -83,7 +80,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def height(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Get the height of the solder ball property."""
+        """:term:`ValueLike`: Height of the solder ball property."""
         return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter
@@ -95,9 +92,9 @@ class SolderBallProperty(ObjBase):
 
         Returns
         -------
-        diameter1 : :class:`Value <ansys.edb.utility.Value>`
+        diameter1 : :term:`ValueLike`
             Solder ball property's diameter 1.
-        diameter2 : :class:`Value <ansys.edb.utility.Value>`
+        diameter2 : :term:`ValueLike`
             Solder ball property's diameter 2.
         """
         diameter_paramaters = self.__stub.GetDiameter(edb_obj_message(self))
@@ -108,9 +105,9 @@ class SolderBallProperty(ObjBase):
 
         Parameters
         ----------
-        diameter1 : :class:`Value <ansys.edb.utility.Value>`
+        diameter1 : :term:`ValueLike`
             Solder ball property's diameter 1.
-        diameter2 : :class:`Value <ansys.edb.utility.Value>`
+        diameter2 : :term:`ValueLike`
             Solder ball property's diameter 2.
         """
         self.__stub.SetDiameter(_QueryBuilder.set_diameter_message(self, diameter1, diameter2))

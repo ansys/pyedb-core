@@ -87,11 +87,11 @@ class ComponentGroup(Group):
             or comp_type == edb_defs_pb2.ComponentType.INDUCTOR
             or comp_type == edb_defs_pb2.ComponentType.CAPACITOR
         ):
-            return RLCComponentProperty(comp_prop)
+            return RLCComponentProperty(comp_prop.msg)
         if comp_type == edb_defs_pb2.ComponentType.IO:
-            return IOComponentProperty(comp_prop)
+            return IOComponentProperty(comp_prop.msg)
         if comp_type == edb_defs_pb2.ComponentType.IC:
-            return ICComponentProperty(comp_prop)
+            return ICComponentProperty(comp_prop.msg)
         if comp_type == edb_defs_pb2.ComponentType.OTHER:
             return comp_prop
         else:

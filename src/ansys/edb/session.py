@@ -29,7 +29,6 @@ from ansys.api.edb.v1.component_model_pb2_grpc import (
     NPortComponentModelServiceStub,
 )
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
-from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
@@ -37,7 +36,6 @@ from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalSer
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
-from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
@@ -74,7 +72,6 @@ from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsServiceStub
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
-from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
@@ -339,9 +336,6 @@ class StubType(Enum):
     extended_net = ExtendedNetServiceStub
     padstack_def_data = PadstackDefDataServiceStub
     differential_pair = DifferentialPairServiceStub
-    solder_ball_property = SolderBallPropertyServiceStub
-    component_property = ComponentPropertyServiceStub
-    ic_component_property = ICComponentPropertyServiceStub
 
 
 # Dictionary for storing local server error code exception messages
@@ -352,27 +346,16 @@ _local_server_error_code_exception_msg_map = {
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):
-    r"""Launch a local session to an EDB API server.
-
-    The session must be manually disconnected after use by calling session.disconnect()
+    """Launch a local session to an EDB API server. must be manually disconnected after use.
 
     Parameters
     ----------
-    ansys_em_root : str
-        The installation directory of EDB_RPC_Server.exe
+    ansys_em_root : str, optional
     port_num : int
-        The port number to listen on
     ip_address : str, optional
-        Currently not supported. Default value means local_host. It specifies the IP address of the machine where \
-        the server executable is running. Future releases will support remotely running the API on another machine.
-
-    Examples
-    --------
-    Creates a session and disconnects it
-
-    >>> session = launch_session("C:\\Program Files\\AnsysEM\\v231\\Win64", 50051)
-    >>> # program goes here
-    >>> session.disconnect()
+    Returns
+    -------
+    None
     """
     MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
     MOD.current_session.connect()
@@ -381,24 +364,16 @@ def launch_session(ansys_em_root, port_num, ip_address=None):
 
 @contextmanager
 def session(ansys_em_root, port_num, ip_address=None):
-    r"""Launch a local session to an EDB API server in a context manager.
+    """Launch a local session to an EDB API server in a context manager.
 
     Parameters
     ----------
-    ansys_em_root : str
-        The installation directory of EDB_RPC_Server.exe
+    ansys_em_root : atr, optional
     port_num : int
-        The port number to listen on
     ip_address : str, optional
-        Currently not supported. Default value means local_host. It specifies the IP address of the machine where \
-        the server executable is running. Future releases will support remotely running the API on another machine.
-
-    Examples
-    --------
-    Creates a session that will automatically disconnect when it goes out of scope.
-
-    >>> with session("C:\\Program Files\\AnsysEM\\v231\\Win64", 50051):
-    >>>    # program goes here
+    Returns
+    -------
+    None
     """
     try:
         MOD.current_session = _Session(ip_address, port_num, ansys_em_root)

@@ -17,23 +17,20 @@ class DifferentialPair(NetClass):
     def create(cls, layout, name, pos_net=None, neg_net=None):
         """Create a differential pair.
 
-        User must either provide both nets or omit both nets
-
         Parameters
         ----------
         layout : :class:`Layout<ansys.edb.layout.Layout>`
-            Layout on which new differential pair is placed.
+            Layout on which differential pair is placed.
         name : str
-            Name of new differential pair.
-        pos_net : Net or str, optional
-            Positive net or name of positive net.
-        neg_net : Net or str, optional
-            Negative net or name of negative net.
+            Name of differential pair.
+        pos_net : :class:`Net<ansys.edb.net.Net>` or str, optional
+            Positive net. must be provided with negative net if non-None.
+        neg_net : :class:`Net<ansys.edb.net.Net>` or str, optional
+            Negative net. must be provided with positive net if non-None.
 
         Returns
         -------
         DifferentialPair
-            Newly created differential pair.
         """
         return cls(
             cls.__stub.Create(
@@ -42,78 +39,93 @@ class DifferentialPair(NetClass):
         )
 
     @classmethod
-    def find_by_name(cls, layout, name):
-        """Find a differential pair in a layout by name.
+    def find(cls, layout, name):
+        """Find a differential pair by name.
 
         Parameters
         ----------
         layout : :class:`Layout<ansys.edb.layout.Layout>`
-            Layout being searched for differential pair
         name : str
-            Name of the differential pair to find
 
         Returns
         -------
         DifferentialPair
-            The differential pair that was found. Check the returned differential pair's \
-            :obj:`is_null <ansys.edb.net.DifferentialPair.is_null>` property to see if it exists.
         """
         return cls(cls.__stub.FindByName(messages.string_property_message(layout, name)))
 
     @property
     def differential_pair(self):
-        r""":obj:`tuple`\(:class:`Net`, :class:`Net`\): The nets (positive, negative) in the differential pair."""
+        """Get the differential pair.
+
+        Returns
+        -------
+        tuple(Net, Net)
+        """
         msg = self.__stub.GetDifferentialPair(self.msg)
         return Net(msg.positive_net.id), Net(msg.negative_net.id)
 
     @differential_pair.setter
     def differential_pair(self, value):
+        """Set the differential pair (positive net, negative net)."""
         self.__stub.SetDifferentialPair(
             messages.differential_pair_net_refs_message(self, value[0], value[1])
         )
 
     @property
     def positive_net(self):
-        """:class:`Net`: The positive net of a differential pair."""
-        return self.differential_pair[0]
+        """Get the positive net of a differential pair.
 
-    @positive_net.setter
-    def positive_net(self, value):
-        self.__stub.SetDifferentialPair(
-            messages.differential_pair_net_refs_message(self, value, self.differential_pair[1])
-        )
+        Returns
+        -------
+        Net
+        """
+        return self.differential_pair[0]
 
     @property
     def negative_net(self):
-        """:class:`Net`: The negative net of a differential pair."""
-        return self.differential_pair[1]
+        """Get the negative net of a differential pair.
 
-    @negative_net.setter
-    def negative_net(self, value):
-        self.__stub.SetDifferentialPair(
-            messages.differential_pair_net_refs_message(self, self.differential_pair[0], value)
-        )
+        Returns
+        -------
+        Net
+        """
+        return self.differential_pair[1]
 
     @property
     def is_power_ground(self):
-        """Invalid for differential pair."""
+        """Get if the differential pair is grounded.
+
+        Returns
+        -------
+        bool
+        """
         return False
 
     def add_net(self, net):
-        """Invalid for differential pair.
+        """Add a net. this method is invalid for DifferentialPair.
 
-        Use :obj:`ansys.edb.net.DifferentialPair.differential_pair` = (pos_net, neg_net) instead.
+        Use differential_pair = (pos_net, neg_net) instead.
+
+        Parameters
+        ----------
+        net : Net
         """
         raise TypeError("net cannot be added to differential pair.")
 
     def remove_net(self, net):
-        """Invalid for differential pair."""
+        """Remove a net. this method is invalid for DifferentialPair.
+
+        Use .differential_pair = (pos_net, neg_net) instead.
+
+        Parameters
+        ----------
+        net : Net
+        """
         raise TypeError("net cannot be removed from differential pair.")
 
-    @property
     def nets(self):
-        """Invalid for differential pair.
+        """Get the list of nets. this method is invalid for DifferentialPair.
 
-        Use :obj:`ansys.edb.net.DifferentialPair.differential_pair` instead.
+        Use .differential_pair instead.
         """
-        return self.differential_pair
+        raise TypeError("differential pairs do not have nets.")

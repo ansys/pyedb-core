@@ -14,9 +14,7 @@ from ansys.edb.definition.component_model import (
     NPortComponentModel,
 )
 from ansys.edb.definition.component_pin import ComponentPin
-from ansys.edb.definition.component_property import ComponentProperty
 from ansys.edb.definition.dataset_def import DatasetDef
-from ansys.edb.definition.ic_component_property import ICComponentProperty
 from ansys.edb.definition.material_def import (
     DielectricMaterialModel,
     MaterialDef,
@@ -33,4 +31,3 @@ from ansys.edb.definition.padstack_def_data import (
     SolderballPlacement,
     SolderballShape,
 )
-from ansys.edb.definition.solder_ball_property import SolderBallProperty

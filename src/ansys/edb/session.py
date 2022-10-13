@@ -349,6 +349,8 @@ class StubType(Enum):
     port_property = PortPropertyServiceStub
     dataset_def = DatasetDefServiceStub
     solder_ball_property = SolderBallPropertyServiceStub
+    component_property = ComponentPropertyServiceStub
+    ic_component_property = ICComponentPropertyServiceStub
 
 
 # Dictionary for storing local server error code exception messages

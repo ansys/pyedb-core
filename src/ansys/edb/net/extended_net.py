@@ -28,19 +28,19 @@ class ExtendedNet(net_class.NetClass):
 
     @staticmethod
     def create(layout, name):
-        """Create an extended net.
+        """Create an extendednet.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
-            Layout containing new extended net.
+            The layout object
         name : str
-            Name of the new extended net
+            Name of the extendednet to create
 
         Returns
         -------
         ExtendedNet
-            Newly created extended net
+            Newly created extended netobject
         """
         return ExtendedNet(
             get_extended_net_stub().Create(_ExtendedNetQueryBuilder.extnet_create_msg(layout, name))
@@ -48,20 +48,19 @@ class ExtendedNet(net_class.NetClass):
 
     @staticmethod
     def find_by_name(layout, name):
-        """Find an extended net in a layout by name.
+        """Find an extendednet in a layout by name.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
-            Layout being searched for extended net
+            The layout object
         name : str
-            Name of the extended net to find
+            Name of the extendednet to find
 
         Returns
         -------
         ExtendedNet
-            The extended net that was found. Check the returned extended net's \
-            :obj:`is_null <ansys.edb.net.ExtendedNet.is_null>` property to see if it exists.
+            The extended net that was found. Null object is returned if it is not found.
         """
         return ExtendedNet(
             get_extended_net_stub().FindByName(
@@ -70,25 +69,27 @@ class ExtendedNet(net_class.NetClass):
         )
 
     def add_net(self, net):
-        """Add net to this extended net.
+        """Add net to an extendednet.
 
         Parameters
         ----------
-        net : Net
-            The net to be added.
+        net : :class:`Net <ansys.edb.layout.Net>`
+            The net object to be added
+
         """
         self.__stub.AddNet(_ExtendedNetQueryBuilder.extnet_modify_net_msg(self, net))
 
     def remove_net(self, net):
-        """Remove net from this extended net.
+        """Remove net from extendednet.
 
         Parameters
         ----------
-        net : Net
-            The net to be removed.
+        net : :class:`Net <ansys.edb.layout.Net>`
+            The net object to be removed
+
         """
         self.__stub.RemoveNet(_ExtendedNetQueryBuilder.extnet_modify_net_msg(self, net))
 
     def remove_all_nets(self):
-        """Remove all nets from this extended net."""
+        """Remove all nets from extendednet."""
         self.__stub.RemoveAllNets(self.msg)

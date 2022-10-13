@@ -30,7 +30,6 @@ Modules
    simulation_setup
    terminal
    utility
-   release_notes
    
 
 

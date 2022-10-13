@@ -6,6 +6,7 @@ from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
 from ansys.edb.core import messages
+from ansys.edb.definition import component_property
 from ansys.edb.hierarchy.group import Group
 from ansys.edb.session import StubAccessor, StubType
 
@@ -69,13 +70,37 @@ class ComponentGroup(Group):
 
     @property
     def component_property(self):
-        """:obj:`ComponentProperty`: Component property of the component group."""
-        return self.__stub.GetComponentProperty(self.msg)
+        """:obj:`ComponentProperty`: Component property of the component group.
+
+        A copy is returned. Use the setter for any modifications to be reflected.
+        """
+        from ansys.edb.definition.ic_component_property import (
+            ICComponentProperty,
+            IOComponentProperty,
+            RLCComponentProperty,
+        )
+
+        comp_prop = component_property.ComponentProperty(self.__stub.GetComponentProperty(self.msg))
+        comp_type = self.__stub.GetComponentType(self.msg).comp_type
+        if (
+            comp_type == edb_defs_pb2.ComponentType.RESISTOR
+            or comp_type == edb_defs_pb2.ComponentType.INDUCTOR
+            or comp_type == edb_defs_pb2.ComponentType.CAPACITOR
+        ):
+            return RLCComponentProperty(comp_prop.msg)
+        if comp_type == edb_defs_pb2.ComponentType.IO:
+            return IOComponentProperty(comp_prop.msg)
+        if comp_type == edb_defs_pb2.ComponentType.IC:
+            return ICComponentProperty(comp_prop.msg)
+        if comp_type == edb_defs_pb2.ComponentType.OTHER:
+            return comp_prop
+        else:
+            return None
 
     @component_property.setter
     def component_property(self, value):
         """Set the component property on the component group."""
-        self.__stub.SetComponentProperty(messages.point_property_message(self, value))
+        self.__stub.SetComponentProperty(messages.pointer_property_message(self, value))
 
     @property
     def component_type(self):

@@ -29,6 +29,7 @@ from ansys.api.edb.v1.component_model_pb2_grpc import (
     NPortComponentModelServiceStub,
 )
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
+from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
@@ -36,6 +37,7 @@ from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalSer
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
+from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
@@ -338,6 +340,8 @@ class StubType(Enum):
     padstack_def_data = PadstackDefDataServiceStub
     differential_pair = DifferentialPairServiceStub
     solder_ball_property = SolderBallPropertyServiceStub
+    component_property = ComponentPropertyServiceStub
+    ic_component_property = ICComponentPropertyServiceStub
 
 
 # Dictionary for storing local server error code exception messages

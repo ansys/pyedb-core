@@ -127,7 +127,7 @@ class _PadstackDefDataQueryBuilder:
     @staticmethod
     def padstack_def_data_set_solderball_placement_message(target, solderball_placement):
         return pb.PadstackDefDataSetSolderballPlacementMessage(
-            target=target.msg, solderball_placement=solderball_placement
+            target=target.msg, solderball_placement=solderball_placement.value
         )
 
     @staticmethod

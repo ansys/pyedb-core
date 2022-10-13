@@ -25,6 +25,10 @@ Classes
    PadstackDef
    PadstackDefData
    ThermalModifier
+   SolderBallProperty
+   ComponentProperty
+   ICComponentProperty
+   
 
 Enums
 -----

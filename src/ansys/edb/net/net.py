@@ -27,11 +27,14 @@ class Net(layout_obj.LayoutObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout containing new net.
         name : str
+            Name of new net
 
         Returns
         -------
         Net
+            Newly created net.
         """
         return Net(cls.__stub.Create(messages.string_property_message(layout, name)))
 
@@ -42,101 +45,87 @@ class Net(layout_obj.LayoutObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout being searched for net
         name : str
+            Name of net being searched for.
 
         Returns
         -------
         Net
+            Net matching the requested name. Check the returned net's \
+            :obj:`is_null <ansys.edb.net.Net.is_null>` property to see if it exists.
         """
         return Net(cls.__stub.FindByName(messages.string_property_message(layout, name)))
 
     @property
     def name(self):
-        """Get name of a net.
-
-        Returns
-        -------
-        str
-        """
+        """:class:`str`: Name of this net."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, value):
-        """Set name of a net."""
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property
     def is_power_ground(self):
-        """Get whether a net is grounded.
+        """:class:`bool`: True if net belongs to Power/Ground :class:`NetClass`.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.GetIsPowerGround(self.msg).value
 
     @is_power_ground.setter
     def is_power_ground(self, value):
-        """Set if a net is grounded."""
         self.__stub.SetIsPowerGround(messages.bool_property_message(self, value))
 
     @property
     def primitives(self):
-        """Get a list of primitives on a net.
+        r""":obj:`list`\[:class:`Primitive <ansys.edb.primitive.Primitive>`\]: List of all primitives on this net.
 
-        Returns
-        -------
-        list[:class:`Primitive <ansys.edb.primitive.Primitive>`]
+        Read-Only.
         """
         return [Primitive(lo).cast() for lo in self._layout_objs(LayoutObjType.PRIMITIVE)]
 
     @property
     def padstack_instances(self):
-        """Get a list of padstack instances on a net.
+        r"""
+        :obj:`list`\[:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`\]: List of padstacks on this net.
 
-        Returns
-        -------
-        list[:class:`PadstackInstance <ansys.edb.primitive.PadstackInstance>`]
+        Read-Only.
         """
         return [PadstackInstance(lo) for lo in self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)]
 
     @property
     def terminals(self):
-        """Get a list of terminals on a net.
+        r""":obj:`list`\[:class:`Terminal <ansys.edb.terminal.Terminal>`\]: List of all terminals on this net.
 
-        Returns
-        -------
-        list[:class:`Terminal <ansys.edb.terminal.Terminal>`]
+        Read-Only.
         """
         return [Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
 
     @property
     def terminal_instances(self):
-        """Get a list of terminal instances on a net.
+        r""":obj:`list`\[:class:`TerminalInstance <ansys.edb.terminal.TerminalInstance>`\]: terminal instances on net.
 
-        Returns
-        -------
-        list[:class:`TerminalInstance <ansys.edb.terminal.TerminalInstance>`]
+        Read-Only.
         """
         return [TerminalInstance(lo) for lo in self._layout_objs(LayoutObjType.TERMINAL_INSTANCE)]
 
     @property
     def net_classes(self):
-        """Get a list of net classes on a net.
+        r""":obj:`list`\[:class:`NetClass`\]: List of all net classes on this net.
 
-        Returns
-        -------
-        list[:class:`NetClass <ansys.edb.net.NetClass>`]
+        Read-Only.
         """
         return [NetClass(lo) for lo in self._layout_objs(LayoutObjType.NET_CLASS)]
 
     @property
     def extended_net(self):
-        """Get an extended net.
+        """:class:`ExtendedNet` or :class:`None`: The extended net that this net belongs to.
 
-        Returns
-        -------
-        :class:`ExtendedNet <ansys.edb.net.ExtendedNet>`
+        :class:`None` means the net doesn't belong to an extended net.
+
+        Read-Only.
         """
         en = ExtendedNet(self._layout_objs(LayoutObjType.NET_CLASS)[0])
         return None if en.is_null else en

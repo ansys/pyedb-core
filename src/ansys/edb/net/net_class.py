@@ -26,84 +26,61 @@ class NetClass(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout containing new net class.
         name : str
+            Name of the new net class.
 
         Returns
         -------
         NetClass
+            Newly created net class.
         """
         return NetClass(cls.__stub.Create(_QueryBuilder.create(layout, name)))
 
     @classmethod
-    def find(cls, layout, name):
+    def find_by_name(cls, layout, name):
         """
         Find net class by name.
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout being searched for net class.
         name : str
+            Name of net class being searched for.
 
         Returns
         -------
         NetClass
+            Net class matching the requested name. Check the returned net class's \
+            :obj:`is_null <ansys.edb.net.NetClass.is_null>` property to see if it exists.
         """
         return NetClass(cls.__stub.FindByName(messages.edb_obj_name_message(layout, name)))
 
     @property
     def name(self):
-        """
-        Name of net class.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str`: Name of this object."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, newname):
-        """
-        Set name of net class.
-
-        Parameters
-        ----------
-        newname : str
-
-        """
         self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
 
     @property
     def description(self):
-        """
-        Return description of net class.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str` : Description of this object."""
         return self.__stub.GetDescription(self.msg).value
 
     @description.setter
     def description(self, newdesc):
-        """
-        Set description of net class.
-
-        Parameters
-        ----------
-        newdesc : str
-
-        """
         self.__stub.SetDescription(messages.string_property_message(self, newdesc))
 
     @property
     def is_power_ground(self):
-        """Return whether this netclass is power or ground.
+        """:class:`bool`: True if object belongs to Power/Ground :class:`NetClass`.
 
-        Returns
-        -------
-        bool
+        Read-Only.
         """
         return self.__stub.IsPowerGround(messages.edb_obj_message(self.msg)).value
 
@@ -120,37 +97,39 @@ class NetClass(layout_obj.LayoutObj):
 
     def add_net(self, net):
         """
-        Add net to netclass.
+        Add net to this this object.
 
         Parameters
         ----------
         net : Net
-
+            Net to add
         """
         return self.__stub.AddNet(nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg))
 
     def remove_net(self, net):
         """
-        Remove net from netclass.
+        Remove net from this object.
 
         Parameters
         ----------
         net : Net
-
+            Net to remove
         """
         self.__stub.RemoveNet(nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg))
 
     def contains_net(self, net):
         """
-        Find if net exists in netclass.
+        Check if net exists in this object.
 
         Parameters
         ----------
         net : Net
+            Net to check for.
 
         Returns
         -------
         bool
+            True if net is in this object
         """
         return self.__stub.ContainsNet(
             nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg)

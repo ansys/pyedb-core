@@ -7,7 +7,7 @@ import "padstack_def_data.proto";
 
 service SolderBallPropertyService {
   rpc Create(google.protobuf.Empty) returns (EDBObjMessage) {}
-  
+
   rpc GetShape(EDBObjMessage) returns (PadstackDefDataSolderballShapeMessage) {}
   rpc SetShape(PadstackDefDataSetSolderballShapeMessage) returns (google.protobuf.Empty) {}
 
@@ -24,6 +24,8 @@ service SolderBallPropertyService {
   rpc SetMaterialName(StringPropertyMessage) returns (google.protobuf.Empty) {}
 
   rpc UsesSolderball(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  rpc Clone(EDBObjMessage) returns (EDBObjMessage) {}
 }
 
 message DiameterMessage {

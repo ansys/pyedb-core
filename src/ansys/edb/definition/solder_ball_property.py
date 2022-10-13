@@ -137,3 +137,14 @@ class SolderBallProperty(ObjBase):
     @placement.setter
     def placement(self, placement):
         self.__stub.SetPlacement(_QueryBuilder.set_placement_message(self, placement))
+
+    def clone(self):
+        """
+        Clone a solder ball property.
+
+        Returns
+        -------
+        SolderBallProperty
+            The cloned solder ball property created.
+        """
+        return SolderBallProperty(self.__stub.Clone(edb_obj_message(self)))

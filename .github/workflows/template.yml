@@ -3,6 +3,11 @@ name: Template Validation
 on:
   pull_request:
     types: [opened, edited, synchronize]
+    branches:
+      - develop
+  push:
+    branches:
+      - develop
   workflow_dispatch:
 
 jobs:

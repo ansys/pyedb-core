@@ -19,6 +19,12 @@ from ansys.api.edb.v1.component_group_pb2 import (
     ComponentGroupCreateMessage,
     SetComponentGroupTypeMessage,
 )
+from ansys.api.edb.v1.die_property_pb2 import (
+    DieOrientationMessage,
+    DieOrientationPropertyMessage,
+    DieTypeMessage,
+    DieTypePropertyMessage,
+)
 from ansys.api.edb.v1.differential_pair_pb2 import (
     DifferentialPairCreationMessage,
     DifferentialPairNetRefsMessage,
@@ -44,6 +50,8 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     StringsMessage,
     TemperatureSettingsMessage,
     ValueMessage,
+    ValuePairMessage,
+    ValuePairPropertyMessage,
     ValuePropertyMessage,
 )
 from ansys.api.edb.v1.edge_term_pb2 import (
@@ -1044,4 +1052,28 @@ def differential_pair_net_refs_message(dp, pos_net, neg_net):
     """Convert to DifferentialPairNetRefsMessage."""
     return DifferentialPairNetRefsMessage(
         dp=edb_obj_message(dp), pos_net=net_ref_message(pos_net), neg_net=net_ref_message(neg_net)
+    )
+
+
+def set_die_type_message(obj, die_type):
+    """Convert to DieTypePropertyMessage."""
+    return DieTypePropertyMessage(target=obj.msg, die_type=DieTypeMessage(die_type=die_type.value))
+
+
+def set_die_orientation_message(obj, die_orientation):
+    """Convert to DieOrientationPropertyMessage."""
+    return DieOrientationPropertyMessage(
+        target=obj.msg, die_orientation=DieOrientationMessage(die_orientation=die_orientation.value)
+    )
+
+
+def value_pair_message(val1, val2):
+    """Convert to ValuePairMessage."""
+    return ValuePairMessage(val1=value_message(val1), val2=value_message(val2))
+
+
+def value_pair_property_message(target, val1, val2):
+    """Convert to ValuePairPropertyMessage."""
+    return ValuePairPropertyMessage(
+        target=edb_obj_message(target), values=value_pair_message(val1, val2)
     )

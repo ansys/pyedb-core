@@ -10,9 +10,15 @@ import "edb_messages.proto";
 
 // Component Property service definition
 service ICComponentPropertyService {
-  // Set the solder ball properties
+  // Get/Set the solder ball property
   rpc SetSolderBallProperty(PointerPropertyMessage) returns (google.protobuf.Empty) {}
-
-  // Get the solder ball properties
   rpc GetSolderBallProperty(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get/Set the die property
+  rpc SetDieProperty(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc GetDieProperty(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get/Set the port property
+  rpc SetPortProperty(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc GetPortProperty(EDBObjMessage) returns (EDBObjMessage) {}
 }

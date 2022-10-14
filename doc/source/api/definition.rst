@@ -28,6 +28,8 @@ Classes
    SolderBallProperty
    ComponentProperty
    ICComponentProperty
+   DieProperty
+   PortProperty
    
 
 Enums
@@ -43,4 +45,6 @@ Enums
    PadstackHoleRange
    SolderballShape
    SolderballPlacement
+   DieType
+   DieOrientation
 

@@ -123,12 +123,7 @@ class PackageDef(ObjBase):
 
     @property
     def height(self):
-        """Get the height of the package definition object.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Height of the package definition object."""
         return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter
@@ -137,12 +132,7 @@ class PackageDef(ObjBase):
 
     @property
     def operating_power(self):
-        """Get the operating power of the package.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Operating power of the package."""
         return Value(self.__stub.GetOperatingPower(edb_obj_message(self)))
 
     @operating_power.setter
@@ -151,12 +141,7 @@ class PackageDef(ObjBase):
 
     @property
     def maximum_power(self):
-        """Get the maximum power of the package.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Maximum power of the package."""
         return Value(self.__stub.GetMaximumPower(edb_obj_message(self)))
 
     @maximum_power.setter
@@ -165,12 +150,7 @@ class PackageDef(ObjBase):
 
     @property
     def thermal_condactivity(self):
-        """Get the relative permitivity at optical frequency.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Relative permitivity at optical frequency."""
         return Value(self.__stub.GetTherm_Cond(edb_obj_message(self)))
 
     @thermal_condactivity.setter
@@ -179,12 +159,7 @@ class PackageDef(ObjBase):
 
     @property
     def theta_jb(self):
-        """Get the Theta_JB (junction to board) of the package.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Theta_JB (junction to board) of the package."""
         return Value(self.__stub.GetTheta_JB(edb_obj_message(self)))
 
     @theta_jb.setter
@@ -193,12 +168,7 @@ class PackageDef(ObjBase):
 
     @property
     def theta_jc(self):
-        """Get the Theta_JC (junction to case) of the package.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
+        """:class:`Value <ansys.edb.utility.Value>`: Theta_JC (junction to case) of the package."""
         return Value(self.__stub.GetTheta_JC(edb_obj_message(self)))
 
     @theta_jc.setter
@@ -210,13 +180,13 @@ class PackageDef(ObjBase):
 
         Returns
         -------
-        thickness : :class:`Value <ansys.edb.utility.Value>`
+        thickness : ValueLike
             Heat sink's thinkness.
-        spacing : :class:`Value <ansys.edb.utility.Value>`
+        spacing : ValueLike
             Heat sink's spacing.
-        base_height : :class:`Value <ansys.edb.utility.Value>`
+        base_height : ValueLike
             Heat sink's base height.
-        height : :class:`Value <ansys.edb.utility.Value>`
+        height : ValueLike
             Heat sink's height.
         orientation : :class:`HeatSinkOrientation`
             Heat sink's orientation.
@@ -235,13 +205,13 @@ class PackageDef(ObjBase):
 
         Parameters
         ----------
-        thickness : :class:`Value <ansys.edb.utility.Value>`
+        thickness : ValueLike
             Heat sink's thinkness.
-        spacing : :class:`Value <ansys.edb.utility.Value>`
+        spacing : ValueLike
             Heat sink's spacing.
-        base_height : :class:`Value <ansys.edb.utility.Value>`
+        base_height : ValueLike
             Heat sink's base height.
-        height : :class:`Value <ansys.edb.utility.Value>`
+        height : ValueLike
             Heat sink's height.
         orientation : :class:`HeatSinkOrientation`
             Heat sink's orientation.

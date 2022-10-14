@@ -7,6 +7,7 @@ on:
     branches:
       - develop
       - "release-*"
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

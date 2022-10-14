@@ -75,9 +75,9 @@ class PortProperty(ObjBase):
 
         Parameters
         ----------
-        ref_x : :class:`Value <ansys.edb.utility.Value>`
+        ref_x : :term:`ValueLike`
             X reference size.
-        ref_y : :class:`Value <ansys.edb.utility.Value>`
+        ref_y : :term:`ValueLike`
             Y reference size.
         """
         self.__stub.SetReferenceSize(messages.value_pair_property_message(self, ref_x, ref_y))

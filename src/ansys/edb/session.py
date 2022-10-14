@@ -34,6 +34,7 @@ from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
+from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
 from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
@@ -351,6 +352,8 @@ class StubType(Enum):
     solder_ball_property = SolderBallPropertyServiceStub
     component_property = ComponentPropertyServiceStub
     ic_component_property = ICComponentPropertyServiceStub
+    die_property = DiePropertyServiceStub
+    port_property = PortPropertyServiceStub
 
 
 # Dictionary for storing local server error code exception messages

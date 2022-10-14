@@ -167,3 +167,14 @@ message EDBObjPairMessage {
   EDBObjMessage edb_obj_0 = 1;
   EDBObjMessage edb_obj_1 = 2;
 }
+
+message ValuePairMessage {
+  ValueMessage val1 = 1;
+  ValueMessage val2 = 2;
+}
+
+message ValuePairPropertyMessage {
+  EDBObjMessage target = 1;
+  ValuePairMessage values = 2;
+}
+

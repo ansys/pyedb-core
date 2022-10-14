@@ -1,0 +1,25 @@
+// Proto file representing the Port Property class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+// Port Property service definition
+service PortPropertyService {
+
+  rpc Create(google.protobuf.Empty) returns (EDBObjMessage) {}
+  rpc Clone(EDBObjMessage) returns (EDBObjMessage) {}
+  
+  rpc GetReferenceHeight(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetReferenceHeight(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc GetReferenceSizeAuto(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetReferenceSizeAuto(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc GetReferenceSize(EDBObjMessage) returns (ValuePairMessage) {}
+  rpc SetReferenceSize(ValuePairPropertyMessage) returns (google.protobuf.Empty) {}
+}

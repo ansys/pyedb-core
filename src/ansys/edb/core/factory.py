@@ -33,7 +33,7 @@ def create_conn_obj(msg):
     elif type == LayoutObjType.GROUP:
         return Group(msg).cast()
     elif type == LayoutObjType.PIN_GROUP:
-        return PinGroup(Group)
+        return PinGroup(msg)
     elif type == LayoutObjType.VOLTAGE_REGULATOR:
         return layout.VoltageRegulator(msg)
     raise TypeError("Encountered an unknown layout obj type")

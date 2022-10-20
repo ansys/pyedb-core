@@ -184,7 +184,7 @@ class Primitive(conn_obj.ConnObj):
         -------
         Primitive
         """
-        if self.is_null():
+        if self.is_null:
             return
 
         prim_type = self.primitive_type

@@ -51,10 +51,7 @@ class ConnObj(layout_obj.LayoutObj):
                 if cls == primitive.Text:
                     return primitive.PrimitiveType.TEXT
 
-            if (
-                get_client_prim_type_from_class()
-                == primitive.Primitive(edb_obj_msg).get_primitive_type()
-            ):
+            if get_client_prim_type_from_class() == primitive.Primitive(edb_obj_msg).primitive_type:
                 return client_obj
         elif cls.layout_obj_type == LayoutObjType.TERMINAL:
             import ansys.edb.terminal as terminal

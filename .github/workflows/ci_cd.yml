@@ -3,10 +3,10 @@ on:
   pull_request:
   push:
     tags:
-      - "*"
+      - '*'
     branches:
       - develop
-      - "release-*"
+      - release-*
   workflow_dispatch:
 
 concurrency:

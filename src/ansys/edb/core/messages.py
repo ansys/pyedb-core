@@ -644,14 +644,17 @@ def pin_group_term_set_layer_message(term, layer_ref):
 
 def edge_creation_message(edge_type, **params):
     """Convert to EdgeCreationMessage."""
-    return EdgeCreationMessage(edge_type=edge_type, params=edge_params_message(edge_type, **params))
+    return EdgeCreationMessage(
+        edge_type=edge_type.value, params=edge_params_message(edge_type, **params)
+    )
 
 
 def edge_params_message(edge_type, **params):
     """Convert to EdgeParamsMessage."""
-    if edge_type == EdgeType.PRIMITIVE_EDGE:
+    edge_type_val = edge_type.value
+    if edge_type_val == EdgeType.PRIMITIVE_EDGE:
         return EdgeParamsMessage(primitve_params=primitive_edge_params_message(**params))
-    elif edge_type == EdgeType.PAD_EDGE:
+    elif edge_type_val == EdgeType.PAD_EDGE:
         return EdgeParamsMessage(pad_params=pad_edge_params_message(**params))
     else:
         raise RuntimeError(f"Edge type {edge_type} is not valid.")
@@ -1043,8 +1046,8 @@ def differential_pair_creation_message(layout, name, pos_net, neg_net):
     return DifferentialPairCreationMessage(
         layout=edb_obj_message(layout),
         name=name,
-        pos_net=net_ref_message(pos_net),
-        neg_net=net_ref_message(neg_net),
+        positive_net=net_ref_message(pos_net),
+        negative_net=net_ref_message(neg_net),
     )
 
 

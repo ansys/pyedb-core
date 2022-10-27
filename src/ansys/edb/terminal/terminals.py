@@ -173,7 +173,7 @@ class PrimitiveEdge(Edge):
         -------
         PrimitiveEdge
         """
-        return PrimitiveEdge(cls._create(primitive=primitive, point=point))
+        return PrimitiveEdge(cls._create(primitive=prim, point=point))
 
     @property
     def primitive(self):

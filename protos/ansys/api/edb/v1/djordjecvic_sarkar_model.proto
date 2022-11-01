@@ -1,0 +1,31 @@
+// Proto file representing the DielectricMaterialModel class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+service DjordjecvicSarkarModelService {
+  rpc Create(google.protobuf.Empty) returns (EDBObjMessage) {}
+  
+  rpc GetFrequency(EDBObjMessage) returns (google.protobuf.FloatValue) {}
+  rpc SetFrequency(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc GetRelativePermitivityAtFrequency(EDBObjMessage) returns (google.protobuf.FloatValue) {}
+  rpc SetRelativePermitivityAtFrequency(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetLossTangentAtFrequency(EDBObjMessage) returns (google.protobuf.FloatValue) {}
+  rpc SetLossTangentAtFrequency(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc UseDCRelativePermitivity(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseDCRelativePermitivity(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCRelativePermitivity(EDBObjMessage) returns (google.protobuf.FloatValue) {}
+  rpc SetDCRelativePermitivity(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCConductivity(EDBObjMessage) returns (google.protobuf.FloatValue) {}
+  rpc SetDCConductivity(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+}

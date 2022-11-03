@@ -1,27 +1,15 @@
 """Dataset Def Definition."""
-import ansys.api.edb.v1.dataset_def_pb2 as pb
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 
-from ansys.edb.core import ObjBase, parser
+from ansys.edb.core import ObjBase
 from ansys.edb.core.messages import (
     edb_obj_message,
     edb_obj_name_message,
-    point_message,
+    points_property_message,
     string_property_message,
 )
+from ansys.edb.core.parser import to_point_data_list
 from ansys.edb.session import StubAccessor, StubType
-
-
-class _QueryBuilder:
-    @staticmethod
-    def data_message(points):
-        return pb.DatasetDefDataMessage(points=points)
-
-    @staticmethod
-    def set_data_message(dataset, points):
-        return pb.SetDatasetDefDataMessage(
-            target=edb_obj_message(dataset), value=_QueryBuilder.data_message(points)
-        )
 
 
 class DatasetDef(ObjBase):
@@ -30,12 +18,12 @@ class DatasetDef(ObjBase):
     __stub: DatasetDefServiceStub = StubAccessor(StubType.dataset_def)
 
     @classmethod
-    def create(cls, db, name):
+    def create(cls, database, name):
         """Create a Dataset definition Object.
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.database.Database>`
+        database : :class:`Database <ansys.edb.database.Database>`
             Database that the dataset definition should belong to.
         name : :obj:`str`
             Name of the component definition to be created.
@@ -77,7 +65,7 @@ class DatasetDef(ObjBase):
     def name(self, name):
         self.__stub.SetName(string_property_message(self, name))
 
-    @parser.to_point_data_list
+    @to_point_data_list
     def get_data(self):
         """Get a list of data points in the DatasetDef.
 
@@ -96,5 +84,5 @@ class DatasetDef(ObjBase):
         points : list[:class:`PointData <ansys.edb.geometry.point_data.PointData>`]
         """
         self.__stub.SetData(
-            _QueryBuilder.set_data_message(self, [point_message(point) for point in points])
+            points_property_message(self,points)
         )

@@ -83,6 +83,4 @@ class DatasetDef(ObjBase):
         ----------
         points : list[:class:`PointData <ansys.edb.geometry.point_data.PointData>`]
         """
-        self.__stub.SetData(
-            points_property_message(self,points)
-        )
+        self.__stub.SetData(points_property_message(self, points))

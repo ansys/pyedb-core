@@ -32,10 +32,8 @@ from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
-from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
-from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub

@@ -32,6 +32,11 @@ message PointPropertyMessage {
   PointMessage point = 2;
 }
 
+message PointsPropertyMessage {
+  EDBObjMessage target = 1;
+  repeated PointMessage points = 2;
+}
+
 message PointDataRotateMessage {
   PointMessage point = 1;
   PointMessage rotate_center = 2;

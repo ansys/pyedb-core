@@ -73,15 +73,15 @@ message PolygonDataPairWithToleranceMessage {
 message PolygonDataTransformMessage {
   message PointValueMessage {
     PointMessage point = 1;
-	float value = 2;
+	  float value = 2;
   }
 
   PolygonDataMessage polygon = 1;
   oneof op {
     PointMessage move = 2;
-	PointValueMessage rotate = 3;
-	PointValueMessage scale = 4;
-	float mirror_x = 5;
+	  PointValueMessage rotate = 3;
+  	PointValueMessage scale = 4;
+	  float mirror_x = 5;
   }
 }
 
@@ -106,7 +106,7 @@ message PolygonDataWithPointsMessage {
   PolygonDataMessage target = 1;
   oneof coord {
     PointMessage point = 2;
-	PolygonDataMessage polygon = 3;
+	  PolygonDataMessage polygon = 3;
   }
 }
 

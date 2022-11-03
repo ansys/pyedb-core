@@ -5,7 +5,7 @@ package ansys.api.edb.v1;
 import "edb_messages.proto";
 import "polygon_data.proto";
 
-enum HeatSinkOrientation {
+enum HeatSinkFinOrientation {
   X_ORIENTED = 0;
   Y_ORIENTED = 1;
   OTHER_ORIENTED = 2;
@@ -56,7 +56,7 @@ message HeatSinkMessage {
   ValueMessage spacing  = 2;
   ValueMessage base_height = 3;
   ValueMessage height = 4;
-  HeatSinkOrientation orientation = 5;
+  HeatSinkFinOrientation orientation = 5;
 }
 
 message SetHeatSinkMessage {

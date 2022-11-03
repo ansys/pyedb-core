@@ -149,13 +149,13 @@ class PackageDef(ObjBase):
         self.__stub.SetMaximumPower(value_property_message(self, value_message(power)))
 
     @property
-    def thermal_condactivity(self):
+    def thermal_conductivity(self):
         """:class:`Value <ansys.edb.utility.Value>`: Relative permitivity at optical frequency."""
         return Value(self.__stub.GetTherm_Cond(edb_obj_message(self)))
 
-    @thermal_condactivity.setter
-    def thermal_condactivity(self, condactivity):
-        self.__stub.SetTherm_Cond(value_property_message(self, value_message(condactivity)))
+    @thermal_conductivity.setter
+    def thermal_conductivity(self, conductivity):
+        self.__stub.SetTherm_Cond(value_property_message(self, value_message(conductivity)))
 
     @property
     def theta_jb(self):
@@ -180,16 +180,16 @@ class PackageDef(ObjBase):
 
         Returns
         -------
-        thickness : ValueLike
-            Heat sink's thinkness.
-        spacing : ValueLike
-            Heat sink's spacing.
-        base_height : ValueLike
-            Heat sink's base height.
-        height : ValueLike
-            Heat sink's height.
-        orientation : :class:`HeatSinkOrientation`
-            Heat sink's orientation.
+        fin_thickness : ValueLike
+            Heat sink's fin thinkness.
+        fin_spacing : ValueLike
+            Heat sink's fin spacing.
+        fin_base_height : ValueLike
+            Heat sink's fin base height.
+        fin_height : ValueLike
+            Heat sink's fin height.
+        fin_orientation : :class:`HeatSinkFinOrientation`
+            Heat sink's fin orientation.
         """
         heat_sink_paramaters = self.__stub.GetHeatSink(edb_obj_message(self))
         return (
@@ -197,28 +197,28 @@ class PackageDef(ObjBase):
             Value(heat_sink_paramaters.spacing),
             Value(heat_sink_paramaters.base_height),
             Value(heat_sink_paramaters.height),
-            HeatSinkOrientation(heat_sink_paramaters.orientation),
+            HeatSinkFinOrientation(heat_sink_paramaters.orientation),
         )
 
-    def set_heat_sink(self, thickness, spacing, base_height, height, orientation):
+    def set_heat_sink(self, fin_thickness, fin_spacing, fin_base_height, fin_height, fin_orientation):
         """Set the assigned heat sink model for the package definition.
 
         Parameters
         ----------
-        thickness : ValueLike
-            Heat sink's thinkness.
-        spacing : ValueLike
-            Heat sink's spacing.
-        base_height : ValueLike
-            Heat sink's base height.
-        height : ValueLike
-            Heat sink's height.
-        orientation : :class:`HeatSinkOrientation`
-            Heat sink's orientation.
+        fin_thickness : ValueLike
+            Heat sink's fin thinkness.
+        fin_spacing : ValueLike
+            Heat sink's fin spacing.
+        fin_base_height : ValueLike
+            Heat sink's fin base height.
+        fin_height : ValueLike
+            Heat sink's fin height.
+        fin_orientation : :class:`HeatSinkFinOrientation`
+            Heat sink's fin orientation.
         """
         self.__stub.SetHeatSink(
             _DielectricMaterialModelQueryBuilder.set_heat_sink_message(
-                self, thickness, spacing, base_height, height, orientation
+                self, fin_thickness, fin_spacing, fin_base_height, fin_height, fin_orientation
             )
         )
 

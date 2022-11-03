@@ -277,7 +277,7 @@ class MaterialDef(ObjBase):
 
     @property
     def dielectric_material_model(self):
-        """:class:`DielectricMaterialModel <ansys.edb.definition.material_def.DielectricMaterialModel>`: \
+        """:class:`DielectricMaterialModel <ansys.edb.definition.dielectric_material_model.DielectricMaterialModel>`: \
         Dielectric material model of the material definition."""
         from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
         return DielectricMaterialModel(

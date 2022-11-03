@@ -280,6 +280,7 @@ class MaterialDef(ObjBase):
         """:class:`DielectricMaterialModel <ansys.edb.definition.dielectric_material_model.DielectricMaterialModel>`: \
         Dielectric material model of the material definition."""
         from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
+
         return DielectricMaterialModel(
             self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
         )

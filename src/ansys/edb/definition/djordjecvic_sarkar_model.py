@@ -7,6 +7,7 @@ from ansys.edb.core import messages
 from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
 from ansys.edb.utility import Value
 
+
 class DjordjecvicSarkarModel(DielectricMaterialModel):
     """Class representing a Djordjecvic-Sarkar dielectric material model object."""
 

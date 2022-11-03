@@ -4,9 +4,8 @@ from ansys.api.edb.v1 import djordjecvic_sarkar_model_pb2_grpc
 
 from ansys.edb import session
 from ansys.edb.core import messages
-from ansys.edb.definition import DielectricMaterialModel
+from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
 from ansys.edb.utility import Value
-
 
 class DjordjecvicSarkarModel(DielectricMaterialModel):
     """Class representing a Djordjecvic-Sarkar dielectric material model object."""

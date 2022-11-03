@@ -5,7 +5,7 @@ import ansys.api.edb.v1.debye_model_pb2 as pb
 
 from ansys.edb import session
 from ansys.edb.core import messages
-from ansys.edb.definition import DielectricMaterialModel
+from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
 from ansys.edb.utility import Value
 
 

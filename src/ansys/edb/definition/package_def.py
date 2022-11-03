@@ -200,7 +200,9 @@ class PackageDef(ObjBase):
             HeatSinkFinOrientation(heat_sink_paramaters.orientation),
         )
 
-    def set_heat_sink(self, fin_thickness, fin_spacing, fin_base_height, fin_height, fin_orientation):
+    def set_heat_sink(
+        self, fin_thickness, fin_spacing, fin_base_height, fin_height, fin_orientation
+    ):
         """Set the assigned heat sink model for the package definition.
 
         Parameters

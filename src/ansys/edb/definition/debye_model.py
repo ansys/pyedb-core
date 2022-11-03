@@ -87,7 +87,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def loss_tangent_at_high_low_frequency(self):
-        """Get the relative permitivity at low/high frequency.
+        """Get the loss tangent at low/high frequency.
 
         Returns
         -------

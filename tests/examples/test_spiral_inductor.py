@@ -383,23 +383,15 @@ class SpiralInductor(BaseExample):
     def set_extents(self):
         print("setting HFSS extents")
         self.set_hfss_extents(
-            use_open_region=True,
-            extent_type=HfssExtentInfo.HFSSExtentInfoType.CONFORMING,
-            open_region_type=HfssExtentInfo.OpenRegionType.RADIATION,
-            base_polygon=None,
             dielectric_extent_type=HfssExtentInfo.HFSSExtentInfoType.CONFORMING,
-            dielectric_base_polygon=None,
             dielectric=(0.0, False),
             honor_user_dielectric=True,
             airbox_truncate_at_ground=True,
             airbox_horizontal=(0.15, False),
             airbox_vertical_positive=(0.5, False),
             airbox_vertical_negative=(0.15, False),
-            sync_airbox_vertical_extent=False,
             is_pml_visible=True,
             operating_frequency=0,
-            radiation_level=0,
-            user_xy_data_extent_for_vertical_expansion=True,
         )
 
     def create_adaptive_settings(self):

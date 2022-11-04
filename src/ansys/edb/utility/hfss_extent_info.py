@@ -4,6 +4,8 @@ from enum import Enum
 
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
+from ansys.edb.utility.value import Value
+
 
 class HfssExtentInfo:
     """HFSS Extent info class."""
@@ -40,23 +42,23 @@ class HfssExtentInfo:
 
     def __init__(
         self,
-        use_open_region,
-        extent_type,
-        open_region_type,
-        base_polygon,
-        dielectric_extent_type,
-        dielectric_base_polygon,
-        dielectric,
-        honor_user_dielectric,
-        airbox_truncate_at_ground,
-        airbox_horizontal,
-        airbox_vertical_positive,
-        airbox_vertical_negative,
-        sync_airbox_vertical_extent,
-        is_pml_visible,
-        operating_frequency,
-        radiation_level,
-        user_xy_data_extent_for_vertical_expansion,
+        use_open_region=True,
+        extent_type=HFSSExtentInfoType.BOUNDING_BOX,
+        open_region_type=OpenRegionType.RADIATION,
+        base_polygon=None,
+        dielectric_extent_type=HFSSExtentInfoType.BOUNDING_BOX,
+        dielectric_base_polygon=None,
+        dielectric=(0.15, True),
+        honor_user_dielectric=False,
+        airbox_truncate_at_ground=False,
+        airbox_horizontal=(0.15, True),
+        airbox_vertical_positive=(0.15, True),
+        airbox_vertical_negative=(0.15, True),
+        sync_airbox_vertical_extent=False,
+        is_pml_visible=False,
+        operating_frequency=Value(5),
+        radiation_level=Value(0),
+        user_xy_data_extent_for_vertical_expansion=True,
     ):
         """Create an HfssExtentInfo object.
 

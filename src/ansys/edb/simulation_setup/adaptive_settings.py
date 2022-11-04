@@ -37,12 +37,7 @@ class AdaptiveSettings(ObjBase):
 
     @property
     def adaptive_frequency_data_list(self):
-        """Get adaptive frequencies.
-
-        Returns
-        -------
-        list of AdaptiveFrequencyData
-        """
+        r""":obj:`list`\[:class:`AdaptiveFrequencyData`\]: Multiple adaptive frequencies."""
         msg = get_adaptive_settings_stub().GetAdaptiveFrequencyDataList(
             _QueryBuilder.get_adaptive_frequency_data_list(self)
         )
@@ -53,16 +48,6 @@ class AdaptiveSettings(ObjBase):
 
     @adaptive_frequency_data_list.setter
     def adaptive_frequency_data_list(self, new_adaptive_freq_list):
-        """Set adaptive frequencies.
-
-        Parameters
-        ----------
-        new_adaptive_freq_list : list of AdaptiveFrequencyData
-
-        Returns
-        -------
-        None
-        """
         get_adaptive_settings_stub().SetAdaptiveFrequencyDataList(
             _QueryBuilder.set_adaptive_frequency_data_list(self, new_adaptive_freq_list)
         )

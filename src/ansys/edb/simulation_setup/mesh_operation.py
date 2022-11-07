@@ -2,7 +2,21 @@
 
 
 class MeshOperation:
-    """Class representing mesh operations."""
+    """Class representing mesh operations.
+
+    Attributes
+    ----------
+    name : str, optional
+        Name of the operation.
+    net_layer_info : list[tuple(str, str, bool)], optional
+        Each entry has net name, layer name, and isSheet which is True if it is a sheet object.
+    enabled : bool, optional
+        True if mesh operation is enabled.
+    refine_inside : bool, optional
+        True if should refine inside.
+    mesh_region : str, optional
+        Mesh region.
+    """
 
     def __init__(
         self,
@@ -12,17 +26,7 @@ class MeshOperation:
         refine_inside=False,
         mesh_region="",
     ):
-        """
-        Instantiate a mesh op.
-
-        Parameters
-        ----------
-        name : str, optional
-        net_layer_info : list of str, str, bool, optional
-        enabled : bool, optional
-        refine_inside : bool, optional
-        mesh_region : str, optional
-        """
+        """__init__ for MeshOperation."""
         self.name = name
         self.net_layer_info = [] if net_layer_info is None else net_layer_info
         self.enabled = enabled

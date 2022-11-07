@@ -74,7 +74,7 @@ class HfssExtentInfo:
             Polygon to use if extent type is Polygon.
         dielectric_extent_type: HfssExtentInfo.HFSSExtentInfoType
             Dielectric extent type.
-        dielectric_base_polygon: Primitive
+        dielectric_base_polygon: :class:`Primitive <ansys.edb.primitive.Primitive>`
             Polygon to use if dielectric extent type is Polygon.
         dielectric: (float, bool)
             Dielectric extent size. First parameter is the value and second parameter \
@@ -96,9 +96,9 @@ class HfssExtentInfo:
             Whether airbox positive and negative vertical extent will be synchronized.
         is_pml_visible: bool
             Check to see if the PML boxes should be rendered or not.
-        operating_frequency: Value
+        operating_frequency: :class:`Value <ansys.edb.utility.Value>`
             PML Operating Frequency.
-        radiation_level: Value
+        radiation_level: :class:`Value <ansys.edb.utility.Value>`
             PML Radiation level to calculate the thickness of boundary.
         user_xy_data_extent_for_vertical_expansion: bool
             if true, retain the old behaviour for the vertical expansion of the airbox.

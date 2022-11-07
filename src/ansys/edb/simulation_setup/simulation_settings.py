@@ -4,6 +4,6 @@ from ansys.edb.simulation_setup.base_simulation_settings import BaseSimulationSe
 
 
 class SimulationSettings(BaseSimulationSettings):
-    """Base class representing simulation settings."""
+    """Simulation settings."""
 
     pass

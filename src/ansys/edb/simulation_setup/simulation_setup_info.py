@@ -39,11 +39,9 @@ class SimulationSetupInfo(ObjBase):
 
     @property
     def simulation_settings(self):
-        """Get simulation settings.
+        """:obj:`HFSSSimulationSettings` : Simulation settings.
 
-        Returns
-        -------
-        SimulationSettings
+        Read-Only.
         """
         # TODO: Add support for sim types other than HFSS
         return simulation_setup.HFSSSimulationSettings(
@@ -54,12 +52,7 @@ class SimulationSetupInfo(ObjBase):
 
     @property
     def sweep_data_list(self):
-        """Get sweep data list.
-
-        Returns
-        -------
-        list of SweepData
-        """
+        r""":obj:`list`\[:class:`SweepData`\] : Sweep data list."""
         sweep_data_list_msg = get_simulation_setup_info_stub().GetSweepDataList(
             _QueryBuilder.get_sweep_data_list(self)
         )
@@ -70,16 +63,6 @@ class SimulationSetupInfo(ObjBase):
 
     @sweep_data_list.setter
     def sweep_data_list(self, sweep_data_list):
-        """Set sweep data list.
-
-        Parameters
-        ----------
-        sweep_data_list : list of SweepData
-
-        Returns
-        -------
-        None
-        """
         get_simulation_setup_info_stub().SetSweepDataList(
             _QueryBuilder.set_sweep_data_list(self, sweep_data_list)
         )

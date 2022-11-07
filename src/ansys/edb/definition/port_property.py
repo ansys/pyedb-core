@@ -60,11 +60,14 @@ class PortProperty(ObjBase):
         self.__stub.SetReferenceSizeAuto(messages.bool_property_message(self, auto))
 
     def get_reference_size(self):
-        """Get the X and Y reference size for the port property.
+        r"""Get the X and Y reference size for the port property.
 
         Returns
         -------
-        tuple [:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`]
+        tuple[
+            :class:`Value <ansys.edb.utility.Value>`,
+            :class:`Value <ansys.edb.utility.Value>`
+        ]
             X and Y reference sizes.
         """
         value_pair_message = self.__stub.GetReferenceSize(messages.edb_obj_message(self))

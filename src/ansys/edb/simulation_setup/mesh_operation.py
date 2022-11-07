@@ -4,7 +4,7 @@
 class MeshOperation:
     """Class representing mesh operations.
 
-    Parameters
+    Attributes
     ----------
     name : str, optional
         Name of the operation.

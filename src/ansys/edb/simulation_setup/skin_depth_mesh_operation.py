@@ -6,7 +6,7 @@ from ansys.edb.simulation_setup.mesh_operation import MeshOperation
 class SkinDepthMeshOperation(MeshOperation):
     """Class representing skin depth mesh op.
 
-    Parameters
+    Attributes
     ----------
     name : str, optional
         Name of the operation.

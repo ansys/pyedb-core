@@ -4,7 +4,7 @@
 class AdaptiveFrequencyData:
     """Class representing adaptive frequency.
 
-    Parameters
+    Attributes
     ----------
     adaptive_frequency : str, optional
         Frequency where adaptive calculations are performed.

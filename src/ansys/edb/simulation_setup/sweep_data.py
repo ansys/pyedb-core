@@ -6,7 +6,7 @@ from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
 class SweepData:
     r"""Class representing a sweep data setting.
 
-    Parameters
+    Attributes
     ----------
     name : str
       Name of this sweep.

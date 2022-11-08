@@ -1491,16 +1491,12 @@ class _PadstackInstanceQueryBuilder:
 
     @staticmethod
     def set_name_message(padstack_inst, name):
-        return padstack_instance_pb2.PadstackInstSetNameMessage(
-            target=padstack_inst.msg,
-            name=name,
-        )
+        return messages.edb_obj_name_message(padstack_inst, name)
 
     @staticmethod
     def position_and_rotation_message(x, y, rotation):
         return padstack_instance_pb2.PadstackInstPositionAndRotationMessage(
-            x=messages.value_message(x),
-            y=messages.value_message(y),
+            position=messages.point_message((x, y)),
             rotation=messages.value_message(rotation),
         )
 

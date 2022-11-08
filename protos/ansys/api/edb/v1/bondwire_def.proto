@@ -36,7 +36,7 @@ service ApdBondwireDefService {
 
   // Find Apd BondwireDef By Name.
   rpc FindByName (BondwireDefStrMessage) returns (EDBObjMessage) {}
-
+  
   // Get Apd BondwireDef parameters in cblock string format.
   rpc GetParameters (EDBObjMessage) returns (google.protobuf.StringValue) {}
 
@@ -47,13 +47,13 @@ service ApdBondwireDefService {
 service Jedec4BondwireDefService {
   // Creates an Jedec4BondwireDef.
   rpc Create (BondwireDefStrMessage) returns (EDBObjMessage) {}
-
+  
   // Find Jedec4BondwireDef By Name.
   rpc FindByName (BondwireDefStrMessage) returns (EDBObjMessage) {}
-
+  
   // Get Jedec4BondwireDef parameters in cblock string format.
   rpc GetParameters (EDBObjMessage) returns (ValueMessage) {}
-
+  
   // Set Jedec4BondwireDef parameters by passing cblock string.
   rpc SetParameters (Jedec4BondwireDefSetParametersMessage) returns (google.protobuf.Empty) {}
 }
@@ -66,13 +66,13 @@ message Jedec4BondwireDefSetParametersMessage{
 service Jedec5BondwireDefService {
   // Creates an Jedec5BondwireDef.
   rpc Create (BondwireDefStrMessage) returns (EDBObjMessage) {}
-
+  
   // Find Jedec5BondwireDef By Name.
   rpc FindByName (BondwireDefStrMessage) returns (EDBObjMessage) {}
-
+  
   // Get Jedec5BondwireDef parameters in cblock string format.
   rpc GetParameters (EDBObjMessage) returns (Jedec5BondwireDefParametersMessage) {}
-
+  
   // Set Jedec5BondwireDef parameters by passing cblock string.
   rpc SetParameters (Jedec5BondwireDefSetParametersMessage) returns (google.protobuf.Empty) {}
 }

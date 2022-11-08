@@ -23,7 +23,7 @@ message LayoutObjInstancesQueryMessage {
   EDBObjMessage layout_inst = 1;
   oneof spatial_filter {
     PointMessage point_filter = 2;
-	  PolygonDataMessage region_filter = 3;
+    PolygonDataMessage region_filter = 3;
   }
   repeated LayerRefMessage layer_filter = 4;
   repeated NetRefMessage net_filter = 5;
@@ -32,7 +32,7 @@ message LayoutObjInstancesQueryMessage {
 message LayoutObjInstancesQueryResultsMessage {
   oneof results {
     EDBObjCollectionMessage hits = 1;
-    FullPartialHitsMessage full_partial_hits = 2;
+	FullPartialHitsMessage full_partial_hits = 2;
   }
 }
 

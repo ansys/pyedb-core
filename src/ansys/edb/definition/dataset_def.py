@@ -26,7 +26,7 @@ class DatasetDef(ObjBase):
         database : :class:`Database <ansys.edb.database.Database>`
             Database that the dataset definition should belong to.
         name : :obj:`str`
-            Name of the component definition to be created.
+            Name of the dataset to be created.
 
 
         Returns
@@ -50,15 +50,13 @@ class DatasetDef(ObjBase):
         -------
         DatasetDef
             The dataset definition object found.
+            If a dataset isn't found then dataset's is_null will result True.
         """
         return DatasetDef(cls.__stub.FindByName(edb_obj_name_message(database, name)))
 
     @property
     def name(self):
-        """:obj:`str`: Name of the dataset definition.
-
-        Read-Only.
-        """
+        """:obj:`str`: Name of the dataset definition."""
         return self.__stub.GetName(edb_obj_message(self)).value
 
     @name.setter

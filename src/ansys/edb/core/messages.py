@@ -1080,11 +1080,12 @@ def value_pair_property_message(target, val1, val2):
 
 
 def points_message(points):
-    """Convert to PointMessage."""
+    """Convert to PointsMessage."""
     return PointsMessage(points=[point_message(point) for point in points])
 
 
 def points_property_message(target, points):
     """Convert to PointsPropertyMessage."""
-    return PointsPropertyMessage(target=edb_obj_message(target), value=points_message(points))
-
+    return PointsPropertyMessage(
+        target=edb_obj_message(target), points=[point_message(point) for point in points]
+    )

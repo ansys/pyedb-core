@@ -65,7 +65,10 @@ class HFSSSimulationSettings(SimulationSettings):
 
     @property
     def adaptive_settings(self):
-        """Get adaptive settings of this simulation setting."""
+        """:obj:`HFSSAdaptiveSettings`: Adaptive frequency settings of this simulation setting.
+
+        Read-Only.
+        """
         return simulation_setup.HFSSAdaptiveSettings(
             get_hfss_simulation_settings_stub().GetAdaptiveSettings(
                 _QueryBuilder.get_adaptive_settings(self)
@@ -74,16 +77,11 @@ class HFSSSimulationSettings(SimulationSettings):
 
     @property
     def mesh_operations(self):
-        """Get list of mesh operations?."""
+        r""":obj:`list`\[:class:`MeshOperation`\]: mesh operations of this simulation setting."""
         pass
 
     @mesh_operations.setter
     def mesh_operations(self, new_mesh_ops):
-        """Update mesh operations of this simulation setting.
 
-        Parameters
-        ----------
-        new_mesh_ops : list[MeshOperation]
-        """
         query = _QueryBuilder.set_mesh_operations(self, new_mesh_ops)
         get_hfss_simulation_settings_stub().SetMeshOperations(query)

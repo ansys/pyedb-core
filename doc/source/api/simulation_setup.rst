@@ -14,8 +14,15 @@ Classes
    HFSSAdaptiveSettings
    HFSSSimulationSettings
    MeshOperation
-   SimulationSetupType
    SimulationSetup
    SimulationSetupInfo
    SkinDepthMeshOperation
    SweepData
+
+Enums
+-----
+
+.. autosummary::
+   :toctree: _autosummary
+
+      SimulationSetupType

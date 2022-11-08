@@ -12,9 +12,9 @@ from ansys.edb.utility import conversions
 class Value:
     r"""Represents a number or an expression.
 
-    Parameters
+    Attributes
     ----------
-    val : str, int, float, complex, Value
+    val : :term:`ValueLike`
         The value assigned to the new Value
     _owner :    None, :class:`Database <ansys.edb.database.Database>`, :class:`Cell <ansys.edb.layout.Cell>`,
                 :class:`Layout <ansys.edb.layout.Layout>`, :class:`ComponentDef <ansys.edb.definition.ComponentDef>`

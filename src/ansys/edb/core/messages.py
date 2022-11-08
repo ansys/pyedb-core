@@ -1091,6 +1091,6 @@ def points_property_message(target, points):
     )
 
 
-def set_polygon_data_property_message(obj, polygon):
+def polygon_data_property_message(obj, polygon):
     """Convert to PolygonDataPropertyMessage."""
     return PolygonDataPropertyMessage(target=obj.msg, value=polygon_data_message(polygon))

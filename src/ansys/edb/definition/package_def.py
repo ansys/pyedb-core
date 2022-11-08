@@ -11,7 +11,7 @@ from ansys.edb.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,
     int_property_message,
-    set_polygon_data_property_message,
+    polygon_data_property_message,
     set_product_property_message,
     string_property_message,
     value_message,
@@ -69,8 +69,10 @@ class PackageDef(ObjBase):
 
         Parameters
         ----------
-        db
-        name
+        db :class:`Database <ansys.edb.database.Database>` or PadstackDef
+            Database in which we save the Package Definition.
+        name : str
+            Name of the Package Definition.
 
         Returns
         -------
@@ -119,7 +121,7 @@ class PackageDef(ObjBase):
 
     @exterior_boundary.setter
     def exterior_boundary(self, boundary):
-        self.__stub.SetExteriorBoundary(set_polygon_data_property_message(self, boundary))
+        self.__stub.SetExteriorBoundary(polygon_data_property_message(self, boundary))
 
     @property
     def height(self):

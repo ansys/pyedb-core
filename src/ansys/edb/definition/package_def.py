@@ -21,7 +21,7 @@ from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 
 
-class _DielectricMaterialModelQueryBuilder:
+class _PackageDefQueryBuilder:
     @staticmethod
     def heat_sink_message(thickness, spacing, base_height, height, orientation):
         return pb.HeatSinkMessage(
@@ -36,13 +36,13 @@ class _DielectricMaterialModelQueryBuilder:
     def set_heat_sink_message(target, thickness, spacing, base_height, height, orientation):
         return pb.SetHeatSinkMessage(
             target=edb_obj_message(target),
-            value=_DielectricMaterialModelQueryBuilder.heat_sink_message(
+            value=_PackageDefQueryBuilder.heat_sink_message(
                 thickness, spacing, base_height, height, orientation
             ),
         )
 
 
-class HeatSinkOrientation(Enum):
+class HeatSinkFinOrientation(Enum):
     """Enum representing bondwire types.
 
     - X_ORIENTED
@@ -114,7 +114,7 @@ class PackageDef(ObjBase):
     @property
     @parser.to_polygon_data
     def exterior_boundary(self):
-        """:class:`PolygonData <ansys.edb.geometry.PolygonData>`: Exterior doundary for package definition."""
+        """:class:`PolygonData <ansys.edb.geometry.PolygonData>`: Exterior boundary for package definition."""
         return self.__stub.GetExteriorBoundary(edb_obj_message(self))
 
     @exterior_boundary.setter
@@ -150,7 +150,7 @@ class PackageDef(ObjBase):
 
     @property
     def thermal_conductivity(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Relative permitivity at optical frequency."""
+        """:class:`Value <ansys.edb.utility.Value>`: Thermal conductivity of the package."""
         return Value(self.__stub.GetTherm_Cond(edb_obj_message(self)))
 
     @thermal_conductivity.setter
@@ -180,13 +180,13 @@ class PackageDef(ObjBase):
 
         Returns
         -------
-        fin_thickness : ValueLike
+        fin_thickness : Value
             Heat sink's fin thinkness.
-        fin_spacing : ValueLike
+        fin_spacing : Value
             Heat sink's fin spacing.
-        fin_base_height : ValueLike
+        fin_base_height : Value
             Heat sink's fin base height.
-        fin_height : ValueLike
+        fin_height : Value
             Heat sink's fin height.
         fin_orientation : :class:`HeatSinkFinOrientation`
             Heat sink's fin orientation.
@@ -219,7 +219,7 @@ class PackageDef(ObjBase):
             Heat sink's fin orientation.
         """
         self.__stub.SetHeatSink(
-            _DielectricMaterialModelQueryBuilder.set_heat_sink_message(
+            _PackageDefQueryBuilder.set_heat_sink_message(
                 self, fin_thickness, fin_spacing, fin_base_height, fin_height, fin_orientation
             )
         )

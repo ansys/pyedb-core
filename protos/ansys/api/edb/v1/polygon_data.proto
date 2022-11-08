@@ -9,11 +9,11 @@ import "point_data.proto";
 
 enum IntersectionType
 {
-    NO_INTERSECTION = 0;
-	THIS_INSIDE_OTHER = 1;
-	OTHER_INSIDE_THIS = 2;
-	COMMON_INTERSECTION = 3;
-	UNDEFINED_INTERSECTION = 4;
+  NO_INTERSECTION = 0;
+  THIS_INSIDE_OTHER = 1;
+  OTHER_INSIDE_THIS = 2;
+  COMMON_INTERSECTION = 3;
+  UNDEFINED_INTERSECTION = 4;
 };
 
 // Polygon Data service definition
@@ -73,15 +73,15 @@ message PolygonDataPairWithToleranceMessage {
 message PolygonDataTransformMessage {
   message PointValueMessage {
     PointMessage point = 1;
-	  float value = 2;
+    float value = 2;
   }
 
   PolygonDataMessage polygon = 1;
-  oneof op {
-    PointMessage move = 2;
-	  PointValueMessage rotate = 3;
-  	PointValueMessage scale = 4;
-	  float mirror_x = 5;
+    oneof op {
+      PointMessage move = 2;
+      PointValueMessage rotate = 3;
+    PointValueMessage scale = 4;
+    float mirror_x = 5;
   }
 }
 
@@ -106,7 +106,7 @@ message PolygonDataWithPointsMessage {
   PolygonDataMessage target = 1;
   oneof coord {
     PointMessage point = 2;
-	  PolygonDataMessage polygon = 3;
+    PolygonDataMessage polygon = 3;
   }
 }
 

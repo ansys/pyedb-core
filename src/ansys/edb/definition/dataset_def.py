@@ -69,7 +69,7 @@ class DatasetDef(ObjBase):
 
         Returns
         -------
-        list[:class:`PointData <ansys.edb.geometry.point_data.PointData>`]
+        list[:class:`PointData <ansys.edb.geometry.PointData>`]
         """
         msg = self.__stub.GetData(edb_obj_message(self))
         return msg.points
@@ -79,6 +79,6 @@ class DatasetDef(ObjBase):
 
         Parameters
         ----------
-        points : list[:class:`PointData <ansys.edb.geometry.point_data.PointData>`]
+        points : list[:class:`PointData <ansys.edb.geometry.PointData>`]
         """
         self.__stub.SetData(points_property_message(self, points))

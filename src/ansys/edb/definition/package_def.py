@@ -207,13 +207,13 @@ class PackageDef(ObjBase):
 
         Parameters
         ----------
-        fin_thickness : ValueLike
+        fin_thickness : Value
             Heat sink's fin thinkness.
-        fin_spacing : ValueLike
+        fin_spacing : Value
             Heat sink's fin spacing.
-        fin_base_height : ValueLike
+        fin_base_height : Value
             Heat sink's fin base height.
-        fin_height : ValueLike
+        fin_height : Value
             Heat sink's fin height.
         fin_orientation : :class:`HeatSinkFinOrientation`
             Heat sink's fin orientation.

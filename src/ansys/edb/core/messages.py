@@ -259,9 +259,9 @@ def polygon_data_remove_arc_message(pd, max_chord_error, max_arc_angle, max_poin
     )
 
 
-def polygon_data_does_intersect_message(pd, center, radius):
+def polygon_data_with_circle_message(pd, center, radius):
     """Convert to PolygonDataDoesIntersectMessage."""
-    return PolygonDataDoesIntersectMessage(
+    return PolygonDataWithCircleMessage(
         polygon=polygon_data_message(pd), circle=circle_message(center, radius)
     )
 
@@ -1089,3 +1089,8 @@ def points_property_message(target, points):
     return PointsPropertyMessage(
         target=edb_obj_message(target), points=[point_message(point) for point in points]
     )
+
+
+def set_polygon_data_property_message(obj, polygon):
+    """Convert to PolygonDataPropertyMessage."""
+    return PolygonDataPropertyMessage(target=obj.msg, value=polygon_data_message(polygon))

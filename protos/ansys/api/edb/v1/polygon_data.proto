@@ -6,15 +6,14 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 import "point_data.proto";
-import "arc_data.proto";
 
 enum IntersectionType
 {
-    NO_INTERSECTION = 0;
-	THIS_INSIDE_OTHER = 1;
-	OTHER_INSIDE_THIS = 2;
-	COMMON_INTERSECTION = 3;
-	UNDEFINED_INTERSECTION = 4;
+  NO_INTERSECTION = 0;
+  THIS_INSIDE_OTHER = 1;
+  OTHER_INSIDE_THIS = 2;
+  COMMON_INTERSECTION = 3;
+  UNDEFINED_INTERSECTION = 4;
 };
 
 // Polygon Data service definition
@@ -33,7 +32,7 @@ service PolygonDataService {
   rpc Defeature (PolygonDataWithToleranceMessage) returns (PolygonDataMessage) {}
   rpc GetBoundingCircle (PolygonDataMessage) returns (CircleMessage) {}
   rpc IsInside (PolygonDataWithPointMessage) returns (google.protobuf.BoolValue) {}
-  rpc DoesIntersect (PolygonDataDoesIntersectMessage) returns (google.protobuf.BoolValue) {}
+  rpc CircleIntersectsPolygon (PolygonDataWithCircleMessage) returns (google.protobuf.BoolValue) {}
   rpc GetIntersectionType (PolygonDataPairWithToleranceMessage) returns (IntersectionTypeMessage) {}
   rpc GetClosestPoints (PolygonDataWithPointsMessage) returns (PointsMessage) {}
   rpc GetUnion (PolygonDataListMessage) returns (PolygonDataListMessage) {}
@@ -74,15 +73,15 @@ message PolygonDataPairWithToleranceMessage {
 message PolygonDataTransformMessage {
   message PointValueMessage {
     PointMessage point = 1;
-	float value = 2;
+    float value = 2;
   }
-  
+
   PolygonDataMessage polygon = 1;
-  oneof op {
-    PointMessage move = 2;
-	PointValueMessage rotate = 3;
-	PointValueMessage scale = 4;
-	float mirror_x = 5;
+    oneof op {
+      PointMessage move = 2;
+      PointValueMessage rotate = 3;
+    PointValueMessage scale = 4;
+    float mirror_x = 5;
   }
 }
 
@@ -93,7 +92,7 @@ message PolygonDataRemoveArcMessage {
   int64 max_points = 4;
 }
 
-message PolygonDataDoesIntersectMessage {
+message PolygonDataWithCircleMessage {
   PolygonDataMessage polygon = 1;
   CircleMessage circle = 2;
 }
@@ -107,7 +106,7 @@ message PolygonDataWithPointsMessage {
   PolygonDataMessage target = 1;
   oneof coord {
     PointMessage point = 2;
-	PolygonDataMessage polygon = 3;
+    PolygonDataMessage polygon = 3;
   }
 }
 
@@ -126,4 +125,9 @@ message PolygonDataGetAlphaShapeMessage {
 
 message IntersectionTypeMessage {
   IntersectionType intersection_type = 1;
+}
+
+message PolygonDataPropertyMessage {
+  EDBObjMessage target = 1;
+  PolygonDataMessage value = 2;
 }

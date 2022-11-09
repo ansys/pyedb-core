@@ -451,8 +451,8 @@ class PolygonData:
         -------
         bool
         """
-        return self.__stub.DoesIntersect(
-            messages.polygon_data_does_intersect_message(self, center, radius)
+        return self.__stub.CircleIntersectsPolygon(
+            messages.polygon_data_with_circle_message(self, center, radius)
         ).value
 
     @parser.to_point_data

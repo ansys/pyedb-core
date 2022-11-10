@@ -5,7 +5,6 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "database.proto";
 import "layer.proto";
 
 enum LayerCollectionMode {
@@ -108,7 +107,7 @@ message AddLayerMessage {
   EDBObjMessage layer = 2;
   oneof op_params {
     AddLayerAboveBelowMessage above_below_msg = 3;
-	  bool add_top = 4;
+	bool add_top = 4;
   }
 }
 

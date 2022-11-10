@@ -38,6 +38,6 @@ message LayerMapUniqueDirectionMessage {
 
 message LayerMapTwoIntPropertiesMessage {
   EDBObjMessage target = 1;
-  uint64 from_id = 2;
-  uint64 to_id = 3;
+  EDBInternalIdMessage from_id = 2;
+  EDBInternalIdMessage to_id = 3;
 }

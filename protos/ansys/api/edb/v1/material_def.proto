@@ -32,13 +32,13 @@ service MaterialDefService {
 
   // Find Material Definition by name
   rpc FindByName(EDBObjNameMessage) returns (EDBObjMessage) {}
-
+  
   // Delete Material Definition
   rpc Delete(EDBObjMessage) returns (google.protobuf.Empty) {}
-
+  
   // Get Property
   rpc GetProperty(MaterialDefGetPropertyMessage) returns (ValueMessage) {}
-
+  
   // Get All Properties
   rpc GetAllProperties(EDBObjMessage) returns (MaterialDefGetAllPropertiesMessage) {}
 
@@ -47,26 +47,26 @@ service MaterialDefService {
 
   // Get Name of Material Def
   rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
-
+  
   // Get Dielectric Material Model
   rpc GetDielectricMaterialModel(EDBObjMessage) returns (EDBObjMessage) {}
-
-  // Set Dielectric Material Model
+  
+  // Set Dielectric Material Model 
   rpc SetDielectricMaterialModel(PointerPropertyMessage) returns (google.protobuf.Empty) {}
 
   // Get Dimensions
   rpc GetDimensions(MaterialDefPropertyMessage) returns (MaterialDefGetDimensionMessage) {}
-
+  
   // Set Thermal Modifier
   rpc SetThermalModifier(SetMaterialDefPropertyMessage) returns (google.protobuf.Empty) {}
 
   // Set Anisotropic Thermal Modifier
   rpc SetAnisotropicThermalModifier(SetMaterialDefPropertyComponentMessage) returns (google.protobuf.Empty) {}
-
+  
   // Get Thermal Modifier
   rpc GetThermalModifier(MaterialDefPropertyMessage) returns (EDBObjMessage) {}
-
-  // Get Anisotropic Thermal Modifier
+  
+  // Get Anisotropic Thermal Modifier 
   rpc GetAnisotropicThermalModifier(MaterialDefPropertyComponentMessage) returns (EDBObjMessage) {}
 }
 

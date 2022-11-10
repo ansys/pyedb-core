@@ -79,6 +79,7 @@ class LayoutObjInstance(ObjBase):
         """
         return create_conn_obj(self.__stub.GetLayoutObj(self.msg))
 
+    @parser.to_polygon_data
     def get_bbox(self, local=False):
         """Get the bounding box of the layout object instance.
 
@@ -92,4 +93,4 @@ class LayoutObjInstance(ObjBase):
         -------
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
         """
-        return parser.to_polygon_data(self.__stub.GetBBox(bool_property_message(self, local)))
+        return self.__stub.GetBBox(bool_property_message(self, local))

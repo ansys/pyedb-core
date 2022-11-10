@@ -12,6 +12,7 @@ Classes
    ArcData
    PolygonData
    PointData
+   Point3DData
    
 Enums
 -----

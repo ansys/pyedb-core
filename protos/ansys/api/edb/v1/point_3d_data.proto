@@ -1,0 +1,13 @@
+// Proto file representing the EDB Point 3D Data class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+message Point3DMessage {
+  ValueMessage x = 1;
+  ValueMessage y = 2;
+  ValueMessage z = 3;
+}

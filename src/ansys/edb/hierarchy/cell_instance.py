@@ -3,7 +3,7 @@
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
 from ansys.edb import layout
-from ansys.edb.core import messages
+from ansys.edb.core import messages, parser
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.hierarchy import hierarchy_obj
 from ansys.edb.session import StubAccessor, StubType
@@ -123,11 +123,11 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         """
         t3d_message = self.__stub.Get3DTransform(self.msg)
         return Transform3D(
-            [t3d_message.anchor.x, t3d_message.anchor.y, t3d_message.anchor.z],
-            [t3d_message.rotAxisFrom.x, t3d_message.rotAxisFrom.y, t3d_message.rotAxisFrom.z],
-            [t3d_message.rotAxisTo.x, t3d_message.rotAxisTo.y, t3d_message.rotAxisTo.z],
+            parser.to_point3d_data(t3d_message.anchor),
+            parser.to_point3d_data(t3d_message.rotAxisFrom),
+            parser.to_point3d_data(t3d_message.rotAxisTo),
             t3d_message.rotAngle,
-            [t3d_message.offset.x, t3d_message.offset.y, t3d_message.offset.z],
+            parser.to_point3d_data(t3d_message.offset),
         )
 
     @transform3d.setter

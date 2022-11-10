@@ -11,6 +11,7 @@ Classes
    
    Cell
    Layout
+   McadModel
    VoltageRegulator
 
 Enums

@@ -1,5 +1,6 @@
 """Transform 3D Class."""
 
+from ansys.edb.utility import conversions
 from ansys.edb.utility.value import Value
 
 
@@ -8,22 +9,18 @@ class Transform3D:
 
     Parameters
     ----------
-    anchor : list[str, int, float, complex, Value]
-        Triple of Values for x, y, z
-    rot_axis_from : list[str, int, float, complex, Value]
-        Triple of Values for x, y, z
-    rot_axis_to : list[str, int, float, complex, Value]
-        Triple of Values for x, y, z
+    anchor : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+    rot_axis_from : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+    rot_axis_to : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
     rot_angle : str, int, float, complex, Value
         Rotation angle, specified CCW in radians, from rot_axis_from towards rot_axis_to
-    offset : list[str, int, float, complex, Value]
-        Triple of Values for x, y, z
+    offset : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
     """
 
     def __init__(self, anchor, rot_axis_from, rot_axis_to, rot_angle, offset):
         """Construct a Transform3D."""
-        self.anchor = [Value(val) for val in anchor]
-        self.rot_axis_from = [Value(val) for val in rot_axis_from]
-        self.rot_axis_to = [Value(val) for val in rot_axis_to]
+        self.anchor = conversions.to_point3d(anchor)
+        self.rot_axis_from = conversions.to_point3d(rot_axis_from)
+        self.rot_axis_to = conversions.to_point3d(rot_axis_to)
         self.rot_angle = Value(rot_angle)
-        self.offset = [Value(val) for val in offset]
+        self.offset = conversions.to_point3d(offset)

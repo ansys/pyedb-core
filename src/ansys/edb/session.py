@@ -62,6 +62,7 @@ from ansys.api.edb.v1.layout_obj_pb2_grpc import LayoutObjServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
 from ansys.api.edb.v1.multipole_debye_model_pb2_grpc import MultipoleDebyeModelServiceStub
+from ansys.api.edb.v1.mcad_model_pb2_grpc import McadModelServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
 from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
 from ansys.api.edb.v1.package_def_pb2_grpc import PackageDefServiceStub
@@ -358,6 +359,7 @@ class StubType(Enum):
     debye_model = DebyeModelServiceStub
     multipole_debye_model = MultipoleDebyeModelServiceStub
     djordecvic_sarkar_model = DjordjecvicSarkarModelServiceStub
+    mcad_model = McadModelServiceStub
 
 
 # Dictionary for storing local server error code exception messages

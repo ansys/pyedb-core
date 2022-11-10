@@ -12,6 +12,7 @@ import "layout_obj.proto";
 
 // Connectable Service definition
 service ConnectableService {
+
   // Gets the layout object type.
   rpc GetObjType(EDBObjMessage) returns (LayoutObjTypeMessage) {}
 

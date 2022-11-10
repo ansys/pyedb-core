@@ -33,8 +33,8 @@ class _QueryBuilder:
         """
         return pb.LayerMapTwoIntPropertiesMessage(
             target=target,
-            from_id=from_id,
-            to_id=to_id,
+            from_id=messages.edb_internal_id_message(from_id),
+            to_id=messages.edb_internal_id_message(to_id),
         )
 
 

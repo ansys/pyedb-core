@@ -7,7 +7,7 @@ import "edb_messages.proto";
 service PadstackDefService {
   // create a PadstackDef
   rpc Create(PadstackDefStringMessage) returns (EDBObjMessage) {}
-
+  
   // delete a PadstackDef
   rpc Delete(EDBObjMessage) returns (google.protobuf.Empty) {}
 

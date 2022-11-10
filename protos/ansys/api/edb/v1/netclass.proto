@@ -8,7 +8,7 @@ import "edb_messages.proto";
 
 service NetClassService {
   rpc Create(NetClassCreationMessage) returns (EDBObjMessage) {}
-
+  
   rpc FindByName(EDBObjNameMessage) returns (EDBObjMessage) {}
 
   rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
@@ -20,9 +20,9 @@ service NetClassService {
   rpc SetDescription(StringPropertyMessage) returns (google.protobuf.Empty) {}
 
   rpc IsPowerGround(EDBObjMessage) returns (google.protobuf.BoolValue) {}
-
+  
   rpc GetNets(EDBObjMessage) returns (EDBObjCollectionMessage) {}
-
+  
   rpc AddNet(NetClassEditMessage) returns (google.protobuf.Empty) {}
 
   rpc RemoveNet(NetClassEditMessage) returns (google.protobuf.Empty) {}

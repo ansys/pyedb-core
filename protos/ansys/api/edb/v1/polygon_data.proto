@@ -6,7 +6,6 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 import "point_data.proto";
-import "arc_data.proto";
 
 enum IntersectionType
 {
@@ -33,7 +32,7 @@ service PolygonDataService {
   rpc Defeature (PolygonDataWithToleranceMessage) returns (PolygonDataMessage) {}
   rpc GetBoundingCircle (PolygonDataMessage) returns (CircleMessage) {}
   rpc IsInside (PolygonDataWithPointMessage) returns (google.protobuf.BoolValue) {}
-  rpc DoesIntersect (PolygonDataDoesIntersectMessage) returns (google.protobuf.BoolValue) {}
+  rpc CircleIntersectsPolygon (PolygonDataWithCircleMessage) returns (google.protobuf.BoolValue) {}
   rpc GetIntersectionType (PolygonDataPairWithToleranceMessage) returns (IntersectionTypeMessage) {}
   rpc GetClosestPoints (PolygonDataWithPointsMessage) returns (PointsMessage) {}
   rpc GetUnion (PolygonDataListMessage) returns (PolygonDataListMessage) {}
@@ -93,7 +92,7 @@ message PolygonDataRemoveArcMessage {
   int64 max_points = 4;
 }
 
-message PolygonDataDoesIntersectMessage {
+message PolygonDataWithCircleMessage {
   PolygonDataMessage polygon = 1;
   CircleMessage circle = 2;
 }

@@ -179,15 +179,15 @@ message PadstackDefDataSetPolygonalPadParametersMessage{
 
 message PadstackDefDataPadParametersMessage{
   oneof pad_message {
-	  PadstackDefDataGetPadParametersParametersMessage generic = 1;
-	  PadstackDefDataGetPolygonalPadParametersParametersMessage polygon = 2;
+    PadstackDefDataGetPadParametersParametersMessage generic = 1;
+    PadstackDefDataGetPolygonalPadParametersParametersMessage polygon = 2;
   }
 }
 
 message PadstackDefDataPadParametersSetMessage{
   oneof pad_message {
-	  PadstackDefDataSetPadParametersMessage generic = 1;
-	  PadstackDefDataSetPolygonalPadParametersMessage polygon = 2;
+    PadstackDefDataSetPadParametersMessage generic = 1;
+    PadstackDefDataSetPolygonalPadParametersMessage polygon = 2;
   }
 }
 

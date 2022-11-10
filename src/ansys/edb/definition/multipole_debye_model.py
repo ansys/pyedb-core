@@ -6,7 +6,6 @@ import ansys.api.edb.v1.multipole_debye_model_pb2 as pb
 from ansys.edb import session
 from ansys.edb.core import messages
 from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
-from ansys.edb.utility import Value
 
 
 class _MultipoleDebyeModelQueryBuilder:
@@ -53,18 +52,18 @@ class MultipoleDebyeModel(DielectricMaterialModel):
 
         Returns
         -------
-        frequencies : :class:`Value <ansys.edb.utility.Value>`
+        frequencies : list[float]
             List of frequencies.
-        permitivities : :class:`Value <ansys.edb.utility.Value>`
+        permitivities : list[float]
             List of relative permitivites at each frequency.
-        loss_tangents : :class:`Value <ansys.edb.utility.Value>`
+        loss_tangents : list[float]
             List of loss tangents at each frequency.
         """
         parameters_msg = self.__stub.GetParameters(messages.edb_obj_message(self))
         return (
-            [Value(i) for i in parameters_msg.frequencies],
-            [Value(i) for i in parameters_msg.relative_permitivities],
-            [Value(i) for i in parameters_msg.loss_tangents],
+            [float(i) for i in parameters_msg.frequencies],
+            [float(i) for i in parameters_msg.relative_permitivities],
+            [float(i) for i in parameters_msg.loss_tangents],
         )
 
     def set_parameters(self, frequencies, permitivities, loss_tangents):
@@ -72,11 +71,11 @@ class MultipoleDebyeModel(DielectricMaterialModel):
 
         Parameters
         ----------
-        frequencies : :class:`Value <ansys.edb.utility.Value>`
+        frequencies : list[float]
             List of frequencies.
-        permitivities : :class:`Value <ansys.edb.utility.Value>`
+        permitivities : list[float]
             List of relative permitivites at each frequency.
-        loss_tangents : :class:`Value <ansys.edb.utility.Value>`
+        loss_tangents : list[float]
             List of loss tangents at each frequency.
         """
         _MultipoleDebyeModelQueryBuilder.set_multipole_debye_modelget_params(

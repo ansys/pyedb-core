@@ -29,10 +29,5 @@ class DielectricMaterialModel(ObjBase):
 
     @property
     def type(self):
-        """Type of dielectric material model.
-
-        Returns
-        -------
-        DielectricMaterialModelType
-        """
+        """DielectricMaterialModelType: Type of dielectric material model."""
         return DielectricMaterialModelType(self.__stub.GetType(self.msg))

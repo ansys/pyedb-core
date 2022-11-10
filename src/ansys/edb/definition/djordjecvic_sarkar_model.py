@@ -5,7 +5,6 @@ from ansys.api.edb.v1 import djordjecvic_sarkar_model_pb2_grpc
 from ansys.edb import session
 from ansys.edb.core import messages
 from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
-from ansys.edb.utility import Value
 
 
 class DjordjecvicSarkarModel(DielectricMaterialModel):
@@ -27,12 +26,7 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @property
     def use_dc_relative_conductivity(self):
-        """Whether the DC relative permitivity nominal value is used.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Whether the DC relative permitivity nominal value is used."""
         return self.__stub.UseDCRelativePermitivity(self.msg).value
 
     @use_dc_relative_conductivity.setter
@@ -41,13 +35,8 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @property
     def frequency(self):
-        """Get the frequency.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
-        return Value(self.__stub.GetFrequency(self.msg))
+        """:obj:`float`: Get the frequency."""
+        return self.__stub.GetFrequency(self.msg).value
 
     @frequency.setter
     def frequency(self, frequency):
@@ -55,13 +44,8 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @property
     def relative_permitivity_at_frequency(self):
-        """Get the relative permitivity frequency.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
-        return Value(self.__stub.GetRelativePermitivityAtFrequency(self.msg))
+        """:obj:`float`: Get the relative permitivity frequency."""
+        return self.__stub.GetRelativePermitivityAtFrequency(self.msg).value
 
     @relative_permitivity_at_frequency.setter
     def relative_permitivity_at_frequency(self, frequency):
@@ -69,13 +53,8 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @property
     def loss_tangent_at_frequency(self):
-        """Get the loss tangent at frequency.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
-        return Value(self.__stub.GetLossTangentAtFrequency(self.msg))
+        """:obj:`float`: Get the loss tangent at frequency."""
+        return self.__stub.GetLossTangentAtFrequency(self.msg).value
 
     @loss_tangent_at_frequency.setter
     def loss_tangent_at_frequency(self, frequency):
@@ -83,13 +62,8 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @property
     def dc_relative_permitivity(self):
-        """Get the dc relative permitivity.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
-        return Value(self.__stub.GetDCRelativePermitivity(self.msg))
+        """:obj:`float`: Get the dc relative permitivity."""
+        return self.__stub.GetDCRelativePermitivity(self.msg).value
 
     @dc_relative_permitivity.setter
     def dc_relative_permitivity(self, permitivity):
@@ -97,13 +71,8 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @property
     def dc_conductivity(self):
-        """Get the dc conductivity.
-
-        Returns
-        -------
-        :class:`Value <ansys.edb.utility.Value>`
-        """
-        return Value(self.__stub.GetDCConductivity(self.msg))
+        """:obj:`float`: Get the dc conductivity."""
+        return self.__stub.GetDCConductivity(self.msg).value
 
     @dc_conductivity.setter
     def dc_conductivity(self, conductivity):

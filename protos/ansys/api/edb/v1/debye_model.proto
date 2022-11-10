@@ -34,8 +34,8 @@ service DebyeModelService {
 }
 
 message FrequencyRangeMessage {
-  ValueMessage low = 1;
-  ValueMessage high = 2;
+  google.protobuf.FloatValue low = 1;
+  google.protobuf.FloatValue high = 2;
 }
 
 message SetFrequencyRangeMessage {

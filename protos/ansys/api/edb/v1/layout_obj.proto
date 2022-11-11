@@ -5,7 +5,6 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "refs.proto";
 
 // Enum for layout object types
 enum LayoutObjType {
@@ -30,9 +29,6 @@ enum LayoutObjType {
 
 // LayoutObj service definition
 service LayoutObjService {
-  // Gets the layout object type
-  rpc GetObjType (EDBObjMessage) returns (EDBObjMessage) {}
-
   // Gets the layout of the layout object
   rpc GetLayout (LayoutObjTargetMessage) returns (EDBObjMessage) {}
   

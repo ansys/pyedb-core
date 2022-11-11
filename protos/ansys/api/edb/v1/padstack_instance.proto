@@ -3,7 +3,7 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-//import "point_data.proto";
+import "point_data.proto";
 
 // BACK_DRILL_TYPE type enum
 enum BackDrillType {
@@ -23,7 +23,7 @@ service PadstackInstanceService {
   rpc GetName(EDBObjMessage) returns (google.protobuf.StringValue) {}
 
   // Set name of PadstackInst
-  rpc SetName(PadstackInstSetNameMessage) returns (google.protobuf.Empty) {}
+  rpc SetName(EDBObjNameMessage) returns (google.protobuf.Empty) {}
   
   // Get position and rotation from PadstackInst
   rpc GetPositionAndRotation(EDBObjMessage) returns (PadstackInstPositionAndRotationMessage) {}
@@ -48,40 +48,40 @@ service PadstackInstanceService {
   
   // Set Layer Map from PadstackInst
   rpc SetLayerMap(PointerPropertyMessage) returns (google.protobuf.Empty) {}
-
+  
   // Get Hole Overrides from PadstackInst
   rpc GetHoleOverrides(EDBObjMessage) returns (PadstackInstHoleOverridesMessage) {}
-
+  
   // Set Hole Overrides of PadstackInst
   rpc SetHoleOverrides(PadstackInstSetHoleOverridesMessage) returns (google.protobuf.Empty) {}
-
+  
   // Check if PadstackInst is layout pin
   rpc GetIsLayoutPin(EDBObjMessage) returns (google.protobuf.BoolValue) {}
-
+  
   // Set PadstackInst to be layout pin
   rpc SetIsLayoutPin(PadstackInstSetIsLayoutPinMessage) returns (google.protobuf.Empty) {}
-
+  
   // Get Back Drill Type from PadstackInst
   rpc GetBackDrillType(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillTypeMessage) {}
-
+  
   // Get back drill by layer from PadstackInst
   rpc GetBackDrillByLayer(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillByLayerMessage) {}
-
+  
   // Get back drill by depth from PadstackInst
   rpc GetBackDrillByDepth(PadstackInstGetBackDrillMessage) returns (PadstackInstBackDrillByDepthMessage) {}
-
+  
   // Set back drill of PadstackInst by layer by Layer
   rpc SetBackDrillByLayer(PadstackInstSetBackDrillByLayerMessage) returns (google.protobuf.Empty) {}
-
+  
   // Set back drill of PadstackInst by layer by Depth
   rpc SetBackDrillByDepth(PadstackInstSetBackDrillByDepthMessage) returns (google.protobuf.Empty) {}
-
+  
   // Get Terminal of PadstackInst
   rpc GetPadstackInstanceTerminal(EDBObjMessage) returns (EDBObjMessage) {}
-
+  
   // Check if PadstackInst is in pin group
   rpc IsInPinGroup(PadstackInstIsInPinGroupMessage) returns (google.protobuf.BoolValue) {}
-
+  
   // Get pin groups of PadstackInst
   rpc GetPinGroups(EDBObjMessage) returns (EDBObjCollectionMessage ) {}
 
@@ -99,15 +99,9 @@ message PadstackInstCreateMessage{
   EDBObjMessage layer_map = 9;
 }
 
-message PadstackInstSetNameMessage {
-  EDBObjMessage target = 1;
-  string name = 2;
-}
-
 message PadstackInstPositionAndRotationMessage {
-  ValueMessage x = 1;
-  ValueMessage y = 2;
-  ValueMessage rotation = 3;
+  PointMessage position = 1;
+  ValueMessage rotation = 2;
 }
 
 message PadstackInstSetPositionAndRotationMessage {

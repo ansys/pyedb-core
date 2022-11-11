@@ -36,16 +36,16 @@ service PrimitiveService {
 
   // Get Layer
   rpc GetLayer (EDBObjMessage) returns (EDBObjMessage) {}
-
+  
   // Set Layer
   rpc SetLayer (SetLayerMessage) returns (google.protobuf.Empty) {}
 
   // Get IsNegative
   rpc GetIsNegative (EDBObjMessage) returns (google.protobuf.BoolValue) {}
-
+  
   // Set IsNegative
   rpc SetIsNegative (SetIsNegativeMessage) returns (google.protobuf.Empty) {}
-
+  
   // Get isVoid
   rpc IsVoid (EDBObjMessage) returns (google.protobuf.BoolValue) {}
 

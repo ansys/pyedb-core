@@ -259,9 +259,9 @@ def polygon_data_remove_arc_message(pd, max_chord_error, max_arc_angle, max_poin
     )
 
 
-def polygon_data_does_intersect_message(pd, center, radius):
-    """Convert to PolygonDataDoesIntersectMessage."""
-    return PolygonDataDoesIntersectMessage(
+def polygon_data_with_circle_message(pd, center, radius):
+    """Convert to PolygonDataWithCircleMessage."""
+    return PolygonDataWithCircleMessage(
         polygon=polygon_data_message(pd), circle=circle_message(center, radius)
     )
 

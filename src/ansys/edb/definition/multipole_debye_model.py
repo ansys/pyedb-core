@@ -1,7 +1,7 @@
 """Dielectric Material Definition."""
-
 from ansys.api.edb.v1 import multipole_debye_model_pb2_grpc
 import ansys.api.edb.v1.multipole_debye_model_pb2 as pb
+from google.protobuf import empty_pb2
 
 from ansys.edb import session
 from ansys.edb.core import messages
@@ -10,10 +10,10 @@ from ansys.edb.definition.dielectric_material_model import DielectricMaterialMod
 
 class _MultipoleDebyeModelQueryBuilder:
     @staticmethod
-    def multipole_debye_modelget_params(frequencies, permitivities, loss_tangents):
-        frequencies_msg = [messages.value_message(i) for i in frequencies]
-        permitivities_msg = [messages.value_message(i) for i in permitivities]
-        loss_tangents_msg = [messages.value_message(i) for i in loss_tangents]
+    def multmultipole_debye_model_params(frequencies, permitivities, loss_tangents):
+        frequencies_msg = [messages.float_message(i) for i in frequencies]
+        permitivities_msg = [messages.float_message(i) for i in permitivities]
+        loss_tangents_msg = [messages.float_message(i) for i in loss_tangents]
         return pb.MultipoleDebyeModelGetParams(
             frequencies=frequencies_msg,
             relative_permitivities=permitivities_msg,
@@ -21,10 +21,10 @@ class _MultipoleDebyeModelQueryBuilder:
         )
 
     @staticmethod
-    def set_multipole_debye_modelget_params(target, frequencies, permitivities, loss_tangents):
+    def set_multipole_debye_model_params(target, frequencies, permitivities, loss_tangents):
         return pb.MultipoleDebyeModelSetParams(
             target=target.msg,
-            value=_MultipoleDebyeModelQueryBuilder.multipole_debye_modelget_params(
+            vectors=_MultipoleDebyeModelQueryBuilder.multmultipole_debye_model_params(
                 frequencies, permitivities, loss_tangents
             ),
         )
@@ -45,7 +45,7 @@ class MultipoleDebyeModel(DielectricMaterialModel):
         -------
         MultipoleDebyeModel
         """
-        return MultipoleDebyeModel(cls.__stub.Create())
+        return MultipoleDebyeModel(cls.__stub.Create(empty_pb2.Empty()))
 
     def get_parameters(self):
         """Get parameters used to define the model.
@@ -61,9 +61,9 @@ class MultipoleDebyeModel(DielectricMaterialModel):
         """
         parameters_msg = self.__stub.GetParameters(messages.edb_obj_message(self))
         return (
-            [float(i) for i in parameters_msg.frequencies],
-            [float(i) for i in parameters_msg.relative_permitivities],
-            [float(i) for i in parameters_msg.loss_tangents],
+            [i.value for i in parameters_msg.frequencies],
+            [i.value for i in parameters_msg.relative_permitivities],
+            [i.value for i in parameters_msg.loss_tangents],
         )
 
     def set_parameters(self, frequencies, permitivities, loss_tangents):
@@ -78,6 +78,8 @@ class MultipoleDebyeModel(DielectricMaterialModel):
         loss_tangents : list[float]
             List of loss tangents at each frequency.
         """
-        _MultipoleDebyeModelQueryBuilder.set_multipole_debye_modelget_params(
-            self, frequencies, permitivities, loss_tangents
+        self.__stub.SetParameters(
+            _MultipoleDebyeModelQueryBuilder.set_multipole_debye_model_params(
+                self, frequencies, permitivities, loss_tangents
+            )
         )

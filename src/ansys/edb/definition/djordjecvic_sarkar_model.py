@@ -1,6 +1,6 @@
 """Dielectric Material Definition."""
-
 from ansys.api.edb.v1 import djordjecvic_sarkar_model_pb2_grpc
+from google.protobuf import empty_pb2
 
 from ansys.edb import session
 from ansys.edb.core import messages
@@ -22,7 +22,7 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
         -------
         DjordjecvicSarkarModel
         """
-        return DjordjecvicSarkarModel(cls.__stub.Create())
+        return DjordjecvicSarkarModel(cls.__stub.Create(empty_pb2.Empty()))
 
     @property
     def use_dc_relative_conductivity(self):
@@ -40,7 +40,7 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @frequency.setter
     def frequency(self, frequency):
-        self.__stub.SetFrequency(messages.value_message(frequency))
+        self.__stub.SetFrequency(messages.double_property_message(self, frequency))
 
     @property
     def relative_permitivity_at_frequency(self):
@@ -49,7 +49,9 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @relative_permitivity_at_frequency.setter
     def relative_permitivity_at_frequency(self, frequency):
-        self.__stub.SetRelativePermitivityAtFrequency(messages.value_message(frequency))
+        self.__stub.SetRelativePermitivityAtFrequency(
+            messages.double_property_message(self, frequency)
+        )
 
     @property
     def loss_tangent_at_frequency(self):
@@ -58,7 +60,7 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @loss_tangent_at_frequency.setter
     def loss_tangent_at_frequency(self, frequency):
-        self.__stub.SetLossTangentAtFrequency(messages.value_message(frequency))
+        self.__stub.SetLossTangentAtFrequency(messages.double_property_message(self, frequency))
 
     @property
     def dc_relative_permitivity(self):
@@ -67,7 +69,7 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @dc_relative_permitivity.setter
     def dc_relative_permitivity(self, permitivity):
-        self.__stub.SetDCRelativePermitivity(messages.value_message(permitivity))
+        self.__stub.SetDCRelativePermitivity(messages.double_property_message(self, permitivity))
 
     @property
     def dc_conductivity(self):
@@ -76,4 +78,4 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @dc_conductivity.setter
     def dc_conductivity(self, conductivity):
-        self.__stub.SetDCConductivity(messages.value_message(conductivity))
+        self.__stub.SetDCConductivity(messages.double_property_message(self, conductivity))

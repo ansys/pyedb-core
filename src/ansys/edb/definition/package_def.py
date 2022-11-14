@@ -69,7 +69,7 @@ class PackageDef(ObjBase):
 
         Parameters
         ----------
-        db :class:`Database <ansys.edb.database.Database>` or PadstackDef
+        db :class:`Database <ansys.edb.database.Database>`
             Database in which we save the Package Definition.
         name : str
             Name of the Package Definition.

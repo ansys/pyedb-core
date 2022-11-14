@@ -17,8 +17,9 @@ class HeatSink:
             Base elevation of the HeatSink
         fin_height : ValueLike
             HeatSink's height.
-        fin_orientation : ValueLike
-            HeatSink's orientation.
+        fin_orientation : HeatSinkFinOrientation
+            HeatSink's orientation if not set is set to X axis orientation.
+
     """
 
     def __init__(
@@ -29,21 +30,7 @@ class HeatSink:
         fin_height=0,
         fin_orientation=HeatSinkFinOrientation.X_ORIENTED,
     ):
-        """Construct a HeatSink object using given values.
-
-        Parameters
-        ----------
-        fin_thickness : ValueLike
-            HeatSink's thickness.
-        fin_spacing : ValueLike
-            HeatSink's spacing.
-        fin_base_height : ValueLike
-            Base elevation of the HeatSink
-        fin_height : ValueLike
-            HeatSink's height.
-        fin_orientation : ValueLike
-            HeatSink's orientation if not set is set to X axis orientation.
-        """
+        """Construct a HeatSink object using given values."""
         value_handle = lambda v: v if type(v) is Value else conversions.to_value(v)
         self.fin_thickness = value_handle(fin_thickness)
         self.fin_spacing = value_handle(fin_spacing)

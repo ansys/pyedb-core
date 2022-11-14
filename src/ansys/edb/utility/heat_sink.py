@@ -1,8 +1,7 @@
 """HeatSink."""
 
-from ansys.edb.definition.package_def import HeatSinkOrientation
-from ansys.edb.typing import ValueLike
-from ansys.edb.utility import conversions
+from ansys.edb.definition.package_def import HeatSinkFinOrientation
+from ansys.edb.utility import Value, conversions
 
 
 class HeatSink:
@@ -28,7 +27,7 @@ class HeatSink:
         fin_spacing=0,
         fin_base_height=0,
         fin_height=0,
-        fin_orientation=HeatSinkOrientation.X_ORIENTED,
+        fin_orientation=HeatSinkFinOrientation.X_ORIENTED,
     ):
         """Construct a HeatSink object using given values.
 
@@ -45,7 +44,7 @@ class HeatSink:
         fin_orientation : ValueLike
             HeatSink's orientation if not set is set to X axis orientation.
         """
-        value_handle = lambda v: v if type(v) is ValueLike else conversions.to_value(v)
+        value_handle = lambda v: v if type(v) is Value else conversions.to_value(v)
         self.fin_thickness = value_handle(fin_thickness)
         self.fin_spacing = value_handle(fin_spacing)
         self.fin_base_height = value_handle(fin_base_height)

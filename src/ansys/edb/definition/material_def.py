@@ -5,6 +5,7 @@ from enum import Enum
 import ansys.api.edb.v1.material_def_pb2 as pb
 
 from ansys.edb.core import ObjBase, messages
+from ansys.edb.definition import DielectricMaterialModel
 from ansys.edb.session import MaterialDefServiceStub, StubAccessor, StubType
 from ansys.edb.utility import Value
 
@@ -279,8 +280,6 @@ class MaterialDef(ObjBase):
     def dielectric_material_model(self):
         """:class:`DielectricMaterialModel <ansys.edb.definition.dielectric_material_model.DielectricMaterialModel>`: \
         Dielectric material model of the material definition."""
-        from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
-
         return DielectricMaterialModel(
             self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
         )

@@ -42,7 +42,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def frequency_range(self):
-        """:obj:`tuple` of :obj:`float`, :obj:`float`: Frequency range of the debye model."""
+        """:obj:`tuple` of :obj:`float`, :obj:`float`: Frequency range (low, high)."""
         range_msg = self.__stub.GetFrequencyRange(messages.edb_obj_message(self))
         return range_msg.low.value, range_msg.high.value
 
@@ -56,7 +56,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def relative_permitivity_at_high_low_frequency(self):
-        """:obj:`tuple` of :obj:`float`, :obj:`float`: Relative permitivity at low/high frequency."""
+        """:obj:`tuple` of :obj:`float`, :obj:`float`: Relative permitivity frequency range (low, high)."""
         range_msg = self.__stub.GetRelativePermitivityAtHighLowFrequency(
             messages.edb_obj_message(self)
         )
@@ -72,7 +72,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def loss_tangent_at_high_low_frequency(self):
-        """:obj:`tuple` of :obj:`float`, :obj:`float`: Loss tangent at low/high frequency."""
+        """:obj:`tuple` of :obj:`float`, :obj:`float`: Loss tangent frequency range (low, high)."""
         range_msg = self.__stub.GetLossTangentAtHighLowFrequency(messages.edb_obj_message(self))
         return range_msg.low.value, range_msg.high.value
 

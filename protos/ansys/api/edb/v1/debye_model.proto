@@ -20,13 +20,13 @@ service DebyeModelService {
   rpc IsRelativePermitivityEnabledAtOpticalFrequency(EDBObjMessage) returns (google.protobuf.BoolValue) {}
   rpc SetRelativePermitivityEnabledAtOpticalFrequency(BoolPropertyMessage) returns (google.protobuf.Empty) {}
   
-  rpc GetRelativePermitivityAtOpticalFrequency(EDBObjMessage) returns (google.protobuf.FloatValue) {}
+  rpc GetRelativePermitivityAtOpticalFrequency(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
   rpc SetRelativePermitivityAtOpticalFrequency(DoublePropertyMessage) returns (google.protobuf.Empty) {}
   
   rpc UseDCConductivity(EDBObjMessage) returns (google.protobuf.BoolValue) {}
   rpc SetUseDCConductivity(BoolPropertyMessage) returns (google.protobuf.Empty) {}
 
-  rpc GetDCConductivity(EDBObjMessage) returns (google.protobuf.FloatValue) {}
+  rpc GetDCConductivity(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
   rpc SetDCConductivity(DoublePropertyMessage) returns (google.protobuf.Empty) {}
 
   rpc GetLossTangentAtHighLowFrequency(EDBObjMessage) returns (FrequencyRangeMessage) {}
@@ -34,8 +34,8 @@ service DebyeModelService {
 }
 
 message FrequencyRangeMessage {
-  google.protobuf.FloatValue low = 1;
-  google.protobuf.FloatValue high = 2;
+  google.protobuf.DoubleValue low = 1;
+  google.protobuf.DoubleValue high = 2;
 }
 
 message SetFrequencyRangeMessage {

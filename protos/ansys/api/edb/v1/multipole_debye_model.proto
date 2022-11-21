@@ -16,9 +16,9 @@ service MultipoleDebyeModelService {
 }
 
 message MultipoleDebyeModelGetParams {
-  repeated google.protobuf.FloatValue frequencies = 1;
-  repeated google.protobuf.FloatValue relative_permitivities = 2;
-  repeated google.protobuf.FloatValue loss_tangents = 3;
+  repeated google.protobuf.DoubleValue frequencies = 1;
+  repeated google.protobuf.DoubleValue relative_permitivities = 2;
+  repeated google.protobuf.DoubleValue loss_tangents = 3;
 }
 
 message MultipoleDebyeModelSetParams {

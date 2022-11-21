@@ -10,15 +10,15 @@ class HeatSink:
     Attributes
     ----------
         fin_thickness : ValueLike
-            HeatSink's thickness.
+            HeatSink's fin thickness.
         fin_spacing : ValueLike
-            HeatSink's spacing.
+            HeatSink's fin spacing.
         fin_base_height : ValueLike
             Base elevation of the HeatSink
         fin_height : ValueLike
-            HeatSink's height.
+            HeatSink's fin height.
         fin_orientation : HeatSinkFinOrientation
-            HeatSink's orientation if not set is set to X axis orientation.
+            HeatSink's fin orientation if not set is set to X axis orientation.
 
     """
 

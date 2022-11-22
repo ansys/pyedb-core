@@ -12,7 +12,7 @@ class _DebyeModelQueryBuilder:
     @staticmethod
     def frequency_range_message(low, high):
         return pb.FrequencyRangeMessage(
-            low=messages.float_message(low), high=messages.float_message(high)
+            low=messages.double_message(low), high=messages.double_message(high)
         )
 
     @staticmethod

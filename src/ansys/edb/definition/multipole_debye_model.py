@@ -11,9 +11,9 @@ from ansys.edb.definition.dielectric_material_model import DielectricMaterialMod
 class _MultipoleDebyeModelQueryBuilder:
     @staticmethod
     def multmultipole_debye_model_params(frequencies, permitivities, loss_tangents):
-        frequencies_msg = [messages.float_message(i) for i in frequencies]
-        permitivities_msg = [messages.float_message(i) for i in permitivities]
-        loss_tangents_msg = [messages.float_message(i) for i in loss_tangents]
+        frequencies_msg = [messages.double_message(i) for i in frequencies]
+        permitivities_msg = [messages.double_message(i) for i in permitivities]
+        loss_tangents_msg = [messages.double_message(i) for i in loss_tangents]
         return pb.MultipoleDebyeModelGetParams(
             frequencies=frequencies_msg,
             relative_permitivities=permitivities_msg,

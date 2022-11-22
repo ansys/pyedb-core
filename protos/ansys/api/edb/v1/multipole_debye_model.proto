@@ -1,0 +1,27 @@
+// Proto file representing the DielectricMaterialModel class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+service MultipoleDebyeModelService {
+  rpc Create(google.protobuf.Empty) returns (EDBObjMessage) {}
+  
+  rpc GetParameters(EDBObjMessage) returns (MultipoleDebyeModelGetParams) {}
+  rpc SetParameters(MultipoleDebyeModelSetParams) returns (google.protobuf.Empty) {}
+}
+
+message MultipoleDebyeModelGetParams {
+  repeated google.protobuf.DoubleValue frequencies = 1;
+  repeated google.protobuf.DoubleValue relative_permitivities = 2;
+  repeated google.protobuf.DoubleValue loss_tangents = 3;
+}
+
+message MultipoleDebyeModelSetParams {
+  EDBObjMessage target = 1;
+  MultipoleDebyeModelGetParams vectors = 2;
+}

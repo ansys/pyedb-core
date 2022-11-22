@@ -33,8 +33,11 @@ from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServic
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
 from ansys.api.edb.v1.database_pb2_grpc import DatabaseServiceStub
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
+from ansys.api.edb.v1.debye_model_pb2_grpc import DebyeModelServiceStub
 from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
+from ansys.api.edb.v1.dielectric_material_model_pb2_grpc import DielectricMaterialModelServiceStub
 from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
+from ansys.api.edb.v1.djordjecvic_sarkar_model_pb2_grpc import DjordjecvicSarkarModelServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
@@ -58,6 +61,7 @@ from ansys.api.edb.v1.layout_obj_instance_pb2_grpc import LayoutObjInstanceServi
 from ansys.api.edb.v1.layout_obj_pb2_grpc import LayoutObjServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
+from ansys.api.edb.v1.multipole_debye_model_pb2_grpc import MultipoleDebyeModelServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
 from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
 from ansys.api.edb.v1.package_def_pb2_grpc import PackageDefServiceStub
@@ -350,6 +354,10 @@ class StubType(Enum):
     port_property = PortPropertyServiceStub
     dataset_def = DatasetDefServiceStub
     package_def = PackageDefServiceStub
+    dielectric_material_model = DielectricMaterialModelServiceStub
+    debye_model = DebyeModelServiceStub
+    multipole_debye_model = MultipoleDebyeModelServiceStub
+    djordecvic_sarkar_model = DjordjecvicSarkarModelServiceStub
 
 
 # Dictionary for storing local server error code exception messages

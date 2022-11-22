@@ -1,0 +1,44 @@
+// Proto file representing the DielectricMaterialModel class
+
+syntax = "proto3";
+
+// Package
+package ansys.api.edb.v1;
+
+// Imports
+import "edb_messages.proto";
+
+service DebyeModelService {
+  rpc Create(google.protobuf.Empty) returns (EDBObjMessage) {}
+  
+  rpc GetFrequencyRange(EDBObjMessage) returns (FrequencyRangeMessage) {}
+  rpc SetFrequencyRange(SetFrequencyRangeMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetRelativePermitivityAtHighLowFrequency(EDBObjMessage) returns (FrequencyRangeMessage) {}
+  rpc SetRelativePermitivityAtHighLowFrequency(SetFrequencyRangeMessage) returns (google.protobuf.Empty) {}
+  
+  rpc IsRelativePermitivityEnabledAtOpticalFrequency(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetRelativePermitivityEnabledAtOpticalFrequency(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc GetRelativePermitivityAtOpticalFrequency(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetRelativePermitivityAtOpticalFrequency(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc UseDCConductivity(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseDCConductivity(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCConductivity(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetDCConductivity(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetLossTangentAtHighLowFrequency(EDBObjMessage) returns (FrequencyRangeMessage) {}
+  rpc SetLossTangentAtHighLowFrequency(SetFrequencyRangeMessage) returns (google.protobuf.Empty) {}
+}
+
+message FrequencyRangeMessage {
+  google.protobuf.DoubleValue low = 1;
+  google.protobuf.DoubleValue high = 2;
+}
+
+message SetFrequencyRangeMessage {
+  EDBObjMessage target = 1;
+  FrequencyRangeMessage range = 2;
+}

@@ -1,7 +1,27 @@
 """HeatSink."""
 
-from ansys.edb.definition.package_def import HeatSinkFinOrientation
+from enum import Enum
+
+from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
+import ansys.api.edb.v1.package_def_pb2 as pb
+
 from ansys.edb.utility import Value, conversions
+
+
+class HeatSinkFinOrientation(Enum):
+    """Enum representing bondwire types.
+
+    - X_ORIENTED
+       X axis oriented.
+    - Y_ORIENTED
+       Y axis oriented.
+    - OTHER_ORIENTED
+       Other oriented.
+    """
+
+    X_ORIENTED = pb.X_ORIENTED
+    Y_ORIENTED = pb.Y_ORIENTED
+    OTHER_ORIENTED = pb.OTHER_ORIENTED
 
 
 class HeatSink:
@@ -31,7 +51,11 @@ class HeatSink:
         fin_orientation=HeatSinkFinOrientation.X_ORIENTED,
     ):
         """Construct a HeatSink object using given values."""
-        value_handle = lambda v: v if type(v) is Value else conversions.to_value(v)
+        value_handle = (
+            lambda v: Value(v)
+            if (type(v) is Value or type(v) is ValueMessage)
+            else conversions.to_value(v)
+        )
         self.fin_thickness = value_handle(fin_thickness)
         self.fin_spacing = value_handle(fin_spacing)
         self.fin_base_height = value_handle(fin_base_height)

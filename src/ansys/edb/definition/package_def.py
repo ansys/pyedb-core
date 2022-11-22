@@ -1,7 +1,5 @@
 """Package Def Definition."""
 
-from enum import Enum
-
 from ansys.api.edb.v1 import package_def_pb2_grpc
 import ansys.api.edb.v1.package_def_pb2 as pb
 
@@ -10,6 +8,7 @@ from ansys.edb.core.messages import (
     edb_obj_message,
     get_product_property_ids_message,
     get_product_property_message,
+    int64_message,
     int_property_message,
     polygon_data_property_message,
     set_product_property_message,
@@ -19,6 +18,7 @@ from ansys.edb.core.messages import (
 )
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
+from ansys.edb.utility.heat_sink import HeatSink
 
 
 class _PackageDefQueryBuilder:
@@ -40,22 +40,6 @@ class _PackageDefQueryBuilder:
                 thickness, spacing, base_height, height, orientation
             ),
         )
-
-
-class HeatSinkFinOrientation(Enum):
-    """Enum representing bondwire types.
-
-    - X_ORIENTED
-       X axis oriented.
-    - Y_ORIENTED
-       Y axis oriented.
-    - OTHER_ORIENTED
-       Other oriented.
-    """
-
-    X_ORIENTED = pb.X_ORIENTED
-    Y_ORIENTED = pb.Y_ORIENTED
-    OTHER_ORIENTED = pb.OTHER_ORIENTED
 
 
 class PackageDef(ObjBase):
@@ -177,52 +161,28 @@ class PackageDef(ObjBase):
     def theta_jc(self, theta):
         self.__stub.SetTheta_JC(value_property_message(self, value_message(theta)))
 
-    def get_heat_sink(self):
-        """Get the assigned heat sink model for the package definition.
-
-        Returns
-        -------
-        fin_thickness : Value
-            Heat sink's fin thinkness.
-        fin_spacing : Value
-            Heat sink's fin spacing.
-        fin_base_height : Value
-            Heat sink's fin base height.
-        fin_height : Value
-            Heat sink's fin height.
-        fin_orientation : :class:`HeatSinkFinOrientation`
-            Heat sink's fin orientation.
-        """
+    @property
+    def heat_sink(self):
+        """:class:`HeatSink <ansys.edb.utility.HeatSink>`: Assigned heat sink model for the package definition."""
         heat_sink_paramaters = self.__stub.GetHeatSink(edb_obj_message(self))
-        return (
-            Value(heat_sink_paramaters.thickness),
-            Value(heat_sink_paramaters.spacing),
-            Value(heat_sink_paramaters.base_height),
-            Value(heat_sink_paramaters.height),
-            HeatSinkFinOrientation(heat_sink_paramaters.orientation),
+        return HeatSink(
+            heat_sink_paramaters.thickness,
+            heat_sink_paramaters.spacing,
+            heat_sink_paramaters.base_height,
+            heat_sink_paramaters.height,
+            heat_sink_paramaters.orientation,
         )
 
-    def set_heat_sink(
-        self, fin_thickness, fin_spacing, fin_base_height, fin_height, fin_orientation
-    ):
-        """Set the assigned heat sink model for the package definition.
-
-        Parameters
-        ----------
-        fin_thickness : Value
-            Heat sink's fin thinkness.
-        fin_spacing : Value
-            Heat sink's fin spacing.
-        fin_base_height : Value
-            Heat sink's fin base height.
-        fin_height : Value
-            Heat sink's fin height.
-        fin_orientation : :class:`HeatSinkFinOrientation`
-            Heat sink's fin orientation.
-        """
+    @heat_sink.setter
+    def heat_sink(self, heat_sink_value):
         self.__stub.SetHeatSink(
             _PackageDefQueryBuilder.set_heat_sink_message(
-                self, fin_thickness, fin_spacing, fin_base_height, fin_height, fin_orientation
+                self,
+                Value(heat_sink_value.fin_thickness),
+                Value(heat_sink_value.fin_spacing),
+                Value(heat_sink_value.fin_base_height),
+                Value(heat_sink_value.fin_height),
+                heat_sink_value.fin_orientation,
             )
         )
 
@@ -242,7 +202,7 @@ class PackageDef(ObjBase):
             Property value returned.
         """
         return self.__stub.GetProductProperty(
-            get_product_property_message(self, prod_id, attr_it)
+            get_product_property_message(self, int64_message(prod_id), attr_it)
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
@@ -258,7 +218,7 @@ class PackageDef(ObjBase):
             Product property's new value
         """
         self.__stub.SetProductProperty(
-            set_product_property_message(self, prod_id, attr_it, prop_value)
+            set_product_property_message(self, int64_message(prod_id), attr_it, prop_value)
         )
 
     def get_product_property_ids(self, prod_id):
@@ -275,6 +235,6 @@ class PackageDef(ObjBase):
             The attribute ids associated with this product property.
         """
         attr_ids = self.__stub.GetProductPropertyIds(
-            get_product_property_ids_message(self, prod_id)
+            get_product_property_ids_message(self, int64_message(prod_id))
         ).ids
         return [attr_id for attr_id in attr_ids]

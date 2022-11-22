@@ -11,3 +11,8 @@ message Point3DMessage {
   ValueMessage y = 2;
   ValueMessage z = 3;
 }
+
+message Point3DPropertyMessage {
+  EDBObjMessage target = 1;
+  Point3DMessage value = 2;
+}

@@ -1,7 +1,7 @@
 """Mcad Model."""
 
+from ansys.edb import hierarchy
 from ansys.edb.core import ObjBase, messages, parser
-from ansys.edb.hierarchy import CellInstance
 from ansys.edb.session import McadModelServiceStub, StubAccessor, StubType
 
 
@@ -12,17 +12,9 @@ class McadModel(ObjBase):
 
     @classmethod
     def create_stride(cls, connectable=None, layout=None, filename=None):
-        """Create a stride model.
+        """Create a Stride model.
 
-        Parameters
-        ----------
-        connectable : :term:`Connectable`, optional
-        layout : :class:`Layout <ansys.edb.layout.Layout>`, optional
-        filename : str, optional
-
-        Returns
-        -------
-        McadModel
+        call directly on :term:`Connectable` or :func:`Layout<ansys.edb.layout.Layout.create_stride>`.
         """
         return cls(
             cls.__stub.CreateStride(
@@ -34,16 +26,7 @@ class McadModel(ObjBase):
     def create_hfss(cls, connectable=None, layout=None, filename=None, design=None):
         """Create a HFSS model.
 
-        Parameters
-        ----------
-        connectable : :term:`Connectable`, optional
-        layout : :class:`Layout <ansys.edb.layout.Layout>`, optional
-        filename : str, optional
-        design : str, optional
-
-        Returns
-        -------
-        McadModel
+        call directly on :term:`Connectable` or :func:`Layout<ansys.edb.layout.Layout.create_hfss>`.
         """
         return cls(
             cls.__stub.CreateHfss(
@@ -53,17 +36,9 @@ class McadModel(ObjBase):
 
     @classmethod
     def create_3d_comp(cls, connectable=None, layout=None, filename=None):
-        """Create a 3dComp model.
+        """Create a 3D Component model.
 
-        Parameters
-        ----------
-        connectable : :term:`Connectable`, optional
-        layout : :class:`Layout <ansys.edb.layout.Layout>`, optional
-        filename : str, optional
-
-        Returns
-        -------
-        McadModel
+        call directly on :term:`Connectable` or :func:`Layout<ansys.edb.layout.Layout.create_3d_comp>`.
         """
         return cls(
             cls.__stub.Create3dComp(
@@ -75,71 +50,56 @@ class McadModel(ObjBase):
     def is_mcad(cls, connectable):
         """Get if a connectable object is Mcad model.
 
-        Parameters
-        ----------
-        connectable : :term:`Connectable`
-
-        Returns
-        -------
-        bool
+        call directly on :term:`Connectable`.
         """
         return cls.__stub.IsMcad(messages.edb_obj_message(connectable))
 
     @classmethod
     def is_mcad_stride(cls, connectable):
-        """Get if a connectable object is Stride Mcad model.
+        """Get if a connectable object is Stride model.
 
-        Parameters
-        ----------
-        connectable : :term:`Connectable`
-
-        Returns
-        -------
-        bool
+        call directly on :term:`Connectable`.
         """
         return cls.__stub.IsMcadStride(messages.edb_obj_message(connectable))
 
     @classmethod
     def is_mcad_hfss(cls, connectable):
-        """Get if a connectable object is HFSS Mcad model.
+        """Get if a connectable object is HFSS model.
 
-        Parameters
-        ----------
-        connectable : :term:`Connectable`
-
-        Returns
-        -------
-        bool
+        call directly on :term:`Connectable`.
         """
         return cls.__stub.IsMcadHfss(messages.edb_obj_message(connectable))
 
     @classmethod
     def is_mcad_3d_comp(cls, connectable):
-        """Get if a connectable object is 3dComp Mcad model.
+        """Get if a connectable object is 3D Component model.
 
-        Parameters
-        ----------
-        connectable : :term:`Connectable`
-
-        Returns
-        -------
-        bool
+        call directly on :term:`Connectable`.
         """
         return cls.__stub.IsMcad3dComp(messages.edb_obj_message(connectable))
 
     @property
     def cell_instance(self):
-        """:class:`CellInstance <ansys.edb.hierarchy.CellInstance>` Cell instance of a Mcad model."""
-        return CellInstance(self.__stub.GetCellInst(messages.edb_obj_message(self)))
+        """:class:`CellInstance <ansys.edb.hierarchy.CellInstance>` Cell instance of a Mcad model.
+
+        Read-Only.
+        """
+        return hierarchy.CellInstance(self.__stub.GetCellInst(messages.edb_obj_message(self)))
 
     @property
     def model_name(self):
-        """:obj:`str` Model name of a Mcad model."""
+        """:obj:`str` Model name of a Mcad model.
+
+        Read-Only.
+        """
         return self.__stub.GetModelName(messages.edb_obj_message(self)).value
 
     @property
     def design_name(self):
-        """:obj:`str` Design name of a Mcad model."""
+        """:obj:`str` Design name of a Mcad model.
+
+        Read-Only.
+        """
         return self.__stub.GetDesignName(messages.edb_obj_message(self)).value
 
     @property
@@ -149,7 +109,7 @@ class McadModel(ObjBase):
 
     @origin.setter
     def origin(self, pnt):
-        self.__stub.SetOrigin(messages.mcad_model_origin_message(self, pnt))
+        self.__stub.SetOrigin(messages.point_3d_property_message(self, pnt))
 
     @property
     def rotation(self):
@@ -161,6 +121,10 @@ class McadModel(ObjBase):
             msg.angle.value,
         )
 
+    @rotation.setter
+    def rotation(self, value):
+        self.set_rotation(*value)
+
     def set_rotation(self, axis_from, axis_to, angle):
         """Set rotation from/to axis and angle in radians.
 
@@ -170,7 +134,9 @@ class McadModel(ObjBase):
         axis_to : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
         angle : float
         """
-        self.__stub.SetRotation(messages.mcad_model_set_rotation_message(axis_from, axis_to, angle))
+        self.__stub.SetRotation(
+            messages.mcad_model_set_rotation_message(self, axis_from, axis_to, angle)
+        )
 
     @property
     def scale(self):
@@ -228,7 +194,7 @@ class McadModel(ObjBase):
         self.__stub.SetVisible(messages.mcad_model_bool_message(self, index, visible))
 
     def modeled(self, index):
-        """Get if a Mcad model part at index is modeled.
+        """Get if a Mcad model part at index is included in analysis.
 
         Parameters
         ----------
@@ -284,7 +250,3 @@ class McadModel(ObjBase):
         str
         """
         return self.__stub.GetPartName(messages.int_property_message(self, index)).value
-
-    def apply_changes(self):
-        """Apply changes to Mcad model."""
-        self.__stub.ApplyChanges(messages.edb_obj_message(self))

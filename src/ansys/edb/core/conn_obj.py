@@ -1,9 +1,9 @@
 """ConnObj."""
 from ansys.api.edb.v1 import connectable_pb2
 
-from ansys.edb.core import layout_obj
-import ansys.edb.core.messages as messages
+from ansys.edb.core import layout_obj, messages
 from ansys.edb.edb_defs import LayoutObjType
+from ansys.edb.layout import mcad_model as mm
 from ansys.edb.session import ConnectableServiceStub, StubAccessor, StubType
 
 
@@ -130,3 +130,62 @@ class ConnObj(layout_obj.LayoutObj):
     def net(self, net):
         """Set the net of the connectable object."""
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))
+
+    def create_stride(self):
+        """Create a stride model.
+
+        Returns
+        -------
+        :class:`McadModel <ansys.edb.layout.McadModel>`
+        """
+        return mm.McadModel.create_stride(connectable=self)
+
+    def create_hfss(self):
+        """Create a HFSS model.
+
+        Returns
+        -------
+        :class:`McadModel <ansys.edb.layout.McadModel>`
+        """
+        return mm.McadModel.create_hfss(connectable=self)
+
+    def create_3d_comp(self):
+        """Create a 3dComp model.
+
+        Returns
+        -------
+        :class:`McadModel <ansys.edb.layout.McadModel>`
+        """
+        return mm.McadModel.create_3d_comp(connectable=self)
+
+    @property
+    def is_mcad(self):
+        """:obj:`bool`: True if this is a Mcad Model.
+
+        Read-Only.
+        """
+        return mm.McadModel.is_mcad(self)
+
+    @property
+    def is_mcad_stride(self):
+        """:obj:`bool`: True if this is a Stride Mcad Model.
+
+        Read-Only.
+        """
+        return mm.McadModel.is_mcad_stride(self)
+
+    @property
+    def is_mcad_hfss(self):
+        """:obj:`bool`: True if this is a HFSS Mcad Model.
+
+        Read-Only.
+        """
+        return mm.McadModel.is_mcad_hfss(self)
+
+    @property
+    def is_mcad_3d_comp(self):
+        """:obj:`bool`: True if this is a 3D Comp Mcad Model.
+
+        Read-Only.
+        """
+        return mm.McadModel.is_mcad_3d_comp(self)

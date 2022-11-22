@@ -18,7 +18,7 @@ service McadModelService {
   rpc IsMcad3dComp (EDBObjMessage) returns (google.protobuf.BoolValue) {}
 
   rpc GetOrigin (EDBObjMessage) returns (Point3DMessage) {}
-  rpc SetOrigin (McadModelOriginMessage) returns (google.protobuf.Empty) {}
+  rpc SetOrigin (Point3DPropertyMessage) returns (google.protobuf.Empty) {}
 
   rpc GetRotation (EDBObjMessage) returns (McadModelRotationMessage) {}
   rpc SetRotation (McadModelSetRotationMessage) returns (google.protobuf.Empty) {}
@@ -41,8 +41,6 @@ service McadModelService {
   rpc GetPartIndex (StringPropertyMessage) returns (google.protobuf.Int64Value) {}
   rpc GetModelName (EDBObjMessage) returns (google.protobuf.StringValue) {}
   rpc GetDesignName (EDBObjMessage) returns (google.protobuf.StringValue) {}
-
-  rpc ApplyChanges (EDBObjMessage) returns (google.protobuf.Empty) {}
 }
 
 message McadModelCreationMessage {
@@ -74,11 +72,6 @@ message McadModelHfssCreationMessage {
     WithConnObj conn_obj = 1;
     WithLayout layout = 2;
   }
-}
-
-message McadModelOriginMessage {
-  EDBObjMessage model = 1;
-  Point3DMessage origin = 2;
 }
 
 message McadModelRotationMessage {

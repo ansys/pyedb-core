@@ -53,7 +53,7 @@ def to_point3d(val):
 
     Parameters
     ----------
-    val
+    val : geometry.Point3DData, tuple[:term:`ValueLike`,:term:`ValueLike`,:term:`ValueLike`]
 
     Returns
     -------

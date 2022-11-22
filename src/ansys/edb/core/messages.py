@@ -448,6 +448,11 @@ def point3d_message(point3d):
         return Point3DMessage(x=value_message(x), y=value_message(y), z=value_message(z))
 
 
+def point_3d_property_message(target, value):
+    """Convert to Point3DPropertyMessage."""
+    return Point3DPropertyMessage(target=edb_obj_message(target), origin=point3d_message(value))
+
+
 def transform3d_message(transform3d):
     """Convert to Transform3DMessage."""
     if transform3d is None:
@@ -1081,11 +1086,6 @@ def mcad_model_hfss_creation_message(connectable, layout, filename, design):
         return McadModelCreationMessage(layout=param)
     else:
         raise TypeError("either a connectable object or layout+filename+design must be provided.")
-
-
-def mcad_model_origin_message(mcad_model, origin):
-    """Convert to McadModelOriginMessage."""
-    return McadModelOriginMessage(model=edb_obj_message(mcad_model), origin=point3d_message(origin))
 
 
 def mcad_model_rotation_message(axis_from, axis_to, angle):

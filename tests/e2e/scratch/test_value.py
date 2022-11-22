@@ -10,7 +10,6 @@ from ansys.edb.utility import Value
 
 
 def test_value():
-    # session = launch_session("C:\\Rxxx\\build_output\\64debug", 50051)
     session = launch_session(settings.configs.get("RPC_SERVER_ROOT"), 50051)
 
     db = Database.create(settings.configs.get("RPC_SERVER_TEMP"))

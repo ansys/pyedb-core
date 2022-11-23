@@ -1,16 +1,15 @@
 """Package Def Definition."""
 
 from ansys.api.edb.v1 import package_def_pb2_grpc
-import ansys.api.edb.v1.package_def_pb2 as pb
 
 from ansys.edb.core import ObjBase, parser
 from ansys.edb.core.messages import (
     edb_obj_message,
     get_product_property_ids_message,
     get_product_property_message,
-    int64_message,
     int_property_message,
     polygon_data_property_message,
+    set_heat_sink_message,
     set_product_property_message,
     string_property_message,
     value_message,
@@ -19,27 +18,6 @@ from ansys.edb.core.messages import (
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 from ansys.edb.utility.heat_sink import HeatSink
-
-
-class _PackageDefQueryBuilder:
-    @staticmethod
-    def heat_sink_message(thickness, spacing, base_height, height, orientation):
-        return pb.HeatSinkMessage(
-            thickness=value_message(thickness),
-            spacing=value_message(spacing),
-            base_height=value_message(base_height),
-            height=value_message(height),
-            orientation=orientation.value,
-        )
-
-    @staticmethod
-    def set_heat_sink_message(target, thickness, spacing, base_height, height, orientation):
-        return pb.SetHeatSinkMessage(
-            target=edb_obj_message(target),
-            value=_PackageDefQueryBuilder.heat_sink_message(
-                thickness, spacing, base_height, height, orientation
-            ),
-        )
 
 
 class PackageDef(ObjBase):
@@ -175,16 +153,7 @@ class PackageDef(ObjBase):
 
     @heat_sink.setter
     def heat_sink(self, heat_sink_value):
-        self.__stub.SetHeatSink(
-            _PackageDefQueryBuilder.set_heat_sink_message(
-                self,
-                Value(heat_sink_value.fin_thickness),
-                Value(heat_sink_value.fin_spacing),
-                Value(heat_sink_value.fin_base_height),
-                Value(heat_sink_value.fin_height),
-                heat_sink_value.fin_orientation,
-            )
-        )
+        self.__stub.SetHeatSink(set_heat_sink_message(self, heat_sink_value))
 
     def get_product_property(self, prod_id, attr_it):
         """Get the product-specific property value.
@@ -202,7 +171,7 @@ class PackageDef(ObjBase):
             Property value returned.
         """
         return self.__stub.GetProductProperty(
-            get_product_property_message(self, int64_message(prod_id), attr_it)
+            get_product_property_message(self, prod_id, attr_it)
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
@@ -218,7 +187,7 @@ class PackageDef(ObjBase):
             Product property's new value
         """
         self.__stub.SetProductProperty(
-            set_product_property_message(self, int64_message(prod_id), attr_it, prop_value)
+            set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
     def get_product_property_ids(self, prod_id):
@@ -235,6 +204,6 @@ class PackageDef(ObjBase):
             The attribute ids associated with this product property.
         """
         attr_ids = self.__stub.GetProductPropertyIds(
-            get_product_property_ids_message(self, int64_message(prod_id))
+            get_product_property_ids_message(self, prod_id)
         ).ids
         return [attr_id for attr_id in attr_ids]

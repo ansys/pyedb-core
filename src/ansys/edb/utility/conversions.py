@@ -1,4 +1,5 @@
 """This module performs conversions from arbitrary user input to explicit types."""
+from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
 from ansys.edb import geometry, utility
 
@@ -16,7 +17,7 @@ def to_value(val):
     """
     if isinstance(val, utility.Value):
         return val
-    elif type(val) in [int, float, complex, str]:
+    elif type(val) in [int, float, complex, str, ValueMessage]:
         return utility.Value(val)
     else:
         raise TypeError(

@@ -4,8 +4,6 @@ from enum import Enum
 
 import ansys.api.edb.v1.package_def_pb2 as pb
 
-from ansys.edb.utility.value import Value, conversions
-
 
 class HeatSinkFinOrientation(Enum):
     """Enum representing bondwire types.
@@ -50,9 +48,8 @@ class HeatSink:
         fin_orientation=HeatSinkFinOrientation.X_ORIENTED,
     ):
         """Construct a HeatSink object using given values."""
-        value_handle = lambda v: Value(v) if (type(v) is Value) else conversions.to_value(v)
-        self.fin_thickness = value_handle(fin_thickness)
-        self.fin_spacing = value_handle(fin_spacing)
-        self.fin_base_height = value_handle(fin_base_height)
-        self.fin_height = value_handle(fin_height)
+        self.fin_thickness = fin_thickness
+        self.fin_spacing = fin_spacing
+        self.fin_base_height = fin_base_height
+        self.fin_height = fin_height
         self.fin_orientation = fin_orientation

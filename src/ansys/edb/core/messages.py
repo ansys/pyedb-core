@@ -964,7 +964,7 @@ def value_message(val):
 
 def product_property_id_message(prod_id, att_id):
     """Convert to ProductPropertyIdMessage."""
-    return ProductPropertyIdMessage(product_id=prod_id, attribute_id=att_id)
+    return ProductPropertyIdMessage(product_id=prod_id.value, attribute_id=att_id)
 
 
 def set_product_property_message(obj, prod_id, att_id, value):
@@ -985,7 +985,7 @@ def get_product_property_message(obj, prod_id, att_id):
 
 def get_product_property_ids_message(obj, prod_id):
     """Convert to GetProductPropertyIdsMessage."""
-    return GetProductPropertyIdsMessage(edb_obj=obj.msg, product_id=prod_id)
+    return GetProductPropertyIdsMessage(edb_obj=obj.msg, product_id=prod_id.value)
 
 
 def edb_internal_id_message(id):

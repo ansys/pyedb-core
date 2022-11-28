@@ -40,9 +40,9 @@ class _QueryBuilder:
         """Create an RTreeGeometryRequestMessage."""
         return pb.RTreeGeometryRequestMessage(
             target=messages.edb_obj_message(rtree),
-            polygon=messages.edb_obj_message(polygon),
+            polygon=messages.polygon_data_message(polygon),
             prop=prop_id,
-            increment_visit=messages.bool_message(increment_visit),
+            increment_visit=increment_visit,
         )
 
 

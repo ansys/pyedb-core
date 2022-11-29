@@ -46,3 +46,20 @@ def to_point(val):
     raise TypeError(
         "point-like objects must be either of type PointData or a list/tuple containing (start, end) or (arc_height)."
     )
+
+
+def to_point3d(val):
+    """Convert a value to Point3DData object.
+
+    Parameters
+    ----------
+    val : geometry.Point3DData, tuple[:term:`ValueLike`,:term:`ValueLike`,:term:`ValueLike`]
+
+    Returns
+    -------
+    geometry.Point3DData
+    """
+    if isinstance(val, geometry.Point3DData):
+        return val
+    if len(val) == 3:
+        return geometry.Point3DData(val[0], val[1], val[2])

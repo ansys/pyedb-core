@@ -5,7 +5,7 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "transform3d.proto";
+import "point_3d_data.proto";
 import "layout_obj_instance_geometry.proto";
 
 service LayoutObjInstance3DGeometryService {

@@ -8,6 +8,7 @@ from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.hierarchy import CellInstance, Group, PinGroup
 from ansys.edb.layer import LayerCollection
 import ansys.edb.layout as layout
+from ansys.edb.layout.mcad_model import McadModel
 from ansys.edb.layout_instance import LayoutInstance
 from ansys.edb.net import DifferentialPair, ExtendedNet, Net, NetClass
 from ansys.edb.primitive import BoardBendDef, PadstackInstance, Primitive
@@ -263,3 +264,47 @@ class Layout(ObjBase, variable_server.VariableServer):
         Read-Only.
         """
         return LayoutInstance(self.__stub.GetLayoutInstance(self.msg))
+
+    def create_stride(self, filename):
+        """Create a stride model from a Mcad file.
+
+        Parameters
+        ----------
+        filename : str
+            absolute path of Mcad file.
+
+        Returns
+        -------
+        McadModel
+        """
+        return McadModel.create_stride(layout=self, filename=filename)
+
+    def create_hfss(self, filename, design):
+        """Create a HFSS model from a Mcad file.
+
+        Parameters
+        ----------
+        filename : str
+            absolute path of Mcad file.
+        design : str
+            design name.
+
+        Returns
+        -------
+        McadModel
+        """
+        return McadModel.create_hfss(connectable=self, filename=filename, design=design)
+
+    def create_3d_comp(self, filename):
+        """Create a 3dComp model from a Mcad file.
+
+        Parameters
+        ----------
+        filename : str
+            absolute path of Mcad file.
+
+        Returns
+        -------
+        McadModel
+        """
+        return McadModel.create_3d_comp(layout=self, filename=filename)

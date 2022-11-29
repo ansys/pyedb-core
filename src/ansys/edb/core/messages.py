@@ -71,6 +71,7 @@ from ansys.api.edb.v1.layout_pb2 import (
     LayoutGetItemsMessage,
 )
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
+from ansys.api.edb.v1.mcad_model_pb2 import *  # noqa
 from ansys.api.edb.v1.net_pb2 import NetGetLayoutObjMessage
 from ansys.api.edb.v1.padstack_inst_term_pb2 import (
     PadstackInstTermCreationsMessage,
@@ -88,6 +89,7 @@ from ansys.api.edb.v1.pin_group_term_pb2 import (
     PinGroupTermSetLayerMessage,
     PinGroupTermSetPinGroupMessage,
 )
+from ansys.api.edb.v1.point_3d_data_pb2 import *  # noqa
 from ansys.api.edb.v1.point_data_pb2 import *  # noqa
 from ansys.api.edb.v1.point_term_pb2 import (
     PointTermCreationMessage,
@@ -118,11 +120,7 @@ from ansys.api.edb.v1.term_pb2 import (
     TermSetRefMessage,
     TermSetSolverOptionMessage,
 )
-from ansys.api.edb.v1.transform3d_pb2 import (
-    Point3DMessage,
-    Transform3DMessage,
-    Transform3DPropertyMessage,
-)
+from ansys.api.edb.v1.transform3d_pb2 import Transform3DMessage, Transform3DPropertyMessage
 from ansys.api.edb.v1.transform_pb2 import TransformMessage, TransformPropertyMessage
 from ansys.api.edb.v1.via_group_pb2 import (
     ViaGroupCreateWithOutlineMessage,
@@ -446,9 +444,13 @@ def point3d_message(point3d):
     if point3d is None:
         return None
     else:
-        return Point3DMessage(
-            x=value_message(point3d[0]), y=value_message(point3d[1]), z=value_message(point3d[2])
-        )
+        x, y, z = point3d.x, point3d.y, point3d.z
+        return Point3DMessage(x=value_message(x), y=value_message(y), z=value_message(z))
+
+
+def point_3d_property_message(target, value):
+    """Convert to Point3DPropertyMessage."""
+    return Point3DPropertyMessage(target=edb_obj_message(target), origin=point3d_message(value))
 
 
 def transform3d_message(transform3d):
@@ -1058,6 +1060,57 @@ def differential_pair_net_refs_message(dp, pos_net, neg_net):
     return DifferentialPairNetRefsMessage(
         dp=edb_obj_message(dp), pos_net=net_ref_message(pos_net), neg_net=net_ref_message(neg_net)
     )
+
+
+def mcad_model_creation_message(connectable, layout, filename):
+    """Convert to McadModelCreationMessage."""
+    if connectable is not None:
+        param = McadModelCreationMessage.WithConnObj(obj=edb_obj_message(connectable))
+        return McadModelCreationMessage(conn_obj=param)
+    elif layout is not None and filename is not None and len(filename) > 0:
+        param = McadModelCreationMessage.WithLayout(obj=edb_obj_message(layout), file_name=filename)
+        return McadModelCreationMessage(layout=param)
+    else:
+        raise TypeError("either a connectable object or layout+filename must be provided.")
+
+
+def mcad_model_hfss_creation_message(connectable, layout, filename, design):
+    """Convert to McadModelHfssCreationMessage."""
+    if connectable is not None:
+        param = McadModelHfssCreationMessage.WithConnObj(obj=edb_obj_message(connectable))
+        return McadModelCreationMessage(conn_obj=param)
+    elif layout is not None and filename is not None and len(filename) > 0 and len(design) > 0:
+        param = McadModelHfssCreationMessage.WithLayout(
+            obj=edb_obj_message(layout), file_name=filename, design=design
+        )
+        return McadModelCreationMessage(layout=param)
+    else:
+        raise TypeError("either a connectable object or layout+filename+design must be provided.")
+
+
+def mcad_model_rotation_message(axis_from, axis_to, angle):
+    """Convert to McadModelRotationMessage."""
+    return McadModelRotationMessage(
+        axis_from=point3d_message(axis_from), axis_to=point3d_message(axis_to), angle=angle
+    )
+
+
+def mcad_model_set_rotation_message(mcad_model, axis_from, axis_to, angle):
+    """Convert to McadModelSetRotationMessage."""
+    return McadModelSetRotationMessage(
+        model=edb_obj_message(mcad_model),
+        rotation=mcad_model_rotation_message(axis_from, axis_to, angle),
+    )
+
+
+def mcad_model_bool_message(mcad_model, index, value):
+    """Convert to McadModelBoolMessage."""
+    return McadModelBoolMessage(model=edb_obj_message(mcad_model), index=index, value=value)
+
+
+def mcad_model_string_message(mcad_model, index, value):
+    """Convert to McadModelStringMessage."""
+    return McadModelStringMessage(model=edb_obj_message(mcad_model), index=index, value=value)
 
 
 def set_die_type_message(obj, die_type):

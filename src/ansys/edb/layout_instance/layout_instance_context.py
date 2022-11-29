@@ -19,6 +19,7 @@ class LayoutInstanceContext(ObjBase):
         """
         return layout.Layout(self.__stub.GetLayout(self.msg))
 
+    @parser.to_polygon_data
     def get_bbox(self, local):
         """Get the bounding box of the context.
 
@@ -32,7 +33,7 @@ class LayoutInstanceContext(ObjBase):
         -------
         :class:`PolygonData <ansys.edb.geometry.PolygonData>`
         """
-        return parser.to_polygon_data(self.__stub.GetBBox(bool_property_message(self, local)))
+        return self.__stub.GetBBox(bool_property_message(self, local))
 
     @property
     def is_top_or_black_box(self):

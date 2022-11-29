@@ -7,12 +7,7 @@ package ansys.api.edb.v1;
 
 // Imports
 import "edb_messages.proto";
-
-message Point3DMessage {
-  ValueMessage x = 1;
-  ValueMessage y = 2;
-  ValueMessage z = 3;
-}
+import "point_3d_data.proto";
 
 message Transform3DMessage {
   Point3DMessage anchor = 1;

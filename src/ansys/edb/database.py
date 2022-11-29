@@ -77,7 +77,9 @@ class Database(ObjBase, variable_server.VariableServer):
         -------
         Database
         """
-        return Database(cls.__stub.Create(proto_wrappers.StringValue(value=db_path)))
+        msg = cls.__stub.Create(proto_wrappers.StringValue(value=db_path))
+        print(msg)
+        return Database(msg)
 
     @classmethod
     def open(cls, db_path, read_only):

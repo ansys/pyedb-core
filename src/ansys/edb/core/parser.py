@@ -15,6 +15,11 @@ def to_point_data_list(fn):
     return _wraps(fn, _to_point_data_list)
 
 
+def to_point3d_data(fn):
+    """Decorate a function that returns a message to return as Point3DData."""
+    return _wraps(fn, _to_point3d_data)
+
+
 def to_polygon_data(fn):
     """Decorate a function that returns a message to return as PolygonData."""
     return _wraps(fn, _to_polygon_data)
@@ -41,11 +46,15 @@ def to_circle(fn):
 
 
 def _wraps(fn, wrapper_fn):
-    @functools.wraps(fn)
-    def wrapper(*args, **kwargs):
-        return wrapper_fn(fn(*args, **kwargs))
+    if callable(fn):
 
-    return wrapper
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            return wrapper_fn(fn(*args, **kwargs))
+
+        return wrapper
+    else:
+        return wrapper_fn(fn)
 
 
 def _to_point_data(message):
@@ -74,6 +83,22 @@ def _to_point_data_list(message):
     list[geometry.PointData]
     """
     return [_to_point_data(m) for m in message]
+
+
+def _to_point3d_data(message):
+    """Convert Point3DMessage to PointData.
+
+    Parameters
+    ----------
+    message : ansys.api.edb.v1.point_data_pb2.Point3DMessage
+
+    Returns
+    -------
+    geometry.Point3DData
+    """
+    return geometry.Point3DData(
+        utility.Value(message.x), utility.Value(message.y), utility.Value(message.z)
+    )
 
 
 def _to_polygon_data(message):

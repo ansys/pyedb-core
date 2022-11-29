@@ -1,0 +1,98 @@
+// Proto file representing the MCAD Model
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+import "point_3d_data.proto";
+
+service McadModelService {
+  rpc CreateStride (McadModelCreationMessage) returns (EDBObjMessage) {}
+  rpc CreateHfss (McadModelHfssCreationMessage) returns (EDBObjMessage) {}
+  rpc Create3dComp (McadModelCreationMessage) returns (EDBObjMessage) {}
+
+  rpc IsMcad (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc IsMcadStride (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc IsMcadHfss (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc IsMcad3dComp (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  rpc GetOrigin (EDBObjMessage) returns (Point3DMessage) {}
+  rpc SetOrigin (Point3DPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetRotation (EDBObjMessage) returns (McadModelRotationMessage) {}
+  rpc SetRotation (McadModelSetRotationMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetScale (EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetScale (DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMaterial (IntPropertyMessage) returns (google.protobuf.StringValue) {}
+  rpc SetMaterial (McadModelStringMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetVisible (IntPropertyMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetVisible (McadModelBoolMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetModeled (IntPropertyMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetModeled (McadModelBoolMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetCellInst (EDBObjMessage) returns (EDBObjMessage) {}
+  rpc GetPartCount (EDBObjMessage) returns (google.protobuf.Int64Value) {}
+  rpc GetPartName (IntPropertyMessage) returns (google.protobuf.StringValue) {}
+  rpc GetPartIndex (StringPropertyMessage) returns (google.protobuf.Int64Value) {}
+  rpc GetModelName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc GetDesignName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+}
+
+message McadModelCreationMessage {
+  message WithLayout {
+    EDBObjMessage obj = 1;
+    string file_name = 2;
+  }
+  message WithConnObj {
+      EDBObjMessage obj = 1;
+  }
+
+  oneof param {
+    WithConnObj conn_obj = 1;
+    WithLayout layout = 2;
+  }
+}
+
+message McadModelHfssCreationMessage {
+  message WithLayout {
+    EDBObjMessage obj = 1;
+    string file_name = 2;
+    string design = 3;
+  }
+  message WithConnObj {
+    EDBObjMessage obj = 1;
+  }
+
+  oneof param {
+    WithConnObj conn_obj = 1;
+    WithLayout layout = 2;
+  }
+}
+
+message McadModelRotationMessage {
+  Point3DMessage axis_from = 1;
+  Point3DMessage axis_to = 2;
+  double angle = 3;
+}
+
+message McadModelSetRotationMessage {
+  EDBObjMessage model = 1;
+  McadModelRotationMessage rotation = 2;
+}
+
+message McadModelStringMessage {
+  EDBObjMessage model = 1;
+  int64 index = 2;
+  string value = 3;
+}
+
+message McadModelBoolMessage {
+  EDBObjMessage model = 1;
+  int64 index = 2;
+  bool value = 3;
+}

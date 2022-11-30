@@ -17,7 +17,7 @@ from ansys.edb.core.messages import (
 )
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
-from ansys.edb.utility.heat_sink import HeatSink
+from ansys.edb.utility.heat_sink import HeatSink, HeatSinkFinOrientation
 
 
 class PackageDef(ObjBase):
@@ -148,7 +148,7 @@ class PackageDef(ObjBase):
             heat_sink_paramaters.spacing,
             heat_sink_paramaters.base_height,
             heat_sink_paramaters.height,
-            heat_sink_paramaters.orientation,
+            HeatSinkFinOrientation(heat_sink_paramaters.orientation),
         )
 
     @heat_sink.setter

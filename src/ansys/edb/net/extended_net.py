@@ -4,7 +4,7 @@ import ansys.api.edb.v1.extended_net_pb2 as enet_pb2
 
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.net import net_class
-from ansys.edb.session import StubAccessor, StubType, get_extended_net_stub
+from ansys.edb.session import StubAccessor, StubType
 
 
 class _ExtendedNetQueryBuilder:
@@ -16,6 +16,7 @@ class _ExtendedNetQueryBuilder:
     def extenet_find_by_name_msg(layout, name):
         return enet_pb2.ExtendedNetLookupMessage(layout=layout.msg, name=name)
 
+    @staticmethod
     def extnet_modify_net_msg(ext_net, net):
         return enet_pb2.ExtendedNetModifyMessage(ext_net=ext_net.msg, net=net.msg)
 
@@ -26,8 +27,8 @@ class ExtendedNet(net_class.NetClass):
     __stub = StubAccessor(StubType.extended_net)
     layout_obj_type = LayoutObjType.EXTENDED_NET
 
-    @staticmethod
-    def create(layout, name):
+    @classmethod
+    def create(cls, layout, name):
         """Create an extended net.
 
         Parameters
@@ -43,11 +44,11 @@ class ExtendedNet(net_class.NetClass):
             Newly created extended net
         """
         return ExtendedNet(
-            get_extended_net_stub().Create(_ExtendedNetQueryBuilder.extnet_create_msg(layout, name))
+            cls.__stub.Create(_ExtendedNetQueryBuilder.extnet_create_msg(layout, name))
         )
 
-    @staticmethod
-    def find_by_name(layout, name):
+    @classmethod
+    def find_by_name(cls, layout, name):
         """Find an extended net in a layout by name.
 
         Parameters
@@ -64,9 +65,7 @@ class ExtendedNet(net_class.NetClass):
             :obj:`is_null <ansys.edb.net.ExtendedNet.is_null>` property to see if it exists.
         """
         return ExtendedNet(
-            get_extended_net_stub().FindByName(
-                _ExtendedNetQueryBuilder.extenet_find_by_name_msg(layout, name)
-            )
+            cls.__stub.FindByName(_ExtendedNetQueryBuilder.extenet_find_by_name_msg(layout, name))
         )
 
     def add_net(self, net):

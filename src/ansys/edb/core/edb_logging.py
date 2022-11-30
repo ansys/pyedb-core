@@ -21,7 +21,7 @@ It should be noticed that the default logging level of ``LOG`` is ``ERROR``.
 To change this and output lower level messages you can use the next snippet:
 
 .. code::
-   EDB_LOG.setLevel('DEBUG')
+   EDB_LOG.setLevel(logging.DEBUG)
 
 By default, this logger does not log to a file.
 If you wish to do so, you can add a file handler using:
@@ -52,13 +52,6 @@ import sys
 LOG_LEVEL = logging.DEBUG
 FILE_NAME = "edb_client.log"
 
-# For convenience
-DEBUG = logging.DEBUG
-INFO = logging.INFO
-WARN = logging.WARN
-ERROR = logging.ERROR
-CRITICAL = logging.CRITICAL
-
 # Formatting
 
 STDOUT_MSG_FORMAT = "%(levelname)s - %(message)s"
@@ -73,15 +66,6 @@ NEW_SESSION_HEADER = f"""
 ===============================================================================
        NEW SESSION - {datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
 ==============================================================================="""
-
-string_to_loglevel = {
-    "DEBUG": DEBUG,
-    "INFO": INFO,
-    "WARN": WARN,
-    "WARNING": WARN,
-    "ERROR": ERROR,
-    "CRITICAL": CRITICAL,
-}
 
 
 class EDBLogger:
@@ -112,14 +96,6 @@ class EDBLogger:
         self.logger.setLevel(level)
         self.logger.propagate = True
 
-        # Writing logging methods.
-        self.debug = self.logger.debug
-        self.info = self.logger.info
-        self.warning = self.logger.warning
-        self.error = self.logger.error
-        self.critical = self.logger.critical
-        self.log = self.logger.log
-
         if to_file or filename != FILE_NAME:
             # We record to file
             self.log_to_file(filename=filename, level=level)
@@ -127,9 +103,11 @@ class EDBLogger:
         if to_stdout:
             self.log_to_stdout(level=level)
 
-        self.add_handling_uncaught_exceptions(
-            self.logger
-        )  # Using logger to record unhandled exceptions
+        add_handling_uncaught_exceptions(self.logger)  # Using logger to record unhandled exceptions
+
+    def __getattr__(self, item):
+        """Delegate method calls to logger."""
+        return getattr(self.logger, item)
 
     def stop_logging_to_stdout(self):
         """Stop logging to stdout."""
@@ -165,26 +143,20 @@ class EDBLogger:
         """
         add_stdout_handler(self, level=level)
 
-    def set_level(self, level="DEBUG"):
-        """Change the log level of the object and the attached handlers."""
-        self.logger.setLevel(level)
-        for each_handler in self.logger.handlers:
-            each_handler.setLevel(level)
-
-    @staticmethod
-    def add_handling_uncaught_exceptions(logger):
-        """Redirects the output of an exception to the logger."""
-
-        def handle_exception(exc_type, exc_value, exc_traceback):
-            if issubclass(exc_type, KeyboardInterrupt):
-                sys.__excepthook__(exc_type, exc_value, exc_traceback)
-                return
-            logger.critical("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
-
-        sys.excepthook = handle_exception
-
 
 # Auxiliary functions
+
+
+def add_handling_uncaught_exceptions(logger):
+    """Redirects the output of an exception to the logger."""
+
+    def handle_exception(exc_type, exc_value, exc_traceback):
+        if issubclass(exc_type, KeyboardInterrupt):
+            sys.__excepthook__(exc_type, exc_value, exc_traceback)
+            return
+        logger.critical("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+    sys.excepthook = handle_exception
 
 
 def addfile_handler(edb_logger, filename=FILE_NAME, level=LOG_LEVEL, write_headers=False):

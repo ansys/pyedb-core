@@ -1,12 +1,10 @@
 """Session manager for gRPC."""
-
 from contextlib import contextmanager
 from enum import Enum
 from os import path
 from struct import pack, unpack
 import subprocess
 from sys import modules
-from typing import Union
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
@@ -97,7 +95,9 @@ from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 from ansys.api.edb.v1.voltage_regulator_pb2_grpc import VoltageRegulatorServiceStub
 import grpc
 
-from ansys.edb.core import edb_errors
+from ansys.edb.core import LOGGER
+from ansys.edb.core.exceptions import EDBSessionException, ErrorCode
+from ansys.edb.core.interceptors import ExceptionInterceptor, LoggingInterceptor
 
 # The session module singleton
 MOD = modules[__name__]
@@ -120,16 +120,7 @@ class StubAccessor(object):
         """Return the corresponding stub service if a session is active."""
         if MOD.current_session is not None:
             return MOD.current_session.stub(self.__stub_name)
-        raise EDBSessionException("No active session detected")
-
-
-class _Stub:
-    def __init__(self, s):
-        self._stub = s
-
-    def __getattr__(self, item):
-        if hasattr(self._stub, item):
-            return edb_errors.handle_grpc_exception(getattr(self._stub, item))
+        raise EDBSessionException(ErrorCode.NO_SESSIONS)
 
 
 # Helper class for storing data used by the session
@@ -138,7 +129,7 @@ class _Session:
         if MOD.current_session is None:
             MOD.current_session = self
         else:
-            raise EDBSessionStartupException("There can be only one session active at a time")
+            raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
         self.ip_address = ip_address or "localhost"
         self.port_num = port_num
@@ -147,22 +138,24 @@ class _Session:
         self.local_server_proc = None
         self.stubs = None
         self.session = None
+        self.interceptors = [
+            # on reversed order of interception
+            ExceptionInterceptor(LOGGER),
+            LoggingInterceptor(LOGGER),
+        ]
 
     def __enter__(self):
         if MOD.current_session == self:
             self.connect()
             return self
         else:
-            raise EDBSessionStartupException("There can be only one session active at a time")
+            raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disconnect()
 
-    def _initialize_stub(self, stub):
-        return _Stub(stub(self.channel))
-
     def _initialize_stubs(self):
-        self.stubs = {stub.name: self._initialize_stub(stub.value) for stub in StubType}
+        self.stubs = {stub.name: stub.value(self.channel) for stub in StubType}
 
     @property
     def server_url(self):
@@ -195,14 +188,12 @@ class _Session:
         if self.is_local():
             self.start_server()
 
-        print("connecting...")
         self.channel = grpc.insecure_channel(self.server_url)
+        self.channel = grpc.intercept_channel(self.channel, *self.interceptors)
 
         self._initialize_stubs()
-        print("successfully connected.")
 
     def disconnect(self):
-        print("disconnecting...")
         if self.stubs is not None:
             self.stubs = None
 
@@ -210,7 +201,6 @@ class _Session:
             self.channel.close()
             self.channel = None
 
-        print("successfully disconnected.")
         if MOD.current_session == self:
             MOD.current_session = None
 
@@ -218,22 +208,18 @@ class _Session:
             self.stop_server()
 
     def start_server(self):
+        if not path.isfile(self.server_executable):
+            raise EDBSessionException(ErrorCode.STARTUP_NO_EXECUTABLE)
+
         try:
-            print(f"starting a server from {self.server_executable}...")
             self.local_server_proc = subprocess.Popen(
                 self.server_executable, stdout=subprocess.PIPE
             )
-        except OSError as os_err:
-            raise EDBSessionStartupException(
-                'The OS error "{}" occurred when starting the local server. '
-                "Was the correct Ansys EM root directory specified?".format(os_err)
-            )
-        except Exception as err:
+        except Exception as e:
             self.disconnect()
-            raise _raise_unknown_startup_exception(err)
+            raise EDBSessionException(ErrorCode.STARTUP_UNEXPECTED, e)
 
         self.wait_server_ready()
-        print("successfully started a server.")
 
     def wait_server_ready(self):
         """Wait for the server to say it successfully started up."""
@@ -247,10 +233,7 @@ class _Session:
                 if self.local_server_proc.wait(10):
                     self._on_server_startup_error()
             except subprocess.TimeoutExpired:
-                # If the server has not stopped, it will be manually terminated
-                # when _disconnect is called in _launch_session.
-                # Throw an exception with what info we have.
-                raise _raise_unknown_startup_exception(stdout)
+                raise EDBSessionException(ErrorCode.STARTUP_TIMEOUT, stdout)
             finally:
                 self.disconnect()
 
@@ -263,19 +246,19 @@ class _Session:
         ret_code = self.local_server_proc.returncode
         ret_code = ret_code if ret_code < 0 else unpack("i", pack("I", ret_code))[0]
 
-        # Handle the return code
-        raise EDBSessionStartupException(
-            _local_server_error_code_exception_msg_map.get(
-                ret_code, "Local server exited with error code {}".format(ret_code)
-            )
+        code = (
+            ErrorCode.STARTUP_FAILURE_EDB
+            if ret_code == -1
+            else ErrorCode.STARTUP_FAILURE_LICENSE
+            if ret_code == -2
+            else ErrorCode.STARTUP_FAILURE
         )
+        raise EDBSessionException(code)
 
     def stop_server(self):
         if self.local_server_proc and not self.local_server_proc.poll():
-            print("stopping server...")
             self.local_server_proc.terminate()
             self.local_server_proc.wait()
-            print("successfully stopped server.")
         self.local_server_proc = None
 
 
@@ -362,13 +345,6 @@ class StubType(Enum):
     mcad_model = McadModelServiceStub
 
 
-# Dictionary for storing local server error code exception messages
-_local_server_error_code_exception_msg_map = {
-    -1: "Failed to initialize EDB",
-    -2: "No valid license detected",
-}
-
-
 def launch_session(ansys_em_root, port_num, ip_address=None):
     r"""Launch a local session to an EDB API server.
 
@@ -422,28 +398,12 @@ def session(ansys_em_root, port_num, ip_address=None):
         MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
         MOD.current_session.connect()
         yield
+    except EDBSessionException:
+        raise
     except Exception as e:  # noqa
-        print("EDB session ran into unhandled error.")
-        print(e)
         raise
     finally:
         MOD.current_session.disconnect()
-
-
-def _raise_unknown_startup_exception(error_msg: Union[str, Exception]) -> None:
-    raise EDBSessionStartupException(
-        "An unexpected error occurred when starting the local server: {}".format(error_msg)
-    )
-
-
-def get_database_stub():
-    """Get Database stub.
-
-    Returns
-    -------
-    DatabaseServiceStub
-    """
-    return StubAccessor(StubType.database).__get__()
 
 
 def get_layer_collection_stub():
@@ -516,16 +476,6 @@ def get_simulation_setup_info_stub():
     return StubAccessor(StubType.simulation_setup_info).__get__()
 
 
-def get_via_group_stub():
-    """Get Via group stub.
-
-    Returns
-    -------
-    ViaGroupServiceStub
-    """
-    return StubAccessor(StubType.via_group).__get__()
-
-
 def get_variable_server_stub():
     """Get VariableServer stub.
 
@@ -534,35 +484,3 @@ def get_variable_server_stub():
     VariableServerServiceStub
     """
     return StubAccessor(StubType.variable_server).__get__()
-
-
-def get_cell_instance_stub():
-    """Get CellInstance stub.
-
-    Returns
-    -------
-    CellInstanceServiceStub
-    """
-    return StubAccessor(StubType.cell_instance).__get__()
-
-
-def get_extended_net_stub():
-    """Get ExtendedNet stub.
-
-    Returns
-    -------
-    ExtendedNetServiceStub
-    """
-    return StubAccessor(StubType.extended_net).__get__()
-
-
-class EDBSessionException(Exception):
-    """Base class for exceptions related to EDB sessions."""
-
-    pass
-
-
-class EDBSessionStartupException(EDBSessionException):
-    """Exception managing startup process of EDB sessions."""
-
-    pass

@@ -99,7 +99,7 @@ _HFSS_EXTENT_MESSAGE_HELPER = {
     },
     "HfssExtentsOpenRegionType": {
         "msg": _translate_hfss_extents_enums,
-        "val": HfssExtentInfo.HFSSExtentInfoType,
+        "val": HfssExtentInfo.OpenRegionType,
     },
 }
 
@@ -315,7 +315,7 @@ class Cell(ObjBase, variable_server.VariableServer):
              - extent_type: :class:`HFSSExtentInfoType <ansys.edb.utility.HfssExtentInfo.HFSSExtentInfoType>`
                 Extent type.
              - open_region_type: :class:`OpenRegionType <ansys.edb.utility.HfssExtentInfo.OpenRegionType>`
-                Check to see if the PML boxes should be rendered or not.
+                Open region type.
              - base_polygon: Primitive
                 Polygon to use if extent type is Polygon.
              - dielectric_extent_type: :class:`HFSSExtentInfoType <ansys.edb.utility.HfssExtentInfo.HFSSExtentInfoType>`

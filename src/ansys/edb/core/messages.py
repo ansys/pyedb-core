@@ -73,6 +73,7 @@ from ansys.api.edb.v1.layout_pb2 import (
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.mcad_model_pb2 import *  # noqa
 from ansys.api.edb.v1.net_pb2 import NetGetLayoutObjMessage
+from ansys.api.edb.v1.package_def_pb2 import HeatSinkMessage, SetHeatSinkMessage
 from ansys.api.edb.v1.padstack_inst_term_pb2 import (
     PadstackInstTermCreationsMessage,
     PadstackInstTermParamsMessage,
@@ -1149,6 +1150,22 @@ def points_property_message(target, points):
     )
 
 
-def set_polygon_data_property_message(obj, polygon):
+def polygon_data_property_message(obj, polygon):
     """Convert to PolygonDataPropertyMessage."""
     return PolygonDataPropertyMessage(target=obj.msg, value=polygon_data_message(polygon))
+
+
+def heat_sink_message(heat_sink):
+    """Convert to HeatSinkMessage."""
+    return HeatSinkMessage(
+        thickness=value_message(heat_sink.fin_thickness),
+        spacing=value_message(heat_sink.fin_spacing),
+        base_height=value_message(heat_sink.fin_base_height),
+        height=value_message(heat_sink.fin_height),
+        orientation=heat_sink.fin_orientation.value,
+    )
+
+
+def set_heat_sink_message(target, heat_sink):
+    """Convert to SetHeatSinkMessage."""
+    return SetHeatSinkMessage(target=edb_obj_message(target), value=heat_sink_message(heat_sink))

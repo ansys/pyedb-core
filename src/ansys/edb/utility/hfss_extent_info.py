@@ -56,7 +56,7 @@ class HfssExtentInfo:
         airbox_vertical_negative=(0.15, True),
         sync_airbox_vertical_extent=False,
         is_pml_visible=False,
-        operating_frequency=Value("5GHz"),
+        operating_frequency=Value(5),
         radiation_level=Value(0),
         user_xy_data_extent_for_vertical_expansion=True,
     ):

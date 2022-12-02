@@ -86,7 +86,7 @@ class RTree(ObjBase):
     def search(self, box, bb_search):
         """Search for a node in the RTree."""
         msg = self.__stub.Search(_QueryBuilder.r_tree_search_message(self, box, bb_search))
-        return [int(to_id) for to_id in msg.ids]
+        return [int(to_id) for to_id in msg.props]
 
     def nearest_neighbor(self, polygon, prop_id):
         """Nearest Neighbor for the polygon of an RTree Node."""
@@ -98,14 +98,14 @@ class RTree(ObjBase):
         msg = self.__stub.TouchingGeometry(
             _QueryBuilder.r_tree_geometry_request_message(self, polygon, prop_id, increment_visit)
         )
-        return [int(to_id) for to_id in msg.ids]
+        return [int(to_id) for to_id in msg.props]
 
     def connected_geometry(self, polygon, prop_id, increment_visit):
         """Connect geometries for the polygon of an RTree Node."""
         msg = self.__stub.ConnectedGeometry(
             _QueryBuilder.r_tree_geometry_request_message(self, polygon, prop_id, increment_visit)
         )
-        return [int(to_id) for to_id in msg.ids]
+        return [int(to_id) for to_id in msg.props]
 
     @property
     def connected_geometry_sets(self):

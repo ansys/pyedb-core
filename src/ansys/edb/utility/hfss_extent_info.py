@@ -54,9 +54,9 @@ class HfssExtentInfo:
         airbox_horizontal=(0.15, True),
         airbox_vertical_positive=(0.15, True),
         airbox_vertical_negative=(0.15, True),
-        sync_airbox_vertical_extent=False,
+        sync_airbox_vertical_extent=True,
         is_pml_visible=False,
-        operating_frequency=Value(5),
+        operating_frequency="5GHz",
         radiation_level=Value(0),
         user_xy_data_extent_for_vertical_expansion=True,
     ):
@@ -69,7 +69,7 @@ class HfssExtentInfo:
         extent_type: HfssExtentInfo.HFSSExtentInfoType
             Extent type.
         open_region_type: HfssExtentInfo.OpenRegionType
-            Check to see if the PML boxes should be rendered or not.
+            Open region type.
         base_polygon: Primitive
             Polygon to use if extent type is Polygon.
         dielectric_extent_type: HfssExtentInfo.HFSSExtentInfoType
@@ -118,6 +118,6 @@ class HfssExtentInfo:
         self.airbox_vertical_negative = airbox_vertical_negative
         self.sync_airbox_vertical_extent = sync_airbox_vertical_extent
         self.is_pml_visible = is_pml_visible
-        self.operating_frequency = operating_frequency
+        self.operating_frequency = Value(operating_frequency)
         self.radiation_level = radiation_level
         self.user_xy_data_extent_for_vertical_expansion = user_xy_data_extent_for_vertical_expansion

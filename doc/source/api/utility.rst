@@ -9,6 +9,7 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
+   HfssExtentInfo
    PortPostProcessingProp
    Rlc
    TemperatureSettings
@@ -16,3 +17,9 @@ Classes
    Transform3D
    Value
 
+
+.. autosummary::
+   :toctree: _autosummary
+
+   HFSSExtentInfoType
+   OpenRegionType

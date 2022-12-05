@@ -128,4 +128,4 @@ class RTree(ObjBase):
     @property
     def get_visit(self):
         """Visit value of an RTree."""
-        return self.__stub.GetVisit(messages.edb_obj_message(self)).id
+        return self.__stub.GetVisit(messages.edb_obj_message(self)).value

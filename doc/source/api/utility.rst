@@ -16,10 +16,3 @@ Classes
    Transform
    Transform3D
    Value
-
-
-.. autosummary::
-   :toctree: _autosummary
-
-   HFSSExtentInfoType
-   OpenRegionType

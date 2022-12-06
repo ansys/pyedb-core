@@ -166,12 +166,12 @@ jobs:
       - name: Generate release notes
         uses: docker://pandoc/core:2.9
         with:
-          args: --output=dist/release_notes.md doc/source/api/release_notes.rst
+          args: --output=release_notes.md doc/source/api/release_notes.rst
 
       - name: Publish release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: dist/release_notes.md
+          body_path: release_notes.md
           files: ./**/pyedb.zip
           token: ${{ secrets.PYANSYS_PYEDB_BOT_TOKEN }}
           prerelease: true
@@ -185,7 +185,7 @@ jobs:
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
           overwrite: "{
-            title: `New release has been published!`,
+            title: `New release has been published at https://github.com/pyansys/pyedb/releases`,
             }"
 
       - name: Notify Failure

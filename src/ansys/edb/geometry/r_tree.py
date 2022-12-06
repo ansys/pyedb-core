@@ -91,7 +91,7 @@ class RTree(ObjBase):
     def nearest_neighbor(self, polygon, prop_id):
         """Nearest Neighbor for the polygon of an RTree Node."""
         msg = self.__stub.NearestNeighbor(_QueryBuilder.r_tree_obj_message(self, polygon, prop_id))
-        return msg.id, parser.to_box((lambda a: a)(msg.coordinates))
+        return msg.id, parser.to_box(msg.coordinates)
 
     def touching_geometry(self, polygon, prop_id, increment_visit):
         """Touching geometries for the polygon of an RTree Node."""

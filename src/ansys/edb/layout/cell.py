@@ -6,10 +6,9 @@ import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core import ObjBase, messages, variable_server
+from ansys.edb.core import ObjBase, factory, messages, variable_server
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import layout
-from ansys.edb.primitive import Primitive
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.simulation_setup import SimulationSetup
 from ansys.edb.utility import TemperatureSettings, Value
@@ -91,7 +90,7 @@ _HFSS_EXTENT_MESSAGE_HELPER = {
     },
     "EDBObjMessage": {
         "msg": messages.edb_obj_message,
-        "val": Primitive,
+        "val": factory.create_conn_obj,
     },
     "HfssExtentsType": {
         "msg": _translate_hfss_extents_enums,
@@ -298,7 +297,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def hfss_extent_info(self):
-        """:term:`HFSSExtents` : HFSS Extents for the cell."""
+        """:class: HfssExtentInfo <ansys.edb.utility.HfssExtentInfo> : HFSS Extents for the cell."""
         msg = self.__stub.GetHfssExtentInfo(self.msg)
         return HfssExtentInfo(**parse_args(msg))
 

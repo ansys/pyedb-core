@@ -19,13 +19,13 @@ service RTreeService {
   
   rpc Empty (EDBObjMessage) returns (google.protobuf.BoolValue) {}
   
-  rpc Search (RTreeSearchMessage) returns (IntegerPropertiesMessage) {}
+  rpc Search (RTreeSearchMessage) returns (IntegersPropertyMessage) {}
 
   rpc NearestNeighbor(RTreeObjMessage) returns (NearestNeighborResponseMessage) {}
 
-  rpc TouchingGeometry (RTreeGeometryRequestMessage) returns (IntegerPropertiesMessage) {}
+  rpc TouchingGeometry (RTreeGeometryRequestMessage) returns (IntegersPropertyMessage) {}
 
-  rpc ConnectedGeometry(RTreeGeometryRequestMessage) returns (IntegerPropertiesMessage) {}
+  rpc ConnectedGeometry(RTreeGeometryRequestMessage) returns (IntegersPropertyMessage) {}
 
   rpc GetConnectedGeometrySets (EDBObjMessage) returns (GeometrySetsMessage) {}
 

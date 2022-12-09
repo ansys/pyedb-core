@@ -155,7 +155,7 @@ message ProductPropertyIdsMessage {
   repeated uint64 ids = 1;
 }
 
-message IntegerPropertiesMessage {
+message IntegersPropertyMessage {
   repeated uint64 props = 1;
 }
 

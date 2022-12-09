@@ -10,6 +10,7 @@ Classes
    :toctree: _autosummary
 
    ArcData
+   RTree
    PolygonData
    PointData
    Point3DData

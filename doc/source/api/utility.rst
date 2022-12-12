@@ -9,6 +9,8 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
+   AdvancedQuadraticParams
+   BasicQuadraticParams
    PortPostProcessingProp
    Rlc
    TemperatureSettings

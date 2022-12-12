@@ -1,6 +1,10 @@
 """This package contains utility classes and functions available to users."""
 
 from ansys.edb.utility.heat_sink import HeatSink
+from ansys.edb.utility.material_property_thermal_modifier_params import (
+    AdvancedQuadraticParams,
+    BasicQuadraticParams,
+)
 from ansys.edb.utility.port_post_processing_prop import PortPostProcessingProp
 from ansys.edb.utility.rlc import PinPair, PinPairRlc, Rlc
 from ansys.edb.utility.temperature_settings import TemperatureSettings

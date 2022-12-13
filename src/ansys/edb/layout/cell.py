@@ -6,9 +6,10 @@ import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core import ObjBase, factory, messages, variable_server
+from ansys.edb.core import ObjBase, messages, variable_server
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import layout
+from ansys.edb.primitive import Primitive
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.simulation_setup import SimulationSetup
 from ansys.edb.utility import TemperatureSettings, Value
@@ -74,6 +75,11 @@ def _translate_hfss_extents_enums(msg):
     return msg.value
 
 
+def primitive_helper(msg):
+    """Convert message to primitive."""
+    return Primitive(msg).cast()
+
+
 # dictionary describing message type and functions to translate them
 _HFSS_EXTENT_MESSAGE_HELPER = {
     "HfssExtentMessage": {
@@ -90,7 +96,7 @@ _HFSS_EXTENT_MESSAGE_HELPER = {
     },
     "EDBObjMessage": {
         "msg": messages.edb_obj_message,
-        "val": factory.create_conn_obj,
+        "val": primitive_helper,
     },
     "HfssExtentsType": {
         "msg": _translate_hfss_extents_enums,
@@ -129,10 +135,9 @@ class _QueryBuilder:
         return cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=name)
 
     @staticmethod
-    def set_hfss_extents(cell, **extents):
-        extents = sanitize_args(extents)
+    def set_hfss_extents(cell, extents):
         return cell_pb2.CellSetHfssExtentsMessage(
-            cell=cell.msg, info=messages.hfss_extent_info_message(**extents)
+            cell=cell.msg, info=messages.hfss_extent_info_message(extents)
         )
 
 
@@ -301,55 +306,14 @@ class Cell(ObjBase, variable_server.VariableServer):
         msg = self.__stub.GetHfssExtentInfo(self.msg)
         return HfssExtentInfo(**parse_args(msg))
 
-    def set_hfss_extent_info(self, **extents):
+    def set_hfss_extent_info(self, extents):
         """Set HFSS Extents of this cell.
 
         Parameters
         ----------
-        extents : dict
-            Possible keys : Values where key is :class:`HfssExtentInfo <ansys.edb.utility.HfssExtentInfo>` \
-            attribute and value it's value.
-             - use_open_region: bool
-                Is Open Region used?
-             - extent_type: :class:`HFSSExtentInfoType <ansys.edb.utility.HfssExtentInfo.HFSSExtentInfoType>`
-                Extent type.
-             - open_region_type: :class:`OpenRegionType <ansys.edb.utility.HfssExtentInfo.OpenRegionType>`
-                Open region type.
-             - base_polygon: Primitive
-                Polygon to use if extent type is Polygon.
-             - dielectric_extent_type: :class:`HFSSExtentInfoType <ansys.edb.utility.HfssExtentInfo.HFSSExtentInfoType>`
-                Dielectric extent type.
-             - dielectric_base_polygon: :class:`Primitive <ansys.edb.primitive.Primitive>`
-                Polygon to use if dielectric extent type is Polygon.
-             - dielectric: (float, bool)
-                Dielectric extent size. First parameter is the value and second parameter \
-                indicates if the value is a multiple.
-             - honor_user_dielectric: bool
-                Honoring user defined dielectric primitive when calculate dielectric extent.
-             - airbox_truncate_at_ground: bool
-                Whether airbox will be truncated at the ground layers.
-             - airbox_horizontal: (float, bool)
-                Airbox horizontal extent size. First parameter is the value and second parameter \
-                indicates if the value is a multiple.
-             - airbox_vertical_positive: (float, bool)
-                Airbox positive vertical extent size. First parameter is the value and second parameter \
-                indicates if the value is a multiple.
-             - airbox_vertical_negative: (float, bool)
-                Airbox negative vertical extent size. First parameter is the value and second parameter indicates \
-                if the value is a multiple.
-             - sync_airbox_vertical_extent: bool
-                Whether airbox positive and negative vertical extent will be synchronized.
-             - is_pml_visible: bool
-                Check to see if the PML boxes should be rendered or not.
-             - operating_frequency: :class:`Value <ansys.edb.utility.Value>`
-                PML Operating Frequency.
-             - radiation_level: :class:`Value <ansys.edb.utility.Value>`
-                PML Radiation level to calculate the thickness of boundary.
-             - user_xy_data_extent_for_vertical_expansion: bool
-                if true, retain the old behaviour for the vertical expansion of the airbox.
-                The vertical extent will be calculated from the XY data extent.
+        extents : :class: HfssExtentInfo <ansys.edb.utility.HfssExtentInfo>
         """
-        self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, **extents))
+        self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, extents))
 
     @property
     def temperature_settings(self):

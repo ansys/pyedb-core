@@ -129,8 +129,8 @@ class BaseExample:
     def create_point_terminal(self, net_name, name, point, layer_name):
         return PointTerminal.create(self.layout, self.net(net_name), layer_name, name, point)
 
-    def set_hfss_extents(self, **extents):
-        self.cell.set_hfss_extent_info(**extents)
+    def set_hfss_extents(self, extents):
+        self.cell.set_hfss_extent_info(extents)
 
 
 def um(val, val2=None):
@@ -390,7 +390,7 @@ class SpiralInductor(BaseExample):
 
     def set_extents(self):
         print("setting HFSS extents")
-        self.set_hfss_extents(
+        hfss_info = HfssExtentInfo(
             dielectric_extent_type=HfssExtentInfo.HFSSExtentInfoType.CONFORMING,
             dielectric=(0.0, False),
             honor_user_dielectric=True,
@@ -401,6 +401,7 @@ class SpiralInductor(BaseExample):
             is_pml_visible=True,
             operating_frequency=0,
         )
+        self.set_hfss_extents(hfss_info)
 
     def create_adaptive_settings(self):
         print("creating adaptive settings")

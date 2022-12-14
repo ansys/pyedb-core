@@ -49,10 +49,32 @@ class _QueryBuilder:
 class RTree(ObjBase):
     """Class representing an RTree."""
 
-    __stub: r_tree_pb2_grpc.RTreeServiceStub = StubAccessor(StubType.r_tree)
+    class RTreeObj:
+        """Class representing an RTreeObj object."""
 
-    @classmethod
-    def create(cls, tolerance):
+        def __init__(
+            self,
+            polygon,
+            obj,
+        ):
+            """Construct a RTreeObj object using given values.
+
+            Parameters
+            ----------
+            polygon: :class:`PolygonData <ansys.edb.primitive.Polygon>`
+                The polygon representation for the object in the spatial index.
+            obj: ObjBase
+                The object to be stored in the index.
+            """
+            self.__unique_id = None
+            self.polygon = polygon
+            self.obj = obj
+
+    __stub: r_tree_pb2_grpc.RTreeServiceStub = StubAccessor(StubType.r_tree)
+    rtree_obj_dict = None
+    unique_id = None
+
+    def create(self, tolerance=1e-9):
         """Create an RTree.
 
         Parameters
@@ -63,9 +85,15 @@ class RTree(ObjBase):
         Returns
         -------
         RTree
-            RTree created
+            The new RTree created.
         """
-        return RTree(cls.__stub.Create(messages.double_message(tolerance)))
+        self.rtree_obj_dict = {}
+        self.unique_id = 1
+        return RTree(self.__stub.Create(messages.double_message(tolerance)))
+
+    def increase_unique_id(self):
+        """Increase RTree unique id counter."""
+        self.unique_id += 1
 
     @property
     @parser.to_box
@@ -73,42 +101,53 @@ class RTree(ObjBase):
         """Tuple[geometry.PointData, geometry.PointData]: Get the bounding-box for the contents of the RTree."""
         return self.__stub.GetExtent(self.msg)
 
-    def insert_int_object(self, polygon, prop_id):
-        """Insert RTree int object.
+    def insert(self, rtree_obj):
+        """Insert RTreeObj from the RTree object.
 
         Parameters
         ----------
-        polygon: Polygon of the RTree object
-        prop_id: Id of the RTree object
+        rtree_obj: RTreeObj
+            An R-tree data object, with index.
         """
-        self.__stub.InsertIntObject(_QueryBuilder.r_tree_obj_message(self, polygon, prop_id))
+        self.increase_unique_id()
+        rtree_obj.__unique_id = self.unique_id
+        self.rtree_obj_dict[rtree_obj.__unique_id] = rtree_obj
+        self.__stub.InsertIntObject(
+            _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+        )
 
-    def delete_int_object(self, polygon, prop_id):
-        """Delete RTree int object.
+    def delete(self, rtree_obj):
+        """Delete RTreeObj from the RTree object.
 
         Parameters
         ----------
-        polygon: Polygon of the RTree object
-        prop_id: Id of the RTree object
+        rtree_obj: RTreeObj
+            An R-tree data object, with index.
         """
-        self.__stub.DeleteIntObject(_QueryBuilder.r_tree_obj_message(self, polygon, prop_id))
+        del self.rtree_obj_dict[rtree_obj.__unique_id]
+        self.__stub.DeleteIntObject(
+            _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+        )
 
     def empty(self):
-        """Empty an RTree.
+        """Check if the RTree is contains no geometry.
 
         Returns
         -------
         bool
         """
-        return self.__stub.Empty(self.msg).value
+        msg_empty = self.__stub.Empty(self.msg).value
+        return (len(self.rtree_obj_dict) == 0) == msg_empty
 
     def search(self, box, bb_search):
         """Search all objects intersecting the given box.
 
         Parameters
         ----------
-        box: The testing region, described as a (lower-left, upper-right) box.
-        bb_search: If true, an RTreeObj intersects when the bounding-box of it's PolygonData intersects the testing \
+        box: box
+            The testing region, described as a (lower-left, upper-right) box.
+        bb_search: bool
+            If true, an RTreeObj intersects when the bounding-box of it's PolygonData intersects the testing \
         object. If false, an explicit intersection is required for a hit.
 
         Returns
@@ -119,98 +158,117 @@ class RTree(ObjBase):
         msg = self.__stub.Search(_QueryBuilder.r_tree_search_message(self, box, bb_search))
         return [int(to_id) for to_id in msg.props]
 
-    def nearest_neighbor(self, polygon, prop_id):
+    def nearest_neighbor(self, rtree_obj):
         """Find the nearest-neighbor of the given RTree object (polygon, id pair).
 
         Parameters
         ----------
-        polygon: Polygon of the RTree object
-        prop_id: Id of the RTree object
+        rtree_obj: RTreeObj
+            An R-tree data object, with index.
 
         Returns
         -------
-        :obj:`tuple` of int, tuple[geometry.PointData, geometry.PointData]
-        int: The nearest-neighbor in the RTree to the provided obj, or null if nothing is found.
+        :obj:`tuple` of RTreeObj, tuple[geometry.PointData, geometry.PointData]
+        RTreeObj: The nearest-neighbor in the RTree to the provided obj, or null if nothing is found.
         tuple[geometry.PointData, geometry.PointData]: A line-segment spanning the closest points between obj and \
         nearest.
         """
-        msg = self.__stub.NearestNeighbor(_QueryBuilder.r_tree_obj_message(self, polygon, prop_id))
-        return msg.id, parser.to_box(msg.coordinates)
+        msg = self.__stub.NearestNeighbor(
+            _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+        )
+        return self.rtree_obj_dict[msg.id], parser.to_box(msg.coordinates)
 
-    def touching_geometry(self, polygon, prop_id, increment_visit):
+    def touching_geometry(self, rtree_obj, increment_visit):
         """Find all geometry touching the provided RTree object (polygon, id pair).  Note that the  provided RTree \
         object is not returned in the touching list.
 
         Parameters
         ----------
-        polygon: Polygon of the RTree object
-        prop_id: Id of the RTree object
-        increment_visit: If True, increment the visit counter for items returned in connected.
+        rtree_obj: RTreeObj
+            An R-tree data object, with index.
+        increment_visit: bool
+            If True, increment the visit counter for items returned in connected.
 
         Returns
         -------
-        :obj:`list` of int
+        :obj:`list` of RTreeObj
             All touching RTree objects.
         """
         msg = self.__stub.TouchingGeometry(
-            _QueryBuilder.r_tree_geometry_request_message(self, polygon, prop_id, increment_visit)
+            _QueryBuilder.r_tree_geometry_request_message(
+                self, rtree_obj.polygon, rtree_obj.__unique_id, increment_visit
+            )
         )
-        return [int(to_id) for to_id in msg.props]
+        return [self.rtree_obj_dict[int(to_id)] for to_id in msg.props]
 
-    def connected_geometry(self, polygon, prop_id, increment_visit):
+    def connected_geometry(self, rtree_obj, increment_visit):
         """Find connected geometry.  Note that, if connections exists, the provided RTree object \
         will be returned in the connected list.
 
         Parameters
         ----------
-        polygon: Polygon of the RTree object
-        prop_id: Id of the RTree object
+        rtree_obj: RTreeObj
+            An R-tree data object, with index.
         increment_visit: If True, increment the visit counter for items returned in connected.
 
         Returns
         -------
-        :obj:`list` of int
+        :obj:`list` of RTreeObj
             The connected geometry list.
         """
         msg = self.__stub.ConnectedGeometry(
-            _QueryBuilder.r_tree_geometry_request_message(self, polygon, prop_id, increment_visit)
+            _QueryBuilder.r_tree_geometry_request_message(
+                self, rtree_obj.polygon, rtree_obj.__unique_id, increment_visit
+            )
         )
-        return [int(to_id) for to_id in msg.props]
+        return [self.rtree_obj_dict[int(to_id)] for to_id in msg.props]
 
     @property
     def connected_geometry_sets(self):
-        """:obj:`tuple` of :obj:`list` of int, :obj:`list` of int (ids, sizes): Connected geometry sets of an RTree \
+        """:obj:`list` of :obj:`lists' of RTreeObj: Connected geometry sets of an RTree \
         (ids, sizes)."""
         msg = self.__stub.GetConnectedGeometrySets(messages.edb_obj_message(self))
-        return [i for i in msg.id], [i for i in msg.sizes]
+        set_start = 0
+        rtree_obj_sets = []
+        for set_size in range(0, len(msg.sizes) - 1):
+            rtree_obj_set = []
+            for j in range(set_start, set_size):
+                rtree_obj_set.append(self.rtree_obj_dict[msg.id[j]])
+            set_start += set_size
+            rtree_obj_sets.append(rtree_obj_set)
+        return rtree_obj_sets
 
     def increment_visit(self):
         """Increment the visit count, effectively marking all items in the tree unvisited."""
         self.__stub.IncrementVisit(messages.edb_obj_message(self))
 
-    def is_visited(self, polygon, prop_id):
+    def is_visited(self, rtree_obj):
         """Check whether a given object has been visited.
 
         Parameters
         ----------
-        polygon: Polygon of the RTree object
-        prop_id: Id of the RTree object
+        rtree_obj: RTreeObj
+            An R-tree data object, with index.
 
         Returns
         -------
         bool
         """
-        return self.__stub.IsVisited(_QueryBuilder.r_tree_obj_message(self, polygon, prop_id)).value
+        return self.__stub.IsVisited(
+            _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+        ).value
 
-    def visit(self, polygon, prop_id):
+    def visit(self, rtree_obj):
         """Increment a given RTree object (polygon, id pair) count.
 
         Parameters
         ----------
-        polygon: Polygon of the RTree object
-        prop_id: Id of the RTree object
+        rtree_obj: RTreeObj
+            An R-tree data object, with index.
         """
-        self.__stub.Visit(_QueryBuilder.r_tree_obj_message(self, polygon, prop_id))
+        self.__stub.Visit(
+            _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+        )
 
     @property
     def get_visit(self):

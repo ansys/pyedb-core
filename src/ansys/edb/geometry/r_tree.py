@@ -71,8 +71,8 @@ class RTree(ObjBase):
             self.obj = obj
 
     __stub: r_tree_pb2_grpc.RTreeServiceStub = StubAccessor(StubType.r_tree)
-    rtree_obj_dict = None
-    unique_id = None
+    __rtree_obj_dict = None
+    __unique_id = None
 
     def create(self, tolerance=1e-9):
         """Create an RTree.
@@ -94,6 +94,7 @@ class RTree(ObjBase):
     def increase_unique_id(self):
         """Increase RTree unique id counter."""
         self.unique_id += 1
+        return self.unique_id
 
     @property
     @parser.to_box
@@ -124,10 +125,10 @@ class RTree(ObjBase):
         rtree_obj: RTreeObj
             An R-tree data object, with index.
         """
-        del self.rtree_obj_dict[rtree_obj.__unique_id]
         self.__stub.DeleteIntObject(
             _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
         )
+        del self.rtree_obj_dict[rtree_obj.__unique_id]
 
     def empty(self):
         """Check if the RTree is contains no geometry.
@@ -152,11 +153,11 @@ class RTree(ObjBase):
 
         Returns
         -------
-        :obj:`list` of int
+        :obj:`list` of RTreeObj
             A list of intersecting RTreeObj.
         """
         msg = self.__stub.Search(_QueryBuilder.r_tree_search_message(self, box, bb_search))
-        return [int(to_id) for to_id in msg.props]
+        return [self.rtree_obj_dict[int(to_id)] for to_id in msg.props]
 
     def nearest_neighbor(self, rtree_obj):
         """Find the nearest-neighbor of the given RTree object (polygon, id pair).

@@ -9,10 +9,10 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
+   HfssExtentInfo
    PortPostProcessingProp
    Rlc
    TemperatureSettings
    Transform
    Transform3D
    Value
-

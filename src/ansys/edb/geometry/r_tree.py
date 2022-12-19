@@ -64,12 +64,7 @@ class RTree(ObjBase):
     __stub: r_tree_pb2_grpc.RTreeServiceStub = StubAccessor(StubType.r_tree)
 
     def __init__(self, msg):
-        """Init method for RTree.
-
-        Parameters
-        ----------
-        msg
-        """
+        """Init method for RTree."""
         super().__init__(msg)
         self.__rtree_obj_dict = {}
         self._unique_id = None
@@ -237,7 +232,7 @@ class RTree(ObjBase):
 
     @property
     def connected_geometry_sets(self):
-        """:obj:`list` of :obj:`lists' of RTreeObj: Connected geometry sets of an RTree \
+        """:obj:`list` of :obj:`list` of RTreeObj: Connected geometry sets of an RTree \
         (ids, sizes)."""
         msg = self.__stub.GetConnectedGeometrySets(messages.edb_obj_message(self))
         set_start = 0

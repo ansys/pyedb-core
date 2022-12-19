@@ -8,7 +8,50 @@ from ansys.edb.utility.value import Value
 
 
 class HfssExtentInfo:
-    """HFSS Extent info class."""
+    """HFSS Extent info class.
+
+    Attributes
+    ----------
+        use_open_region: bool
+            Is Open Region used?
+        extent_type: HfssExtentInfo.HFSSExtentInfoType
+            Extent type.
+        open_region_type: HfssExtentInfo.OpenRegionType
+            Open region type.
+        base_polygon: Primitive
+            Polygon to use if extent type is Polygon.
+        dielectric_extent_type: HfssExtentInfo.HFSSExtentInfoType
+            Dielectric extent type.
+        dielectric_base_polygon: :class:`Primitive <ansys.edb.primitive.Primitive>`
+            Polygon to use if dielectric extent type is Polygon.
+        dielectric: (float, bool)
+            Dielectric extent size. First parameter is the value and second parameter \
+            indicates if the value is a multiple.
+        honor_user_dielectric: bool
+            Honoring user defined dielectric primitive when calculate dielectric extent.
+        airbox_truncate_at_ground: bool
+            Whether airbox will be truncated at the ground layers.
+        airbox_horizontal: (float, bool)
+            Airbox horizontal extent size. First parameter is the value and second parameter \
+            indicates if the value is a multiple.
+        airbox_vertical_positive: (float, bool)
+            Airbox positive vertical extent size. First parameter is the value and second parameter \
+            indicates if the value is a multiple.
+        airbox_vertical_negative: (float, bool)
+            Airbox negative vertical extent size. First parameter is the value and second parameter indicates \
+            if the value is a multiple.
+        sync_airbox_vertical_extent: bool
+            Whether airbox positive and negative vertical extent will be synchronized.
+        is_pml_visible: bool
+            Check to see if the PML boxes should be rendered or not.
+        operating_frequency: :class:`Value <ansys.edb.utility.Value>`
+            PML Operating Frequency.
+        radiation_level: :class:`Value <ansys.edb.utility.Value>`
+            PML Radiation level to calculate the thickness of boundary.
+        user_xy_data_extent_for_vertical_expansion: bool
+            if true, retain the old behaviour for the vertical expansion of the airbox.
+            The vertical extent will be calculated from the XY data extent.
+    """
 
     class HFSSExtentInfoType(Enum):
         """Enum representing available hfss extenct info types.

@@ -50,17 +50,6 @@ message RTreeSearchMessage {
   bool bb_search = 3;
 }
 
-message RTreePolyMessage {
-  EDBObjMessage target = 1;
-  EDBObjMessage polygon = 2;
-  uint64 id = 3;
-}
-
-message TouchingGeometryMessage {
-  RTreePolyMessage target = 1;
-  bool increment_visit = 2;
-}
-
 message NearestNeighborResponseMessage {
   uint64 id = 1;
   BoxMessage coordinates = 2;

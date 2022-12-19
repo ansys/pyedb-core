@@ -150,7 +150,7 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        box: Tuple[:class:`PointData <geometry.PointData>, :class:`PointData <geometry.PointData>]
+        box: Tuple[:class:`PointData <geometry.PointData>`, :class:`PointData <geometry.PointData>`]
             The testing region, described as a (lower-left, upper-right) box.
         bb_search: bool
             If true, an RTreeObj intersects when the bounding-box of it's \

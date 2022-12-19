@@ -5,7 +5,6 @@ syntax = "proto3";
 package ansys.api.edb.v1;
 
 import "edb_messages.proto";
-import "refs.proto";
 
 service VoltageRegulatorService {
   rpc Create (VoltageRegulatorMessage) returns (EDBObjMessage) {}
@@ -25,21 +24,24 @@ service VoltageRegulatorService {
   rpc GetLoadRegulationPercent(EDBObjMessage) returns (ValueMessage) {}
   rpc SetLoadRegulationPercent(ValuePropertyMessage) returns (google.protobuf.Empty) {}
 
-  rpc GetNPowerModules(EDBObjMessage) returns (google.protobuf.Int64Value){}
-
-  rpc GetNActivePowerModules(EDBObjMessage) returns (google.protobuf.Int64Value) {}
-
   rpc GetPosRemoteSensePin(EDBObjMessage) returns (EDBObjMessage) {}
   rpc SetPosRemoteSensePin(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
 
   rpc GetNegRemoteSensePin(EDBObjMessage) returns (EDBObjMessage) {}
-  rpc SetNegRemoteSensePin(EDBObjCollectionMessage) returns (google.protobuf.Empty) {} 
+  rpc SetNegRemoteSensePin(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+  
+  rpc GetNPowerModules(EDBObjMessage) returns (google.protobuf.Int64Value){}
+  rpc GetNActivePowerModules(EDBObjMessage) returns (google.protobuf.Int64Value) {}
 
-  rpc AddPowerModule(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
-  rpc RemovePowerModule(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+  rpc GetPowerModule(StringPropertyMessage) returns (PowerModuleMessage) {}
+  rpc GetAllPowerModules(EDBObjMessage) returns (PowerModulesMessage) {}
 
-  rpc AddPowerModules(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
-  rpc RemovePowerModules(EDBObjCollectionMessage) returns (google.protobuf.Empty) {}
+  rpc AddPowerModule(PowerModulePropertyMessage) returns (google.protobuf.Empty) {}
+  rpc RemovePowerModule(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc AddPowerModules(PowerModulesPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc RemovePowerModules(StringsPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc RemoveAllPowerModules(EDBObjMessage) returns (google.protobuf.Empty) {}
 }
 
 message VoltageRegulatorMessage {
@@ -49,5 +51,28 @@ message VoltageRegulatorMessage {
   ValueMessage voltage = 4;
   ValueMessage lrc = 5;
   ValueMessage lrp = 6;
+}
+
+message PowerModuleMessage {
+  string comp_group_name = 1;
+  string pos_output_terminal = 2;
+  string neg_output_terminal = 3;
+  ValueMessage relative_strength = 4;
+  bool active = 5;
+  bool needs_sync = 6;
+}
+
+message PowerModulesMessage {
+  repeated PowerModuleMessage data = 1;
+}
+
+message PowerModulePropertyMessage {
+  EDBObjMessage vrm = 1;
+  PowerModuleMessage module = 2;
+}
+
+message PowerModulesPropertyMessage {
+  EDBObjMessage vrm = 1;
+  PowerModulesMessage modules = 2;
 }
 

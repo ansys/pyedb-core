@@ -50,7 +50,7 @@ message TemperatureSettingsMessage {
 // HFSS Extents
 
 message HfssExtentMessage {
-  float value = 1;
+  double value = 1;
   bool absolute = 2;
 }
 

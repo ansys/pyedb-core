@@ -9,9 +9,11 @@ import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 from ansys.edb.core import ObjBase, messages, variable_server
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import layout
+from ansys.edb.primitive import Primitive
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.simulation_setup import SimulationSetup
-from ansys.edb.utility import TemperatureSettings
+from ansys.edb.utility import TemperatureSettings, Value
+from ansys.edb.utility.hfss_extent_info import HfssExtentInfo
 
 
 class CellType(Enum):
@@ -38,22 +40,44 @@ class DesignMode(Enum):
 
 # dict representing options of HFSS Extents available via API.
 HFSS_EXTENT_ARGS = {
+    "use_open_region": "bool",
+    "extent_type": "HfssExtentsType",
+    "open_region_type": "HfssExtentsOpenRegionType",
+    "base_polygon": "EDBObjMessage",
+    "dielectric_extent_type": "HfssExtentsType",
+    "dielectric_base_polygon": "EDBObjMessage",
     "dielectric": "HfssExtentMessage",
+    "honor_user_dielectric": "bool",
+    "airbox_truncate_at_ground": "bool",
     "airbox_horizontal": "HfssExtentMessage",
     "airbox_vertical_positive": "HfssExtentMessage",
     "airbox_vertical_negative": "HfssExtentMessage",
-    "airbox_truncate_at_ground": "BoolValueMessage",
+    "sync_airbox_vertical_extent": "bool",
+    "is_pml_visible": "bool",
+    "operating_frequency": "ValueMessage",
+    "radiation_level": "ValueMessage",
+    "user_xy_data_extent_for_vertical_expansion": "bool",
 }
 
 
-def _translate_bool_value(bool_value):
-    """Convert BoolValue Message to tuple of expected values."""
-    return bool_value.value
+def _return_value(value):
+    """Return value as it is."""
+    return value
 
 
 def _translate_hfss_extent(hfss_extent_msg):
     """Convert HfssExtentMessage to tuple of expected values."""
     return hfss_extent_msg.value, hfss_extent_msg.absolute
+
+
+def _translate_hfss_extents_enums(msg):
+    """Convert HfssExtent enums to get it's values."""
+    return msg.value
+
+
+def primitive_helper(msg):
+    """Convert message to primitive."""
+    return Primitive(msg).cast()
 
 
 # dictionary describing message type and functions to translate them
@@ -62,9 +86,25 @@ _HFSS_EXTENT_MESSAGE_HELPER = {
         "msg": messages.hfss_extent_message,
         "val": _translate_hfss_extent,
     },
-    "BoolValueMessage": {
-        "msg": messages.bool_message,
-        "val": _translate_bool_value,
+    "bool": {
+        "msg": _return_value,
+        "val": bool,
+    },
+    "ValueMessage": {
+        "msg": messages.value_message,
+        "val": Value,
+    },
+    "EDBObjMessage": {
+        "msg": messages.edb_obj_message,
+        "val": primitive_helper,
+    },
+    "HfssExtentsType": {
+        "msg": _translate_hfss_extents_enums,
+        "val": HfssExtentInfo.HFSSExtentInfoType,
+    },
+    "HfssExtentsOpenRegionType": {
+        "msg": _translate_hfss_extents_enums,
+        "val": HfssExtentInfo.OpenRegionType,
     },
 }
 
@@ -95,9 +135,10 @@ class _QueryBuilder:
         return cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=name)
 
     @staticmethod
-    def set_hfss_extents(cell, **extents):
-        extents = sanitize_args(extents)
-        return cell_pb2.CellSetHfssExtentsMessage(cell=cell.msg, **extents)
+    def set_hfss_extents(cell, extents):
+        return cell_pb2.CellSetHfssExtentsMessage(
+            cell=cell.msg, info=messages.hfss_extent_info_message(extents)
+        )
 
 
 class Cell(ObjBase, variable_server.VariableServer):
@@ -261,18 +302,18 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def hfss_extent_info(self):
-        """:term:`HFSSExtents` : HFSS Extents for the cell."""
+        """:class: HfssExtentInfo <ansys.edb.utility.HfssExtentInfo> : HFSS Extents for the cell."""
         msg = self.__stub.GetHfssExtentInfo(self.msg)
-        return parse_args(msg)
+        return HfssExtentInfo(**parse_args(msg))
 
-    def set_hfss_extent_info(self, **extents):
+    def set_hfss_extent_info(self, extents):
         """Set HFSS Extents of this cell.
 
         Parameters
         ----------
-        extents : :term:`HFSSExtents`
+        extents : :class: HfssExtentInfo <ansys.edb.utility.HfssExtentInfo>
         """
-        self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, **extents))
+        self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, extents))
 
     @property
     def temperature_settings(self):

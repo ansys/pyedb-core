@@ -57,7 +57,7 @@ class RTree(ObjBase):
             obj: ObjBase
                 The object to be stored in the index.
             """
-            self.__unique_id = None
+            self._unique_id = None
             self.polygon = polygon
             self.obj = obj
 
@@ -72,7 +72,7 @@ class RTree(ObjBase):
         """
         super().__init__(msg)
         self.__rtree_obj_dict = {}
-        self.__unique_id = None
+        self._unique_id = None
 
     @classmethod
     def create(cls, tolerance=1e-9):
@@ -91,13 +91,13 @@ class RTree(ObjBase):
         rtree_created = RTree(cls.__stub.Create(messages.double_message(tolerance)))
         return rtree_created
 
-    def __handle_rtree_obj(self, rtree_obj):
-        if rtree_obj.__unique_id is None:
+    def _handle_rtree_obj(self, rtree_obj):
+        if rtree_obj._unique_id is None:
             for i in self.__rtree_obj_dict.keys():
-                if self.__rtree_obj_dict[i].polygon == rtree_obj.polygon:
-                    rtree_obj.__unique_id = self.__rtree_obj_dict[i].__unique_id
+                if self.__rtree_obj_dict[i].obj == rtree_obj.obj:
+                    rtree_obj._unique_id = self.__rtree_obj_dict[i]._unique_id
                     return True
-            return False
+            raise Exception("RTreeObj does not exist in RTree.")
         else:
             return True
 
@@ -115,12 +115,12 @@ class RTree(ObjBase):
         rtree_obj: RTreeObj
             An R-tree data object, with index.
         """
-        unique_id = 1 if self.__unique_id is None else self.__unique_id + 1
+        unique_id = 1 if self._unique_id is None else self._unique_id + 1
         self.__stub.InsertIntObject(
             _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, unique_id)
         )
-        self.__unique_id = unique_id
-        rtree_obj.__unique_id = int(unique_id)
+        self._unique_id = unique_id
+        rtree_obj._unique_id = int(unique_id)
         self.__rtree_obj_dict[unique_id] = rtree_obj
 
     def delete(self, rtree_obj):
@@ -131,11 +131,11 @@ class RTree(ObjBase):
         rtree_obj: RTreeObj
             An R-tree data object, with index.
         """
-        if self.__handle_rtree_obj(rtree_obj):
+        if self._handle_rtree_obj(rtree_obj):
             self.__stub.DeleteIntObject(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
-            del self.__rtree_obj_dict[rtree_obj.__unique_id]
+            del self.__rtree_obj_dict[rtree_obj._unique_id]
 
     def empty(self):
         """Check if the RTree is contains no geometry.
@@ -182,9 +182,9 @@ class RTree(ObjBase):
         tuple[geometry.PointData, geometry.PointData]: A line-segment spanning the closest points between obj and \
         nearest.
         """
-        if self.__handle_rtree_obj(rtree_obj):
+        if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.NearestNeighbor(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
             return self.__rtree_obj_dict[int(msg.id)], parser.to_box(msg.coordinates)
 
@@ -204,10 +204,10 @@ class RTree(ObjBase):
         :obj:`list` of RTreeObj
             All touching RTree objects.
         """
-        if self.__handle_rtree_obj(rtree_obj):
+        if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.TouchingGeometry(
                 _QueryBuilder.r_tree_geometry_request_message(
-                    self, rtree_obj.polygon, rtree_obj.__unique_id, increment_visit
+                    self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
                 )
             )
             return [self.__rtree_obj_dict[int(to_id)] for to_id in msg.props]
@@ -227,10 +227,10 @@ class RTree(ObjBase):
         :obj:`list` of RTreeObj
             The connected geometry list.
         """
-        if self.__handle_rtree_obj(rtree_obj):
+        if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.ConnectedGeometry(
                 _QueryBuilder.r_tree_geometry_request_message(
-                    self, rtree_obj.polygon, rtree_obj.__unique_id, increment_visit
+                    self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
                 )
             )
             return [self.__rtree_obj_dict[int(to_id)] for to_id in msg.props]
@@ -266,9 +266,9 @@ class RTree(ObjBase):
         -------
         bool
         """
-        if self.__handle_rtree_obj(rtree_obj):
+        if self._handle_rtree_obj(rtree_obj):
             return self.__stub.IsVisited(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             ).value
 
     def visit(self, rtree_obj):
@@ -279,9 +279,9 @@ class RTree(ObjBase):
         rtree_obj: RTreeObj
             An R-tree data object, with index.
         """
-        if self.__handle_rtree_obj(rtree_obj):
+        if self._handle_rtree_obj(rtree_obj):
             self.__stub.Visit(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj.__unique_id)
+                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
 
     @property

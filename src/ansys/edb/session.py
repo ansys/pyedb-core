@@ -2,6 +2,7 @@
 from contextlib import contextmanager
 from enum import Enum
 from os import path
+from shutil import which
 from struct import pack, unpack
 import subprocess
 from sys import modules
@@ -167,7 +168,7 @@ class _Session:
     @property
     def server_executable(self):
         if self.is_local():
-            return path.join(self.ansys_em_root, "EDB_RPC_Server")
+            return which(cmd="EDB_RPC_Server", path=self.ansys_em_root)
         else:
             return ""
 

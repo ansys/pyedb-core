@@ -517,32 +517,29 @@ def hfss_extent_message(val):
         absolute = False
     else:
         value, absolute = val
-
     return HfssExtentMessage(value=value, absolute=absolute)
 
 
 def hfss_extent_info_message(hfss_info):
     """Convert to HfssExtentInfoMessage."""
     return HfssExtentInfoMessage(
-        use_open_region=bool_message(hfss_info.use_open_region),
+        use_open_region=hfss_info.use_open_region,
         extent_type=hfss_info.extent_type.value,
         open_region_type=hfss_info.open_region_type.value,
         base_polygon=edb_obj_message(hfss_info.base_polygon),
         dielectric_extent_type=hfss_info.dielectric_extent_type.value,
         dielectric_base_polygon=edb_obj_message(hfss_info.dielectric_base_polygon),
         dielectric=hfss_extent_message(hfss_info.dielectric),
-        honor_user_dielectric=bool_message(hfss_info.honor_user_dielectric),
-        airbox_truncate_at_ground=bool_message(hfss_info.airbox_truncate_at_ground),
-        airbox_horizontal=hfss_extent_message(hfss_info.airbox_vertical_negative),
+        honor_user_dielectric=hfss_info.honor_user_dielectric,
+        airbox_truncate_at_ground=hfss_info.airbox_truncate_at_ground,
+        airbox_horizontal=hfss_extent_message(hfss_info.airbox_horizontal),
         airbox_vertical_positive=hfss_extent_message(hfss_info.airbox_vertical_positive),
         airbox_vertical_negative=hfss_extent_message(hfss_info.airbox_vertical_negative),
-        sync_airbox_vertical_extent=bool_message(hfss_info.sync_airbox_vertical_extent),
-        is_pml_visible=bool_message(hfss_info.is_pml_visible),
+        sync_airbox_vertical_extent=hfss_info.sync_airbox_vertical_extent,
+        is_pml_visible=hfss_info.is_pml_visible,
         operating_frequency=value_message(hfss_info.operating_frequency),
         radiation_level=value_message(hfss_info.radiation_level),
-        user_xy_data_extent_for_vertical_expansion=bool_message(
-            hfss_info.user_xy_data_extent_for_vertical_expansion
-        ),
+        user_xy_data_extent_for_vertical_expansion=hfss_info.user_xy_data_extent_for_vertical_expansion,
     )
 
 

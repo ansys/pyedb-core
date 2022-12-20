@@ -35,7 +35,7 @@ class MaterialPropertyThermalModifier(ObjBase):
     )
 
     @classmethod
-    def create(cls, basic_quadratic_params, advanced_quadratic_params):
+    def create(cls, basic_quadratic_params=None, advanced_quadratic_params=None):
         """Create a material property thermal modifier.
 
         Parameters

@@ -1,6 +1,5 @@
 """Material Property Thermal Modifier."""
 
-from ansys.api.edb.v1 import material_property_thermal_modifier_pb2 as pb
 from ansys.api.edb.v1 import material_property_thermal_modifier_pb2_grpc
 import ansys.api.edb.v1.material_def_pb2 as pb
 
@@ -74,7 +73,6 @@ class MaterialPropertyThermalModifier(ObjBase):
         Read-Only.
         """
         msg = self.__stub.GetQuadraticModelParams(messages.edb_obj_message(self))
-        auto_calc_constant_thermal_modifier_vals = True
         return BasicQuadraticParams(
             Value(msg.temp_ref),
             Value(msg.c1),
@@ -93,4 +91,4 @@ class MaterialPropertyThermalModifier(ObjBase):
 
         Read-Only.
         """
-        return self.__stub.GetThermalModifierExpression(messages.edb_obj_message(self))
+        return Value(self.__stub.GetThermalModifierExpression(messages.edb_obj_message(self)))

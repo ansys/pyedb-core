@@ -1,7 +1,6 @@
 """Session manager for gRPC."""
 from contextlib import contextmanager
 from enum import Enum
-from os import path
 from shutil import which
 from struct import pack, unpack
 import subprocess
@@ -170,7 +169,7 @@ class _Session:
         if self.is_local():
             return which(cmd="EDB_RPC_Server", path=self.ansys_em_root)
         else:
-            return ""
+            return
 
     def stub(self, name):
         if self.is_active():
@@ -209,7 +208,10 @@ class _Session:
             self.stop_server()
 
     def start_server(self):
-        if not path.isfile(self.server_executable):
+        if not self.is_local():
+            return
+
+        if self.server_executable is None:
             raise EDBSessionException(ErrorCode.STARTUP_NO_EXECUTABLE)
 
         try:

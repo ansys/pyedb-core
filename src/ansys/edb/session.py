@@ -169,7 +169,7 @@ class _Session:
         if self.is_local():
             return which(cmd="EDB_RPC_Server", path=self.ansys_em_root)
         else:
-            return
+            return None
 
     def stub(self, name):
         if self.is_active():
@@ -209,7 +209,7 @@ class _Session:
 
     def start_server(self):
         if not self.is_local():
-            return
+            return None
 
         if self.server_executable is None:
             raise EDBSessionException(ErrorCode.STARTUP_NO_EXECUTABLE)

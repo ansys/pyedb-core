@@ -10,6 +10,8 @@ Classes
    :toctree: _autosummary
 
    HfssExtentInfo
+   AdvancedQuadraticParams
+   BasicQuadraticParams
    PortPostProcessingProp
    Rlc
    TemperatureSettings

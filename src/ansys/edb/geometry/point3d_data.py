@@ -30,11 +30,13 @@ class Point3DData:
         """Add two points piecewise."""
         if isinstance(other, Point3DData):
             return Point3DData(self.x + other.x, self.y + other.y, self.z + other.z)
+        return NotImplemented
 
     def __sub__(self, other):
         """Subtract a point piecewise."""
         if isinstance(other, Point3DData):
             return Point3DData(self.x - other.x, self.y - other.y, self.z - other.z)
+        return NotImplemented
 
     def __mul__(self, other):
         """Compute a cross product if `Point3DData` is provided. otherwise scalar multiplication."""
@@ -45,11 +47,17 @@ class Point3DData:
             return Point3DData(x, y, z)
         if isinstance(other, (int, float)):
             return Point3DData(self.x * other, self.y * other, self.z * other)
+        return NotImplemented
+
+    def __rmul__(self, other):
+        """Compute a scalar multiplication."""
+        return self.__mul__(other)
 
     def __div__(self, other):
         """Compute a scalar division."""
         if isinstance(other, (int, float)):
             return Point3DData(self.x / other, self.y / other, self.z / other)
+        return NotImplemented
 
     def __neg__(self):
         """Negate the signs on point coordinates."""
@@ -96,7 +104,7 @@ class Point3DData:
 
         Returns
         -------
-        bool
+        Point3DData
         """
         if isinstance(other, Point3DData):
             return (self - other).magnitude
@@ -111,7 +119,7 @@ class Point3DData:
 
         Returns
         -------
-        bool
+        Point3DData
         """
         if isinstance(other, Point3DData):
             return 0.5 * (self + other)

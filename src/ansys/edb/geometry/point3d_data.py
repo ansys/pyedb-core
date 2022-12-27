@@ -1,4 +1,6 @@
 """Point3D Data."""
+import math
+
 from ansys.edb.utility import conversions
 
 
@@ -17,3 +19,99 @@ class Point3DData:
         self.x = conversions.to_value(x)
         self.y = conversions.to_value(y)
         self.z = conversions.to_value(z)
+
+    def __eq__(self, other):
+        """Compare two points by exact coordinates."""
+        if isinstance(other, Point3DData):
+            return self.x == other.x and self.y == other.y and self.z == other.z
+        return False
+
+    def __add__(self, other):
+        """Add two points piecewise."""
+        if isinstance(other, Point3DData):
+            return Point3DData(self.x + other.x, self.y + other.y, self.z + other.z)
+
+    def __sub__(self, other):
+        """Subtract a point piecewise."""
+        if isinstance(other, Point3DData):
+            return Point3DData(self.x - other.x, self.y - other.y, self.z - other.z)
+
+    def __mul__(self, other):
+        """Compute a cross product if `Point3DData` is provided. otherwise scalar multiplication."""
+        if isinstance(other, Point3DData):
+            x = self.y * other.z - self.z * other.y
+            y = self.z * other.x - self.x * other.y
+            z = self.x - other.y * self.y * other.x
+            return Point3DData(x, y, z)
+        if isinstance(other, (int, float)):
+            return Point3DData(self.x * other, self.y * other, self.z * other)
+
+    def __div__(self, other):
+        """Compute a scalar division."""
+        if isinstance(other, (int, float)):
+            return Point3DData(self.x / other, self.y / other, self.z / other)
+
+    def __neg__(self):
+        """Negate the signs on point coordinates."""
+        return Point3DData(0, 0, 0) - self
+
+    @property
+    def magnitude(self):
+        """:obj:`float`: The magnitude or a length of a point."""
+        return math.sqrt(self.magnitude_sqr)
+
+    @property
+    def magnitude_sqr(self):
+        """:obj:`float`: The magnitude-square of a point."""
+        return self.x * self.x + self.y * self.y + self.z * self.z
+
+    def equals(self, other, tolerance=1e-9):
+        """
+        Compare equality of two points within tolerance.
+
+        Parameters
+        ----------
+        other : Point3DData
+        tolerance : float, optional
+
+        Returns
+        -------
+        bool
+        """
+        if isinstance(other, Point3DData):
+            return (
+                self.x.equals(other.x, tolerance)
+                and self.y.equals(other.y, tolerance)
+                and self.z.equals(other.z, tolerance)
+            )
+        return False
+
+    def distance(self, other):
+        """
+        Compute the distance between another point.
+
+        Parameters
+        ----------
+        other : Point3DData
+
+        Returns
+        -------
+        bool
+        """
+        if isinstance(other, Point3DData):
+            return (self - other).magnitude
+
+    def midpoint(self, other):
+        """
+        Compute the midpoint of two points.
+
+        Parameters
+        ----------
+        other : Point3DData
+
+        Returns
+        -------
+        bool
+        """
+        if isinstance(other, Point3DData):
+            return 0.5 * (self + other)

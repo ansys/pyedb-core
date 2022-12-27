@@ -66,7 +66,8 @@ class RTree(ObjBase):
     def __init__(self, msg):
         """Init method for RTree."""
         super().__init__(msg)
-        self.__rtree_obj_dict = {}
+        self._id_to_obj = {}
+        self._obj_to_id = {}
         self._unique_id = None
 
     @classmethod
@@ -88,11 +89,11 @@ class RTree(ObjBase):
 
     def _handle_rtree_obj(self, rtree_obj):
         if rtree_obj._unique_id is None:
-            for i in self.__rtree_obj_dict.keys():
-                if self.__rtree_obj_dict[i].obj == rtree_obj.obj:
-                    rtree_obj._unique_id = self.__rtree_obj_dict[i]._unique_id
-                    return True
-            raise Exception("RTreeObj does not exist in RTree.")
+            if (rtree_obj.obj, rtree_obj.polygon) in self._obj_to_id.keys:
+                rtree_obj._unique_id = self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)]
+                return True
+            else:
+                raise Exception("RTreeObj does not exist in RTree.")
         else:
             return True
 
@@ -116,7 +117,8 @@ class RTree(ObjBase):
         )
         self._unique_id = unique_id
         rtree_obj._unique_id = int(unique_id)
-        self.__rtree_obj_dict[unique_id] = rtree_obj
+        self._id_to_obj[unique_id] = rtree_obj
+        self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)] = unique_id
 
     def delete(self, rtree_obj):
         """Delete RTreeObj from the RTree object.
@@ -130,7 +132,8 @@ class RTree(ObjBase):
             self.__stub.DeleteIntObject(
                 _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
-            del self.__rtree_obj_dict[rtree_obj._unique_id]
+            del self._id_to_obj[rtree_obj._unique_id]
+            del self._obj_to_id[rtree_obj]
 
     def empty(self):
         """Check if the RTree is contains no geometry.
@@ -160,7 +163,7 @@ class RTree(ObjBase):
             A list of intersecting RTreeObj.
         """
         msg = self.__stub.Search(_QueryBuilder.r_tree_search_message(self, box, bb_search))
-        return [self.__rtree_obj_dict[int(to_id)] for to_id in msg.props]
+        return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     def nearest_neighbor(self, rtree_obj):
         """Find the nearest-neighbor of the given RTree object (polygon, id pair).
@@ -181,7 +184,7 @@ class RTree(ObjBase):
             msg = self.__stub.NearestNeighbor(
                 _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
-            return self.__rtree_obj_dict[int(msg.id)], parser.to_box(msg.coordinates)
+            return self._id_to_obj[int(msg.id)], parser.to_box(msg.coordinates)
 
     def touching_geometry(self, rtree_obj, increment_visit):
         """Find all geometry touching the provided RTree object (polygon, id pair).  Note that the  provided RTree \
@@ -205,7 +208,7 @@ class RTree(ObjBase):
                     self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
                 )
             )
-            return [self.__rtree_obj_dict[int(to_id)] for to_id in msg.props]
+            return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     def connected_geometry(self, rtree_obj, increment_visit):
         """Find connected geometry.  Note that, if connections exists, the provided RTree object \
@@ -228,7 +231,7 @@ class RTree(ObjBase):
                     self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
                 )
             )
-            return [self.__rtree_obj_dict[int(to_id)] for to_id in msg.props]
+            return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     @property
     def connected_geometry_sets(self):
@@ -240,7 +243,7 @@ class RTree(ObjBase):
         for set_size in range(0, len(msg.sizes) - 1):
             rtree_obj_set = []
             for j in range(set_start, set_size):
-                rtree_obj_set.append(self.__rtree_obj_dict[msg.id[j]])
+                rtree_obj_set.append(self._id_to_obj[msg.id[j]])
             set_start += set_size
             rtree_obj_sets.append(rtree_obj_set)
         return rtree_obj_sets

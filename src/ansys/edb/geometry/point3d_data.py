@@ -1,6 +1,4 @@
 """Point3D Data."""
-import math
-
 from ansys.edb.utility import conversions
 
 
@@ -66,7 +64,7 @@ class Point3DData:
     @property
     def magnitude(self):
         """:obj:`float`: The magnitude or a length of a point."""
-        return math.sqrt(self.magnitude_sqr)
+        return self.magnitude_sqr.sqrt.double
 
     @property
     def magnitude_sqr(self):
@@ -104,7 +102,7 @@ class Point3DData:
 
         Returns
         -------
-        Point3DData
+        float
         """
         if isinstance(other, Point3DData):
             return (self - other).magnitude

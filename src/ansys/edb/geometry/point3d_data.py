@@ -3,7 +3,7 @@ from ansys.edb.utility import conversions
 
 
 class Point3DData:
-    """Class representing 3D point system."""
+    """Represent a point on 3D coordinate system."""
 
     def __init__(self, x, y, z):
         """Initialize a 3D point.
@@ -14,9 +14,7 @@ class Point3DData:
         y : :term:`ValueLike`
         z : :term:`ValueLike`
         """
-        self.x = conversions.to_value(x)
-        self.y = conversions.to_value(y)
-        self.z = conversions.to_value(z)
+        self.x, self.y, self.z = x, y, z
 
     def __eq__(self, other):
         """Compare two points by exact coordinates."""
@@ -41,7 +39,7 @@ class Point3DData:
         if isinstance(other, Point3DData):
             x = self.y * other.z - self.z * other.y
             y = self.z * other.x - self.x * other.y
-            z = self.x - other.y * self.y * other.x
+            z = self.x * other.y - self.y * other.x
             return Point3DData(x, y, z)
         if isinstance(other, (int, float)):
             return Point3DData(self.x * other, self.y * other, self.z * other)
@@ -60,6 +58,33 @@ class Point3DData:
     def __neg__(self):
         """Negate the signs on point coordinates."""
         return Point3DData(0, 0, 0) - self
+
+    @property
+    def x(self):
+        """:class:`Value<ansys.edb.utility.Value>`: x coordinate."""
+        return self._x
+
+    @x.setter
+    def x(self, x):
+        self._x = conversions.to_value(x)
+
+    @property
+    def y(self):
+        """:class:`Value<ansys.edb.utility.Value>`: y coordinate."""
+        return self._y
+
+    @y.setter
+    def y(self, y):
+        self._y = conversions.to_value(y)
+
+    @property
+    def z(self):
+        """:class:`Value<ansys.edb.utility.Value>`: z coordinate."""
+        return self._z
+
+    @z.setter
+    def z(self, z):
+        self._z = conversions.to_value(z)
 
     @property
     def magnitude(self):
@@ -94,7 +119,7 @@ class Point3DData:
 
     def distance(self, other):
         """
-        Compute the distance between another point.
+        Compute the distance to another point.
 
         Parameters
         ----------

@@ -1,0 +1,26 @@
+// Proto file representing the EDB AdaptiveSettings class and derived classes
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service MaterialPropertyThermalModifierService {
+  rpc Create(MaterialPropertyThermalModifierParamsMessage) returns (EDBObjMessage) {}
+
+  rpc GetQuadraticModelParams(EDBObjMessage) returns (MaterialPropertyThermalModifierParamsMessage) {}
+
+  rpc GetThermalModifierExpression(EDBObjMessage) returns (ValueMessage) {}
+}
+
+message MaterialPropertyThermalModifierParamsMessage{
+  ValueMessage temp_ref = 1;
+  ValueMessage c1 = 2;
+  ValueMessage c2 = 3;
+  ValueMessage temp_lower_limit = 4;
+  ValueMessage temp_upper_limit = 5;
+  bool auto_calc_constant_thermal_modifier = 6;
+  ValueMessage lower_const_therm_mod = 7;
+  ValueMessage upper_const_therm_mod = 8;
+}

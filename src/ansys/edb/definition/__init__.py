@@ -25,6 +25,7 @@ from ansys.edb.definition.dielectric_material_model import (
 from ansys.edb.definition.djordjecvic_sarkar_model import DjordjecvicSarkarModel
 from ansys.edb.definition.ic_component_property import ICComponentProperty
 from ansys.edb.definition.material_def import MaterialDef, MaterialProperty, ThermalModifier
+from ansys.edb.definition.material_property_thermal_modifier import MaterialPropertyThermalModifier
 from ansys.edb.definition.multipole_debye_model import MultipoleDebyeModel
 from ansys.edb.definition.package_def import PackageDef
 from ansys.edb.definition.padstack_def import PadstackDef

@@ -59,6 +59,9 @@ from ansys.api.edb.v1.layout_obj_instance_pb2_grpc import LayoutObjInstanceServi
 from ansys.api.edb.v1.layout_obj_pb2_grpc import LayoutObjServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
+from ansys.api.edb.v1.material_property_thermal_modifier_pb2_grpc import (
+    MaterialPropertyThermalModifierServiceStub,
+)
 from ansys.api.edb.v1.mcad_model_pb2_grpc import McadModelServiceStub
 from ansys.api.edb.v1.multipole_debye_model_pb2_grpc import MultipoleDebyeModelServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
@@ -346,6 +349,7 @@ class StubType(Enum):
     multipole_debye_model = MultipoleDebyeModelServiceStub
     djordecvic_sarkar_model = DjordjecvicSarkarModelServiceStub
     mcad_model = McadModelServiceStub
+    material_property_thermal_modifier = MaterialPropertyThermalModifierServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):

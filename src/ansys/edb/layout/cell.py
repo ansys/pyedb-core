@@ -320,7 +320,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         """:class:`TemperatureSettings <ansys.edb.utility.TemperatureSettings>` :Temperature settings."""
         msg = self.__stub.GetTemperatureSettings(self.msg)
         return TemperatureSettings(
-            msg.include_temp_dependence, msg.enable_thermal_feedback, msg.temperature
+            msg.include_temp_dependence, msg.enable_thermal_feedback, Value(msg.temperature)
         )
 
     @temperature_settings.setter

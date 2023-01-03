@@ -10,6 +10,7 @@ class TemperatureSettings:
     ----------
     include_temp_dependence : bool
     enable_thermal_feedback : bool
+    temperature : :term:`ValueLike`
     """
 
     def __init__(self, include_temp_dependence, enable_thermal_feedback, temperature):
@@ -24,15 +25,6 @@ class TemperatureSettings:
             return (
                 self.include_temp_dependence == other.include_temp_dependence
                 and self.enable_thermal_feedback == other.enable_thermal_feedback
-                and self.temperature == other.temperature
+                and Value(self.temperature) == Value(other.temperature)
             )
         return False
-
-    @property
-    def temperature(self):
-        """:class:`Value`: the temperature."""
-        return self._temperature
-
-    @temperature.setter
-    def temperature(self, temp):
-        self._temperature = Value(temp)

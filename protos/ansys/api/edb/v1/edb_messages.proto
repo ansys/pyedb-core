@@ -155,6 +155,10 @@ message ProductPropertyIdsMessage {
   repeated uint64 ids = 1;
 }
 
+message IntegersPropertyMessage {
+  repeated uint64 props = 1;
+}
+
 message EDBInternalIdMessage {
   uint64 id = 1;
 }

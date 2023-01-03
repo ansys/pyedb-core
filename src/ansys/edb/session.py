@@ -80,6 +80,7 @@ from ansys.api.edb.v1.polygon_data_pb2_grpc import PolygonDataServiceStub
 from ansys.api.edb.v1.polygon_pb2_grpc import PolygonServiceStub
 from ansys.api.edb.v1.port_property_pb2_grpc import PortPropertyServiceStub
 from ansys.api.edb.v1.primitive_pb2_grpc import PrimitiveServiceStub
+from ansys.api.edb.v1.r_tree_pb2_grpc import RTreeServiceStub
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsServiceStub
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
@@ -350,6 +351,7 @@ class StubType(Enum):
     djordecvic_sarkar_model = DjordjecvicSarkarModelServiceStub
     mcad_model = McadModelServiceStub
     material_property_thermal_modifier = MaterialPropertyThermalModifierServiceStub
+    r_tree = RTreeServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):

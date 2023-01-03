@@ -133,7 +133,7 @@ class RTree(ObjBase):
                 _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
             del self._id_to_obj[rtree_obj._unique_id]
-            del self._obj_to_id[rtree_obj]
+            del self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)]
 
     def empty(self):
         """Check if the RTree is contains no geometry.

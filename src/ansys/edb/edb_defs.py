@@ -28,7 +28,22 @@ class LayoutObjType(enum.Enum):
 
 
 class DefinitionObjType(enum.Enum):
-    """Definition Object Type."""
+    """
+    Definition Object Type.
+
+    - PADSTACK_DEF
+       Padstack definition.
+    - COMPONENT_DEF
+       Component definition.
+    - BONDWIRE_DEF
+       Bondwire definition.
+    - MATERIAL_DEF
+       Material definition.
+    - DATASET_DEF
+       Dataset definition.
+    - PACKAGE_DEF
+       Package definition.
+    """
 
     INVALID_DEFINITION_TYPE = definition_obj_pb2.INVALID_DEFINITION_TYPE
     PADSTACK_DEF = definition_obj_pb2.PADSTACK_DEF

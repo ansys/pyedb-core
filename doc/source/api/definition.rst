@@ -30,7 +30,7 @@ Classes
    ICComponentProperty
    DieProperty
    PortProperty
-   
+
 
 Enums
 -----
@@ -38,6 +38,7 @@ Enums
 .. autosummary::
    :toctree: _autosummary
 
+   DefinitionObjType
    BondwireDefType
    MaterialProperty
    PadType
@@ -47,4 +48,3 @@ Enums
    SolderballPlacement
    DieType
    DieOrientation
-

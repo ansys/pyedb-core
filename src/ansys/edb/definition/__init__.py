@@ -39,3 +39,4 @@ from ansys.edb.definition.padstack_def_data import (
 )
 from ansys.edb.definition.port_property import PortProperty
 from ansys.edb.definition.solder_ball_property import SolderBallProperty
+from ansys.edb.edb_defs import DefinitionObjType

@@ -6,6 +6,7 @@ import ansys.api.edb.v1.material_def_pb2 as pb
 
 from ansys.edb.core import ObjBase, messages
 from ansys.edb.definition import DielectricMaterialModel
+from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import MaterialDefServiceStub, StubAccessor, StubType
 from ansys.edb.utility import Value
 
@@ -194,6 +195,31 @@ class MaterialDef(ObjBase):
         """
         return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))
 
+    @property
+    def definition_type(self):
+        """:class:`DefinitionObjType`: type."""
+        return DefinitionObjType.MATERIAL_DEF
+
+    @property
+    def name(self):
+        """:obj:`str`: Name of the material definition.
+
+        Read-Only.
+        """
+        return self.__stub.GetName(messages.edb_obj_message(self)).value
+
+    @property
+    def dielectric_material_model(self):
+        """:class:`DielectricMaterialModel <ansys.edb.definition.dielectric_material_model.DielectricMaterialModel>`: \
+        Dielectric material model of the material definition."""
+        return DielectricMaterialModel(
+            self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
+        )
+
+    @dielectric_material_model.setter
+    def dielectric_material_model(self, dielectric):
+        self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
+
     def delete(self):
         """Delete a material definition."""
         self.__stub.Delete(messages.edb_obj_message(self))
@@ -267,26 +293,6 @@ class MaterialDef(ObjBase):
                 messages.edb_obj_message(self), material_property, None, None, None
             )
         )
-
-    @property
-    def name(self):
-        """:obj:`str`: Name of the material definition.
-
-        Read-Only.
-        """
-        return self.__stub.GetName(messages.edb_obj_message(self)).value
-
-    @property
-    def dielectric_material_model(self):
-        """:class:`DielectricMaterialModel <ansys.edb.definition.dielectric_material_model.DielectricMaterialModel>`: \
-        Dielectric material model of the material definition."""
-        return DielectricMaterialModel(
-            self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
-        )
-
-    @dielectric_material_model.setter
-    def dielectric_material_model(self, dielectric):
-        self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
 
     def get_dimensions(self, material_property_id):
         """Get dimensions of a material definition Simple 1x1, Anisotropic 3x1, Tensor 3x3.

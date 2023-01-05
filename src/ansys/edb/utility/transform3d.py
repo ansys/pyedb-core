@@ -15,12 +15,15 @@ class Transform3D:
     rot_angle : str, int, float, complex, Value
         Rotation angle, specified CCW in radians, from rot_axis_from towards rot_axis_to
     offset : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+    mirror : bool
+        Mirror against YZ plane
     """
 
-    def __init__(self, anchor, rot_axis_from, rot_axis_to, rot_angle, offset):
+    def __init__(self, anchor, rot_axis_from, rot_axis_to, rot_angle, offset, mirror):
         """Construct a Transform3D."""
         self.anchor = conversions.to_point3d(anchor)
         self.rot_axis_from = conversions.to_point3d(rot_axis_from)
         self.rot_axis_to = conversions.to_point3d(rot_axis_to)
         self.rot_angle = Value(rot_angle)
         self.offset = conversions.to_point3d(offset)
+        self.mirror = mirror

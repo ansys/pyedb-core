@@ -466,6 +466,7 @@ def transform3d_message(transform3d):
             rotAxisTo=point3d_message(transform3d.rot_axis_to),
             rotAngle=value_message(transform3d.rot_angle),
             offset=point3d_message(transform3d.offset),
+            mirror=transform3d.mirror,
         )
 
 

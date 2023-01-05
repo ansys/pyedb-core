@@ -15,6 +15,7 @@ message Transform3DMessage {
   Point3DMessage rotAxisTo = 3;
   ValueMessage rotAngle = 4;
   Point3DMessage offset = 5;
+  bool mirror = 6;
 }
 
 message Transform3DPropertyMessage {

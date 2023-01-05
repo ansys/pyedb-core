@@ -128,6 +128,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
             parser.to_point3d_data(t3d_message.rotAxisTo),
             t3d_message.rotAngle,
             parser.to_point3d_data(t3d_message.offset),
+            t3d_message.mirror,
         )
 
     @transform3d.setter

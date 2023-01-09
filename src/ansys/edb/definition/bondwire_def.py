@@ -6,6 +6,7 @@ from ansys.api.edb.v1 import bondwire_def_pb2_grpc
 import ansys.api.edb.v1.bondwire_def_pb2 as pb
 
 from ansys.edb.core import ObjBase, messages
+from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 
@@ -64,9 +65,10 @@ class BondwireDef(ObjBase):
 
     __stub: bondwire_def_pb2_grpc.BondwireDefServiceStub = StubAccessor(StubType.bondwire_def)
 
-    def delete(self):
-        """Delete a bondwire definition."""
-        self.__stub.Delete(self.msg)
+    @property
+    def definition_type(self):
+        """:class:`DefinitionObjType`: type."""
+        return DefinitionObjType.BONDWIRE_DEF
 
     @property
     def name(self):
@@ -75,6 +77,10 @@ class BondwireDef(ObjBase):
         Read-Only.
         """
         return self.__stub.GetName(self.msg)
+
+    def delete(self):
+        """Delete a bondwire definition."""
+        self.__stub.Delete(self.msg)
 
 
 class ApdBondwireDef(BondwireDef):
@@ -174,7 +180,7 @@ class _Jedec4QueryBuilder:
         )
 
 
-class Jedec4BondwireDef(ObjBase):
+class Jedec4BondwireDef(BondwireDef):
     """Class representing a jedec 4 bondwire definition."""
 
     __stub: bondwire_def_pb2_grpc.Jedec4BondwireDefServiceStub = StubAccessor(

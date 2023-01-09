@@ -4,6 +4,7 @@ from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 from ansys.edb.core import ObjBase, messages
 from ansys.edb.core.utils import map_list
 from ansys.edb.definition import component_model, component_pin
+from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.layout import cell
 from ansys.edb.session import StubAccessor, StubType
 
@@ -54,6 +55,11 @@ class ComponentDef(ObjBase):
         return ComponentDef(
             cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
         )
+
+    @property
+    def definition_type(self):
+        """:class:`DefinitionObjType`: type."""
+        return DefinitionObjType.COMPONENT_DEF
 
     @property
     def name(self):

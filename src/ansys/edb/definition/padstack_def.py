@@ -5,6 +5,7 @@ import ansys.api.edb.v1.padstack_def_pb2 as pb
 
 from ansys.edb.core import ObjBase
 from ansys.edb.definition.padstack_def_data import PadstackDefData
+from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import StubAccessor, StubType
 
 
@@ -69,10 +70,6 @@ class PadstackDef(ObjBase):
             cls.__stub.Create(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
         )
 
-    def delete(self):
-        """Delete a PadstackDef."""
-        self.__stub.Delete(self.msg)
-
     @classmethod
     def find_by_name(cls, db, name):
         """Find a PadstackDef by name.
@@ -93,6 +90,11 @@ class PadstackDef(ObjBase):
         )
 
     @property
+    def definition_type(self):
+        """:class:`DefinitionObjType`: type."""
+        return DefinitionObjType.PADSTACK_DEF
+
+    @property
     def name(self):
         """:obj:`str`: Name of the PadstackDef.
 
@@ -109,3 +111,7 @@ class PadstackDef(ObjBase):
     @data.setter
     def data(self, data):
         self.__stub.SetData(_PadstackDefQueryBuilder.padstack_def_set_data_message(self, data))
+
+    def delete(self):
+        """Delete a PadstackDef."""
+        self.__stub.Delete(self.msg)

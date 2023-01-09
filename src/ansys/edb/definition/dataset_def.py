@@ -9,6 +9,7 @@ from ansys.edb.core.messages import (
     string_property_message,
 )
 from ansys.edb.core.parser import to_point_data_list
+from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import StubAccessor, StubType
 
 
@@ -53,6 +54,11 @@ class DatasetDef(ObjBase):
             If a dataset isn't found then dataset's is_null will result True.
         """
         return DatasetDef(cls.__stub.FindByName(edb_obj_name_message(database, name)))
+
+    @property
+    def definition_type(self):
+        """:class:`DefinitionObjType`: type."""
+        return DefinitionObjType.DATASET_DEF
 
     @property
     def name(self):

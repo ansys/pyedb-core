@@ -15,6 +15,7 @@ from ansys.edb.core.messages import (
     value_message,
     value_property_message,
 )
+from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 from ansys.edb.utility.heat_sink import HeatSink, HeatSinkFinOrientation
@@ -42,29 +43,30 @@ class PackageDef(ObjBase):
         """
         return PackageDef(cls.__stub.Create(string_property_message(db, name)))
 
-    def delete(self):
-        """Delete the Package definition."""
-        self.__stub.Delete(edb_obj_message(self))
-
     @classmethod
-    def find_by_name(cls, self, name):
+    def find_by_name(cls, db, name):
         """Find a Package definition object by name.
 
         Returns
         -------
         PackageDef
         """
-        return PackageDef(cls.__stub.FindByName(string_property_message(self, name)))
+        return PackageDef(cls.__stub.FindByName(string_property_message(db, name)))
 
     @classmethod
-    def find_by_id(cls, self, uid):
+    def find_by_id(cls, db, uid):
         """Find a Package definition object by Id.
 
         Returns
         -------
         PackageDef
         """
-        return PackageDef(cls.__stub.FindByEDBUId(int_property_message(self, uid)))
+        return PackageDef(cls.__stub.FindByEDBUId(int_property_message(db, uid)))
+
+    @property
+    def definition_type(self):
+        """:class:`DefinitionObjType`: type."""
+        return DefinitionObjType.PACKAGE_DEF
 
     @property
     def name(self):
@@ -154,6 +156,10 @@ class PackageDef(ObjBase):
     @heat_sink.setter
     def heat_sink(self, heat_sink_value):
         self.__stub.SetHeatSink(set_heat_sink_message(self, heat_sink_value))
+
+    def delete(self):
+        """Delete the Package definition."""
+        self.__stub.Delete(edb_obj_message(self))
 
     def get_product_property(self, prod_id, attr_it):
         """Get the product-specific property value.

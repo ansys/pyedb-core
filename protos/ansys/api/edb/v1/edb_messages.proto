@@ -167,9 +167,28 @@ message StringsMessage {
   repeated string strings = 1;
 }
 
+message StringsPropertyMessage {
+  EDBObjMessage edb_obj = 1;
+  repeated string strings = 2;
+}
+
 message EDBObjPairMessage {
   EDBObjMessage edb_obj_0 = 1;
   EDBObjMessage edb_obj_1 = 2;
+}
+
+message StringPairMessage {
+  string first = 1;
+  string second = 2;
+}
+
+message StringPairsMessage {
+  repeated StringPairMessage pairs = 1;
+}
+
+message StringPairPropertyMessage {
+  EDBObjMessage target = 1;
+  StringPairMessage values = 2;
 }
 
 message ValuePairMessage {

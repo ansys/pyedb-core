@@ -26,7 +26,7 @@ class NetlistModel(Model):
     @property
     def netlist(self):
         """:obj:`str`: Netlist name."""
-        return self.__stub.GetNetlist(messages.edb_obj_message(self))
+        return self.__stub.GetNetlist(messages.edb_obj_message(self)).value
 
     @netlist.setter
     def netlist(self, name):

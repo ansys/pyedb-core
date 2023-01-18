@@ -11,7 +11,7 @@ class SPICEModel(Model):
 
     @classmethod
     def create(cls, name, path, sub_circuit):
-        """Create a new SPICEC model.
+        """Create a new SPICE model.
 
         Parameters
         ----------

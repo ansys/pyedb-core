@@ -36,10 +36,10 @@ class SParameterModel(Model):
         self.__stub.SetComponentModelName(messages.string_property_message(self, name))
 
     @property
-    def refrence_net(self):
-        """:obj:`str`: Name of referencec net."""
+    def reference_net(self):
+        """:obj:`str`: Name of reference net."""
         return self._properties.ref_net
 
-    @refrence_net.setter
-    def refrence_net(self, name):
+    @reference_net.setter
+    def reference_net(self, name):
         self.__stub.SetReferenceNet(messages.string_property_message(self, name))

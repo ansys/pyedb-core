@@ -63,9 +63,11 @@ from ansys.api.edb.v1.material_property_thermal_modifier_pb2_grpc import (
     MaterialPropertyThermalModifierServiceStub,
 )
 from ansys.api.edb.v1.mcad_model_pb2_grpc import McadModelServiceStub
+from ansys.api.edb.v1.model_pb2_grpc import ModelServiceStub
 from ansys.api.edb.v1.multipole_debye_model_pb2_grpc import MultipoleDebyeModelServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
 from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
+from ansys.api.edb.v1.netlist_model_pb2_grpc import NetlistModelServiceStub
 from ansys.api.edb.v1.package_def_pb2_grpc import PackageDefServiceStub
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
 from ansys.api.edb.v1.padstack_def_pb2_grpc import PadstackDefServiceStub
@@ -74,6 +76,7 @@ from ansys.api.edb.v1.padstack_instance_pb2_grpc import PadstackInstanceServiceS
 from ansys.api.edb.v1.path_pb2_grpc import PathServiceStub
 from ansys.api.edb.v1.pin_group_pb2_grpc import PinGroupServiceStub
 from ansys.api.edb.v1.pin_group_term_pb2_grpc import PinGroupTerminalServiceStub
+from ansys.api.edb.v1.pin_pair_model_pb2_grpc import PinPairModelServiceStub
 from ansys.api.edb.v1.point_data_pb2_grpc import PointDataServiceStub
 from ansys.api.edb.v1.point_term_pb2_grpc import PointTerminalServiceStub
 from ansys.api.edb.v1.polygon_data_pb2_grpc import PolygonDataServiceStub
@@ -86,6 +89,8 @@ from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsS
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
+from ansys.api.edb.v1.sparameter_model_pb2_grpc import SParameterModelServiceStub
+from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
@@ -352,6 +357,11 @@ class StubType(Enum):
     mcad_model = McadModelServiceStub
     material_property_thermal_modifier = MaterialPropertyThermalModifierServiceStub
     r_tree = RTreeServiceStub
+    pin_pair_model = PinPairModelServiceStub
+    sparameter_model = SParameterModelServiceStub
+    spice_model = SpiceModelServiceStub
+    netlist_model = NetlistModelServiceStub
+    model = ModelServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):

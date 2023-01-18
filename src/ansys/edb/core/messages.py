@@ -47,6 +47,8 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     PointerPropertyMessage,
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
+    StringPairMessage,
+    StringPairPropertyMessage,
     StringPropertyMessage,
     StringsMessage,
     TemperatureSettingsMessage,
@@ -91,6 +93,7 @@ from ansys.api.edb.v1.pin_group_term_pb2 import (
     PinGroupTermSetLayerMessage,
     PinGroupTermSetPinGroupMessage,
 )
+from ansys.api.edb.v1.pin_pair_model_pb2 import PinPairModelRlcPropertyMessage
 from ansys.api.edb.v1.point_3d_data_pb2 import *  # noqa
 from ansys.api.edb.v1.point_data_pb2 import *  # noqa
 from ansys.api.edb.v1.point_term_pb2 import (
@@ -108,6 +111,8 @@ from ansys.api.edb.v1.simulation_settings_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
+from ansys.api.edb.v1.sparameter_model_pb2 import SParameterModelMessage
+from ansys.api.edb.v1.spice_model_pb2 import SpiceModelMessage, SpiceModelNewTerminalPinMessage
 from ansys.api.edb.v1.structure3d_pb2 import ClosureMessage, SetClosureMessage
 from ansys.api.edb.v1.term_inst_pb2 import TermInstCreationMessage
 from ansys.api.edb.v1.term_inst_term_pb2 import (
@@ -163,6 +168,11 @@ def double_message(v: float):
 def empty_message():
     """Get Empty message."""
     return Empty()
+
+
+def str_pair_message(pair):
+    """Convert to StringPairMessage."""
+    return StringPairMessage(first=pair[0], second=pair[1])
 
 
 def point_message(point):
@@ -354,6 +364,11 @@ def bool_property_message(target, value):
 def string_property_message(target, value):
     """Convert to StringPropertyMessage."""
     return StringPropertyMessage(target=target.msg, value=value)
+
+
+def string_pair_property_message(target, pair):
+    """Convert to StringPairPropertyMessage."""
+    return StringPairPropertyMessage(target=target.msg, values=str_pair_message(pair))
 
 
 def value_property_message(target, value):
@@ -1193,3 +1208,27 @@ def heat_sink_message(heat_sink):
 def set_heat_sink_message(target, heat_sink):
     """Convert to SetHeatSinkMessage."""
     return SetHeatSinkMessage(target=edb_obj_message(target), value=heat_sink_message(heat_sink))
+
+
+def pin_pair_model_rlc_message(model, pin_pair, rlc):
+    """Convert to PinPairModelRlcPropertyMessage."""
+    return PinPairModelRlcPropertyMessage(
+        model=edb_obj_message(model), pins=str_pair_message(pin_pair), rlc=rlc_message(rlc)
+    )
+
+
+def sparameter_model_message(name, ref_net):
+    """Convert to SParameterModelMessage."""
+    return SParameterModelMessage(name=name, ref_net=ref_net)
+
+
+def spice_model_message(name, path, sub_circuit):
+    """Convert to SpiceModelMessage."""
+    return SpiceModelMessage(name=name, path=path, sub_ckt=sub_circuit)
+
+
+def spice_model_net_terminal_pin_message(model, terminal, pin):
+    """Convert to SpiceModelNewTerminalPinMessage."""
+    return SpiceModelNewTerminalPinMessage(
+        target=edb_obj_message(model), terminal=terminal, pin=pin
+    )

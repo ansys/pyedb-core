@@ -1,0 +1,32 @@
+// Proto file representing the SpiceModel class
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service SpiceModelService {
+  rpc Create (SpiceModelMessage) returns (EDBObjMessage) {}
+
+  rpc GetProperties (EDBObjMessage) returns (SpiceModelMessage) {}
+
+  rpc SetModelPath (StringPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc SetModelName (StringPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc SetSubCkt (StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc AddTerminalPinPair (SpiceModelNewTerminalPinMessage) returns (google.protobuf.Empty) {}
+  rpc RemoveTerminalPinPair (StringPropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+message SpiceModelMessage {
+  string name = 1;
+  string path = 2;
+  string sub_ckt = 3;
+}
+
+message SpiceModelNewTerminalPinMessage {
+  EDBObjMessage target = 1;
+  string terminal = 2;
+  string pin = 3;
+}

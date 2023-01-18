@@ -17,7 +17,11 @@ Object Types
    ComponentGroup
    Group
    PinGroup
-   Structure3D   
+   PinPairModel
+   NetlistModel
+   SParameterModel
+   SPICEModel
+   Structure3D
    ViaGroup
 
 

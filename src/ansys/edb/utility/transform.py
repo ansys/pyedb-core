@@ -108,8 +108,8 @@ class Transform(ObjBase):
         """:obj:`bool`: Gets whether or not the transformation is an identity transformation."""
         return self.__stub.IsIdentity(messages.edb_obj_message(self)).value
 
-    def transform(self, other_transform):
-        """Concatenate two transformations.
+    def __add__(self, other_transform):
+        """Add operator, concatenate two transformations.
 
         Parameters
         ----------
@@ -122,25 +122,10 @@ class Transform(ObjBase):
             A new transformation object
         """
         return Transform(
-            self.__stub.Transform(
+            self.__stub.TransformPlus(
                 _TransformQueryBuilder.transform_operator_message(self, other_transform)
             )
         )
-
-    def __add__(self, other_transform):
-        """Add operator concatenate two transformations.
-
-        Parameters
-        ----------
-        other_transform: Transform
-            Second transformation
-
-        Returns
-        -------
-        Transform
-            A new transformation object
-        """
-        return self.transform(other_transform)
 
     def transform_point(self, point):
         """Transform a point.

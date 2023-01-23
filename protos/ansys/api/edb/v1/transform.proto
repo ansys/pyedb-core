@@ -29,7 +29,7 @@ service TransformService {
   rpc GetOffsetY (EDBObjMessage) returns (ValueMessage) {}
   rpc SetOffsetY (ValuePropertyMessage) returns (google.protobuf.Empty) {}
 
-  rpc Transform (TransformOperatorMessage) returns (EDBObjMessage) {}
+  rpc TransformPlus (TransformOperatorMessage) returns (EDBObjMessage) {}
   rpc IsIdentity (EDBObjMessage) returns (google.protobuf.BoolValue) {}
 
   rpc TransformPoint (PointPropertyMessage) returns (PointMessage) {}

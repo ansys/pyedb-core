@@ -60,7 +60,10 @@ class Transform(ObjBase):
 
     @property
     def scale(self):
-        """:term:`ValueLike`: Scale property."""
+        """:class:`Value <ansys.edb.utility.Value>`: Scale property.
+
+        This property can be set to :term:`ValueLike`
+        """
         return Value(self.__stub.GetScale(messages.edb_obj_message(self)))
 
     @scale.setter
@@ -69,7 +72,10 @@ class Transform(ObjBase):
 
     @property
     def rotation(self):
-        """:term:`ValueLike`: Rotation property."""
+        """:class:`Value <ansys.edb.utility.Value>`: Rotation property.
+
+        This property can be set to :term:`ValueLike`
+        """
         return Value(self.__stub.GetRotation(messages.edb_obj_message(self)))
 
     @rotation.setter
@@ -78,7 +84,10 @@ class Transform(ObjBase):
 
     @property
     def offset_x(self):
-        """:term:`ValueLike`: X offset property."""
+        """:class:`Value <ansys.edb.utility.Value>`: X offset property.
+
+        This property can be set to :term:`ValueLike`
+        """
         return Value(self.__stub.GetOffsetX(messages.edb_obj_message(self)))
 
     @offset_x.setter
@@ -87,7 +96,10 @@ class Transform(ObjBase):
 
     @property
     def offset_y(self):
-        """:term:`ValueLike`: Y offset property."""
+        """:class:`Value <ansys.edb.utility.Value>`: Y offset property.
+
+        This property can be set to :term:`ValueLike`
+        """
         return Value(self.__stub.GetOffsetY(messages.edb_obj_message(self)))
 
     @offset_y.setter
@@ -96,7 +108,7 @@ class Transform(ObjBase):
 
     @property
     def mirror(self):
-        """:term:`ValueLike`: Mirror property. If true, mirror about Y-axis."""
+        """:term:`bool`: Mirror property. If true, mirror about Y-axis."""
         return self.__stub.GetMirror(messages.edb_obj_message(self)).value
 
     @mirror.setter
@@ -105,7 +117,7 @@ class Transform(ObjBase):
 
     @property
     def is_dentity(self):
-        """:obj:`bool`: Gets whether or not the transformation is an identity transformation."""
+        """:obj:`bool`: Gets whether the transformation is an identity transformation."""
         return self.__stub.IsIdentity(messages.edb_obj_message(self)).value
 
     def __add__(self, other_transform):
@@ -137,7 +149,7 @@ class Transform(ObjBase):
 
         Returns
         -------
-        :obj:`tuple` ( :term:`ValueLike`, :class: :term:`ValueLike`)
+        :obj:`tuple` ( :class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`)
             The transformed point
         """
         pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))

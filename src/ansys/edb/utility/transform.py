@@ -37,15 +37,15 @@ class Transform(ObjBase):
 
         Parameters
         ----------
-        scale : str, int, float, complex, Value
+        scale : :term:`ValueLike`
             Scale parameter
-        angle : str, int, float, complex, Value
+        angle : :term:`ValueLike`
             Rotation angle, specified CCW in radians.
-        mirror : bool
+        mirror : :term:`ValueLike`
             Mirror about Y-axis
-        offset_x : str, int, float, complex, Value
+        offset_x : :term:`ValueLike`
             X offset
-        offset_y : str, int, float, complex, Value
+        offset_y : :term:`ValueLike`
             Y offset
 
         Returns
@@ -60,7 +60,7 @@ class Transform(ObjBase):
 
     @property
     def scale(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Scale property."""
+        """:term:`ValueLike`: Scale property."""
         return Value(self.__stub.GetScale(messages.edb_obj_message(self)))
 
     @scale.setter
@@ -69,7 +69,7 @@ class Transform(ObjBase):
 
     @property
     def rotation(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Rotation property."""
+        """:term:`ValueLike`: Rotation property."""
         return Value(self.__stub.GetRotation(messages.edb_obj_message(self)))
 
     @rotation.setter
@@ -78,7 +78,7 @@ class Transform(ObjBase):
 
     @property
     def offset_x(self):
-        """:class:`Value <ansys.edb.utility.Value>`: X offset property."""
+        """:term:`ValueLike`: X offset property."""
         return Value(self.__stub.GetOffsetX(messages.edb_obj_message(self)))
 
     @offset_x.setter
@@ -87,7 +87,7 @@ class Transform(ObjBase):
 
     @property
     def offset_y(self):
-        """:class:`Value <ansys.edb.utility.Value>`: Y offset property."""
+        """:term:`ValueLike`: Y offset property."""
         return Value(self.__stub.GetOffsetY(messages.edb_obj_message(self)))
 
     @offset_y.setter
@@ -96,7 +96,7 @@ class Transform(ObjBase):
 
     @property
     def mirror(self):
-        """:obj:`bool`: Mirror property. If true, mirror about Y-axis."""
+        """:term:`ValueLike`: Mirror property. If true, mirror about Y-axis."""
         return self.__stub.GetMirror(messages.edb_obj_message(self)).value
 
     @mirror.setter
@@ -132,12 +132,12 @@ class Transform(ObjBase):
 
         Parameters
         ----------
-        point: :obj:`tuple` (:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`)
+        point: :obj:`tuple` ( :term:`ValueLike`, :class: :term:`ValueLike`)
             The point to transform [x, y] Point values.
 
         Returns
         -------
-        :obj:`tuple` (:class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`)
+        :obj:`tuple` ( :term:`ValueLike`, :class: :term:`ValueLike`)
             The transformed point
         """
         pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))

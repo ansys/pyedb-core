@@ -108,7 +108,7 @@ class Transform(ObjBase):
 
     @property
     def mirror(self):
-        """:term:`bool`: Mirror property. If true, mirror about Y-axis."""
+        """:obj:`bool`: Mirror property. If true, mirror about Y-axis."""
         return self.__stub.GetMirror(messages.edb_obj_message(self)).value
 
     @mirror.setter

@@ -97,6 +97,7 @@ from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
+from ansys.api.edb.v1.transform_pb2_grpc import TransformServiceStub
 from ansys.api.edb.v1.value_pb2_grpc import ValueServiceStub
 from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
@@ -362,6 +363,7 @@ class StubType(Enum):
     spice_model = SpiceModelServiceStub
     netlist_model = NetlistModelServiceStub
     model = ModelServiceStub
+    transform = TransformServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):

@@ -43,6 +43,16 @@ message PointDataRotateMessage {
   float rotate_angle = 3;
 }
 
+message PointPairMessage {
+  PointMessage point_0 = 1;
+  PointMessage point_1 = 2;
+}
+
+message PointPairPropertyMessage {
+  PointPairMessage point_pair = 1;
+  EDBObjMessage target = 2;
+}
+
 message PointDataWithLineMessage {
   PointMessage point = 1;
   PointMessage line_start = 2;

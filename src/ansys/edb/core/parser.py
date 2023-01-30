@@ -20,6 +20,11 @@ def to_point3d_data(fn):
     return _wraps(fn, _to_point3d_data)
 
 
+def to_point_data_pair(fn):
+    """Decorate a function that returns a message to return as tuple[PointData, PointData]."""
+    return _wraps(fn, _to_point_data_pair)
+
+
 def to_polygon_data(fn):
     """Decorate a function that returns a message to return as PolygonData."""
     return _wraps(fn, _to_polygon_data)
@@ -69,6 +74,20 @@ def _to_point_data(message):
     geometry.PointData
     """
     return geometry.PointData([utility.Value(message.x), utility.Value(message.y)])
+
+
+def _to_point_data_pair(message):
+    """Convert PointPairMessage to tuple[PointData, PointData].
+
+    Parameters
+    ----------
+    message : ansys.api.edb.v1.point_data_pb2.PointPairMessage
+
+    Returns
+    -------
+    tuple[geometry.PointData, geometry.PointData]
+    """
+    return _to_point_data(message.point_0), _to_point_data(message.point_1)
 
 
 def _to_point_data_list(message):

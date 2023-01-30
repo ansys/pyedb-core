@@ -69,6 +69,9 @@ service PrimitiveService {
   
   // Get Is Zone Primitive
   rpc IsZonePrimitive (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+
+  // Make primitive a zone primitive in the specified zone
+  rpc MakeZonePrimitive (IntPropertyMessage) returns (google.protobuf.Empty) {}
 }
 
 // Message for GetPrimitiveType

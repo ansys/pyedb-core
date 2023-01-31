@@ -51,6 +51,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     StringPairPropertyMessage,
     StringPropertyMessage,
     StringsMessage,
+    StringsPropertyMessage,
     TemperatureSettingsMessage,
     ValueMessage,
     ValuePairMessage,
@@ -133,6 +134,7 @@ from ansys.api.edb.v1.via_group_pb2 import (
     ViaGroupCreateWithOutlineMessage,
     ViaGroupCreateWithPrimitivesMessage,
 )
+from ansys.api.edb.v1.voltage_regulator_pb2 import PowerModuleMessage
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.wrappers_pb2 import BoolValue, DoubleValue, FloatValue, Int64Value, StringValue
 
@@ -1065,6 +1067,11 @@ def strings_message(strings):
     return StringsMessage(strings=strings)
 
 
+def strings_property_message(target, value):
+    """Convert to StringPropertyMessage."""
+    return StringsPropertyMessage(edb_obj=target.msg, strings=value)
+
+
 def edb_obj_pair_message(edb_obj_0, edb_obj_1):
     """Convert to EDBObjPairMessage."""
     return EDBObjPairMessage(edb_obj_0=edb_obj_0.msg, edb_obj_1=edb_obj_1.msg)
@@ -1220,6 +1227,18 @@ def pin_pair_model_rlc_message(model, pin_pair, rlc):
 def sparameter_model_message(name, ref_net):
     """Convert to SParameterModelMessage."""
     return SParameterModelMessage(name=name, ref_net=ref_net)
+
+
+def power_module_message(power_module):
+    """Convert to PowerModuleMessage."""
+    return PowerModuleMessage(
+        comp_group_name=power_module.comp_group_name,
+        pos_output_terminal=power_module.pos_output_terminal,
+        neg_output_terminal=power_module.neg_output_terminal,
+        relative_strength=value_message(power_module.relative_strength),
+        active=power_module.active,
+        needs_sync=power_module.needs_sync,
+    )
 
 
 def spice_model_message(name, path, sub_circuit):

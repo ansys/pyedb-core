@@ -38,7 +38,7 @@ service ArcDataService {
 
 message ArcMessage {
   message RadiusMessage {
-    float radius = 1;
+    double radius = 1;
 	RotationDirection dir = 2;
 	bool is_big = 3;
   }

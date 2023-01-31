@@ -8,11 +8,111 @@ from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import Value
 
 
+class PowerModule:
+    """Class representing a Power Module.
+
+    Attributes
+    ----------
+    comp_group_name : str
+        Component Group Name.
+    pos_output_terminal : str
+        Name of the Positive Output Terminal.
+    neg_output_terminal : str
+        Name of the Negative Output Terminal
+    relative_strength : :class:`Value <ansys.edb.utility.Value>`
+        Relative strength in %
+    active : bool
+        True if active
+    """
+
+    def __init__(
+        self,
+        comp_group_name,
+        pos_output_terminal="",
+        neg_output_terminal="",
+        relative_strength=Value(100),
+        active=True,
+    ):
+        """Construct a Power Module."""
+        self._comp_group_name = comp_group_name
+        self._pos_output_terminal = pos_output_terminal
+        self._neg_output_terminal = neg_output_terminal
+        self._relative_strength = Value(relative_strength)
+        self._active = active
+        self._needs_sync = True
+
+    @property
+    def comp_group_name(self):
+        """:obj:`str`: Component Group Name of this Power Module."""
+        return self._comp_group_name
+
+    @comp_group_name.setter
+    def comp_group_name(self, comp_group_name):
+        self._comp_group_name = comp_group_name
+
+    @property
+    def pos_output_terminal(self):
+        """:obj:`str`: Positive Output Terminal name for this Power Module."""
+        return self._pos_output_terminal
+
+    @pos_output_terminal.setter
+    def pos_output_terminal(self, pos_output_terminal):
+        self._pos_output_terminal = pos_output_terminal
+
+    @property
+    def neg_output_terminal(self):
+        """:obj:`str`: Negative Output Terminal name for this Power Module."""
+        return self._neg_output_terminal
+
+    @neg_output_terminal.setter
+    def neg_output_terminal(self, neg_output_terminal):
+        self._neg_output_terminal = neg_output_terminal
+
+    @property
+    def relative_strength(self):
+        """:class:`Value <ansys.edb.utility.Value>` : Relative Strength for this Power Module in percent.
+
+        Property can be set with :term:`ValueLike`
+        """
+        return self._relative_strength
+
+    @relative_strength.setter
+    def relative_strength(self, relative_strength):
+        self._relative_strength = relative_strength
+
+    @property
+    def active(self):
+        """:obj:`bool`: True if this Power Module is active."""
+        return self._active
+
+    @active.setter
+    def active(self, active):
+        self._active = active
+
+    @property
+    def needs_sync(self):
+        """:obj:`bool`: True if this Power Module needs to be synchronized.
+
+        Read-Only
+        """
+        return self._needs_sync
+
+
 class _QueryBuilder:
     @staticmethod
     def create(layout, name, active, voltage, lrc, lrp):
         return vr_pb2.VoltageRegulatorMessage(
             layout=layout.msg, name=name, active=active, voltage=voltage, lrc=lrc, lrp=lrp
+        )
+
+    @staticmethod
+    def create_power_module(msg):
+        return PowerModule(
+            comp_group_name=msg.comp_group_name,
+            pos_output_terminal=msg.pos_output_terminal,
+            neg_output_terminal=msg.neg_output_terminal,
+            relative_strength=msg.relative_strength,
+            active=msg.active,
         )
 
 
@@ -145,3 +245,95 @@ class VoltageRegulator(conn_obj.ConnObj):
     @neg_remote_sense_pin.setter
     def neg_remote_sense_pin(self, newpin):
         self.__stub.SetNegRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))
+
+    @property
+    def num_power_modules(self):
+        """:obj: `int` : Number of power modules.
+
+        Read-Only
+        """
+        return self.__stub.GetNPowerModules(self.msg).value
+
+    @property
+    def num_active_power_modules(self):
+        """:obj: `int` : Number of active power modules.
+
+        Read-Only
+        """
+        return self.__stub.GetNActivePowerModules(self.msg).value
+
+    def get_power_module(self, comp_group_name):
+        """Get power module corresponding to the component group name.
+
+        Parameters
+        ----------
+        comp_group_name : str
+            Component group name of the power module
+
+        Returns
+        -------
+        PowerModule
+        """
+        return _QueryBuilder.create_power_module(
+            msg=self.__stub.GetPowerModule(messages.string_property_message(self, comp_group_name))
+        )
+
+    def get_all_power_modules(self):
+        """Get all power modules in this voltage regulator.
+
+        Returns
+        -------
+        list[PowerModule]
+        """
+        all_pms = self.__stub.GetAllPowerModules(self.msg)
+
+        return [_QueryBuilder.create_power_module(msg=msg) for msg in all_pms.data]
+
+    def add_power_module(self, power_module):
+        """Add a Power Module to this Voltage Regulator.
+
+        Parameters
+        ----------
+        power_module : PowerModule
+            PowerModule to be added
+        """
+        self.__stub.AddPowerModule(
+            vr_pb2.PowerModulePropertyMessage(
+                vrm=self.msg, module=messages.power_module_message(power_module)
+            )
+        )
+
+    def remove_power_module(self, name):
+        """Remove a Power Module from this Voltage Regulator.
+
+        Parameters
+        ----------
+        name : str
+            Component Group Name of the Power Module to be removed.
+        """
+        self.__stub.RemovePowerModule(messages.string_property_message(target=self, value=name))
+
+    def add_power_modules(self, power_modules):
+        """Add multiple Power Modules to this Voltage Regulator.
+
+        Parameters
+        ----------
+        power_modules : list[PowerModule]
+            Power Modules to be added
+        """
+        self.__stub.AddPowerModules([messages.power_module_message(pm) for pm in power_modules])
+
+    def remove_power_modules(self, names):
+        """Remove multiple Power Modules.
+
+        Parameters
+        ----------
+        names : list[str]
+            Component Group Names of each Power Module to remove.
+
+        """
+        self.__stub.RemovePowerModules(messages.strings_property_message(target=self, value=names))
+
+    def remove_all_power_modules(self):
+        """Remove all Power Modules in this Voltage Regulator."""
+        self.__stub.RemoveAllPowerModules(self.msg)

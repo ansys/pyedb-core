@@ -12,6 +12,7 @@ Classes
    Cell
    Layout
    McadModel
+   PowerModule
    VoltageRegulator
 
 Enums

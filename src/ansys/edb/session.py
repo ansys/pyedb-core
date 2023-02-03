@@ -41,6 +41,7 @@ from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
+from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
@@ -85,6 +86,7 @@ from ansys.api.edb.v1.port_property_pb2_grpc import PortPropertyServiceStub
 from ansys.api.edb.v1.primitive_pb2_grpc import PrimitiveServiceStub
 from ansys.api.edb.v1.r_tree_pb2_grpc import RTreeServiceStub
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
+from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsServiceStub
 from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
@@ -364,6 +366,8 @@ class StubType(Enum):
     netlist_model = NetlistModelServiceStub
     model = ModelServiceStub
     transform = TransformServiceStub
+    io_component_property = IOComponentPropertyServiceStub
+    rlc_component_property = RLCComponentPropertyServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):

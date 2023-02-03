@@ -28,6 +28,8 @@ Classes
    SolderBallProperty
    ComponentProperty
    ICComponentProperty
+   IOComponentProperty
+   RLCComponentProperty
    DieProperty
    PortProperty
 

@@ -14,6 +14,7 @@ Classes
    PolygonData
    PointData
    Point3DData
+   Triangle3DData
    
 Enums
 -----

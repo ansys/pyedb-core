@@ -1,9 +1,10 @@
 """Layout Obj Instance 3D Geometry."""
 
 from ansys.edb.core import utils
+from ansys.edb.core.parser import to_point3d_data
+from ansys.edb.geometry import Triangle3DData
 from ansys.edb.layout_instance.layout_obj_instance_geometry import LayoutObjInstanceGeometry
 from ansys.edb.session import LayoutObjInstance3DGeometryServiceStub, StubAccessor, StubType
-from ansys.edb.utility import Value
 
 
 class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
@@ -15,20 +16,17 @@ class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
 
     @property
     def tesselation_data(self):
-        r""":obj:`list`\[:term:`Triangle3DLike`\]: The underlying tessellation data of the geometry.
+        r""":obj:`list`\[:class:`ansys.edb.geometry.Triangle3DData`\]: The underlying tessellation data of the geometry.
 
         Read-Only.
         """
         tesselation_data = self.__stub.GetTesselationData(self.msg)
 
-        def to_3d_triangle_like(triangle_msg):
-            def to_3d_point_like(point_3d_msg):
-                return (Value(point_3d_msg.x), Value(point_3d_msg.y), Value(point_3d_msg.z))
-
-            return (
-                to_3d_point_like(triangle_msg.point_1),
-                to_3d_point_like(triangle_msg.point_2),
-                to_3d_point_like(triangle_msg.point_3),
+        def to_3d_triangle(triangle_msg):
+            return Triangle3DData(
+                to_point3d_data(triangle_msg.point_1),
+                to_point3d_data(triangle_msg.point_2),
+                to_point3d_data(triangle_msg.point_3),
             )
 
-        return utils.map_list(tesselation_data.tesselation_data, to_3d_triangle_like)
+        return utils.map_list(tesselation_data.tesselation_data, to_3d_triangle)

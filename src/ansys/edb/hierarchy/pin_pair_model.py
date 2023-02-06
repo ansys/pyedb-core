@@ -1,5 +1,7 @@
 """Pin Pair Model."""
 
+import google.protobuf.empty_pb2 as empty_pb2
+
 from ansys.edb.core import messages, parser
 from ansys.edb.hierarchy.model import Model
 from ansys.edb.session import PinPairModelServiceStub, StubAccessor, StubType
@@ -18,7 +20,7 @@ class PinPairModel(Model):
         -------
         PinPairModel
         """
-        return cls(cls.__stub.Create())
+        return cls(cls.__stub.Create(empty_pb2.Empty()))
 
     def rlc(self, pin_pair):
         """Get RLC value for a pin pair.
@@ -45,7 +47,7 @@ class PinPairModel(Model):
         pin_pair : tuple[str, str]
         rlc : :class:`Rlc<ansys.edb.utility.Rlc>`
         """
-        self.__stub.SetRlc(messages.pin_pair_model_rlc_message(pin_pair, rlc))
+        self.__stub.SetRlc(messages.pin_pair_model_rlc_message(self, pin_pair, rlc))
 
     def delete_rlc(self, pin_pair):
         """Delete RLC value for a pin pair.
@@ -54,7 +56,7 @@ class PinPairModel(Model):
         ----------
         pin_pair : tuple[str, str]
         """
-        self.__stub.DeleteRlc(messages.string_pair_property_message(pin_pair))
+        self.__stub.DeleteRlc(messages.string_pair_property_message(self, pin_pair))
 
     def pin_pairs(self):
         """Get all pin pairs.

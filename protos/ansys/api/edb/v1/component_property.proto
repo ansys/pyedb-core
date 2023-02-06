@@ -12,4 +12,16 @@ import "edb_messages.proto";
 service ComponentPropertyService {
   // Clone a component property
   rpc Clone(EDBObjMessage) returns (EDBObjMessage) {}
+
+  // Get/Set Package mounting offset
+  rpc GetPackageMountingOffset(EDBObjMessage) returns (ValueMessage) {}
+  rpc SetPackageMountingOffset(ValuePropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get/Set Package def
+  rpc GetPackageDef(EDBObjMessage) returns (EDBObjMessage) {}
+  rpc SetPackageDef(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+
+  // Get/Set Model
+  rpc GetModel(EDBObjMessage) returns (EDBObjMessage) {}
+  rpc SetModel(PointerPropertyMessage) returns (google.protobuf.Empty) {}
 }

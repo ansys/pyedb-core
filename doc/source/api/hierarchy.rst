@@ -17,6 +17,7 @@ Object Types
    ComponentGroup
    Group
    PinGroup
+   Model
    PinPairModel
    NetlistModel
    SParameterModel

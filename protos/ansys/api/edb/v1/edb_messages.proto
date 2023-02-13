@@ -1,4 +1,4 @@
-// Proto file containing commonly used messages
+tr// Proto file containing commonly used messages
 
 syntax = "proto3";
 
@@ -201,3 +201,11 @@ message ValuePairPropertyMessage {
   ValuePairMessage values = 2;
 }
 
+message DoublesMessage {
+  repeated double doubles = 1;
+}
+
+message DoublesPropertyMessage {
+  EDBObjMessage edb_obj = 1;
+  repeated double doubles = 2;
+}

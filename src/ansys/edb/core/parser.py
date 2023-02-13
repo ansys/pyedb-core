@@ -104,6 +104,20 @@ def _to_point_data_list(message):
     return [_to_point_data(m) for m in message]
 
 
+def _to_3_point3d_data(message):
+    """Convert Point3DMessage to PointData.
+
+    Parameters
+    ----------
+    message : ansys.api.edb.v1.point_data_pb2.CPos3DTripleMessage
+
+    Returns
+    -------
+    geometry.Point3DData
+    """
+    return [_to_point3d_data(message.x), _to_point3d_data(message.y), _to_point3d_data(message.z)]
+
+
 def _to_point3d_data(message):
     """Convert Point3DMessage to PointData.
 

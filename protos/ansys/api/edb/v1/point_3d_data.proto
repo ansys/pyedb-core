@@ -16,3 +16,30 @@ message Point3DPropertyMessage {
   EDBObjMessage target = 1;
   Point3DMessage value = 2;
 }
+
+message CPos3DMessage {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+message CPos3DPropertyMessage {
+  EDBObjMessage target = 1;
+  CPos3DMessage value = 2;
+}
+
+message CPos3DPairMessage {
+  CPos3DMessage x = 1;
+  CPos3DMessage y = 2;
+}
+
+message CPos3DTripleMessage {
+  CPos3DMessage x = 1;
+  CPos3DMessage y = 2;
+  CPos3DMessage z = 3;
+}
+
+message CPos3DDoubleMessage {
+  CPos3DMessage pos = 1;
+  double value = 2;
+}

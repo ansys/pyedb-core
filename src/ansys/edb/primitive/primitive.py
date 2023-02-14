@@ -3,6 +3,8 @@
 from enum import Enum
 
 from ansys.api.edb.v1 import (
+    board_bend_def_pb2,
+    board_bend_def_pb2_grpc,
     bondwire_pb2,
     bondwire_pb2_grpc,
     circle_pb2,
@@ -323,6 +325,17 @@ class Primitive(conn_obj.ConnObj):
         Read-Only.
         """
         return True
+
+    def make_zone_primitive(self, zone_id):
+        """Make primitive a zone primitive with a zone specified by the provided id.
+
+        Parameters
+        ----------
+        zone_id : int
+            Id of zone primitive will use.
+
+        """
+        self.__stub.MakeZonePrimitive(messages.int_property_message(self, zone_id))
 
 
 class Rectangle(Primitive):
@@ -1997,4 +2010,85 @@ class PadstackInstance(Primitive):
 class BoardBendDef(Primitive):
     """Class representing board bending definitions."""
 
-    pass
+    __stub: board_bend_def_pb2_grpc.BoardBendDefServiceStub = StubAccessor(StubType.board_bend_def)
+
+    @classmethod
+    def create(cls, layout, zone_prim, bend_middle, bend_radius, bend_angle):
+        """Create a board bend definition.
+
+        Parameters
+        ----------
+        layout : :class:`Layout <ansys.edb.layout.Layout>`
+            Layout this board bend definition will be in.
+        zone_prim : :class:`Primitive <Primitive>`
+            Zone primitive this board bend definition exists on.
+        bend_middle : :term:`PointDataTuple`
+            Tuple containing the starting and ending points of the line that represents the middle of the bend.
+        bend_radius : :term:`ValueLike`
+            Radius of the bend.
+        bend_angle : :term:`ValueLike`
+            Angle of the bend.
+
+        Returns
+        -------
+        BoardBendDef
+            BoardBendDef that was created.
+        """
+        return BoardBendDef(
+            cls.__stub.Create(
+                board_bend_def_pb2.BoardBendDefCreateMessage(
+                    layout=layout.msg,
+                    zone_prim=zone_prim.msg,
+                    middle=messages.point_pair_message(bend_middle),
+                    radius=messages.value_message(bend_radius),
+                    angle=messages.value_message(bend_angle),
+                )
+            )
+        )
+
+    @property
+    def boundary_primitive(self):
+        """:class:`Primitive <Primitive>`: Zone primitive the board bend is placed on.
+
+        Read-Only.
+        """
+        return Primitive(self.__stub.GetBoundaryPrim(self.msg)).cast()
+
+    @property
+    @parser.to_point_data_pair
+    def bend_middle(self):
+        """:term:`PointDataTuple`: Tuple of the bend middle starting and ending points."""
+        return self.__stub.GetBendMiddle(self.msg)
+
+    @bend_middle.setter
+    def bend_middle(self, bend_middle):
+        self.__stub.SetBendMiddle(messages.point_pair_property_message(self, bend_middle))
+
+    @property
+    def radius(self):
+        """:term:`ValueLike`: Radius of the bend."""
+        return Value(self.__stub.GetRadius(self.msg))
+
+    @radius.setter
+    def radius(self, val):
+        self.__stub.SetRadius(messages.value_property_message(self, val))
+
+    @property
+    def angle(self):
+        """:term:`ValueLike`: Angle of the bend."""
+        return Value(self.__stub.GetAngle(self.msg))
+
+    @angle.setter
+    def angle(self, val):
+        self.__stub.SetAngle(messages.value_property_message(self, val))
+
+    @property
+    @parser.to_polygon_data_list
+    def bent_regions(self):
+        """:obj:`list` of :class:`PolygonData <ansys.edb.geometry.PolygonData>`: Bent region polygons.
+
+            Collection of polygon data representing the areas bent by this bend definition.
+
+        Read-Only.
+        """
+        return self.__stub.GetBentRegions(self.msg)

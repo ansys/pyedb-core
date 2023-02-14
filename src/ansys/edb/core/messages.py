@@ -375,7 +375,7 @@ def string_pair_property_message(target, pair):
 
 def value_property_message(target, value):
     """Convert to ValuePropertyMessage."""
-    return ValuePropertyMessage(target=edb_obj_message(target), value=value)
+    return ValuePropertyMessage(target=edb_obj_message(target), value=value_message(value))
 
 
 def pointer_property_message(target, value):
@@ -986,7 +986,7 @@ def value_message(val):
 
     Parameters
     ----------
-    val : str, int, float, complex, utility.Value
+    val : str, int, float, complex, utility.Value, ValueMessage
 
     Returns
     -------
@@ -994,6 +994,8 @@ def value_message(val):
     """
     if isinstance(val, utility.Value):
         return val.msg
+    if isinstance(val, ValueMessage):
+        return val
 
     msg = ValueMessage()
     if isinstance(val, str):
@@ -1224,6 +1226,13 @@ def pin_pair_model_rlc_message(model, pin_pair, rlc):
     )
 
 
+def point_pair_message(point_pair):
+    """Convert to PointPairMessage."""
+    return PointPairMessage(
+        point_0=point_message(point_pair[0]), point_1=point_message(point_pair[1])
+    )
+
+
 def sparameter_model_message(name, ref_net):
     """Convert to SParameterModelMessage."""
     return SParameterModelMessage(name=name, ref_net=ref_net)
@@ -1238,6 +1247,13 @@ def power_module_message(power_module):
         relative_strength=value_message(power_module.relative_strength),
         active=power_module.active,
         needs_sync=power_module.needs_sync,
+    )
+
+
+def point_pair_property_message(target, point_pair):
+    """Convert to PointPairPropertyMessage."""
+    return PointPairPropertyMessage(
+        target=edb_obj_message(target), point_pair=point_pair_message(point_pair)
     )
 
 

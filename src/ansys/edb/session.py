@@ -8,6 +8,7 @@ from sys import modules
 
 from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
+from ansys.api.edb.v1.board_bend_def_pb2_grpc import BoardBendDefServiceStub
 from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
     ApdBondwireDefServiceStub,
     BondwireDefServiceStub,
@@ -361,6 +362,7 @@ class StubType(Enum):
     material_property_thermal_modifier = MaterialPropertyThermalModifierServiceStub
     r_tree = RTreeServiceStub
     pin_pair_model = PinPairModelServiceStub
+    board_bend_def = BoardBendDefServiceStub
     sparameter_model = SParameterModelServiceStub
     spice_model = SpiceModelServiceStub
     netlist_model = NetlistModelServiceStub

@@ -144,12 +144,12 @@ class Transform(ObjBase):
 
         Parameters
         ----------
-        point: :obj:`tuple` ( :term:`ValueLike`, :class: :term:`ValueLike`)
+        point: :class:`PointData <ansys.edb.geometry.PointData>`
             The point to transform [x, y] Point values.
 
         Returns
         -------
-        :obj:`tuple` ( :class:`Value <ansys.edb.utility.Value>`, :class:`Value <ansys.edb.utility.Value>`)
+        :class:`PointData <ansys.edb.geometry.PointData>`
             The transformed point
         """
         pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))

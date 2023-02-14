@@ -12,11 +12,11 @@ Glossary
 		Objects of the following types are all connectables :
 		
 		.. toctree::
-		   :maxdepth: 1
+			:maxdepth: 1
 
-		   primitive
-		   hierarchy   
-		   terminal
+			primitive
+			hierarchy
+			terminal
 		   
 	Zone
 
@@ -31,6 +31,10 @@ Glossary
 	Point3DLike
 
 		:obj:`tuple`\[:term:`ValueLike`, :term:`ValueLike`, :term:`ValueLike`\]
+
+	PointDataTuple
+
+		:obj:`tuple`\[:class:`PointData <ansys.edb.geometry.PointData>`, :class:`PointData <ansys.edb.geometry.PointData>`\]`
 
 	Triangle3DLike
 

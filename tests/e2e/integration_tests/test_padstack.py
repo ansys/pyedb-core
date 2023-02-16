@@ -2,8 +2,8 @@ from ansys.edb.definition import PadGeometryType, PadstackDef
 from ansys.edb.layout import Cell
 
 
-def test_get_hole_parameters(cell_with_padstack_def: Cell):
-    padstack_def = PadstackDef.find_by_name(cell_with_padstack_def.database, "VIA050070100")
+def test_get_hole_parameters(circuit_cell_with_padstack_def: Cell):
+    padstack_def = PadstackDef.find_by_name(circuit_cell_with_padstack_def.database, "VIA050070100")
     assert not padstack_def.is_null
     padstack_def_data = padstack_def.data
     assert not padstack_def_data.is_null

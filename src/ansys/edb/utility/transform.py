@@ -13,7 +13,7 @@ class _TransformQueryBuilder:
         return pb.TransformMessage(
             scale=messages.value_message(scale),
             angle=messages.value_message(angle),
-            mirror=messages.bool_message(mirror),
+            mirror=mirror,
             offset_x=messages.value_message(offset_x),
             offset_y=messages.value_message(offset_y),
         )
@@ -41,7 +41,7 @@ class Transform(ObjBase):
             Scale parameter
         angle : :term:`ValueLike`
             Rotation angle, specified CCW in radians.
-        mirror : :term:`ValueLike`
+        mirror : :obj:`bool`
             Mirror about Y-axis
         offset_x : :term:`ValueLike`
             X offset
@@ -116,7 +116,7 @@ class Transform(ObjBase):
         self.__stub.SetMirror(messages.bool_property_message(self, value))
 
     @property
-    def is_dentity(self):
+    def is_identity(self):
         """:obj:`bool`: Gets whether the transformation is an identity transformation."""
         return self.__stub.IsIdentity(messages.edb_obj_message(self)).value
 

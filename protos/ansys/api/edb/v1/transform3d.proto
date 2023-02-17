@@ -22,7 +22,7 @@ service Transform3DService {
   rpc CreateRotationFromAxisAndAngle (CPos3DDoubleMessage) returns (EDBObjMessage) {}
   
   rpc CreateRotationFromToAxis (CPos3DPairMessage) returns (EDBObjMessage) {}
-  rpc CreateTransform2D (CPos3DPairMessage) returns (EDBObjMessage) {}
+  rpc CreateTransform2D (DoublePropertyMessage) returns (EDBObjMessage) {}
   
   rpc OperatorPlus (PointerPropertyMessage) returns (EDBObjMessage) {}
   
@@ -60,8 +60,8 @@ message Transform3DPropertyMessage {
 
 message IsIdentityMessage {
   EDBObjMessage target = 1;
-  bool eps = 2;
-  double rotation = 3;
+  double eps = 2;
+  bool rotation = 3;
 }
 
 message IsEqualMessage {

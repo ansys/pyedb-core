@@ -1,4 +1,4 @@
-tr// Proto file containing commonly used messages
+// Proto file containing commonly used messages
 
 syntax = "proto3";
 

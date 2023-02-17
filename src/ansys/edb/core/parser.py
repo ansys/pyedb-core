@@ -25,6 +25,11 @@ def to_point_data_pair(fn):
     return _wraps(fn, _to_point_data_pair)
 
 
+def to_3_point3d_data(fn):
+    """Decorate a function that returns a message to return as List of Point3DData."""
+    return _wraps(fn, _to_3_point3d_data)
+
+
 def to_polygon_data(fn):
     """Decorate a function that returns a message to return as PolygonData."""
     return _wraps(fn, _to_polygon_data)

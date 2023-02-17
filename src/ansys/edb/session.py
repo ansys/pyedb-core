@@ -100,6 +100,7 @@ from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
+from ansys.api.edb.v1.transform3d_pb2_grpc import Transform3DServiceStub
 from ansys.api.edb.v1.transform_pb2_grpc import TransformServiceStub
 from ansys.api.edb.v1.value_pb2_grpc import ValueServiceStub
 from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
@@ -370,6 +371,7 @@ class StubType(Enum):
     transform = TransformServiceStub
     io_component_property = IOComponentPropertyServiceStub
     rlc_component_property = RLCComponentPropertyServiceStub
+    transform3d = Transform3DServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):

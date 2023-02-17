@@ -1,11 +1,11 @@
 """Transform 3D Class."""
+import ansys.api.edb.v1.transform3d_pb2 as pb
+from ansys.api.edb.v1.transform3d_pb2_grpc import Transform3DServiceStub
 from google.protobuf import empty_pb2
 
-from ansys.edb.core import messages
-from ansys.edb.core.parser import _to_3_point3d_data, _to_point3d_data
-from ansys.edb.geometry import Point3DData
-from ansys.edb.utility import conversions
-from ansys.edb.utility.value import Value
+from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.parser import to_3_point3d_data, to_point3d_data
+from ansys.edb.session import StubAccessor, StubType
 
 
 class _Transform3DQueryBuilder:
@@ -13,8 +13,8 @@ class _Transform3DQueryBuilder:
     def is_identity_message(target, eps, rotation):
         return pb.IsIdentityMessage(
             target=messages.edb_obj_message(target),
-            eps=messages.bool_message(eps),
-            rotation=messages.doubles_message(rotation),
+            eps=eps,
+            rotation=rotation,
         )
 
     @staticmethod
@@ -22,12 +22,12 @@ class _Transform3DQueryBuilder:
         return pb.IsEqualMessage(
             target=messages.edb_obj_message(target),
             value=messages.edb_obj_message(value),
-            eps=messages.bool_message(eps),
-            rotation=messages.double_message(rotation),
+            eps=eps,
+            rotation=rotation,
         )
 
 
-class Transform3D:
+class Transform3D(ObjBase):
     """Represents a 3d transformation.
 
     Parameters
@@ -42,14 +42,7 @@ class Transform3D:
         Mirror against YZ plane
     """
 
-    def __init__(self, anchor, rot_axis_from, rot_axis_to, rot_angle, offset, mirror):
-        """Construct a Transform3D."""
-        self.anchor = conversions.to_point3d(anchor)
-        self.rot_axis_from = conversions.to_point3d(rot_axis_from)
-        self.rot_axis_to = conversions.to_point3d(rot_axis_to)
-        self.rot_angle = Value(rot_angle)
-        self.offset = conversions.to_point3d(offset)
-        self.mirror = mirror
+    __stub: Transform3DServiceStub = StubAccessor(StubType.transform3d)
 
     @classmethod
     def create_identity(cls):
@@ -62,14 +55,14 @@ class Transform3D:
         return Transform3D(cls.__stub.CreateIdentity(empty_pb2.Empty()))
 
     @classmethod
-    def create_copy(cls):
+    def create_copy(cls, transform3d):
         """Create a Transform3D by copying another Transform3D.
 
         Returns
         -------
         Transform3D
         """
-        return Transform3D(cls.__stub.CreateCopy(messages.edb_obj_message(object)))
+        return Transform3D(cls.__stub.CreateCopy(messages.edb_obj_message(transform3d)))
 
     @classmethod
     def create_offset(cls, point3d):
@@ -173,23 +166,20 @@ class Transform3D:
         )
 
     @classmethod
-    def create_transform_2d(cls, point3d, scaling, angle, mirror):
+    def create_transform_2d(cls, transform_2d, z_off):
         """Create a Transform3D with Transform2D data.
 
         Parameters
         ----------
-        point3d : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
-        scaling : :obj:`float`
-        angle : :obj:`float`
-        mirror : :obj:`float`
+        transform_2d : :class:`Point3DData <ansys.edb.utility.Transform>`
+        z_off : :obj:`float`
 
         Returns
         -------
         Transform3D
         """
-        point_2 = Point3DData(scaling, angle, mirror)
         return Transform3D(
-            cls.__stub.CreateTransform2D(messages.cpos_3d_pair_message(point3d, point_2))
+            cls.__stub.CreateTransform2D(messages.double_property_message(transform_2d, z_off))
         )
 
     def transpose(self):
@@ -221,13 +211,15 @@ class Transform3D:
 
         Parameters
         ----------
-        other_transform : Transform3D
-            Second transformation
+        other_transform
+        eps : :obj:`bool`
+        rotation : :obj:`float`
 
         Returns
         -------
         :obj:`bool`
             Result of equality check
+
         """
         return self.__stub.IsEqual(
             _Transform3DQueryBuilder.is_equal_message(self, other_transform, eps, rotation)
@@ -251,12 +243,12 @@ class Transform3D:
         )
 
     @property
-    @_to_3_point3d_data
+    @to_3_point3d_data
     def axis(self):
         """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: Axis."""
         return self.__stub.GetAxis(messages.edb_obj_message(self))
 
-    @_to_point3d_data
+    @to_point3d_data
     def transform_point(self, point):
         """Get the transform point of the Transform3d.
 
@@ -272,19 +264,19 @@ class Transform3D:
         return self.__stub.TransformPoint(messages.cpos_3d_property_message(self, point))
 
     @property
-    @_to_point3d_data
+    @to_point3d_data
     def z_y_x_rotation(self):
         """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: ZYXRotation."""
         return self.__stub.GetZYXRotation(messages.edb_obj_message(self))
 
     @property
-    @_to_point3d_data
+    @to_point3d_data
     def scaling(self):
         """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: Scaling."""
         return self.__stub.GetScaling(messages.edb_obj_message(self))
 
     @property
-    @_to_point3d_data
+    @to_point3d_data
     def shift(self):
         """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: Shift."""
         return self.__stub.GetShift(messages.edb_obj_message(self))

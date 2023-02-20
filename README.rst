@@ -164,3 +164,44 @@ Then, you can execute:
 .. _pytest: https://docs.pytest.org/en/stable/
 .. _Sphinx: https://www.sphinx-doc.org/en/master/
 .. _tox: https://tox.wiki/
+
+Examples
+------------
+
+Examples in the form of jupyter notebooks are available to illustrate API usage.
+Follow these steps as necessary to run the notebooks :
+
+1. Create and activate a virtual env (detailed instructions can be found above):
+
+        .. code:: bash
+
+            python -m venv .venv
+            .venv\Scripts\activate.bat
+
+
+2. Build and Install the ansys-edb and ansys-api packages (ensure pip is upgraded) :
+
+        .. code:: bash
+
+            python -m pip install -e .
+            python -m pip install -e ./protos
+
+3. Install requirements_notebook.txt :
+
+        .. code:: bash
+
+            python -m pip install -r .\requirements\requirements_notebook.txt
+
+4. Install ipython kernel :
+
+        .. code:: bash
+
+            ipython kernel install --user --name=.venv
+
+5. Launch notebook :
+
+        .. code:: bash
+
+            jupyter-notebook
+
+6. Navigate to the required example, change the kernel to .venv and execute with the desired settings.

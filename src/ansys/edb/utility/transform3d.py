@@ -65,7 +65,7 @@ class Transform3D(ObjBase):
         return Transform3D(cls.__stub.CreateCopy(messages.edb_obj_message(transform3d)))
 
     @classmethod
-    def create_offset(cls, matrix):
+    def create_matrix(cls, matrix):
         """Create from general matrix data.
 
         Parameters
@@ -315,6 +315,12 @@ class Transform3D(ObjBase):
 
     @matrix.setter
     def matrix(self, value):
-        if len(value) == 4 and len(value[0]) == 4:
+        if (
+            len(value) == 4
+            and len(value[0]) == 4
+            and len(value[1]) == 4
+            and len(value[2]) == 4
+            and len(value[3]) == 4
+        ):
             unrolled_matrix = [float(j) for submatrix in value for j in submatrix]
             self.__stub.SetMatrix(messages.doubles_property_message(self, unrolled_matrix))

@@ -1273,7 +1273,7 @@ def spice_model_net_terminal_pin_message(model, terminal, pin):
 
 def doubles_message(doubles):
     """Convert to DoublesMessage."""
-    return DoublesMessage(doubles=[float(_) for _ in doubles])
+    return DoublesMessage(doubles=doubles)
 
 
 def doubles_property_message(edb_obj, doubles):

@@ -190,7 +190,7 @@ Follow these steps as necessary to run the notebooks :
 
         .. code:: bash
 
-            python -m pip install -r .\requirements\requirements_notebook.txt
+            python -m pip install -r ./requirements/requirements_notebook.txt
 
 4. Install ipython kernel :
 

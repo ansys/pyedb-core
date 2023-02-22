@@ -67,6 +67,6 @@ message IsIdentityMessage {
 message IsEqualMessage {
   EDBObjMessage target = 1;
   EDBObjMessage value = 2;
-  bool eps = 3;
-  double rotation = 4;
+  double eps = 3;
+  bool rotation = 4;
 }

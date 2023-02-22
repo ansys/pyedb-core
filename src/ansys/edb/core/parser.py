@@ -114,7 +114,7 @@ def _to_3_point3d_data(message):
 
     Parameters
     ----------
-    message : ansys.api.edb.v1.point_data_pb2.CPos3DTripleMessage
+    message : list[ansys.api.edb.v1.point_data_pb2.CPos3DTripleMessage]
 
     Returns
     -------

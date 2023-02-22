@@ -65,7 +65,7 @@ class Transform3D(ObjBase):
         return Transform3D(cls.__stub.CreateCopy(messages.edb_obj_message(transform3d)))
 
     @classmethod
-    def create_matrix(cls, matrix):
+    def create_from_matrix(cls, matrix):
         """Create from general matrix data.
 
         Parameters
@@ -81,7 +81,7 @@ class Transform3D(ObjBase):
         return trans
 
     @classmethod
-    def create_offset(cls, offset):
+    def create_from_offset(cls, offset):
         """Create a Transform3D with offset.
 
         Parameters
@@ -95,7 +95,7 @@ class Transform3D(ObjBase):
         return Transform3D(cls.__stub.CreateOffset(messages.cpos_3d_message(offset)))
 
     @classmethod
-    def create_center_scale(cls, center, scale):
+    def create_from_center_scale(cls, center, scale):
         """Create a Transform3D for scaling about a point.
 
         Parameters
@@ -114,7 +114,7 @@ class Transform3D(ObjBase):
         )
 
     @classmethod
-    def create_rotation_from_angle(cls, zyx_decomposition):
+    def create_from_angle(cls, zyx_decomposition):
         """Create a Transform3D from zyx decomposition.
 
         Parameters
@@ -130,7 +130,7 @@ class Transform3D(ObjBase):
         )
 
     @classmethod
-    def create_rotation_from_axis(cls, x, y, z):
+    def create_from_axis(cls, x, y, z):
         """Create a Transform3D with rotation matrix from 3 axis.
 
         Parameters
@@ -151,7 +151,7 @@ class Transform3D(ObjBase):
         )
 
     @classmethod
-    def create_rotationfrom_axis_and_angle(cls, axis, angle):
+    def create_from_axis_and_angle(cls, axis, angle):
         """Create a Transform3D with axis and angle.
 
         Parameters
@@ -170,7 +170,7 @@ class Transform3D(ObjBase):
         )
 
     @classmethod
-    def create_rotation_from_to_axis(cls, from_axis, to_axis):
+    def create_from_one_axis_to_another(cls, from_axis, to_axis):
         """Create a Transform3D with rotation from to axis.
 
         Parameters
@@ -189,7 +189,7 @@ class Transform3D(ObjBase):
         )
 
     @classmethod
-    def create_transform_2d(cls, transform, z_off):
+    def create_from_transform_2d(cls, transform, z_off):
         """Create a Transform3D with Transform data.
 
         Parameters
@@ -220,8 +220,8 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        eps : :obj:`bool`
-        rotation : :obj:`float`
+        rotation : :obj:`bool`
+        eps : :obj:`float`
 
         Returns
         -------
@@ -231,14 +231,14 @@ class Transform3D(ObjBase):
             _Transform3DQueryBuilder.is_identity_message(self, eps, rotation)
         ).value
 
-    def is_equal(self, other_transform, eps, rotation):
+    def is_equal(self, other_transform, rotation, eps):
         """Equality check for two 3d transformations.
 
         Parameters
         ----------
         other_transform
-        eps : :obj:`bool`
-        rotation : :obj:`float`
+        rotation : :obj:`bool`
+        eps : :obj:`float`
 
         Returns
         -------
@@ -270,7 +270,7 @@ class Transform3D(ObjBase):
     @property
     @to_3_point3d_data
     def axis(self):
-        """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: Axis."""
+        """:obj:`list` of :class:`Point3DData <ansys.edb.geometry.Point3DData>`: Axis."""
         return self.__stub.GetAxis(messages.edb_obj_message(self))
 
     @to_point3d_data

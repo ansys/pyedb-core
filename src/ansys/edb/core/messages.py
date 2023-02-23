@@ -1286,7 +1286,8 @@ def cpos_3d_message(point3d):
     if point3d is None:
         return None
     else:
-        x, y, z = point3d.x.double, point3d.y.double, point3d.z.double
+        point3d_converted = conversions.to_point3d(point3d)
+        x, y, z = point3d_converted.x.double, point3d_converted.y.double, point3d_converted.z.double
         return CPos3DMessage(x=x, y=y, z=z)
 
 

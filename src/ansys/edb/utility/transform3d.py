@@ -32,12 +32,12 @@ class Transform3D(ObjBase):
 
     Parameters
     ----------
-    anchor : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
-    rot_axis_from : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
-    rot_axis_to : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+    anchor : :term:`Point3DLike`
+    rot_axis_from : :term:`Point3DLike`
+    rot_axis_to : :term:`Point3DLike`
     rot_angle : str, int, float, complex, Value
         Rotation angle, specified CCW in radians, from rot_axis_from towards rot_axis_to
-    offset : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+    offset : :term:`Point3DLike`
     mirror : bool
         Mirror against YZ plane
     """
@@ -86,7 +86,7 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        offset : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        offset : :term:`Point3DLike`
             The vector offset.
         Returns
         -------
@@ -100,7 +100,7 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        center : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        center : :term:`Point3DLike`
             The center of the transformation.
         scale : :obj:`float`
             The scale factor of the transformation.
@@ -119,7 +119,7 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        zyx_decomposition : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        zyx_decomposition : :term:`Point3DLike`
              ZYX decomposition.
         Returns
         -------
@@ -135,11 +135,11 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        x : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        x : :term:`Point3DLike`
             X axis.
-        y : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        y : :term:`Point3DLike`
             Y axis.
-        z : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        z : :term:`Point3DLike`
             Z axis.
 
         Returns
@@ -156,7 +156,7 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        axis : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        axis : :term:`Point3DLike`
             Axis.
         angle : :obj:`float`
             Angle.
@@ -175,9 +175,9 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        from_axis : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        from_axis : :term:`Point3DLike`
             From axis.
-        to_axis : :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        to_axis : :term:`Point3DLike`
             To axis.
 
         Returns
@@ -194,7 +194,7 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        transform : :class:`Point3DData <ansys.edb.utility.Transform>`
+        transform : :class:`Transform <ansys.edb.utility.Transform>`
             Transform data.
         z_off : :obj:`float`
             Z offset.
@@ -270,7 +270,7 @@ class Transform3D(ObjBase):
     @property
     @to_3_point3d_data
     def axis(self):
-        """:obj:`list` of :class:`Point3DData <ansys.edb.geometry.Point3DData>`: Axis."""
+        """:obj:`list` of :term:`Point3DLike`: Axis."""
         return self.__stub.GetAxis(messages.edb_obj_message(self))
 
     @to_point3d_data
@@ -279,11 +279,11 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        point : `Point3DData <geometry.Point3DData>`
+        point : :term:`Point3DLike`
 
         Returns
         -------
-        :class:`Point3DData <ansys.edb.geometry.Point3DData>`
+        :term:`Point3DLike`
             TransformPoint.
         """
         return self.__stub.TransformPoint(messages.cpos_3d_property_message(self, point))
@@ -291,19 +291,19 @@ class Transform3D(ObjBase):
     @property
     @to_point3d_data
     def z_y_x_rotation(self):
-        """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: ZYXRotation."""
+        """:term:`Point3DLike`: ZYXRotation."""
         return self.__stub.GetZYXRotation(messages.edb_obj_message(self))
 
     @property
     @to_point3d_data
     def scaling(self):
-        """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: Scaling."""
+        """:term:`Point3DLike`: Scaling."""
         return self.__stub.GetScaling(messages.edb_obj_message(self))
 
     @property
     @to_point3d_data
     def shift(self):
-        """:class:`Point3DData <ansys.edb.geometry.Point3DData>`: Shift."""
+        """:term:`Point3DLike`: Shift."""
         return self.__stub.GetShift(messages.edb_obj_message(self))
 
     @property

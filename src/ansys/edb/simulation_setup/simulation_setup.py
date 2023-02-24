@@ -2,12 +2,17 @@
 
 from enum import Enum
 
-import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
-import ansys.api.edb.v1.simulation_setup_pb2 as simulation_setup_pb2
+from ansys.api.edb.v1 import edb_defs_pb2
+from ansys.api.edb.v1.simulation_setup_pb2 import (
+    SimulationSetupCreationMessage,
+    SweepDataListMessage,
+    SweepDataListPropertyMessage,
+    SweepDataMessage,
+)
 
-from ansys.edb import simulation_setup
-from ansys.edb.core import ObjBase, messages
-from ansys.edb.session import get_simulation_setup_stub
+from ansys.edb.core import messages
+from ansys.edb.core.base import ObjBase
+from ansys.edb.session import SimulationSetupServiceStub, StubAccessor, StubType
 
 
 class SimulationSetupType(Enum):
@@ -19,170 +24,139 @@ class SimulationSetupType(Enum):
     HFSS = edb_defs_pb2.HFSS
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(cell, name: str, sim_type: SimulationSetupType):
-        return simulation_setup_pb2.SimulationSetupCreationMessage(
-            cell=cell.msg, simulation_setup_name=name, simulation_setup_type=sim_type.value
-        )
+class SweepData:
+    r"""Class representing a sweep data setting.
 
-    @staticmethod
-    def get_simulation_setup_info(sim_setup: "SimulationSetup"):
-        return sim_setup.msg
+    Attributes
+    ----------
+    name : str
+      Name of this sweep.
+    distribution : str
+      Type of sweep (see table below).
+    start_f : str
+      Start frequency is number with optional frequency units.
+    end_f : str
+      End frequency is number with optional frequency units.
+    step : str
+      Step is either frequency with optional frequency units or an integer when a count is needed.
+    fast_sweep : bool
+      True if this is a fast sweep.
 
-    @staticmethod
-    def add_adaptive_frequencies(setup, frequencies):
-        return simulation_setup_pb2.AdaptiveFrequenciesSetMessage(
-            setup=messages.edb_obj_message(setup),
-            frequencies=[messages.adaptive_frequency_message(*f) for f in frequencies],
-        )
+    Notes
+    -----
+    Here are the choices for the distribution parameter
 
-    @staticmethod
-    def add_mesh_operations(setup, mesh_ops):
-        return simulation_setup_pb2.MeshOperationsSetMessage(
-            setup=messages.edb_obj_message(setup),
-            mesh_operations=[messages.mesh_operation_message(**m) for m in mesh_ops],
-        )
+    .. list-table:: Values for distribution parameter
+       :widths: 20 45 25
+       :header-rows: 1
 
-    @staticmethod
-    def add_frequency_sweeps(setup, sweeps):
-        return simulation_setup_pb2.FrequencySweepsSetMessage(
-            setup=messages.edb_obj_message(setup),
-            sweeps=[messages.frequency_sweep_message(*s) for s in sweeps],
-        )
+       * - Distribution
+         - Description
+         - Example
+       * - LIN
+         - linear (start, stop, step)
+         - LIN 2GHz 4GHz 100MHz or LIN 1dBm 10dBm 1dB
+       * - LINC
+         - linear (start, stop, count)
+         - LINC 2GHz 4GHz 11
+       * - ESTP
+         - Exponential step (start, stop, count)
+         - ESTP 2MHz 10MHz 3
+       * - DEC
+         - decade (start, stop, number of decades)
+         - DEC 10KHz 10GHz 6
+       * - OCT
+         - octave (start, stop, number of octaves)
+         - OCT 10MHz 160MHz 5
+
+    """
+
+    def __init__(
+        self,
+        name,
+        distribution,
+        start_f,
+        end_f,
+        step,
+        fast_sweep=False,
+    ):
+        """Initialize a sweep data setting."""
+        self.name = name
+        self.distribution = distribution
+        self.start_f = start_f
+        self.end_f = end_f
+        self.step = step
+        self.fast_sweep = fast_sweep
+
+    @property
+    def frequency_string(self):
+        """:obj:`str`: String representing the frequency sweep data."""
+        return self.distribution + " " + self.start_f + " " + self.end_f + " " + self.step
 
 
 class SimulationSetup(ObjBase):
-    """Simulation Setup."""
+    """Class representing base simulation setup data."""
 
-    @staticmethod
-    def create(cell, name, sim_type):
-        """Create a simulation setup.
+    __stub: SimulationSetupServiceStub = StubAccessor(StubType.sim_setup)
 
-        Parameters
-        ----------
-        cell : :class:`Cell <ansys.edb.layout.Cell>`
-            Cell to be simulated.
-        name : str
-            Name of this simulation setup.
-        sim_type : SimulationSetupType
-            Type of this simulation setup.
-
-        Returns
-        -------
-        SimulationSetup
-            Newly created simulation setup.
-        """
-        return SimulationSetup(
-            get_simulation_setup_stub().Create(_QueryBuilder.create(cell, name, sim_type))
+    @classmethod
+    def _create(cls, cell, sim_setup_name, sim_setup_type):
+        return cls(
+            SimulationSetup.__stub.Create(
+                SimulationSetupCreationMessage(
+                    cell=cell.msg, name=sim_setup_name, type=sim_setup_type.value
+                )
+            )
         )
 
     @property
-    def simulation_setup_info(self):
-        """:obj:`SimulationSetupInfo` : Get simulation setup info.
+    def name(self):
+        """:obj:`str`: Name of simulation setup."""
+        return self.__stub.GetName(self.msg).value
 
-        Read-Only.
-        """
-        return simulation_setup.SimulationSetupInfo(
-            get_simulation_setup_stub().GetSimulationSetupInfo(
-                _QueryBuilder.get_simulation_setup_info(self)
+    @name.setter
+    def name(self, name):
+        self.__stub.SetName(messages.string_property_message(self, name))
+
+    @property
+    def position(self):
+        """:obj:`int`: Position of simulation in setup order."""
+        return self.__stub.GetPosition(self.msg).value
+
+    @position.setter
+    def position(self, position):
+        self.__stub.SetPosition(messages.int_property_message(self, position))
+
+    @property
+    def sweep_data(self):
+        """:obj:`list` of :class:`SweepData`: Frequency sweeps of the simulation setup."""
+        sweep_data = []
+        for sweep_data_msg in self.__stub.GetSweepData(self.msg).sweep_data:
+            freq_str_params = sweep_data_msg.frequency_string.split()
+            new_sweep_data = SweepData(
+                sweep_data_msg.name,
+                freq_str_params[0],
+                freq_str_params[1],
+                freq_str_params[2],
+                freq_str_params[3],
+                sweep_data_msg.fast_sweep,
             )
-        )
+            sweep_data.append(new_sweep_data)
+        return sweep_data
 
-    def adaptive_frequency(self, frequency, max_delta_s, max_pass):
-        """Add an adaptive frequency to this simulation setup.
-
-        Parameters
-        ----------
-        frequency : str
-            Frequency where adaptive calculations are performed.
-        max_delta_s : str
-            Adaptive calculations are repeated until the S-parameters change by less than this amount.
-        max_pass : int
-            Adaptive calculations are stopped after this number of passes even if max_delta_s isn't attained.
-        """
-        return (
-            get_simulation_setup_stub()
-            .AddAdaptiveFrequencies(
-                _QueryBuilder.add_adaptive_frequencies(self, [(frequency, max_delta_s, max_pass)])
-            )
-            .value
-        )
-
-    def mesh_operation(self, name, net_layers, num_layers):
-        """Add a mesh operation to this simulation setup.
-
-        Parameters
-        ----------
-        name : str, optional
-            Name of the operation.
-        net_layers : list[tuple(str, str, bool)], optional
-            Each entry has net name, layer name, and isSheet which is True if it is a sheet object.
-        num_layers : int
-            Number of entries in net_layers
-        """
-        return (
-            get_simulation_setup_stub()
-            .AddMeshOperations(
-                _QueryBuilder.add_mesh_operations(
-                    self, [{"name": name, "net_layers": net_layers, "num_layers": str(num_layers)}]
+    @sweep_data.setter
+    def sweep_data(self, sweep_data):
+        sweep_data_msgs = []
+        for sweep in sweep_data:
+            sweep_data_msgs.append(
+                SweepDataMessage(
+                    name=sweep.name,
+                    frequency_string=sweep.frequency_string,
+                    fast_sweep=sweep.fast_sweep,
                 )
             )
-            .value
-        )
-
-    def frequency_sweep(self, name, distribution, start_f, end_f, step, fast_sweep):
-        r"""Add a frequency sweep to this simulation setup.
-
-        Parameters
-        ----------
-        name : str
-          Name of this sweep.
-        distribution : str
-          Type of sweep (see table below).
-        start_f : str
-          Start frequency is number with optional frequency units.
-        end_f : str
-          End frequency is number with optional frequency units.
-        step : str
-          Step is either frequency with optional frequency units or an integer when a count is needed.
-        fast_sweep : bool
-          True if this is a fast sweep.
-
-        Notes
-        -----
-        Here are the choices for the distribution parameter
-
-        .. list-table:: Values for distribution parameter
-           :widths: 20 45 25
-           :header-rows: 1
-
-           * - Distribution
-             - Description
-             - Example
-           * - LIN
-             - linear (start, stop, step)
-             - LIN 2GHz 4GHz 100MHz or LIN 1dBm 10dBm 1dB
-           * - LINC
-             - linear (start, stop, count)
-             - LINC 2GHz 4GHz 11
-           * - ESTP
-             - Exponential step (start, stop, count)
-             - ESTP 2MHz 10MHz 3
-           * - DEC
-             - decade (start, stop, number of decades)
-             - DEC 10KHz 10GHz 6
-           * - OCT
-             - octave (start, stop, number of octaves)
-             - OCT 10MHz 160MHz 5
-
-        """
-        return (
-            get_simulation_setup_stub()
-            .AddFrequencySweeps(
-                _QueryBuilder.add_frequency_sweeps(
-                    self, [(name, distribution, start_f, end_f, step, fast_sweep)]
-                )
+        self.__stub.SetSweepData(
+            SweepDataListPropertyMessage(
+                target=self.msg, sweeps=SweepDataListMessage(sweep_data=sweep_data_msgs)
             )
-            .value
         )

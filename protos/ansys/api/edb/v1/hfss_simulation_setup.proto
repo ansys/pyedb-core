@@ -1,0 +1,58 @@
+// Proto file representing hfss simulation setup 
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service HfssSimulationSetupService {
+  rpc GetMeshOperations (EDBObjMessage) returns (MeshOperationsMessage) {}
+  
+  rpc SetMeshOperations (MeshOperationsPropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+// Message for MeshOperation net layer info
+message MeshOpNetLayerInfoMessage {
+  string net = 1;
+  string layer = 2;
+  bool is_sheet = 3;
+}
+
+// Message containing skin depth operation specific attributes
+message SkinDepthMeshOperationMessage {
+  string skin_depth = 1;
+  string surface_triangle_length = 2;
+  string num_layers = 3;
+  string max_elements = 4;
+  bool restrict_max_elements = 5;
+}
+
+// Message containing length operation specific attributes
+message LengthMeshOperationMessage {
+  string max_length = 1;
+  bool restrict_length = 2;
+  string max_elements = 3;
+  bool restrict_max_elements = 4;
+}
+
+message MeshOperationMessage {
+  string name = 1;	
+  bool enabled = 2;
+  bool refine_inside = 3;
+  string mesh_region = 4;
+  repeated MeshOpNetLayerInfoMessage net_layer_info = 5;
+  oneof mesh_operation_sub_type {
+    SkinDepthMeshOperationMessage skin_depth_mesh_op = 6;
+    LengthMeshOperationMessage length_mesh_op = 7;
+  }
+}
+
+message MeshOperationsMessage {
+  repeated MeshOperationMessage mesh_ops = 1;
+}
+
+message MeshOperationsPropertyMessage {
+  EDBObjMessage target = 1;
+  MeshOperationsMessage mesh_ops = 2;
+}

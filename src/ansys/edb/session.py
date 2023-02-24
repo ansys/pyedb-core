@@ -6,7 +6,6 @@ from struct import pack, unpack
 import subprocess
 from sys import modules
 
-from ansys.api.edb.v1.adaptive_settings_pb2_grpc import AdaptiveSettingsServiceStub
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
 from ansys.api.edb.v1.board_bend_def_pb2_grpc import BoardBendDefServiceStub
 from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
@@ -40,6 +39,15 @@ from ansys.api.edb.v1.djordjecvic_sarkar_model_pb2_grpc import DjordjecvicSarkar
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
+from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
+    DCRSettingsServiceStub,
+    HFSSAdvancedMeshingSettingsServiceStub,
+    HFSSAdvancedSettingsServiceStub,
+    HFSSGeneralSettingsServiceStub,
+    HFSSOptionsSettingsServiceStub,
+    HFSSSolverSettingsServiceStub,
+)
+from ansys.api.edb.v1.hfss_simulation_setup_pb2_grpc import HfssSimulationSetupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
@@ -88,8 +96,13 @@ from ansys.api.edb.v1.primitive_pb2_grpc import PrimitiveServiceStub
 from ansys.api.edb.v1.r_tree_pb2_grpc import RTreeServiceStub
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
-from ansys.api.edb.v1.simulation_settings_pb2_grpc import HFSSSimulatonSettingsServiceStub
-from ansys.api.edb.v1.simulation_setup_info_pb2_grpc import SimulationSetupInfoServiceStub
+from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
+    AdvancedMeshingSettingsServiceStub,
+    AdvancedSettingsServiceStub,
+    SettingsOptionsServiceStub,
+    SimulationSettingsServiceStub,
+    SolverSettingsServiceStub,
+)
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 from ansys.api.edb.v1.sparameter_model_pb2_grpc import SParameterModelServiceStub
@@ -296,10 +309,6 @@ class StubType(Enum):
     polygon_data = PolygonDataServiceStub
     path = PathServiceStub
     rectangle = RectangleServiceStub
-    adaptive_settings = AdaptiveSettingsServiceStub
-    simulation_setup = SimulationSetupServiceStub
-    hfss_simulation_settings = HFSSSimulatonSettingsServiceStub
-    simulation_setup_info = SimulationSetupInfoServiceStub
     via_group = ViaGroupServiceStub
     circle = CircleServiceStub
     text = TextServiceStub
@@ -372,6 +381,19 @@ class StubType(Enum):
     io_component_property = IOComponentPropertyServiceStub
     rlc_component_property = RLCComponentPropertyServiceStub
     transform3d = Transform3DServiceStub
+    hfss_general_sim_settings = HFSSGeneralSettingsServiceStub
+    hfss_options_sim_settings = HFSSOptionsSettingsServiceStub
+    hfss_advanced_sim_settings = HFSSAdvancedSettingsServiceStub
+    hfss_advanced_sim_meshing_settings = HFSSAdvancedMeshingSettingsServiceStub
+    hfss_solver_sim_settings = HFSSSolverSettingsServiceStub
+    hfss_dcr_sim_settings = DCRSettingsServiceStub
+    hfss_sim_setup = HfssSimulationSetupServiceStub
+    sim_setup = SimulationSetupServiceStub
+    sim_settings = SimulationSettingsServiceStub
+    sim_settings_options = SettingsOptionsServiceStub
+    advanced_sim_settings = AdvancedSettingsServiceStub
+    advanced_mesh_sim_settings = AdvancedMeshingSettingsServiceStub
+    solver_sim_settings = SolverSettingsServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):
@@ -463,46 +485,6 @@ def get_via_layer_stub():
     ViaLayerServiceStub
     """
     return StubAccessor(StubType.via_layer).__get__()
-
-
-def get_adaptive_settings_stub():
-    """Get Adaptive settings stub.
-
-    Returns
-    -------
-    AdaptiveSettingsServiceStub
-    """
-    return StubAccessor(StubType.adaptive_settings).__get__()
-
-
-def get_simulation_setup_stub():
-    """Get Simulation setup stub.
-
-    Returns
-    -------
-    SimulationSetupServiceStub
-    """
-    return StubAccessor(StubType.simulation_setup).__get__()
-
-
-def get_hfss_simulation_settings_stub():
-    """Get HFSS simulation settings stub.
-
-    Returns
-    -------
-    HFSSSimulatonSettingsServiceStub
-    """
-    return StubAccessor(StubType.hfss_simulation_settings).__get__()
-
-
-def get_simulation_setup_info_stub():
-    """Get Simulation setup info stub.
-
-    Returns
-    -------
-    SimulationSetupInfoServiceStub
-    """
-    return StubAccessor(StubType.simulation_setup_info).__get__()
 
 
 def get_variable_server_stub():

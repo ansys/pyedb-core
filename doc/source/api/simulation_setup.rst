@@ -9,14 +9,28 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
-   AdaptiveFrequencyData
-   AdaptiveSettings
-   HFSSAdaptiveSettings
    HFSSSimulationSettings
+   HFSSGeneralSettings
+   HFSSSettingsOptions
+   HFSSSolverSettings
+   HFSSAdvancedSettings
+   HFSSAdvancedMeshingSettings
+   HFSSDCRSettings
+   AdaptiveFrequency
+   BroadbandAdaptiveSolution
+   MatrixConvergenceData
+   MatrixConvergenceDataEntry
+   MultiFrequencyAdaptiveSolution
+   SingleFrequencyAdaptiveSolution
+   LengthMeshOperation
    MeshOperation
-   SimulationSetup
-   SimulationSetupInfo
    SkinDepthMeshOperation
+   AdvancedMeshingSettings
+   AdvancedSettings
+   SettingsOptions
+   SimulationSettings
+   SolverSettings
+   SimulationSetup
    SweepData
 
 Enums
@@ -26,3 +40,7 @@ Enums
    :toctree: _autosummary
 
       SimulationSetupType
+      AdaptType
+      BasisFunctionOrder
+      SolverType
+      ViaStyle

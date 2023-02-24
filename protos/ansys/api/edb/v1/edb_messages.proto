@@ -201,6 +201,11 @@ message ValuePairPropertyMessage {
   ValuePairMessage values = 2;
 }
 
+message UInt64PropertyMessage {
+  EDBObjMessage target = 1;
+  uint64 value = 2;
+}
+
 message DoublesMessage {
   repeated double doubles = 1;
 }

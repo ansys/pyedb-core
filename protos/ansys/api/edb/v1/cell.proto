@@ -94,9 +94,6 @@ service CellService {
   // Set a product property value
   rpc SetProductProperty (SetProductPropertyMessage) returns (google.protobuf.Empty) {}
 
-  // Add a simulation setup
-  rpc AddSimulationSetup (CellAddSimSetupMessage) returns (google.protobuf.Empty) {}
-
   // Delete a simulation setup by name
   rpc DeleteSimulationSetup (StringPropertyMessage) returns (google.protobuf.Empty) {}
 
@@ -136,13 +133,6 @@ message CellFindMessage {
     string name = 3;
 	sint64 id = 4;
   }
-}
-
-message CellAddSimSetupMessage {
-  EDBObjMessage cell = 1;
-  string name = 2;
-  string simsetup = 3;
-  SimulationSetupType setup_type = 4;
 }
 
 message CellSetTemperatureSettingsMessage {

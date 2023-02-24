@@ -34,6 +34,8 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     ComponentTypeMessage,
     DesignModePropertyMessage,
     DoublePropertyMessage,
+    DoublesMessage,
+    DoublesPropertyMessage,
     EDBInternalIdMessage,
     EDBObjCollectionMessage,
     EDBObjMessage,
@@ -1267,3 +1269,43 @@ def spice_model_net_terminal_pin_message(model, terminal, pin):
     return SpiceModelNewTerminalPinMessage(
         target=edb_obj_message(model), terminal=terminal, pin=pin
     )
+
+
+def doubles_message(doubles):
+    """Convert to DoublesMessage."""
+    return DoublesMessage(doubles=doubles)
+
+
+def doubles_property_message(edb_obj, doubles):
+    """Convert to DoublesPropertyMessage."""
+    return DoublesPropertyMessage(edb_obj=edb_obj_message(edb_obj), doubles=doubles)
+
+
+def cpos_3d_message(point3d):
+    """Convert to CPos3DMessage."""
+    if point3d is None:
+        return None
+    else:
+        point3d_converted = conversions.to_point3d(point3d)
+        x, y, z = point3d_converted.x.double, point3d_converted.y.double, point3d_converted.z.double
+        return CPos3DMessage(x=x, y=y, z=z)
+
+
+def cpos_3d_property_message(target, value):
+    """Convert to CPos3DPropertyMessage."""
+    return CPos3DPropertyMessage(target=edb_obj_message(target), value=cpos_3d_message(value))
+
+
+def cpos_3d_pair_message(x, y):
+    """Convert to CPos3DPairMessage."""
+    return CPos3DPairMessage(x=cpos_3d_message(x), y=cpos_3d_message(y))
+
+
+def cpos_3d_triple_message(x, y, z):
+    """Convert to CPos3DTripleMessage."""
+    return CPos3DTripleMessage(x=cpos_3d_message(x), y=cpos_3d_message(y), z=cpos_3d_message(z))
+
+
+def cpos_3d_double_message(pos, value):
+    """Convert to CPos3DDoubleMessage."""
+    return CPos3DDoubleMessage(pos=cpos_3d_message(pos), value=value)

@@ -25,6 +25,11 @@ def to_point_data_pair(fn):
     return _wraps(fn, _to_point_data_pair)
 
 
+def to_3_point3d_data(fn):
+    """Decorate a function that returns a message to return as List of Point3DData."""
+    return _wraps(fn, _to_3_point3d_data)
+
+
 def to_polygon_data(fn):
     """Decorate a function that returns a message to return as PolygonData."""
     return _wraps(fn, _to_polygon_data)
@@ -102,6 +107,20 @@ def _to_point_data_list(message):
     list[geometry.PointData]
     """
     return [_to_point_data(m) for m in message]
+
+
+def _to_3_point3d_data(message):
+    """Convert Point3DMessage to PointData.
+
+    Parameters
+    ----------
+    message : list[ansys.api.edb.v1.point_data_pb2.CPos3DTripleMessage]
+
+    Returns
+    -------
+    geometry.Point3DData
+    """
+    return [_to_point3d_data(message.x), _to_point3d_data(message.y), _to_point3d_data(message.z)]
 
 
 def _to_point3d_data(message):

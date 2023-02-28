@@ -71,8 +71,8 @@ class StackupLayer(Layer):
         ----------
         name : str
         layer_type : LayerType
-        thickness : float
-        elevation : float
+        thickness : :term:`ValueLike`
+        elevation : :term:`ValueLike`
         material : str
 
         Returns

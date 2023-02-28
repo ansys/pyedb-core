@@ -37,7 +37,8 @@ repos:
     exclude: |
       (?x)(
         ^src/ansys/api/|
-        ^protos
+        ^protos|
+        ^notebooks
       )
 
 - repo: https://github.com/pycqa/pydocstyle

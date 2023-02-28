@@ -1,3 +1,5 @@
+import settings
+
 from ansys.edb.database import Database
 from ansys.edb.layer import Layer, LayerType
 from ansys.edb.layer.layer_collection import LayerCollection, LayerCollectionMode
@@ -5,7 +7,6 @@ from ansys.edb.layout import Cell, CellType
 from ansys.edb.primitive import BoardBendDef, Rectangle, RectangleRepresentationType
 from ansys.edb.session import session
 from ansys.edb.utility import Value
-import tests.e2e.settings as settings
 
 
 def do_test():

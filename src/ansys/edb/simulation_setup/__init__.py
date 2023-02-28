@@ -1,11 +1,41 @@
 """Import simulation setup classes."""
 
-from ansys.edb.simulation_setup.adaptive_frequency_data import AdaptiveFrequencyData
-from ansys.edb.simulation_setup.adaptive_settings import AdaptiveSettings
-from ansys.edb.simulation_setup.hfss_adaptive_settings import HFSSAdaptiveSettings
-from ansys.edb.simulation_setup.hfss_simulation_settings import HFSSSimulationSettings
-from ansys.edb.simulation_setup.mesh_operation import MeshOperation
-from ansys.edb.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
-from ansys.edb.simulation_setup.simulation_setup_info import SimulationSetupInfo
-from ansys.edb.simulation_setup.skin_depth_mesh_operation import SkinDepthMeshOperation
-from ansys.edb.simulation_setup.sweep_data import SweepData
+from ansys.edb.simulation_setup.adaptive_solutions import (
+    AdaptiveFrequency,
+    BroadbandAdaptiveSolution,
+    MatrixConvergenceData,
+    MatrixConvergenceDataEntry,
+    MultiFrequencyAdaptiveSolution,
+    SingleFrequencyAdaptiveSolution,
+)
+from ansys.edb.simulation_setup.hfss_simulation_settings import (
+    AdaptType,
+    BasisFunctionOrder,
+    HFSSAdvancedMeshingSettings,
+    HFSSAdvancedSettings,
+    HFSSDCRSettings,
+    HFSSGeneralSettings,
+    HFSSSettingsOptions,
+    HFSSSimulationSettings,
+    HFSSSolverSettings,
+    SolverType,
+)
+from ansys.edb.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
+from ansys.edb.simulation_setup.mesh_operation import (
+    LengthMeshOperation,
+    MeshOperation,
+    SkinDepthMeshOperation,
+)
+from ansys.edb.simulation_setup.simulation_settings import (
+    AdvancedMeshingSettings,
+    AdvancedSettings,
+    SettingsOptions,
+    SimulationSettings,
+    SolverSettings,
+    ViaStyle,
+)
+from ansys.edb.simulation_setup.simulation_setup import (
+    SimulationSetup,
+    SimulationSetupType,
+    SweepData,
+)

@@ -1,4 +1,4 @@
-// deprecated: Proto file representing the EDB SimulationSettings class and derived classes
+// Proto file representing simulation setup settings 
 
 syntax = "proto3";
 
@@ -6,58 +6,102 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 
-// DEPRECATED: use SimulationSetupService instead
-service HFSSSimulatonSettingsService {
-  // Gets the HFSSAdaptiveSettings  
-  rpc GetAdaptiveSettings (EDBObjMessage) returns (EDBObjMessage) {}
-
-  // Sets the MeshOperation list
-  rpc SetMeshOperations (SetMeshOperationsMessage) returns (google.protobuf.Empty) {}
+// SimulationSetup service definition
+service SimulationSettingsService {
+  rpc GetEnabled (EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  
+  rpc SetEnabled (BoolPropertyMessage) returns (google.protobuf.Empty) {}
 }
 
-// Message for MeshOperation net layer info
-message MeshOpNetLayerInfoMessage {
-  string net = 1;
-  string layer = 2;
-  bool is_sheet = 3;
+// Settings options
+service SettingsOptionsService {
+  rpc GetDoLamdaRefineFlag(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetDoLamdaRefineFlag(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetLamdaTarget(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetLamdaTarget(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetUseDefaultLamda(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseDefaultLamda(BoolPropertyMessage) returns (google.protobuf.Empty) {}
 }
 
-// Enum for MeshOperation types
-enum MeshOperationType {
-  MESH_SETUP_BASE = 0;
-  MESH_SETUP_LENGTH = 1;
-  MESH_SETUP_SKIN_DEPTH = 2;
-  NUM_MESH_OP_TYPES = 3;
+// Advanced settings
+enum T25DViaStyle
+{
+  WIREBOND = 0;
+  RIBBON = 1;
+  MESH = 2;
+  FIELD = 3;
+  NUM_VIA_STYLE = 4;
+}	
+
+service AdvancedSettingsService {
+  rpc GetUnionPolygons(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUnionPolygons(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetRemoveFloatingGeometry(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetRemoveFloatingGeometry(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetSmallVoidArea(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetSmallVoidArea(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetUseDefeature(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseDefeature(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetUseDefeatureAbsoluteLength(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseDefeatureAbsoluteLength(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDefeatureAbsoluteLength(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetDefeatureAbsoluteLength(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDefeatureRatio(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetDefeatureRatio(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetViaModelType(EDBObjMessage) returns (ViaModelTypeMessage) {}
+  rpc SetViaModelType(ViaModelTypePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetNumViaSides(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetNumViaSides(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetViaDensity(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetViaDensity(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetViaMaterial(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetViaMaterial(StringPropertyMessage) returns (google.protobuf.Empty) {}
 }
 
-// Message containing skin depth operation specific attributes
-message SkinDepthMeshOperationMessage {
-  string skin_depth = 1;
-  string max_surface_triangle_length = 2;
-  string num_layers = 3;
-  string max_elements = 4;
-  bool restrict_max_elements = 5;
+message ViaModelTypeMessage {
+  T25DViaStyle via_model_type = 1;
 }
 
-// Message representing a mesh operations
-message MeshOperationMessage {
-  string name = 1;	
-  bool enabled = 2;
-  bool refine_inside = 3;
-  string mesh_region = 4;
-  repeated MeshOpNetLayerInfoMessage net_layer_info = 5;
-  oneof mesh_operation_sub_type {
-    SkinDepthMeshOperationMessage skin_depth_mesh_op = 6;
-  }
+message ViaModelTypePropertyMessage {
+  EDBObjMessage target = 1;
+  T25DViaStyle via_model_type = 2;
 }
 
-// Message representing a list of MeshOperations
-message MeshOperationsMessage {
-	repeated MeshOperationMessage mesh_operations = 1;
+// Advanced meshing settings
+service AdvancedMeshingSettingsService {
+  rpc GetArcStepSize(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetArcStepSize(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetCircleStartAzimuth(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetCircleStartAzimuth(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMaxNumArcPoints(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetMaxNumArcPoints(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetUseArcChordErrorApprox(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseArcChordErrorApprox(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetArcChordErrorApprox(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetArcChordErrorApprox(StringPropertyMessage) returns (google.protobuf.Empty) {}
 }
 
-// Message for SetMeshOperations
-message SetMeshOperationsMessage {
-  EDBObjMessage hfss_simulation_settings = 1;
-  MeshOperationsMessage mesh_operations = 2;
+// Solver settings
+service SolverSettingsService {
+  rpc GetThinSignalLayerThreshold(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetThinSignalLayerThreshold(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetThinDielectricLayerThreshold(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetThinDielectricLayerThreshold(StringPropertyMessage) returns (google.protobuf.Empty) {}
 }

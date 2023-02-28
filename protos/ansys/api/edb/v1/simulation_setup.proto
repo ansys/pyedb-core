@@ -1,51 +1,42 @@
-// Proto file representing the EDB SimulationSetup class 
+// Proto file representing simulation setup 
 
 syntax = "proto3";
 
 package ansys.api.edb.v1;
 
-import "edb_defs.proto";
 import "edb_messages.proto";
-import "adaptive_settings.proto";
-import "simulation_setup_info.proto";
-import "simulation_settings.proto";
+import "edb_defs.proto";
 
-// SimulationSetup service definition
 service SimulationSetupService {
-  // Creates a SimulationSetup in the given cell with the provided type and name
   rpc Create(SimulationSetupCreationMessage) returns (EDBObjMessage) {}
 
-  // Get the SimSetupInfo of the SimulationSetup
-  rpc GetSimulationSetupInfo (EDBObjMessage) returns (EDBObjMessage) {}
-
-  // Add adaptive frequency
-  rpc AddAdaptiveFrequencies (AdaptiveFrequenciesSetMessage) returns (google.protobuf.BoolValue) {}
-
-  // Add mesh operations
-  rpc AddMeshOperations (MeshOperationsSetMessage) returns (google.protobuf.BoolValue) {}
+  rpc GetName (EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetName (StringPropertyMessage) returns (google.protobuf.Empty) {}
   
-  // Add frequency sweeps
-  rpc AddFrequencySweeps (FrequencySweepsSetMessage) returns (google.protobuf.BoolValue) {}
+  rpc GetPosition (EDBObjMessage) returns (google.protobuf.UInt64Value) {} 
+  rpc SetPosition (UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+  
+  rpc GetSweepData (EDBObjMessage) returns (SweepDataListMessage) {}
+  rpc SetSweepData (SweepDataListPropertyMessage) returns (google.protobuf.Empty) {}
 }
 
-// Message for Create
 message SimulationSetupCreationMessage {
   EDBObjMessage cell = 1;
-  string simulation_setup_name = 2;
-  SimulationSetupType simulation_setup_type = 3;
+  string name = 2;
+  SimulationSetupType type = 3;
 }
 
-message AdaptiveFrequenciesSetMessage {
-  EDBObjMessage setup = 1;
-  repeated AdaptiveFrequencyDataMessage frequencies = 2;
+message SweepDataMessage {
+  string name = 1;
+  string frequency_string = 2;
+  bool fast_sweep = 3;
 }
 
-message MeshOperationsSetMessage {
-  EDBObjMessage setup = 1;
-  repeated MeshOperationMessage mesh_operations = 2;
+message SweepDataListMessage {
+  repeated SweepDataMessage sweep_data = 1;
 }
 
-message FrequencySweepsSetMessage {
-  EDBObjMessage setup = 1;
-  repeated SweepDataMessage sweeps = 2;
+message SweepDataListPropertyMessage {
+  EDBObjMessage target = 1;
+  SweepDataListMessage sweeps = 2;
 }

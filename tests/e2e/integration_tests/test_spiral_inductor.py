@@ -21,12 +21,11 @@ from ansys.edb.primitive import (
 )
 from ansys.edb.session import session
 from ansys.edb.simulation_setup import (
-    AdaptiveFrequencyData,
-    SimulationSetup,
-    SimulationSetupType,
+    HfssSimulationSetup,
+    SingleFrequencyAdaptiveSolution,
+    SkinDepthMeshOperation,
     SweepData,
 )
-import ansys.edb.simulation_setup.skin_depth_mesh_operation
 from ansys.edb.terminal import PointTerminal
 
 # Wrapper class over Database
@@ -405,25 +404,18 @@ class SpiralInductor(BaseExample):
 
     def create_adaptive_settings(self):
         print("creating adaptive settings")
-        setup = SimulationSetup.create(self.cell, "HFSS Setup 1", SimulationSetupType.HFSS)
-        info = setup.simulation_setup_info
-        settings = info.simulation_settings
-        adaptive_settings = settings.adaptive_settings
-        afd = AdaptiveFrequencyData("5GHz", "0.005", 20)
-        adaptive_settings.adaptive_frequency_data_list = (
-            adaptive_settings.adaptive_frequency_data_list + [afd]
+        setup = HfssSimulationSetup.create(self.cell, "HFSS Setup 1")
+        general_settings = setup.settings.general
+        general_settings.single_frequency_adaptive_solution = SingleFrequencyAdaptiveSolution(
+            max_delta="0.005", max_passes=20
         )
-
-        skin_depth_mesh_operation = ansys.edb.simulation_setup.skin_depth_mesh_operation
-
-        settings.mesh_operations = [
-            skin_depth_mesh_operation.SkinDepthMeshOperation(
+        general_settings.save_fields = True
+        setup.mesh_operations = [
+            SkinDepthMeshOperation(
                 name="SPIRAL_M9", net_layer_info=[("SPIRAL", "M9", False)], num_layers="3"
             )
         ]
-
-        sd = SweepData("Sweep 1", "LIN", "0GHz", "30GHz", "0.01GHz", True)
-        info.sweep_data_list = info.sweep_data_list + [sd]
+        setup.sweep_data = [SweepData("Sweep 1", "LIN", "0GHz", "30GHz", "0.01GHz", True)]
 
 
 def test_spiral_inductor():

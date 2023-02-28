@@ -1,15 +1,11 @@
 """Protobuf interface for message creation."""
 
-from typing import List, Tuple
-
 from ansys.api.edb.v1 import arc_data_pb2
-from ansys.api.edb.v1.adaptive_settings_pb2 import AdaptiveFrequencyDataMessage
 from ansys.api.edb.v1.cell_instance_pb2 import (
     CellInstanceCreationMessage,
     CellInstanceParameterOverride,
 )
 from ansys.api.edb.v1.cell_pb2 import (
-    CellAddSimSetupMessage,
     CellCutOutMessage,
     CellFindMessage,
     CellSetTemperatureSettingsMessage,
@@ -70,6 +66,21 @@ from ansys.api.edb.v1.edge_term_pb2 import (
     PrimitiveEdgeParamsMessage,
 )
 from ansys.api.edb.v1.group_pb2 import GroupModifyMemberMessage
+from ansys.api.edb.v1.hfss_simulation_settings_pb2 import (
+    AdaptiveFrequencyDataMessage,
+    AdaptiveMultiFrequencyDataMessage,
+    BroadbandFrequencyAdaptiveSolutionMessage,
+    MatrixConvergenceDataMessage,
+    MatrixConvergenceEntryMessage,
+    MultiFrequencyAdaptiveSolutionMessage,
+    SingleFrequencyAdaptiveSolutionMessage,
+)
+from ansys.api.edb.v1.hfss_simulation_setup_pb2 import (
+    LengthMeshOperationMessage,
+    MeshOperationMessage,
+    MeshOpNetLayerInfoMessage,
+    SkinDepthMeshOperationMessage,
+)
 from ansys.api.edb.v1.hierarchy_obj_pb2 import ObjectNameInLayoutMessage
 from ansys.api.edb.v1.layout_pb2 import (
     LayoutConvertP2VMessage,
@@ -108,12 +119,6 @@ from ansys.api.edb.v1.polygon_data_pb2 import *  # noqa
 from ansys.api.edb.v1.port_post_processing_prop_pb2 import PortPostProcessingPropMessage
 from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, LayerRefPropertyMessage, NetRefMessage
 from ansys.api.edb.v1.rlc_pb2 import RlcMessage
-from ansys.api.edb.v1.simulation_settings_pb2 import (
-    MeshOperationMessage,
-    MeshOpNetLayerInfoMessage,
-    SkinDepthMeshOperationMessage,
-)
-from ansys.api.edb.v1.simulation_setup_info_pb2 import SweepDataMessage
 from ansys.api.edb.v1.sparameter_model_pb2 import SParameterModelMessage
 from ansys.api.edb.v1.spice_model_pb2 import SpiceModelMessage, SpiceModelNewTerminalPinMessage
 from ansys.api.edb.v1.structure3d_pb2 import ClosureMessage, SetClosureMessage
@@ -141,6 +146,7 @@ from google.protobuf.empty_pb2 import Empty
 from google.protobuf.wrappers_pb2 import BoolValue, DoubleValue, FloatValue, Int64Value, StringValue
 
 from ansys.edb import utility
+from ansys.edb.simulation_setup import LengthMeshOperation, SkinDepthMeshOperation
 from ansys.edb.utility import conversions
 
 
@@ -589,13 +595,6 @@ def cell_cutout_message(cell, included_nets, clipped_nets, clipping_polygon, cle
     )
 
 
-def cell_add_sim_setup_message(cell, setup_type, name, sim_setup):
-    """Convert to CellAddSimSetupMessage."""
-    return CellAddSimSetupMessage(
-        cell=cell.msg, setup_type=setup_type.value, name=name, simsetup=sim_setup
-    )
-
-
 def cell_set_temperature_settings_message(cell, temp_settings):
     """Convert to CellSetTemperatureSettingsMessage."""
     return CellSetTemperatureSettingsMessage(
@@ -933,50 +932,39 @@ def adaptive_frequency_message(frequency: str, max_delta_s: float, max_passes: i
     )
 
 
-def mesh_operation_message(
-    name: str,
-    net_layers: List[Tuple[str, str, bool]],
-    enabled: bool = True,
-    refine_inside: bool = False,
-    mesh_region: str = "",
-    skin_depth: str = "1um",
-    surf_tri_length: str = "1mm",
-    num_layers: str = "2",
-    max_elem: str = "1000",
-    restrict_max_elem: bool = False,
-):
-    """Convert to MeshOperationMessage."""
-    return MeshOperationMessage(
-        name=name,
-        enabled=enabled,
-        refine_inside=refine_inside,
-        mesh_region=mesh_region,
-        skin_depth_mesh_op=_mesh_op_skin_depth_message(
-            skin_depth, surf_tri_length, num_layers, max_elem, restrict_max_elem
-        ),
-        net_layer_info=[_mesh_op_net_layer_message(*nl) for nl in net_layers],
+def _length_mesh_operation_message(mesh_op):
+    return LengthMeshOperationMessage(
+        max_length=mesh_op.max_length,
+        restrict_length=mesh_op.restrict_max_length,
+        max_elements=mesh_op.max_elements,
+        restrict_max_elements=mesh_op.restrict_max_elements,
     )
 
 
-def frequency_sweep_message(name, distribution, start_f, end_f, step, fast_sweep):
-    """Convert to FrequencySweepMessage."""
-    return SweepDataMessage(
-        name=name,
-        frequency_string=distribution + " " + start_f + " " + end_f + " " + step,
-        fast_sweep=fast_sweep,
-    )
-
-
-def _mesh_op_skin_depth_message(
-    skin_depth, surf_tri_length, num_layers, max_elem, restrict_max_elem
-):
+def _mesh_op_skin_depth_message(mesh_op):
     return SkinDepthMeshOperationMessage(
-        skin_depth=skin_depth,
-        max_surface_triangle_length=surf_tri_length,
-        num_layers=num_layers,
-        max_elements=max_elem,
-        restrict_max_elements=restrict_max_elem,
+        skin_depth=mesh_op.skin_depth,
+        surface_triangle_length=mesh_op.surface_triangle_length,
+        num_layers=mesh_op.number_of_layers,
+        max_elements=mesh_op.max_elements,
+        restrict_max_elements=mesh_op.restrict_max_elements,
     )
+
+
+def mesh_operation_message(mesh_op):
+    """Convert to MeshOperationMessage."""
+    mesh_op_msg = MeshOperationMessage(
+        name=mesh_op.name,
+        enabled=mesh_op.enabled,
+        refine_inside=mesh_op.refine_inside,
+        mesh_region=mesh_op.mesh_region,
+        net_layer_info=[_mesh_op_net_layer_message(*nl) for nl in mesh_op.net_layer_info],
+    )
+    if isinstance(mesh_op, LengthMeshOperation):
+        mesh_op_msg.length_mesh_op.CopyFrom(_length_mesh_operation_message(mesh_op))
+    elif isinstance(mesh_op, SkinDepthMeshOperation):
+        mesh_op_msg.skin_depth_mesh_op.CopyFrom(_mesh_op_skin_depth_message(mesh_op))
+    return mesh_op_msg
 
 
 def _mesh_op_net_layer_message(net, layer, is_sheet):
@@ -1309,3 +1297,73 @@ def cpos_3d_triple_message(x, y, z):
 def cpos_3d_double_message(pos, value):
     """Convert to CPos3DDoubleMessage."""
     return CPos3DDoubleMessage(pos=cpos_3d_message(pos), value=value)
+
+
+def mx_convergence_data_msg(mx_data):
+    """Convert to MatrixConvergenceDataMessage."""
+    mx_entry_msgs = []
+    for mx_entry in mx_data.entry_list:
+        mx_entry_msgs.append(
+            MatrixConvergenceEntryMessage(
+                port_1=mx_entry.port_1_name,
+                port_2=mx_entry.port_2_name,
+                mag_limit=mx_entry.mag_limit,
+                phase_limit=mx_entry.phase_limit,
+            )
+        )
+
+    return MatrixConvergenceDataMessage(
+        all_are_constant=mx_data.all_constant,
+        all_diag_are_constant=mx_data.all_diag_constant,
+        all_off_diag_are_constant=mx_data.all_off_diag_constant,
+        mag_min_threashold=mx_data.mag_min_threshold,
+        entries=mx_entry_msgs,
+    )
+
+
+def base_adaptive_frequency_solution_msg(adaptive_frequency, max_delta):
+    """Convert to AdaptiveFrequencyDataMessage."""
+    return AdaptiveFrequencyDataMessage(adaptive_frequency=adaptive_frequency, max_delta=max_delta)
+
+
+def single_frequency_adaptive_solution_msg(single_freq_adapt_sol):
+    """Convert to SingleFrequencyAdaptiveSolutionMessage."""
+    return SingleFrequencyAdaptiveSolutionMessage(
+        adaptive_frequency=base_adaptive_frequency_solution_msg(
+            single_freq_adapt_sol.adaptive_frequency, single_freq_adapt_sol.max_delta
+        ),
+        max_passes=single_freq_adapt_sol.max_passes,
+        matrix_conv_data=mx_convergence_data_msg(single_freq_adapt_sol.mx_conv_data),
+        use_matrix_conv_data=single_freq_adapt_sol.use_mx_conv_data,
+    )
+
+
+def multi_adaptive_freq_to_msg(multi_adaptive_freq):
+    """Convert to AdaptiveMultiFrequencyDataMessage."""
+    return AdaptiveMultiFrequencyDataMessage(
+        adaptive_frequency=base_adaptive_frequency_solution_msg(
+            multi_adaptive_freq.adaptive_frequency, multi_adaptive_freq.max_delta
+        ),
+        output_variables=multi_adaptive_freq.output_variables,
+    )
+
+
+def multi_frequency_adaptive_solution_msg(multi_freq_adapt_sol):
+    """Convert to MultiFrequencyAdaptiveSolutionMessage."""
+    return MultiFrequencyAdaptiveSolutionMessage(
+        adaptive_frequencies=[
+            multi_adaptive_freq_to_msg(multi_adaptive_freq)
+            for multi_adaptive_freq in multi_freq_adapt_sol.adaptive_frequencies
+        ],
+        max_passes=multi_freq_adapt_sol.max_passes,
+    )
+
+
+def broadband_solution_msg(broadband_adapt_sol):
+    """Convert to BroadbandFrequencyAdaptiveSolutionMessage."""
+    return BroadbandFrequencyAdaptiveSolutionMessage(
+        max_delta=broadband_adapt_sol.max_delta,
+        max_passes=broadband_adapt_sol.max_num_passes,
+        low_frequency=broadband_adapt_sol.low_frequency,
+        high_frequency=broadband_adapt_sol.high_frequency,
+    )

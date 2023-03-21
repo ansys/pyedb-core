@@ -1,7 +1,9 @@
 """Sphinx documentation configuration file."""
+import os
+
 from datetime import datetime
 
-from pyansys_sphinx_theme import pyansys_logo_black
+from pyansys_sphinx_theme import pyansys_logo_black, get_version_match
 
 from ansys.edb import __version__
 
@@ -84,3 +86,15 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+# multi-version support
+cname = os.getenv("DOCUMENTATION_CNAME", "<DEFAULT_CNAME>")
+"""The canonical name of the webpage hosting the documentation."""
+
+html_theme_options = {
+    "switcher": {
+        "json_url": f"https://{cname}/versions.json",
+        "version_match": get_version_match(__version__),
+    },
+    ...
+}

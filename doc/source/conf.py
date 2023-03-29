@@ -87,10 +87,6 @@ numpydoc_validation_checks = {
     # type, unless multiple values are being returned"
 }
 
-# notfound.extension
-notfound_template = "404.rst"
-notfound_urls_prefix = "/../"
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 

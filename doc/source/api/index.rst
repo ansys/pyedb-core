@@ -8,7 +8,7 @@ API Reference
 **This is a working document and will be changed without notice.**
 
 
-This section gives an overview of the API for all the pyedb classes, functions, and attributes.
+This section gives an overview of the API for all the classes, functions, and attributes.
 
 *******
 Modules

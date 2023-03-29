@@ -9,6 +9,9 @@ on:
       - release-*
   workflow_dispatch:
 
+env:
+  DOCUMENTATION_CNAME: 'edb.docs.pyansys.com'
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -108,6 +111,32 @@ jobs:
           branch: gh-pages
           folder: .tox/doc_out
           clean: true
+
+  doc-deploy-dev:
+    name: "Deploy development documentation"
+    # Deploy development only when merging or pushing to the 'main' branch
+    if: github.event_name == 'push' && !contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    needs: build-library
+    steps:
+      - uses: pyansys/actions/doc-deploy-dev@v4
+        with:
+          doc-artifact-name: '<html-artifact-name>'
+          cname: ${{ env.DOCUMENTATION_CNAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-deploy-stable:
+    name: "Deploy stable documentation"
+    # Deploy release documentation when creating a new tag
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - uses: pyansys/actions/doc-deploy-stable@v4
+        with:
+          doc-artifact-name: '<html-artifact-name>'
+          cname: ${{ env.DOCUMENTATION_CNAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
     name: Build library

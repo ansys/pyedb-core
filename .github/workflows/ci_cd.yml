@@ -21,7 +21,7 @@ jobs:
     name: Code style
     runs-on: ubuntu-latest
     steps:
-      - uses: pyansys/actions/code-style@v3
+      - uses: pyansys/actions/code-style@v4
         with:
           python-version: 3.7
 
@@ -48,15 +48,23 @@ jobs:
         # Only the tox environment specified in the tox.ini gh-actions is run
         run: tox -e test -- --ignore=tests/e2e
 
-  docs:
+  doc-style:
     name: Documentation
     runs-on: ubuntu-latest
-    needs: [style]
     steps:
       - name: "Check documentation style"
-        uses: pyansys/actions/doc-style@v3
+        uses: pyansys/actions/doc-style@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-build:
+    name: Build documentation
+    runs-on: ubuntu-latest
+    needs: [doc-style]
+    steps:
+      - uses: pyansys/actions/doc-build@v4
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   build:
     name: Build library
@@ -98,7 +106,7 @@ jobs:
 
   release:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [build, tests, docs]
+    needs: [build, tests, doc-build]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -154,11 +162,10 @@ jobs:
     # Deploy development only when merging or pushing to the 'main' branch
     if: github.event_name == 'push' && !contains(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
-    needs: [docs, build]
+    needs: [doc-build, build]
     steps:
       - uses: pyansys/actions/doc-deploy-dev@v4
         with:
-          doc-artifact-name: Documentation-html
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -171,7 +178,6 @@ jobs:
     steps:
       - uses: pyansys/actions/doc-deploy-stable@v4
         with:
-          doc-artifact-name: Documentation-html
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
 

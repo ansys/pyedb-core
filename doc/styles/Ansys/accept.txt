@@ -4,4 +4,3 @@ PyAnsys
 PyEDB
 pyedb
 EDB
-Enums

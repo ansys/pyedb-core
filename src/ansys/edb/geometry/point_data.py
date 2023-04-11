@@ -1,6 +1,6 @@
 """Point Data."""
 from functools import reduce
-import math
+import math, sys
 import operator
 
 from ansys.api.edb.v1 import point_data_pb2_grpc
@@ -35,9 +35,13 @@ class PointData:
                 pass
 
         if len(data) == 1:
-            self._arc_h = conversions.to_value(data[0])
+            self._x = self._arc_h = conversions.to_value(data[0])
+            self._y = sys.float_info.max 
         elif len(data) == 2:
-            self._x, self._y = [conversions.to_value(val) for val in data]
+            self._x = conversions.to_value(data[0])
+            self._y = conversions.to_value(data[1])
+            if not self._y.is_parametric and self._y == sys.float_info.max:
+                self._arc_h = self._x
         else:
             raise TypeError(
                 "PointData must receive either one value representing arc height or "

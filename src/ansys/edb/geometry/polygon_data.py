@@ -339,18 +339,29 @@ class PolygonData:
         return self.__stub.Transform(messages.polygon_data_transform_message("mirror_x", x))
 
     @parser.to_box
-    def bbox(self, *others):
-        """Compute the bounding box of polygon(s).
-
-        Parameters
-        ----------
-        others : list[PolygonData]
+    def bbox(self):
+        """Compute the bounding box.
 
         Returns
         -------
         tuple[ansys.edb.geometry.PointData, ansys.edb.geometry.PointData]
         """
-        return self.__stub.GetBBox(messages.polygon_data_list_message([self, *others]))
+        return self.__stub.GetBBox(messages.polygon_data_list_message([self]))
+
+    @classmethod
+    @parser.to_box
+    def bbox_of_polygons(cls, polygons):
+        """Compute the bounding box of polygons.
+
+        Parameters
+        ----------
+        polygons: list[PolygonData]
+
+        Returns
+        -------
+        tuple[ansys.edb.geometry.PointData, ansys.edb.geometry.PointData]
+        """
+        return cls.__stub.GetBBox(messages.polygon_data_list_message(polygons))
 
     @parser.to_circle
     def bounding_circle(self):
@@ -362,19 +373,20 @@ class PolygonData:
         """
         return self.__stub.GetBoundingCircle(messages.polygon_data_message(self))
 
+    @classmethod
     @parser.to_polygon_data
-    def convex_hull(self, *others):
-        """Compute the convex hull of a polygon union-ed with any extra polygons.
+    def convex_hull(cls, polygons):
+        """Compute the convex hull of the union of polygons.
 
         Parameters
         ----------
-        others : list[PolygonData], optional
+        others : list[PolygonData]
 
         Returns
         -------
         PolygonData
         """
-        return self.__stub.GetConvexHull(messages.polygon_data_list_message([self, *others]))
+        return cls.__stub.GetConvexHull(messages.polygon_data_list_message(polygons))
 
     @parser.to_polygon_data
     def without_arcs(self, max_chord_error=0, max_arc_angle=math.pi / 6, max_points=8):
@@ -487,70 +499,36 @@ class PolygonData:
             messages.polygon_data_with_points_message(self, polygon=polygon)
         ).points
 
-    @parser.to_polygon_data
-    def unite(self, *others):
-        """Compute the union of a polygon with arbitrary number of polygons.
-
-        Parameters
-        ----------
-        others : list[PolygonData]
-
-        Returns
-        -------
-        PolygonData
-        """
-        return self.__stub.GetUnion(messages.polygon_data_list_message([self, *others]))
-
+    @classmethod
     @parser.to_polygon_data_list
-    def intersect(self, other_polygons):
-        """Compute an intersection of polygons.
-
-        Intersection between this polygon and another set of polygons.
+    def unite(cls, polygons):
+        """Compute union of polygons.
 
         Parameters
         ----------
-        other_polygons : list[PolygonData] or PolygonData
+        polygons: list[PolygonData]
 
         Returns
         -------
         list[PolygonData]
         """
-        return PolygonData.intersect(self, other_polygons)
+        return cls.__stub.GetUnion(messages.polygon_data_list_message(polygons))
 
     @classmethod
     @parser.to_polygon_data_list
     def intersect(cls, polygons1, polygons2):
-        """Compute an intersection of polygons.
-
-        Intersection between a set of polygons and another set of polygons.
+        """Compute intersection of polygons.
 
         Parameters
         ----------
-        polygons1 : list[PolygonData] or PolygonData
-        polygons2 : list[PolygonData] or PolygonData
+        polygons1: list[PolygonData] or PolygonData
+        polygons2: list[PolygonData] or PolygonData, optional
 
         Returns
         -------
         list[PolygonData]
         """
         return cls.__stub.GetIntersection(messages.polygon_data_pair_message(polygons1, polygons2))
-
-    @parser.to_polygon_data_list
-    def subtract(self, other_polygons):
-        """Compute geometric subtraction of polygons.
-
-        Subtract a set of polygons from this polygon.
-
-        Parameters
-        ----------
-        other_polygons : list[PolygonData], PolygonData
-            base polygons.
-
-        Returns
-        -------
-        list[PolygonData]
-        """
-        return PolygonData.Subtract(self, other_polygons)
 
     @classmethod
     @parser.to_polygon_data_list
@@ -571,22 +549,6 @@ class PolygonData:
         list[PolygonData]
         """
         return cls.__stub.Subtract(messages.polygon_data_pair_message(polygons1, polygons2))
-
-    @parser.to_polygon_data_list
-    def xor(self, other_polygons):
-        """Compute an exclusive OR of polygons.
-
-        Exclusive OR between this polygon and another set of polygons.
-
-        Parameters
-        ----------
-        other_polygons : list[PolygonData], PolygonData
-
-        Returns
-        -------
-        list[PolygonData]
-        """
-        return PolygonData.Xor(self, other_polygons)
 
     @classmethod
     @parser.to_polygon_data_list

@@ -245,7 +245,9 @@ def polygon_data_with_tol_message(pd, tol):
 
 def polygon_data_pair_message(pds1, pds2):
     """Convert to PolygonDataPairMessage."""
-    return PolygonDataPairMessage(first=polygon_data_list_message(pds1), second=polygon_data_list_message(pds2))
+    return PolygonDataPairMessage(
+        first=polygon_data_list_message(pds1), second=polygon_data_list_message(pds2)
+    )
 
 
 def polygon_data_pair_with_tolerance_message(pd1, pd2, tol):
@@ -1369,10 +1371,10 @@ def broadband_solution_msg(broadband_adapt_sol):
         high_frequency=broadband_adapt_sol.high_frequency,
     )
 
+
 def _as_array(array_or_item):
     try:
         iter(array_or_item)
         return array_or_item
     except TypeError:
         return [array_or_item]
-

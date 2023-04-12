@@ -1,7 +1,8 @@
 """Point Data."""
 from functools import reduce
-import math, sys
+import math
 import operator
+import sys
 
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
@@ -36,7 +37,7 @@ class PointData:
 
         if len(data) == 1:
             self._x = self._arc_h = conversions.to_value(data[0])
-            self._y = sys.float_info.max 
+            self._y = sys.float_info.max
         elif len(data) == 2:
             self._x = conversions.to_value(data[0])
             self._y = conversions.to_value(data[1])

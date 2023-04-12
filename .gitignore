@@ -82,8 +82,8 @@ doc/source/api/_autosummary
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
-notebooks/
+#.ipynb_checkpoints
+#notebooks/
 
 # IPython
 profile_default/

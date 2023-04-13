@@ -234,6 +234,7 @@ def polygon_data_message(pd):
 
 def polygon_data_list_message(pds):
     """Convert to PolygonDataListMessage."""
+    pds = _as_array(pds)
     return PolygonDataListMessage(polygons=[polygon_data_message(pd) for pd in pds])
 
 
@@ -242,9 +243,11 @@ def polygon_data_with_tol_message(pd, tol):
     return PolygonDataWithToleranceMessage(polygon=polygon_data_message(pd), tol=tol)
 
 
-def polygon_data_pair_message(pd1, pd2):
+def polygon_data_pair_message(pds1, pds2):
     """Convert to PolygonDataPairMessage."""
-    return PolygonDataPairMessage(first=polygon_data_message(pd1), second=polygon_data_message(pd2))
+    return PolygonDataPairMessage(
+        first=polygon_data_list_message(pds1), second=polygon_data_list_message(pds2)
+    )
 
 
 def polygon_data_pair_with_tolerance_message(pd1, pd2, tol):
@@ -314,7 +317,7 @@ def polygon_data_expand_message(pd, offset, tol, round_corner, max_corner_expans
         offset=offset,
         tol=tol,
         round_corner=round_corner,
-        max_corner_expansion=max_corner_expansion,
+        max_corner_extension=max_corner_expansion,
     )
 
 
@@ -1367,3 +1370,11 @@ def broadband_solution_msg(broadband_adapt_sol):
         low_frequency=broadband_adapt_sol.low_frequency,
         high_frequency=broadband_adapt_sol.high_frequency,
     )
+
+
+def _as_array(array_or_item):
+    try:
+        iter(array_or_item)
+        return array_or_item
+    except TypeError:
+        return [array_or_item]

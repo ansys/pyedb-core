@@ -169,3 +169,10 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
+# Ansys EDB backups, etc.
+edb.def.bak
+edb.def.tmp
+edb.def\+
+model.index.bak
+model.index.tmp
+model.index\+

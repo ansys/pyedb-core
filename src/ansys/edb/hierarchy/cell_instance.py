@@ -3,7 +3,7 @@
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
 from ansys.edb import layout
-from ansys.edb.core import messages, parser
+from ansys.edb.core import messages
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.hierarchy import hierarchy_obj
 from ansys.edb.session import StubAccessor, StubType
@@ -121,20 +121,12 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         :obj:`placement_3d` must be True for the transformation to be applied.
         """
-        t3d_message = self.__stub.Get3DTransform(self.msg)
-        return Transform3D(
-            parser.to_point3d_data(t3d_message.anchor),
-            parser.to_point3d_data(t3d_message.rotAxisFrom),
-            parser.to_point3d_data(t3d_message.rotAxisTo),
-            t3d_message.rotAngle,
-            parser.to_point3d_data(t3d_message.offset),
-            t3d_message.mirror,
-        )
+        return Transform3D(self.__stub.Get3DTransform(self.msg))
 
     @transform3d.setter
     def transform3d(self, value):
         """Set the 3D transformation for this cell instance. The cell instance must be 3D placed."""
-        self.__stub.Set3DTransform(messages.transform3d_property_message(self, value))
+        self.__stub.Set3DTransform(messages.pointer_property_message(self, value))
 
     def get_parameter_override(self, param_name):
         """Get the override of the cell instance parameter by name.

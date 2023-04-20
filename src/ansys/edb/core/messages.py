@@ -135,7 +135,6 @@ from ansys.api.edb.v1.term_pb2 import (
     TermSetRefMessage,
     TermSetSolverOptionMessage,
 )
-from ansys.api.edb.v1.transform3d_pb2 import Transform3DMessage, Transform3DPropertyMessage
 from ansys.api.edb.v1.transform_pb2 import TransformMessage, TransformPropertyMessage
 from ansys.api.edb.v1.via_group_pb2 import (
     ViaGroupCreateWithOutlineMessage,
@@ -481,26 +480,6 @@ def point3d_message(point3d):
 def point_3d_property_message(target, value):
     """Convert to Point3DPropertyMessage."""
     return Point3DPropertyMessage(target=edb_obj_message(target), origin=point3d_message(value))
-
-
-def transform3d_message(transform3d):
-    """Convert to Transform3DMessage."""
-    if transform3d is None:
-        return None
-    else:
-        return Transform3DMessage(
-            anchor=point3d_message(transform3d.anchor),
-            rotAxisFrom=point3d_message(transform3d.rot_axis_from),
-            rotAxisTo=point3d_message(transform3d.rot_axis_to),
-            rotAngle=value_message(transform3d.rot_angle),
-            offset=point3d_message(transform3d.offset),
-            mirror=transform3d.mirror,
-        )
-
-
-def transform3d_property_message(target, transform3d):
-    """Convert to Transform3DPropertyMessage."""
-    return Transform3DPropertyMessage(target=target.msg, t3d=transform3d_message(transform3d))
 
 
 def layout_get_items_message(layout, item_type):

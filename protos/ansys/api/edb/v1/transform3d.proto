@@ -44,20 +44,6 @@ service Transform3DService {
   rpc GetMatrix (EDBObjMessage) returns (DoublesMessage) {}
 }
 
-message Transform3DMessage {
-  Point3DMessage anchor = 1;
-  Point3DMessage rotAxisFrom = 2;
-  Point3DMessage rotAxisTo = 3;
-  ValueMessage rotAngle = 4;
-  Point3DMessage offset = 5;
-  bool mirror = 6;
-}
-
-message Transform3DPropertyMessage {
-  EDBObjMessage target = 1;
-  Transform3DMessage t3d = 2;
-}
-
 message IsIdentityMessage {
   EDBObjMessage target = 1;
   double eps = 2;

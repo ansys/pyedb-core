@@ -52,7 +52,7 @@ class ComponentProperty(ObjBase):
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
-        return model.Model(self.__stub.GetModel(messages.edb_obj_message(self)))
+        return model.Model(self.__stub.GetModel(messages.edb_obj_message(self))).cast()
 
     @model.setter
     def model(self, value):

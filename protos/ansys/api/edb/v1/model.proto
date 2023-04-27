@@ -6,6 +6,16 @@ package ansys.api.edb.v1;
 
 import "edb_messages.proto";
 
+enum ModelType {
+  PIN_PAIR_RLC_MODEL_TYPE = 0;
+  S_PARAM_MODEL_TYPE = 1;
+  NETLIST_MODEL_TYPE = 2;
+  LIBRARY_MODEL_TYPE = 3;
+  SPICE_MODEL_TYPE = 4;
+  MODEL_TYPE_TOTAL = 5;
+  INVALID_MODEL_TYPE = -1;
+}
+
 service ModelService {
   rpc Clone (EDBObjMessage) returns (EDBObjMessage) {}
 }

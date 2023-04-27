@@ -7,6 +7,7 @@ package ansys.api.edb.v1;
 
 // Imports
 import "edb_messages.proto";
+import "model.proto";
 
 // Component Property service definition
 service ComponentPropertyService {
@@ -22,6 +23,11 @@ service ComponentPropertyService {
   rpc SetPackageDef(PointerPropertyMessage) returns (google.protobuf.Empty) {}
 
   // Get/Set Model
-  rpc GetModel(EDBObjMessage) returns (EDBObjMessage) {}
+  rpc GetModel(EDBObjMessage) returns (ComponentPropModelMessage) {}
   rpc SetModel(PointerPropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+message ComponentPropModelMessage {
+  EDBObjMessage model = 1;
+  ModelType model_type = 2;
 }

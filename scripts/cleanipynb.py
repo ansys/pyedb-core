@@ -39,7 +39,7 @@ if __name__ == "__main__":
             continue
         result = _clean_notebook(path)
         if result is None:
-            print("_clean_notebook failed")
+            print("_clean_notebook failed on {}".format(path))
             sys.exit(2)
         files_modified = result
 

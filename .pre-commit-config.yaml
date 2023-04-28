@@ -52,3 +52,11 @@ repos:
         ^src/ansys/api/|
         ^protos
       )
+
+- repo: local
+  hooks:
+    - id: cleanipynb
+      name: cleanipynb
+      language: system
+      entry: python scripts/cleanipynb.py
+      files: \.ipynb$

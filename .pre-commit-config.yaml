@@ -55,8 +55,15 @@ repos:
 
 - repo: local
   hooks:
+    - id: cleanipynb-helpers
+      name: cleanipynb-helpers
+      language: system
+      entry: python scripts/cleanipynb.py
+      files: notebooks/helpers/.*\.ipynb$
+
     - id: cleanipynb
       name: cleanipynb
       language: system
       entry: python scripts/cleanipynb.py
-      files: \.ipynb$
+      args: [--leave-outputs]
+      files: notebooks/.*\.ipynb$

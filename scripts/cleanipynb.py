@@ -1,43 +1,53 @@
 """A pre-commit hook script for cleaning Jupyter notebooks by resetting execution counts, removing outputs, and removing metadata."""  # noqa: E501
 
+import argparse
 import json
 from pathlib import Path
 import sys
 
 
-def _clean_notebook(path: Path):
+def _clean_notebook(path: Path, leave_outputs: bool):
     """Clean an ipynb file and return True if it was modified, None on error, otherwise False."""
-    result = False
+    modified = False
     try:
         with open(path) as input_file:
             data = json.load(input_file)
+        if "metadata" in data and data["metadata"]:
+            data["metadata"] = {}
+            modified = True
         for cell in data["cells"]:
             if "execution_count" in cell and cell["execution_count"] is not None:
                 cell["execution_count"] = None
-                result = True
+                modified = True
             if "metadata" in cell and cell["metadata"]:
                 cell["metadata"] = {}
-                result = True
-            if "outputs" in cell and cell["outputs"]:
+                modified = True
+            if not leave_outputs and "outputs" in cell and cell["outputs"]:
                 cell["outputs"] = []
-                result = True
-        if result:
+                modified = True
+        if modified:
             print(path)
             with open(path, "w") as output_file:
                 json.dump(data, output_file, indent=1)
     except Exception as e:
         print("Unexpected exception: {}".format(e))
         return None
-    return result
+    return modified
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--leave-outputs", action="store_true", default=False, help="leave cell outputs as-is"
+    )
+    parser.add_argument("files", help="ipynb files to process", nargs=argparse.REMAINDER)
+    arguments = parser.parse_args()
     files_modified = False
-    for file in sys.argv[1:]:
+    for file in arguments.files:
         path = Path(file)
         if not path.is_file() or path.suffix != ".ipynb":
             continue
-        result = _clean_notebook(path)
+        result = _clean_notebook(path, arguments.leave_outputs)
         if result is None:
             print("_clean_notebook failed on {}".format(path))
             sys.exit(2)

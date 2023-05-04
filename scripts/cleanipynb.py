@@ -12,13 +12,21 @@ def _clean_notebook(path: Path, leave_outputs: bool):
     try:
         with open(path) as input_file:
             data = json.load(input_file)
+        execution_order = 1
         if "metadata" in data and data["metadata"]:
             data["metadata"] = {}
             modified = True
         for cell in data["cells"]:
-            if "execution_count" in cell and cell["execution_count"] is not None:
-                cell["execution_count"] = None
-                modified = True
+            if "execution_count" in cell:
+                if leave_outputs:
+                    if cell["execution_count"] != execution_order:
+                        cell["execution_count"] = execution_order
+                        modified = True
+                    execution_order += 1
+                else:
+                    if cell["execution_count"] is not None:
+                        cell["execution_count"] = None
+                        modified = True
             if "metadata" in cell and cell["metadata"]:
                 cell["metadata"] = {}
                 modified = True

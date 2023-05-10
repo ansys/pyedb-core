@@ -148,8 +148,10 @@ class StackupLayer(Layer):
         -------
         str
         """
-        return get_stackup_layer_stub().GetMaterial(
-            _get_layer_material_name_message(self, evaluated)
+        return (
+            get_stackup_layer_stub()
+            .GetMaterial(_get_layer_material_name_message(self, evaluated))
+            .value
         )
 
     def set_material(self, material_name):
@@ -173,8 +175,10 @@ class StackupLayer(Layer):
         -------
         str
         """
-        return get_stackup_layer_stub().GetFillMaterial(
-            _get_layer_material_name_message(self, evaluated)
+        return (
+            get_stackup_layer_stub()
+            .GetFillMaterial(_get_layer_material_name_message(self, evaluated))
+            .value
         )
 
     def set_fill_material(self, fill_material_name):

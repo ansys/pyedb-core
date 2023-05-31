@@ -1494,12 +1494,12 @@ class _PadstackInstanceQueryBuilder:
             layout=layout.msg,
             net=net.msg,
             name=name,
-            padstack_def=padstack_def,
+            padstack_def=padstack_def.msg,
             rotation=messages.value_message(rotation),
             top_layer=top_layer.msg,
             bottom_layer=bottom_layer.msg,
-            solder_ball_layer=solder_ball_layer.msg,
-            layer_map=layer_map.msg,
+            solder_ball_layer=messages.edb_obj_message(solder_ball_layer),
+            layer_map=messages.edb_obj_message(layer_map),
         )
 
     @staticmethod
@@ -1677,7 +1677,7 @@ class PadstackInstance(Primitive):
                     layout,
                     net,
                     name,
-                    padstack_def.msg,
+                    padstack_def,
                     rotation,
                     top_layer,
                     bottom_layer,

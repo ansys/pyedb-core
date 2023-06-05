@@ -85,7 +85,7 @@ setup(
     packages=["ansys.api.edb.v1"],
     version="0.0.0",
     license="MIT",
-    url="https://github.com/pyansys/",
+    url="https://github.com/ansys/",
     author="Ansys Inc.",
     author_email="support@ansys.com",
     description=desc,

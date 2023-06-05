@@ -20,7 +20,7 @@ html_theme = "ansys_sphinx_theme"
 html_short_title = html_title = "PyEDB"
 
 html_context = {
-    "github_user": "pyansys",
+    "github_user": "ansys",
     "github_repo": "pyedb",
     "github_version": "develop",
     "doc_path": "doc/source",
@@ -32,7 +32,7 @@ html_theme_options = {
         "version_match": get_version_match(__version__),
     },
     "check_switcher": False,
-    "github_url": "https://github.com/pyansys/pyedb",
+    "github_url": "https://github.com/ansys/pyedb",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "collapse_navigation": True,

@@ -3,8 +3,8 @@ Pyedb
 
 Ansys Electronics Database Python Client
 
-.. image:: https://github.com/pyansys/pyedb/actions/workflows/ci_cd.yml/badge.svg?branch=develop
-   :target: https://github.com/pyansys/pyedb/actions/workflows/ci_cd.yml?query=branch%3Adevelop
+.. image:: https://github.com/ansys/pyedb/actions/workflows/ci_cd.yml/badge.svg?branch=develop
+   :target: https://github.com/ansys/pyedb/actions/workflows/ci_cd.yml?query=branch%3Adevelop
 
 How to install
 --------------
@@ -42,7 +42,7 @@ need to follow these steps:
 
     .. code:: bash
 
-        git clone https://github.com/pyansys/pyedb
+        git clone https://github.com/ansys/pyedb
         cd pyedb
 
 2. Create a fresh-clean Python environment and activate it:

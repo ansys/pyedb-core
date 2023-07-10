@@ -88,7 +88,7 @@ class Edge(ObjBase):
 
     @classmethod
     def _create(cls, **params):
-        return cls.__stub.Create(messages.edge_creation_message(cls.type, **params))
+        return cls.__stub.Create(messages.edge_creation_message(cls.type.value, **params))
 
     @property
     def _type(self):
@@ -122,7 +122,7 @@ class PadEdge(Edge):
         -------
         PadEdge
         """
-        return PrimitiveEdge(cls._create(padstack_instance=padstack_instance, layer=layer, arc=arc))
+        return PadEdge(cls._create(padstack_instance=padstack_instance, layer=layer, arc=arc))
 
     @property
     def padstack_instance(self):
@@ -173,7 +173,7 @@ class PrimitiveEdge(Edge):
         -------
         PrimitiveEdge
         """
-        return PrimitiveEdge(cls._create(primitive=primitive, point=point))
+        return PrimitiveEdge(cls._create(primitive=prim, point=point))
 
     @property
     def primitive(self):

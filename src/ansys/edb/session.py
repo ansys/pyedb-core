@@ -153,9 +153,7 @@ class StubAccessor(object):
 # Helper class for storing data used by the session
 class _Session:
     def __init__(self, ip_address, port_num, ansys_em_root):
-        if MOD.current_session is None:
-            MOD.current_session = self
-        else:
+        if MOD.current_session is not None:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
         self.ip_address = ip_address or "localhost"
@@ -186,17 +184,23 @@ class _Session:
 
     @property
     def server_url(self):
-        if self.is_local():
-            return "localhost:{}".format(self.port_num)
-        else:
-            return "{}:{}".format(self.ip_address, self.port_num)
+        return "{}:{}".format(self.ip_address, self.port_num)
 
     @property
     def server_executable(self):
-        if self.is_local():
+        if self.is_launch():
             return which(cmd="EDB_RPC_Server", path=self.ansys_em_root)
         else:
             return None
+
+    def server_arguments(self):
+        args = []
+
+        if self.port_num is not None:
+            args.append("-p")
+            args.append(str(self.port_num))
+
+        return args
 
     def stub(self, name):
         if self.is_active():
@@ -206,13 +210,16 @@ class _Session:
         return self.channel is not None and self.stubs is not None
 
     def is_local(self):
+        return self.ip_address == "localhost"
+
+    def is_launch(self):
         return self.ansys_em_root is not None
 
     def connect(self):
         if self.is_active():
             return
 
-        if self.is_local():
+        if self.is_launch():
             self.start_server()
 
         self.channel = grpc.insecure_channel(self.server_url)
@@ -231,20 +238,23 @@ class _Session:
         if MOD.current_session == self:
             MOD.current_session = None
 
-        if self.is_local():
+        if self.is_launch():
             self.stop_server()
 
     def start_server(self):
         if not self.is_local():
             return None
 
+        if not self.is_launch():
+            return None
+
         if self.server_executable is None:
             raise EDBSessionException(ErrorCode.STARTUP_NO_EXECUTABLE)
 
+        cmd = [self.server_executable] + self.server_arguments()
+
         try:
-            self.local_server_proc = subprocess.Popen(
-                self.server_executable, stdout=subprocess.PIPE
-            )
+            self.local_server_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         except Exception as e:
             self.disconnect()
             raise EDBSessionException(ErrorCode.STARTUP_UNEXPECTED, e)
@@ -255,9 +265,8 @@ class _Session:
         """Wait for the server to say it successfully started up."""
         local_server_proc_output = self.local_server_proc.stdout.readline()
         stdout = local_server_proc_output.decode().rstrip()
-        expected_output = "Server listening on 127.0.0.1:{}".format(self.port_num)
 
-        if stdout != expected_output:
+        if not stdout.startswith("Server listening on 127.0.0.1"):
             try:
                 print("local server failed to start properly. trying to gracefully shutdown...")
                 if self.local_server_proc.wait(10):
@@ -396,7 +405,22 @@ class StubType(Enum):
     solver_sim_settings = SolverSettingsServiceStub
 
 
-def launch_session(ansys_em_root, port_num, ip_address=None):
+def attach_session(ip_address=None, port_num=50051):
+    """Attach a session to a port running EDB API server.
+
+    Parameters
+    ----------
+    ip_address : str, optional
+        ip address of the machine running a server. localhost by default.
+    port_num : int, optional
+        port number of the server to listen to. 50051 by default.
+    """
+    MOD.current_session = _Session(ip_address, port_num, None)
+    MOD.current_session.connect()
+    return MOD.current_session
+
+
+def launch_session(ansys_em_root, port_num=None):
     r"""Launch a local session to an EDB API server.
 
     The session must be manually disconnected after use by calling session.disconnect()
@@ -405,11 +429,8 @@ def launch_session(ansys_em_root, port_num, ip_address=None):
     ----------
     ansys_em_root : str
         The installation directory of EDB_RPC_Server.exe
-    port_num : int
+    port_num : int, optional
         The port number to listen on
-    ip_address : str, optional
-        Currently not supported. Default value means local_host. It specifies the IP address of the machine where \
-        the server executable is running. Future releases will support remotely running the API on another machine.
 
     Examples
     --------
@@ -419,9 +440,16 @@ def launch_session(ansys_em_root, port_num, ip_address=None):
     >>> # program goes here
     >>> session.disconnect()
     """
-    MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
-    MOD.current_session.connect()
-    return MOD.current_session
+    ip_address = None  # remote launch is not supported yet
+
+    try:
+        MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
+        MOD.current_session.connect()
+        return MOD.current_session
+    except Exception as e:  # noqa
+        if MOD.current_session is not None:
+            MOD.current_session.disconnect()
+        raise
 
 
 @contextmanager

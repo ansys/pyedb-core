@@ -1,7 +1,9 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
+import os
+import sys
 
-from pyansys_sphinx_theme import pyansys_logo_black
+from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 
 from ansys.edb import __version__
 
@@ -10,22 +12,39 @@ project = "ansys-edb"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
+cname = os.getenv("DOCUMENTATION_CNAME", "<DEFAULT_CNAME>")
 
 # use the default pyansys logo
 html_logo = pyansys_logo_black
-html_theme = "pyansys_sphinx_theme"
+html_theme = "ansys_sphinx_theme"
+html_short_title = html_title = "PyEDB"
 
-html_short_title = html_title = "ansys-edb"
+html_context = {
+    "github_user": "ansys",
+    "github_repo": "pyedb",
+    "github_version": "develop",
+    "doc_path": "doc/source",
+}
 
-# specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/pyedb",
+    "switcher": {
+        "json_url": f"https://{cname}/versions.json",
+        "version_match": get_version_match(__version__),
+    },
+    "check_switcher": False,
+    "github_url": "https://github.com/ansys/pyedb",
     "show_prev_next": False,
     "show_breadcrumbs": True,
+    "collapse_navigation": True,
+    "use_edit_page_button": True,
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
 }
+
+html_favicon = ansys_favicon
+
+html_static_path = ["_static"]
 
 # Sphinx extensions
 extensions = [
@@ -38,7 +57,7 @@ extensions = [
 
 # Intersphinx mapping
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/dev", None),
+    "python": (f"https://docs.python.org/{'.'.join((str(i) for i in sys.version_info[:2]))}", None),
     # kept here as an example
     # "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
     # "numpy": ("https://numpy.org/devdocs", None),
@@ -72,9 +91,6 @@ numpydoc_validation_checks = {
 # notfound.extension
 notfound_template = "404.rst"
 notfound_urls_prefix = "/../"
-
-# static path
-html_static_path = ["_static"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

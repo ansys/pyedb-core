@@ -12,13 +12,15 @@ from ansys.edb.terminal import Terminal, TerminalInstance
 class Net(layout_obj.LayoutObj):
     """Class representing net."""
 
-    layout_obj_type = LayoutObjType.NET_CLASS
+    layout_obj_type = LayoutObjType.NET
     no_net_name = "<NO-NET>"
     __stub: NetServiceStub = StubAccessor(StubType.net)
 
     def _layout_objs(self, obj_type):
         """Get layout objects on a net."""
-        return self.__stub.GetLayoutObjects(messages.net_get_layout_obj_message(self, obj_type))
+        return self.__stub.GetLayoutObjects(
+            messages.net_get_layout_obj_message(self, obj_type)
+        ).items
 
     @classmethod
     def create(cls, layout, name):

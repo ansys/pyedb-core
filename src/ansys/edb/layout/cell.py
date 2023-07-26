@@ -409,22 +409,6 @@ class Cell(ObjBase, variable_server.VariableServer):
             messages.set_product_property_message(self, prod_id, attr_id, prop_value)
         )
 
-    def add_simulation_setup(self, setup_type, name, sim_setup):
-        """Add a simulation setup.
-
-        Parameters
-        ----------
-        setup_type : :class:`SimulationSetupType <ansys.edb.simulation_setup.SimulationSetupType>`
-            Type of setup to be added.
-        name : str
-            Name of the setup to be added.
-        sim_setup : str
-            Name of :class:`SimulationSetupInfo <ansys.edb.simulation_setup.SimulationSetupInfo>`.
-        """
-        self.__stub.AddSimulationSetup(
-            messages.cell_add_sim_setup_message(self, setup_type, name, sim_setup)
-        )
-
     def delete_simulation_setup(self, name):
         """Delete a simulation setup by name.
 

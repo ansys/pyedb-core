@@ -83,7 +83,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
-notebooks/
+notebooks/results
 
 # IPython
 profile_default/
@@ -169,3 +169,7 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
+# Ansys EDB backups, etc.
+**/*.aedb/**/*+
+**/*.aedb/**/*.bak
+**/*.aedb/**/*.tmp

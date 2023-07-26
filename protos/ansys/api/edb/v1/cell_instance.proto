@@ -34,10 +34,10 @@ service CellInstanceService {
   rpc Set3DPlacement(BoolPropertyMessage) returns (google.protobuf.Empty) {}
 
   // Get 3d transform values
-  rpc Get3DTransform(EDBObjMessage) returns (Transform3DMessage) {}
+  rpc Get3DTransform(EDBObjMessage) returns (EDBObjMessage) {}
 
   // Set 3d transform values
-  rpc Set3DTransform(Transform3DPropertyMessage) returns (google.protobuf.Empty) {}
+  rpc Set3DTransform(PointerPropertyMessage) returns (google.protobuf.Empty) {}
 
   // Get Parameter Override
   rpc GetParameterOverride(StringPropertyMessage) returns (ValueMessage) {}

@@ -8,7 +8,7 @@ pyedb Documentation
 
 The Electronics Database (EDB) is a format for storing information describing designs for the Ansys Electronic Desktop (AEDT). This Python API makes calls to an EDB Server that can be run locally or remotely.
 
-Currently the server can create, edit, read and write EDBs to disk. After that, those EDBs can be read into AEDT and simulated.
+Currently the server can create, edit, read and write EDB file to disk. After that, it can be read into AEDT and simulated.
 
 Choose :ref:`ref_index_api` to access a complete description of all the available Python classes and functions.
 

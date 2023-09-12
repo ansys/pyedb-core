@@ -29,7 +29,10 @@ enum GeometryExtentType {
 
 // Enum for SimulationSetup types
 enum SimulationSetupType {
-  HFSS = 0;
+  HFSS_SIM = 0;
+  SI_WAVE_SIM = 2;
+  SI_WAVE_DCIR_SIM = 9;
+  RAPTOR_X_SIM = 12;
 }
 
 //------------------------------------------------------------------------------ 

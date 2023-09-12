@@ -94,6 +94,10 @@ from ansys.api.edb.v1.polygon_pb2_grpc import PolygonServiceStub
 from ansys.api.edb.v1.port_property_pb2_grpc import PortPropertyServiceStub
 from ansys.api.edb.v1.primitive_pb2_grpc import PrimitiveServiceStub
 from ansys.api.edb.v1.r_tree_pb2_grpc import RTreeServiceStub
+from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import (
+    RaptorXAdvancedSettingsServiceStub,
+    RaptorXGeneralSettingsServiceStub,
+)
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
@@ -104,6 +108,16 @@ from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
     SolverSettingsServiceStub,
 )
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
+from ansys.api.edb.v1.siwave_dcir_simulation_settings_pb2_grpc import (
+    SIWaveDCIRSimulationSettingsServiceStub,
+)
+from ansys.api.edb.v1.siwave_simulation_settings_pb2_grpc import (
+    SIWaveAdvancedSettingsServiceStub,
+    SIWaveDCAdvancedSettingsServiceStub,
+    SIWaveDCSettingsServiceStub,
+    SIWaveGeneralSettingsServiceStub,
+    SIWaveSParameterSettingsServiceStub,
+)
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 from ansys.api.edb.v1.sparameter_model_pb2_grpc import SParameterModelServiceStub
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
@@ -394,6 +408,14 @@ class StubType(Enum):
     advanced_sim_settings = AdvancedSettingsServiceStub
     advanced_mesh_sim_settings = AdvancedMeshingSettingsServiceStub
     solver_sim_settings = SolverSettingsServiceStub
+    siwave_general_sim_settings = SIWaveGeneralSettingsServiceStub
+    siwave_advanced_sim_settings = SIWaveAdvancedSettingsServiceStub
+    siwave_dc_sim_settings = SIWaveDCSettingsServiceStub
+    siwave_dc_advanced_sim_settings = SIWaveDCAdvancedSettingsServiceStub
+    siwave_s_param_sim_settings = SIWaveSParameterSettingsServiceStub
+    siwave_dcir_sim_settings = SIWaveDCIRSimulationSettingsServiceStub
+    raptor_x_general_sim_settings = RaptorXGeneralSettingsServiceStub
+    raptor_x_adv_sim_settings = RaptorXAdvancedSettingsServiceStub
 
 
 def launch_session(ansys_em_root, port_num, ip_address=None):

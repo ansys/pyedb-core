@@ -118,8 +118,8 @@ service SIWaveDCAdvancedSettingsService {
   rpc GetPercentLocalRefinement(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
   rpc SetPercentLocalRefinement(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
 
-  rpc GetEnergyError(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
-  rpc SetEnergyError(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+  rpc GetEnergyError(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetEnergyError(DoublePropertyMessage) returns (google.protobuf.Empty) {}
 
   rpc GetMeshBws(EDBObjMessage) returns (google.protobuf.BoolValue) {}
   rpc SetMeshBws(BoolPropertyMessage) returns (google.protobuf.Empty) {}

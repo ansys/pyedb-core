@@ -309,7 +309,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def inf_gnd_location(self):
-        """:obj:`bool`: Infinite ground plane location."""
+        """:obj:`str`: Infinite ground plane location."""
         return self.__stub.GetInfGndLocation(self.msg).value
 
     @inf_gnd_location.setter
@@ -382,7 +382,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @property
     def dc_slider_pos(self):
-        """:obj:`str`: DC slider position."""
+        """:obj:`int`: DC slider position."""
         return self.__stub.GetDCSliderPos(self.msg).value
 
     @dc_slider_pos.setter
@@ -472,7 +472,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def energy_error(self):
-        """:obj:`int`: Percent energy error used for adaptive mesh refinement."""
+        """:obj:`float`: Percent energy error used for adaptive mesh refinement."""
         return self.__stub.GetEnergyError(self.msg).value
 
     @energy_error.setter

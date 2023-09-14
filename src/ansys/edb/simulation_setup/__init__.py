@@ -29,6 +29,7 @@ from ansys.edb.simulation_setup.mesh_operation import (
 from ansys.edb.simulation_setup.raptor_x_simulation_settings import (
     RaptorXAdvancedSettings,
     RaptorXGeneralSettings,
+    RaptorXSimulationSettings,
 )
 from ansys.edb.simulation_setup.raptor_x_simulation_setup import RaptorXSimulationSetup
 from ansys.edb.simulation_setup.simulation_settings import (
@@ -51,6 +52,7 @@ from ansys.edb.simulation_setup.siwave_simulation_settings import (
     SIWaveDCAdvancedSettings,
     SIWaveDCSettings,
     SIWaveGeneralSettings,
+    SIWaveSimulationSettings,
     SIWaveSParameterSettings,
     SParamDCBehavior,
     SParamExtrapolation,

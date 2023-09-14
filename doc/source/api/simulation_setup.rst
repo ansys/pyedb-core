@@ -32,6 +32,19 @@ Classes
    SolverSettings
    SimulationSetup
    SweepData
+   RaptorXSimulationSettings
+   RaptorXGeneralSettings
+   RaptorXAdvancedSettings
+   RaptorXSimulationSetup
+   SIWaveDCIRSimulationSettings
+   SIWaveDCIRSimulationSetup
+   SIWaveSimulationSettings
+   SIWaveGeneralSettings
+   SIWaveAdvancedSettings
+   SIWaveDCSettings
+   SIWaveDCAdvancedSettings
+   SIWaveSParameterSettings
+   SIWaveSimulationSetup
 
 Enums
 -----
@@ -44,3 +57,6 @@ Enums
       BasisFunctionOrder
       SolverType
       ViaStyle
+      SParamInterpolation
+      SParamExtrapolation
+      SParamDCBehavior

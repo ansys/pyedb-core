@@ -477,7 +477,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @energy_error.setter
     def energy_error(self, energy_error):
-        self.__stub.SetEnergyError(messages.int_property_message(self, energy_error))
+        self.__stub.SetEnergyError(messages.double_property_message(self, energy_error))
 
     @property
     def mesh_bws(self):

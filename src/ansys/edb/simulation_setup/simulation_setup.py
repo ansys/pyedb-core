@@ -21,7 +21,10 @@ class SimulationSetupType(Enum):
     - HFSS
     """
 
-    HFSS = edb_defs_pb2.HFSS
+    HFSS = edb_defs_pb2.HFSS_SIM
+    SI_WAVE = edb_defs_pb2.SI_WAVE_SIM
+    SI_WAVE_DCIR = edb_defs_pb2.SI_WAVE_DCIR_SIM
+    RAPTOR_X = edb_defs_pb2.RAPTOR_X_SIM
 
 
 class SweepData:
@@ -160,3 +163,35 @@ class SimulationSetup(ObjBase):
                 target=self.msg, sweeps=SweepDataListMessage(sweep_data=sweep_data_msgs)
             )
         )
+
+    @property
+    def type(self):
+        """:class:`SimulationSetupType`: Type of the simulation setup."""
+        return SimulationSetupType(self.__stub.GetType(self.msg).type)
+
+    def cast(self):
+        """Cast the base SimulationSetup object to correct subclass, if possible.
+
+        Returns
+        -------
+        SimulationSetup
+        """
+        from ansys.edb.simulation_setup import (
+            HfssSimulationSetup,
+            RaptorXSimulationSetup,
+            SIWaveDCIRSimulationSetup,
+            SIWaveSimulationSetup,
+        )
+
+        if self.is_null:
+            return
+
+        sim_type = self.type
+        if sim_type == SimulationSetupType.HFSS:
+            return HfssSimulationSetup(self.msg)
+        elif sim_type == SimulationSetupType.SI_WAVE:
+            return SIWaveSimulationSetup(self.msg)
+        elif sim_type == SimulationSetupType.SI_WAVE_DCIR:
+            return SIWaveDCIRSimulationSetup(self.msg)
+        elif sim_type == SimulationSetupType.RAPTOR_X:
+            return RaptorXSimulationSetup(self.msg)

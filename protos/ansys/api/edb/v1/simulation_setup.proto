@@ -18,6 +18,8 @@ service SimulationSetupService {
   
   rpc GetSweepData (EDBObjMessage) returns (SweepDataListMessage) {}
   rpc SetSweepData (SweepDataListPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetType (EDBObjMessage) returns (SimulationSetupTypeMessage) {}
 }
 
 message SimulationSetupCreationMessage {
@@ -39,4 +41,8 @@ message SweepDataListMessage {
 message SweepDataListPropertyMessage {
   EDBObjMessage target = 1;
   SweepDataListMessage sweeps = 2;
+}
+
+message SimulationSetupTypeMessage {
+  SimulationSetupType type = 1;
 }

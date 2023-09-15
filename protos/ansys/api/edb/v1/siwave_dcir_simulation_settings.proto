@@ -1,0 +1,53 @@
+// Proto file representing siwave dcir simulation setup settings
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service SIWaveDCIRSimulationSettingsService {
+  rpc GetIcepakTempFile(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetIcepakTempFile(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetSourceTermsToGround(EDBObjMessage) returns (SourceTermsToGroundMessage) {}
+  rpc SetSourceTermsToGround(SourceTermsToGroundPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetExportDCThermalData(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetExportDCThermalData(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetImportThermalData(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetImportThermalData(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetFullDCReportPath(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetFullDCReportPath(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetViaReportPath(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetViaReportPath(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPerPinResPath(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetPerPinResPath(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCReportConfigFile(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetDCReportConfigFile(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCReportShowActiveDevices(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetDCReportShowActiveDevices(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPerPinUsePinFormat(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetPerPinUsePinFormat(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetUseLoopResForPerPin(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseLoopResForPerPin(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+message SourceTermsToGroundMessage
+{
+  map<string, int64> source_terms_to_ground = 1;
+}
+
+message SourceTermsToGroundPropertyMessage
+{
+  SourceTermsToGroundMessage value = 1;
+  EDBObjMessage target = 2;
+}

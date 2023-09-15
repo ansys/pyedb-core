@@ -1,0 +1,207 @@
+// Proto file representing siwave simulation setup settings
+
+syntax = "proto3";
+
+package ansys.api.edb.v1;
+
+import "edb_messages.proto";
+
+service SIWaveGeneralSettingsService {
+  rpc GetUseSISettings(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseSISettings(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetUseCustomSettings(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseCustomSettings(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetSISliderPos(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetSISliderPos(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPISliderPos(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetPISliderPos(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+service SIWaveAdvancedSettingsService {
+  rpc GetIncludeCoPlaneCoupling(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIncludeCoPlaneCoupling(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetIncludeInterPlaneCoupling(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIncludeInterPlaneCoupling(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetIncludeSplitPlaneCoupling(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIncludeSplitPlaneCoupling(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetIncludeFringePlaneCoupling(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIncludeFringePlaneCoupling(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetIncludeTracePlaneCoupling(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIncludeTracePlaneCoupling(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetCrossTalkThreshold(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetCrossTalkThreshold(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMaxCoupledLines(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetMaxCoupledLines(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMinVoidArea(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetMinVoidArea(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMinPadAreaToMesh(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetMinPadAreaToMesh(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMinPlaneAreaToMesh(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetMinPlaneAreaToMesh(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetSnapLengthThreshold(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetSnapLengthThreshold(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMeshAutomatic(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetMeshAutomatic(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMeshFrequency(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetMeshFrequency(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc Get3DReturnCurrentDistribution(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc Set3DReturnCurrentDistribution(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetIncludeVISources(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIncludeVISources(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetIncludeInfGnd(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIncludeInfGnd(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetInfGndLocation(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetInfGndLocation(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPerformERC(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetPerformERC(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetIgnoreNonFunctionalPads(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetIgnoreNonFunctionalPads(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+service SIWaveDCSettingsService {
+  rpc GetUseDCCustomSettings(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseDCCustomSettings(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetComputeInductance(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetComputeInductance(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPlotJV(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetPlotJV(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetContactRadius(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetContactRadius(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCSliderPos(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetDCSliderPos(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+service SIWaveDCAdvancedSettingsService {
+  rpc GetDCMinPlaneAreaToMesh(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetDCMinPlaneAreaToMesh(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCMinVoidAreaToMesh(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetDCMinVoidAreaToMesh(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMaxInitMeshEdgeLength(EDBObjMessage) returns (google.protobuf.StringValue) {}
+  rpc SetMaxInitMeshEdgeLength(StringPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPerformAdaptiveRefinement(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetPerformAdaptiveRefinement(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMaxNumPasses(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetMaxNumPasses(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMinNumPasses(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetMinNumPasses(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetPercentLocalRefinement(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetPercentLocalRefinement(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetEnergyError(EDBObjMessage) returns (google.protobuf.DoubleValue) {}
+  rpc SetEnergyError(DoublePropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMeshBws(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetMeshBws(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetRefineBws(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetRefineBws(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetMeshVias(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetMeshVias(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetRefineVias(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetRefineVias(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetNumBwSides(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetNumBwSides(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetNumViaSides(EDBObjMessage) returns (google.protobuf.UInt64Value) {}
+  rpc SetNumViaSides(UInt64PropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+enum SParamInterpolation
+{
+   POINT_IN = 0;
+   LINEAR_IN = 1;
+   STEP_IN = 2;
+}
+
+enum SParamExtrapolation
+{
+    ZERO_EX = 0;
+    SAME_EX = 1;
+    LINEAR_EX = 2;
+    CONSTANT_EX = 3;
+}
+
+enum SParamDCBehavior
+{
+    ZERO_DC = 0;
+    SAME_DC = 1;
+    LINEAR_DC = 2;
+    CONSTANT_DC = 3;
+    ONE_PORT_CAPACITOR_DC = 4;
+    OPEN_DC = 5;
+}
+
+service SIWaveSParameterSettingsService {
+  rpc GetUseStateSpace(EDBObjMessage) returns (google.protobuf.BoolValue) {}
+  rpc SetUseStateSpace(BoolPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetInterpolation(EDBObjMessage) returns (SParamInterpolationMessage) {}
+  rpc SetInterpolation(SParamInterpolationPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetExtrapolation(EDBObjMessage) returns (SParamExtrapolationMessage) {}
+  rpc SetExtrapolation(SParamExtrapolationPropertyMessage) returns (google.protobuf.Empty) {}
+
+  rpc GetDCBehavior(EDBObjMessage) returns (SParamDCBehaviorMessage) {}
+  rpc SetDCBehavior(SParamDCBehaviorPropertyMessage) returns (google.protobuf.Empty) {}
+}
+
+message SParamInterpolationMessage {
+  SParamInterpolation interpolation = 1;
+}
+
+message SParamInterpolationPropertyMessage {
+  EDBObjMessage target = 1;
+  SParamInterpolation interpolation = 2;
+}
+
+message SParamExtrapolationMessage {
+  SParamExtrapolation extrapolation = 1;
+}
+
+message SParamExtrapolationPropertyMessage {
+  EDBObjMessage target = 1;
+  SParamExtrapolation extrapolation = 2;
+}
+
+message SParamDCBehaviorMessage {
+  SParamDCBehavior dc_behavior = 1;
+}
+
+message SParamDCBehaviorPropertyMessage {
+  EDBObjMessage target = 1;
+  SParamDCBehavior dc_behavior = 2;
+}

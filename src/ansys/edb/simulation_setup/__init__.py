@@ -26,6 +26,12 @@ from ansys.edb.simulation_setup.mesh_operation import (
     MeshOperation,
     SkinDepthMeshOperation,
 )
+from ansys.edb.simulation_setup.raptor_x_simulation_settings import (
+    RaptorXAdvancedSettings,
+    RaptorXGeneralSettings,
+    RaptorXSimulationSettings,
+)
+from ansys.edb.simulation_setup.raptor_x_simulation_setup import RaptorXSimulationSetup
 from ansys.edb.simulation_setup.simulation_settings import (
     AdvancedMeshingSettings,
     AdvancedSettings,
@@ -39,3 +45,17 @@ from ansys.edb.simulation_setup.simulation_setup import (
     SimulationSetupType,
     SweepData,
 )
+from ansys.edb.simulation_setup.siwave_dcir_simulation_settings import SIWaveDCIRSimulationSettings
+from ansys.edb.simulation_setup.siwave_dcir_simulation_setup import SIWaveDCIRSimulationSetup
+from ansys.edb.simulation_setup.siwave_simulation_settings import (
+    SIWaveAdvancedSettings,
+    SIWaveDCAdvancedSettings,
+    SIWaveDCSettings,
+    SIWaveGeneralSettings,
+    SIWaveSimulationSettings,
+    SIWaveSParameterSettings,
+    SParamDCBehavior,
+    SParamExtrapolation,
+    SParamInterpolation,
+)
+from ansys.edb.simulation_setup.siwave_simulation_setup import SIWaveSimulationSetup

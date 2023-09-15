@@ -429,7 +429,9 @@ class Cell(ObjBase, variable_server.VariableServer):
         -------
         list[:class:`SimulationSetup <ansys.edb.simulation_setup.SimulationSetup>`]
         """
-        return [SimulationSetup(msg) for msg in self.__stub.GetSimulationSetups(self.msg)]
+        return [
+            SimulationSetup(msg).cast() for msg in self.__stub.GetSimulationSetups(self.msg).items
+        ]
 
     def generate_auto_hfss_regions(self):
         """Generate auto HFSS regions.

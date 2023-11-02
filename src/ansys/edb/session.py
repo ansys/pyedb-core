@@ -50,6 +50,7 @@ from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
 from ansys.api.edb.v1.hfss_simulation_setup_pb2_grpc import HfssSimulationSetupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
+from ansys.api.edb.v1.inst_array_pb2_grpc import InstArrayServiceStub
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
@@ -354,6 +355,7 @@ class StubType(Enum):
     value = ValueServiceStub
     variable_server = VariableServerServiceStub
     cell_instance = CellInstanceServiceStub
+    inst_array = InstArrayServiceStub
     hierarchy_obj = HierarchyObjectServiceStub
     group = GroupServiceStub
     netclass = NetClassServiceStub

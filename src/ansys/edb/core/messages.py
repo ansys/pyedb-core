@@ -82,6 +82,7 @@ from ansys.api.edb.v1.hfss_simulation_setup_pb2 import (
     SkinDepthMeshOperationMessage,
 )
 from ansys.api.edb.v1.hierarchy_obj_pb2 import ObjectNameInLayoutMessage
+from ansys.api.edb.v1.inst_array_pb2 import InstArrayCreationMessage
 from ansys.api.edb.v1.layout_pb2 import (
     LayoutConvertP2VMessage,
     LayoutExpandedExtentMessage,
@@ -441,6 +442,19 @@ def cell_instance_parameter_override_message(target, param_name, param_value):
         target=edb_obj_message(target),
         pname=param_name,
         pval=value_message(param_value),
+    )
+
+
+def inst_array_creation_message(layout, name, ref, orig, xaxis, yaxis, xcount, ycount):
+    """Convert to InstArrayCreationMessage."""
+    return InstArrayCreationMessage(
+        layout=string_property_message(layout, name),
+        ref=edb_obj_message(ref),
+        orig=point_message(orig),
+        xaxis=point_message(xaxis),
+        yaxis=point_message(yaxis),
+        xcount=value_message(xcount),
+        ycount=value_message(ycount),
     )
 
 

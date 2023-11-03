@@ -14,6 +14,7 @@ Object Types
    :toctree: _autosummary
    
    CellInstance
+   InstArray
    ComponentGroup
    Group
    PinGroup

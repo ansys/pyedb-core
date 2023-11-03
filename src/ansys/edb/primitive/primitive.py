@@ -1724,8 +1724,8 @@ class PadstackInstance(Primitive):
         """
         params = self.__stub.GetPositionAndRotation(self.msg)
         return (
-            Value(params.x),
-            Value(params.y),
+            Value(params.position.x),
+            Value(params.position.y),
             Value(params.rotation),
         )
 

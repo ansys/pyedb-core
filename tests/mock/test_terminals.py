@@ -1,7 +1,7 @@
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
-from ansys.edb import terminal
+from ansys.edb.terminal import terminals
 from ansys.edb.terminal.terminals import BoundaryType, HfssPIType, PointTerminal, BundleTerminal, SourceTermToGroundType, Terminal
 from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_msgs, equals
@@ -48,7 +48,7 @@ def lyr_type_mock(mocked_stub):
 
 @pytest.mark.current
 def test_bundle_terminal_create(mocked_stub, point_terminal, bundle_terminal, edb_obj_msg):
-    mock = mocked_stub(terminal, BundleTerminal).Create
+    mock = mocked_stub(terminals, BundleTerminal).Create
     mock.return_value = edb_obj_msg
 
     bt = BundleTerminal.create([point_terminal, bundle_terminal])

@@ -6,12 +6,16 @@ import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb import hierarchy, primitive
-from ansys.edb.core import ObjBase, TypeField, conn_obj, messages, parser
+from ansys.edb.core.base import ObjBase, TypeField
+from ansys.edb.core import messages, parser
+# from ansys.edb.core.conn_obj import ConnObj
+# from ansys.edb.core.layout_obj import LayoutObj
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.geometry import ArcData
-from ansys.edb.layer import Layer
+from ansys.edb.geometry.arc_data import ArcData
+from ansys.edb.layer.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import PortPostProcessingProp, Value
+from ansys.edb.utility.port_post_processing_prop import PortPostProcessingProp
+from ansys.edb.utility.value import Value
 
 
 class TerminalType(Enum):
@@ -196,7 +200,7 @@ class PrimitiveEdge(Edge):
         return self._params.point
 
 
-class Terminal(conn_obj.ConnObj):
+class Terminal(ObjBase):
     """Class representing a terminal object."""
 
     __stub = StubAccessor(StubType.terminal)
@@ -649,7 +653,7 @@ class Terminal(conn_obj.ConnObj):
         return [solver.name for solver in self._product_solvers(product_id)]
 
 
-class TerminalInstance(conn_obj.ConnObj):
+class TerminalInstance(ObjBase):
     """Class representing a terminal instance."""
 
     __stub = StubAccessor(StubType.terminal_instance)

@@ -1,6 +1,7 @@
 """Layout Instance Context."""
 
-from ansys.edb.core import ObjBase, parser
+from ansys.edb.core import parser
+from ansys.edb.core.base import ObjBase
 from ansys.edb.core.messages import bool_property_message
 import ansys.edb.layout as layout
 from ansys.edb.session import LayoutInstanceContextServiceStub, StubAccessor, StubType

@@ -2,9 +2,10 @@
 
 from ansys.edb.core import conn_obj, messages
 from ansys.edb.definition import component_def
-from ansys.edb.layer import Layer
+from ansys.edb.layer.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Transform, Value
+from ansys.edb.utility.transform import Transform
+from ansys.edb.utility.value import Value
 
 
 class HierarchyObj(conn_obj.ConnObj):

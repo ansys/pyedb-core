@@ -3,20 +3,28 @@
 from ansys.api.edb.v1 import layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
-from ansys.edb.core import ObjBase, messages, parser, utils, variable_server
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core.variable_server import VariableServer
+from ansys.edb.core.utils import map_list
+from ansys.edb.core import parser, messages
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.hierarchy import CellInstance, Group, PinGroup
-from ansys.edb.layer import LayerCollection
+from ansys.edb.hierarchy.cell_instance import CellInstance
+from ansys.edb.hierarchy.group import Group
+from ansys.edb.hierarchy.pin_group import PinGroup
+from ansys.edb.layer.layer_collection import LayerCollection
 import ansys.edb.layout as layout
 from ansys.edb.layout.mcad_model import McadModel
 from ansys.edb.layout_instance import LayoutInstance
-from ansys.edb.net import DifferentialPair, ExtendedNet, Net, NetClass
-from ansys.edb.primitive import BoardBendDef, PadstackInstance, Primitive
+from ansys.edb.net.differential_pair import DifferentialPair
+from ansys.edb.net.extended_net import ExtendedNet
+from ansys.edb.net.net import Net
+from ansys.edb.net.net_class import NetClass
+from ansys.edb.primitive.primitive import BoardBendDef, PadstackInstance, Primitive
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.terminal import Terminal
+from ansys.edb.terminal.terminals import Terminal
 
 
-class Layout(ObjBase, variable_server.VariableServer):
+class Layout(ObjBase, VariableServer):
     """Layout."""
 
     __stub: LayoutServiceStub = StubAccessor(StubType.layout)
@@ -29,7 +37,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        variable_server.VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @property
     def cell(self):
@@ -57,7 +65,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     def _get_items(self, obj_type, lyt_obj_type_enum, do_cast=False):
         """Get list of layout objects."""
-        items = utils.map_list(
+        items = map_list(
             self.__stub.GetItems(messages.layout_get_items_message(self, lyt_obj_type_enum)).items,
             obj_type,
         )

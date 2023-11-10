@@ -1,11 +1,13 @@
 """This module allows for the creating of objects while avoid circular imports."""
 
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.hierarchy import CellInstance, Group, PinGroup
+from ansys.edb.hierarchy.cell_instance import CellInstance
+from ansys.edb.hierarchy.group import Group
+from ansys.edb.hierarchy.pin_group import PinGroup
 import ansys.edb.layout as layout
-from ansys.edb.primitive import PadstackInstance, Primitive
+from ansys.edb.primitive.primitive import PadstackInstance, Primitive
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.terminal import Terminal, TerminalInstance
+from ansys.edb.terminal.terminals import Terminal, TerminalInstance
 
 
 def create_conn_obj(msg):

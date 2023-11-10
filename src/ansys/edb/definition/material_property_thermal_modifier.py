@@ -3,7 +3,8 @@
 from ansys.api.edb.v1 import material_property_thermal_modifier_pb2_grpc
 import ansys.api.edb.v1.material_def_pb2 as pb
 
-from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility import AdvancedQuadraticParams, BasicQuadraticParams, Value
 

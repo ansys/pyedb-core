@@ -5,7 +5,7 @@ from enum import Enum
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 
-from ansys.edb.core import ObjBase
+from ansys.edb.core.base import ObjBase
 from ansys.edb.core.messages import (
     get_product_property_ids_message,
     get_product_property_message,

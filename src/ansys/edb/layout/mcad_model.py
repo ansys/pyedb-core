@@ -1,7 +1,8 @@
 """Mcad Model."""
 
 from ansys.edb import hierarchy
-from ansys.edb.core import ObjBase, messages, parser
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages, parser
 from ansys.edb.session import McadModelServiceStub, StubAccessor, StubType
 
 

@@ -2,7 +2,7 @@
 
 from ansys.edb.core import utils
 from ansys.edb.core.parser import to_point3d_data
-from ansys.edb.geometry import Triangle3DData
+from ansys.edb.geometry.triangle3d_data import Triangle3DData
 from ansys.edb.layout_instance.layout_obj_instance_geometry import LayoutObjInstanceGeometry
 from ansys.edb.session import LayoutObjInstance3DGeometryServiceStub, StubAccessor, StubType
 

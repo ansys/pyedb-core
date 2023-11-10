@@ -6,7 +6,7 @@ from ansys.edb.core import messages, parser
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.hierarchy import cell_instance
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 
 
 class InstArray(cell_instance.CellInstance):

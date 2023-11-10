@@ -6,7 +6,8 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core import ObjBase, variable_server
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core.variable_server import VariableServer
 from ansys.edb.core.messages import (
     double_property_message,
     edb_obj_collection_message,
@@ -17,19 +18,14 @@ from ansys.edb.core.messages import (
     str_message,
 )
 from ansys.edb.core.utils import map_list
-from ansys.edb.definition import (
-    ApdBondwireDef,
-    BondwireDefType,
-    ComponentDef,
-    DatasetDef,
-    Jedec4BondwireDef,
-    Jedec5BondwireDef,
-    MaterialDef,
-    PackageDef,
-    PadstackDef,
-)
+from ansys.edb.definition.bondwire_def import ApdBondwireDef, BondwireDefType, Jedec4BondwireDef, Jedec5BondwireDef
+from ansys.edb.definition.component_def import ComponentDef
+from ansys.edb.definition.dataset_def import DatasetDef
+from ansys.edb.definition.material_def import MaterialDef
+from ansys.edb.definition.package_def import PackageDef
+from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.edb_defs import DefinitionObjType
-from ansys.edb.layout import Cell
+from ansys.edb.layout.cell import Cell
 from ansys.edb.session import DatabaseServiceStub, StubAccessor, StubType
 
 
@@ -50,7 +46,7 @@ class ProductIdType(Enum):
     INVALID_PRODUCT = edb_defs_pb2.INVALID_PRODUCT
 
 
-class Database(ObjBase, variable_server.VariableServer):
+class Database(ObjBase, VariableServer):
     """Class representing a database object."""
 
     __stub: DatabaseServiceStub = StubAccessor(StubType.database)
@@ -63,7 +59,7 @@ class Database(ObjBase, variable_server.VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        variable_server.VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @classmethod
     def create(cls, db_path):

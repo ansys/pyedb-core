@@ -2,7 +2,8 @@
 import ansys.api.edb.v1.transform_pb2 as pb
 from ansys.api.edb.v1.transform_pb2_grpc import TransformServiceStub
 
-from ansys.edb.core import ObjBase, messages, parser
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages, parser
 from ansys.edb.session import StubAccessor, StubType
 from ansys.edb.utility.value import Value
 

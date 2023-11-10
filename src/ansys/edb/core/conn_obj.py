@@ -1,7 +1,8 @@
 """ConnObj."""
 from ansys.api.edb.v1 import connectable_pb2
 
-from ansys.edb.core import layout_obj, messages
+from ansys.edb.core import messages
+from ansys.edb.core.layout_obj import LayoutObj
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import mcad_model as mm
 from ansys.edb.session import ConnectableServiceStub, StubAccessor, StubType
@@ -22,7 +23,7 @@ class _QueryBuilder:
         )
 
 
-class ConnObj(layout_obj.LayoutObj):
+class ConnObj(LayoutObj):
     """Base class representing ConnObj."""
 
     __stub: ConnectableServiceStub = StubAccessor(StubType.connectable)
@@ -100,14 +101,14 @@ class ConnObj(layout_obj.LayoutObj):
     @property
     def component(self):
         """:class:`ComponentGroup <ansys.edb.hierarchy.ComponentGroup>`: Component of the :term:`Connectable` object."""
-        from ansys.edb.hierarchy import ComponentGroup
+        from ansys.edb.hierarchy.component_group import ComponentGroup
 
         return ComponentGroup(self.__stub.GetComponent(self.msg))
 
     @property
     def group(self):
         """:class:`Group <ansys.edb.hierarchy.Group>`: Group of the :term:`Connectable` object."""
-        from ansys.edb.hierarchy import Group
+        from ansys.edb.hierarchy.group import Group
 
         return Group(self.__stub.GetGroup(self.msg)).cast()
 
@@ -122,7 +123,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         This property can be set with :class:`Net <ansys.edb.net.Net>`, str, None.
         """
-        from ansys.edb.net import Net
+        from ansys.edb.net.net import Net
 
         return Net(self.__stub.GetNet(self.msg))
 

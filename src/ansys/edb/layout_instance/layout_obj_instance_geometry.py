@@ -2,7 +2,7 @@
 
 from ansys.api.edb.v1.layout_obj_instance_geometry_pb2 import LayoutObjInstanceGeometryMessage
 
-from ansys.edb.core import ObjBase
+from ansys.edb.core.base import ObjBase
 from ansys.edb.core.messages import edb_obj_message
 from ansys.edb.session import LayoutObjInstanceGeometryServiceStub, StubAccessor, StubType
 

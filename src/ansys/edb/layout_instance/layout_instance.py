@@ -1,7 +1,8 @@
 """Layout Instance."""
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
-from ansys.edb.core import ObjBase, utils
+from ansys.edb.core import utils
+from ansys.edb.core.base import ObjBase
 from ansys.edb.core.messages import (
     layer_ref_message,
     net_ref_message,
@@ -9,7 +10,7 @@ from ansys.edb.core.messages import (
     polygon_data_message,
     strings_message,
 )
-from ansys.edb.geometry import PointData
+from ansys.edb.geometry.point_data import PointData
 from ansys.edb.layout_instance.layout_obj_instance import LayoutObjInstance
 from ansys.edb.session import LayoutInstanceServiceStub, StubAccessor, StubType
 

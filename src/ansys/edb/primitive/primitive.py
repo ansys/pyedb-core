@@ -24,12 +24,13 @@ from ansys.api.edb.v1 import (
 )
 
 from ansys.edb import hierarchy, terminal
-from ansys.edb.core import conn_obj, messages, parser
+from ansys.edb.core import messages, parser
+from ansys.edb.core.conn_obj import ConnObj
 from ansys.edb.definition.padstack_def import PadstackDef
 from ansys.edb.edb_defs import LayoutObjType
-from ansys.edb.layer import Layer
+from ansys.edb.layer.layer import Layer
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 from ansys.edb.utility.layer_map import LayerMap
 
 
@@ -173,7 +174,7 @@ class BackDrillType(Enum):
     DEPTH_DRILL = padstack_instance_pb2.DEPTH_DRILL
 
 
-class Primitive(conn_obj.ConnObj):
+class Primitive(ConnObj):
     """Base class representing primitive objects."""
 
     __stub: primitive_pb2_grpc.PrimitiveServiceStub = StubAccessor(StubType.primitive)

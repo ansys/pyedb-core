@@ -146,7 +146,7 @@ from google.protobuf.empty_pb2 import Empty
 from google.protobuf.wrappers_pb2 import BoolValue, DoubleValue, FloatValue, Int64Value, StringValue
 
 from ansys.edb import utility
-from ansys.edb.simulation_setup import LengthMeshOperation, SkinDepthMeshOperation
+from ansys.edb.simulation_setup.mesh_operation import LengthMeshOperation, SkinDepthMeshOperation
 from ansys.edb.utility import conversions
 
 

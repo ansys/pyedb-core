@@ -1,7 +1,7 @@
 """Dataset Def Definition."""
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 
-from ansys.edb.core import ObjBase
+from ansys.edb.core.base import ObjBase
 from ansys.edb.core.messages import (
     edb_obj_message,
     edb_obj_name_message,

@@ -3,7 +3,8 @@ import ansys.api.edb.v1.transform3d_pb2 as pb
 from ansys.api.edb.v1.transform3d_pb2_grpc import Transform3DServiceStub
 from google.protobuf import empty_pb2
 
-from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
 from ansys.edb.core.parser import to_3_point3d_data, to_point3d_data
 from ansys.edb.session import StubAccessor, StubType
 

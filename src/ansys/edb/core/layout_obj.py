@@ -2,7 +2,7 @@
 
 import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 
-from ansys.edb.core import ObjBase
+from ansys.edb.core.base import ObjBase
 import ansys.edb.core.messages as messages
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import layout

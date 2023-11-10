@@ -3,10 +3,11 @@
 from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 import ansys.api.edb.v1.model_pb2 as model_pb2
 
-from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
 from ansys.edb.definition import package_def
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 
 
 class ComponentProperty(ObjBase):

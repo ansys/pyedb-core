@@ -4,9 +4,9 @@ from ansys.edb.core import layout_obj, messages
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.net.extended_net import ExtendedNet
 from ansys.edb.net.net_class import NetClass
-from ansys.edb.primitive import PadstackInstance, Primitive
+from ansys.edb.primitive.primitive import PadstackInstance, Primitive
 from ansys.edb.session import NetServiceStub, StubAccessor, StubType
-from ansys.edb.terminal import Terminal, TerminalInstance
+from ansys.edb.terminal.terminals import Terminal, TerminalInstance
 
 
 class Net(layout_obj.LayoutObj):

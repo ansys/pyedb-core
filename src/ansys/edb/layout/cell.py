@@ -6,13 +6,16 @@ import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core import ObjBase, messages, variable_server
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
+from ansys.edb.core.variable_server import VariableServer
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.layout import layout
-from ansys.edb.primitive import Primitive
+from ansys.edb.primitive.primitive import Primitive
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.simulation_setup import SimulationSetup
-from ansys.edb.utility import TemperatureSettings, Value
+from ansys.edb.simulation_setup.simulation_setup import SimulationSetup
+from ansys.edb.utility.temperature_settings import TemperatureSettings
+from ansys.edb.utility.value import Value
 from ansys.edb.utility.hfss_extent_info import HfssExtentInfo
 
 
@@ -141,7 +144,7 @@ class _QueryBuilder:
         )
 
 
-class Cell(ObjBase, variable_server.VariableServer):
+class Cell(ObjBase, VariableServer):
     """Cell."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
@@ -155,7 +158,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        variable_server.VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @classmethod
     def create(cls, db, cell_type, cell_name):

@@ -3,7 +3,7 @@
 from ansys.api.edb.v1 import padstack_def_pb2_grpc
 import ansys.api.edb.v1.padstack_def_pb2 as pb
 
-from ansys.edb.core import ObjBase
+from ansys.edb.core.base import ObjBase
 from ansys.edb.definition.padstack_def_data import PadstackDefData
 from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import StubAccessor, StubType

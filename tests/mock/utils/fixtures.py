@@ -3,9 +3,9 @@ import string
 
 import pytest
 
-from ansys.edb.layer import Layer
-from ansys.edb.layout import Layout
-from ansys.edb.net import Net
+from ansys.edb.layer.layer import Layer
+from ansys.edb.layout.layout import Layout
+from ansys.edb.net.net import Net
 
 from .test_utils import create_edb_obj_msg, generate_random_int
 

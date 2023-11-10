@@ -1,5 +1,6 @@
 """Base Hierarchy Model."""
-from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
 from ansys.edb.session import ModelServiceStub, StubAccessor, StubType
 
 

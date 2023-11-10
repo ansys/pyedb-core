@@ -9,16 +9,17 @@ import ansys.api.edb.v1.padstack_def_data_pb2 as pb
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core import ObjBase, messages, parser
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages, parser
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 
 
 class _PadstackDefDataQueryBuilder:
     """Class for creating padstack def data grpc messages."""
 
     if TYPE_CHECKING:
-        from padstack_def_data import PadstackDefData
+        from ansys.edb.definition.padstack_def_data import PadstackDefData
 
     @staticmethod
     def padstack_def_data_set_material_message(target, material):

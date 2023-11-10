@@ -7,7 +7,8 @@ from ansys.edb.core import messages
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.hierarchy import hierarchy_obj
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Transform3D, Value
+from ansys.edb.utility.transform3d import Transform3D
+from ansys.edb.utility.value import Value
 
 
 class CellInstance(hierarchy_obj.HierarchyObj):

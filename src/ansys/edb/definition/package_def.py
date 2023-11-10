@@ -2,7 +2,8 @@
 
 from ansys.api.edb.v1 import package_def_pb2_grpc
 
-from ansys.edb.core import ObjBase, parser
+from ansys.edb.core import parser
+from ansys.edb.core.base import ObjBase
 from ansys.edb.core.messages import (
     edb_obj_message,
     get_product_property_ids_message,
@@ -17,7 +18,7 @@ from ansys.edb.core.messages import (
 )
 from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import StubAccessor, StubType
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 from ansys.edb.utility.heat_sink import HeatSink, HeatSinkFinOrientation
 
 

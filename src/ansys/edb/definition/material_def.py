@@ -4,11 +4,12 @@ from enum import Enum
 
 import ansys.api.edb.v1.material_def_pb2 as pb
 
-from ansys.edb.core import ObjBase, messages
-from ansys.edb.definition import DielectricMaterialModel
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
+from ansys.edb.definition.dielectric_material_model import DielectricMaterialModel
 from ansys.edb.edb_defs import DefinitionObjType
 from ansys.edb.session import MaterialDefServiceStub, StubAccessor, StubType
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 
 
 class MaterialProperty(Enum):

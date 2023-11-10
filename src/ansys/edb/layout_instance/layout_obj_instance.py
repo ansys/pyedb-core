@@ -1,9 +1,10 @@
 """Layout Obj Instance."""
 
-from ansys.edb.core import ObjBase, parser, utils
+from ansys.edb.core import parser, utils
+from ansys.edb.core.base import ObjBase
 from ansys.edb.core.factory import create_conn_obj
 from ansys.edb.core.messages import bool_property_message, layer_ref_property_message
-from ansys.edb.layer import Layer
+from ansys.edb.layer.layer import Layer
 from ansys.edb.layout_instance.layout_instance_context import LayoutInstanceContext
 from ansys.edb.layout_instance.layout_obj_instance_2d_geometry import LayoutObjInstance2DGeometry
 from ansys.edb.layout_instance.layout_obj_instance_3d_geometry import LayoutObjInstance3DGeometry

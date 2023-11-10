@@ -5,9 +5,9 @@ from enum import Enum
 import ansys.api.edb.v1.stackup_layer_pb2 as stackup_layer_pb2
 
 from ansys.edb.core import messages
-from ansys.edb.layer import Layer
+from ansys.edb.layer.layer import Layer
 from ansys.edb.session import get_stackup_layer_stub
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 
 
 class DCThicknessType(Enum):

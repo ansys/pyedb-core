@@ -1,7 +1,8 @@
 """Component Def Definition."""
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
-from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
 from ansys.edb.core.utils import map_list
 from ansys.edb.definition import component_model, component_pin
 from ansys.edb.edb_defs import DefinitionObjType

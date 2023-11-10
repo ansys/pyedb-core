@@ -6,7 +6,8 @@ from ansys.api.edb.v1.component_model_pb2_grpc import (
 )
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core import ObjBase, messages
+from ansys.edb.core.base import ObjBase
+from ansys.edb.core import messages
 from ansys.edb.session import StubAccessor, StubType
 
 

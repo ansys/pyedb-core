@@ -5,7 +5,7 @@ import ansys.api.edb.v1.variable_server_pb2 as variable_server_msgs
 
 from ansys.edb.core.messages import value_message
 from ansys.edb.session import get_variable_server_stub
-from ansys.edb.utility import Value
+from ansys.edb.utility.value import Value
 
 
 class VariableServer:

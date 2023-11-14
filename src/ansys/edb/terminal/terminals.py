@@ -8,7 +8,7 @@ import ansys.api.edb.v1.term_pb2 as term_pb2
 from ansys.edb import hierarchy, primitive
 from ansys.edb.core.base import ObjBase, TypeField
 from ansys.edb.core import messages, parser
-# from ansys.edb.core.conn_obj import ConnObj
+from ansys.edb.core.conn_obj import ConnObj
 # from ansys.edb.core.layout_obj import LayoutObj
 from ansys.edb.edb_defs import LayoutObjType
 from ansys.edb.geometry.arc_data import ArcData
@@ -200,7 +200,7 @@ class PrimitiveEdge(Edge):
         return self._params.point
 
 
-class Terminal(ObjBase):
+class Terminal(ConnObj):
     """Class representing a terminal object."""
 
     __stub = StubAccessor(StubType.terminal)
@@ -653,7 +653,7 @@ class Terminal(ObjBase):
         return [solver.name for solver in self._product_solvers(product_id)]
 
 
-class TerminalInstance(ObjBase):
+class TerminalInstance(ConnObj):
     """Class representing a terminal instance."""
 
     __stub = StubAccessor(StubType.terminal_instance)

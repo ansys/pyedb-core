@@ -3,6 +3,7 @@
 from ansys.edb.hierarchy.cell_instance import CellInstance
 from ansys.edb.hierarchy.component_group import ComponentGroup, ComponentType
 from ansys.edb.hierarchy.group import Group
+from ansys.edb.hierarchy.inst_array import InstArray
 from ansys.edb.hierarchy.model import Model
 from ansys.edb.hierarchy.netlist_model import NetlistModel
 from ansys.edb.hierarchy.pin_group import PinGroup

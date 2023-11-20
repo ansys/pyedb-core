@@ -27,6 +27,9 @@ service PathService {
 
   // Render Path
   rpc Render (PathRenderMessage) returns (PolygonDataMessage) {}
+  
+  // Get Polygon Data
+  rpc GetPolygonData (EDBObjMessage) returns (PolygonDataMessage) {}
 
   // Get Center Line
   rpc GetCenterLine (EDBObjMessage) returns (PolygonDataMessage) {}

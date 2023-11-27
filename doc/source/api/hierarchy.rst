@@ -8,7 +8,7 @@ Sub-designs, MCAD Components, Coordinate systems etc.. are all examples of hiera
 Object Types
 ------------
 
-.. currentmodule:: ansys.edb.hierarchy
+.. currentmodule:: ansys.edb.core.hierarchy
 
 .. autosummary::
    :toctree: _autosummary

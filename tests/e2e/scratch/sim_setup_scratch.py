@@ -1,9 +1,9 @@
 import settings
 
-from ansys.edb.database import Database
-from ansys.edb.layout import Cell, CellType
-from ansys.edb.session import session
-from ansys.edb.simulation_setup import (
+from ansys.edb.core.database import Database
+from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.session import session
+from ansys.edb.core.simulation_setup import (
     AdaptType,
     BasisFunctionOrder,
     BroadbandAdaptiveSolution,

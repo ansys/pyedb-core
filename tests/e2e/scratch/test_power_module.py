@@ -1,8 +1,8 @@
 import settings
 
-from ansys.edb.database import Database
-from ansys.edb.layout import Cell, CellType, PowerModule, VoltageRegulator
-from ansys.edb.session import launch_session
+from ansys.edb.core.database import Database
+from ansys.edb.core.layout import Cell, CellType, PowerModule, VoltageRegulator
+from ansys.edb.core.session import launch_session
 
 
 def test_power_module():

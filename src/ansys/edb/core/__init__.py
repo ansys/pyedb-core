@@ -1,8 +1,9 @@
-"""This package contains code unavailable to API users."""
+"""Ansys Electronics Database Python Package."""
 
-import logging
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
 
-from ansys.edb.core.base import ObjBase, TypeField
-from ansys.edb.core.edb_logging import EDBLogger
+__version__ = importlib_metadata.version("ansys-edb-core")
 
-LOGGER = EDBLogger(level=logging.DEBUG, to_file=False, to_stdout=True)

@@ -7,7 +7,7 @@ occurs, all EDB API function calls will be processed using that channel.
 Functions
 ---------
 
-.. currentmodule:: ansys.edb.session
+.. currentmodule:: ansys.edb.core.session
 
 .. autosummary::
    :toctree: _autosummary

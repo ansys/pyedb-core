@@ -5,7 +5,7 @@ import sys
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 
-from ansys.edb import __version__
+from ansys.edb.core import __version__
 
 # Project information
 project = "ansys-edb"

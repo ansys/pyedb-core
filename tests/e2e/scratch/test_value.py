@@ -1,12 +1,12 @@
 import settings
 
-from ansys.edb.database import Database
-from ansys.edb.layer import LayerType, StackupLayer
-from ansys.edb.layout import Cell, CellType
-from ansys.edb.net import Net
-from ansys.edb.primitive import Circle
-from ansys.edb.session import launch_session
-from ansys.edb.utility import Value
+from ansys.edb.core.database import Database
+from ansys.edb.core.layer import LayerType, StackupLayer
+from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.net import Net
+from ansys.edb.core.primitive import Circle
+from ansys.edb.core.session import launch_session
+from ansys.edb.core.utility import Value
 
 
 def test_value():

@@ -1,12 +1,12 @@
 import settings
 
-from ansys.edb.database import Database
-from ansys.edb.layer import Layer, LayerType
-from ansys.edb.layer.layer_collection import LayerCollection, LayerCollectionMode
-from ansys.edb.layout import Cell, CellType
-from ansys.edb.primitive import BoardBendDef, Rectangle, RectangleRepresentationType
-from ansys.edb.session import session
-from ansys.edb.utility import Value
+from ansys.edb.core.database import Database
+from ansys.edb.core.layer import Layer, LayerType
+from ansys.edb.core.layer.layer_collection import LayerCollection, LayerCollectionMode
+from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.primitive import BoardBendDef, Rectangle, RectangleRepresentationType
+from ansys.edb.core.session import session
+from ansys.edb.core.utility import Value
 
 
 def do_test():

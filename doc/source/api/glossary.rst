@@ -26,7 +26,7 @@ Glossary
 
 	ValueLike
 
-		:obj:`Union <typing.Union>`\[:obj:`int`, :obj:`float`, :obj:`complex`, :obj:`str`, :class:`Value <ansys.edb.utility.Value>`\]
+		:obj:`Union <typing.Union>`\[:obj:`int`, :obj:`float`, :obj:`complex`, :obj:`str`, :class:`Value <ansys.edb.core.utility.Value>`\]
 
 	Point3DLike
 
@@ -34,7 +34,7 @@ Glossary
 
 	PointDataTuple
 
-		:obj:`tuple`\[:class:`PointData <ansys.edb.geometry.PointData>`, :class:`PointData <ansys.edb.geometry.PointData>`\]`
+		:obj:`tuple`\[:class:`PointData <ansys.edb.core.geometry.PointData>`, :class:`PointData <ansys.edb.core.geometry.PointData>`\]`
 
 	Triangle3DLike
 
@@ -51,7 +51,7 @@ Glossary
 
 		HFSS solver properties are represented by a tuple of the form [dc_thickness_type, dc_thickness_value, solve_inside_enabled]
 
-		:obj:`tuple`\[:class:`DCThicknessType <ansys.edb.layer.DCThicknessType>`, :term:`ValueLike`, :obj:`bool`\]
+		:obj:`tuple`\[:class:`DCThicknessType <ansys.edb.core.layer.DCThicknessType>`, :term:`ValueLike`, :obj:`bool`\]
 
 	HFSSExtents
 		

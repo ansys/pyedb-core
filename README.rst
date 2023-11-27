@@ -141,14 +141,7 @@ However, the recommended way of checking documentation integrity is using:
 Distributing
 ------------
 
-If you would like to create either source or wheel files, start by installing
-the building requirements:
-
-.. code:: bash
-
-    python -m pip install -r requirements/requirements_build.txt
-
-Then, you can execute:
+If you would like to create either source or wheel files, then you can execute:
 
 .. code:: bash
 
@@ -184,13 +177,12 @@ Follow these steps as necessary to run the notebooks :
         .. code:: bash
 
             python -m pip install -e .
-            python -m pip install -e ./protos
 
-3. Install requirements_notebook.txt :
+3. Install notebook requirements :
 
         .. code:: bash
 
-            python -m pip install -r ./requirements/requirements_notebook.txt
+            python -m pip install .[notebook]
 
 4. Install ipython kernel :
 

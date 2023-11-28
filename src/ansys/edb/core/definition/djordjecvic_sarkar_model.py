@@ -3,8 +3,8 @@ from ansys.api.edb.v1 import djordjecvic_sarkar_model_pb2_grpc
 from google.protobuf import empty_pb2
 
 from ansys.edb.core import session
-from ansys.edb.core.inner import messages
 from ansys.edb.core.definition.dielectric_material_model import DielectricMaterialModel
+from ansys.edb.core.inner import messages
 
 
 class DjordjecvicSarkarModel(DielectricMaterialModel):

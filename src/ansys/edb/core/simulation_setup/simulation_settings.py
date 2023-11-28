@@ -79,7 +79,7 @@ class SettingsOptions(SimulationSettingsBase):
 
     @property
     def lamda_target(self):
-        """:obj:`float`: Target lamda value for lambda refinement."""
+        """:obj:`float`: Target lambda value for lambda refinement."""
         return self.__stub.GetLamdaTarget(self.msg).value
 
     @lamda_target.setter

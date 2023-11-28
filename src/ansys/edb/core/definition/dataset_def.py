@@ -1,6 +1,7 @@
 """Dataset Def Definition."""
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 
+from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase
 from ansys.edb.core.inner.messages import (
     edb_obj_message,
@@ -9,7 +10,6 @@ from ansys.edb.core.inner.messages import (
     string_property_message,
 )
 from ansys.edb.core.inner.parser import to_point_data_list
-from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.session import StubAccessor, StubType
 
 

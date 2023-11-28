@@ -8,7 +8,7 @@ Classes
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    BoundaryType
    BundleTerminal
    Edge

@@ -7,6 +7,7 @@ from utils.fixtures import *  # noqa
 
 from ansys.edb.core import geometry, utility
 
+
 @pytest.mark.parametrize(
     "args, kwargs, expect_call",
     [

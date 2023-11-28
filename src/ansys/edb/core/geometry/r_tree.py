@@ -154,8 +154,8 @@ class RTree(ObjBase):
             The testing region, described as a (lower-left, upper-right) box.
         bb_search: bool
             If true, an RTreeObj intersects when the bounding-box of it's \
-            :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` intersects the testing  object. If false, an explicit\
-             intersection is required for a hit.
+            :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` \
+            intersects the testing  object. If false, an explicit intersection is required for a hit.
 
         Returns
         -------

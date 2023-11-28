@@ -2,8 +2,8 @@
 
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.hierarchy.model import Model
+from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.session import PinPairModelServiceStub, StubAccessor, StubType
 
 

@@ -8,21 +8,21 @@ Glossary
 	Connectable
 
 		The generic type for most objects in Layout.
-		
+
 		Objects of the following types are all connectables :
-		
+
 		.. toctree::
 			:maxdepth: 1
 
 			primitive
 			hierarchy
 			terminal
-		   
+
 	Zone
 
-		Multizone stackups allow a design to be divided into areas called zones. 
-		
-		Each zone contains a subset of layers available to the entire circuit board and is spatially defined by polygons on the Outline layer.	
+		Multizone stackups allow a design to be divided into areas called zones.
+
+		Each zone contains a subset of layers available to the entire circuit board and is spatially defined by polygons on the Outline layer.
 
 	ValueLike
 
@@ -54,9 +54,9 @@ Glossary
 		:obj:`tuple`\[:class:`DCThicknessType <ansys.edb.core.layer.DCThicknessType>`, :term:`ValueLike`, :obj:`bool`\]
 
 	HFSSExtents
-		
+
 		Extent box around the design, represented by a :obj:`dict` with the following key:values
-		
+
 		| **dielectric**: (:obj:`float`, :obj:`bool`)
 		| 	Dielectric extent size. First parameter is the value and second parameter indicates if the value is a multiple.
 		| **airbox_horizontal**: (:obj:`float`, :obj:`bool`)

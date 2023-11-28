@@ -5,8 +5,8 @@ from enum import Enum
 from ansys.api.edb.v1 import bondwire_def_pb2_grpc
 import ansys.api.edb.v1.bondwire_def_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.edb_defs import DefinitionObjType
+from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import Value
 

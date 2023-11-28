@@ -8,7 +8,7 @@ Classes
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    DifferentialPair
    ExtendedNet
    Net

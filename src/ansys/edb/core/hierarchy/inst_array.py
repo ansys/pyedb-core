@@ -2,9 +2,9 @@
 
 from ansys.api.edb.v1.inst_array_pb2_grpc import InstArrayServiceStub
 
-from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import cell_instance
+from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import Value
 

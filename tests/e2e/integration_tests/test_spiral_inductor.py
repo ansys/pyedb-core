@@ -8,7 +8,13 @@ from ansys.edb.core.database import Database
 from ansys.edb.core.definition import MaterialDef, MaterialProperty
 from ansys.edb.core.geometry import PolygonData
 from ansys.edb.core.hierarchy import ViaGroup
-from ansys.edb.core.layer import LayerCollection, LayerCollectionMode, LayerType, StackupLayer, ViaLayer
+from ansys.edb.core.layer import (
+    LayerCollection,
+    LayerCollectionMode,
+    LayerType,
+    StackupLayer,
+    ViaLayer,
+)
 from ansys.edb.core.layout import Cell, CellType
 from ansys.edb.core.net import Net
 from ansys.edb.core.primitive import (

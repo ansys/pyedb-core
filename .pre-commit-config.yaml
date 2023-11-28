@@ -27,6 +27,7 @@ repos:
   - id: codespell
     exclude: (?x)(^notebooks)
     args: ["--ignore-words", "doc/styles/Vocab/ANSYS/accept.txt", "-w"]
+
 - repo: https://github.com/pycqa/pydocstyle
   rev: 6.3.0
   hooks:
@@ -41,6 +42,7 @@ repos:
   - id: debug-statements
   - id: check-yaml
   - id: trailing-whitespace
+    exclude: (?x)^(.*\.def)
 
 # - repo: https://github.com/ansys/pre-commit-hooks
 #   rev: v0.2.2

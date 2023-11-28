@@ -1,7 +1,7 @@
 """Hierarchy Obj."""
 
-from ansys.edb.core.inner import conn_obj, messages
 from ansys.edb.core.definition import component_def
+from ansys.edb.core.inner import conn_obj, messages
 from ansys.edb.core.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import Transform, Value
@@ -60,8 +60,9 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def location(self):
-        """:obj:`tuple` (:class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`): \
-         [x, y] location of the object on the :obj:`placement_layer`."""
+        """:obj:`tuple` (:class:`Value <ansys.edb.core.utility.Value>`, \
+        :class:`Value <ansys.edb.core.utility.Value>`): \
+        [x, y] location of the object on the :obj:`placement_layer`."""
         pnt_msg = self.__stub.GetLocation(self.msg)
         return [Value(pnt_msg.x), Value(pnt_msg.y)]
 

@@ -26,7 +26,9 @@ from ansys.edb.core.definition.djordjecvic_sarkar_model import DjordjecvicSarkar
 from ansys.edb.core.definition.ic_component_property import ICComponentProperty
 from ansys.edb.core.definition.io_component_property import IOComponentProperty
 from ansys.edb.core.definition.material_def import MaterialDef, MaterialProperty, ThermalModifier
-from ansys.edb.core.definition.material_property_thermal_modifier import MaterialPropertyThermalModifier
+from ansys.edb.core.definition.material_property_thermal_modifier import (
+    MaterialPropertyThermalModifier,
+)
 from ansys.edb.core.definition.multipole_debye_model import MultipoleDebyeModel
 from ansys.edb.core.definition.package_def import PackageDef
 from ansys.edb.core.definition.padstack_def import PadstackDef

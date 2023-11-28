@@ -8,7 +8,7 @@ Classes
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    Cell
    Layout
    McadModel
@@ -20,6 +20,6 @@ Enums
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    CellType
    DesignMode

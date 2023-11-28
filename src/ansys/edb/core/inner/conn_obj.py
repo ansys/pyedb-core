@@ -1,8 +1,8 @@
 """ConnObj."""
 from ansys.api.edb.v1 import connectable_pb2
 
-from ansys.edb.core.inner import layout_obj, messages
 from ansys.edb.core.edb_defs import LayoutObjType
+from ansys.edb.core.inner import layout_obj, messages
 from ansys.edb.core.layout import mcad_model as mm
 from ansys.edb.core.session import ConnectableServiceStub, StubAccessor, StubType
 
@@ -99,7 +99,8 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def component(self):
-        """:class:`ComponentGroup <ansys.edb.core.hierarchy.ComponentGroup>`: Component of the :term:`Connectable` object."""
+        """:class:`ComponentGroup <ansys.edb.core.hierarchy.ComponentGroup>`: \
+        Component of the :term:`Connectable` object."""
         from ansys.edb.core.hierarchy import ComponentGroup
 
         return ComponentGroup(self.__stub.GetComponent(self.msg))

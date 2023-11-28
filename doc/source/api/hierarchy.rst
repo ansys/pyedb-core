@@ -12,7 +12,7 @@ Object Types
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    CellInstance
    InstArray
    ComponentGroup
@@ -32,6 +32,6 @@ Enums
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    ComponentType
    MeshClosure

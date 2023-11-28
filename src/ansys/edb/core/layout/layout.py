@@ -3,9 +3,9 @@
 from ansys.api.edb.v1 import layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
-from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import CellInstance, Group, PinGroup
+from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
 from ansys.edb.core.layer import LayerCollection
 import ansys.edb.core.layout as layout
 from ansys.edb.core.layout.mcad_model import McadModel
@@ -83,7 +83,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def terminals(self):
-        """:obj:`list` of :class:`Terminal <ansys.edb.core.terminal.Terminal>` : List of all the terminals in this layout.
+        """:obj:`list` of :class:`Terminal <ansys.edb.core.terminal.Terminal>` : \
+        List of all the terminals in this layout.
 
         Read-Only.
         """
@@ -91,8 +92,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def cell_instances(self):
-        """:obj:`list` of :class:`CellInstance <ansys.edb.core.hierarchy.CellInstances>` : List of the cell instances in \
-        this layout.
+        """:obj:`list` of :class:`CellInstance <ansys.edb.core.hierarchy.CellInstances>` : \
+        List of the cell instances in this layout.
 
         Read-Only.
         """
@@ -124,8 +125,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def differential_pairs(self):
-        """:obj:`list` of :class:`DifferentialPair <ansys.edb.core.net.DifferentialPair>` : List of all the differential \
-         pairs in this layout.
+        """:obj:`list` of :class:`DifferentialPair <ansys.edb.core.net.DifferentialPair>` : \
+        List of all the differential pairs in this layout.
 
         Read-Only.
         """
@@ -142,8 +143,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def voltage_regulators(self):
-        """:obj:`list` of :class:`VoltageRegulator <ansys.edb.core.hierarchy.VoltageRegulator>` : List of all the voltage \
-         regulators in this layout.
+        """:obj:`list` of :class:`VoltageRegulator <ansys.edb.core.hierarchy.VoltageRegulator>` : \
+        List of all the voltage regulators in this layout.
 
         Read-Only.
         """
@@ -151,8 +152,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def extended_nets(self):
-        """:obj:`list` of :class:`ExtendedNet <ansys.edb.core.net.ExtendedNet>` : List of all the extended nets in this \
-        layout.
+        """:obj:`list` of :class:`ExtendedNet <ansys.edb.core.net.ExtendedNet>` : \
+        List of all the extended nets in this layout.
 
         Read-Only.
         """

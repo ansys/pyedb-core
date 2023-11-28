@@ -3,9 +3,9 @@
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
 from ansys.edb.core import layout
-from ansys.edb.core.inner import messages
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import hierarchy_obj
+from ansys.edb.core.inner import messages
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import Transform3D, Value
 
@@ -117,7 +117,8 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def transform3d(self):
-        """:class:`Transform3D <ansys.edb.core.utility.Transform3D>`: 3D transformation information of this cell instance.
+        """:class:`Transform3D <ansys.edb.core.utility.Transform3D>`: \
+        3D transformation information of this cell instance.
 
         :obj:`placement_3d` must be True for the transformation to be applied.
         """

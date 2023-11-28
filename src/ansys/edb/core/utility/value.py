@@ -17,7 +17,8 @@ class Value:
     val : :term:`ValueLike`
         The value assigned to the new Value
     _owner :    None, :class:`Database <ansys.edb.core.database.Database>`, :class:`Cell <ansys.edb.core.layout.Cell>`,
-                :class:`Layout <ansys.edb.core.layout.Layout>`, :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+                :class:`Layout <ansys.edb.core.layout.Layout>`, \
+                :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
 
     Notes
     -----

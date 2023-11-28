@@ -6,17 +6,6 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.inner import ObjBase, variable_server
-from ansys.edb.core.inner.messages import (
-    double_property_message,
-    edb_obj_collection_message,
-    edb_obj_name_message,
-    get_product_property_ids_message,
-    get_product_property_message,
-    set_product_property_message,
-    str_message,
-)
-from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.definition import (
     ApdBondwireDef,
     BondwireDefType,
@@ -29,6 +18,17 @@ from ansys.edb.core.definition import (
     PadstackDef,
 )
 from ansys.edb.core.edb_defs import DefinitionObjType
+from ansys.edb.core.inner import ObjBase, variable_server
+from ansys.edb.core.inner.messages import (
+    double_property_message,
+    edb_obj_collection_message,
+    edb_obj_name_message,
+    get_product_property_ids_message,
+    get_product_property_message,
+    set_product_property_message,
+    str_message,
+)
+from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.layout import Cell
 from ansys.edb.core.session import DatabaseServiceStub, StubAccessor, StubType
 

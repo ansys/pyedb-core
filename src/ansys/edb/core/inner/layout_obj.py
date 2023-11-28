@@ -2,9 +2,9 @@
 
 import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 
+from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import ObjBase
 import ansys.edb.core.inner.messages as messages
-from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.layout import layout
 from ansys.edb.core.session import LayoutObjServiceStub, StubAccessor, StubType
 

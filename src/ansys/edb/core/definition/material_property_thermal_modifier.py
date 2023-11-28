@@ -63,8 +63,8 @@ class MaterialPropertyThermalModifier(ObjBase):
     @property
     def quadratic_model_params(self):
         """:class:`BasicQuadraticParams <ansys.edb.core.utility.BasicQuadraticParams>`, \
-        :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`: Quadratic model parameters of \
-        the thermal modifier.
+        :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`: \
+        Quadratic model parameters of the thermal modifier.
 
         The quadratic model is of the following form:
             PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]

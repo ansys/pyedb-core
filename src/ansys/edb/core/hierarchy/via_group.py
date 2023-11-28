@@ -2,8 +2,8 @@
 
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 
-from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.hierarchy.group import Group
+from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.session import StubAccessor, StubType
 
 

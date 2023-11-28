@@ -1,6 +1,7 @@
 """Layout Instance."""
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
+from ansys.edb.core.geometry import PointData
 from ansys.edb.core.inner import ObjBase, utils
 from ansys.edb.core.inner.messages import (
     layer_ref_message,
@@ -9,7 +10,6 @@ from ansys.edb.core.inner.messages import (
     polygon_data_message,
     strings_message,
 )
-from ansys.edb.core.geometry import PointData
 from ansys.edb.core.layout_instance.layout_obj_instance import LayoutObjInstance
 from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
 
@@ -116,9 +116,9 @@ class LayoutInstance(ObjBase):
             from.
         touching_only : bool
             If touching_only is true, only :class:`layout object instances <LayoutObjInstance>` touching \
-            origin_layout_obj_inst on the placement :class:`layer <ansys.edb.core.layer.Layer>` of origin_layout_obj_inst \
-            will be returned. Otherwise, all layout object instances across all layers that are electrically connected \
-            to origin_layout_obj_inst will be returned.
+            origin_layout_obj_inst on the placement :class:`layer <ansys.edb.core.layer.Layer>` of \
+            origin_layout_obj_inst will be returned. Otherwise, all layout object instances across all layers that \
+            are electrically connected to origin_layout_obj_inst will be returned.
 
         Returns
         -------

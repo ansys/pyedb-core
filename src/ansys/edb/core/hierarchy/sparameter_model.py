@@ -1,6 +1,6 @@
 """S-Parameter Model."""
-from ansys.edb.core.inner import messages
 from ansys.edb.core.hierarchy.model import Model
+from ansys.edb.core.inner import messages
 from ansys.edb.core.session import SParameterModelServiceStub, StubAccessor, StubType
 
 

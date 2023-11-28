@@ -5,17 +5,17 @@ import ansys.api.edb.v1.solder_ball_property_pb2 as pb
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
+from ansys.edb.core.definition.padstack_def_data import (
+    SolderballPlacement,
+    SolderballShape,
+    _PadstackDefDataQueryBuilder,
+)
 from ansys.edb.core.inner import ObjBase
 from ansys.edb.core.inner.messages import (
     edb_obj_message,
     string_property_message,
     value_message,
     value_property_message,
-)
-from ansys.edb.core.definition.padstack_def_data import (
-    SolderballPlacement,
-    SolderballShape,
-    _PadstackDefDataQueryBuilder,
 )
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import Value

@@ -7,8 +7,8 @@ import math
 from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2_grpc
 
 from ansys.edb.core import session
-from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.geometry.arc_data import ArcData
+from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.utility import conversions
 
 

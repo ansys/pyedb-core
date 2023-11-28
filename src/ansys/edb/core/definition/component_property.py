@@ -3,8 +3,8 @@
 from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 import ansys.api.edb.v1.model_pb2 as model_pb2
 
-from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.definition import package_def
+from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility import Value
 
@@ -55,7 +55,12 @@ class ComponentProperty(ObjBase):
         comp_model_msg = self.__stub.GetModel(messages.edb_obj_message(self))
 
         def get_model_obj_type():
-            from ansys.edb.core.hierarchy import NetlistModel, PinPairModel, SParameterModel, SPICEModel
+            from ansys.edb.core.hierarchy import (
+                NetlistModel,
+                PinPairModel,
+                SParameterModel,
+                SPICEModel,
+            )
 
             if comp_model_msg.model_type == model_pb2.SPICE_MODEL_TYPE:
                 return SPICEModel

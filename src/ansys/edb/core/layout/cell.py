@@ -6,8 +6,8 @@ import ansys.api.edb.v1.cell_pb2 as cell_pb2
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core.inner import ObjBase, messages, variable_server
 from ansys.edb.core.edb_defs import LayoutObjType
+from ansys.edb.core.inner import ObjBase, messages, variable_server
 from ansys.edb.core.layout import layout
 from ansys.edb.core.primitive import Primitive
 from ansys.edb.core.session import StubAccessor, StubType

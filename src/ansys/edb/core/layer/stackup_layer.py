@@ -274,7 +274,6 @@ class StackupLayer(Layer):
 
     @use_solver_properties.setter
     def use_solver_properties(self, use_solver_properties):
-
         get_stackup_layer_stub().SetUseSolverProperties(
             stackup_layer_pb2.SetLayerPropEnabledMessage(
                 layer=self.msg, enabled=use_solver_properties

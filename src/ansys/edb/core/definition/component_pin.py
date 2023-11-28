@@ -1,8 +1,8 @@
 """Component Pin Definition."""
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 
-from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.definition import component_def
+from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 

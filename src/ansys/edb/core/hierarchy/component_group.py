@@ -5,9 +5,9 @@ from enum import Enum
 from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core.inner import messages
 from ansys.edb.core.definition import component_property
 from ansys.edb.core.hierarchy.group import Group
+from ansys.edb.core.inner import messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 

@@ -5,8 +5,12 @@ from ansys.edb.core.inner.factory import create_conn_obj
 from ansys.edb.core.inner.messages import bool_property_message, layer_ref_property_message
 from ansys.edb.core.layer import Layer
 from ansys.edb.core.layout_instance.layout_instance_context import LayoutInstanceContext
-from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import LayoutObjInstance2DGeometry
-from ansys.edb.core.layout_instance.layout_obj_instance_3d_geometry import LayoutObjInstance3DGeometry
+from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import (
+    LayoutObjInstance2DGeometry,
+)
+from ansys.edb.core.layout_instance.layout_obj_instance_3d_geometry import (
+    LayoutObjInstance3DGeometry,
+)
 from ansys.edb.core.session import LayoutObjInstanceServiceStub, StubAccessor, StubType
 
 
@@ -29,9 +33,14 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def layers(self):
-        r""":obj:`list`\[:class:`Layer <ansys.edb.core.layer.Layer>`\]: Layers this layout object instance has geometry on.
+        """Return a list of Layer instances.
 
-        Read-Only.
+        This list contains the :class:`Layer <ansys.edb.core.layer.Layer>` instances that this layout
+        object instance has geometry on.
+
+        Returns
+        -------
+        list[ansys.edb.core.layer.Layer]
         """
         return [Layer(msg).cast() for msg in self.__stub.GetLayers(self.msg).items]
 
@@ -53,10 +62,10 @@ class LayoutObjInstance(ObjBase):
     def context(self):
         r""":obj:`list`\[:obj:`str`\]: List of strings representing the context of the layout object instance.
 
-        The list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names representing \
-        the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>` resides on. The the \
-        first entry in the list represents the top level context and the last entry represents the context the layout \
-        obj instance exists in.
+        The list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names \
+        representing the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>` \
+        resides on. The the first entry in the list represents the top level context and the last entry \
+        represents the context the layout obj instance exists in.
 
         Read-Only
         """

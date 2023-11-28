@@ -45,7 +45,9 @@ from ansys.edb.core.simulation_setup.simulation_setup import (
     SimulationSetupType,
     SweepData,
 )
-from ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings import SIWaveDCIRSimulationSettings
+from ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings import (
+    SIWaveDCIRSimulationSettings,
+)
 from ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup import SIWaveDCIRSimulationSetup
 from ansys.edb.core.simulation_setup.siwave_simulation_settings import (
     SIWaveAdvancedSettings,

@@ -3,8 +3,8 @@
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.inner import messages
 from ansys.edb.core.definition import component_property, port_property, solder_ball_property
+from ansys.edb.core.inner import messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 

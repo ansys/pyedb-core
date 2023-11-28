@@ -1,7 +1,7 @@
 """Net."""
 
-from ansys.edb.core.inner import layout_obj, messages
 from ansys.edb.core.edb_defs import LayoutObjType
+from ansys.edb.core.inner import layout_obj, messages
 from ansys.edb.core.net.extended_net import ExtendedNet
 from ansys.edb.core.net.net_class import NetClass
 from ansys.edb.core.primitive import PadstackInstance, Primitive
@@ -90,26 +90,40 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def padstack_instances(self):
-        r"""
-        :obj:`list`\[:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`\]: List of padstacks on this net.
+        """Return a list of PadstackInstance instances.
 
-        Read-Only.
+        This list contains the :class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>` \
+        instances on this net object instance.
+
+        Returns
+        -------
+        list[ansys.edb.core.primitive.PadstackInstance]
         """
         return [PadstackInstance(lo) for lo in self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)]
 
     @property
     def terminals(self):
-        r""":obj:`list`\[:class:`Terminal <ansys.edb.core.terminal.Terminal>`\]: List of all terminals on this net.
+        """Return a list of Terminal instances.
 
-        Read-Only.
+        This list contains the :class:`Terminal <ansys.edb.core.terminal.Terminal>` \
+        instances on this net object instance.
+
+        Returns
+        -------
+        list[ansys.edb.core.terminal.Terminal]
         """
         return [Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
 
     @property
     def terminal_instances(self):
-        r""":obj:`list`\[:class:`TerminalInstance <ansys.edb.core.terminal.TerminalInstance>`\]: terminal instances on net.
+        """Return a list of TerminalInstance instances.
 
-        Read-Only.
+        This list contains the :class:`TerminalInstance <ansys.edb.core.terminal.TerminalInstance>` instances \
+        that are on this net object instance.
+
+        Returns
+        -------
+        list[ansys.edb.core.layer.Layer]
         """
         return [TerminalInstance(lo) for lo in self._layout_objs(LayoutObjType.TERMINAL_INSTANCE)]
 

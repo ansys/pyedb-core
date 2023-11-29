@@ -41,16 +41,16 @@ notebook = [
 tests = [
     "pytest==7.4.3",
     "pytest-cov==4.1.0",
-    "pytest-mock==3.12.0",
+    "pytest-mock==3.11.1",
     "python-dotenv>=0.20.0",
     "tox",
 ]
 
 # FIXME: update to newer versions
 doc = [
-    "sphinx==7.2.5",
+    "sphinx==7.1.2",
     "numpydoc==1.6.0",
-    "ansys_sphinx_theme>=0.12.4",
+    "ansys_sphinx_theme>=0.12.2",
     "sphinx-copybutton==0.5.2",
 ]
 

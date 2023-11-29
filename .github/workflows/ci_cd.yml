@@ -12,6 +12,7 @@ on:
 env:
   DOCUMENTATION_CNAME: 'edb.docs.pyansys.com'
   MAIN_PYTHON_VERSION: '3.10'
+  PIP_EXTRA_INDEX_URL: 'https://${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}@pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/simple/'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -42,7 +43,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10']
       fail-fast: false
 
     steps:
@@ -51,10 +52,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade .[test]
+          python -m pip install --upgrade .[tests]
           python -m pip install --upgrade tox-gh-actions
+
       - name: Test with tox
         # Only the tox environment specified in the tox.ini gh-actions is run
         run: tox -e test -- --ignore=tests/e2e
@@ -69,11 +72,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.8
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade .[test]
+          python -m pip install --upgrade .[doc] tox
 
       - name: Generate the documentation with tox
         run: tox -e doc
@@ -93,7 +96,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.8
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip flit twine
@@ -123,7 +126,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4.3.0
         with:
-          python-version: 3.7
+          python-version: 3.8
 
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3

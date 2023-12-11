@@ -15,7 +15,7 @@ Choose :ref:`ref_index_api` to access a complete description of all the availabl
 
 .. toctree::
    :hidden:
-   
+
    installation
    user_guide/user_guide
    api/index

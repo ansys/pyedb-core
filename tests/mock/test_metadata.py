@@ -1,4 +1,4 @@
-from ansys.edb import __version__
+from ansys.edb.core import __version__
 
 
 def test_pkg_version():

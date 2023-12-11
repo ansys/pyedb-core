@@ -4,14 +4,20 @@ import tempfile
 
 import settings
 
-from ansys.edb.database import Database
-from ansys.edb.definition import MaterialDef, MaterialProperty
-from ansys.edb.geometry import PolygonData
-from ansys.edb.hierarchy import ViaGroup
-from ansys.edb.layer import LayerCollection, LayerCollectionMode, LayerType, StackupLayer, ViaLayer
-from ansys.edb.layout import Cell, CellType
-from ansys.edb.net import Net
-from ansys.edb.primitive import (
+from ansys.edb.core.database import Database
+from ansys.edb.core.definition import MaterialDef, MaterialProperty
+from ansys.edb.core.geometry import PolygonData
+from ansys.edb.core.hierarchy import ViaGroup
+from ansys.edb.core.layer import (
+    LayerCollection,
+    LayerCollectionMode,
+    LayerType,
+    StackupLayer,
+    ViaLayer,
+)
+from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.net import Net
+from ansys.edb.core.primitive import (
     Path,
     PathCornerType,
     PathEndCapType,
@@ -19,18 +25,18 @@ from ansys.edb.primitive import (
     Rectangle,
     RectangleRepresentationType,
 )
-from ansys.edb.session import session
-from ansys.edb.simulation_setup import (
+from ansys.edb.core.session import session
+from ansys.edb.core.simulation_setup import (
     HfssSimulationSetup,
     SingleFrequencyAdaptiveSolution,
     SkinDepthMeshOperation,
     SweepData,
 )
-from ansys.edb.terminal import PointTerminal
+from ansys.edb.core.terminal import PointTerminal
 
 # Wrapper class over Database
 # This will ensure clean entry and exit from database
-from ansys.edb.utility.hfss_extent_info import HfssExtentInfo
+from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
 
 
 class TDatabase:

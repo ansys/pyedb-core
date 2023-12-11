@@ -4,7 +4,7 @@ Simulation Setup
 Classes
 -------
 
-.. currentmodule:: ansys.edb.simulation_setup
+.. currentmodule:: ansys.edb.core.simulation_setup
 
 .. autosummary::
    :toctree: _autosummary

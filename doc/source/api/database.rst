@@ -4,7 +4,7 @@ Database
 Classes
 -------
 
-.. currentmodule:: ansys.edb.database
+.. currentmodule:: ansys.edb.core.database
 
 
 .. autosummary::

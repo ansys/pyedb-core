@@ -4,11 +4,11 @@ Layout
 Classes
 -------
 
-.. currentmodule:: ansys.edb.layout
+.. currentmodule:: ansys.edb.core.layout
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    Cell
    Layout
    McadModel
@@ -20,6 +20,6 @@ Enums
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    CellType
    DesignMode

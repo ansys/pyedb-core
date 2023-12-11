@@ -4,7 +4,7 @@ Layout Instance
 Classes
 -------
 
-.. currentmodule:: ansys.edb.layout_instance
+.. currentmodule:: ansys.edb.core.layout_instance
 
 .. autosummary::
    :toctree: _autosummary

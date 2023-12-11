@@ -4,11 +4,11 @@ Terminals
 Classes
 -------
 
-.. currentmodule:: ansys.edb.terminal
+.. currentmodule:: ansys.edb.core.terminal
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    BoundaryType
    BundleTerminal
    Edge

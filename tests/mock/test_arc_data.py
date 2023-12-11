@@ -5,7 +5,7 @@ from google.protobuf import wrappers_pb2
 import pytest
 from utils.fixtures import *  # noqa
 
-from ansys.edb import geometry, utility
+from ansys.edb.core import geometry, utility
 
 
 @pytest.mark.parametrize(

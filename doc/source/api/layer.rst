@@ -4,11 +4,11 @@ Layers
 Classes
 -------
 
-.. currentmodule:: ansys.edb.layer
+.. currentmodule:: ansys.edb.core.layer
 
 .. autosummary::
    :toctree: _autosummary
-   
+
    Layer
    StackupLayer
    ViaLayer

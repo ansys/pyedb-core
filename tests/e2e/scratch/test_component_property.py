@@ -1,7 +1,7 @@
 import settings
 
-from ansys.edb.database import Database
-from ansys.edb.definition import (
+from ansys.edb.core.database import Database
+from ansys.edb.core.definition import (
     ComponentDef,
     DieOrientation,
     DieProperty,
@@ -14,10 +14,10 @@ from ansys.edb.definition import (
     SolderBallProperty,
     SolderballShape,
 )
-from ansys.edb.hierarchy import ComponentGroup, ComponentType, PinPairModel
-from ansys.edb.layout import Cell, CellType
-from ansys.edb.session import session
-from ansys.edb.utility import Rlc
+from ansys.edb.core.hierarchy import ComponentGroup, ComponentType, PinPairModel
+from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.session import session
+from ansys.edb.core.utility import Rlc
 
 
 def do_test():

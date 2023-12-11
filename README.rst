@@ -35,7 +35,7 @@ For developers
 Installing Pyedb in developer mode allows
 you to modify the source and enhance it.
 
-Before contributing to the project, please refer to the `PyAnsys Developer's guide`_. You will 
+Before contributing to the project, please refer to the `PyAnsys Developer's guide`_. You will
 need to follow these steps:
 
 1. Start by cloning this repository:
@@ -77,7 +77,7 @@ need to follow these steps:
 4. Finally, verify your development installation by running:
 
     .. code:: bash
-        
+
         tox
 
 
@@ -86,7 +86,7 @@ How to testing
 
 This project takes advantage of `tox`_. This tool allows to automate common
 development tasks (similar to Makefile) but it is oriented towards Python
-development. 
+development.
 
 Using tox
 ^^^^^^^^^
@@ -141,14 +141,7 @@ However, the recommended way of checking documentation integrity is using:
 Distributing
 ------------
 
-If you would like to create either source or wheel files, start by installing
-the building requirements:
-
-.. code:: bash
-
-    python -m pip install -r requirements/requirements_build.txt
-
-Then, you can execute:
+If you would like to create either source or wheel files, then you can execute:
 
 .. code:: bash
 
@@ -184,13 +177,12 @@ Follow these steps as necessary to run the notebooks :
         .. code:: bash
 
             python -m pip install -e .
-            python -m pip install -e ./protos
 
-3. Install requirements_notebook.txt :
+3. Install notebook requirements :
 
         .. code:: bash
 
-            python -m pip install -r ./requirements/requirements_notebook.txt
+            python -m pip install .[notebook]
 
 4. Install ipython kernel :
 

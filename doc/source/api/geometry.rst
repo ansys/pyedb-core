@@ -4,7 +4,7 @@ Geometry
 Classes
 -------
 
-.. currentmodule:: ansys.edb.geometry
+.. currentmodule:: ansys.edb.core.geometry
 
 .. autosummary::
    :toctree: _autosummary
@@ -15,7 +15,7 @@ Classes
    PointData
    Point3DData
    Triangle3DData
-   
+
 Enums
 -----
 

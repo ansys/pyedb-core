@@ -1,39 +1,65 @@
 [build-system]
-requires = ["flit_core >=3.2,<4", "grpcio-tools>=1.39.0"]
+requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
-name = "ansys-edb"
+name = "ansys-edb-core"
 version = "0.1"
-description = "Ansys electronics database python client"
+description = "A python wrapper for Ansys Edb service"
 readme = "README.rst"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = {file = "LICENSE"}
-authors = [
-    {name = "ANSYS, Inc.", email = "pyansys.support@ansys.com"},
-]
-maintainers = [
-    {name = "PyAnsys developers", email = "pyansys.maintainers@ansys.com"},
-]
-
+authors = [{name = "ANSYS, Inc.", email = "pyansys.support@ansys.com"}]
+maintainers = [{name = "PyAnsys developers", email = "pyansys.maintainers@ansys.com"}]
 classifiers = [
     "Development Status :: 4 - Beta",
-    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
 ]
+
+
+# FIXME: add ansys-api-edb version
 dependencies = [
-    "importlib-metadata >=4.0",
-    "protobuf>=3.20,<4",
+    "ansys-api-edb",
+    "protobuf>=3.19.3,<4",
     "grpcio>=1.44.0"
 ]
 
-[tool.flit.module]
-name = "ansys.edb"
+# FIXME: add versions
+[project.optional-dependencies]
+notebook = [
+    "notebook",
+    "matplotlib",
+    "ipynbname"
+]
+
+# FIXME: update to newer versions
+tests = [
+    "pytest==7.4.3",
+    "pytest-cov==4.1.0",
+    "pytest-mock==3.11.1",
+    "python-dotenv>=0.20.0",
+    "tox",
+]
+
+# FIXME: update to newer versions
+doc = [
+    "sphinx==7.1.2",
+    "numpydoc==1.6.0",
+    "ansys_sphinx_theme>=0.12.2",
+    "sphinx-copybutton==0.5.2",
+]
 
 [project.urls]
 Source = "https://github.com/ansys/pyedb"
+
+
+[tool.flit.module]
+name = "ansys.edb.core"
 
 [tool.black]
 line-length = 100

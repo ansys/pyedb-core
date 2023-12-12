@@ -1,199 +1,57 @@
-Pyedb
-=====
-
-Ansys Electronics Database Python Client
-
+PyEDB-Core
+==========
 .. image:: https://github.com/ansys/pyedb/actions/workflows/ci_cd.yml/badge.svg?branch=develop
    :target: https://github.com/ansys/pyedb/actions/workflows/ci_cd.yml?query=branch%3Adevelop
 
-How to install
---------------
-
-At least two installation modes are provided: user and developer.
-
-[NOT RELEASED] For users
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-<This instruction does not work until this package is released to PyPI. Go to "For developers" section instead.>
-
-In order to install Pyedb, make sure you
-have the required build system tool. To do so, run:
-
-.. code:: bash
-
-    python -m pip install -U pip
-
-Then, you can simply execute:
-
-.. code:: bash
-
-    python -m pip install ansys-edb
-
-For developers
-^^^^^^^^^^^^^^
-
-Installing Pyedb in developer mode allows
-you to modify the source and enhance it.
-
-Before contributing to the project, please refer to the `PyAnsys Developer's guide`_. You will
-need to follow these steps:
-
-1. Start by cloning this repository:
-
-    .. code:: bash
-
-        git clone https://github.com/ansys/pyedb
-        cd pyedb
-
-2. Create a fresh-clean Python environment and activate it:
-
-    .. code:: bash
-
-        # Create a virtual environment
-        python -m venv .venv
-
-        # Activate it in a Linux environment
-        python -m venv .venv && source .venv/bin/activate
-
-        # Activate it in a Windows CMD environment
-        .venv\Scripts\activate.bat
-
-        # Activate it in a Windows Powershell environment
-        .venv\Scripts\Activate.ps1
-
-
-3. Make sure you have the latest required build system and doc, testing, and CI tools:
-
-    .. code:: bash
-
-        python -m pip install -U pip tox
-
-        # Copy default environment variables for test
-        cp .env.test.example .env.test
-
-        # Modify .env.test if necessary
-
-
-4. Finally, verify your development installation by running:
-
-    .. code:: bash
-
-        tox
-
-
-How to testing
---------------
-
-This project takes advantage of `tox`_. This tool allows to automate common
-development tasks (similar to Makefile) but it is oriented towards Python
-development.
-
-Using tox
-^^^^^^^^^
-
-As Makefile has rules, `tox`_ has environments. In fact, the tool creates its
-own virtual environment so anything being tested is isolated from the project in
-order to guarantee project's integrity. The following environments commands are provided:
-
-- **tox -e style**: will check for coding style quality.
-- **tox -e test**: checks for unit tests. Replace X with the minor version of your Python environment. Pass pytest flags after "--". For example, `tox -e py3X -- -s` to show stdout from pytest
-- **tox -e coverage**: checks for code coverage.
-- **tox -e doc**: checks for documentation building process.
-
-
-Raw testing
-^^^^^^^^^^^
-
-If required, you can always call the style commands (`black`_, `isort`_,
-`flake8`_...) or unit testing ones (`pytest`_) from the command line. However,
-this does not guarantee that your project is being tested in an isolated
-environment, which is the reason why tools like `tox`_ exist.
-
-
-A note on pre-commit
-^^^^^^^^^^^^^^^^^^^^
-
-The style checks take advantage of `pre-commit`_. Developers are not forced but
-encouraged to install this tool via:
-
-.. code:: bash
-
-    python -m pip install pre-commit && pre-commit install
-
-
-Documentation
--------------
-
-For building documentation, you can either run the usual rules provided in the
-`Sphinx`_ Makefile, such us:
-
-.. code:: bash
-
-    make -C doc/ html && your_browser_name doc/html/index.html
-
-However, the recommended way of checking documentation integrity is using:
-
-.. code:: bash
-
-    tox -e doc && your_browser_name .tox/doc_out/html/index.html
-
-
-Distributing
-------------
-
-If you would like to create either source or wheel files, then you can execute:
-
-.. code:: bash
-
-        flit build
-        python -m twine check dist/*
-
-.. LINKS AND REFERENCES
-.. _black: https://github.com/psf/black
-.. _flake8: https://flake8.pycqa.org/en/latest/
-.. _isort: https://github.com/PyCQA/isort
-.. _PyAnsys Developer's guide: https://dev.docs.pyansys.com/
-.. _pre-commit: https://pre-commit.com/
-.. _pytest: https://docs.pytest.org/en/stable/
-.. _Sphinx: https://www.sphinx-doc.org/en/master/
-.. _tox: https://tox.wiki/
-
-Examples
-------------
-
-Examples in the form of jupyter notebooks are available to illustrate API usage.
-Follow these steps as necessary to run the notebooks :
-
-1. Create and activate a virtual env (detailed instructions can be found above):
-
-        .. code:: bash
-
-            python -m venv .venv
-            .venv\Scripts\activate.bat
-
-
-2. Build and Install the ansys-edb and ansys-api packages (ensure pip is upgraded) :
-
-        .. code:: bash
-
-            python -m pip install -e .
-
-3. Install notebook requirements :
-
-        .. code:: bash
-
-            python -m pip install .[notebook]
-
-4. Install ipython kernel :
-
-        .. code:: bash
-
-            ipython kernel install --user --name=.venv
-
-5. Launch notebook :
-
-        .. code:: bash
-
-            jupyter-notebook
-
-6. Navigate to the required example, change the kernel to .venv and execute with the desired settings.
+.. reuse_start
+
+PyEDB-Core is a Python client for the Electronics Database (EDB), a format for storing
+information describing designs for Ansys Electronic Desktop (AEDT). Using the PyEDT-Core API,
+you can make calls to an EDB server that is running either locally or remotely.
+
+The EDB server can create, edit, read, and write EDB files to disk. These files can then be
+read into AEDT and their designs simulated.
+
+Documentation and issues
+~~~~~~~~~~~~~~~~~~~~~~~~
+Documentation for the latest stable release of PyMEDB-Core is hosted at
+`PyEDB-Core documentation <https://edb.core.docs.pyansys.com/version/dev/index.html#>`_.
+The documentation has five sections:
+
+- `Getting started <https://edb.core.docs.pyansys.com/version/dev/getting_started/index.html#>`_: Describes
+  how to install PyEDB-Core in user mode.
+- `User guide <https://edb.core.docs.pyansys.com/version/dev/user_guide/index.html>`_: Describes how to
+  use PyEDB-Core.
+- `API reference <https://edb.core.docs.pyansys.com/version/dev/api/index.html>`_: Provides API member descriptions
+  and usage examples.
+- `Examples <https://edb.core.docs.pyansys.com/version/dev/examples/index.html>`_: Provides examples showing
+- end-to-end workflows for using PyEDB-Core.
+- `Contribute <>`_: Describes how to install PyEDB-Core in developer mode and how to contribute to this
+  PyAnsys library.
+
+In the upper right corner of the documentation's title bar, there is an option for switching from
+viewing the documentation for the latest stable release to viewing the documentation for the
+development version or previously released versions.
+
+On the `PyEDB-Core <https://github.com/ansys/pyedb-core/issues>`_ page, you can create
+issues to report bugs and request new features. When possible, use these issue templates:
+
+* Bug report template
+* Feature request template
+* Documentation issue template
+* Example request template
+
+If your issue does not fit into one of these categories, create your own issue.
+
+On the `Discussions <https://discuss.ansys.com/>`_ page on the Ansys Developer portal, you can post questions,
+share ideas, and get community feedback.
+
+To reach the PyAnsys support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
+
+License
+~~~~~~~
+PyEDB-Core is licensed under the MIT license.
+
+PyEDB-Core makes no commercial claim over Ansys whatsoever. The use of this Python client requires
+a legally licensed local copy of AEDT. For more information, see the
+`Ansys Electronics <https://www.ansys.com/products/electronics>`_ page on the Ansys website.

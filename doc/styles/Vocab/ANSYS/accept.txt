@@ -3,4 +3,8 @@ Enums
 PyAnsys
 PyEDB
 pyedb
+PyEDB-Core
 EDB
+IPython
+Juptyer
+Makefile

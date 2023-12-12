@@ -8,7 +8,7 @@ from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_bl
 from ansys.edb.core import __version__
 
 # Project information
-project = "ansys-edb"
+project = "ansys-edb-core"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
@@ -17,11 +17,11 @@ cname = os.getenv("DOCUMENTATION_CNAME", "<DEFAULT_CNAME>")
 # use the default pyansys logo
 html_logo = pyansys_logo_black
 html_theme = "ansys_sphinx_theme"
-html_short_title = html_title = "PyEDB"
+html_short_title = html_title = "PyEDB-Core"
 
 html_context = {
     "github_user": "ansys",
-    "github_repo": "pyedb",
+    "github_repo": "pyedb-core",
     "github_version": "develop",
     "doc_path": "doc/source",
 }
@@ -32,7 +32,7 @@ html_theme_options = {
         "version_match": get_version_match(__version__),
     },
     "check_switcher": False,
-    "github_url": "https://github.com/ansys/pyedb",
+    "github_url": "https://github.com/ansys/pyedb-core",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "collapse_navigation": True,

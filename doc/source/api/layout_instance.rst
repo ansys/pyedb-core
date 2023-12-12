@@ -1,4 +1,4 @@
-Layout Instance
+Layout instance
 ===============
 
 Classes

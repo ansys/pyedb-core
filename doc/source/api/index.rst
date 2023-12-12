@@ -1,14 +1,10 @@
 .. _ref_index_api:
 
 =============
-API Reference
+API reference
 =============
 
-**[Ansys Internal - Confidential]**
-**This is a working document and will be changed without notice.**
-
-
-This section gives an overview of the API for all the classes, functions, and attributes.
+This section describes all PyEDB-Core API classes, functions, and attributes.
 
 *******
 Modules

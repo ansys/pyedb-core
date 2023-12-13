@@ -26,8 +26,8 @@ The documentation has five sections:
   and usage examples.
 - `Examples <https://edb.core.docs.pyansys.com/version/dev/examples/index.html>`_: Provides examples showing
 - end-to-end workflows for using PyEDB-Core.
-- `Contribute <>`_: Describes how to install PyEDB-Core in developer mode and how to contribute to this
-  PyAnsys library.
+- `Contribute <https://edb.core.docs.pyansys.com/version/dev/contribute.html>`_: Describes how to install
+  PyEDB-Core in developer mode and how to contribute to this PyAnsys library.
 
 In the upper right corner of the documentation's title bar, there is an option for switching from
 viewing the documentation for the latest stable release to viewing the documentation for the

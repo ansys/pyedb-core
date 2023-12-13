@@ -1,4 +1,4 @@
-"""Dataset Def Definition."""
+"""Dataset definition."""
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 
 from ansys.edb.core.edb_defs import DefinitionObjType
@@ -14,20 +14,20 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class DatasetDef(ObjBase):
-    """Class representing a dataset definition."""
+    """Represents a dataset definition."""
 
     __stub: DatasetDefServiceStub = StubAccessor(StubType.dataset_def)
 
     @classmethod
     def create(cls, database, name):
-        """Create a Dataset definition Object.
+        """Create a dataset definition object.
 
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-            Database that the dataset definition should belong to.
+            Database to create the dataset definition in.
         name : :obj:`str`
-            Name of the dataset to be created.
+            Name of the dataset to create.
 
 
         Returns
@@ -38,7 +38,7 @@ class DatasetDef(ObjBase):
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a dataset definition in the database with given name.
+        """Find a dataset definition in the database with a given name.
 
         Parameters
         ----------
@@ -50,8 +50,8 @@ class DatasetDef(ObjBase):
         Returns
         -------
         DatasetDef
-            The dataset definition object found.
-            If a dataset isn't found then dataset's is_null will result True.
+            Dataset definition object found.
+            If a dataset isn't found, the dataset's ``is_null`` attribute is set to ``True``.
         """
         return DatasetDef(cls.__stub.FindByName(edb_obj_name_message(database, name)))
 
@@ -71,7 +71,7 @@ class DatasetDef(ObjBase):
 
     @to_point_data_list
     def get_data(self):
-        """Get a list of data points in the DatasetDef.
+        """Get a list of data points in the dataset definition.
 
         Returns
         -------
@@ -81,7 +81,7 @@ class DatasetDef(ObjBase):
         return msg.points
 
     def set_data(self, points):
-        """Set a list of data points in the DatasetDef.
+        """Set a list of data points in the dataset definition.
 
         Parameters
         ----------

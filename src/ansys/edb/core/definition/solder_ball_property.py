@@ -1,4 +1,4 @@
-"""Solder Ball Property."""
+"""Solder ball property."""
 
 from ansys.api.edb.v1.padstack_def_data_pb2 import SolderballShape
 import ansys.api.edb.v1.solder_ball_property_pb2 as pb
@@ -53,7 +53,7 @@ class _QueryBuilder:
 
 
 class SolderBallProperty(ObjBase):
-    """Class representing a solder ball property."""
+    """Represents a solder ball property."""
 
     __stub: SolderBallPropertyServiceStub = StubAccessor(StubType.solder_ball_property)
 
@@ -93,9 +93,9 @@ class SolderBallProperty(ObjBase):
         Returns
         -------
         diameter1 : :term:`ValueLike`
-            Solder ball property's diameter 1.
+            Diameter 1 of the solder ball property.
         diameter2 : :term:`ValueLike`
-            Solder ball property's diameter 2.
+            Diameter 2 of the solder ball property.
         """
         diameter_paramaters = self.__stub.GetDiameter(edb_obj_message(self))
         return Value(diameter_paramaters.diameter1), Value(diameter_paramaters.diameter2)
@@ -106,15 +106,15 @@ class SolderBallProperty(ObjBase):
         Parameters
         ----------
         diameter1 : :term:`ValueLike`
-            Solder ball property's diameter 1.
+            Diameter 1 of the solder ball property.
         diameter2 : :term:`ValueLike`
-            Solder ball property's diameter 2.
+            Diameter 2 of the solder ball property.
         """
         self.__stub.SetDiameter(_QueryBuilder.set_diameter_message(self, diameter1, diameter2))
 
     @property
     def uses_solderball(self):
-        """:obj:`bool`: Whether solder ball is used.
+        """:obj:`bool`: Flag indicating if the solder ball is used.
 
         Read-Only.
         """
@@ -145,6 +145,6 @@ class SolderBallProperty(ObjBase):
         Returns
         -------
         SolderBallProperty
-            The cloned solder ball property created.
+            Clone of the solder ball property created.
         """
         return SolderBallProperty(self.__stub.Clone(edb_obj_message(self)))

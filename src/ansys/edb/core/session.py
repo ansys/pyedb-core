@@ -147,10 +147,10 @@ MOD.current_session = None
 
 
 class StubAccessor(object):
-    """A descriptor to assign specific stub to a model."""
+    """Provides a descriptor for assignig a specific stub to a model."""
 
     def __init__(self, stub_type):
-        """Initialize a descriptor stub with name and stub service.
+        """Initialize a descriptor stub with a name and stub service.
 
         Parameters
         ----------
@@ -159,7 +159,7 @@ class StubAccessor(object):
         self.__stub_name = stub_type.name
 
     def __get__(self, instance=None, owner=None):
-        """Return the corresponding stub service if a session is active."""
+        """Get the corresponding stub service if a session is active."""
         if MOD.current_session is not None:
             return MOD.current_session.stub(self.__stub_name)
         raise EDBSessionException(ErrorCode.NO_SESSIONS)
@@ -281,9 +281,9 @@ class _Session:
         local_server_proc_output = self.local_server_proc.stdout.readline()
         stdout = local_server_proc_output.decode().rstrip()
 
-        if not stdout.startswith("Server listening on 127.0.0.1"):
+        if not stdout.startswith("Server listening on 127.0.0.1."):
             try:
-                print("local server failed to start properly. trying to gracefully shutdown...")
+                print("Local server failed to start properly. Trying to shut down gracefully...")
                 if self.local_server_proc.wait(10):
                     self._on_server_startup_error()
             except subprocess.TimeoutExpired:
@@ -317,7 +317,7 @@ class _Session:
 
 
 class StubType(Enum):
-    """Enum representing available service stubs."""
+    """Provides an enum representing available service stub types."""
 
     cell = CellServiceStub
     database = DatabaseServiceStub
@@ -430,14 +430,15 @@ class StubType(Enum):
 
 
 def attach_session(ip_address=None, port_num=50051):
-    """Attach a session to a port running EDB API server.
+    """Attach a session to a port running the EDB API server.
 
     Parameters
     ----------
     ip_address : str, optional
-        ip address of the machine running a server. localhost by default.
+        IP address of the machine that is running the server. The default is ``None``,
+        in which case localhost is used.
     port_num : int, optional
-        port number of the server to listen to. 50051 by default.
+        Port number that the server is listening on. The default is ``50051``.
     """
     MOD.current_session = _Session(ip_address, port_num, None)
     MOD.current_session.connect()
@@ -452,13 +453,14 @@ def launch_session(ansys_em_root, port_num=None):
     Parameters
     ----------
     ansys_em_root : str
-        The installation directory of EDB_RPC_Server.exe
+        Directory where the ``EDB_RPC_Server.exe`` file is installed.
     port_num : int, optional
-        The port number to listen on
+        Port number to listen on. The default is ``None``, in which
+        case local host is used.
 
     Examples
     --------
-    Creates a session and disconnects it
+    Create a session and then disconnect it
 
     >>> session = launch_session("C:\\Program Files\\AnsysEM\\v231\\Win64", 50051)
     >>> # program goes here
@@ -483,16 +485,20 @@ def session(ansys_em_root, port_num, ip_address=None):
     Parameters
     ----------
     ansys_em_root : str
-        The installation directory of EDB_RPC_Server.exe
+        Directory where the ``EDB_RPC_Server.exe`` file is installed.
     port_num : int
-        The port number to listen on
+        Port number to listen on. The default is ``None``.
     ip_address : str, optional
-        Currently not supported. Default value means local_host. It specifies the IP address of the machine where \
-        the server executable is running. Future releases will support remotely running the API on another machine.
+        IP address where the server executable file is running. The default is ``None``, in which
+        case local host is used.
+
+        .. note::
+           This parameter is currently not supported. In future releases, this parameter is to
+           support remotely running the API on another machine.
 
     Examples
     --------
-    Creates a session that will automatically disconnect when it goes out of scope.
+    Create a session that automatically disconnects when it goes out of scope.
 
     >>> with session("C:\\Program Files\\AnsysEM\\v231\\Win64", 50051):
     >>>    # program goes here
@@ -510,7 +516,7 @@ def session(ansys_em_root, port_num, ip_address=None):
 
 
 def get_layer_collection_stub():
-    """Get Layer collection stub.
+    """Get the layer collection stub.
 
     Returns
     -------
@@ -520,7 +526,7 @@ def get_layer_collection_stub():
 
 
 def get_stackup_layer_stub():
-    """Get Stackup layer stub.
+    """Get the stackup layer stub.
 
     Returns
     -------
@@ -530,7 +536,7 @@ def get_stackup_layer_stub():
 
 
 def get_via_layer_stub():
-    """Get Via layer stub.
+    """Get the via layer stub.
 
     Returns
     -------
@@ -540,7 +546,7 @@ def get_via_layer_stub():
 
 
 def get_variable_server_stub():
-    """Get VariableServer stub.
+    """Get the variable server stub.
 
     Returns
     -------

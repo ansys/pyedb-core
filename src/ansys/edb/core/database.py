@@ -34,10 +34,10 @@ from ansys.edb.core.session import DatabaseServiceStub, StubAccessor, StubType
 
 
 class ProductIdType(Enum):
-    """Enum representing the ids of Ansys products that support EDB usage.
+    """Provides an enum representing IDs of Ansys products that support EDB usage.
 
     - HFSS_3D_LAYOUT
-    - DESIGNER (deprecated. use HFSS_3D_LAYOUT instead)
+    - DESIGNER (Deprecated. Use HFSS_3D_LAYOUT instead.)
     - SIWAVE
     - GENERIC_TRANSLATOR
     - USER_DEFINED
@@ -51,12 +51,12 @@ class ProductIdType(Enum):
 
 
 class Database(ObjBase, variable_server.VariableServer):
-    """Class representing a database object."""
+    """Represents a database object."""
 
     __stub: DatabaseServiceStub = StubAccessor(StubType.database)
 
     def __init__(self, msg):
-        """Initialize a new Database.
+        """Initialize a new database.
 
         Parameters
         ----------
@@ -67,12 +67,12 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def create(cls, db_path):
-        """Create a Database at the specified file location.
+        """Create a database at the specified file location.
 
         Parameters
         ----------
         db_path : str
-            Path to top-level database folder
+            Path to the top-level database folder.
 
         Returns
         -------
@@ -84,19 +84,19 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def open(cls, db_path, read_only):
-        """Open an existing Database at the specified file location.
+        """Open an existing database at the specified file location.
 
         Parameters
         ----------
         db_path : str
-            Path to top-level Database folder.
+            Path to the top-level database folder.
         read_only : bool
-            Obtain read-only access.
+            Whether to open the database in read-only mode.
 
         Returns
         -------
-        Database or None
-            The opened Database object, or None if not found.
+        Database object or None
+            Opened database object or ``None`` if no database object is found.
         """
         return Database(
             cls.__stub.Open(
@@ -114,31 +114,31 @@ class Database(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         db_path : str
-            Path to top-level database folder.
+            Path to the top-level database folder.
         """
         cls.__stub.Delete(proto_wrappers.StringValue(value=db_path))
 
     def save(self):
-        """Save any changes into a file."""
+        """Save any changes to a file."""
         self.__stub.Save(self.msg)
 
     def close(self):
         """Close the database.
 
         .. note::
-            Unsaved changes will be lost.
+            Unsaved changes are lost.
         """
         self.__stub.Close(self.msg)
         self.msg = None
 
     @staticmethod
     def _map_cell_edb_obj_collection(cells_msg):
-        """Get a list of cell objects from the EDBObjCollection msg."""
+        """Get a list of cell objects from the ``EDBObjCollection`` message."""
         return map_list(cells_msg.items, Cell)
 
     @property
     def top_circuit_cells(self):
-        """Get top circuit cells.
+        """Top circuit cells in the database.
 
         Returns
         -------
@@ -148,7 +148,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def circuit_cells(self):
-        """Get all circuit cells in the Database.
+        """All circuit cells in the database.
 
         Returns
         -------
@@ -158,7 +158,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def footprint_cells(self):
-        """Get all footprint cells in the Database.
+        """All footprint cells in the database.
 
         Returns
         -------
@@ -168,23 +168,23 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def edb_uid(self):
-        """Get ID of the database.
+        """Unique EDB ID of the database.
 
         Returns
         -------
         int
-            The unique EDB id of the Database.
+            Unique EDB ID of the database.
         """
         return self.__stub.GetId(self.msg).value
 
     @property
     def is_read_only(self):
-        """Determine if the database is open in a read-only mode.
+        """Flag indicating if the database is open in read-only mode.
 
         Returns
         -------
         bool
-            True if Database is open with read only access, otherwise False.
+            ``True`` when the database is open in read-only mode, ``False`` otherwise.
         """
         return self.__stub.IsReadOnly(self.msg).value
 
@@ -195,24 +195,25 @@ class Database(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         db_id : int
-            The Database's unique EDB id.
+            Unique EDB ID for the database.
 
         Returns
         -------
         Database
-            The Database or Null on failure
+            Database when successful, Null when failed.
         """
         return Database(cls.__stub.FindById(proto_wrappers.Int64Value(value=db_id)))
 
     def save_as(self, path, version=""):
-        """Save this Database to a new location and older EDB version.
+        """Save the database to a new location and older EDB version.
 
         Parameters
         ----------
         path : str
-            New Database file location.
-        version : str
-            EDB version to save to. Empty string means current version.
+            Location for saving the new database file to.
+        version : str, optional
+            EDB version for the new database file. The default is ``""``, which means that
+            the new database file is saved for the current version.
         """
         self.__stub.SaveAs(
             database_pb2.SaveAsDatabaseMessage(db=self.msg, new_location=path, version=version)
@@ -220,7 +221,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def get_version_by_release(cls, release):
-        """Get the EDB version corresponding to the given release name.
+        """Get the EDB version corresponding to a given release name.
 
         Parameters
         ----------
@@ -236,7 +237,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def directory(self):
-        """Get the directory of the Database.
+        """Directory of the database.
 
         Returns
         -------
@@ -258,14 +259,14 @@ class Database(ObjBase, variable_server.VariableServer):
         Returns
         -------
         str
-            Property value returned.
+            Property value.
         """
         return self.__stub.GetProductProperty(
             get_product_property_message(self, prod_id, attr_it)
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property associated with the given product and attribute ids.
+        """Set the product property associated with the given product and attribute IDs.
 
         Parameters
         ----------
@@ -274,14 +275,14 @@ class Database(ObjBase, variable_server.VariableServer):
         attr_it : int
             Attribute ID.
         prop_value : str
-            Product property's new value
+            New value for the product property.
         """
         self.__stub.SetProductProperty(
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute ids corresponding to a product property id.
+        """Get a list of attribute IDs corresponding to a product property ID.
 
         Parameters
         ----------
@@ -291,7 +292,7 @@ class Database(ObjBase, variable_server.VariableServer):
         Returns
         -------
         list[int]
-            The attribute ids associated with this product property.
+            Attribute IDs associated with the product property.
         """
         attr_ids = self.__stub.GetProductPropertyIds(
             get_product_property_ids_message(self, prod_id)
@@ -299,16 +300,17 @@ class Database(ObjBase, variable_server.VariableServer):
         return [attr_id for attr_id in attr_ids]
 
     def import_material_from_control_file(self, control_file, schema_dir=None, append=True):
-        """Import materials from the provided control file.
+        """Import materials from a control file.
 
         Parameters
         ----------
         control_file : str
-            Control file name with full path.
+            Full path to the control file.
         schema_dir : str
-            Schema file path.
-        append : bool
-            True if the existing materials in Database are kept. False to remove existing materials in database.
+            Path to the schema directory.
+        append : bool, optional
+            Whether to keep existing materials in the database. The default is ``True``. If
+            ``False``, the existing materials in the database are removed.
         """
         self.__stub.ImportMaterialFromControlFile(
             database_pb2.ImportMaterialFromControlFileMessage(
@@ -321,47 +323,46 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def version(self):
-        """Get version of the Database.
+        """Version of the database.
 
         Returns
         -------
         tuple(int, int)
-            A tuple of the version numbers [major, minor]
+            Tuple of the version numbers [major, minor].
         """
         version_msg = self.__stub.GetVersion(self.msg)
         return version_msg.major.id, version_msg.minor.id
 
     def scale(self, scale_factor):
-        """Uniformly scale all geometry and their locations by a positive factor.
+        """Scale all geometries and their locations uniformly by a positive factor.
 
         Parameters
         ----------
         scale_factor : float
-            Amount that coordinates are multiplied by.
+            Amount to multiply coordinates by.
         """
         self.__stub.Scale(double_property_message(self, scale_factor))
 
     @property
     def source(self):
-        """Get source name for this Database.
+        """Source name for this database.
 
         This attribute is also used to set the source name.
 
         Returns
         -------
         str
-            name of the source
+            Name of the source
         """
         return self.__stub.GetSource(self.msg).value
 
     @source.setter
     def source(self, source):
-        """Set source name of the database."""
         self.__stub.SetSource(edb_obj_name_message(self, source))
 
     @property
     def source_version(self):
-        """Get the source version for this Database.
+        """Source version for this database.
 
         This attribute is also used to set the version.
 
@@ -375,11 +376,10 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @source_version.setter
     def source_version(self, source_version):
-        """Set source version of the database."""
         self.__stub.SetSourceVersion(edb_obj_name_message(self, source_version))
 
     def copy_cells(self, cells_to_copy):
-        """Copy Cells from other Databases or this Database into this Database.
+        """Copy Cells from other databases or this database into this database.
 
         Parameters
         ----------
@@ -389,7 +389,7 @@ class Database(ObjBase, variable_server.VariableServer):
         Returns
         -------
         list[:class:`Cell <ansys.edb.core.layout.Cell>`]
-            New Cells created in this Database.
+            New cells created in this database.
         """
         return Database._map_cell_edb_obj_collection(
             self.__stub.CopyCells(
@@ -400,7 +400,7 @@ class Database(ObjBase, variable_server.VariableServer):
         )
 
     def _get_definition_objs(self, def_class, def_type_enum, bw_def_type_enum=None):
-        """Get the definition objects of the given type."""
+        """Get the definition objects of a given type."""
         def_objs = self.__stub.GetDefinitionObjs(
             database_pb2.GetDefinitionObjsMessage(
                 target=self.msg,
@@ -411,14 +411,14 @@ class Database(ObjBase, variable_server.VariableServer):
         return map_list(def_objs.items, def_class)
 
     def _get_bondwire_definition_objs(self, def_class, bw_def_type_enum):
-        """Get the bondwire definition objects of the given type."""
+        """Get the bondwire definition objects of a given type."""
         return self._get_definition_objs(
             def_class, DefinitionObjType.BONDWIRE_DEF, bw_def_type_enum
         )
 
     @property
     def apd_bondwire_defs(self):
-        """Get all APD bondwire definitions in this Database.
+        """All APD bondwire definitions in the database.
 
         Returns
         -------
@@ -428,7 +428,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def jedec4_bondwire_defs(self):
-        """Get all JEDEC4 bondwire definitions in this Database.
+        """All JEDEC4 bondwire definitions in the database.
 
         Returns
         -------
@@ -440,7 +440,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def jedec5_bondwire_defs(self):
-        """Get all JEDEC5 bondwire definitions in this Database.
+        """All JEDEC5 bondwire definitions in the database.
 
         Returns
         -------
@@ -452,7 +452,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def padstack_defs(self):
-        """Get all Padstack definitions in this Database.
+        """All padstack definitions in the database.
 
         Returns
         -------
@@ -462,7 +462,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def package_defs(self):
-        """Get all Package definitions in this Database.
+        """All package definitions in the database.
 
         Returns
         -------
@@ -472,7 +472,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def component_defs(self):
-        """Get all component definitions in the database.
+        """All component definitions in the database.
 
         Returns
         -------
@@ -482,7 +482,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def material_defs(self):
-        """Get all material definitions in the database.
+        """All material definitions in the database.
 
         Returns
         -------
@@ -492,7 +492,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def dataset_defs(self):
-        """Get all dataset definitions in the database.
+        """All dataset definitions in the database.
 
         Returns
         -------

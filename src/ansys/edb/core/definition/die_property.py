@@ -1,4 +1,4 @@
-"""Die Property."""
+"""Die property."""
 
 from enum import Enum
 
@@ -12,7 +12,7 @@ from ansys.edb.core.utility import Value
 
 
 class DieOrientation(Enum):
-    """Enum representing die orientations.
+    """Provides an enum representing die orientations.
 
     - CHIP_UP
     - CHIP_DOWN
@@ -23,7 +23,7 @@ class DieOrientation(Enum):
 
 
 class DieType(Enum):
-    """Enum representing die types.
+    """Provides an enum representing die types.
 
     - NONE
     - FLIPCHIP
@@ -36,7 +36,7 @@ class DieType(Enum):
 
 
 class DieProperty(ObjBase):
-    """Class representing a Die Property."""
+    """Represents a die property."""
 
     __stub: DiePropertyServiceStub = StubAccessor(StubType.die_property)
 
@@ -59,7 +59,7 @@ class DieProperty(ObjBase):
         Returns
         -------
         DieProperty
-            The cloned die property created.
+            Cloned die property created.
         """
         return DieProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
@@ -76,7 +76,7 @@ class DieProperty(ObjBase):
     def height(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Height of the die property.
 
-        Property can be set with :term:`ValueLike`
+        This attribute can be set with the :term:`ValueLike` term.
         """
         return Value(self.__stub.GetHeight(messages.edb_obj_message(self)))
 

@@ -1,8 +1,8 @@
 Session
 =======
 
-A session both launches a new server executable and creates a channel connection to that server. Once these
-actions are completed, all EDB API function calls are processed using this channel.
+A session both launches a new EDB API server and creates a channel connection to this server.
+Once these actions are completed, all EDB API function calls are processed using this channel.
 
 Functions
 ---------

@@ -4,7 +4,7 @@
 API reference
 =============
 
-This section describes all PyEDB-Core API classes, functions, and attributes.
+This section describes all API classes, functions, and attributes in PyEDB-Core modules.
 
 *******
 Modules

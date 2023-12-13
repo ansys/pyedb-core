@@ -1,4 +1,4 @@
-"""Port Property."""
+"""Port property."""
 
 from ansys.api.edb.v1.port_property_pb2_grpc import PortPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
@@ -9,7 +9,7 @@ from ansys.edb.core.utility import Value
 
 
 class PortProperty(ObjBase):
-    """Class representing a Port Property."""
+    """Represents a port property."""
 
     __stub: PortPropertyServiceStub = StubAccessor(StubType.port_property)
 
@@ -32,7 +32,7 @@ class PortProperty(ObjBase):
         Returns
         -------
         PortProperty
-            The cloned port property created.
+            Clone of port property created.
         """
         return PortProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
@@ -40,7 +40,7 @@ class PortProperty(ObjBase):
     def reference_height(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Reference height of the port property.
 
-        Property can be set with :term:`ValueLike`
+        This attribute can be set with the :term:`ValueLike` term.
         """
         return Value(self.__stub.GetReferenceHeight(messages.edb_obj_message(self)))
 
@@ -60,7 +60,7 @@ class PortProperty(ObjBase):
         self.__stub.SetReferenceSizeAuto(messages.bool_property_message(self, auto))
 
     def get_reference_size(self):
-        r"""Get the X and Y reference size for the port property.
+        r"""Get the X and Y reference sizes for the port property.
 
         Returns
         -------
@@ -74,7 +74,7 @@ class PortProperty(ObjBase):
         return Value(value_pair_message.val1), Value(value_pair_message.val2)
 
     def set_reference_size(self, ref_x, ref_y):
-        """Set the X and Y reference size for the port property.
+        """Set the X and Y reference sizes for the port property.
 
         Parameters
         ----------

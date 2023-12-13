@@ -1,4 +1,4 @@
-"""Dielectric Material Definition."""
+"""Dielectric material definition."""
 from enum import Enum
 
 from ansys.api.edb.v1 import dielectric_material_model_pb2_grpc
@@ -8,7 +8,7 @@ from ansys.edb.core.inner import ObjBase
 
 
 class DielectricMaterialModelType(Enum):
-    """Enum representing dielectric material model type.
+    """Provides an eum representing dielectric material model types.
 
     - DEBYE
     - MULTIPOLE_DEBYE
@@ -21,7 +21,7 @@ class DielectricMaterialModelType(Enum):
 
 
 class DielectricMaterialModel(ObjBase):
-    """Class representing a dielectric material model object."""
+    """Represents a dielectric material model object."""
 
     __stub: dielectric_material_model_pb2_grpc.DielectricMaterialModelServiceStub = (
         session.StubAccessor(session.StubType.dielectric_material_model)

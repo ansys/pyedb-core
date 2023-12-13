@@ -1,4 +1,4 @@
-"""Component Def Definition."""
+"""Component definition."""
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
 from ansys.edb.core.definition import component_model, component_pin
@@ -10,7 +10,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class ComponentDef(ObjBase):
-    """Class representing a Component Definition."""
+    """Represents a component definition."""
 
     __stub: ComponentDefServiceStub = StubAccessor(StubType.component_def)
 
@@ -21,16 +21,16 @@ class ComponentDef(ObjBase):
         Parameters
         ----------
         db : :class:`Database <ansys.edb.core.database.Database>`
-            Database that the component definition should belong to.
+            Database to create the component definition in.
         comp_def_name : str
-            Name of the component definition to be created.
+            Name of the component definition to create.
         fp : :class:`Cell <ansys.edb.core.layout.Cell>`
             Footprint cell of the component definition.
 
         Returns
         -------
         ComponentDef
-            Newly created component definition.
+            Component definition created.
         """
         return ComponentDef(
             cls.__stub.Create(messages.component_def_creation_message(db, comp_def_name, fp))
@@ -43,14 +43,14 @@ class ComponentDef(ObjBase):
         Parameters
         ----------
         db : :class:`Database <ansys.edb.core.database.Database>`
-            Database to search the component definition in.
+            Database to search for the component definition.
         comp_def_name : str
-            Name of the component definition to be searched.
+            Name of the component definition.
 
         Returns
         -------
         ComponentDef
-            Component definition that was found, None otherwise.
+            Component definition that was found or ``None`` otherwise.
         """
         return ComponentDef(
             cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
@@ -82,7 +82,7 @@ class ComponentDef(ObjBase):
     @property
     def component_models(self):
         """:obj:`list` of :class:`ComponentModel <ansys.edb.core.definition.component_model.ComponentModel>`: \
-        List of component models associated with this component definition.
+        List of component models associated with the component definition.
 
         Read-Only.
         """
@@ -92,9 +92,9 @@ class ComponentDef(ObjBase):
     @property
     def component_pins(self):
         """:obj:`list` of :class:`ComponentPin <ansys.edb.core.definition.ComponentPin>`: \
-        List of component pins of this component definition.
+        List of component pins of the component definition.
 
-        Read-Only.
+        This attribute is read-only.
         """
         objs = self.__stub.GetComponentPins(self.msg).items
         return map_list(objs, component_pin.ComponentPin)

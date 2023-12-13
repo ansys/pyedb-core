@@ -1,4 +1,4 @@
-"""Component Model Definition."""
+"""Component model definition."""
 from ansys.api.edb.v1.component_model_pb2_grpc import (
     ComponentModelServiceStub,
     DynamicLinkComponentModelServiceStub,
@@ -11,7 +11,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class ComponentModel(ObjBase):
-    """Class representing a Component Model."""
+    """Represents a component model."""
 
     __stub: ComponentModelServiceStub = StubAccessor(StubType.component_model)
 
@@ -26,40 +26,40 @@ class ComponentModel(ObjBase):
 
 
 class NPortComponentModel(ComponentModel):
-    """Class representing a NPort component model."""
+    """Represents an NPort component model."""
 
     __stub: NPortComponentModelServiceStub = StubAccessor(StubType.nport_component_model)
 
     @classmethod
     def create(cls, name):
-        """Create a NPort component model.
+        """Create an NPort component model.
 
         Parameters
         ----------
         name : str
-            Name of the nport component model.
+            Name of the NPport component model.
 
         Returns
         -------
         NPortComponentModel
-            Newly created nport component model.
+            NPort component model created.
 
         Notes
         -----
-        The component model will not belong to a specific database until it is added to a
-        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`.
+        The component model does not belong to a specific database until it is added to a
+        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` class.
         """
         return NPortComponentModel(cls.__stub.Create(proto_wrappers.StringValue(value=name)))
 
 
 class DynamicLinkComponentModel(ComponentModel):
-    """Class representing a Dynamic link component model."""
+    """Represents a dynamic link component model."""
 
     __stub: DynamicLinkComponentModelServiceStub = StubAccessor(StubType.dyn_link_component_model)
 
     @classmethod
     def create(cls, name):
-        """Create a Dynamic link component model.
+        """Create a dynamic link component model.
 
         Parameters
         ----------
@@ -69,12 +69,12 @@ class DynamicLinkComponentModel(ComponentModel):
         Returns
         -------
         DynamicLinkComponentModel
-            Newly created dynamic link component model.
+            Dynamic link component model created.
 
         Notes
         -----
-        The component model will not belong to a specific database until it is added to a
-        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`.
+        The component model does not belong to a specific database until it is added to a
+        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` class.
         """
         return DynamicLinkComponentModel(cls.__stub.Create(proto_wrappers.StringValue(value=name)))
 

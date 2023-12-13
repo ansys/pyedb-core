@@ -23,7 +23,7 @@ This package supports Python 3.9 through 3.12 on Windows, Linux, and MacOS.
 
    .. code:: bash
 
-       git clone https://github.com/ansys/pyedb
+       git clone https://github.com/ansys/pyedb-core
        cd pyedb
 
 #. Create a fresh-clean Python `virtual environment <venv_>`_ and activate it:
@@ -71,7 +71,7 @@ Using ``tox``
 
 As Makefile has rules, `tox`_ has environments. In fact, the tool creates its
 own virtual environment so anything being tested is isolated from the project
-to guarantee project's integrity. The following environments commands are provided:
+to guarantee the project's integrity. The following environments commands are provided:
 
 - **tox -e style**: Checks for coding style quality.
 - **tox -e test**: Checks for unit tests. Replace X with the minor version of your Python environment.

@@ -1,12 +1,12 @@
 PyEDB-Core
 ==========
-.. image:: https://github.com/ansys/pyedb/actions/workflows/ci_cd.yml/badge.svg?branch=develop
-   :target: https://github.com/ansys/pyedb/actions/workflows/ci_cd.yml?query=branch%3Adevelop
+.. image:: https://github.com/ansys/pyedb-core/actions/workflows/ci_cd.yml/badge.svg?branch=develop
+   :target: https://github.com/ansys/pyedb-core/actions/workflows/ci_cd.yml?query=branch%3Adevelop
 
 .. reuse_start
 
 PyEDB-Core is a Python client for the Electronics Database (EDB), a format for storing
-information describing designs for Ansys Electronic Desktop (AEDT). Using the PyEDT-Core API,
+information describing designs for Ansys Electronic Desktop (AEDT). Using the PyEDB-Core API,
 you can make calls to an EDB server that is running either locally or remotely.
 
 The EDB server can create, edit, read, and write EDB files to disk. These files can then be

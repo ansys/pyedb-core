@@ -75,7 +75,7 @@ to guarantee the project's integrity. The following environments commands are pr
 
 - **tox -e style**: Checks for coding style quality.
 - **tox -e test**: Checks for unit tests. Replace X with the minor version of your Python environment.
-  Pass `pytest <_pytest_>`_ flags after the ``--`` portion of the command. For example, use this
+  Pass `pytest <pytest_>`_ flags after the ``--`` portion of the command. For example, use this
   ``pytest`` command to show the standard output: ``tox -e py3X -- -s``.
 - **tox -e coverage**: Checks for code coverage.
 - **tox -e doc**: Checks for the documentation-building process.

@@ -42,7 +42,7 @@ This package supports Python 3.9 through 3.12 on Windows, Linux, and MacOS.
        # Activate it in a Windows Powershell environment
        .venv\Scripts\Activate.ps1
 
-#. Make sure you have the latest required build system and doc, testing, and CI tools:
+#. Make sure you have the latest required build system and documentation, testing, and CI tools:
 
    .. code:: bash
 
@@ -55,43 +55,43 @@ This package supports Python 3.9 through 3.12 on Windows, Linux, and MacOS.
 
 #. Verify your development installation:
 
-    .. code:: bash
+   .. code:: bash
 
-        tox
+       tox
 
 Testing
 -------
 
-This project takes advantage of `tox`_. This tool allows you to automate common
-development tasks (similar to Makefile), but it is oriented towards Python
-development.
+This project takes advantage of `tox`_. Similar to Makefile, this tool allows you to automate
+common tasks, but it is oriented towards Python development.
 
 Using ``tox``
 ^^^^^^^^^^^^^
 
-As Makefile has rules, `tox`_ has environments. In fact, the tool creates its
+While Makefile has rules, `tox` has environments. In fact, the tool creates its
 own virtual environment so anything being tested is isolated from the project
 to guarantee the project's integrity. The following environments commands are provided:
 
 - **tox -e style**: Checks for coding style quality.
-- **tox -e test**: Checks for unit tests. Replace X with the minor version of your Python environment.
-  Pass `pytest <pytest_>`_ flags after the ``--`` portion of the command. For example, use this
-  ``pytest`` command to show the standard output: ``tox -e py3X -- -s``.
+- **tox -e test**: Checks for unit tests. Pass `pytest <pytest_>`_ flags after the
+  ``--`` portion of the command. For example, use this ``pytest`` command to show the
+  standard output, replacing ``X`` with the minor version of your Python environment:
+  ``tox -e py3X -- -s``.
 - **tox -e coverage**: Checks for code coverage.
-- **tox -e doc**: Checks for the documentation-building process.
+- **tox -e doc**: Checks for documentation building.
 
 Raw testing
 ^^^^^^^^^^^
 
-If required, you can always call style commands, such as `black`_, `isort`_,
-and `flake8`_, or unit testing ones, such as `pytest`_ from the command line.
-However, this does not guarantee that your project is being tested in an isolated
-environment, which is the reason why tools like `tox`_ exist.
+If required, you can always call code style tools, such as `black`_, `isort`_,
+and `flake8`_, or unit testing tools, such as `pytest`_ from the command line.
+However, using these tools do not guarantee that your project is being tested in an isolated
+environment, which is the reason why a tool like `tox`_ exists.
 
 Adhere to code style
 --------------------
 PyEDB-Core follows the PEP8 standard as indicated in `PEP 8 <dev_guide_pyansys_pep8_>`_
-in the *PyAnsys developer's guide* and implements style checking using `pre-commit <pre-commit_>`_.
+in the *PyAnsys developer's guide*. It also implements style checking using `pre-commit <pre-commit_>`_.
 
 To ensure your code meets minimum code styling standards, run these commands:
 
@@ -106,7 +106,7 @@ You can also install this as a pre-commit hook by running this command:
 
   pre-commit install
 
-This way, it's not possible for you to push code that fails the style checks:
+This way, it's not possible for you to push code that fails the code style checks:
 
 .. code:: text
 

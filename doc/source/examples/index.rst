@@ -6,10 +6,10 @@ To run these notebooks, perform these steps:
 
 #. Create and activate a Python `virtual environment <venv_>`_:
 
-    .. code:: bash
+   .. code:: bash
 
-        python -m venv .venv
-        .venv\Scripts\activate.bat
+       python -m venv .venv
+       .venv\Scripts\activate.bat
 
     For more information on creating and installing a virtual environment, see
     :ref:`dev_install`.
@@ -32,7 +32,7 @@ To run these notebooks, perform these steps:
 
        python -m pip install .[notebook]
 
-# Install the IPython kernel:
+#. Install the IPython kernel:
 
    .. code:: bash
 
@@ -40,9 +40,9 @@ To run these notebooks, perform these steps:
 
 #. Launch Juptyer notebook:
 
-    .. code:: bash
+   .. code:: bash
 
-        jupyter-notebook
+       jupyter-notebook
 
 6. Navigate to desired notebook example, change the kernel to the virtual environment, and execute the notebook
    with the desired settings.

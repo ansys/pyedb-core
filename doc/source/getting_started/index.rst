@@ -19,9 +19,9 @@ Installation
 
 #. To install PyEDB-Core, run this command:
 
-.. code:: bash
+   .. code:: bash
 
-    python -m pip install ansys-edb
+       python -m pip install ansys-edb
 
 .. LINKS AND REFERENCES
 .. _pip: https://pypi.org/project/pip/

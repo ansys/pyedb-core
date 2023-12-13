@@ -6,5 +6,7 @@ pyedb
 PyEDB-Core
 EDB
 IPython
+isort
 Juptyer
 Makefile
+pytest

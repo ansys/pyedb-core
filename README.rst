@@ -33,7 +33,7 @@ In the upper right corner of the documentation's title bar, there is an option f
 viewing the documentation for the latest stable release to viewing the documentation for the
 development version or previously released versions.
 
-On the `PyEDB-Core <https://github.com/ansys/pyedb-core/issues>`_ page, you can create
+On the `PyEDB-Core Issues <https://github.com/ansys/pyedb-core/issues>`_ page, you can create
 issues to report bugs and request new features. When possible, use these issue templates:
 
 * Bug report template
@@ -53,5 +53,5 @@ License
 PyEDB-Core is licensed under the MIT license.
 
 PyEDB-Core makes no commercial claim over Ansys whatsoever. The use of this Python client requires
-a legally licensed local copy of AEDT. For more information, see the
+a legally licensed copy of AEDT. For more information, see the
 `Ansys Electronics <https://www.ansys.com/products/electronics>`_ page on the Ansys website.

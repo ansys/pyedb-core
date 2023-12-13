@@ -174,5 +174,8 @@ If you would like to create either source or wheel files, run these commands:
 .. _Sphinx: https://www.sphinx-doc.org/en/master/
 .. _dynalib_repo_issues: https://github.com/ansys/pyedb-core/issues
 .. _pytest: https://docs.pytest.org/en/stable/
+.. _black: https://black.readthedocs.io/en/latest/
+.. _isort: https://pycqa.github.io/isort/
+.. _flake8: https://flake8.pycqa.org/en/latest/
 .. _dev_guide_pyansys_pep8: https://dev.docs.pyansys.com/coding-style/pep8.html
 .. _pre-commit: https://pre-commit.com/

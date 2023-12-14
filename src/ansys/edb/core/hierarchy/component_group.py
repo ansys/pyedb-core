@@ -78,11 +78,12 @@ class ComponentGroup(Group):
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
+        from ansys.edb.core.definition.component_property import ComponentProperty
         from ansys.edb.core.definition.ic_component_property import ICComponentProperty
         from ansys.edb.core.definition.io_component_property import IOComponentProperty
         from ansys.edb.core.definition.rlc_component_property import RLCComponentProperty
 
-        comp_prop = component_property.ComponentProperty(self.__stub.GetComponentProperty(self.msg))
+        comp_prop = ComponentProperty(self.__stub.GetComponentProperty(self.msg))
         comp_type = self.__stub.GetComponentType(self.msg).comp_type
         if (
             comp_type == edb_defs_pb2.ComponentType.RESISTOR

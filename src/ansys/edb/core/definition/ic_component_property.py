@@ -15,6 +15,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 class ICComponentProperty(component_property.ComponentProperty):
     """Represents an IC component property."""
+
     __stub: ICComponentPropertyServiceStub = StubAccessor(StubType.ic_component_property)
 
     @classmethod

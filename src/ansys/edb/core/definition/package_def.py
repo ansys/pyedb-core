@@ -212,7 +212,7 @@ class PackageDef(ObjBase):
 
     def get_product_property_ids(self, prod_id):
         """Get the list of property IDs for a given property ID.
-        
+
         Parameters
         ----------
         prod_id : ProductIdType

@@ -385,8 +385,7 @@ class MaterialDef(ObjBase):
     def set_anisotropic_thermal_modifier(
         self, material_property_id, component_id, thermal_modifier
     ):
-        """Set the anisotropic thermal modifier
-        of a given material definition.
+        """Set the anisotropic thermal modifier of a given material definition.
 
         Parameters
         ----------

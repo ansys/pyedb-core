@@ -2,21 +2,6 @@
 
 import functools
 
-from ansys.edb.core.geometry.point3d_data import Point3DData
-from ansys.edb.core.simulation_setup.adaptive_solutions import (
-    AdaptiveFrequency,
-    BroadbandAdaptiveSolution,
-    MatrixConvergenceData,
-    MultiFrequencyAdaptiveSolution,
-    SingleFrequencyAdaptiveSolution,
-)
-from ansys.edb.core.simulation_setup.mesh_operation import (
-    LengthMeshOperation,
-    SkinDepthMeshOperation,
-)
-from ansys.edb.core.utility.rlc import Rlc
-from ansys.edb.core.utility.value import Value
-
 
 def to_point_data(fn):
     """Decorate a function that returns a message to return as PointData."""
@@ -122,6 +107,7 @@ def _to_point_data(message):
     geometry.PointData
     """
     from ansys.edb.core.geometry.point_data import PointData
+    from ansys.edb.core.utility.value import Value
 
     return PointData([Value(message.x), Value(message.y)])
 
@@ -179,6 +165,9 @@ def _to_point3d_data(message):
     -------
     geometry.Point3DData
     """
+    from ansys.edb.core.geometry.point3d_data import Point3DData
+    from ansys.edb.core.utility.value import Value
+
     return Point3DData(Value(message.x), Value(message.y), Value(message.z))
 
 
@@ -250,6 +239,8 @@ def _to_circle(message):
     -------
     tuple[geometry.PointData, utility.Value]
     """
+    from ansys.edb.core.utility.value import Value
+
     if hasattr(message, "center") and hasattr(message, "radius"):
         return _to_point_data(message.center), Value(message.radius)
 
@@ -265,6 +256,9 @@ def _to_rlc(message):
     -------
     Rlc
     """
+    from ansys.edb.core.utility.rlc import Rlc
+    from ansys.edb.core.utility.value import Value
+
     return Rlc(
         Value(message.r),
         message.r_enabled.value,
@@ -287,6 +281,8 @@ def _to_mx_convergence_data(message):
     -------
     MatrixConvergenceData
     """
+    from ansys.edb.core.simulation_setup.adaptive_solutions import MatrixConvergenceData
+
     mx_entry_msgs = message.entries
     if len(mx_entry_msgs) == 0:
         return
@@ -367,6 +363,8 @@ def _to_single_frequency_adaptive_solution(message):
     -------
     SingleFrequencyAdaptiveSolution
     """
+    from ansys.edb.core.simulation_setup.adaptive_solutions import SingleFrequencyAdaptiveSolution
+
     adaptive_freq_data = _to_base_adaptive_frequency_solution(message.adaptive_frequency)
     return SingleFrequencyAdaptiveSolution(
         adaptive_freq_data[0],
@@ -388,6 +386,8 @@ def _to_multi_adaptive_freq(message):
     -------
     AdaptiveFrequency
     """
+    from ansys.edb.core.simulation_setup.adaptive_solutions import AdaptiveFrequency
+
     adaptive_freq_data = _to_base_adaptive_frequency_solution(message.adaptive_frequency)
     return AdaptiveFrequency(
         adaptive_freq_data[0],
@@ -407,6 +407,8 @@ def _to_multi_frequency_adaptive_solution(message):
     -------
     MultiFrequencyAdaptiveSolution
     """
+    from ansys.edb.core.simulation_setup.adaptive_solutions import MultiFrequencyAdaptiveSolution
+
     return MultiFrequencyAdaptiveSolution(
         message.max_passes,
         [_to_multi_adaptive_freq(freq_msg) for freq_msg in message.adaptive_frequencies],
@@ -424,6 +426,8 @@ def _to_broadband_adaptive_solution(message):
     -------
     BroadbandAdaptiveSolution
     """
+    from ansys.edb.core.simulation_setup.adaptive_solutions import BroadbandAdaptiveSolution
+
     return BroadbandAdaptiveSolution(
         message.low_frequency, message.high_frequency, message.max_passes, message.max_delta
     )
@@ -440,6 +444,8 @@ def _length_mesh_op(message):
     -------
     LengthMeshOperation
     """
+    from ansys.edb.core.simulation_setup.mesh_operation import LengthMeshOperation
+
     return LengthMeshOperation(
         max_length=message.max_length,
         restrict_max_length=message.restrict_length,
@@ -459,6 +465,8 @@ def _to_skin_depth_mesh_op(message):
     -------
     SkinDepthMeshOperation
     """
+    from ansys.edb.core.simulation_setup.mesh_operation import SkinDepthMeshOperation
+
     return SkinDepthMeshOperation(
         skin_depth=message.skin_depth,
         surface_triangle_length=message.surface_triangle_length,

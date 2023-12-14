@@ -2,7 +2,7 @@ import random
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
 
-from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner.base import ObjBase
 
 # Comparison utils
 

@@ -145,12 +145,6 @@ from ansys.api.edb.v1.voltage_regulator_pb2 import PowerModuleMessage
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.wrappers_pb2 import BoolValue, DoubleValue, FloatValue, Int64Value, StringValue
 
-from ansys.edb.core.simulation_setup.mesh_operation import (
-    LengthMeshOperation,
-    SkinDepthMeshOperation,
-)
-from ansys.edb.core.utility.conversions import to_point, to_point3d
-
 
 def str_message(s: str):
     """Convert to StringValue."""
@@ -189,6 +183,8 @@ def str_pair_message(pair):
 
 def point_message(point):
     """Convert to PointMessage."""
+    from ansys.edb.core.utility.conversions import to_point
+
     point = to_point(point)
     return PointMessage(x=value_message(point.x), y=value_message(point.y))
 
@@ -951,6 +947,11 @@ def _mesh_op_skin_depth_message(mesh_op):
 
 def mesh_operation_message(mesh_op):
     """Convert to MeshOperationMessage."""
+    from ansys.edb.core.simulation_setup.mesh_operation import (
+        LengthMeshOperation,
+        SkinDepthMeshOperation,
+    )
+
     mesh_op_msg = MeshOperationMessage(
         name=mesh_op.name,
         enabled=mesh_op.enabled,
@@ -1274,6 +1275,8 @@ def cpos_3d_message(point3d):
     if point3d is None:
         return None
     else:
+        from ansys.edb.core.utility.conversions import to_point3d
+
         point3d_converted = to_point3d(point3d)
         x, y, z = point3d_converted.x.double, point3d_converted.y.double, point3d_converted.z.double
         return CPos3DMessage(x=x, y=y, z=z)

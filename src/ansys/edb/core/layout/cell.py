@@ -25,8 +25,6 @@ from ansys.edb.core.inner.messages import (
     value_message,
 )
 from ansys.edb.core.inner.variable_server import VariableServer
-from ansys.edb.core.layout.layout import Layout
-from ansys.edb.core.primitive.primitive import Primitive
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
 from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
@@ -95,6 +93,8 @@ def _translate_hfss_extents_enums(msg):
 
 def primitive_helper(msg):
     """Convert message to primitive."""
+    from ansys.edb.core.primitive.primitive import Primitive
+
     return Primitive(msg).cast()
 
 
@@ -201,6 +201,8 @@ class Cell(ObjBase, VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.layout.layout import Layout
+
         return Layout(self.__stub.GetLayout(self.msg))
 
     @property
@@ -209,6 +211,8 @@ class Cell(ObjBase, VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.layout.layout import Layout
+
         return Layout(self.__stub.GetFlattenedLayout(self.msg))
 
     @classmethod

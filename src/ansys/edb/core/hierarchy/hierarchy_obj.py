@@ -1,6 +1,5 @@
 """Hierarchy Obj."""
 
-from ansys.edb.core.definition.component_def import ComponentDef
 from ansys.edb.core.inner.conn_obj import ConnObj
 from ansys.edb.core.inner.messages import (
     bool_property_message,
@@ -54,6 +53,8 @@ class HierarchyObj(ConnObj):
 
         Read-Only.
         """
+        from ansys.edb.core.definition.component_def import ComponentDef
+
         return ComponentDef(self.__stub.GetComponent(self.msg))
 
     @property

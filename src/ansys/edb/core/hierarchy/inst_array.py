@@ -1,4 +1,4 @@
-"""Inst Array."""
+"""Instance array."""
 
 from ansys.api.edb.v1.inst_array_pb2_grpc import InstArrayServiceStub
 
@@ -10,29 +10,29 @@ from ansys.edb.core.utility import Value
 
 
 class InstArray(cell_instance.CellInstance):
-    """Class representing an instance array object."""
+    """Represents an instance array object."""
 
     __stub: InstArrayServiceStub = StubAccessor(StubType.inst_array)
     layout_obj_type = LayoutObjType.INST_ARRAY
 
     @classmethod
     def create(cls, layout, name, ref, orig, xaxis, yaxis, xcount, ycount):
-        """Create an instance array object with a layout.
+        """Create an instance array with a layout.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
             Layout that owns the instance array.
         name : str
-            Name of instance array to be created.
+            Name of instance array.
         ref : :class:`Layout <ansys.edb.core.layout.Layout>`
             Layout that the instance array refers to.
         orig : :class:`PointData <ansys.edb.core.geometry.PointData>`
-            PointData that represents the origin of the instance array.
+            Point data that represents the origin of the instance array.
         xaxis : :class:`PointData <ansys.edb.core.geometry.PointData>`
-            PointData that represents the xaxis of the instance array.
+            Point data that represents the x axis of the instance array.
         yaxis : :class:`PointData <ansys.edb.core.geometry.PointData>`
-            PointData that represents the yaxis of the instance array.
+            PointData that represents the y axis of the instance array.
         xcount : :class:`Value <ansys.edb.core.layout.Value>`
             Value of x count of the instance array.
         ycount : :class:`Value <ansys.edb.core.utility.Value>`
@@ -41,7 +41,7 @@ class InstArray(cell_instance.CellInstance):
         Returns
         -------
         InstArray
-            Newly created instance array.
+            Instance array created.
         """
         return InstArray(
             cls.__stub.Create(
@@ -53,32 +53,32 @@ class InstArray(cell_instance.CellInstance):
 
     @classmethod
     def find(cls, layout, name):
-        """Find an instance array in layout by name.
+        """Find an instance array by name in a given layout.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout to search for the instance array in.
+            Layout to search for the instance array.
         name : str
-            Name of the instance array to be searched for.
+            Name of the instance array.
 
         Returns
         -------
         InstArray
-            instance array that is found, None otherwise.
+            Instance array that is found, ``None`` otherwise.
         """
         return InstArray(cls.__stub.FindByName(messages.string_property_message(layout, name)))
 
     @property
     @parser.to_point_data
     def orig(self):
-        """:class:`PointData <geometry.PointData>`: origin of the instance array."""
+        """:class:`PointData <geometry.PointData>`: Origin of the instance array."""
         return self.__stub.GetOrig(self.msg)
 
     @property
     @parser.to_point_data
     def x_axis(self):
-        """:class:`PointData <geometry.PointData>`: x axis of the instance array."""
+        """:class:`PointData <geometry.PointData>`: X axis of the instance array."""
         return self.__stub.GetXAxis(self.msg)
 
     @x_axis.setter
@@ -88,7 +88,7 @@ class InstArray(cell_instance.CellInstance):
     @property
     @parser.to_point_data
     def y_axis(self):
-        """:class:`PointData <geometry.PointData>`: y axis of the instance array."""
+        """:class:`PointData <geometry.PointData>`: Y axis of the instance array."""
         return self.__stub.GetYAxis(self.msg)
 
     @y_axis.setter
@@ -97,7 +97,7 @@ class InstArray(cell_instance.CellInstance):
 
     @property
     def x_count(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: x count of the instance array."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: X count of the instance array."""
         return Value(self.__stub.GetXCount(self.msg))
 
     @x_count.setter
@@ -106,7 +106,7 @@ class InstArray(cell_instance.CellInstance):
 
     @property
     def y_count(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: y count of the instance array."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: Y count of the instance array."""
         return Value(self.__stub.GetYCount(self.msg))
 
     @y_count.setter

@@ -1,24 +1,24 @@
-"""S-Parameter Model."""
+"""S-parameter model."""
 from ansys.edb.core.hierarchy.model import Model
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import SParameterModelServiceStub, StubAccessor, StubType
 
 
 class SParameterModel(Model):
-    """Class representing a S-Parameter model object."""
+    """Represents an S-parameter model object."""
 
     __stub: SParameterModelServiceStub = StubAccessor(StubType.sparameter_model)
 
     @classmethod
     def create(cls, name, ref_net):
-        """Create a new SParameter Model.
+        """Create an S-parameter model.
 
         Parameters
         ----------
         name : str
-            Name of component model.
+            Name of the component model.
         ref_net : str
-            Name of reference net.
+            Name of the reference net.
         """
         return cls(cls.__stub.Create(messages.sparameter_model_message(name, ref_net)))
 
@@ -28,7 +28,7 @@ class SParameterModel(Model):
 
     @property
     def component_model(self):
-        """:obj:`str`: Name of component model."""
+        """:obj:`str`: Name of the component model."""
         return self._properties.name
 
     @component_model.setter
@@ -37,7 +37,7 @@ class SParameterModel(Model):
 
     @property
     def reference_net(self):
-        """:obj:`str`: Name of reference net."""
+        """:obj:`str`: Name of the reference net."""
         return self._properties.ref_net
 
     @reference_net.setter

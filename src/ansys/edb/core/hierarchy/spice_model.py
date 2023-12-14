@@ -5,22 +5,22 @@ from ansys.edb.core.session import SpiceModelServiceStub, StubAccessor, StubType
 
 
 class SPICEModel(Model):
-    """Class representing a SPICE model object."""
+    """Represents a SPICE model object."""
 
     __stub: SpiceModelServiceStub = StubAccessor(StubType.spice_model)
 
     @classmethod
     def create(cls, name, path, sub_circuit):
-        """Create a new SPICE model.
+        """Create a SPICE model.
 
         Parameters
         ----------
         name : str
-            SPICE model file name.
+            Name of the SPICE model file.
         path : str
-            SPICE model file path.
+            Path to the SPICE model file.
         sub_circuit : str
-            Sub circuit name of SPICE model.
+            Subcircuit name of the SPICE model.
         """
         return cls(cls.__stub.Create(messages.spice_model_message(name, path, sub_circuit)))
 
@@ -30,7 +30,7 @@ class SPICEModel(Model):
 
     @property
     def model_name(self):
-        """:obj:`str`: Name of SPICE model file."""
+        """:obj:`str`: Name of the SPICE model file."""
         return self._properties.name
 
     @model_name.setter
@@ -39,7 +39,7 @@ class SPICEModel(Model):
 
     @property
     def model_path(self):
-        """:obj:`str`: File path of SPICE model."""
+        """:obj:`str`: File path to the SPICE model file."""
         return self._properties.path
 
     @model_path.setter
@@ -48,7 +48,7 @@ class SPICEModel(Model):
 
     @property
     def sub_circuit(self):
-        """:obj:`str`: The name of the sub circuit in the SPICE model."""
+        """:obj:`str`: Name of the subcircuit in the SPICE model."""
         return self._properties.sub_ckt
 
     @sub_circuit.setter
@@ -56,25 +56,25 @@ class SPICEModel(Model):
         self.__stub.SetSubCkt(messages.string_property_message(self, name))
 
     def add_terminal(self, terminal, pin):
-        """Add a terminal with pin number.
+        """Add a terminal with a pin number.
 
         Parameters
         ----------
         terminal : str
-            The terminal name to associate with the pin.
+            Terminal name to associate with the pin.
         pin : str
-            The pin number.
+            Pin number.
         """
         self.__stub.AddTerminalPinPair(
             messages.spice_model_net_terminal_pin_message(self, terminal, pin)
         )
 
     def remove_terminal(self, terminal):
-        """Remove a terminal with pin number.
+        """Remove a terminal.
 
         Parameters
         ----------
         terminal : str
-            The terminal name.
+            Terminal name.
         """
         self.__stub.RemoveTerminalPinPair(messages.string_property_message(self, terminal))

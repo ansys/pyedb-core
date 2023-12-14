@@ -88,7 +88,7 @@ class SolderBallProperty(ObjBase):
         self.__stub.SetHeight(value_property_message(self, value_message(height)))
 
     def get_diameter(self):
-        """Get the diameter parameters.
+        """Get the diameter parameters of the solder ball property.
 
         Returns
         -------
@@ -131,7 +131,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def placement(self):
-        """:class:`SolderballPlacement`: Solder ball shape."""
+        """:class:`SolderballPlacement`: Solder ball placement."""
         return SolderballPlacement(self.__stub.GetPlacement(self.msg).solderball_placement)
 
     @placement.setter

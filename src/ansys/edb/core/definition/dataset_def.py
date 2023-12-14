@@ -38,12 +38,12 @@ class DatasetDef(ObjBase):
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a dataset definition in the database with a given name.
+        """Find a dataset definition by name in a given database.
 
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-            Database that owns the dataset definition.
+            Database to search for the dataset definition.
         name : :obj:`str`
             Name of the dataset definition.
 

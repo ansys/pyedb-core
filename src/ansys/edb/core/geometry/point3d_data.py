@@ -1,9 +1,9 @@
-"""Point3D Data."""
+"""Point3D data."""
 from ansys.edb.core.utility import conversions
 
 
 class Point3DData:
-    """Represent a point on 3D coordinate system."""
+    """Represents a point on a 3D coordinate system."""
 
     def __init__(self, x, y, z):
         """Initialize a 3D point.
@@ -35,7 +35,7 @@ class Point3DData:
         return NotImplemented
 
     def __mul__(self, other):
-        """Compute a cross product if `Point3DData` is provided. otherwise scalar multiplication."""
+        """Compute a cross product if ``Point3DData` is provided. Otherwise, perform scalar multiplication."""
         if isinstance(other, Point3DData):
             x = self.y * other.z - self.z * other.y
             y = self.z * other.x - self.x * other.y
@@ -46,22 +46,22 @@ class Point3DData:
         return NotImplemented
 
     def __rmul__(self, other):
-        """Compute a scalar multiplication."""
+        """Perform scalar multiplication."""
         return self.__mul__(other)
 
     def __div__(self, other):
-        """Compute a scalar division."""
+        """Perform scalar division."""
         if isinstance(other, (int, float)):
             return Point3DData(self.x / other, self.y / other, self.z / other)
         return NotImplemented
 
     def __neg__(self):
-        """Negate the signs on point coordinates."""
+        """Negate the signs on the point coordinates."""
         return Point3DData(0, 0, 0) - self
 
     @property
     def x(self):
-        """:class:`Value<ansys.edb.core.utility.Value>`: x coordinate."""
+        """:class:`Value<ansys.edb.core.utility.Value>`: X coordinate."""
         return self._x
 
     @x.setter
@@ -70,7 +70,7 @@ class Point3DData:
 
     @property
     def y(self):
-        """:class:`Value<ansys.edb.core.utility.Value>`: y coordinate."""
+        """:class:`Value<ansys.edb.core.utility.Value>`: Y coordinate."""
         return self._y
 
     @y.setter
@@ -79,7 +79,7 @@ class Point3DData:
 
     @property
     def z(self):
-        """:class:`Value<ansys.edb.core.utility.Value>`: z coordinate."""
+        """:class:`Value<ansys.edb.core.utility.Value>`: Z coordinate."""
         return self._z
 
     @z.setter
@@ -88,22 +88,23 @@ class Point3DData:
 
     @property
     def magnitude(self):
-        """:obj:`float`: The magnitude or a length of a point."""
+        """:obj:`float`: Magnitude or length of the point."""
         return self.magnitude_sqr.sqrt.double
 
     @property
     def magnitude_sqr(self):
-        """:obj:`float`: The magnitude-square of a point."""
+        """:obj:`float`: Magnitude-square of the point."""
         return self.x * self.x + self.y * self.y + self.z * self.z
 
     def equals(self, other, tolerance=1e-9):
         """
-        Compare equality of two points within tolerance.
+        Compare the equality of two 3D points within a given tolerance.
 
         Parameters
         ----------
         other : Point3DData
         tolerance : float, optional
+            Tolerance. The default is ``1e-9``.
 
         Returns
         -------

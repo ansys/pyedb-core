@@ -13,7 +13,7 @@ class ComponentPin(ObjBase):
 
     @classmethod
     def create(cls, comp_def, name):
-        """Create a component pin.
+        """Create a component pin in a given component definition.
 
         Parameters
         ----------
@@ -31,7 +31,7 @@ class ComponentPin(ObjBase):
 
     @classmethod
     def find(cls, comp_def, name):
-        """Find a component pin in a component definition.
+        """Find a component pin in a given component definition.
 
         Parameters
         ----------
@@ -66,7 +66,7 @@ class ComponentPin(ObjBase):
 
     @property
     def component_def(self):
-        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition that this component \
+        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition that the component \
         pin belongs to.
 
         This attribute is read-only.

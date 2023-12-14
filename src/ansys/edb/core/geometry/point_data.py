@@ -1,4 +1,4 @@
-"""Point Data."""
+"""Point data."""
 from functools import reduce
 import math
 import operator
@@ -12,14 +12,14 @@ from ansys.edb.core.utility import conversions
 
 
 class PointData:
-    """Represent arbitrary (x, y) coordinates that exist on 2D space."""
+    """Represents arbitrary (x, y) coordinates that exist on a 2D space."""
 
     __stub: point_data_pb2_grpc.PointDataServiceStub = session.StubAccessor(
         session.StubType.point_data
     )
 
     def __init__(self, *data):
-        """Initialize a point data from list of coordinates.
+        """Initialize a point data from a list of coordinates.
 
         Parameters
         ----------
@@ -45,7 +45,7 @@ class PointData:
                 self._arc_h = self._x
         else:
             raise TypeError(
-                "PointData must receive either one value representing arc height or "
+                "`PointData` must receive either one value representing arc height or "
                 f"two values representing x and y coordinates. - Received '{data}'"
             )
 
@@ -98,7 +98,7 @@ class PointData:
         return self.__class__(self._map_reduce(other, operator.__sub__))
 
     def __str__(self):
-        """Generate unique name for point object.
+        """Generate unique name for the point object.
 
         Returns
         -------
@@ -130,7 +130,7 @@ class PointData:
 
     @property
     def _matrix_values(self):
-        """Return coordinates of this point as a list of Value.
+        """Return coordinates of the point as a list of values.
 
         Returns
         -------
@@ -144,17 +144,18 @@ class PointData:
 
     @property
     def is_arc(self):
-        """Return if the point represents an arc.
+        """Flag indicating if the point represents an arc.
 
         Returns
         -------
         bool
+            ``True`` when the point represents an arc, ``False`` otherwise.
         """
         return self._arc_h is not None
 
     @property
     def arc_height(self):
-        """Return the height of arc.
+        """Height of arc.
 
         Returns
         -------
@@ -164,7 +165,7 @@ class PointData:
 
     @property
     def x(self):
-        """Return the x coordinate.
+        """X coordinate.
 
         Returns
         -------
@@ -174,7 +175,7 @@ class PointData:
 
     @property
     def y(self):
-        """Return the y coordinate.
+        """Y coordinate.
 
         Returns
         -------
@@ -184,16 +185,17 @@ class PointData:
 
     @property
     def is_parametric(self):
-        """Return if this point contains parametric values (variable expressions).
+        """Flag indicating if the point contains parametric values (variable expressions).
 
         Returns
         -------
         bool
+            ``True`` when the point contains parametric values, ``False`` otherwise.
         """
         return any(val.is_parametric for val in self._matrix_values)
 
     def magnitude(self):
-        """Return the magnitude of point vector.
+        """Magnitude of point vector.
 
         Returns
         -------
@@ -216,9 +218,9 @@ class PointData:
 
     @parser.to_point_data
     def closest(self, start, end):
-        """Return the closest point on the line segment [start, end] from the point.
+        """Get the closest point on the line segment [start, end] from the point.
 
-        Return None if either point is an arc.
+        Return ``None`` if either point is an arc.
 
         Parameters
         ----------
@@ -233,8 +235,8 @@ class PointData:
             return self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
 
     def distance(self, start, end=None):
-        """Compute the shortest distance from the point to the line segment [start, end] when end point is given, \
-        otherwise the distance between the point and another.
+        """Compute the shortest distance from the point to the line segment [start, end] when the end point is given. \
+        Otherwise, compute the distance between this point and another point.
 
         Parameters
         ----------
@@ -253,9 +255,9 @@ class PointData:
             ).value
 
     def cross(self, other):
-        """Compute the cross product of the point vector with another.
+        """Compute the cross product of the point vector with another point vector.
 
-        Return None if either point is an arc.
+        Return ``None`` if either point is an arc.
 
         Parameters
         ----------
@@ -272,7 +274,7 @@ class PointData:
     def move(self, vector):
         """Move the point by a vector.
 
-        Return None if either point is an arc.
+        Return ``None`` if either point is an arc.
 
         Parameters
         ----------
@@ -288,15 +290,16 @@ class PointData:
 
     @parser.to_point_data
     def rotate(self, angle, center):
-        """Rotate a point at the specified center by the specified angle.
+        """Rotate a point at a given center by a given angle.
 
-        Return None if either point is an arc.
+        Return ``None`` if either point is an arc.
 
         Parameters
         ----------
         angle : float
-            in radians.
+            Angle in radians.
         center : ansys.edb.core.typing.PointLike
+            Center.
 
         Returns
         -------
@@ -319,16 +322,17 @@ class PointData:
         return sum(self._map_reduce(other, operator.__mul__), utility.Value(0)).value
 
     def angle(self, other):
-        """Get the angle between another vector.
+        """Get the angle between this vector and another vector.
 
         Parameters
         ----------
         other : ansys.edb.core.typing.PointLike
+            Other vector.
 
         Returns
         -------
         float
-            angle in radian.
+            Angle in radians.
         """
         other = conversions.to_point(other)
         return math.acos(self.dot(other) / (self.magnitude() * other.magnitude()))

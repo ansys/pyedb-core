@@ -67,7 +67,7 @@ class BondwireDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: type."""
+        """:class:`DefinitionObjType` of the bondwire definition."""
         return DefinitionObjType.BONDWIRE_DEF
 
     @property
@@ -111,7 +111,7 @@ class ApdBondwireDef(BondwireDef):
 
     @classmethod
     def load_definitions_from_file(cls, database, name):
-        """Load an APD bondwire definition into the given database.
+        """Load an APD bondwire definition into a given database.
 
         Parameters
         ----------
@@ -124,7 +124,7 @@ class ApdBondwireDef(BondwireDef):
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find an APD bondwire definition by name in the given database.
+        """Find an APD bondwire definition by name in a given database.
 
         Parameters
         ----------
@@ -143,7 +143,7 @@ class ApdBondwireDef(BondwireDef):
         )
 
     def get_parameters(self):
-        """Get parameters of an APD bondwire definition.
+        """Get parameters of the APD bondwire definition.
 
         Returns
         -------
@@ -153,7 +153,7 @@ class ApdBondwireDef(BondwireDef):
         return self.__stub.GetParameters(self.msg)
 
     def set_parameters(self, name):
-        """Set parameters of an APD bondwire definition.
+        """Set parameters of the APD bondwire definition.
 
         Parameters
         ----------
@@ -164,7 +164,7 @@ class ApdBondwireDef(BondwireDef):
 
     @property
     def bondwire_type(self):
-        """:class:`BondwireDefType`: Type of the APD bondwire definition.
+        """:class:`BondwireDefType`: Type of the APD bondwire.
 
         This attribute is read-only.
         """
@@ -209,7 +209,7 @@ class Jedec4BondwireDef(BondwireDef):
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a JEDEC4 bondwire definition by name.
+        """Find a JEDEC4 bondwire definition by name in a given database.
 
         Parameters
         ----------
@@ -238,7 +238,7 @@ class Jedec4BondwireDef(BondwireDef):
         return Value(self.__stub.GetParameters(self.msg))
 
     def set_parameters(self, top_to_die_distance):
-        """Set parameters of a JEDEC4 bondwire definition.
+        """Set parameters of the JEDEC4 bondwire definition.
 
         Parameters
         ----------
@@ -253,7 +253,7 @@ class Jedec4BondwireDef(BondwireDef):
 
     @property
     def bondwire_type(self):
-        """:class:`BondwireDefType`: Type of the JEDEC4 bondwire definition.
+        """:class:`BondwireDefType`: Type of the JEDEC4 bondwire.
 
         This attribute is read-only.
         """
@@ -313,7 +313,7 @@ class Jedec5BondwireDef(BondwireDef):
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a JEDEC5 bondwire definition by name.
+        """Find a JEDEC5 bondwire definition by name in a given database.
 
         Parameters
         ----------
@@ -379,7 +379,7 @@ class Jedec5BondwireDef(BondwireDef):
 
     @property
     def bondwire_type(self):
-        """:class:`BondwireDefType`: Type of the JEDEC5 bondwire definition.
+        """:class:`BondwireDefType`: Type of the JEDEC5 bondwire.
 
         This attribute is read-only.
         """

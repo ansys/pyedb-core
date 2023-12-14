@@ -10,7 +10,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 class _QueryBuilder:
     @staticmethod
     def r_tree_obj_message(rtree, polygon, prop_id):
-        """Create an RTreeObjMessage."""
+        """Create an RTree object message."""
         return pb.RTreeObjMessage(
             target=messages.edb_obj_message(rtree),
             polygon=messages.polygon_data_message(polygon),
@@ -19,7 +19,7 @@ class _QueryBuilder:
 
     @staticmethod
     def r_tree_search_message(rtree, box, bb_search):
-        """Create a RTreeSearchMessage."""
+        """Create an RTree search message."""
         return pb.RTreeSearchMessage(
             target=messages.edb_obj_message(rtree),
             box=messages.box_message(box[0], box[1]),
@@ -28,7 +28,7 @@ class _QueryBuilder:
 
     @staticmethod
     def r_tree_geometry_request_message(rtree, polygon, prop_id, increment_visit):
-        """Create an RTreeGeometryRequestMessage."""
+        """Create an RTree geometry request message."""
         return pb.RTreeGeometryRequestMessage(
             target=messages.edb_obj_message(rtree),
             polygon=messages.polygon_data_message(polygon),
@@ -38,24 +38,24 @@ class _QueryBuilder:
 
 
 class RTree(ObjBase):
-    """Class representing an RTree."""
+    """Provides the base RTree class."""
 
     class RTreeObj:
-        """Class representing an RTreeObj object."""
+        """Represents an RTree object."""
 
         def __init__(
             self,
             polygon,
             obj,
         ):
-            """Construct a RTreeObj object using given values.
+            """Construct an RTree object using given values.
 
             Parameters
             ----------
             polygon: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-                The polygon representation for the object in the spatial index.
+                Polygon representation for the object in the spatial index.
             obj: ObjBase
-                The object to be stored in the index.
+                Object to store in the index.
             """
             self._unique_id = None
             self.polygon = polygon
@@ -64,7 +64,7 @@ class RTree(ObjBase):
     __stub: r_tree_pb2_grpc.RTreeServiceStub = StubAccessor(StubType.r_tree)
 
     def __init__(self, msg):
-        """Init method for RTree."""
+        """Initialize an RTree object."""
         super().__init__(msg)
         self._id_to_obj = {}
         self._obj_to_id = {}
@@ -76,13 +76,13 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        tolerance : double
-            The tolerance of the R-tree, in meters.
+        tolerance : float, optional
+            Tolerance of the R-tree in meters. The default is ``1e-9``.
 
         Returns
         -------
         RTree
-            The new RTree created.
+            RTree created.
         """
         rtree_created = RTree(cls.__stub.Create(messages.double_message(tolerance)))
         return rtree_created
@@ -93,23 +93,23 @@ class RTree(ObjBase):
                 rtree_obj._unique_id = self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)]
                 return True
             else:
-                raise Exception("RTreeObj does not exist in RTree.")
+                raise Exception("RTree object does not exist in the RTree.")
         else:
             return True
 
     @property
     @parser.to_box
     def extent(self):
-        """Tuple[geometry.PointData, geometry.PointData]: Get the bounding-box for the contents of the RTree."""
+        """Tuple[geometry.PointData, geometry.PointData]: Bounding-box for the contents of the RTree."""
         return self.__stub.GetExtent(self.msg)
 
     def insert(self, rtree_obj):
-        """Insert RTreeObj from the RTree object.
+        """Insert an RTreeObj from the RTree object.
 
         Parameters
         ----------
         rtree_obj: RTreeObj
-            An R-tree data object, with index.
+            R-tree data object with index.
         """
         unique_id = 1 if self._unique_id is None else self._unique_id + 1
         self.__stub.InsertIntObject(
@@ -121,12 +121,12 @@ class RTree(ObjBase):
         self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)] = unique_id
 
     def delete(self, rtree_obj):
-        """Delete RTreeObj from the RTree object.
+        """Delete the RTreeObj from the RTree object.
 
         Parameters
         ----------
         rtree_obj: RTreeObj
-            An R-tree data object, with index.
+            R-tree data object with index.
         """
         if self._handle_rtree_obj(rtree_obj):
             self.__stub.DeleteIntObject(
@@ -136,11 +136,12 @@ class RTree(ObjBase):
             del self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)]
 
     def empty(self):
-        """Check if the RTree is contains no geometry.
+        """Determine if the RTree contains no geometry.
 
         Returns
         -------
         bool
+            ``True`` if the RTree contains no geometry, ``False`` otherwise.
         """
         msg_empty = self.__stub.Empty(self.msg).value
         return msg_empty
@@ -151,34 +152,34 @@ class RTree(ObjBase):
         Parameters
         ----------
         box: Tuple[:class:`PointData <geometry.PointData>`, :class:`PointData <geometry.PointData>`]
-            The testing region, described as a (lower-left, upper-right) box.
+            Testing region, described as a (lower-left, upper-right) box.
         bb_search: bool
-            If true, an RTreeObj intersects when the bounding-box of it's \
-            :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` \
-            intersects the testing  object. If false, an explicit intersection is required for a hit.
+            Whether the RTreeObj intersects when the bounding-box of its \
+            :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` class \
+            intersects the testing  object. If ``False``, an explicit intersection is required for a hit.
 
         Returns
         -------
         :obj:`list` of RTreeObj
-            A list of intersecting RTreeObj.
+           List of intersecting RTreeObj.
         """
         msg = self.__stub.Search(_QueryBuilder.r_tree_search_message(self, box, bb_search))
         return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     def nearest_neighbor(self, rtree_obj):
-        """Find the nearest-neighbor of the given RTree object (polygon, id pair).
+        """Find the nearest neighbor of the given RTree object (polygon, id pair).
 
         Parameters
         ----------
         rtree_obj: RTreeObj
-            An R-tree data object, with index.
+            R-tree data object with index.
 
         Returns
         -------
         :obj:`tuple` of RTreeObj, tuple[geometry.PointData, geometry.PointData]
-        RTreeObj: The nearest-neighbor in the RTree to the provided obj, or null if nothing is found.
-        tuple[geometry.PointData, geometry.PointData]: A line-segment spanning the closest points between obj and \
-        nearest.
+        RTreeObj: Nearest-neighbor in the RTree to the provided object, or null if nothing is found.
+        tuple[geometry.PointData, geometry.PointData]: Line segment spanning the closest points between the object \
+        and the nearest neighbor.
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.NearestNeighbor(
@@ -187,15 +188,16 @@ class RTree(ObjBase):
             return self._id_to_obj[int(msg.id)], parser.to_box(msg.coordinates)
 
     def touching_geometry(self, rtree_obj, increment_visit):
-        """Find all geometry touching the provided RTree object (polygon, id pair).  Note that the  provided RTree \
-        object is not returned in the touching list.
+        """Find all geometries touching an RTree object (polygon, id pair).
+
+        The provided RTree object is not returned in the touching list.
 
         Parameters
         ----------
         rtree_obj: RTreeObj
-            An R-tree data object, with index.
+            R-tree data object with index.
         increment_visit: bool
-            If True, increment the visit counter for items returned in connected.
+            Whether to increment the visit counter for items returned in the connected list.
 
         Returns
         -------
@@ -211,19 +213,21 @@ class RTree(ObjBase):
             return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     def connected_geometry(self, rtree_obj, increment_visit):
-        """Find connected geometry.  Note that, if connections exists, the provided RTree object \
-        will be returned in the connected list.
+        """Find the connected geometry.
+
+        If a connections exists, the provided RTree object is returned in the connected list.
 
         Parameters
         ----------
         rtree_obj: RTreeObj
-            An R-tree data object, with index.
-        increment_visit: If True, increment the visit counter for items returned in connected.
+            R-tree data object with index.
+        increment_visit: bool
+            Whether to increment the visit counter for items returned in the connected list.
 
         Returns
         -------
         :obj:`list` of RTreeObj
-            The connected geometry list.
+            Connected geometry list.
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.ConnectedGeometry(
@@ -249,20 +253,21 @@ class RTree(ObjBase):
         return rtree_obj_sets
 
     def increment_visit(self):
-        """Increment the visit count, effectively marking all items in the tree unvisited."""
+        """Increment the visit count, effectively marking all items in the tree as unvisited."""
         self.__stub.IncrementVisit(messages.edb_obj_message(self))
 
     def is_visited(self, rtree_obj):
-        """Check whether a given object has been visited.
+        """Determine whether an RTree object has been visited.
 
         Parameters
         ----------
         rtree_obj: RTreeObj
-            An R-tree data object, with index.
+            R-tree data object with index.
 
         Returns
         -------
         bool
+            ``True`` if the Rtree object has been visited, ``False`` otherwise.
         """
         if self._handle_rtree_obj(rtree_obj):
             return self.__stub.IsVisited(
@@ -275,7 +280,7 @@ class RTree(ObjBase):
         Parameters
         ----------
         rtree_obj: RTreeObj
-            An R-tree data object, with index.
+            R-tree data object with index.
         """
         if self._handle_rtree_obj(rtree_obj):
             self.__stub.Visit(
@@ -284,5 +289,5 @@ class RTree(ObjBase):
 
     @property
     def get_visit(self):
-        """Int: Visit count for the tree."""
+        """Int: Visit count for the R-tree."""
         return self.__stub.GetVisit(messages.edb_obj_message(self)).value

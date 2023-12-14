@@ -291,7 +291,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def material(self):
-        """:obj:`str`: Material name of the hole of the padstack definition daata object."""
+        """:obj:`str`: Material name of the hole of the padstack definition data object."""
         return self.__stub.GetMaterial(self.msg)
 
     @material.setter
@@ -333,12 +333,14 @@ class PadstackDefData(ObjBase):
 
     def get_pad_parameters(self, layer, pad_type):
         """
-        Get a pad's parameters by layer name and pad type in its original value in the database.
+        Get the pad parameters by layer name and pad type in their original values in the database.
 
         Parameters
         ----------
         layer : Union[str, int, None]
+            Layer name.
         pad_type : PadType
+            Pad type.
 
         Returns
         -------
@@ -355,13 +357,9 @@ class PadstackDefData(ObjBase):
             :class:`Value <ansys.edb.core.utility.Value>`,
             :class:`Value <ansys.edb.core.utility.Value>`]
 
-            Returns a tuple of the following format:
-
-            **(pad_type, sizes, offset_x, offset_y, rotation)**
-
-            or accordingly if geometry shape is polygon then
-
-            **(fp, offset_x, offset_y, rotation)**
+            Returns a tuple in a **(pad_type, sizes, offset_x, offset_y, rotation)** format
+            If the geometry shape is a polygon, it returns turple in
+            **(fp, offset_x, offset_y, rotation)** format.
 
             **pad_type** : Pad type.
 

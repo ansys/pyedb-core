@@ -145,7 +145,7 @@ class MaterialDef(ObjBase):
 
     @classmethod
     def create(cls, database, name, **kwargs):
-        """Create a material definition in the given database.
+        """Create a material definition in a given database.
 
         Parameters
         ----------
@@ -154,10 +154,9 @@ class MaterialDef(ObjBase):
         name : str
             Name of the material definition.
         kwargs : dict{ str : :class:`Value <ansys.edb.core.utility.Value>` }
-            Dictionary to convert to MaterialDefPropertiesMessage.
-            Dictionary key is the material property name.
-            Dictionary value is the material property value.
-            Expected keys for kwargs are:
+            Provide the dictionary to convert to a ``MaterialDefPropertiesMessage`` object.
+            The dictionary key is the material property name. The dictionary value is the
+            material property value. The expected keys for kwargs are:
 
             - permittivity
             - permeability
@@ -180,7 +179,7 @@ class MaterialDef(ObjBase):
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a material definition in the database by name.
+        """Find a material definition by name in a given database.
 
         Parameters
         ----------
@@ -272,7 +271,7 @@ class MaterialDef(ObjBase):
         )
 
     def get_all_properties(self):
-        """Get all property value of the material.
+        """Get all property values of the material.
 
         Returns
         -------
@@ -297,7 +296,7 @@ class MaterialDef(ObjBase):
         )
 
     def get_dimensions(self, material_property_id):
-        """Get dimensions of a material definition.
+        """Get dimensions of a given material definition.
 
         Types are Simple 1x1, Anisotropic 3x1, and Tensor 3x3.
 
@@ -311,9 +310,7 @@ class MaterialDef(ObjBase):
         -------
         tuple[int, int]
 
-            Returns a tuple of the following format:
-
-            **(col, row)**
+            Returns a tuple in the a **(col, row)** format:
 
             **col** : Number of rows of the material property.
 
@@ -325,7 +322,7 @@ class MaterialDef(ObjBase):
         return [msg.tensor.col, msg.tensor.row]
 
     def get_thermal_modifier(self, material_property_id):
-        """Get the thermal modifier of a material definition.
+        """Get the thermal modifier of a given material definition.
 
         Parameters
         ----------
@@ -362,7 +359,7 @@ class MaterialDef(ObjBase):
         )
 
     def get_anisotropic_thermal_modifier(self, material_property_id, component_id):
-        """Get the anisotropic thermal modifier of a material definition.
+        """Get the anisotropic thermal modifier of a given material definition.
 
         Parameters
         ----------
@@ -388,7 +385,7 @@ class MaterialDef(ObjBase):
     def set_anisotropic_thermal_modifier(
         self, material_property_id, component_id, thermal_modifier
     ):
-        """Set the anisotropic thermal modifier of a material definition.
+        """Set the anisotropic thermal modifier of a given material definition.
 
         Parameters
         ----------

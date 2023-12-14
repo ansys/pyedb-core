@@ -84,12 +84,12 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def open(cls, db_path, read_only):
-        """Open an existing database at the specified file location.
+        """Open the database at the specified location.
 
         Parameters
         ----------
         db_path : str
-            Path to the top-level database folder.
+            Path to the top-level database directory.
         read_only : bool
             Whether to open the database in read-only mode.
 
@@ -109,7 +109,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def delete(cls, db_path):
-        """Delete a database at the specified file location.
+        """Delete a database in the specified location.
 
         Parameters
         ----------
@@ -221,7 +221,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def get_version_by_release(cls, release):
-        """Get the EDB version corresponding to a given release name.
+        """Get the EDB version for a given release name.
 
         Parameters
         ----------
@@ -247,7 +247,7 @@ class Database(ObjBase, variable_server.VariableServer):
         return self.__stub.GetDirectory(self.msg).value
 
     def get_product_property(self, prod_id, attr_it):
-        """Get the product-specific property value.
+        """Get a product-specific property value.
 
         Parameters
         ----------
@@ -282,7 +282,7 @@ class Database(ObjBase, variable_server.VariableServer):
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute IDs corresponding to a product property ID.
+        """Get a list of attribute IDs for a given product property ID.
 
         Parameters
         ----------

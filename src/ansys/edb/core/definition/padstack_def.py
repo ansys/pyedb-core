@@ -53,7 +53,7 @@ class PadstackDef(ObjBase):
 
     @classmethod
     def create(cls, db, name):
-        """Create a padstack definition object.
+        """Create a padstack definition in a given database.
 
         Parameters
         ----------
@@ -73,7 +73,7 @@ class PadstackDef(ObjBase):
 
     @classmethod
     def find_by_name(cls, db, name):
-        """Find a padstack definition by name.
+        """Find a padstack definition by name in a given database.
 
         Parameters
         ----------
@@ -106,7 +106,7 @@ class PadstackDef(ObjBase):
     @property
     def data(self):
         """:class:`PadstackDefData <ansys.edb.core.definition.padstack_def_data.PadstackDefData>`: \
-        Data of the Padstack definition."""
+        Data for the padstack definition."""
         return PadstackDefData(self.__stub.GetData(self.msg))
 
     @data.setter

@@ -4,10 +4,10 @@ from enum import Enum
 
 import ansys.api.edb.v1.stackup_layer_pb2 as stackup_layer_pb2
 
-from ansys.edb.core.inner import messages
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.inner.messages import value_message
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import get_stackup_layer_stub
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class DCThicknessType(Enum):
@@ -48,9 +48,7 @@ def _get_layer_material_name_message(layer, evaluated):
 
 def _stackup_layer_value_message(layer, value):
     """Convert to StackupLayerValueMessage."""
-    return stackup_layer_pb2.StackupLayerValueMessage(
-        layer=layer.msg, value=messages.value_message(value)
-    )
+    return stackup_layer_pb2.StackupLayerValueMessage(layer=layer.msg, value=value_message(value))
 
 
 def _layer_roughness_region_message(layer, region):
@@ -82,8 +80,8 @@ class StackupLayer(Layer):
         params = {
             "name": name,
             "type": layer_type.value,
-            "thickness": messages.value_message(thickness),
-            "elevation": messages.value_message(elevation),
+            "thickness": value_message(thickness),
+            "elevation": value_message(elevation),
             "material": material,
         }
 
@@ -234,10 +232,10 @@ class StackupLayer(Layer):
         roughness_model_msg = stackup_layer_pb2.RoughnessModelMessage()
         is_groisse_roughness = isinstance(roughness_model, Value)
         roughness_model_msg.roughness.CopyFrom(
-            messages.value_message(roughness_model if is_groisse_roughness else roughness_model[0])
+            value_message(roughness_model if is_groisse_roughness else roughness_model[0])
         )
         if not is_groisse_roughness:
-            roughness_model_msg.surface_ratio.CopyFrom(messages.value_message(roughness_model[1]))
+            roughness_model_msg.surface_ratio.CopyFrom(value_message(roughness_model[1]))
         request = stackup_layer_pb2.SetRoughnessModelMessage(
             layer_rough_region=_layer_roughness_region_message(self, region),
             roughness_model=roughness_model_msg,
@@ -294,7 +292,7 @@ class StackupLayer(Layer):
     def hfss_solver_properties(self, hfss_solver_props):
         hfss_solver_props_msg = stackup_layer_pb2.HFSSSolverPropertiesMessage(
             dc_thickness_type=hfss_solver_props[0].value,
-            dc_thickness=messages.value_message(hfss_solver_props[1]),
+            dc_thickness=value_message(hfss_solver_props[1]),
             solve_inside=hfss_solver_props[2],
         )
         request = stackup_layer_pb2.SetHFSSSolverPropertiesMessage(

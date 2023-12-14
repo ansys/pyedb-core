@@ -3,7 +3,7 @@
 import ansys.api.edb.v1.extended_net_pb2 as enet_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.net import net_class
+from ansys.edb.core.net.net_class import NetClass
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -21,7 +21,7 @@ class _ExtendedNetQueryBuilder:
         return enet_pb2.ExtendedNetModifyMessage(ext_net=ext_net.msg, net=net.msg)
 
 
-class ExtendedNet(net_class.NetClass):
+class ExtendedNet(NetClass):
     """ExtendedNet class."""
 
     __stub = StubAccessor(StubType.extended_net)

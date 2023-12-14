@@ -1,8 +1,8 @@
 """Layout Obj Instance 3D Geometry."""
 
-from ansys.edb.core.geometry import Triangle3DData
-from ansys.edb.core.inner import utils
+from ansys.edb.core.geometry.triangle3d_data import Triangle3DData
 from ansys.edb.core.inner.parser import to_point3d_data
+from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.layout_instance.layout_obj_instance_geometry import LayoutObjInstanceGeometry
 from ansys.edb.core.session import LayoutObjInstance3DGeometryServiceStub, StubAccessor, StubType
 
@@ -34,4 +34,4 @@ class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
                 to_point3d_data(triangle_msg.point_3),
             )
 
-        return utils.map_list(tesselation_data.tesselation_data, to_3d_triangle)
+        return map_list(tesselation_data.tesselation_data, to_3d_triangle)

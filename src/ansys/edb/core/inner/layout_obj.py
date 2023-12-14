@@ -3,9 +3,12 @@
 import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import ObjBase
-import ansys.edb.core.inner.messages as messages
-from ansys.edb.core.layout import layout
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    get_product_property_ids_message,
+    get_product_property_message,
+    set_product_property_message,
+)
 from ansys.edb.core.session import LayoutObjServiceStub, StubAccessor, StubType
 
 
@@ -17,21 +20,21 @@ class _QueryBuilder:
     @staticmethod
     def get_product_property_type_msg(obj, prod_id, attr_it, layout_type):
         return layout_obj_pb2.GetProductPropertyTypeMessage(
-            target=messages.get_product_property_message(obj, prod_id, attr_it),
+            target=get_product_property_message(obj, prod_id, attr_it),
             type=layout_type.value,
         )
 
     @staticmethod
     def set_product_property_type_msg(obj, prod_id, att_id, value, layout_type):
         return layout_obj_pb2.SetProductPropertyTypeMessage(
-            target=messages.set_product_property_message(obj, prod_id, att_id, value),
+            target=set_product_property_message(obj, prod_id, att_id, value),
             type=layout_type.value,
         )
 
     @staticmethod
     def get_product_property_ids_type_msg(obj, prod_id, layout_type):
         return layout_obj_pb2.GetProductPropertyIdsTypeMessage(
-            target=messages.get_product_property_ids_message(obj, prod_id),
+            target=get_product_property_ids_message(obj, prod_id),
             type=layout_type.value,
         )
 
@@ -56,7 +59,9 @@ class LayoutObj(ObjBase):
 
         Read-Only.
         """
-        return layout.Layout(
+        from ansys.edb.core.layout.layout import Layout
+
+        return Layout(
             self.__stub.GetLayout(_QueryBuilder.layout_obj_target_msg(self, self.layout_obj_type))
         )
 

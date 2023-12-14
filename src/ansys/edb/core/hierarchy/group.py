@@ -5,7 +5,11 @@ from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    group_modify_member_message,
+    object_name_in_layout_message,
+)
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -22,7 +26,9 @@ class Group(HierarchyObj):
         -------
         Group
         """
-        from ansys.edb.core.hierarchy import ComponentGroup, Structure3D, ViaGroup
+        from ansys.edb.core.hierarchy.component_group import ComponentGroup
+        from ansys.edb.core.hierarchy.structure3d import Structure3D
+        from ansys.edb.core.hierarchy.via_group import ViaGroup
 
         if self.is_null:
             return
@@ -53,7 +59,7 @@ class Group(HierarchyObj):
         Group
             Newly created group.
         """
-        return Group(cls.__stub.Create(messages.object_name_in_layout_message(layout, name)))
+        return Group(cls.__stub.Create(object_name_in_layout_message(layout, name)))
 
     @classmethod
     def find(cls, layout, name):
@@ -71,9 +77,7 @@ class Group(HierarchyObj):
         Group
             Group that is found, None otherwise.
         """
-        return Group(
-            cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name))
-        ).cast()
+        return Group(cls.__stub.FindByName(object_name_in_layout_message(layout, name))).cast()
 
     def add_member(self, member):
         """Add an object to the group.
@@ -83,7 +87,7 @@ class Group(HierarchyObj):
         member : :term:`Connectable`
             Object to be added to the group.
         """
-        self.__stub.AddMember(messages.group_modify_member_message(self, member))
+        self.__stub.AddMember(group_modify_member_message(self, member))
 
     def remove_member(self, member):
         """Remove an object from the group.
@@ -93,7 +97,7 @@ class Group(HierarchyObj):
         member : :term:`Connectable`
             Object to be removed from the group.
         """
-        self.__stub.RemoveMember(messages.group_modify_member_message(self, member))
+        self.__stub.RemoveMember(group_modify_member_message(self, member))
 
     def ungroup(self, recursive):
         """Dissolves the group.
@@ -103,7 +107,7 @@ class Group(HierarchyObj):
         recursive : bool
             True if all containing groups should also be dissolved, False otherwise.
         """
-        self.__stub.Ungroup(messages.bool_property_message(self, recursive))
+        self.__stub.Ungroup(bool_property_message(self, recursive))
 
     @property
     def members(self):
@@ -111,7 +115,7 @@ class Group(HierarchyObj):
 
         Read-Only.
         """
-        from ansys.edb.core.inner import factory
+        from ansys.edb.core.inner.factory import create_conn_obj
 
         objs = self.__stub.GetMembers(self.msg).items
-        return [factory.create_conn_obj(co) for co in objs]
+        return [create_conn_obj(co) for co in objs]

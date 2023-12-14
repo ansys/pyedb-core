@@ -3,7 +3,7 @@
 from ansys.api.edb.v1 import package_def_pb2_grpc
 
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, parser
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.messages import (
     edb_obj_message,
     get_product_property_ids_message,
@@ -16,9 +16,10 @@ from ansys.edb.core.inner.messages import (
     value_message,
     value_property_message,
 )
+from ansys.edb.core.inner.parser import to_polygon_data
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
 from ansys.edb.core.utility.heat_sink import HeatSink, HeatSinkFinOrientation
+from ansys.edb.core.utility.value import Value
 
 
 class PackageDef(ObjBase):
@@ -92,7 +93,7 @@ class PackageDef(ObjBase):
         self.__stub.SetName(string_property_message(self, value))
 
     @property
-    @parser.to_polygon_data
+    @to_polygon_data
     def exterior_boundary(self):
         """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary for the package definition."""
         return self.__stub.GetExteriorBoundary(edb_obj_message(self))

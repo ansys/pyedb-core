@@ -7,13 +7,31 @@ from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import ObjBase, messages, variable_server
-from ansys.edb.core.layout import layout
-from ansys.edb.core.primitive import Primitive
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    cell_cutout_message,
+    cell_find_message,
+    cell_set_temperature_settings_message,
+    design_mode_property_message,
+    edb_obj_message,
+    get_product_property_ids_message,
+    get_product_property_message,
+    hfss_extent_info_message,
+    hfss_extent_message,
+    int_property_message,
+    set_product_property_message,
+    string_property_message,
+    value_message,
+)
+from ansys.edb.core.inner.variable_server import VariableServer
+from ansys.edb.core.layout.layout import Layout
+from ansys.edb.core.primitive.primitive import Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.simulation_setup import SimulationSetup
-from ansys.edb.core.utility import TemperatureSettings, Value
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
 from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
+from ansys.edb.core.utility.temperature_settings import TemperatureSettings
+from ansys.edb.core.utility.value import Value
 
 
 class CellType(Enum):
@@ -83,7 +101,7 @@ def primitive_helper(msg):
 # dictionary describing message type and functions to translate them
 _HFSS_EXTENT_MESSAGE_HELPER = {
     "HfssExtentMessage": {
-        "msg": messages.hfss_extent_message,
+        "msg": hfss_extent_message,
         "val": _translate_hfss_extent,
     },
     "bool": {
@@ -91,11 +109,11 @@ _HFSS_EXTENT_MESSAGE_HELPER = {
         "val": bool,
     },
     "ValueMessage": {
-        "msg": messages.value_message,
+        "msg": value_message,
         "val": Value,
     },
     "EDBObjMessage": {
-        "msg": messages.edb_obj_message,
+        "msg": edb_obj_message,
         "val": primitive_helper,
     },
     "HfssExtentsType": {
@@ -112,7 +130,7 @@ _HFSS_EXTENT_MESSAGE_HELPER = {
 # takes user-provided arbitrary args and a list of allowed keywords
 # return a copy including only the valid args
 def sanitize_args(args):
-    """Extract valid extent options and convert them into messages."""
+    """Extract valid extent options and convert them into."""
     return {
         k: _HFSS_EXTENT_MESSAGE_HELPER[HFSS_EXTENT_ARGS[k]]["msg"](args[k])
         for k in filter(lambda k: k in args, HFSS_EXTENT_ARGS.keys())
@@ -137,11 +155,11 @@ class _QueryBuilder:
     @staticmethod
     def set_hfss_extents(cell, extents):
         return cell_pb2.CellSetHfssExtentsMessage(
-            cell=cell.msg, info=messages.hfss_extent_info_message(extents)
+            cell=cell.msg, info=hfss_extent_info_message(extents)
         )
 
 
-class Cell(ObjBase, variable_server.VariableServer):
+class Cell(ObjBase, VariableServer):
     """Cell."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
@@ -155,7 +173,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        variable_server.VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @classmethod
     def create(cls, db, cell_type, cell_name):
@@ -183,7 +201,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
-        return layout.Layout(self.__stub.GetLayout(self.msg))
+        return Layout(self.__stub.GetLayout(self.msg))
 
     @property
     def flattened_layout(self):
@@ -191,7 +209,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
-        return layout.Layout(self.__stub.GetFlattenedLayout(self.msg))
+        return Layout(self.__stub.GetFlattenedLayout(self.msg))
 
     @classmethod
     def find(cls, database, cell_type, name=None, cell_id=None):
@@ -213,7 +231,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         Cell
             Cell that was found, None otherwise.
         """
-        cell = Cell(cls.__stub.Find(messages.cell_find_message(database, cell_type, name, cell_id)))
+        cell = Cell(cls.__stub.Find(cell_find_message(database, cell_type, name, cell_id)))
         return None if cell.is_null else cell
 
     def delete(self):
@@ -245,7 +263,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @is_blackbox.setter
     def is_blackbox(self, value):
-        self.__stub.SetBlackBox(messages.bool_property_message(self, value))
+        self.__stub.SetBlackBox(bool_property_message(self, value))
 
     @property
     def anti_pads_always_on(self):
@@ -258,7 +276,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @anti_pads_always_on.setter
     def anti_pads_always_on(self, value):
-        self.__stub.SetAntiPadsAlwaysOn(messages.bool_property_message(self, value))
+        self.__stub.SetAntiPadsAlwaysOn(bool_property_message(self, value))
 
     @property
     def anti_pads_option(self):
@@ -272,7 +290,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @anti_pads_option.setter
     def anti_pads_option(self, value):
-        self.__stub.SetAntiPadsOption(messages.int_property_message(self, value))
+        self.__stub.SetAntiPadsOption(int_property_message(self, value))
 
     @property
     def is_symbolic_footprint(self):
@@ -289,7 +307,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @name.setter
     def name(self, value):
-        self.__stub.SetName(messages.string_property_message(self, value))
+        self.__stub.SetName(string_property_message(self, value))
 
     @property
     def design_mode(self):
@@ -298,7 +316,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @design_mode.setter
     def design_mode(self, value):
-        self.__stub.SetDesignMode(messages.design_mode_property_message(self, value))
+        self.__stub.SetDesignMode(design_mode_property_message(self, value))
 
     @property
     def hfss_extent_info(self):
@@ -325,9 +343,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @temperature_settings.setter
     def temperature_settings(self, value):
-        self.__stub.SetTemperatureSettings(
-            messages.cell_set_temperature_settings_message(self, value)
-        )
+        self.__stub.SetTemperatureSettings(cell_set_temperature_settings_message(self, value))
 
     def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True):
         """Cutout an existing cell into a new cell.
@@ -350,7 +366,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         """
         return Cell(
             self.__stub.CutOut(
-                messages.cell_cutout_message(
+                cell_cutout_message(
                     self, included_nets, clipped_nets, clipping_polygon, clean_clipping
                 )
             )
@@ -369,9 +385,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         list[int]
             List of the user-defined attribute IDs for properties stored in this object
         """
-        ids = self.__stub.GetProductPropertyIds(
-            messages.get_product_property_ids_message(self, prod_id)
-        ).ids
+        ids = self.__stub.GetProductPropertyIds(get_product_property_ids_message(self, prod_id)).ids
         return [prop_id for prop_id in ids]
 
     def get_product_property(self, prod_id, attr_id):
@@ -389,9 +403,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         str
             The string stored in this property.
         """
-        return self.__stub.GetProductProperty(
-            messages.get_product_property_message(self, prod_id, attr_id)
-        )
+        return self.__stub.GetProductProperty(get_product_property_message(self, prod_id, attr_id))
 
     def set_product_property(self, prod_id, attr_id, prop_value):
         """Set the product property of the cell associated with the given product and attribute ids.
@@ -406,7 +418,7 @@ class Cell(ObjBase, variable_server.VariableServer):
             The string stored in this property.
         """
         self.__stub.SetProductProperty(
-            messages.set_product_property_message(self, prod_id, attr_id, prop_value)
+            set_product_property_message(self, prod_id, attr_id, prop_value)
         )
 
     def delete_simulation_setup(self, name):
@@ -417,7 +429,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         name : str
             Name of the setup to delete.
         """
-        self.__stub.DeleteSimulationSetup(messages.string_property_message(self, name))
+        self.__stub.DeleteSimulationSetup(string_property_message(self, name))
 
     @property
     def simulation_setups(self):
@@ -455,4 +467,4 @@ class Cell(ObjBase, variable_server.VariableServer):
         list[:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`]
             A list of boxes; one around each via discovered.
         """
-        self.__stub.GenerateViaSmartBox(messages.string_property_message(self, net_name))
+        self.__stub.GenerateViaSmartBox(string_property_message(self, net_name))

@@ -26,11 +26,27 @@ from ansys.api.edb.v1 import (
 from ansys.edb.core import hierarchy, terminal
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import conn_obj, messages, parser
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.inner.conn_obj import ConnObj
+from ansys.edb.core.inner.messages import (
+    bool_message,
+    edb_obj_message,
+    edb_obj_name_message,
+    int_property_message,
+    layer_ref_message,
+    net_ref_message,
+    point_message,
+    point_pair_message,
+    point_pair_property_message,
+    pointer_property_message,
+    polygon_data_message,
+    value_message,
+    value_property_message,
+)
+from ansys.edb.core.inner.parser import to_point_data_pair, to_polygon_data, to_polygon_data_list
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
 from ansys.edb.core.utility.layer_map import LayerMap
+from ansys.edb.core.utility.value import Value
 
 
 class _PrimitiveQueryBuilder:
@@ -54,7 +70,7 @@ class _PrimitiveQueryBuilder:
 
     @staticmethod
     def set_layer(p, layer):
-        return primitive_pb2.SetLayerMessage(target=p.msg, layer=messages.layer_ref_message(layer))
+        return primitive_pb2.SetLayerMessage(target=p.msg, layer=layer_ref_message(layer))
 
 
 class PrimitiveType(Enum):
@@ -173,7 +189,7 @@ class BackDrillType(Enum):
     DEPTH_DRILL = padstack_instance_pb2.DEPTH_DRILL
 
 
-class Primitive(conn_obj.ConnObj):
+class Primitive(ConnObj):
     """Base class representing primitive objects."""
 
     __stub: primitive_pb2_grpc.PrimitiveServiceStub = StubAccessor(StubType.primitive)
@@ -335,7 +351,7 @@ class Primitive(conn_obj.ConnObj):
             Id of zone primitive will use.
 
         """
-        self.__stub.MakeZonePrimitive(messages.int_property_message(self, zone_id))
+        self.__stub.MakeZonePrimitive(int_property_message(self, zone_id))
 
 
 class Rectangle(Primitive):
@@ -381,15 +397,15 @@ class Rectangle(Primitive):
             cls.__stub.Create(
                 rectangle_pb2.RectangleCreationMessage(
                     layout=layout.msg,
-                    layer=messages.layer_ref_message(layer),
-                    net=messages.net_ref_message(net),
+                    layer=layer_ref_message(layer),
+                    net=net_ref_message(net),
                     representation_type=rep_type.value,
-                    parameter1=messages.value_message(param1),
-                    parameter2=messages.value_message(param2),
-                    parameter3=messages.value_message(param3),
-                    parameter4=messages.value_message(param4),
-                    corner_radius=messages.value_message(corner_rad),
-                    rotation=messages.value_message(rotation),
+                    parameter1=value_message(param1),
+                    parameter2=value_message(param2),
+                    parameter3=value_message(param3),
+                    parameter4=value_message(param4),
+                    corner_radius=value_message(corner_rad),
+                    rotation=value_message(rotation),
                 )
             )
         )
@@ -463,12 +479,12 @@ class Rectangle(Primitive):
                 target=self.msg,
                 parameters=rectangle_pb2.RectangleParametersMessage(
                     representation_type=rep_type.value,
-                    parameter1=messages.value_message(param1),
-                    parameter2=messages.value_message(param2),
-                    parameter3=messages.value_message(param3),
-                    parameter4=messages.value_message(param4),
-                    corner_radius=messages.value_message(corner_rad),
-                    rotation=messages.value_message(rotation),
+                    parameter1=value_message(param1),
+                    parameter2=value_message(param2),
+                    parameter3=value_message(param3),
+                    parameter4=value_message(param4),
+                    corner_radius=value_message(corner_rad),
+                    rotation=value_message(rotation),
                 ),
             )
         )
@@ -490,7 +506,7 @@ class Rectangle(Primitive):
         return Rectangle.render(*self.get_parameters())
 
     @classmethod
-    @parser.to_polygon_data
+    @to_polygon_data
     def render(
         cls,
         rep_type,
@@ -535,24 +551,24 @@ class Rectangle(Primitive):
             center_y = y_lower_left_or_center_y + height / 2.0
             polygon_data = cls.__stub.Render(
                 rectangle_pb2.RectanglePolygonDataMessage(
-                    center_x=messages.value_message(center_x),
-                    center_y=messages.value_message(center_y),
-                    width=messages.value_message(width),
-                    height=messages.value_message(height),
-                    corner_radius=messages.value_message(corner_radius),
-                    rotation=messages.value_message(rotation),
+                    center_x=value_message(center_x),
+                    center_y=value_message(center_y),
+                    width=value_message(width),
+                    height=value_message(height),
+                    corner_radius=value_message(corner_radius),
+                    rotation=value_message(rotation),
                     ishole=is_hole,
                 )
             )
         elif rep_type == RectangleRepresentationType.CENTER_WIDTH_HEIGHT:
             polygon_data = cls.__stub.Render(
                 rectangle_pb2.RectanglePolygonDataMessage(
-                    center_x=messages.value_message(x_lower_left_or_center_x),
-                    center_y=messages.value_message(y_lower_left_or_center_y),
-                    width=messages.value_message(x_upper_right_or_width),
-                    height=messages.value_message(y_upper_right_or_height),
-                    corner_radius=messages.value_message(corner_radius),
-                    rotation=messages.value_message(rotation),
+                    center_x=value_message(x_lower_left_or_center_x),
+                    center_y=value_message(y_lower_left_or_center_y),
+                    width=value_message(x_upper_right_or_width),
+                    height=value_message(y_upper_right_or_height),
+                    corner_radius=value_message(corner_radius),
+                    rotation=value_message(rotation),
                     ishole=is_hole,
                 )
             )
@@ -594,17 +610,17 @@ class Circle(Primitive):
             cls.__stub.Create(
                 circle_pb2.CircleCreationMessage(
                     layout=layout.msg,
-                    layer=messages.layer_ref_message(layer),
-                    net=messages.net_ref_message(net),
-                    center_x=messages.value_message(center_x),
-                    center_y=messages.value_message(center_y),
-                    radius=messages.value_message(radius),
+                    layer=layer_ref_message(layer),
+                    net=net_ref_message(net),
+                    center_x=value_message(center_x),
+                    center_y=value_message(center_y),
+                    radius=value_message(radius),
                 )
             )
         )
 
     @classmethod
-    @parser.to_polygon_data
+    @to_polygon_data
     def render(cls, center_x, center_y, radius, is_hole):
         """Render a circle.
 
@@ -626,9 +642,9 @@ class Circle(Primitive):
         """
         return cls.__stub.Render(
             circle_pb2.CircleRenderMessage(
-                center_x=messages.value_message(center_x),
-                center_y=messages.value_message(center_y),
-                radius=messages.value_message(radius),
+                center_x=value_message(center_x),
+                center_y=value_message(center_y),
+                radius=value_message(radius),
                 is_hole=is_hole,
             )
         )
@@ -677,9 +693,9 @@ class Circle(Primitive):
             circle_pb2.SetCircleParametersMessage(
                 target=self.msg,
                 parameters=circle_pb2.CircleParametersMessage(
-                    center_x=messages.value_message(center_x),
-                    center_y=messages.value_message(center_y),
-                    radius=messages.value_message(radius),
+                    center_x=value_message(center_x),
+                    center_y=value_message(center_y),
+                    radius=value_message(radius),
                 ),
             )
         )
@@ -724,9 +740,9 @@ class Text(Primitive):
             cls.__stub.Create(
                 text_pb2.TextCreationMessage(
                     layout=layout.msg,
-                    layer=messages.layer_ref_message(layer),
-                    center_x=messages.value_message(center_x),
-                    center_y=messages.value_message(center_y),
+                    layer=layer_ref_message(layer),
+                    center_x=value_message(center_x),
+                    center_y=value_message(center_y),
                     text=text,
                 )
             )
@@ -775,8 +791,8 @@ class Text(Primitive):
             text_pb2.SetTextDataMessage(
                 target=self.msg,
                 data=text_pb2.TextDataMessage(
-                    center_x=messages.value_message(center_x),
-                    center_y=messages.value_message(center_y),
+                    center_x=value_message(center_x),
+                    center_y=value_message(center_y),
                     text=text,
                 ),
             )
@@ -788,9 +804,9 @@ class _PolygonQueryBuilder:
     def create(layout, layer, net, points):
         return polygon_pb2.PolygonCreationMessage(
             layout=layout.msg,
-            layer=messages.layer_ref_message(layer),
-            net=messages.net_ref_message(net),
-            points=messages.polygon_data_message(points),
+            layer=layer_ref_message(layer),
+            net=net_ref_message(net),
+            points=polygon_data_message(points),
         )
 
 
@@ -824,7 +840,7 @@ class Polygon(Primitive):
         )
 
     @property
-    @parser.to_polygon_data
+    @to_polygon_data
     def polygon_data(self):
         """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Outer contour of the Polygon object."""
         return self.__stub.GetPolygonData(self.msg)
@@ -832,9 +848,7 @@ class Polygon(Primitive):
     @polygon_data.setter
     def polygon_data(self, poly):
         self.__stub.SetPolygonData(
-            polygon_pb2.SetPolygonDataMessage(
-                target=self.msg, poly=messages.polygon_data_message(poly)
-            )
+            polygon_pb2.SetPolygonDataMessage(target=self.msg, poly=polygon_data_message(poly))
         )
 
     @property
@@ -851,13 +865,13 @@ class _PathQueryBuilder:
     def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
         return path_pb2.PathCreationMessage(
             layout=layout.msg,
-            layer=messages.layer_ref_message(layer),
-            net=messages.net_ref_message(net),
-            width=messages.value_message(width),
+            layer=layer_ref_message(layer),
+            net=net_ref_message(net),
+            width=value_message(width),
             end_cap1=end_cap1.value,
             end_cap2=end_cap2.value,
             corner=corner.value,
-            points=messages.polygon_data_message(points),
+            points=polygon_data_message(points),
         )
 
 
@@ -903,7 +917,7 @@ class Path(Primitive):
         )
 
     @classmethod
-    @parser.to_polygon_data
+    @to_polygon_data
     def render(cls, width, end_cap1, end_cap2, corner_style, path):
         """Render a Path object.
 
@@ -927,16 +941,16 @@ class Path(Primitive):
         """
         return cls.__stub.Render(
             path_pb2.PathRenderMessage(
-                width=messages.value_message(width),
+                width=value_message(width),
                 end_cap1=end_cap1.value,
                 end_cap2=end_cap2.value,
                 corner_style=corner_style.value,
-                path=messages.polygon_data_message(path),
+                path=polygon_data_message(path),
             )
         )
 
     @property
-    @parser.to_polygon_data
+    @to_polygon_data
     def center_line(self):
         """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Center line for this Path."""
         return self.__stub.GetCenterLine(self.msg)
@@ -944,7 +958,7 @@ class Path(Primitive):
     @center_line.setter
     def center_line(self, center_line):
         path_pb2.SetCenterLineMessage(
-            target=self.msg, center_line=messages.polygon_data_message(center_line)
+            target=self.msg, center_line=polygon_data_message(center_line)
         )
 
     def get_end_cap_style(self):
@@ -1004,7 +1018,7 @@ class Path(Primitive):
         """
         clip_info_msg = self.__stub.GetClipInfo(self.msg)
         return (
-            parser.to_polygon_data(clip_info_msg.clipping_poly),
+            to_polygon_data(clip_info_msg.clipping_poly),
             clip_info_msg.keep_inside,
         )
 
@@ -1021,7 +1035,7 @@ class Path(Primitive):
         self.__stub.SetClipInfo(
             path_pb2.SetClipInfoMessage(
                 target=self.msg,
-                clipping_poly=messages.polygon_data_message(clipping_poly),
+                clipping_poly=polygon_data_message(clipping_poly),
                 keep_inside=keep_inside,
             )
         )
@@ -1050,7 +1064,7 @@ class Path(Primitive):
         self.__stub.SetWidth(
             path_pb2.SetWidthMessage(
                 target=self.msg,
-                width=path_pb2.WidthMessage(width=messages.value_message(width)),
+                width=path_pb2.WidthMessage(width=value_message(width)),
             )
         )
 
@@ -1064,9 +1078,7 @@ class Path(Primitive):
         self.__stub.SetMiterRatio(
             path_pb2.SetMiterRatioMessage(
                 target=self.msg,
-                miter_ratio=path_pb2.MiterRatioMessage(
-                    miter_ratio=messages.value_message(miter_ratio)
-                ),
+                miter_ratio=path_pb2.MiterRatioMessage(miter_ratio=value_message(miter_ratio)),
             )
         )
 
@@ -1100,20 +1112,20 @@ class _BondwireQueryBuilder:
     ):
         return bondwire_pb2.BondwireCreateMessage(
             layout=layout.msg,
-            net=messages.net_ref_message(net),
+            net=net_ref_message(net),
             bondwire_type=bondwire_type.value,
             definition_name=definition_name,
             placement_layer=placement_layer,
-            width=messages.value_message(width),
+            width=value_message(width),
             material=material,
-            start_context=messages.edb_obj_message(start_context),
+            start_context=edb_obj_message(start_context),
             start_layer_name=start_layer_name,
-            start_x=messages.value_message(start_x),
-            start_y=messages.value_message(start_y),
-            end_context=messages.edb_obj_message(end_context),
+            start_x=value_message(start_x),
+            start_y=value_message(start_y),
+            end_context=edb_obj_message(end_context),
             end_layer_name=end_layer_name,
-            end_x=messages.value_message(end_x),
-            end_y=messages.value_message(end_y),
+            end_x=value_message(end_x),
+            end_y=value_message(end_y),
         )
 
     @staticmethod
@@ -1140,9 +1152,7 @@ class _BondwireQueryBuilder:
 
     @staticmethod
     def set_cross_section_height_message(b, height):
-        return bondwire_pb2.SetCrossSectionHeightMessage(
-            target=b.msg, height=messages.value_message(height)
-        )
+        return bondwire_pb2.SetCrossSectionHeightMessage(target=b.msg, height=value_message(height))
 
     @staticmethod
     def set_definition_name_message(b, definition_name):
@@ -1151,7 +1161,7 @@ class _BondwireQueryBuilder:
     @staticmethod
     def get_elevation_message(b, cell_instance):
         return bondwire_pb2.GetElevationMessage(
-            bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance)
+            bw=b.msg, cell_instance=edb_obj_message(cell_instance)
         )
 
     @staticmethod
@@ -1162,15 +1172,15 @@ class _BondwireQueryBuilder:
 
     @staticmethod
     def bondwire_value_message(b, value):
-        return bondwire_pb2.BondwireValueMessage(target=b.msg, value=messages.value_message(value))
+        return bondwire_pb2.BondwireValueMessage(target=b.msg, value=value_message(value))
 
     @staticmethod
     def bondwire_traj_message(x1, y1, y2, x2):
         return bondwire_pb2.BondwireTrajMessage(
-            x1=messages.value_message(x1),
-            y1=messages.value_message(y1),
-            x2=messages.value_message(x2),
-            y2=messages.value_message(y2),
+            x1=value_message(x1),
+            y1=value_message(y1),
+            x2=value_message(x2),
+            y2=value_message(y2),
         )
 
     @staticmethod
@@ -1495,22 +1505,22 @@ class _PadstackInstanceQueryBuilder:
             net=net.msg,
             name=name,
             padstack_def=padstack_def.msg,
-            rotation=messages.value_message(rotation),
+            rotation=value_message(rotation),
             top_layer=top_layer.msg,
             bottom_layer=bottom_layer.msg,
-            solder_ball_layer=messages.edb_obj_message(solder_ball_layer),
-            layer_map=messages.edb_obj_message(layer_map),
+            solder_ball_layer=edb_obj_message(solder_ball_layer),
+            layer_map=edb_obj_message(layer_map),
         )
 
     @staticmethod
     def set_name_message(padstack_inst, name):
-        return messages.edb_obj_name_message(padstack_inst, name)
+        return edb_obj_name_message(padstack_inst, name)
 
     @staticmethod
     def position_and_rotation_message(x, y, rotation):
         return padstack_instance_pb2.PadstackInstPositionAndRotationMessage(
-            position=messages.point_message((x, y)),
-            rotation=messages.value_message(rotation),
+            position=point_message((x, y)),
+            rotation=value_message(rotation),
         )
 
     @staticmethod
@@ -1545,22 +1555,22 @@ class _PadstackInstanceQueryBuilder:
     def back_drill_message(padstack_inst, from_bottom):
         return padstack_instance_pb2.PadstackInstBackDrillByLayerMessage(
             target=padstack_inst.msg,
-            from_bottom=messages.bool_message(from_bottom),
+            from_bottom=bool_message(from_bottom),
         )
 
     @staticmethod
     def back_drill_by_layer_message(drill_to_layer, diameter, offset):
         return padstack_instance_pb2.PadstackInstBackDrillByLayerMessage(
             drill_to_layer=drill_to_layer.msg,
-            diameter=messages.value_message(diameter),
-            offset=messages.value_message(offset),
+            diameter=value_message(diameter),
+            offset=value_message(offset),
         )
 
     @staticmethod
     def back_drill_by_depth_message(drill_depth, diameter):
         return padstack_instance_pb2.PadstackInstBackDrillByDepthMessage(
-            drill_depth=messages.value_message(drill_depth),
-            diameter=messages.value_message(diameter),
+            drill_depth=value_message(drill_depth),
+            diameter=value_message(diameter),
         )
 
     @staticmethod
@@ -1570,8 +1580,8 @@ class _PadstackInstanceQueryBuilder:
         return padstack_instance_pb2.PadstackInstSetBackDrillByLayerMessage(
             target=padstack_inst.msg,
             drill_to_layer=drill_to_layer.msg,
-            offset=messages.value_message(offset),
-            diameter=messages.value_message(diameter),
+            offset=value_message(offset),
+            diameter=value_message(diameter),
             from_bottom=from_bottom,
         )
 
@@ -1579,8 +1589,8 @@ class _PadstackInstanceQueryBuilder:
     def set_back_drill_by_depth_message(padstack_inst, drill_depth, diameter, from_bottom):
         return padstack_instance_pb2.PadstackInstSetBackDrillByDepthMessage(
             target=padstack_inst.msg,
-            drill_depth=messages.value_message(drill_depth),
-            diameter=messages.value_message(diameter),
+            drill_depth=value_message(drill_depth),
+            diameter=value_message(diameter),
             from_bottom=from_bottom,
         )
 
@@ -1588,7 +1598,7 @@ class _PadstackInstanceQueryBuilder:
     def hole_overrides_message(is_hole_override, hole_override):
         return padstack_instance_pb2.PadstackInstHoleOverridesMessage(
             is_hole_override=is_hole_override,
-            hole_override=messages.value_message(hole_override),
+            hole_override=value_message(hole_override),
         )
 
     @staticmethod
@@ -1801,7 +1811,7 @@ class PadstackInstance(Primitive):
 
     @layer_map.setter
     def layer_map(self, layer_map):
-        self.__stub.SetLayerMap(messages.pointer_property_message(self, layer_map))
+        self.__stub.SetLayerMap(pointer_property_message(self, layer_map))
 
     def get_hole_overrides(self):
         """Get the hole overrides of Padstack Instance.
@@ -2039,9 +2049,9 @@ class BoardBendDef(Primitive):
                 board_bend_def_pb2.BoardBendDefCreateMessage(
                     layout=layout.msg,
                     zone_prim=zone_prim.msg,
-                    middle=messages.point_pair_message(bend_middle),
-                    radius=messages.value_message(bend_radius),
-                    angle=messages.value_message(bend_angle),
+                    middle=point_pair_message(bend_middle),
+                    radius=value_message(bend_radius),
+                    angle=value_message(bend_angle),
                 )
             )
         )
@@ -2055,14 +2065,14 @@ class BoardBendDef(Primitive):
         return Primitive(self.__stub.GetBoundaryPrim(self.msg)).cast()
 
     @property
-    @parser.to_point_data_pair
+    @to_point_data_pair
     def bend_middle(self):
         """:term:`PointDataTuple`: Tuple of the bend middle starting and ending points."""
         return self.__stub.GetBendMiddle(self.msg)
 
     @bend_middle.setter
     def bend_middle(self, bend_middle):
-        self.__stub.SetBendMiddle(messages.point_pair_property_message(self, bend_middle))
+        self.__stub.SetBendMiddle(point_pair_property_message(self, bend_middle))
 
     @property
     def radius(self):
@@ -2071,7 +2081,7 @@ class BoardBendDef(Primitive):
 
     @radius.setter
     def radius(self, val):
-        self.__stub.SetRadius(messages.value_property_message(self, val))
+        self.__stub.SetRadius(value_property_message(self, val))
 
     @property
     def angle(self):
@@ -2080,10 +2090,10 @@ class BoardBendDef(Primitive):
 
     @angle.setter
     def angle(self, val):
-        self.__stub.SetAngle(messages.value_property_message(self, val))
+        self.__stub.SetAngle(value_property_message(self, val))
 
     @property
-    @parser.to_polygon_data_list
+    @to_polygon_data_list
     def bent_regions(self):
         """:obj:`list` of :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Bent region polygons.
 

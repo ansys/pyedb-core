@@ -6,7 +6,8 @@ from ansys.api.edb.v1.component_model_pb2_grpc import (
 )
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import string_property_message
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -22,7 +23,7 @@ class ComponentModel(ObjBase):
 
     @reference_file.setter
     def reference_file(self, value):
-        self.__stub.SetReferenceFile(messages.string_property_message(self, value))
+        self.__stub.SetReferenceFile(string_property_message(self, value))
 
 
 class NPortComponentModel(ComponentModel):
@@ -85,4 +86,4 @@ class DynamicLinkComponentModel(ComponentModel):
 
     @design_name.setter
     def design_name(self, value):
-        self.__stub.SetDesignName(messages.string_property_message(self, value))
+        self.__stub.SetDesignName(string_property_message(self, value))

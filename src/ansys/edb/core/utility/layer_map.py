@@ -4,7 +4,8 @@ from enum import Enum
 
 from ansys.api.edb.v1 import layer_map_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import edb_internal_id_message, int_property_message
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -33,8 +34,8 @@ class _QueryBuilder:
         """
         return pb.LayerMapTwoIntPropertiesMessage(
             target=target,
-            from_id=messages.edb_internal_id_message(from_id),
-            to_id=messages.edb_internal_id_message(to_id),
+            from_id=edb_internal_id_message(from_id),
+            to_id=edb_internal_id_message(to_id),
         )
 
 
@@ -100,7 +101,7 @@ class LayerMap(ObjBase):
     def get_mapping_forward(self, layer_id):
         """Get list of ids mapped forward with the given id (key)."""
         msg = self.__stub.GetMappingForward(
-            messages.int_property_message(
+            int_property_message(
                 target=self,
                 value=layer_id,
             )
@@ -110,7 +111,7 @@ class LayerMap(ObjBase):
     def get_mapping_backward(self, layer_id):
         """Get list of ids mapped backward with the given id (value)."""
         msg = self.__stub.GetMappingBackward(
-            messages.int_property_message(
+            int_property_message(
                 target=self,
                 value=layer_id,
             )

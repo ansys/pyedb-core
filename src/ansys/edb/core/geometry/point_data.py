@@ -6,17 +6,17 @@ import sys
 
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
-from ansys.edb.core import session, utility
-from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.inner.messages import point_data_rotate_message, point_data_with_line_message
+from ansys.edb.core.inner.parser import to_point_data
+from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.utility.conversions import to_point, to_value
+from ansys.edb.core.utility.value import Value
 
 
 class PointData:
     """Represent arbitrary (x, y) coordinates that exist on 2D space."""
 
-    __stub: point_data_pb2_grpc.PointDataServiceStub = session.StubAccessor(
-        session.StubType.point_data
-    )
+    __stub: point_data_pb2_grpc.PointDataServiceStub = StubAccessor(StubType.point_data)
 
     def __init__(self, *data):
         """Initialize a point data from list of coordinates.
@@ -36,11 +36,11 @@ class PointData:
                 pass
 
         if len(data) == 1:
-            self._x = self._arc_h = conversions.to_value(data[0])
+            self._x = self._arc_h = to_value(data[0])
             self._y = sys.float_info.max
         elif len(data) == 2:
-            self._x = conversions.to_value(data[0])
-            self._y = conversions.to_value(data[1])
+            self._x = to_value(data[0])
+            self._y = to_value(data[1])
             if not self._y.is_parametric and self._y == sys.float_info.max:
                 self._arc_h = self._x
         else:
@@ -139,7 +139,7 @@ class PointData:
         return [self.arc_height] if self.is_arc else [self.x, self.y]
 
     def _map_reduce(self, other, op):
-        other = conversions.to_point(other)
+        other = to_point(other)
         return [reduce(op, values) for values in zip(self._matrix_values, other._matrix_values)]
 
     @property
@@ -201,7 +201,7 @@ class PointData:
         """
         if self.is_arc:
             return 0
-        return math.sqrt(sum([v**2 for v in self._matrix_values], utility.Value(0)).value)
+        return math.sqrt(sum([v**2 for v in self._matrix_values], Value(0)).value)
 
     def normalized(self):
         """Normalize the point vector.
@@ -214,7 +214,7 @@ class PointData:
         n = [0] * len(self) if mag == 0 else [v / mag for v in self._matrix_values]
         return self.__class__(n)
 
-    @parser.to_point_data
+    @to_point_data
     def closest(self, start, end):
         """Return the closest point on the line segment [start, end] from the point.
 
@@ -230,7 +230,7 @@ class PointData:
         typing.Optional[PointData]
         """
         if not self.is_arc:
-            return self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
+            return self.__stub.ClosestPoint(point_data_with_line_message(self, start, end))
 
     def distance(self, start, end=None):
         """Compute the shortest distance from the point to the line segment [start, end] when end point is given, \
@@ -248,9 +248,7 @@ class PointData:
         if end is None:
             return (self - start).magnitude()
         else:
-            return self.__stub.Distance(
-                messages.point_data_with_line_message(self, start, end)
-            ).value
+            return self.__stub.Distance(point_data_with_line_message(self, start, end)).value
 
     def cross(self, other):
         """Compute the cross product of the point vector with another.
@@ -265,7 +263,7 @@ class PointData:
         -------
         typing.Optional[utility.Value]
         """
-        other = conversions.to_point(other)
+        other = to_point(other)
         if not self.is_arc and not other.is_arc:
             return self.x * other.y - self.y * other.x
 
@@ -282,11 +280,11 @@ class PointData:
         -------
         typing.Optional[PointData]
         """
-        vector = conversions.to_point(vector)
+        vector = to_point(vector)
         if not self.is_arc and not vector.is_arc:
             return self + vector
 
-    @parser.to_point_data
+    @to_point_data
     def rotate(self, angle, center):
         """Rotate a point at the specified center by the specified angle.
 
@@ -303,7 +301,7 @@ class PointData:
         typing.Optional[PointData]
         """
         if not self.is_arc:
-            return self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))
+            return self.__stub.Rotate(point_data_rotate_message(self, center, angle))
 
     def dot(self, other):
         """Perform per-component multiplication (dot product) of two points.
@@ -316,7 +314,7 @@ class PointData:
         -------
         float
         """
-        return sum(self._map_reduce(other, operator.__mul__), utility.Value(0)).value
+        return sum(self._map_reduce(other, operator.__mul__), Value(0)).value
 
     def angle(self, other):
         """Get the angle between another vector.
@@ -330,5 +328,5 @@ class PointData:
         float
             angle in radian.
         """
-        other = conversions.to_point(other)
+        other = to_point(other)
         return math.acos(self.dot(other) / (self.magnitude() * other.magnitude()))

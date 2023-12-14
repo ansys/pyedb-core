@@ -3,7 +3,14 @@
 from ansys.api.edb.v1 import r_tree_pb2_grpc
 import ansys.api.edb.v1.r_tree_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages, parser
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    box_message,
+    double_message,
+    edb_obj_message,
+    polygon_data_message,
+)
+from ansys.edb.core.inner.parser import to_box
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -12,8 +19,8 @@ class _QueryBuilder:
     def r_tree_obj_message(rtree, polygon, prop_id):
         """Create an RTreeObjMessage."""
         return pb.RTreeObjMessage(
-            target=messages.edb_obj_message(rtree),
-            polygon=messages.polygon_data_message(polygon),
+            target=edb_obj_message(rtree),
+            polygon=polygon_data_message(polygon),
             prop=prop_id,
         )
 
@@ -21,8 +28,8 @@ class _QueryBuilder:
     def r_tree_search_message(rtree, box, bb_search):
         """Create a RTreeSearchMessage."""
         return pb.RTreeSearchMessage(
-            target=messages.edb_obj_message(rtree),
-            box=messages.box_message(box[0], box[1]),
+            target=edb_obj_message(rtree),
+            box=box_message(box[0], box[1]),
             bb_search=bb_search,
         )
 
@@ -30,8 +37,8 @@ class _QueryBuilder:
     def r_tree_geometry_request_message(rtree, polygon, prop_id, increment_visit):
         """Create an RTreeGeometryRequestMessage."""
         return pb.RTreeGeometryRequestMessage(
-            target=messages.edb_obj_message(rtree),
-            polygon=messages.polygon_data_message(polygon),
+            target=edb_obj_message(rtree),
+            polygon=polygon_data_message(polygon),
             prop=prop_id,
             increment_visit=increment_visit,
         )
@@ -84,7 +91,7 @@ class RTree(ObjBase):
         RTree
             The new RTree created.
         """
-        rtree_created = RTree(cls.__stub.Create(messages.double_message(tolerance)))
+        rtree_created = RTree(cls.__stub.Create(double_message(tolerance)))
         return rtree_created
 
     def _handle_rtree_obj(self, rtree_obj):
@@ -98,7 +105,7 @@ class RTree(ObjBase):
             return True
 
     @property
-    @parser.to_box
+    @to_box
     def extent(self):
         """Tuple[geometry.PointData, geometry.PointData]: Get the bounding-box for the contents of the RTree."""
         return self.__stub.GetExtent(self.msg)
@@ -184,7 +191,7 @@ class RTree(ObjBase):
             msg = self.__stub.NearestNeighbor(
                 _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
-            return self._id_to_obj[int(msg.id)], parser.to_box(msg.coordinates)
+            return self._id_to_obj[int(msg.id)], to_box(msg.coordinates)
 
     def touching_geometry(self, rtree_obj, increment_visit):
         """Find all geometry touching the provided RTree object (polygon, id pair).  Note that the  provided RTree \
@@ -237,7 +244,7 @@ class RTree(ObjBase):
     def connected_geometry_sets(self):
         """:obj:`list` of :obj:`list` of RTreeObj: Connected geometry sets of an RTree \
         (ids, sizes)."""
-        msg = self.__stub.GetConnectedGeometrySets(messages.edb_obj_message(self))
+        msg = self.__stub.GetConnectedGeometrySets(edb_obj_message(self))
         set_start = 0
         rtree_obj_sets = []
         for set_size in range(0, len(msg.sizes) - 1):
@@ -250,7 +257,7 @@ class RTree(ObjBase):
 
     def increment_visit(self):
         """Increment the visit count, effectively marking all items in the tree unvisited."""
-        self.__stub.IncrementVisit(messages.edb_obj_message(self))
+        self.__stub.IncrementVisit(edb_obj_message(self))
 
     def is_visited(self, rtree_obj):
         """Check whether a given object has been visited.
@@ -285,4 +292,4 @@ class RTree(ObjBase):
     @property
     def get_visit(self):
         """Int: Visit count for the tree."""
-        return self.__stub.GetVisit(messages.edb_obj_message(self)).value
+        return self.__stub.GetVisit(edb_obj_message(self)).value

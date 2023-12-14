@@ -1,11 +1,13 @@
 """This module allows for the creating of objects while avoid circular imports."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy import CellInstance, Group, PinGroup
-import ansys.edb.core.layout as layout
-from ansys.edb.core.primitive import PadstackInstance, Primitive
+from ansys.edb.core.hierarchy.cell_instance import CellInstance
+from ansys.edb.core.hierarchy.group import Group
+from ansys.edb.core.hierarchy.pin_group import PinGroup
+from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
+from ansys.edb.core.primitive.primitive import PadstackInstance, Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal import Terminal, TerminalInstance
+from ansys.edb.core.terminal.terminals import Terminal, TerminalInstance
 
 
 def create_conn_obj(msg):
@@ -35,5 +37,5 @@ def create_conn_obj(msg):
     elif type == LayoutObjType.PIN_GROUP:
         return PinGroup(msg)
     elif type == LayoutObjType.VOLTAGE_REGULATOR:
-        return layout.VoltageRegulator(msg)
+        return VoltageRegulator(msg)
     raise TypeError("Encountered an unknown layout obj type")

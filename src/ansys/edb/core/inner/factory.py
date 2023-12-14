@@ -9,7 +9,7 @@ from ansys.edb.core.terminal import Terminal, TerminalInstance
 
 
 def create_conn_obj(msg):
-    """Create a ConnObj of its derived type based on its layout obj type.
+    """Create a connection object of its derived type based on its layout object type.
 
     Parameters
     ----------
@@ -36,4 +36,4 @@ def create_conn_obj(msg):
         return PinGroup(msg)
     elif type == LayoutObjType.VOLTAGE_REGULATOR:
         return layout.VoltageRegulator(msg)
-    raise TypeError("Encountered an unknown layout obj type")
+    raise TypeError("Encountered an unknown layout object type.")

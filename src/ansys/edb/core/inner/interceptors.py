@@ -1,4 +1,4 @@
-"""Defines client side GRPC interceptors."""
+"""Client-side gRPC interceptors."""
 
 import abc
 import logging
@@ -9,7 +9,7 @@ from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode, Inva
 
 
 class Interceptor(UnaryUnaryClientInterceptor, metaclass=abc.ABCMeta):
-    """Base interceptor class."""
+    """Provides the base interceptor class."""
 
     def __init__(self, logger):
         """Initialize a base interceptor with a logger."""
@@ -21,7 +21,7 @@ class Interceptor(UnaryUnaryClientInterceptor, metaclass=abc.ABCMeta):
         pass
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        """Intercept a GRPC call."""
+        """Intercept a gRPC call."""
         response = continuation(client_call_details, request)
 
         self._post_process(response)
@@ -30,7 +30,7 @@ class Interceptor(UnaryUnaryClientInterceptor, metaclass=abc.ABCMeta):
 
 
 class LoggingInterceptor(Interceptor):
-    """Log EDB errors on each request."""
+    """Logs EDB errors on each request."""
 
     _LOG_LEVELS = {
         "log-fatal": logging.CRITICAL,
@@ -61,7 +61,7 @@ class LoggingInterceptor(Interceptor):
 
 
 class ExceptionInterceptor(Interceptor):
-    """Handle general GRPC errors on each request."""
+    """Handles general gRPC errors on each request."""
 
     def _post_process(self, response):
         code = response.code()

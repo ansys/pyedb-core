@@ -1,4 +1,4 @@
-"""VariableServer Class."""
+"""Variable server class."""
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 import ansys.api.edb.v1.variable_server_pb2 as variable_server_msgs
@@ -9,47 +9,48 @@ from ansys.edb.core.utility import Value
 
 
 class VariableServer:
-    """Class that owns variables.
+    """Provides a class that owns variables.
 
-    It can be either a Database, Cell, or ComponentDef object.
+    A variables can be either a database, cell, or component definition object.
     """
 
     def __init__(self, variable_owner):
-        """Initialize VariableServer object.
+        """Initialize the variable server object.
 
         Parameters
         ----------
         variable_owner : EdbObjMessage
-            ID of either a Database, Cell, or ComponentDef.
+            ID of either a database, cell, or component definition.
         """
-        assert variable_owner.id > 0, "Invalid variable owner id"
+        assert variable_owner.id > 0, "Invalid variable owner ID,"
         self.variable_owner = EDBObjMessage(id=variable_owner.id)
 
     def add_variable(self, name, value, is_param=False):
-        """Add new variable.
+        """Add a variable.
 
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
         value : str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`
-            value can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+            Value, which can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+            instance.
         is_param : bool, optional
-            True means the new variable is a parameter, False means it is a local variable
+            Whether the new variable is a parameter. The default is ``False``, which means it is a local variable.
 
         Notes
         -----
-        Variables can be added to the following EDB objects
+        Variables can be added to the following EDB objects:
 
-        *   :class:`Database <ansys.edb.core.database.Database>`. Variable names must begin with a '$'
-        *   :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
-        *   :class:`Cell <ansys.edb.core.layout.Cell>`
-        *   :class:`Layout <ansys.edb.core.layout.Layout>` -- adds variable
-            to corresponding :class:`Cell <ansys.edb.core.layout.Cell>`
+        * :class:`Database <ansys.edb.core.database.Database>` (Variable names must begin with a '$'.)
+        * :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+        * :class:`Cell <ansys.edb.core.layout.Cell>`
+        * :class:`Layout <ansys.edb.core.layout.Layout>` (Adds variable to the corresponding
+          :class:`Cell <ansys.edb.core.layout.Cell>` instance.
 
         Examples
         --------
-        Adding variables to a Cell and creating a Value that references those variables
+        Add variables to a cell and create a value that references these variables.
 
         >>> param = Value(33.1)
         >>> cell.add_variable("blue1", param)
@@ -67,18 +68,19 @@ class VariableServer:
         get_variable_server_stub().AddVariable(temp)
 
     def add_menu_variable(self, name, values, is_param=False, index=0):
-        """Add new menu variable.
+        """Add a menu variable.
 
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
         values : list[str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`]
-            each element can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+            Each element can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+            instance.
         is_param : bool, optional
-            True means the new variable is a parameter, False means it is a local variable
+            Whether the new variable is a parameter. The default is ``False``, which means it is a local variable.
         index : int, optional
-            The index of the value that is initially selected
+            Index of the value that is initially selected. The default is ``0``.
         """
         list_of_vms = []
         for value in values:
@@ -94,12 +96,12 @@ class VariableServer:
         get_variable_server_stub().AddMenuVariable(temp)
 
     def delete_variable(self, name):
-        """Delete an existing variable.
+        """Delete a variable.
 
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
         """
         temp = variable_server_msgs.VariableNameMessage(
             variable_owner=self.variable_owner, name=name
@@ -107,13 +109,14 @@ class VariableServer:
         get_variable_server_stub().DeleteVariable(temp)
 
     def set_variable_value(self, name, new_value):
-        """Set variable to have a new value.
+        """Set a variable to a new value.
 
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
         new_value : str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`
+            New value.
         """
         temp = variable_server_msgs.SetVariableMessage(
             variable_owner=self.variable_owner, name=name, value=value_message(new_value)
@@ -126,11 +129,12 @@ class VariableServer:
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
 
         Returns
         -------
         :class:`Value <ansys.edb.core.utility.Value>`
+            Variable value.
         """
         temp = variable_server_msgs.VariableNameMessage(
             variable_owner=self.variable_owner, name=name
@@ -138,17 +142,17 @@ class VariableServer:
         return Value(get_variable_server_stub().GetVariableValue(temp))
 
     def is_parameter(self, name):
-        """Return the type of the variable.
+        """Determine if the variable is parameter.
 
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
 
         Returns
         -------
         bool
-            True if the variable is a parameter, otherwise False
+            ``True`` if the variable is a parameter, ``False`` otherwise.
         """
         temp = variable_server_msgs.VariableNameMessage(
             variable_owner=self.variable_owner, name=name
@@ -156,12 +160,12 @@ class VariableServer:
         return get_variable_server_stub().IsParameter(temp).value
 
     def get_all_variable_names(self):
-        """Return names of all variables that were added.
+        """Get all variable names.
 
         Returns
         -------
         list[str]
-            Names of each variable
+            Names of all variables.
         """
         return get_variable_server_stub().GetAllVariableNames(self.variable_owner).names
 
@@ -171,12 +175,12 @@ class VariableServer:
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
 
         Returns
         -------
         str
-            Description of the variable
+            Description of the variable.
         """
         temp = variable_server_msgs.VariableNameMessage(
             variable_owner=self.variable_owner, name=name
@@ -184,14 +188,14 @@ class VariableServer:
         return get_variable_server_stub().GetVariableDesc(temp).value
 
     def set_variable_desc(self, name, desc):
-        """Set variable to have a new description.
+        """Set a variable to have a new description.
 
         Parameters
         ----------
         name : str
-            Variable name
+            Variable name.
         desc : str
-             New variable description
+             New variable description.
         """
         temp = variable_server_msgs.SetDescriptionMessage(
             variable_owner=self.variable_owner, name=name, desc=desc
@@ -199,12 +203,15 @@ class VariableServer:
         get_variable_server_stub().SetVariableDesc(temp)
 
     def create_value(self, val):
-        """Create a :class:`Value <ansys.edb.core.utility.Value>` that can reference variables in this VariableServer.
+        """Create a :class:`Value <ansys.edb.core.utility.Value>` instance.
+
+        This instancc can reference variables on the variable server.
 
         Parameters
         ----------
         val : str, int, float, complex
-            val can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+            Value, which can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+            instance.
 
 
         Returns
@@ -213,15 +220,16 @@ class VariableServer:
 
         Notes
         -----
-        Creating a value from a :class:`Database <ansys.edb.core.database.Database>` can reference variables in the
-        :class:`Database <ansys.edb.core.database.Database>`.
+        Creating a value from a :class:`Database <ansys.edb.core.database.Database>` instance can reference variables
+        in the :class:`Database <ansys.edb.core.database.Database>` instance.
 
-        Creating a value from a :class:`Cell <ansys.edb.core.layout.Cell>` can reference variables in both the
-        :class:`Database <ansys.edb.core.database.Database>` and the :class:`Cell <ansys.edb.core.layout.Cell>`.
+        Creating a value from a :class:`Cell <ansys.edb.core.layout.Cell>` instance can reference variables in
+        both the :class:`Database <ansys.edb.core.database.Database>` instance and the
+        :class:`Cell <ansys.edb.core.layout.Cell>` instance
 
-        Creating a value from a :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` can reference variables
-        in both the :class:`Database <ansys.edb.core.database.Database>` and
-        the :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`.
+        Creating a value from a :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance can reference
+        variables in both the :class:`Database <ansys.edb.core.database.Database>` instance and
+        the :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance.
         """
         if isinstance(val, str):
             return Value(val, self)

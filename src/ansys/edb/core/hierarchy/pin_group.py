@@ -1,8 +1,14 @@
 """Pin Group."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.primitive import PadstackInstance
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    pin_group_creation_message,
+    pin_group_get_unique_name_message,
+    pin_group_lookup_message,
+    pin_group_pins_modify_message,
+)
+from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -30,7 +36,7 @@ class PinGroup(ObjBase):
             Newly created pin group.
         """
         return PinGroup(
-            cls.__stub.Create(messages.pin_group_creation_message(layout, name, padstack_instances))
+            cls.__stub.Create(pin_group_creation_message(layout, name, padstack_instances))
         )
 
     @classmethod
@@ -49,7 +55,7 @@ class PinGroup(ObjBase):
         PinGroup
             Pin group that is found, None otherwise.
         """
-        return PinGroup(cls.__stub.FindByName(messages.pin_group_lookup_message(layout, name)))
+        return PinGroup(cls.__stub.FindByName(pin_group_lookup_message(layout, name)))
 
     @classmethod
     def unique_name(cls, layout, prefix):
@@ -66,9 +72,7 @@ class PinGroup(ObjBase):
         -------
         str
         """
-        return cls.__stub.GetUniqueName(
-            messages.pin_group_get_unique_name_message(layout, prefix)
-        ).value
+        return cls.__stub.GetUniqueName(pin_group_get_unique_name_message(layout, prefix)).value
 
     @property
     def name(self):
@@ -95,7 +99,7 @@ class PinGroup(ObjBase):
         ----------
         pins : list[:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`]
         """
-        self.__stub.AddPins(messages.pin_group_pins_modify_message(self, pins))
+        self.__stub.AddPins(pin_group_pins_modify_message(self, pins))
 
     def remove_pins(self, pins):
         """Remove the list of padstack instances from the group.
@@ -104,4 +108,4 @@ class PinGroup(ObjBase):
         ----------
         pins : list[:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`]
         """
-        self.__stub.RemovePins(messages.pin_group_pins_modify_message(self, pins))
+        self.__stub.RemovePins(pin_group_pins_modify_message(self, pins))

@@ -4,7 +4,12 @@ from enum import Enum
 
 import ansys.api.edb.v1.siwave_simulation_settings_pb2 as pb
 
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    double_property_message,
+    int_property_message,
+    string_property_message,
+)
 from ansys.edb.core.session import (
     SIWaveAdvancedSettingsServiceStub,
     SIWaveDCAdvancedSettingsServiceStub,
@@ -108,7 +113,7 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
     @use_si_settings.setter
     def use_si_settings(self, use_si_settings):
-        self.__stub.SetUseSISettings(messages.bool_property_message(self, use_si_settings))
+        self.__stub.SetUseSISettings(bool_property_message(self, use_si_settings))
 
     @property
     def use_custom_settings(self):
@@ -117,7 +122,7 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
     @use_custom_settings.setter
     def use_custom_settings(self, use_si_settings):
-        self.__stub.SetUseCustomSettings(messages.bool_property_message(self, use_si_settings))
+        self.__stub.SetUseCustomSettings(bool_property_message(self, use_si_settings))
 
     @property
     def si_slider_pos(self):
@@ -126,7 +131,7 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
     @si_slider_pos.setter
     def si_slider_pos(self, si_slider_pos):
-        self.__stub.SetSISliderPos(messages.int_property_message(self, si_slider_pos))
+        self.__stub.SetSISliderPos(int_property_message(self, si_slider_pos))
 
     @property
     def pi_slider_pos(self):
@@ -135,7 +140,7 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
     @pi_slider_pos.setter
     def pi_slider_pos(self, pi_slider_pos):
-        self.__stub.SetPISliderPos(messages.int_property_message(self, pi_slider_pos))
+        self.__stub.SetPISliderPos(int_property_message(self, pi_slider_pos))
 
 
 class SIWaveAdvancedSettings(SimulationSettingsBase):
@@ -151,7 +156,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @include_co_plane_coupling.setter
     def include_co_plane_coupling(self, include_co_plane_coupling):
         self.__stub.SetIncludeCoPlaneCoupling(
-            messages.bool_property_message(self, include_co_plane_coupling)
+            bool_property_message(self, include_co_plane_coupling)
         )
 
     @property
@@ -162,7 +167,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @include_inter_plane_coupling.setter
     def include_inter_plane_coupling(self, include_inter_plane_coupling):
         self.__stub.SetIncludeInterPlaneCoupling(
-            messages.bool_property_message(self, include_inter_plane_coupling)
+            bool_property_message(self, include_inter_plane_coupling)
         )
 
     @property
@@ -173,7 +178,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @include_split_plane_coupling.setter
     def include_split_plane_coupling(self, include_split_plane_coupling):
         self.__stub.SetIncludeSplitPlaneCoupling(
-            messages.bool_property_message(self, include_split_plane_coupling)
+            bool_property_message(self, include_split_plane_coupling)
         )
 
     @property
@@ -184,7 +189,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @include_fringe_plane_coupling.setter
     def include_fringe_plane_coupling(self, include_fringe_plane_coupling):
         self.__stub.SetIncludeFringePlaneCoupling(
-            messages.bool_property_message(self, include_fringe_plane_coupling)
+            bool_property_message(self, include_fringe_plane_coupling)
         )
 
     @property
@@ -195,7 +200,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @include_trace_plane_coupling.setter
     def include_trace_plane_coupling(self, include_trace_plane_coupling):
         self.__stub.SetIncludeTracePlaneCoupling(
-            messages.bool_property_message(self, include_trace_plane_coupling)
+            bool_property_message(self, include_trace_plane_coupling)
         )
 
     @property
@@ -205,9 +210,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @cross_talk_threshold.setter
     def cross_talk_threshold(self, cross_talk_threshold):
-        self.__stub.SetCrossTalkThreshold(
-            messages.string_property_message(self, cross_talk_threshold)
-        )
+        self.__stub.SetCrossTalkThreshold(string_property_message(self, cross_talk_threshold))
 
     @property
     def max_coupled_lines(self):
@@ -216,7 +219,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @max_coupled_lines.setter
     def max_coupled_lines(self, max_coupled_lines):
-        self.__stub.SetMaxCoupledLines(messages.int_property_message(self, max_coupled_lines))
+        self.__stub.SetMaxCoupledLines(int_property_message(self, max_coupled_lines))
 
     @property
     def min_void_area(self):
@@ -225,7 +228,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @min_void_area.setter
     def min_void_area(self, min_void_area):
-        self.__stub.SetMinVoidArea(messages.string_property_message(self, min_void_area))
+        self.__stub.SetMinVoidArea(string_property_message(self, min_void_area))
 
     @property
     def min_pad_area_to_mesh(self):
@@ -234,9 +237,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @min_pad_area_to_mesh.setter
     def min_pad_area_to_mesh(self, min_pad_area_to_mesh):
-        self.__stub.SetMinPadAreaToMesh(
-            messages.string_property_message(self, min_pad_area_to_mesh)
-        )
+        self.__stub.SetMinPadAreaToMesh(string_property_message(self, min_pad_area_to_mesh))
 
     @property
     def min_plane_area_to_mesh(self):
@@ -245,9 +246,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @min_plane_area_to_mesh.setter
     def min_plane_area_to_mesh(self, min_plane_area_to_mesh):
-        self.__stub.SetMinPlaneAreaToMesh(
-            messages.string_property_message(self, min_plane_area_to_mesh)
-        )
+        self.__stub.SetMinPlaneAreaToMesh(string_property_message(self, min_plane_area_to_mesh))
 
     @property
     def snap_length_threshold(self):
@@ -256,9 +255,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @snap_length_threshold.setter
     def snap_length_threshold(self, snap_length_threshold):
-        self.__stub.SetSnapLengthThreshold(
-            messages.string_property_message(self, snap_length_threshold)
-        )
+        self.__stub.SetSnapLengthThreshold(string_property_message(self, snap_length_threshold))
 
     @property
     def mesh_automatic(self):
@@ -267,7 +264,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @mesh_automatic.setter
     def mesh_automatic(self, mesh_automatic):
-        self.__stub.SetMeshAutomatic(messages.bool_property_message(self, mesh_automatic))
+        self.__stub.SetMeshAutomatic(bool_property_message(self, mesh_automatic))
 
     @property
     def mesh_frequency(self):
@@ -276,7 +273,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @mesh_frequency.setter
     def mesh_frequency(self, mesh_frequency):
-        self.__stub.SetMeshFrequency(messages.string_property_message(self, mesh_frequency))
+        self.__stub.SetMeshFrequency(string_property_message(self, mesh_frequency))
 
     @property
     def return_current_distribution(self):
@@ -286,7 +283,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @return_current_distribution.setter
     def return_current_distribution(self, return_current_distribution):
         self.__stub.Set3DReturnCurrentDistribution(
-            messages.bool_property_message(self, return_current_distribution)
+            bool_property_message(self, return_current_distribution)
         )
 
     @property
@@ -296,7 +293,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @include_vi_sources.setter
     def include_vi_sources(self, include_vi_sources):
-        self.__stub.SetIncludeVISources(messages.bool_property_message(self, include_vi_sources))
+        self.__stub.SetIncludeVISources(bool_property_message(self, include_vi_sources))
 
     @property
     def include_inf_gnd(self):
@@ -305,7 +302,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @include_inf_gnd.setter
     def include_inf_gnd(self, include_inf_gnd):
-        self.__stub.SetIncludeInfGnd(messages.bool_property_message(self, include_inf_gnd))
+        self.__stub.SetIncludeInfGnd(bool_property_message(self, include_inf_gnd))
 
     @property
     def inf_gnd_location(self):
@@ -314,7 +311,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @inf_gnd_location.setter
     def inf_gnd_location(self, inf_gnd_location):
-        self.__stub.SetInfGndLocation(messages.string_property_message(self, inf_gnd_location))
+        self.__stub.SetInfGndLocation(string_property_message(self, inf_gnd_location))
 
     @property
     def perform_erc(self):
@@ -323,7 +320,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @perform_erc.setter
     def perform_erc(self, perform_erc):
-        self.__stub.SetPerformERC(messages.bool_property_message(self, perform_erc))
+        self.__stub.SetPerformERC(bool_property_message(self, perform_erc))
 
     @property
     def ignore_non_functional_pads(self):
@@ -333,7 +330,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @ignore_non_functional_pads.setter
     def ignore_non_functional_pads(self, ignore_non_functional_pads):
         self.__stub.SetIgnoreNonFunctionalPads(
-            messages.bool_property_message(self, ignore_non_functional_pads)
+            bool_property_message(self, ignore_non_functional_pads)
         )
 
 
@@ -349,9 +346,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @use_dc_custom_settings.setter
     def use_dc_custom_settings(self, use_dc_custom_settings):
-        self.__stub.SetUseDCCustomSettings(
-            messages.bool_property_message(self, use_dc_custom_settings)
-        )
+        self.__stub.SetUseDCCustomSettings(bool_property_message(self, use_dc_custom_settings))
 
     @property
     def compute_inductance(self):
@@ -360,7 +355,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @compute_inductance.setter
     def compute_inductance(self, compute_inductance):
-        self.__stub.SetComputeInductance(messages.bool_property_message(self, compute_inductance))
+        self.__stub.SetComputeInductance(bool_property_message(self, compute_inductance))
 
     @property
     def plot_jv(self):
@@ -369,7 +364,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @plot_jv.setter
     def plot_jv(self, plot_jv):
-        self.__stub.SetPlotJV(messages.bool_property_message(self, plot_jv))
+        self.__stub.SetPlotJV(bool_property_message(self, plot_jv))
 
     @property
     def contact_radius(self):
@@ -378,7 +373,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @contact_radius.setter
     def contact_radius(self, contact_radius):
-        self.__stub.SetContactRadius(messages.string_property_message(self, contact_radius))
+        self.__stub.SetContactRadius(string_property_message(self, contact_radius))
 
     @property
     def dc_slider_pos(self):
@@ -387,7 +382,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @dc_slider_pos.setter
     def dc_slider_pos(self, dc_slider_pos):
-        self.__stub.SetDCSliderPos(messages.int_property_message(self, dc_slider_pos))
+        self.__stub.SetDCSliderPos(int_property_message(self, dc_slider_pos))
 
 
 class SIWaveDCAdvancedSettings(SimulationSettingsBase):
@@ -405,7 +400,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
     @dc_min_plane_area_to_mesh.setter
     def dc_min_plane_area_to_mesh(self, dc_min_plane_area_to_mesh):
         self.__stub.SetDCMinPlaneAreaToMesh(
-            messages.string_property_message(self, dc_min_plane_area_to_mesh)
+            string_property_message(self, dc_min_plane_area_to_mesh)
         )
 
     @property
@@ -415,9 +410,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @dc_min_void_area_to_mesh.setter
     def dc_min_void_area_to_mesh(self, dc_min_void_area_to_mesh):
-        self.__stub.SetDCMinVoidAreaToMesh(
-            messages.string_property_message(self, dc_min_void_area_to_mesh)
-        )
+        self.__stub.SetDCMinVoidAreaToMesh(string_property_message(self, dc_min_void_area_to_mesh))
 
     @property
     def max_init_mesh_edge_length(self):
@@ -427,7 +420,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
     @max_init_mesh_edge_length.setter
     def max_init_mesh_edge_length(self, max_init_mesh_edge_length):
         self.__stub.SetMaxInitMeshEdgeLength(
-            messages.string_property_message(self, max_init_mesh_edge_length)
+            string_property_message(self, max_init_mesh_edge_length)
         )
 
     @property
@@ -438,7 +431,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
     @perform_adaptive_refinement.setter
     def perform_adaptive_refinement(self, perform_adaptive_refinement):
         self.__stub.SetPerformAdaptiveRefinement(
-            messages.bool_property_message(self, perform_adaptive_refinement)
+            bool_property_message(self, perform_adaptive_refinement)
         )
 
     @property
@@ -448,7 +441,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @max_num_passes.setter
     def max_num_passes(self, max_num_passes):
-        self.__stub.SetMaxNumPasses(messages.int_property_message(self, max_num_passes))
+        self.__stub.SetMaxNumPasses(int_property_message(self, max_num_passes))
 
     @property
     def min_num_passes(self):
@@ -457,7 +450,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @min_num_passes.setter
     def min_num_passes(self, min_num_passes):
-        self.__stub.SetMinNumPasses(messages.int_property_message(self, min_num_passes))
+        self.__stub.SetMinNumPasses(int_property_message(self, min_num_passes))
 
     @property
     def percent_local_refinement(self):
@@ -466,9 +459,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @percent_local_refinement.setter
     def percent_local_refinement(self, percent_local_refinement):
-        self.__stub.SetPercentLocalRefinement(
-            messages.int_property_message(self, percent_local_refinement)
-        )
+        self.__stub.SetPercentLocalRefinement(int_property_message(self, percent_local_refinement))
 
     @property
     def energy_error(self):
@@ -477,7 +468,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @energy_error.setter
     def energy_error(self, energy_error):
-        self.__stub.SetEnergyError(messages.double_property_message(self, energy_error))
+        self.__stub.SetEnergyError(double_property_message(self, energy_error))
 
     @property
     def mesh_bws(self):
@@ -486,7 +477,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @mesh_bws.setter
     def mesh_bws(self, mesh_bws):
-        self.__stub.SetMeshBws(messages.bool_property_message(self, mesh_bws))
+        self.__stub.SetMeshBws(bool_property_message(self, mesh_bws))
 
     @property
     def refine_bws(self):
@@ -495,7 +486,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @refine_bws.setter
     def refine_bws(self, refine_bws):
-        self.__stub.SetRefineBws(messages.bool_property_message(self, refine_bws))
+        self.__stub.SetRefineBws(bool_property_message(self, refine_bws))
 
     @property
     def mesh_vias(self):
@@ -504,7 +495,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @mesh_vias.setter
     def mesh_vias(self, mesh_vias):
-        self.__stub.SetMeshVias(messages.bool_property_message(self, mesh_vias))
+        self.__stub.SetMeshVias(bool_property_message(self, mesh_vias))
 
     @property
     def refine_vias(self):
@@ -513,7 +504,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @refine_vias.setter
     def refine_vias(self, refine_vias):
-        self.__stub.SetRefineVias(messages.bool_property_message(self, refine_vias))
+        self.__stub.SetRefineVias(bool_property_message(self, refine_vias))
 
     @property
     def num_bw_sides(self):
@@ -522,7 +513,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @num_bw_sides.setter
     def num_bw_sides(self, num_bw_sides):
-        self.__stub.SetNumBwSides(messages.int_property_message(self, num_bw_sides))
+        self.__stub.SetNumBwSides(int_property_message(self, num_bw_sides))
 
     @property
     def num_via_sides(self):
@@ -531,7 +522,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @num_via_sides.setter
     def num_via_sides(self, num_via_sides):
-        self.__stub.SetNumViaSides(messages.int_property_message(self, num_via_sides))
+        self.__stub.SetNumViaSides(int_property_message(self, num_via_sides))
 
 
 class SIWaveSParameterSettings(SimulationSettingsBase):
@@ -546,7 +537,7 @@ class SIWaveSParameterSettings(SimulationSettingsBase):
 
     @use_state_space.setter
     def use_state_space(self, use_state_space):
-        self.__stub.SetUseStateSpace(messages.bool_property_message(self, use_state_space))
+        self.__stub.SetUseStateSpace(bool_property_message(self, use_state_space))
 
     @property
     def interpolation(self):

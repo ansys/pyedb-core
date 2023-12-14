@@ -1,7 +1,11 @@
 """Differential pair."""
 
-from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.layout_obj import LayoutObjType
+from ansys.edb.core.inner.messages import (
+    differential_pair_creation_message,
+    differential_pair_net_refs_message,
+    string_property_message,
+)
 from ansys.edb.core.net.net import Net
 from ansys.edb.core.net.net_class import NetClass
 from ansys.edb.core.session import DifferentialPairServiceStub, StubAccessor, StubType
@@ -36,9 +40,7 @@ class DifferentialPair(NetClass):
             Newly created differential pair.
         """
         return cls(
-            cls.__stub.Create(
-                messages.differential_pair_creation_message(layout, name, pos_net, neg_net)
-            )
+            cls.__stub.Create(differential_pair_creation_message(layout, name, pos_net, neg_net))
         )
 
     @classmethod
@@ -58,7 +60,7 @@ class DifferentialPair(NetClass):
             The differential pair that was found. Check the returned differential pair's \
             :obj:`is_null <ansys.edb.core.net.DifferentialPair.is_null>` property to see if it exists.
         """
-        return cls(cls.__stub.FindByName(messages.string_property_message(layout, name)))
+        return cls(cls.__stub.FindByName(string_property_message(layout, name)))
 
     @property
     def differential_pair(self):
@@ -69,7 +71,7 @@ class DifferentialPair(NetClass):
     @differential_pair.setter
     def differential_pair(self, value):
         self.__stub.SetDifferentialPair(
-            messages.differential_pair_net_refs_message(self, value[0], value[1])
+            differential_pair_net_refs_message(self, value[0], value[1])
         )
 
     @property
@@ -80,7 +82,7 @@ class DifferentialPair(NetClass):
     @positive_net.setter
     def positive_net(self, value):
         self.__stub.SetDifferentialPair(
-            messages.differential_pair_net_refs_message(self, value, self.differential_pair[1])
+            differential_pair_net_refs_message(self, value, self.differential_pair[1])
         )
 
     @property
@@ -91,7 +93,7 @@ class DifferentialPair(NetClass):
     @negative_net.setter
     def negative_net(self, value):
         self.__stub.SetDifferentialPair(
-            messages.differential_pair_net_refs_message(self, self.differential_pair[0], value)
+            differential_pair_net_refs_message(self, self.differential_pair[0], value)
         )
 
     @property

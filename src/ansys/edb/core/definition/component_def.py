@@ -1,11 +1,17 @@
 """Component Def Definition."""
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
-from ansys.edb.core.definition import component_model, component_pin
+from ansys.edb.core.definition.component_model import ComponentModel
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    component_def_creation_message,
+    edb_obj_pair_message,
+    object_name_in_layout_message,
+    string_property_message,
+)
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.layout import cell
+from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -33,7 +39,7 @@ class ComponentDef(ObjBase):
             Newly created component definition.
         """
         return ComponentDef(
-            cls.__stub.Create(messages.component_def_creation_message(db, comp_def_name, fp))
+            cls.__stub.Create(component_def_creation_message(db, comp_def_name, fp))
         )
 
     @classmethod
@@ -52,9 +58,7 @@ class ComponentDef(ObjBase):
         ComponentDef
             Component definition that was found, None otherwise.
         """
-        return ComponentDef(
-            cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
-        )
+        return ComponentDef(cls.__stub.FindByName(object_name_in_layout_message(db, comp_def_name)))
 
     @property
     def definition_type(self):
@@ -68,16 +72,16 @@ class ComponentDef(ObjBase):
 
     @name.setter
     def name(self, value):
-        self.__stub.SetName(messages.string_property_message(self, value))
+        self.__stub.SetName(string_property_message(self, value))
 
     @property
     def footprint(self):
         """:class:`Cell <ansys.edb.core.layout.Cell>`: Footprint of the component definition."""
-        return cell.Cell(self.__stub.GetFootprintCell(self.msg))
+        return Cell(self.__stub.GetFootprintCell(self.msg))
 
     @footprint.setter
     def footprint(self, value):
-        self.__stub.SetFootprintCell(messages.edb_obj_pair_message(self, value))
+        self.__stub.SetFootprintCell(edb_obj_pair_message(self, value))
 
     @property
     def component_models(self):
@@ -87,7 +91,7 @@ class ComponentDef(ObjBase):
         Read-Only.
         """
         objs = self.__stub.GetComponentModels(self.msg).items
-        return map_list(objs, component_model.ComponentModel)
+        return map_list(objs, ComponentModel)
 
     @property
     def component_pins(self):
@@ -96,5 +100,7 @@ class ComponentDef(ObjBase):
 
         Read-Only.
         """
+        from ansys.edb.core.definition.component_pin import ComponentPin
+
         objs = self.__stub.GetComponentPins(self.msg).items
-        return map_list(objs, component_pin.ComponentPin)
+        return map_list(objs, ComponentPin)

@@ -1,8 +1,9 @@
 """Component Pin Definition."""
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 
-from ansys.edb.core.definition import component_def
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.definition.component_def import ComponentDef
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import edb_obj_name_message, string_property_message
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -27,7 +28,7 @@ class ComponentPin(ObjBase):
         ComponentPin
             Newly created component pin.
         """
-        return ComponentPin(cls.__stub.Create(messages.edb_obj_name_message(comp_def, name)))
+        return ComponentPin(cls.__stub.Create(edb_obj_name_message(comp_def, name)))
 
     @classmethod
     def find(cls, comp_def, name):
@@ -45,7 +46,7 @@ class ComponentPin(ObjBase):
         ComponentPin
             Component pin that was found, None otherwise.
         """
-        return ComponentPin(cls.__stub.FindByName(messages.edb_obj_name_message(comp_def, name)))
+        return ComponentPin(cls.__stub.FindByName(edb_obj_name_message(comp_def, name)))
 
     @property
     def name(self):
@@ -54,7 +55,7 @@ class ComponentPin(ObjBase):
 
     @name.setter
     def name(self, value):
-        self.__stub.SetName(messages.string_property_message(self, value))
+        self.__stub.SetName(string_property_message(self, value))
 
     @property
     def number(self):
@@ -71,4 +72,4 @@ class ComponentPin(ObjBase):
 
         Read-Only.
         """
-        return component_def.ComponentDef(self.__stub.GetComponentDef(self.msg))
+        return ComponentDef(self.__stub.GetComponentDef(self.msg))

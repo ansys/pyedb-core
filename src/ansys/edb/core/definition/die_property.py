@@ -6,9 +6,16 @@ import ansys.api.edb.v1.die_property_pb2 as die_property_pb2
 from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    edb_obj_message,
+    set_die_orientation_message,
+    set_die_type_message,
+    value_message,
+    value_property_message,
+)
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class DieOrientation(Enum):
@@ -61,7 +68,7 @@ class DieProperty(ObjBase):
         DieProperty
             The cloned die property created.
         """
-        return DieProperty(self.__stub.Clone(messages.edb_obj_message(self)))
+        return DieProperty(self.__stub.Clone(edb_obj_message(self)))
 
     @property
     def die_type(self):
@@ -70,7 +77,7 @@ class DieProperty(ObjBase):
 
     @die_type.setter
     def die_type(self, value):
-        self.__stub.SetDieType(messages.set_die_type_message(self, value))
+        self.__stub.SetDieType(set_die_type_message(self, value))
 
     @property
     def height(self):
@@ -78,11 +85,11 @@ class DieProperty(ObjBase):
 
         Property can be set with :term:`ValueLike`
         """
-        return Value(self.__stub.GetHeight(messages.edb_obj_message(self)))
+        return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter
     def height(self, height):
-        self.__stub.SetHeight(messages.value_property_message(self, messages.value_message(height)))
+        self.__stub.SetHeight(value_property_message(self, value_message(height)))
 
     @property
     def die_orientation(self):
@@ -91,4 +98,4 @@ class DieProperty(ObjBase):
 
     @die_orientation.setter
     def die_orientation(self, value):
-        self.__stub.SetOrientation(messages.set_die_orientation_message(self, value))
+        self.__stub.SetOrientation(set_die_orientation_message(self, value))

@@ -1,9 +1,11 @@
 """Layout Obj Instance."""
 
-from ansys.edb.core.inner import ObjBase, parser, utils
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.factory import create_conn_obj
 from ansys.edb.core.inner.messages import bool_property_message, layer_ref_property_message
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.inner.parser import to_polygon_data
+from ansys.edb.core.inner.utils import map_list
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.layout_instance.layout_instance_context import LayoutInstanceContext
 from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import (
     LayoutObjInstance2DGeometry,
@@ -56,7 +58,7 @@ class LayoutObjInstance(ObjBase):
         list[LayoutObjInstance2DGeometry or LayoutObjInstance3DGeometry]
         """
         geoms = self.__stub.GetGeometries(layer_ref_property_message(self, layer))
-        return utils.map_list(geoms.geometries, _parse_layout_obj_instance_geometry_message)
+        return map_list(geoms.geometries, _parse_layout_obj_instance_geometry_message)
 
     @property
     def context(self):
@@ -69,7 +71,7 @@ class LayoutObjInstance(ObjBase):
 
         Read-Only
         """
-        return utils.map_list(self.__stub.GetContext(self.msg).strings)
+        return map_list(self.__stub.GetContext(self.msg).strings)
 
     @property
     def layout_instance_context(self):
@@ -88,7 +90,7 @@ class LayoutObjInstance(ObjBase):
         """
         return create_conn_obj(self.__stub.GetLayoutObj(self.msg))
 
-    @parser.to_polygon_data
+    @to_polygon_data
     def get_bbox(self, local=False):
         """Get the bounding box of the layout object instance.
 

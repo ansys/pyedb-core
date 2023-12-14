@@ -3,13 +3,19 @@
 from ansys.api.edb.v1.inst_array_pb2_grpc import InstArrayServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy import cell_instance
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.hierarchy.cell_instance import CellInstance
+from ansys.edb.core.inner.messages import (
+    inst_array_creation_message,
+    point_property_message,
+    string_property_message,
+    value_property_message,
+)
+from ansys.edb.core.inner.parser import to_point_data
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
-class InstArray(cell_instance.CellInstance):
+class InstArray(CellInstance):
     """Class representing an instance array object."""
 
     __stub: InstArrayServiceStub = StubAccessor(StubType.inst_array)
@@ -45,9 +51,7 @@ class InstArray(cell_instance.CellInstance):
         """
         return InstArray(
             cls.__stub.Create(
-                messages.inst_array_creation_message(
-                    layout, name, ref, orig, xaxis, yaxis, xcount, ycount
-                )
+                inst_array_creation_message(layout, name, ref, orig, xaxis, yaxis, xcount, ycount)
             )
         )
 
@@ -67,33 +71,33 @@ class InstArray(cell_instance.CellInstance):
         InstArray
             instance array that is found, None otherwise.
         """
-        return InstArray(cls.__stub.FindByName(messages.string_property_message(layout, name)))
+        return InstArray(cls.__stub.FindByName(string_property_message(layout, name)))
 
     @property
-    @parser.to_point_data
+    @to_point_data
     def orig(self):
         """:class:`PointData <geometry.PointData>`: origin of the instance array."""
         return self.__stub.GetOrig(self.msg)
 
     @property
-    @parser.to_point_data
+    @to_point_data
     def x_axis(self):
         """:class:`PointData <geometry.PointData>`: x axis of the instance array."""
         return self.__stub.GetXAxis(self.msg)
 
     @x_axis.setter
     def x_axis(self, value):
-        self.__stub.SetXAxis(messages.point_property_message(self, value))
+        self.__stub.SetXAxis(point_property_message(self, value))
 
     @property
-    @parser.to_point_data
+    @to_point_data
     def y_axis(self):
         """:class:`PointData <geometry.PointData>`: y axis of the instance array."""
         return self.__stub.GetYAxis(self.msg)
 
     @y_axis.setter
     def y_axis(self, value):
-        self.__stub.SetYAxis(messages.point_property_message(self, value))
+        self.__stub.SetYAxis(point_property_message(self, value))
 
     @property
     def x_count(self):
@@ -102,7 +106,7 @@ class InstArray(cell_instance.CellInstance):
 
     @x_count.setter
     def x_count(self, value):
-        self.__stub.SetXCount(messages.value_property_message(self, value))
+        self.__stub.SetXCount(value_property_message(self, value))
 
     @property
     def y_count(self):
@@ -111,7 +115,7 @@ class InstArray(cell_instance.CellInstance):
 
     @y_count.setter
     def y_count(self, value):
-        self.__stub.SetYCount(messages.value_property_message(self, value))
+        self.__stub.SetYCount(value_property_message(self, value))
 
     def decompose(self):
         """Decompose the instance array."""

@@ -2,7 +2,7 @@
 from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.messages import (
     edb_obj_message,
     edb_obj_name_message,

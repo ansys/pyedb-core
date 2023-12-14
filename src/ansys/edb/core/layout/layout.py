@@ -4,19 +4,21 @@ from ansys.api.edb.v1 import layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy import CellInstance, Group, PinGroup
-from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
-from ansys.edb.core.layer import LayerCollection
-import ansys.edb.core.layout as layout
-from ansys.edb.core.layout.mcad_model import McadModel
-from ansys.edb.core.layout_instance import LayoutInstance
-from ansys.edb.core.net import DifferentialPair, ExtendedNet, Net, NetClass
-from ansys.edb.core.primitive import BoardBendDef, PadstackInstance, Primitive
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    layout_convert_p2v_message,
+    layout_expanded_extent_message,
+    layout_get_items_message,
+    pointer_property_message,
+)
+from ansys.edb.core.inner.parser import to_polygon_data
+from ansys.edb.core.inner.utils import map_list
+from ansys.edb.core.inner.variable_server import VariableServer
+from ansys.edb.core.layer.layer_collection import LayerCollection
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal import Terminal
 
 
-class Layout(ObjBase, variable_server.VariableServer):
+class Layout(ObjBase, VariableServer):
     """Layout."""
 
     __stub: LayoutServiceStub = StubAccessor(StubType.layout)
@@ -29,7 +31,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        variable_server.VariableServer.__init__(self, msg)
+        VariableServer.__init__(self, msg)
 
     @property
     def cell(self):
@@ -57,8 +59,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     def _get_items(self, obj_type, lyt_obj_type_enum, do_cast=False):
         """Get list of layout objects."""
-        items = utils.map_list(
-            self.__stub.GetItems(messages.layout_get_items_message(self, lyt_obj_type_enum)).items,
+        items = map_list(
+            self.__stub.GetItems(layout_get_items_message(self, lyt_obj_type_enum)).items,
             obj_type,
         )
         return items if not do_cast else [item.cast() for item in items]
@@ -70,6 +72,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.primitive.primitive import Primitive
+
         return self._get_items(Primitive, LayoutObjType.PRIMITIVE, True)
 
     @property
@@ -79,6 +83,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.primitive.primitive import PadstackInstance
+
         return self._get_items(PadstackInstance, LayoutObjType.PADSTACK_INSTANCE)
 
     @property
@@ -88,6 +94,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.terminal.terminals import Terminal
+
         return self._get_items(Terminal, LayoutObjType.TERMINAL, True)
 
     @property
@@ -97,6 +105,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.hierarchy.cell_instance import CellInstance
+
         return self._get_items(CellInstance, LayoutObjType.CELL_INSTANCE)
 
     @property
@@ -105,6 +115,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.net.net import Net
+
         return self._get_items(Net, LayoutObjType.NET)
 
     @property
@@ -113,6 +125,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.hierarchy.group import Group
+
         return self._get_items(Group, LayoutObjType.GROUP, True)
 
     @property
@@ -121,6 +135,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.net.net_class import NetClass
+
         return self._get_items(NetClass, LayoutObjType.NET_CLASS)
 
     @property
@@ -130,6 +146,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.net.differential_pair import DifferentialPair
+
         return self._get_items(DifferentialPair, LayoutObjType.DIFFERENTIAL_PAIR)
 
     @property
@@ -139,6 +157,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.hierarchy.pin_group import PinGroup
+
         return self._get_items(PinGroup, LayoutObjType.PIN_GROUP)
 
     @property
@@ -148,7 +168,9 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
-        return self._get_items(layout.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
+        from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
+
+        return self._get_items(VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
 
     @property
     def extended_nets(self):
@@ -157,9 +179,11 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.net.extended_net import ExtendedNet
+
         return self._get_items(ExtendedNet, LayoutObjType.EXTENDED_NET)
 
-    @parser.to_polygon_data
+    @to_polygon_data
     def expanded_extent(
         self, nets, extent, expansion_factor, expansion_unitless, use_round_corner, num_increments
     ):
@@ -192,7 +216,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         Method returns the expansion of the contour, so any voids within expanded objects are ignored.
         """
         return self.__stub.GetExpandedExtentFromNets(
-            messages.layout_expanded_extent_message(
+            layout_expanded_extent_message(
                 self,
                 nets,
                 extent,
@@ -213,9 +237,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         is_pins : bool, optional
             True for pins, false for vias (default).
         """
-        self.__stub.ConvertPrimitivesToVias(
-            messages.layout_convert_p2v_message(self, primitives, is_pins)
-        )
+        self.__stub.ConvertPrimitivesToVias(layout_convert_p2v_message(self, primitives, is_pins))
 
     @property
     def port_reference_terminals_connected(self):
@@ -233,17 +255,21 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.primitive.primitive import Primitive
+
         return [Primitive(msg) for msg in self.__stub.GetZonePrimitives(self.msg)]
 
     @property
     def fixed_zone_primitive(self):
         """:class:`Primitive <ansys.edb.core.primitive.Primitive>` : Fixed :term:`zones <Zone>` primitive."""
+        from ansys.edb.core.primitive.primitive import Primitive
+
         msg = self.__stub.GetFixedZonePrimitive(self.msg)
         return None if msg is None else Primitive(msg).cast()
 
     @fixed_zone_primitive.setter
     def fixed_zone_primitive(self, value):
-        self.__stub.SetFixedZonePrimitives(messages.pointer_property_message(self, value))
+        self.__stub.SetFixedZonePrimitives(pointer_property_message(self, value))
 
     @property
     def board_bend_defs(self):
@@ -252,6 +278,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.primitive.primitive import BoardBendDef
+
         return [BoardBendDef(msg) for msg in self.__stub.GetBoardBendDefs(self.msg)]
 
     def synchronize_bend_manager(self):
@@ -264,6 +292,8 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Read-Only.
         """
+        from ansys.edb.core.layout_instance.layout_instance import LayoutInstance
+
         return LayoutInstance(self.__stub.GetLayoutInstance(self.msg))
 
     def create_stride(self, filename):
@@ -278,6 +308,8 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         McadModel
         """
+        from ansys.edb.core.layout.mcad_model import McadModel
+
         return McadModel.create_stride(layout=self, filename=filename)
 
     def create_hfss(self, filename, design):
@@ -294,6 +326,8 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         McadModel
         """
+        from ansys.edb.core.layout.mcad_model import McadModel
+
         return McadModel.create_hfss(connectable=self, filename=filename, design=design)
 
     def create_3d_comp(self, filename):
@@ -308,4 +342,6 @@ class Layout(ObjBase, variable_server.VariableServer):
         -------
         McadModel
         """
+        from ansys.edb.core.layout.mcad_model import McadModel
+
         return McadModel.create_3d_comp(layout=self, filename=filename)

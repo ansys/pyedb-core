@@ -4,7 +4,7 @@ from enum import Enum
 from ansys.api.edb.v1 import dielectric_material_model_pb2_grpc
 
 from ansys.edb.core import session
-from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner.base import ObjBase
 
 
 class DielectricMaterialModelType(Enum):

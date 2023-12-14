@@ -7,11 +7,34 @@ import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb.core import hierarchy, primitive
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.geometry import ArcData
-from ansys.edb.core.inner import ObjBase, TypeField, conn_obj, messages, parser
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.geometry.arc_data import ArcData
+from ansys.edb.core.inner.base import ObjBase, TypeField
+from ansys.edb.core.inner.conn_obj import ConnObj
+from ansys.edb.core.inner.messages import (
+    edb_obj_collection_message,
+    edge_creation_message,
+    edge_term_creation_message,
+    edge_term_set_edges_message,
+    padstack_inst_term_creation_message,
+    padstack_inst_term_set_params_message,
+    pin_group_term_creation_message,
+    pin_group_term_set_layer_message,
+    pin_group_term_set_pin_group_message,
+    point_term_creation_message,
+    point_term_set_params_message,
+    term_find_by_name_message,
+    term_get_product_solver_message,
+    term_inst_creation_message,
+    term_inst_term_creation_message,
+    term_inst_term_set_instance_message,
+    term_set_params_message,
+    term_set_solver_option_message,
+)
+from ansys.edb.core.inner.parser import to_rlc
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import PortPostProcessingProp, Value
+from ansys.edb.core.utility.port_post_processing_prop import PortPostProcessingProp
+from ansys.edb.core.utility.value import Value
 
 
 class TerminalType(Enum):
@@ -88,7 +111,7 @@ class Edge(ObjBase):
 
     @classmethod
     def _create(cls, **params):
-        return cls.__stub.Create(messages.edge_creation_message(cls.type.value, **params))
+        return cls.__stub.Create(edge_creation_message(cls.type.value, **params))
 
     @property
     def _type(self):
@@ -196,7 +219,7 @@ class PrimitiveEdge(Edge):
         return self._params.point
 
 
-class Terminal(conn_obj.ConnObj):
+class Terminal(ConnObj):
     """Class representing a terminal object."""
 
     __stub = StubAccessor(StubType.terminal)
@@ -246,9 +269,9 @@ class Terminal(conn_obj.ConnObj):
         -------
         Terminal
         """
-        return Terminal(
-            cls.__stub.FindByName(messages.term_find_by_name_message(layout, name))
-        ).cast(cls.type)
+        return Terminal(cls.__stub.FindByName(term_find_by_name_message(layout, name))).cast(
+            cls.type
+        )
 
     @property
     def _params(self):
@@ -256,7 +279,7 @@ class Terminal(conn_obj.ConnObj):
 
     @_params.setter
     def _params(self, values):
-        self.__stub.SetParams(messages.term_set_params_message(self, **values))
+        self.__stub.SetParams(term_set_params_message(self, **values))
 
     @property
     def _type(self):
@@ -554,7 +577,7 @@ class Terminal(conn_obj.ConnObj):
         self._params = {"s_param_model": value}
 
     @property
-    @parser.to_rlc
+    @to_rlc
     def rlc_boundary_parameters(self):
         """Return the RLC boundary parameters.
 
@@ -604,9 +627,7 @@ class Terminal(conn_obj.ConnObj):
         self._params = {"port_post_processing_prop": value}
 
     def _product_solvers(self, product_id):
-        return self.__stub.GetProductSolvers(
-            messages.term_get_product_solver_message(self, product_id)
-        )
+        return self.__stub.GetProductSolvers(term_get_product_solver_message(self, product_id))
 
     def product_solver_option(self, product_id, solver_name):
         """Return product solver option name.
@@ -636,7 +657,7 @@ class Terminal(conn_obj.ConnObj):
         option : str
         """
         self.__stub.SetProductSolverOptions(
-            messages.term_set_solver_option_message(self, product_id, solver_name, option)
+            term_set_solver_option_message(self, product_id, solver_name, option)
         )
 
     def product_solver_names(self, product_id):
@@ -649,7 +670,7 @@ class Terminal(conn_obj.ConnObj):
         return [solver.name for solver in self._product_solvers(product_id)]
 
 
-class TerminalInstance(conn_obj.ConnObj):
+class TerminalInstance(ConnObj):
     """Class representing a terminal instance."""
 
     __stub = StubAccessor(StubType.terminal_instance)
@@ -671,9 +692,7 @@ class TerminalInstance(conn_obj.ConnObj):
         TerminalInstance
         """
         return TerminalInstance(
-            cls.__stub.Create(
-                messages.term_inst_creation_message(layout, net_ref, cell_instance, name)
-            )
+            cls.__stub.Create(term_inst_creation_message(layout, net_ref, cell_instance, name))
         )
 
     @property
@@ -731,9 +750,7 @@ class TerminalInstanceTerminal(Terminal):
         """
         return TerminalInstanceTerminal(
             cls.__stub.Create(
-                messages.term_inst_term_creation_message(
-                    layout, net_ref, name, term_instance, is_ref
-                )
+                term_inst_term_creation_message(layout, net_ref, name, term_instance, is_ref)
             )
         )
 
@@ -755,7 +772,7 @@ class TerminalInstanceTerminal(Terminal):
         ----------
         value : TerminalInstance
         """
-        self.__stub.SetTerminalInstance(messages.term_inst_term_set_instance_message(self, value))
+        self.__stub.SetTerminalInstance(term_inst_term_set_instance_message(self, value))
 
 
 class BundleTerminal(Terminal):
@@ -777,7 +794,7 @@ class BundleTerminal(Terminal):
         -------
         BundleTerminal
         """
-        return BundleTerminal(cls.__stub.Create(messages.edb_obj_collection_message(terminals)))
+        return BundleTerminal(cls.__stub.Create(edb_obj_collection_message(terminals)))
 
     @property
     def terminals(self):
@@ -819,7 +836,7 @@ class PointTerminal(Terminal):
         PointTerminal
         """
         return PointTerminal(
-            cls.__stub.Create(messages.point_term_creation_message(layout, net, layer, name, point))
+            cls.__stub.Create(point_term_creation_message(layout, net, layer, name, point))
         )
 
     @property
@@ -866,7 +883,7 @@ class PointTerminal(Terminal):
         ----------
         params : tuple[str or Layer, PointData]
         """
-        self.__stub.SetParameters(messages.point_term_set_params_message(self, *params))
+        self.__stub.SetParameters(point_term_set_params_message(self, *params))
 
 
 class PadstackInstanceTerminal(Terminal):
@@ -894,7 +911,7 @@ class PadstackInstanceTerminal(Terminal):
         """
         return PadstackInstanceTerminal(
             cls.__stub.Create(
-                messages.padstack_inst_term_creation_message(
+                padstack_inst_term_creation_message(
                     layout, name, padstack_instance, layer, net, is_ref
                 )
             )
@@ -923,7 +940,7 @@ class PadstackInstanceTerminal(Terminal):
         """
         (padstack_instance, layer) = params
         self.__stub.SetParameters(
-            messages.padstack_inst_term_set_params_message(self, padstack_instance, layer)
+            padstack_inst_term_set_params_message(self, padstack_instance, layer)
         )
 
     @property
@@ -971,7 +988,7 @@ class PinGroupTerminal(Terminal):
         """
         return PinGroupTerminal(
             cls.__stub.Create(
-                messages.pin_group_term_creation_message(layout, net_ref, name, pin_group, is_ref)
+                pin_group_term_creation_message(layout, net_ref, name, pin_group, is_ref)
             )
         )
 
@@ -993,7 +1010,7 @@ class PinGroupTerminal(Terminal):
         ----------
         value : PinGroup
         """
-        self.__stub.SetPinGroup(messages.pin_group_term_set_pin_group_message(self, value))
+        self.__stub.SetPinGroup(pin_group_term_set_pin_group_message(self, value))
 
     @property
     def layer(self):
@@ -1013,7 +1030,7 @@ class PinGroupTerminal(Terminal):
         ----------
         value : Layer
         """
-        self.__stub.SetLayer(messages.pin_group_term_set_layer_message(self, value))
+        self.__stub.SetLayer(pin_group_term_set_layer_message(self, value))
 
 
 class EdgeTerminal(Terminal):
@@ -1039,9 +1056,7 @@ class EdgeTerminal(Terminal):
         EdgeTerminal
         """
         return EdgeTerminal(
-            cls.__stub.Create(
-                messages.edge_term_creation_message(layout, net_ref, name, edges, is_ref)
-            )
+            cls.__stub.Create(edge_term_creation_message(layout, net_ref, name, edges, is_ref))
         )
 
     @property
@@ -1062,4 +1077,4 @@ class EdgeTerminal(Terminal):
         ----------
         edges : list of Edge
         """
-        self.__stub.GetEdges(messages.edge_term_set_edges_message(self, edges))
+        self.__stub.GetEdges(edge_term_set_edges_message(self, edges))

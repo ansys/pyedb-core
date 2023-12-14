@@ -3,7 +3,12 @@
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 
 from ansys.edb.core.hierarchy.group import Group
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner.messages import (
+    object_name_in_layout_message,
+    via_group_create_with_outline_message,
+    via_group_create_with_primitives_message,
+)
+from ansys.edb.core.inner.parser import to_polygon_data
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -31,7 +36,7 @@ class ViaGroup(Group):
             List of newly created via group(s).
         """
         via_groups = cls.__stub.CreateWithPrimitives(
-            messages.via_group_create_with_primitives_message(layout, primitives, is_persistent)
+            via_group_create_with_primitives_message(layout, primitives, is_persistent)
         ).items
         return [ViaGroup(vg) for vg in via_groups]
 
@@ -59,7 +64,7 @@ class ViaGroup(Group):
         """
         return ViaGroup(
             cls.__stub.CreateWithOutline(
-                messages.via_group_create_with_outline_message(
+                via_group_create_with_outline_message(
                     layout, outline, conductivity_ratio, layer, net
                 )
             )
@@ -81,10 +86,10 @@ class ViaGroup(Group):
         ViaGroup
             ViaGroup that is found, None otherwise.
         """
-        return ViaGroup(cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name)))
+        return ViaGroup(cls.__stub.FindByName(object_name_in_layout_message(layout, name)))
 
     @property
-    @parser.to_polygon_data
+    @to_polygon_data
     def outline(self):
         """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Via group outline.
 

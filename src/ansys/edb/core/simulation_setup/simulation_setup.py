@@ -10,8 +10,8 @@ from ansys.api.edb.v1.simulation_setup_pb2 import (
     SweepDataMessage,
 )
 
-from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import int_property_message, string_property_message
 from ansys.edb.core.session import SimulationSetupServiceStub, StubAccessor, StubType
 
 
@@ -119,7 +119,7 @@ class SimulationSetup(ObjBase):
 
     @name.setter
     def name(self, name):
-        self.__stub.SetName(messages.string_property_message(self, name))
+        self.__stub.SetName(string_property_message(self, name))
 
     @property
     def position(self):
@@ -128,7 +128,7 @@ class SimulationSetup(ObjBase):
 
     @position.setter
     def position(self, position):
-        self.__stub.SetPosition(messages.int_property_message(self, position))
+        self.__stub.SetPosition(int_property_message(self, position))
 
     @property
     def sweep_data(self):
@@ -176,12 +176,12 @@ class SimulationSetup(ObjBase):
         -------
         SimulationSetup
         """
-        from ansys.edb.core.simulation_setup import (
-            HfssSimulationSetup,
-            RaptorXSimulationSetup,
+        from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
+        from ansys.edb.core.simulation_setup.raptor_x_simulation_setup import RaptorXSimulationSetup
+        from ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup import (
             SIWaveDCIRSimulationSetup,
-            SIWaveSimulationSetup,
         )
+        from ansys.edb.core.simulation_setup.siwave_simulation_setup import SIWaveSimulationSetup
 
         if self.is_null:
             return

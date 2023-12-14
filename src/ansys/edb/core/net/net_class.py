@@ -3,7 +3,12 @@
 import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import layout_obj, messages
+from ansys.edb.core.inner.layout_obj import LayoutObj
+from ansys.edb.core.inner.messages import (
+    edb_obj_message,
+    edb_obj_name_message,
+    string_property_message,
+)
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -13,7 +18,7 @@ class _QueryBuilder:
         return nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name)
 
 
-class NetClass(layout_obj.LayoutObj):
+class NetClass(LayoutObj):
     """Net class."""
 
     __stub = StubAccessor(StubType.netclass)
@@ -56,7 +61,7 @@ class NetClass(layout_obj.LayoutObj):
             Net class matching the requested name. Check the returned net class's \
             :obj:`is_null <ansys.edb.core.net.NetClass.is_null>` property to see if it exists.
         """
-        return NetClass(cls.__stub.FindByName(messages.edb_obj_name_message(layout, name)))
+        return NetClass(cls.__stub.FindByName(edb_obj_name_message(layout, name)))
 
     @property
     def name(self):
@@ -65,7 +70,7 @@ class NetClass(layout_obj.LayoutObj):
 
     @name.setter
     def name(self, newname):
-        self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
+        self.__stub.SetName(edb_obj_name_message(self.msg, newname))
 
     @property
     def description(self):
@@ -74,7 +79,7 @@ class NetClass(layout_obj.LayoutObj):
 
     @description.setter
     def description(self, newdesc):
-        self.__stub.SetDescription(messages.string_property_message(self, newdesc))
+        self.__stub.SetDescription(string_property_message(self, newdesc))
 
     @property
     def is_power_ground(self):
@@ -82,7 +87,7 @@ class NetClass(layout_obj.LayoutObj):
 
         Read-Only.
         """
-        return self.__stub.IsPowerGround(messages.edb_obj_message(self.msg)).value
+        return self.__stub.IsPowerGround(edb_obj_message(self.msg)).value
 
     @property
     def nets(self):

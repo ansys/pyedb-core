@@ -10,7 +10,7 @@ from ansys.edb.core.definition.padstack_def_data import (
     SolderballShape,
     _PadstackDefDataQueryBuilder,
 )
-from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.messages import (
     edb_obj_message,
     string_property_message,
@@ -18,7 +18,7 @@ from ansys.edb.core.inner.messages import (
     value_property_message,
 )
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class _QueryBuilder:

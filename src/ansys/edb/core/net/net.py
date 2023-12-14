@@ -1,15 +1,18 @@
 """Net."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import layout_obj, messages
+from ansys.edb.core.inner.layout_obj import LayoutObj
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    net_get_layout_obj_message,
+    string_property_message,
+)
 from ansys.edb.core.net.extended_net import ExtendedNet
 from ansys.edb.core.net.net_class import NetClass
-from ansys.edb.core.primitive import PadstackInstance, Primitive
 from ansys.edb.core.session import NetServiceStub, StubAccessor, StubType
-from ansys.edb.core.terminal import Terminal, TerminalInstance
 
 
-class Net(layout_obj.LayoutObj):
+class Net(LayoutObj):
     """Class representing net."""
 
     layout_obj_type = LayoutObjType.NET
@@ -18,9 +21,7 @@ class Net(layout_obj.LayoutObj):
 
     def _layout_objs(self, obj_type):
         """Get layout objects on a net."""
-        return self.__stub.GetLayoutObjects(
-            messages.net_get_layout_obj_message(self, obj_type)
-        ).items
+        return self.__stub.GetLayoutObjects(net_get_layout_obj_message(self, obj_type)).items
 
     @classmethod
     def create(cls, layout, name):
@@ -38,7 +39,7 @@ class Net(layout_obj.LayoutObj):
         Net
             Newly created net.
         """
-        return Net(cls.__stub.Create(messages.string_property_message(layout, name)))
+        return Net(cls.__stub.Create(string_property_message(layout, name)))
 
     @classmethod
     def find_by_name(cls, layout, name):
@@ -57,7 +58,7 @@ class Net(layout_obj.LayoutObj):
             Net matching the requested name. Check the returned net's \
             :obj:`is_null <ansys.edb.core.net.Net.is_null>` property to see if it exists.
         """
-        return Net(cls.__stub.FindByName(messages.string_property_message(layout, name)))
+        return Net(cls.__stub.FindByName(string_property_message(layout, name)))
 
     @property
     def name(self):
@@ -66,7 +67,7 @@ class Net(layout_obj.LayoutObj):
 
     @name.setter
     def name(self, value):
-        self.__stub.SetName(messages.string_property_message(self, value))
+        self.__stub.SetName(string_property_message(self, value))
 
     @property
     def is_power_ground(self):
@@ -78,7 +79,7 @@ class Net(layout_obj.LayoutObj):
 
     @is_power_ground.setter
     def is_power_ground(self, value):
-        self.__stub.SetIsPowerGround(messages.bool_property_message(self, value))
+        self.__stub.SetIsPowerGround(bool_property_message(self, value))
 
     @property
     def primitives(self):
@@ -86,6 +87,8 @@ class Net(layout_obj.LayoutObj):
 
         Read-Only.
         """
+        from ansys.edb.core.primitive.primitive import Primitive
+
         return [Primitive(lo).cast() for lo in self._layout_objs(LayoutObjType.PRIMITIVE)]
 
     @property
@@ -99,6 +102,8 @@ class Net(layout_obj.LayoutObj):
         -------
         list[ansys.edb.core.primitive.PadstackInstance]
         """
+        from ansys.edb.core.primitive.primitive import PadstackInstance
+
         return [PadstackInstance(lo) for lo in self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)]
 
     @property
@@ -112,6 +117,8 @@ class Net(layout_obj.LayoutObj):
         -------
         list[ansys.edb.core.terminal.Terminal]
         """
+        from ansys.edb.core.terminal.terminals import Terminal
+
         return [Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
 
     @property
@@ -125,6 +132,8 @@ class Net(layout_obj.LayoutObj):
         -------
         list[ansys.edb.core.layer.Layer]
         """
+        from ansys.edb.core.terminal.terminals import TerminalInstance
+
         return [TerminalInstance(lo) for lo in self._layout_objs(LayoutObjType.TERMINAL_INSTANCE)]
 
     @property

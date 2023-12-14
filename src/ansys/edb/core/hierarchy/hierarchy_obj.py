@@ -1,13 +1,21 @@
 """Hierarchy Obj."""
 
-from ansys.edb.core.definition import component_def
-from ansys.edb.core.inner import conn_obj, messages
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.definition.component_def import ComponentDef
+from ansys.edb.core.inner.conn_obj import ConnObj
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    edb_obj_name_message,
+    point_property_message,
+    pointer_property_message,
+    transform_property_message,
+)
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Transform, Value
+from ansys.edb.core.utility.transform import Transform
+from ansys.edb.core.utility.value import Value
 
 
-class HierarchyObj(conn_obj.ConnObj):
+class HierarchyObj(ConnObj):
     """Base class representing hierarchy object."""
 
     __stub = StubAccessor(StubType.hierarchy_obj)
@@ -27,7 +35,7 @@ class HierarchyObj(conn_obj.ConnObj):
     @transform.setter
     def transform(self, value):
         """Set transform."""
-        self.__stub.SetTransform(messages.transform_property_message(self, value))
+        self.__stub.SetTransform(transform_property_message(self, value))
 
     @property
     def name(self):
@@ -37,7 +45,7 @@ class HierarchyObj(conn_obj.ConnObj):
     @name.setter
     def name(self, value):
         """Set name of the object."""
-        self.__stub.SetName(messages.edb_obj_name_message(self, value))
+        self.__stub.SetName(edb_obj_name_message(self, value))
 
     @property
     def component_def(self):
@@ -46,7 +54,7 @@ class HierarchyObj(conn_obj.ConnObj):
 
         Read-Only.
         """
-        return component_def.ComponentDef(self.__stub.GetComponent(self.msg))
+        return ComponentDef(self.__stub.GetComponent(self.msg))
 
     @property
     def placement_layer(self):
@@ -56,7 +64,7 @@ class HierarchyObj(conn_obj.ConnObj):
     @placement_layer.setter
     def placement_layer(self, value):
         """Set placement layer."""
-        self.__stub.SetPlacementLayer(messages.pointer_property_message(self, value))
+        self.__stub.SetPlacementLayer(pointer_property_message(self, value))
 
     @property
     def location(self):
@@ -69,7 +77,7 @@ class HierarchyObj(conn_obj.ConnObj):
     @location.setter
     def location(self, value):
         """Set the location on placement layer."""
-        self.__stub.SetLocation(messages.point_property_message(self, value))
+        self.__stub.SetLocation(point_property_message(self, value))
 
     @property
     def solve_independent_preference(self):
@@ -89,4 +97,4 @@ class HierarchyObj(conn_obj.ConnObj):
     @solve_independent_preference.setter
     def solve_independent_preference(self, value):
         """Set solve independent preference."""
-        self.__stub.SetSolveIndependentPreference(messages.bool_property_message(self, value))
+        self.__stub.SetSolveIndependentPreference(bool_property_message(self, value))

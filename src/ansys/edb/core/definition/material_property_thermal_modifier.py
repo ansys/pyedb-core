@@ -3,25 +3,30 @@
 from ansys.api.edb.v1 import material_property_thermal_modifier_pb2_grpc
 import ansys.api.edb.v1.material_def_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import edb_obj_message, value_message
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import AdvancedQuadraticParams, BasicQuadraticParams, Value
+from ansys.edb.core.utility.material_property_thermal_modifier_params import (
+    AdvancedQuadraticParams,
+    BasicQuadraticParams,
+)
+from ansys.edb.core.utility.value import Value
 
 
 class _QueryBuilder:
     @staticmethod
     def create(basic_quadratic_params, advanced_quadratic_params):
         return pb.MaterialPropertyThermalModifierParamsMessage(
-            temp_ref=messages.value_message(basic_quadratic_params.temp_ref_val),
-            c1=messages.value_message(basic_quadratic_params.c1_val),
-            c2=messages.value_message(basic_quadratic_params.c2_val),
-            temp_lower_limit=messages.value_message(advanced_quadratic_params.temp_lower_limit_val),
-            temp_upper_limit=messages.value_message(advanced_quadratic_params.temp_upper_limit_val),
+            temp_ref=value_message(basic_quadratic_params.temp_ref_val),
+            c1=value_message(basic_quadratic_params.c1_val),
+            c2=value_message(basic_quadratic_params.c2_val),
+            temp_lower_limit=value_message(advanced_quadratic_params.temp_lower_limit_val),
+            temp_upper_limit=value_message(advanced_quadratic_params.temp_upper_limit_val),
             auto_calc_constant_thermal_modifier=advanced_quadratic_params.auto_calc_constant_thermal_modifier_vals,
-            lower_const_therm_mod=messages.value_message(
+            lower_const_therm_mod=value_message(
                 advanced_quadratic_params.lower_constant_thermal_modifier_val
             ),
-            upper_const_therm_mod=messages.value_message(
+            upper_const_therm_mod=value_message(
                 advanced_quadratic_params.upper_constant_thermal_modifier_val
             ),
         )
@@ -72,7 +77,7 @@ class MaterialPropertyThermalModifier(ObjBase):
 
         Read-Only.
         """
-        msg = self.__stub.GetQuadraticModelParams(messages.edb_obj_message(self))
+        msg = self.__stub.GetQuadraticModelParams(edb_obj_message(self))
         return BasicQuadraticParams(
             Value(msg.temp_ref),
             Value(msg.c1),
@@ -91,4 +96,4 @@ class MaterialPropertyThermalModifier(ObjBase):
 
         Read-Only.
         """
-        return Value(self.__stub.GetThermalModifierExpression(messages.edb_obj_message(self)))
+        return Value(self.__stub.GetThermalModifierExpression(edb_obj_message(self)))

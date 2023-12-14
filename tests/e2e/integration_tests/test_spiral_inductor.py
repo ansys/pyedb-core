@@ -2,22 +2,17 @@ import os
 import platform
 import tempfile
 
-import settings
-
 from ansys.edb.core.database import Database
-from ansys.edb.core.definition import MaterialDef, MaterialProperty
-from ansys.edb.core.geometry import PolygonData
-from ansys.edb.core.hierarchy import ViaGroup
-from ansys.edb.core.layer import (
-    LayerCollection,
-    LayerCollectionMode,
-    LayerType,
-    StackupLayer,
-    ViaLayer,
-)
-from ansys.edb.core.layout import Cell, CellType
-from ansys.edb.core.net import Net
-from ansys.edb.core.primitive import (
+from ansys.edb.core.definition.material_def import MaterialDef, MaterialProperty
+from ansys.edb.core.geometry.polygon_data import PolygonData
+from ansys.edb.core.hierarchy.via_group import ViaGroup
+from ansys.edb.core.layer.layer import LayerType
+from ansys.edb.core.layer.layer_collection import LayerCollection, LayerCollectionMode
+from ansys.edb.core.layer.stackup_layer import StackupLayer
+from ansys.edb.core.layer.via_layer import ViaLayer
+from ansys.edb.core.layout.cell import Cell, CellType
+from ansys.edb.core.net.net import Net
+from ansys.edb.core.primitive.primitive import (
     Path,
     PathCornerType,
     PathEndCapType,
@@ -26,17 +21,16 @@ from ansys.edb.core.primitive import (
     RectangleRepresentationType,
 )
 from ansys.edb.core.session import session
-from ansys.edb.core.simulation_setup import (
-    HfssSimulationSetup,
-    SingleFrequencyAdaptiveSolution,
-    SkinDepthMeshOperation,
-    SweepData,
-)
-from ansys.edb.core.terminal import PointTerminal
+from ansys.edb.core.simulation_setup.adaptive_solutions import SingleFrequencyAdaptiveSolution
+from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
+from ansys.edb.core.simulation_setup.mesh_operation import SkinDepthMeshOperation
+from ansys.edb.core.simulation_setup.simulation_setup import SweepData
+from ansys.edb.core.terminal.terminals import PointTerminal
 
 # Wrapper class over Database
 # This will ensure clean entry and exit from database
 from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
+import tests.e2e.settings as settings
 
 
 class TDatabase:

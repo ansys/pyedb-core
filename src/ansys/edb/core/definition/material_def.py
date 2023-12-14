@@ -4,11 +4,19 @@ from enum import Enum
 
 import ansys.api.edb.v1.material_def_pb2 as pb
 
-from ansys.edb.core.definition import DielectricMaterialModel
+from ansys.edb.core.definition.dielectric_material_model import DielectricMaterialModel
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    edb_internal_id_message,
+    edb_obj_message,
+    edb_obj_name_message,
+    material_properties_message,
+    pointer_property_message,
+    value_message,
+)
 from ansys.edb.core.session import MaterialDefServiceStub, StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class MaterialProperty(Enum):
@@ -62,9 +70,9 @@ class _QueryBuilder:
     @staticmethod
     def create(database, name, **kwargs):
         return pb.MaterialDefCreationMessage(
-            database=messages.edb_obj_message(database),
+            database=edb_obj_message(database),
             name=name,
-            properties=messages.material_properties_message(**kwargs),
+            properties=material_properties_message(**kwargs),
         )
 
     @staticmethod
@@ -77,12 +85,12 @@ class _QueryBuilder:
     @staticmethod
     def set_property(material_def, material_property, value, component, col, row):
         msg_params = {
-            "materialDef": messages.edb_obj_message(material_def),
+            "materialDef": edb_obj_message(material_def),
             "propertyId": material_property.value,
-            "value": messages.value_message(value),
+            "value": value_message(value),
         }
         if component is not None:
-            msg_params["component"] = messages.edb_internal_id_message(component)
+            msg_params["component"] = edb_internal_id_message(component)
         elif row is not None and col is not None:
             msg_params["tensor"] = _QueryBuilder.tensor_pos_message(col, row)
         return pb.MaterialDefSetPropertyMessage(**msg_params)
@@ -90,11 +98,11 @@ class _QueryBuilder:
     @staticmethod
     def get_property(material_def, material_property, component, col, row):
         msg_params = {
-            "materialDef": messages.edb_obj_message(material_def),
+            "materialDef": edb_obj_message(material_def),
             "propertyId": material_property.value,
         }
         if component is not None:
-            msg_params["component"] = messages.edb_internal_id_message(component)
+            msg_params["component"] = edb_internal_id_message(component)
         elif row is not None and col is not None:
             msg_params["tensor"] = _QueryBuilder.tensor_pos_message(col, row)
         return pb.MaterialDefGetPropertyMessage(**msg_params)
@@ -102,7 +110,7 @@ class _QueryBuilder:
     @staticmethod
     def material_def_get_property_message(material_def, material_property_id):
         return pb.MaterialDefPropertyMessage(
-            materialDef=messages.edb_obj_message(material_def),
+            materialDef=edb_obj_message(material_def),
             propertyId=material_property_id.value,
         )
 
@@ -111,9 +119,9 @@ class _QueryBuilder:
         material_def, material_property_id, thermal_modifier
     ):
         return pb.SetMaterialDefPropertyMessage(
-            materialDef=messages.edb_obj_message(material_def),
+            materialDef=edb_obj_message(material_def),
             propertyId=material_property_id.value,
-            thermal_modifier=messages.edb_obj_message(thermal_modifier),
+            thermal_modifier=edb_obj_message(thermal_modifier),
         )
 
     @staticmethod
@@ -121,7 +129,7 @@ class _QueryBuilder:
         material_def, material_property_id, component
     ):
         return pb.MaterialDefPropertyComponentMessage(
-            materialDef=messages.edb_obj_message(material_def),
+            materialDef=edb_obj_message(material_def),
             propertyId=material_property_id.value,
             component=component,
         )
@@ -131,10 +139,10 @@ class _QueryBuilder:
         material_def, material_property_id, component, thermal_modifier
     ):
         return pb.SetMaterialDefPropertyComponentMessage(
-            materialDef=messages.edb_obj_message(material_def),
+            materialDef=edb_obj_message(material_def),
             propertyId=material_property_id.value,
             component=component,
-            thermal_modifier=messages.edb_obj_message(thermal_modifier),
+            thermal_modifier=edb_obj_message(thermal_modifier),
         )
 
 
@@ -193,7 +201,7 @@ class MaterialDef(ObjBase):
         MaterialDef
             The material definition object found.
         """
-        return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))
+        return MaterialDef(cls.__stub.FindByName(edb_obj_name_message(database, name)))
 
     @property
     def definition_type(self):
@@ -206,7 +214,7 @@ class MaterialDef(ObjBase):
 
         Read-Only.
         """
-        return self.__stub.GetName(messages.edb_obj_message(self)).value
+        return self.__stub.GetName(edb_obj_message(self)).value
 
     @property
     def dielectric_material_model(self):
@@ -214,16 +222,16 @@ class MaterialDef(ObjBase):
         <ansys.edb.core.definition.dielectric_material_model.DielectricMaterialModel>`: \
         Dielectric material model of the material definition."""
         return DielectricMaterialModel(
-            self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
+            self.__stub.GetDielectricMaterialModel(edb_obj_message(self))
         )
 
     @dielectric_material_model.setter
     def dielectric_material_model(self, dielectric):
-        self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
+        self.__stub.SetDielectricMaterialModel(pointer_property_message(self, dielectric))
 
     def delete(self):
         """Delete a material definition."""
-        self.__stub.Delete(messages.edb_obj_message(self))
+        self.__stub.Delete(edb_obj_message(self))
 
     def set_property(self, material_property, value, component_id=None, col=None, row=None):
         """Set a property value of a material.
@@ -278,7 +286,7 @@ class MaterialDef(ObjBase):
         list [:class:`MaterialProperty`]
             List with Material Properties of the material definition.
         """
-        msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
+        msg = self.__stub.GetAllProperties(edb_obj_message(self))
         return [MaterialProperty(i) for i in msg.properties]
 
     def remove_property(self, material_property):
@@ -290,9 +298,7 @@ class MaterialDef(ObjBase):
             Property id.
         """
         self.__stub.RemoveProperty(
-            _QueryBuilder.get_property(
-                messages.edb_obj_message(self), material_property, None, None, None
-            )
+            _QueryBuilder.get_property(edb_obj_message(self), material_property, None, None, None)
         )
 
     def get_dimensions(self, material_property_id):

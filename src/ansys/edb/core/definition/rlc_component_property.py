@@ -4,7 +4,7 @@ from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropert
 import google.protobuf.empty_pb2 as empty_pb2
 
 from ansys.edb.core.definition.component_property import ComponentProperty
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import bool_property_message, edb_obj_message
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -28,8 +28,8 @@ class RLCComponentProperty(ComponentProperty):
     @property
     def enabled(self):
         """:obj:`bool`: True if enabled, false otherwise."""
-        return self.__stub.GetEnabled(messages.edb_obj_message(self)).value
+        return self.__stub.GetEnabled(edb_obj_message(self)).value
 
     @enabled.setter
     def enabled(self, value):
-        self.__stub.SetEnabled(messages.bool_property_message(self, value))
+        self.__stub.SetEnabled(bool_property_message(self, value))

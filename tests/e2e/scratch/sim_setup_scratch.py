@@ -1,7 +1,7 @@
 import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.layout.cell import Cell, CellType
 from ansys.edb.core.session import session
 from ansys.edb.core.simulation_setup import (
     AdaptType,

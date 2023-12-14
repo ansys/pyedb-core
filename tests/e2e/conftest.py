@@ -2,9 +2,11 @@ import pytest
 import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.definition import PadGeometryType, PadstackDef, PadstackDefData, PadType
-from ansys.edb.core.layer import LayerType, StackupLayer
-from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.definition.padstack_def import PadstackDef
+from ansys.edb.core.definition.padstack_def_data import PadGeometryType, PadstackDefData, PadType
+from ansys.edb.core.layer.layer import LayerType
+from ansys.edb.core.layer.stackup_layer import StackupLayer
+from ansys.edb.core.layout.cell import Cell, CellType
 from ansys.edb.core.session import session
 
 

@@ -1,4 +1,4 @@
-"""Component Property."""
+"""Component property."""
 
 from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 import ansys.api.edb.v1.model_pb2 as model_pb2
@@ -10,16 +10,17 @@ from ansys.edb.core.utility import Value
 
 
 class ComponentProperty(ObjBase):
-    """Class representing a Component Property."""
+    """Represents a component property."""
 
     __stub: ComponentPropertyServiceStub = StubAccessor(StubType.component_property)
 
     def clone(self):
-        """Return a clone of the component property.
+        """Clone the component property.
 
         Returns
         -------
         ComponentProperty
+            Clone of the component property.
         """
         return ComponentProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
@@ -27,7 +28,7 @@ class ComponentProperty(ObjBase):
     def package_mounting_offset(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Offset of the package definition object.
 
-        Property can be set with :term:`ValueLike`
+        This attribute can be set with the :term:`ValueLike` term.
         """
         return Value(self.__stub.GetPackageMountingOffset(messages.edb_obj_message(self)))
 
@@ -50,7 +51,9 @@ class ComponentProperty(ObjBase):
     def model(self):
         """:class:`Model <ansys.edb.core.hierarchy.Model>` : Model object.
 
-        A copy is returned. Use the setter for any modifications to be reflected.
+        Returns
+        -------
+        Copy of the model object. Use the setter for any modifications to be reflected.
         """
         comp_model_msg = self.__stub.GetModel(messages.edb_obj_message(self))
 

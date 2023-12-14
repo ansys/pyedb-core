@@ -1,4 +1,4 @@
-"""IO Component Property."""
+"""IO component property."""
 
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
@@ -9,14 +9,14 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class IOComponentProperty(component_property.ComponentProperty):
-    """Class representing a I0Component Property."""
+    """Represents an I0 component property."""
 
     __stub: IOComponentPropertyServiceStub = StubAccessor(StubType.io_component_property)
 
     @classmethod
     def create(cls):
         """
-        Create IO Component Property.
+        Create an IO component property.
 
         Returns
         -------

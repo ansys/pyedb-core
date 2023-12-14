@@ -1,4 +1,4 @@
-"""RLC Component Property."""
+"""RLC component property."""
 
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
@@ -9,14 +9,14 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class RLCComponentProperty(ComponentProperty):
-    """Class representing a RLCComponentProperty Property."""
+    """Represents an RLC component property."""
 
     __stub: RLCComponentPropertyServiceStub = StubAccessor(StubType.rlc_component_property)
 
     @classmethod
     def create(cls):
         """
-        Create RLC Component Property.
+        Create an RLC component property.
 
         Returns
         -------
@@ -27,7 +27,7 @@ class RLCComponentProperty(ComponentProperty):
 
     @property
     def enabled(self):
-        """:obj:`bool`: True if enabled, false otherwise."""
+        """:obj:`bool`: Flag indicating if the RLC component property is enabled."""
         return self.__stub.GetEnabled(messages.edb_obj_message(self)).value
 
     @enabled.setter

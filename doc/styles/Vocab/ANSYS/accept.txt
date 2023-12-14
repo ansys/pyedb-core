@@ -3,4 +3,10 @@ Enums
 PyAnsys
 PyEDB
 pyedb
+PyEDB-Core
 EDB
+IPython
+isort
+Juptyer
+Makefile
+pytest

@@ -1,4 +1,4 @@
-"""Padstack Definition Data."""
+"""Padstack definition data."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from ansys.edb.core.utility import Value
 
 
 class _PadstackDefDataQueryBuilder:
-    """Class for creating padstack def data grpc messages."""
+    """Provides for creating gRPC messages for padstack definition data."""
 
     if TYPE_CHECKING:
         from padstack_def_data import PadstackDefData
@@ -148,7 +148,7 @@ class _PadstackDefDataQueryBuilder:
 
 
 class PadType(Enum):
-    """Enum representing Pad types.
+    """Provides an enum representing pad types.
 
     - REGULAR_PAD
         Regular pad.
@@ -170,7 +170,7 @@ class PadType(Enum):
 
 
 class PadGeometryType(Enum):
-    """Enum representing Pad Geometry types.
+    """Provides an enum representing pad geometry types.
 
     - PADGEOMTYPE_NO_GEOMETRY
         No geometry.
@@ -216,7 +216,7 @@ class PadGeometryType(Enum):
 
 
 class PadstackHoleRange(Enum):
-    """Enum representing Pad Hole ranges.
+    """Provides an enum representing pad hole ranges.
 
     - THROUGH
         Hole through all layers of the board.
@@ -238,7 +238,7 @@ class PadstackHoleRange(Enum):
 
 
 class SolderballShape(Enum):
-    """Enum representing Solderball shapes.
+    """Provides an enum representing solderball shapes.
 
     - NO_SOLDERBALL
         No solder ball.
@@ -257,7 +257,7 @@ class SolderballShape(Enum):
 
 
 class SolderballPlacement(Enum):
-    """Enum representing Solderball placement.
+    """Provides an enum representing solderball placement.
 
     - ABOVE_PADSTACK
         Solder ball is placed above the padstack.
@@ -273,7 +273,7 @@ class SolderballPlacement(Enum):
 
 
 class PadstackDefData(ObjBase):
-    """Class representing a padstack data definition."""
+    """Represents a padstack data definition."""
 
     __stub: PadstackDefDataServiceStub = StubAccessor(StubType.padstack_def_data)
 
@@ -291,7 +291,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def material(self):
-        """:obj:`str`: Material name of the hole of the PadstackDefData object."""
+        """:obj:`str`: Material name of the hole of the padstack definition daata object."""
         return self.__stub.GetMaterial(self.msg)
 
     @material.setter
@@ -302,16 +302,16 @@ class PadstackDefData(ObjBase):
 
     @property
     def layer_names(self):
-        """:obj:`list` of :obj:`str`: List of layer names in the PadstackDefData object.
+        """:obj:`list` of :obj:`str`: List of layer names in the padstack definition data object.
 
-        Read-Only.
+        This attribute is read-only.
         """
         layer_names_msg = self.__stub.GetLayerNames(self.msg).names
         return layer_names_msg
 
     @property
     def layer_ids(self):
-        """:obj:`list` of :obj:`int`: List of layer ids in the PadstackDefData object.
+        """:obj:`list` of :obj:`int`: List of layer IDs in the padstack definition data object.
 
         Read-Only.
         """
@@ -320,7 +320,7 @@ class PadstackDefData(ObjBase):
 
     def add_layers(self, names):
         """
-        Add a list of layers of given names into the PadstackDefData object.
+        Add a list of layers of given names to the padstack definition data object.
 
         Parameters
         ----------
@@ -333,7 +333,7 @@ class PadstackDefData(ObjBase):
 
     def get_pad_parameters(self, layer, pad_type):
         """
-        Get a pad's parameters by layer name and pad type in its original value in database.
+        Get a pad's parameters by layer name and pad type in its original value in the database.
 
         Parameters
         ----------
@@ -400,7 +400,7 @@ class PadstackDefData(ObjBase):
         self, layer, pad_type, offset_x, offset_y, rotation, type_geom=None, sizes=None, fp=None
     ):
         """
-        Set a pad's parameters by layer name and pad type in its original value in database.
+        Set a pad's parameters by layer name and pad type in its original value in the database.
 
         Parameters
         ----------
@@ -414,12 +414,12 @@ class PadstackDefData(ObjBase):
             Y offset.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
             Rotation.
-        type_geom : PadGeometryType
-            Pad geometry type. None if setting polygonal pad parameters.
+        type_geom : PadGeometryType, optional
+            Pad geometry type. The default is ``None`` if setting polygonal pad parameters.
         sizes : List[:class:`Value <ansys.edb.core.utility.Value>`]
-            Pad parameters. None if setting polygonal pad parameters.
+            Pad sizes. The default is ``None`` if setting polygonal pad parameters.
         fp : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            Polygon geometry. None if not setting polygonal pad parameters.
+            Polygon geometry. The default is ``None`` if not setting polygonal pad parameters.
         """
         self.__stub.SetPadParameters(
             _PadstackDefDataQueryBuilder.padstack_def_data_set_pad_parameters_message(
@@ -429,7 +429,7 @@ class PadstackDefData(ObjBase):
 
     def get_hole_parameters(self):
         """
-        Get hole parameter in its original value in database.
+        Get hole parameters in their original values in the database.
 
         Returns
         -------
@@ -470,6 +470,10 @@ class PadstackDefData(ObjBase):
             Y offset.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
             Rotation.
+        type_geom : PadGeometryType, optional
+            Pad geometry type. The default is ``None`` if setting polygonal pad parameters.
+        sizes : List[:class:`Value <ansys.edb.core.utility.Value>`]
+            Pad sizes. The default is ``None`` if setting polygonal pad parameters.
         """
         return self.set_pad_parameters(
             -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes
@@ -477,7 +481,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def hole_range(self):
-        """:class:`PadstackHoleRange`: Hole range of the PadstackDefData."""
+        """:class:`PadstackHoleRange`: Hole range of the padstack definition data."""
         return PadstackHoleRange(self.__stub.GetHoleRange(self.msg).hole_range)
 
     @hole_range.setter
@@ -514,7 +518,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_placement(self):
-        """:class:`SolderballPlacement`: Solder ball placement/orientation."""
+        """:class:`SolderballPlacement`: Solder ball placement or orientation."""
         return SolderballPlacement(self.__stub.GetSolderBallPlacement(self.msg))
 
     @solder_ball_placement.setter
@@ -528,7 +532,7 @@ class PadstackDefData(ObjBase):
     @property
     def solder_ball_param(self):
         """
-        Get solder ball parameters in its original value in database.
+        Get solder ball parameters in their original values in the database.
 
         Returns
         -------
@@ -540,9 +544,9 @@ class PadstackDefData(ObjBase):
             Returns a tuple of the following format:
             **(d1, d2)**
 
-            **d1** : Diameter for cylinder solder ball or Top diameter for spheroid solder ball.
+            **d1** : Diameter for a cylinder solder ball or top diameter for a spheroid solder ball.
 
-            **d2** : Middle diameter for spheroid solder ball. Not used for cylinder solder ball.
+            **d2** : Middle diameter for a spheroid solder ball. Not used for a cylinder solder ball.
         """
         params = self.__stub.GetSolderBallParam(self.msg)
         return (

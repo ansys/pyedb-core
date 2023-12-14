@@ -1,4 +1,4 @@
-"""Component Pin Definition."""
+"""Component pin Definition."""
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 
 from ansys.edb.core.definition import component_def
@@ -7,7 +7,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class ComponentPin(ObjBase):
-    """Class representing a Component Pin."""
+    """Represents a component pin."""
 
     __stub: ComponentPinServiceStub = StubAccessor(StubType.component_pin)
 
@@ -18,14 +18,14 @@ class ComponentPin(ObjBase):
         Parameters
         ----------
         comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
-            Component definition that the component pin should belong to.
+            Component definition that the component pin is to belong to.
         name : str
-            Name of the component pin to be created.
+            Name of the component pin to create.
 
         Returns
         -------
         ComponentPin
-            Newly created component pin.
+            Component pin created.
         """
         return ComponentPin(cls.__stub.Create(messages.edb_obj_name_message(comp_def, name)))
 
@@ -36,14 +36,14 @@ class ComponentPin(ObjBase):
         Parameters
         ----------
         comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
-            Component definition to search the component pin in.
+            Component definition to search for the component pin.
         name : str
-            Name of the component pin to be searched.
+            Name of the component pin.
 
         Returns
         -------
         ComponentPin
-            Component pin that was found, None otherwise.
+            Component pin that was found, ``None`` otherwise.
         """
         return ComponentPin(cls.__stub.FindByName(messages.edb_obj_name_message(comp_def, name)))
 
@@ -60,15 +60,15 @@ class ComponentPin(ObjBase):
     def number(self):
         """:obj:`int`: Serial number of the component pin inside its component definition.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return self.__stub.GetNumber(self.msg).value
 
     @property
     def component_def(self):
-        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition this component pin \
-        belongs to.
+        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition that this component \
+        pin belongs to.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return component_def.ComponentDef(self.__stub.GetComponentDef(self.msg))

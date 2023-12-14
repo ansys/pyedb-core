@@ -1,4 +1,4 @@
-"""Dielectric Material Definition."""
+"""Dielectric material definition."""
 from ansys.api.edb.v1 import multipole_debye_model_pb2_grpc
 import ansys.api.edb.v1.multipole_debye_model_pb2 as pb
 from google.protobuf import empty_pb2
@@ -31,7 +31,7 @@ class _MultipoleDebyeModelQueryBuilder:
 
 
 class MultipoleDebyeModel(DielectricMaterialModel):
-    """Class representing a dielectric material model."""
+    """Represents a dielectric material model."""
 
     __stub: multipole_debye_model_pb2_grpc.MultipoleDebyeModelServiceStub = session.StubAccessor(
         session.StubType.multipole_debye_model
@@ -39,7 +39,7 @@ class MultipoleDebyeModel(DielectricMaterialModel):
 
     @classmethod
     def create(cls):
-        """Create a Multipole Debye Dielectric Material Model.
+        """Create a multipole Debye dielectric material model.
 
         Returns
         -------

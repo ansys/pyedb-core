@@ -5,7 +5,7 @@ Hierarchy objects are :term:`Connectables <Connectable>` that can act as a conta
 Sub-designs, MCAD Components, Coordinate systems etc.. are all examples of hierarchy objects.
 
 
-Object Types
+Object types
 ------------
 
 .. currentmodule:: ansys.edb.core.hierarchy

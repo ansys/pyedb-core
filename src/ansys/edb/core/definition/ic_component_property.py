@@ -1,4 +1,4 @@
-"""IC Component Property."""
+"""IC component property."""
 
 from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
@@ -14,14 +14,14 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class ICComponentProperty(component_property.ComponentProperty):
-    """Class representing a ICComponent Property."""
+    """Representing an IC component property."""
 
     __stub: ICComponentPropertyServiceStub = StubAccessor(StubType.ic_component_property)
 
     @classmethod
     def create(cls):
         """
-        Create IC Component Property.
+        Create an IC component property.
 
         Returns
         -------

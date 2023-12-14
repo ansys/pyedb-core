@@ -1,4 +1,4 @@
-"""Package Def Definition."""
+"""Package definition."""
 
 from ansys.api.edb.v1 import package_def_pb2_grpc
 
@@ -22,20 +22,20 @@ from ansys.edb.core.utility.heat_sink import HeatSink, HeatSinkFinOrientation
 
 
 class PackageDef(ObjBase):
-    """Class representing a package definition."""
+    """Represents a package definition."""
 
     __stub: package_def_pb2_grpc.PackageDefServiceStub = StubAccessor(StubType.package_def)
 
     @classmethod
     def create(cls, db, name):
-        """Create a Package definition object.
+        """Create a package definition object.
 
         Parameters
         ----------
         db :class:`Database <ansys.edb.core.database.Database>`
-            Database in which we save the Package Definition.
+            Database to create the package definition in.
         name : str
-            Name of the Package Definition.
+            Name of the package definition.
 
         Returns
         -------
@@ -45,7 +45,14 @@ class PackageDef(ObjBase):
 
     @classmethod
     def find_by_name(cls, db, name):
-        """Find a Package definition object by name.
+        """Find a package definition object by name.
+
+        Parameters
+        ----------
+        db :class:`Database <ansys.edb.core.database.Database>`
+            Database to search for the package definition.
+        name : str
+            Name of the package definition.
 
         Returns
         -------
@@ -55,7 +62,14 @@ class PackageDef(ObjBase):
 
     @classmethod
     def find_by_id(cls, db, uid):
-        """Find a Package definition object by Id.
+        """Find a package definition object by ID.
+
+        Parameters
+        ----------
+        db :class:`Database <ansys.edb.core.database.Database>`
+            Database to search for the package definition.
+        UID : int
+            Unique identifier for the package definition.
 
         Returns
         -------
@@ -65,12 +79,12 @@ class PackageDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: type."""
+        """:class:`DefinitionObjType`: Type."""
         return DefinitionObjType.PACKAGE_DEF
 
     @property
     def name(self):
-        """:obj:`str`: Name of the Package definition object."""
+        """:obj:`str`: Name of the package definition object."""
         return self.__stub.GetName(edb_obj_message(self)).value
 
     @name.setter
@@ -80,7 +94,7 @@ class PackageDef(ObjBase):
     @property
     @parser.to_polygon_data
     def exterior_boundary(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary for package definition."""
+        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary for the package definition."""
         return self.__stub.GetExteriorBoundary(edb_obj_message(self))
 
     @exterior_boundary.setter
@@ -89,7 +103,7 @@ class PackageDef(ObjBase):
 
     @property
     def height(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Height of the package definition object."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: Height of the package."""
         return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter
@@ -125,7 +139,7 @@ class PackageDef(ObjBase):
 
     @property
     def theta_jb(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Theta_JB (junction to board) of the package."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: Theta JB (junction to board) of the package."""
         return Value(self.__stub.GetTheta_JB(edb_obj_message(self)))
 
     @theta_jb.setter
@@ -134,7 +148,7 @@ class PackageDef(ObjBase):
 
     @property
     def theta_jc(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Theta_JC (junction to case) of the package."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: Theta JC (junction to case) of the package."""
         return Value(self.__stub.GetTheta_JC(edb_obj_message(self)))
 
     @theta_jc.setter
@@ -143,7 +157,7 @@ class PackageDef(ObjBase):
 
     @property
     def heat_sink(self):
-        """:class:`HeatSink <ansys.edb.core.utility.HeatSink>`: Assigned heat sink model for the package definition."""
+        """:class:`HeatSink <ansys.edb.core.utility.HeatSink>`: Assigned heat sink model for the package."""
         heat_sink_paramaters = self.__stub.GetHeatSink(edb_obj_message(self))
         return HeatSink(
             heat_sink_paramaters.thickness,
@@ -158,7 +172,7 @@ class PackageDef(ObjBase):
         self.__stub.SetHeatSink(set_heat_sink_message(self, heat_sink_value))
 
     def delete(self):
-        """Delete the Package definition."""
+        """Delete the package definition."""
         self.__stub.Delete(edb_obj_message(self))
 
     def get_product_property(self, prod_id, attr_it):
@@ -174,14 +188,14 @@ class PackageDef(ObjBase):
         Returns
         -------
         str
-            Property value returned.
+            Property value for the specified product and attribute IDs.
         """
         return self.__stub.GetProductProperty(
             get_product_property_message(self, prod_id, attr_it)
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property associated with the given product and attribute ids.
+        """Set the product property associated with the given product and attribute IDs.
 
         Parameters
         ----------
@@ -190,14 +204,14 @@ class PackageDef(ObjBase):
         attr_it : int
             Attribute ID.
         prop_value : str
-            Product property's new value
+            New value for the product property.
         """
         self.__stub.SetProductProperty(
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute ids corresponding to a product property id.
+        """Get the list of attribute IDS for a given property ID.
 
         Parameters
         ----------
@@ -207,7 +221,7 @@ class PackageDef(ObjBase):
         Returns
         -------
         list[int]
-            The attribute ids associated with this product property.
+            List of attribute IDs for the givens product ID.
         """
         attr_ids = self.__stub.GetProductPropertyIds(
             get_product_property_ids_message(self, prod_id)

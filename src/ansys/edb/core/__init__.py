@@ -1,4 +1,4 @@
-"""Ansys Electronics Database Python Package."""
+"""EDB-Core Python package for the Electronics Database (EDB) format."""
 
 try:
     import importlib.metadata as importlib_metadata

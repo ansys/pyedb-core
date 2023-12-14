@@ -1,4 +1,4 @@
-Simulation Setup
+Simulation setup
 ================
 
 Classes

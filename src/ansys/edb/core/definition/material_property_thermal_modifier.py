@@ -1,4 +1,4 @@
-"""Material Property Thermal Modifier."""
+"""Material property thermal modifier."""
 
 from ansys.api.edb.v1 import material_property_thermal_modifier_pb2_grpc
 import ansys.api.edb.v1.material_def_pb2 as pb
@@ -28,7 +28,7 @@ class _QueryBuilder:
 
 
 class MaterialPropertyThermalModifier(ObjBase):
-    """Class representing material property thermal modifiers."""
+    """Representing material property thermal modifiers."""
 
     __stub: material_property_thermal_modifier_pb2_grpc.MaterialPropertyThermalModifierServiceStub = StubAccessor(
         StubType.material_property_thermal_modifier
@@ -41,14 +41,14 @@ class MaterialPropertyThermalModifier(ObjBase):
         Parameters
         ----------
         basic_quadratic_params: :class:`BasicQuadraticParams <ansys.edb.core.utility.BasicQuadraticParams>`
-            Thermal Modifier basic parameters needed.
+            Basic parameters needed for the thermal modifier.
         advanced_quadratic_params : :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`
-            Thermal Modifier advanced parameters.
+            Advanced parameeteres needed for the thermal modifier advanced parameters.
 
         Returns
         -------
         MaterialPropertyThermalModifier
-            The new material property thermal modifiers.
+            Material property thermal modifiers created.
         """
         if basic_quadratic_params is None:
             basic_quadratic_params = BasicQuadraticParams()
@@ -70,7 +70,7 @@ class MaterialPropertyThermalModifier(ObjBase):
             PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]
         where PropValRef = The original property value without the thermal modifier applied
 
-        Read-Only.
+        This attribute is read-only.
         """
         msg = self.__stub.GetQuadraticModelParams(messages.edb_obj_message(self))
         return BasicQuadraticParams(
@@ -89,6 +89,6 @@ class MaterialPropertyThermalModifier(ObjBase):
     def expression(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Expression value representing the thermal modifier.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return Value(self.__stub.GetThermalModifierExpression(messages.edb_obj_message(self)))

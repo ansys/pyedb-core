@@ -1,4 +1,4 @@
-"""Dielectric Material Definition."""
+"""Dielectric material definition."""
 from ansys.api.edb.v1 import debye_model_pb2_grpc
 import ansys.api.edb.v1.debye_model_pb2 as pb
 from google.protobuf import empty_pb2
@@ -24,7 +24,7 @@ class _DebyeModelQueryBuilder:
 
 
 class DebyeModel(DielectricMaterialModel):
-    """Class representing a debye dielectric material model object."""
+    """Representa a Debye dielectric material model object."""
 
     __stub: debye_model_pb2_grpc.DebyeModelServiceStub = session.StubAccessor(
         session.StubType.debye_model
@@ -32,7 +32,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @classmethod
     def create(cls):
-        """Create a Debye Dielectric Material Model.
+        """Create a Debye dielectric material model.
 
         Returns
         -------
@@ -86,7 +86,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def is_relative_permitivity_enabled_at_optical_frequency(self):
-        """bool: Whether the relative permitivity at optical frequency is enabled."""
+        """bool: Flag indicating whether the relative permitivity at optical frequency is enabled."""
         return self.__stub.IsRelativePermitivityEnabledAtOpticalFrequency(self.msg).value
 
     @is_relative_permitivity_enabled_at_optical_frequency.setter
@@ -97,7 +97,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def use_dc_conductivity(self):
-        """bool: Whether DC conductivity nominal value is used."""
+        """bool: Flag indicating whether the DC conductivity nominal value is used."""
         return self.__stub.UseDCConductivity(self.msg).value
 
     @use_dc_conductivity.setter

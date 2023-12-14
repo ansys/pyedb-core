@@ -1,24 +1,23 @@
-pyedb Documentation
-===================
+PyEDB-Core documentation |version|
+==================================
 
-**[Ansys Internal - Confidential]**
+..
+   Simply reuse the root readme
 
-
-**This is a working document and will be changed without notice.**
-
-The Electronics Database (EDB) is a format for storing information describing designs for the Ansys Electronic Desktop (AEDT). This Python API makes calls to an EDB Server that can be run locally or remotely.
-
-Currently the server can create, edit, read and write EDB file to disk. After that, it can be read into AEDT and simulated.
-
-Choose :ref:`ref_index_api` to access a complete description of all the available Python classes and functions.
-
+.. include:: ../../README.rst
+   :start-after: .. reuse_start
 
 .. toctree::
    :hidden:
 
-   installation
-   user_guide/user_guide
+   getting_started/index
+   user_guide/index
    api/index
-   examples/examples
+   examples/index
+   contribute
 
+Indices and tables
+==================
+* :ref:`genindex`
+* :ref:`search`
 

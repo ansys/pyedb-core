@@ -1,4 +1,4 @@
-"""Material Definition."""
+"""Material definition."""
 
 from enum import Enum
 
@@ -12,7 +12,7 @@ from ansys.edb.core.utility import Value
 
 
 class MaterialProperty(Enum):
-    """Enum representing property types.
+    """Provides an enum representing property types.
 
     - PERMITTIVITY
        Permittivity property.
@@ -55,7 +55,7 @@ class MaterialProperty(Enum):
 
 
 class ThermalModifier(ObjBase):
-    """Class representing a thermal modifier model."""
+    """Represents a thermal modifier model."""
 
 
 class _QueryBuilder:
@@ -139,72 +139,73 @@ class _QueryBuilder:
 
 
 class MaterialDef(ObjBase):
-    """Class representing a material definition."""
+    """Represents a material definition."""
 
     __stub: MaterialDefServiceStub = StubAccessor(StubType.material)
 
     @classmethod
     def create(cls, database, name, **kwargs):
-        """Create a material definition into the given database.
+        """Create a material definition in the given database.
 
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-            Database that will own the material definition.
+            Database to create the material definition in.
         name : str
-            Name of the material definition being created.
+            Name of the material definition.
         kwargs : dict{ str : :class:`Value <ansys.edb.core.utility.Value>` }
-            Dictionary to be converted to MaterialDefPropertiesMessage.\
-            Dict key is the material property name.\
-            Dict value is the material property value.\
-            Expected keys for kwargs:
-             - permittivity
-             - permeability
-             - conductivity
-             - dielectric_loss_tangent
-             - magnetic_loss_tangent
-             - thermal_conductivity
-             - mass_density
-             - specific_heat
-             - youngs_modulus
-             - poissons_ratio
-             - thermal_expansion_coefficient
+            Dictionary to convert to MaterialDefPropertiesMessage.
+            Dictionary key is the material property name.
+            Dictionary value is the material property value.
+            Expected keys for kwargs are:
+
+            - permittivity
+            - permeability
+            - conductivity
+            - dielectric_loss_tangent
+            - magnetic_loss_tangent
+            - thermal_conductivity
+            - mass_density
+            - specific_heat
+            - youngs_modulus
+            - poissons_ratio
+            - thermal_expansion_coefficient
 
         Returns
         -------
         MaterialDef
-            The new material definition object.
+            Material definition object created.
         """
         return MaterialDef(cls.__stub.Create(_QueryBuilder.create(database, name, **kwargs)))
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a material definition in the database with given name.
+        """Find a material definition in the database by name.
 
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-            Database that owns the material definition.
+            Database to search for the material definition.
         name : str
             Name of the material definition.
 
         Returns
         -------
         MaterialDef
-            The material definition object found.
+            Naterial definition object found.
         """
         return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: type."""
+        """:class:`DefinitionObjType`: Type of the material definition."""
         return DefinitionObjType.MATERIAL_DEF
 
     @property
     def name(self):
         """:obj:`str`: Name of the material definition.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return self.__stub.GetName(messages.edb_obj_message(self)).value
 
@@ -222,20 +223,20 @@ class MaterialDef(ObjBase):
         self.__stub.SetDielectricMaterialModel(messages.pointer_property_message(self, dielectric))
 
     def delete(self):
-        """Delete a material definition."""
+        """Delete the material definition."""
         self.__stub.Delete(messages.edb_obj_message(self))
 
     def set_property(self, material_property, value, component_id=None, col=None, row=None):
-        """Set a property value of a material.
+        """Set a property value of the material.
 
         Parameters
         ----------
         material_property : :class:`MaterialProperty`
-            Property id.
+            Property ID.
         value : :class:`Value <ansys.edb.core.utility.Value>`
-            Property value returned.
+            New value.
         component_id : int, optional
-            Component id.
+            Component ID.
         row : int, optional
             Tensor row.
         col : int, optional
@@ -246,18 +247,18 @@ class MaterialDef(ObjBase):
         )
 
     def get_property(self, material_property, component_id=None, row=None, col=None):
-        """Set a property value of a material.
+        """Set a property value of the material.
 
         Parameters
         ----------
         material_property : :class:`MaterialProperty`
-            Property id.
+            Property ID. The default is ``None``.
         component_id : int, optional
-            Component id.
+            Component ID. The default is ``None``.
         row : int, optional
-            Tensor row.
+            Tensor row. The default is ``None``.
         col : int, optional
-            Tensor column.
+            Tensor column. The default is ``None``.
 
         Returns
         -------
@@ -271,23 +272,23 @@ class MaterialDef(ObjBase):
         )
 
     def get_all_properties(self):
-        """Set a property value of a material.
+        """Get all property value of the material.
 
         Returns
         -------
         list [:class:`MaterialProperty`]
-            List with Material Properties of the material definition.
+            List of properties for the material definition.
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
         return [MaterialProperty(i) for i in msg.properties]
 
     def remove_property(self, material_property):
-        """Remove a property value of a material def.
+        """Remove the value from a material property.
 
         Parameters
         ----------
         material_property : :class:`MaterialProperty`
-            Property id.
+            Property ID.
         """
         self.__stub.RemoveProperty(
             _QueryBuilder.get_property(
@@ -296,13 +297,15 @@ class MaterialDef(ObjBase):
         )
 
     def get_dimensions(self, material_property_id):
-        """Get dimensions of a material definition Simple 1x1, Anisotropic 3x1, Tensor 3x3.
+        """Get dimensions of a material definition.
+
+        Types are Simple 1x1, Anisotropic 3x1, and Tensor 3x3.
 
         Parameters
         ----------
         material_property_id : \
         :class:`MaterialProperty`
-            Property id.
+            Property ID.
 
         Returns
         -------
@@ -322,13 +325,13 @@ class MaterialDef(ObjBase):
         return [msg.tensor.col, msg.tensor.row]
 
     def get_thermal_modifier(self, material_property_id):
-        """Get thermal modifier of the material definition.
+        """Get the thermal modifier of a material definition.
 
         Parameters
         ----------
         material_property_id : \
         :class:`MaterialProperty`
-            Property id.
+            Property ID.
 
         Returns
         -------
@@ -342,15 +345,15 @@ class MaterialDef(ObjBase):
         )
 
     def set_thermal_modifier(self, material_property_id, thermal_modifier):
-        """Set thermal modifier of the material definition.
+        """Set the thermal modifier of the material definition.
 
         Parameters
         ----------
         material_property_id : \
         :class:`MaterialProperty`
-            Property id.
+            Property ID.
         thermal_modifier : ThermalModifier
-            Thermal modifier to be set to the material definition.
+            Thermal modifier to set to the material definition.
         """
         self.__stub.SetThermalModifier(
             _QueryBuilder.material_def_set_thermal_modifier_message(
@@ -359,15 +362,15 @@ class MaterialDef(ObjBase):
         )
 
     def get_anisotropic_thermal_modifier(self, material_property_id, component_id):
-        """Get anisotropic thermal modifier of a material def.
+        """Get the anisotropic thermal modifier of a material definition.
 
         Parameters
         ----------
         material_property_id : \
         :class:`MaterialProperty`
-            Property id.
+            Property ID.
         component_id : int
-            Component id.
+            Component ID.
 
         Returns
         -------
@@ -385,17 +388,17 @@ class MaterialDef(ObjBase):
     def set_anisotropic_thermal_modifier(
         self, material_property_id, component_id, thermal_modifier
     ):
-        """Set anisotropic thermal modifier of a material def.
+        """Set the anisotropic thermal modifier of a material definition.
 
         Parameters
         ----------
         material_property_id : \
         :class:`MaterialProperty`
-            Property id.
+            Property ID.
         component_id : int
-            Component id
+            Component ID.
         thermal_modifier : :class:`ThermalModifier <ansys.edb.core.definition.material_def.ThermalModifier>`
-            Anisotropic thermal modifier to be set to the material definition
+            Anisotropic thermal modifier to set to the material definition.
         """
         self.__stub.SetAnisotropicThermalModifier(
             _QueryBuilder.material_def_set_anisotropic_thermal_modifier_message(

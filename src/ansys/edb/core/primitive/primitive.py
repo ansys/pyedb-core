@@ -58,7 +58,7 @@ class _PrimitiveQueryBuilder:
 
 
 class PrimitiveType(Enum):
-    """Enum representing available primitive types.
+    """Provides an enum representing primitive types.
 
     - RECTANGLE
     - CIRCLE
@@ -85,7 +85,7 @@ class PrimitiveType(Enum):
 
 
 class RectangleRepresentationType(Enum):
-    """Enum representing possible rectangle types.
+    """Provides an enum representing rectangle types.
 
     - INVALID_RECT_TYPE
        Undefined.
@@ -101,7 +101,7 @@ class RectangleRepresentationType(Enum):
 
 
 class PathEndCapType(Enum):
-    """Enum representing possible end cap types.
+    """Provides an enum representing end cap types.
 
     - ROUND
     - FLAT
@@ -118,7 +118,7 @@ class PathEndCapType(Enum):
 
 
 class PathCornerType(Enum):
-    """Enum representing possible corner types.
+    """Provides an enum representing corner types.
 
     - ROUND
     - SHARP
@@ -131,7 +131,7 @@ class PathCornerType(Enum):
 
 
 class BondwireType(Enum):
-    """Enum representing possible bondwire types.
+    """Provides an enum representing bondwire types.
 
     - APD
     - JEDEC4
@@ -148,7 +148,7 @@ class BondwireType(Enum):
 
 
 class BondwireCrossSectionType(Enum):
-    """Enum representing possible bondwire cross section types.
+    """Provides an enum representing bondwire cross section types.
 
     - ROUND
     - RECTANGLE
@@ -161,7 +161,7 @@ class BondwireCrossSectionType(Enum):
 
 
 class BackDrillType(Enum):
-    """Enum representing possible Back Drill types.
+    """Provides an enum representing back drill types.
 
     - NO_DRILL
     - LAYER_DRILL
@@ -174,13 +174,13 @@ class BackDrillType(Enum):
 
 
 class Primitive(conn_obj.ConnObj):
-    """Base class representing primitive objects."""
+    """Represents a primitive object."""
 
     __stub: primitive_pb2_grpc.PrimitiveServiceStub = StubAccessor(StubType.primitive)
     layout_obj_type = LayoutObjType.PRIMITIVE
 
     def cast(self):
-        """Cast the primitive object to correct concrete type.
+        """Cast the primitive object to the correct concrete type.
 
         Returns
         -------
@@ -207,19 +207,19 @@ class Primitive(conn_obj.ConnObj):
     def primitive_type(self):
         """:class:`PrimitiveType`: Primitive type of the primitive.
 
-        Read-Only.
+        This property is read-only.
         """
         return PrimitiveType(
             self.__stub.GetPrimitiveType(_PrimitiveQueryBuilder.get_primitive_type(self)).type
         )
 
     def add_void(self, hole):
-        """Add a void to primitive.
+        """Add a void to the primitive.
 
         Parameters
         ----------
         hole : Primitive
-            Void to be added to the primitive.
+            Void to add.
         """
         self.__stub.AddVoid(_PrimitiveQueryBuilder.add_void(self, hole))
 
@@ -229,9 +229,9 @@ class Primitive(conn_obj.ConnObj):
         Parameters
         ----------
         material : str
-            Material property name to be set.
+            Material property name to set.
         solve_inside : bool
-            Whether to do solve inside.
+            Whether to solve inside.
         """
         self.__stub.SetHfssProp(_PrimitiveQueryBuilder.set_hfss_prop(self, material, solve_inside))
 
@@ -247,7 +247,7 @@ class Primitive(conn_obj.ConnObj):
 
     @property
     def is_negative(self):
-        """:obj:`bool`: If the primitive is negative."""
+        """:obj:`bool`: Flag indicating if the primitive is negative."""
         return self.__stub.GetIsNegative(self.msg).value
 
     @is_negative.setter
@@ -256,14 +256,14 @@ class Primitive(conn_obj.ConnObj):
 
     @property
     def is_void(self):
-        """:obj:`bool`: If a primitive is a void."""
+        """:obj:`bool`: Flag indicating if a primitive is a void."""
         return self.__stub.IsVoid(self.msg).value
 
     @property
     def has_voids(self):
-        """:obj:`bool`: If a primitive has voids inside.
+        """:obj:`bool`: Flag indicating if a primitive has voids inside.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.HasVoids(self.msg).value
 
@@ -272,7 +272,7 @@ class Primitive(conn_obj.ConnObj):
         """:obj:`list` of :class:`Primitive <ansys.edb.core.primitive.Primitive>`: List of void\
         primitive objects inside the primitive.
 
-        Read-Only.
+        This property is read-only.
         """
         return [Primitive(msg).cast() for msg in self.__stub.Voids(self.msg).items]
 
@@ -280,15 +280,15 @@ class Primitive(conn_obj.ConnObj):
     def owner(self):
         """:class:`Primitive <ansys.edb.core.primitive.Primitive>`: Owner of the primitive object.
 
-        Read-Only.
+        This property is read-only.
         """
         return Primitive(self.__stub.GetOwner(self.msg)).cast()
 
     @property
     def is_parameterized(self):
-        """:obj:`bool`: Primitive's parametrization.
+        """:obj:`bool`: Whether the primitive is parametrized.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.IsParameterized(self.msg).value
 
@@ -299,9 +299,9 @@ class Primitive(conn_obj.ConnObj):
         Returns
         -------
         material : str
-            Material property name.
+            Name of the material property.
         solve_inside : bool
-            If solve inside.
+            Whether to solve inside.
         """
         prop_msg = self.__stub.GetHfssProp(self.msg)
         return prop_msg.material_name, prop_msg.solve_inside
@@ -312,34 +312,33 @@ class Primitive(conn_obj.ConnObj):
 
     @property
     def is_zone_primitive(self):
-        """:obj:`bool`: If primitive object is a zone.
+        """:obj:`bool`: Flag indicating if the primitive object is a zone.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.IsZonePrimitive(self.msg).value
 
     @property
     def can_be_zone_primitive(self):
-        """:obj:`bool`: If a primitive can be a zone.
+        """:obj:`bool`: Flag indicating if the primitive can be a zone.
 
-        Read-Only.
+        This property is read-only.
         """
         return True
 
     def make_zone_primitive(self, zone_id):
-        """Make primitive a zone primitive with a zone specified by the provided id.
+        """Make the primitive a zone primitive with a zone specified by the provided ID.
 
         Parameters
         ----------
         zone_id : int
-            Id of zone primitive will use.
-
+            ID of the zone primitive to use.
         """
         self.__stub.MakeZonePrimitive(messages.int_property_message(self, zone_id))
 
 
 class Rectangle(Primitive):
-    """Class representing a rectangle object."""
+    """Represents a rectangle object."""
 
     __stub: rectangle_pb2_grpc.RectangleServiceStub = StubAccessor(StubType.rectangle)
 
@@ -352,21 +351,21 @@ class Rectangle(Primitive):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout this rectangle will be in.
+            Layout to create the rectangle in.
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer this rectangle will be on.
+            Layer the rectangle is to created on.
         net : str or :class:`Net <ansys.edb.core.net.Net>` or None
-            Net this rectangle will have.
+            Net the rectangle is to have.
         rep_type : :class:`RectangleRepresentationType`
-            Type that defines given parameters meaning.
+            Type that defines the meaning of the given parameters.
         param1 : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of lower left point or center point.
+            X value of the lower-left point or center point.
         param2 : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of lower left point or center point.
+            Y value of the lower-left point or center point.
         param3 : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of upper right point or width.
+            X value of the upper-right point or width.
         param4 : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of upper right point or height.
+            Y value of the upper-right point or height.
         corner_rad : :class:`Value <ansys.edb.core.utility.Value>`
             Corner radius.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
@@ -375,7 +374,7 @@ class Rectangle(Primitive):
         Returns
         -------
         Rectangle
-            Rectangle that was created.
+            Rectangle created.
         """
         return Rectangle(
             cls.__stub.Create(
@@ -395,7 +394,7 @@ class Rectangle(Primitive):
         )
 
     def get_parameters(self):
-        """Get coordinates parameters.
+        """Get coordinate parameters.
 
         Returns
         -------
@@ -409,7 +408,7 @@ class Rectangle(Primitive):
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(representation_type, parameter1, parameter2, parameter3, parameter4, corner_radius, rotation)**
 
@@ -439,20 +438,20 @@ class Rectangle(Primitive):
         )
 
     def set_parameters(self, rep_type, param1, param2, param3, param4, corner_rad, rotation):
-        """Set coordinates parameters.
+        """Set coordinate parameters.
 
         Parameters
         ----------
         rep_type : :class:`RectangleRepresentationType`
-            Type that defines given parameters meaning.
+            Type that defines the meaning of the given parameters.
         param1 : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of lower left point or center point.
+            X value of the lower-left point or center point.
         param2 : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of lower left point or center point.
+            Y value of the lower-left point or center point.
         param3 : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of upper right point or width.
+            X value of the upper-right point or width.
         param4 : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of upper right point or height.
+            Y value of the upper-right point or height.
         corner_rad : :class:`Value <ansys.edb.core.utility.Value>`
             Corner radius.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
@@ -475,9 +474,9 @@ class Rectangle(Primitive):
 
     @property
     def can_be_zone_primitive(self):
-        """:obj:`bool`: If a rectangle can be a zone.
+        """:obj:`bool`: Flag indicating if the rectangle can be a zone.
 
-        Read-Only.
+        This property is read-only.
         """
         return True
 
@@ -485,7 +484,7 @@ class Rectangle(Primitive):
     def polygon_data(self):
         """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Polygon data object of the rectangle.
 
-        Read-Only.
+        This property is read-only.
         """
         return Rectangle.render(*self.get_parameters())
 
@@ -507,21 +506,21 @@ class Rectangle(Primitive):
         Parameters
         ----------
         rep_type : :class:`RectangleRepresentationType`
-            Type that defines given parameters meaning.
+            Type that defines the meaning of the given parameters.
         x_lower_left_or_center_x : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of lower left point or center point.
+            X value of the lower-left point or center point.
         y_lower_left_or_center_y : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of lower left point or center point.
+            Y value of the lower-left point or center point.
         x_upper_right_or_width : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of upper right point or width.
+            X value of the upper-right point or width.
         y_upper_right_or_height : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of upper right point or height.
+            Y value of the upper-right point or height.
         corner_radius : :class:`Value <ansys.edb.core.utility.Value>`
             Corner radius.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
             Rotation.
         is_hole : bool, optional
-            If rectangle is hole.
+            Whether the rectangle is hole. The default is ``False``.
 
         Returns
         -------
@@ -562,7 +561,7 @@ class Rectangle(Primitive):
 
 
 class Circle(Primitive):
-    """Class representing a circle object."""
+    """Represents a circle object."""
 
     __stub: circle_pb2_grpc.CircleServiceStub = StubAccessor(StubType.circle)
 
@@ -573,22 +572,22 @@ class Circle(Primitive):
         Parameters
         ----------
         layout: :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout this circle will be in.
+            Layout to create this circle in.
         layer: str or :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer this circle will be on.
+            Layer to create the circle on.
         net: str or :class:`Net <ansys.edb.core.net.Net>` or None
-            Net this circle will have.
+            Net of the circle.
         center_x: :class:`Value <ansys.edb.core.utility.Value>`
-            X value of center point.
+            X value of the center point.
         center_y: :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of center point.
+            Y value of the center point.
         radius: :class:`Value <ansys.edb.core.utility.Value>`
             Radius value of the circle.
 
         Returns
         -------
         Circle
-            Circle object created.
+            Circle created.
         """
         return Circle(
             cls.__stub.Create(
@@ -611,18 +610,18 @@ class Circle(Primitive):
         Parameters
         ----------
         center_x: :class:`Value <ansys.edb.core.utility.Value>`
-            X value of center point.
+            X value of the center point.
         center_y: :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of center point.
+            Y value of the center point.
         radius: :class:`Value <ansys.edb.core.utility.Value>`
             Radius value of the circle.
         is_hole: bool
-            If circle object is a hole.
+            Whether the circle object is a hole.
 
         Returns
         -------
         :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            Polygon data object created.
+            Circle created.
         """
         return cls.__stub.Render(
             circle_pb2.CircleRenderMessage(
@@ -634,7 +633,7 @@ class Circle(Primitive):
         )
 
     def get_parameters(self):
-        """Get parameters of a circle.
+        """Get parameters of the circle.
 
         Returns
         -------
@@ -644,7 +643,7 @@ class Circle(Primitive):
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(center_x, center_y, radius)**
 
@@ -662,14 +661,14 @@ class Circle(Primitive):
         )
 
     def set_parameters(self, center_x, center_y, radius):
-        """Set parameters of a circle.
+        """Set parameters of the circle.
 
          Parameters
          ----------
         center_x: :class:`Value <ansys.edb.core.utility.Value>`
-            X value of center point.
+            X value of the center point.
         center_y: :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of center point.
+            Y value of the center point.
         radius: :class:`Value <ansys.edb.core.utility.Value>`
             Radius value of the circle.
         """
@@ -685,16 +684,16 @@ class Circle(Primitive):
         )
 
     def get_polygon_data(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Polygon data object of the Circle object."""
+        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Polygon data object of the circle."""
         return Circle.render(*self.get_parameters(), self.is_void)
 
     def can_be_zone_primitive(self):
-        """:obj:`bool`: If a circle can be a zone."""
+        """:obj:`bool`: Flag indicating if a circle can be a zone."""
         return True
 
 
 class Text(Primitive):
-    """Class representing a text object."""
+    """Represents a text object."""
 
     __stub: text_pb2_grpc.TextServiceStub = StubAccessor(StubType.text)
 
@@ -705,20 +704,20 @@ class Text(Primitive):
         Parameters
         ----------
         layout: :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout this text will be in.
+            Layout to create the text object in.
         layer: str or Layer
-            Layer this text will be on.
+            Layer to create the text object on.
         center_x: :class:`Value <ansys.edb.core.utility.Value>`
-            X value of center point.
+            X value of the center point.
         center_y: :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of center point.
+            Y value of the center point.
         text: str
             Text string.
 
         Returns
         -------
         Text
-            The text Object that was created.
+            Text object created.
         """
         return Text(
             cls.__stub.Create(
@@ -733,7 +732,7 @@ class Text(Primitive):
         )
 
     def get_text_data(self):
-        """Get the text data of a text.
+        """Get the data for the text object.
 
         Returns
         -------
@@ -742,7 +741,7 @@ class Text(Primitive):
             :class:`Value <ansys.edb.core.utility.Value>`,
             str
         ]
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(center_x, center_y, text)**
 
@@ -760,16 +759,16 @@ class Text(Primitive):
         )
 
     def set_text_data(self, center_x, center_y, text):
-        """Set the text data of a text.
+        """Set the data for the text object.
 
         Parameters
         ----------
         center_x: :class:`Value <ansys.edb.core.utility.Value>`
-            X value of center point.
+            X value of the center point.
         center_y: :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of center point.
+            Y value of the center point.
         text: str
-            Text object's String value.
+            String value for the text object.
         """
         self.__stub.SetTextData(
             text_pb2.SetTextDataMessage(
@@ -795,7 +794,7 @@ class _PolygonQueryBuilder:
 
 
 class Polygon(Primitive):
-    """Class representing a polygon object."""
+    """Represents a polygon object."""
 
     __stub: polygon_pb2_grpc.PolygonServiceStub = StubAccessor(StubType.polygon)
 
@@ -806,18 +805,18 @@ class Polygon(Primitive):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout the polygon will be in.
+            Layout to create the polygon in.
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer this Polygon will be in.
+            Layer to create the Polygon on.
         net : str or :class:`Net <ansys.edb.core.net.Net>` or None
-            Net of the Polygon object.
+            Net of the polygon.
         polygon_data : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            The outer contour of the Polygon.
+            Outer contour of the polygon.
 
         Returns
         -------
         Polygon
-            Polygon object created.
+            Polygon created.
         """
         return Polygon(
             cls.__stub.Create(_PolygonQueryBuilder.create(layout, layer, net, polygon_data))
@@ -826,7 +825,7 @@ class Polygon(Primitive):
     @property
     @parser.to_polygon_data
     def polygon_data(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Outer contour of the Polygon object."""
+        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Outer contour of the polygon."""
         return self.__stub.GetPolygonData(self.msg)
 
     @polygon_data.setter
@@ -839,9 +838,9 @@ class Polygon(Primitive):
 
     @property
     def can_be_zone_primitive(self):
-        """:obj:`bool`: If a polygon can be a zone.
+        """:obj:`bool`: Flag indicating if a polygon can be a zone.
 
-        Read-Only.
+        This property is read-only.
         """
         return True
 
@@ -862,7 +861,7 @@ class _PathQueryBuilder:
 
 
 class Path(Primitive):
-    """Class representing a path object."""
+    """Represents a path object."""
 
     __stub: path_pb2_grpc.PathServiceStub = StubAccessor(StubType.path)
 
@@ -873,26 +872,26 @@ class Path(Primitive):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout this Path will be in.
+            Layout to create the path in.
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer this Path will be on.
+            Layer to create the path on.
         net : str or :class:`Net <ansys.edb.core.net.Net>` or None
-            Net this Path will have.
+            Net of the path.
         width: :class:`Value <ansys.edb.core.utility.Value>`
             Path width.
         end_cap1: :class:`PathEndCapType`
-            End cap style of path start end cap.
+            End cap style for the start of the path.
         end_cap2: :class:`PathEndCapType`
-            End cap style of path end end cap.
+            End cap style for the end of the path.
         corner_style: :class:`PathCornerType`
             Corner style.
         points : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            Centerline polygonData to set.
+            Centerline polygon data to set.
 
         Returns
         -------
         Path
-            Path object created.
+            Path created.
         """
         return Path(
             cls.__stub.Create(
@@ -905,25 +904,25 @@ class Path(Primitive):
     @classmethod
     @parser.to_polygon_data
     def render(cls, width, end_cap1, end_cap2, corner_style, path):
-        """Render a Path object.
+        """Render a path.
 
         Parameters
         ----------
         width: :class:`Value <ansys.edb.core.utility.Value>`
             Path width.
         end_cap1: :class:`PathEndCapType`
-            End cap style of path start end cap.
+            End cap style for the start of the path.
         end_cap2: :class:`PathEndCapType`
-            End cap style of path end end cap.
+            End cap style for the end of the path.
         corner_style: :class:`PathCornerType`
             Corner style.
         path: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            PolygonData to set.
+            Polygon data to set.
 
         Returns
         -------
         :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            PolygonData object created.
+            Path rendered.
         """
         return cls.__stub.Render(
             path_pb2.PathRenderMessage(
@@ -938,7 +937,7 @@ class Path(Primitive):
     @property
     @parser.to_polygon_data
     def center_line(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Center line for this Path."""
+        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Center line for the path."""
         return self.__stub.GetCenterLine(self.msg)
 
     @center_line.setter
@@ -948,7 +947,7 @@ class Path(Primitive):
         )
 
     def get_end_cap_style(self):
-        """Get path end cap styles.
+        """Get end cap styles for the path.
 
         Returns
         -------
@@ -957,7 +956,7 @@ class Path(Primitive):
             :class:`PathEndCapType`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(end_cap1, end_cap2)**
 
@@ -969,14 +968,14 @@ class Path(Primitive):
         return PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2)
 
     def set_end_cap_style(self, end_cap1, end_cap2):
-        """Set path end cap styles.
+        """Set end cap styles for the path.
 
         Parameters
         ----------
         end_cap1: :class:`PathEndCapType`
-            End cap style of path start end cap.
+            End cap style for the start of the path.
         end_cap2: :class:`PathEndCapType`
-            End cap style of path end end cap.
+            End cap style for the end of the path.
         """
         self.__stub.SetEndCapStyle(
             path_pb2.SetEndCapStyleMessage(
@@ -988,13 +987,13 @@ class Path(Primitive):
         )
 
     def get_clip_info(self):
-        """Get data used to clip the path.
+        """Get the data used to clip the path.
 
         Returns
         -------
         tuple[:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`, bool]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(clipping_poly, keep_inside)**
 
@@ -1009,14 +1008,15 @@ class Path(Primitive):
         )
 
     def set_clip_info(self, clipping_poly, keep_inside=True):
-        """Set data used to clip the path.
+        """Set the data used to clip the path.
 
         Parameters
         ----------
         clipping_poly: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            PolygonData used to clip the path.
-        keep_inside: bool
-            Indicates whether the part of the path inside the polygon should be preserved.
+            Polygon data to use to clip the path.
+        keep_inside: bool, optional
+            Whether the part of the path inside the polygon should be preserved.
+            The default is ``True``.
         """
         self.__stub.SetClipInfo(
             path_pb2.SetClipInfoMessage(
@@ -1028,7 +1028,7 @@ class Path(Primitive):
 
     @property
     def corner_style(self):
-        """:class:`PathCornerType`: Path's corner style."""
+        """:class:`PathCornerType`: Corner style of the path."""
         return PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
 
     @corner_style.setter
@@ -1072,9 +1072,9 @@ class Path(Primitive):
 
     @property
     def can_be_zone_primitive(self):
-        """:obj:`bool`: If a path can be a zone.
+        """:obj:`bool`: Flag indicating if the path can be a zone.
 
-        Read-Only.
+        This property is read-only.
         """
         return True
 
@@ -1181,7 +1181,7 @@ class _BondwireQueryBuilder:
 
 
 class Bondwire(Primitive):
-    """Class representing a bondwire object."""
+    """Represents a bondwire object."""
 
     __stub: bondwire_pb2_grpc.BondwireServiceStub = StubAccessor(StubType.bondwire)
 
@@ -1204,40 +1204,40 @@ class Bondwire(Primitive):
         end_y,
         net,
     ):
-        """Create a bondwire object.
+        """Create a bondwire.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout this bondwire will be in.
+            Layout to create the bondwire in.
         bondwire_type : :class:`BondwireType`
-            Type of bondwire: kAPDBondWire or kJDECBondWire types.
+            Type of the bondwire. Options are ``kAPDBondWire`` and ``kJDECBondWire``.
         definition_name : str
             Bondwire definition name.
         placement_layer : str
-            Layer name this bondwire will be on.
+            Layer name to create the bondwire on.
         width : :class:`Value <ansys.edb.core.utility.Value>`
             Bondwire width.
         material : str
             Bondwire material name.
         start_context : :class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>`
-            Start context: None means top level.
+            Start context. ``None`` means top-level,.
         start_layer_name : str
-            Name of start layer.
+            Name of the start layer.
         start_x : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of start point.
+            X value of the start point.
         start_y : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of start point.
+            Y value of the start point.
         end_context : :class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>`
-            End context: None means top level.
+            End context: End content. ``None`` means top-level.
         end_layer_name : str
-            Name of end layer.
+            Name of the end layer.
         end_x : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of end point.
+            X value of the end point.
         end_y : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of end point.
+            Y value of the end point.
         net : str or :class:`Net <ansys.edb.core.net.Net>` or None
-            Net of the Bondwire.
+            Net of the bondwire.
 
         Returns
         -------
@@ -1267,12 +1267,13 @@ class Bondwire(Primitive):
         )
 
     def get_material(self, evaluated=True):
-        """Get material of the bondwire.
+        """Get the material of the bondwire.
 
         Parameters
         ----------
         evaluated : bool, optional
-            True if an evaluated material name is wanted.
+            Whether an evaluated (in variable namespace) material name is wanted.
+            The default is ``True``.
 
         Returns
         -------
@@ -1282,7 +1283,7 @@ class Bondwire(Primitive):
         return self.__stub.GetMaterial(_BondwireQueryBuilder.bondwire_bool_message(self, evaluated))
 
     def set_material(self, material):
-        """Set the material of a bondwire.
+        """Set the material of the bondwire.
 
         Parameters
         ----------
@@ -1293,7 +1294,7 @@ class Bondwire(Primitive):
 
     @property
     def type(self):
-        """:class:`BondwireType`: Bondwire-type of a bondwire object."""
+        """:class:`BondwireType`: Type of the bondwire."""
         btype_msg = self.__stub.GetType(self.msg)
         return BondwireType(btype_msg.type)
 
@@ -1303,7 +1304,7 @@ class Bondwire(Primitive):
 
     @property
     def cross_section_type(self):
-        """:class:`BondwireCrossSectionType`: Bondwire-cross-section-type of a bondwire object."""
+        """:class:`BondwireCrossSectionType`:Cross-section type of the bondwire."""
         return BondwireCrossSectionType(self.__stub.GetCrossSectionType(self.msg).type)
 
     @cross_section_type.setter
@@ -1314,7 +1315,7 @@ class Bondwire(Primitive):
 
     @property
     def cross_section_height(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Bondwire-cross-section height of a bondwire object."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: Cross-section height of the bondwire."""
         return Value(self.__stub.GetCrossSectionHeight(self.msg))
 
     @cross_section_height.setter
@@ -1324,17 +1325,18 @@ class Bondwire(Primitive):
         )
 
     def get_definition_name(self, evaluated=True):
-        """Get definition name of a bondwire object.
+        """Get the definition name of the bondwire object.
 
         Parameters
         ----------
         evaluated : bool, optional
-            True if an evaluated (in variable namespace) material name is wanted.
+            Whether an evaluated (in variable namespace) material name is wanted.
+            The default is ``True``.
 
         Returns
         -------
         str
-            Bondwire name.
+            Bondwire definition name.
         """
         return self.__stub.GetDefinitionName(
             _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
@@ -1346,14 +1348,14 @@ class Bondwire(Primitive):
         Parameters
         ----------
         definition_name : str
-            Bondwire name to be set.
+            Bondwire definition name to set.
         """
         self.__stub.SetDefinitionName(
             _BondwireQueryBuilder.set_definition_name_message(self, definition_name)
         )
 
     def get_traj(self):
-        """Get trajectory parameters of a bondwire object.
+        """Get trajectory parameters of the bondwire.
 
         Returns
         -------
@@ -1364,7 +1366,7 @@ class Bondwire(Primitive):
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(x1, y1, x2, y2)**
 
@@ -1385,16 +1387,16 @@ class Bondwire(Primitive):
         )
 
     def set_traj(self, x1, y1, x2, y2):
-        """Set the parameters of the trajectory of a bondwire.
+        """Set the parameters of the trajectory of the bondwire.
 
         Parameters
         ----------
         x1 : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of the start point.
+            X value of the the start point.
         y1 : :class:`Value <ansys.edb.core.utility.Value>`
-            Y value of the start point.
+            Y value of the the start point.
         x2 : :class:`Value <ansys.edb.core.utility.Value>`
-            X value of the end point.
+            X value of the the end point.
         y2 : :class:`Value <ansys.edb.core.utility.Value>`
             Y value of the end point.
         """
@@ -1402,7 +1404,7 @@ class Bondwire(Primitive):
 
     @property
     def width(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Width of a bondwire object."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: Width of the bondwire."""
         val = self.__stub.GetWidthValue(self.msg)
         return Value(val)
 
@@ -1411,7 +1413,7 @@ class Bondwire(Primitive):
         self.__stub.SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
 
     def get_start_elevation(self, start_context):
-        """Get the start elevation layer of a bondwire object.
+        """Get the start elevation layer of the bondwire.
 
         Parameters
         ----------
@@ -1421,7 +1423,7 @@ class Bondwire(Primitive):
         Returns
         -------
         :class:`Layer <ansys.edb.core.layer.Layer>`
-            Start context of the bondwire.
+            Start elevation level of the bondwire.
         """
         return Layer(
             self.__stub.GetStartElevation(
@@ -1430,12 +1432,12 @@ class Bondwire(Primitive):
         ).cast()
 
     def set_start_elevation(self, start_context, layer):
-        """Set the start elevation of a bondwire.
+        """Set the start elevation of the bondwire.
 
         Parameters
         ----------
         start_context : :class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>`
-            Start cell context of the bondwire. None means top level.
+            Start cell context of the bondwire. ``None`` means top-level.
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
             Start layer of the bondwire.
         """
@@ -1444,7 +1446,7 @@ class Bondwire(Primitive):
         )
 
     def get_end_elevation(self, end_context):
-        """Get the end elevation layer of a bondwire object.
+        """Get the end elevation layer of the bondwire.
 
         Parameters
         ----------
@@ -1454,7 +1456,7 @@ class Bondwire(Primitive):
         Returns
         -------
         :class:`Layer <ansys.edb.core.layer.Layer>`
-            End context of the bondwire.
+            End elevation layer of the bondwire.
         """
         return Layer(
             self.__stub.GetEndElevation(
@@ -1463,12 +1465,12 @@ class Bondwire(Primitive):
         ).cast()
 
     def set_end_elevation(self, end_context, layer):
-        """Set the end elevation of a bondwire.
+        """Set the end elevation of the bondwire.
 
         Parameters
         ----------
         end_context : :class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>`
-            End cell context of the bondwire. None means top level.
+            End cell context of the bondwire. ``None`` means top-level.
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
             End layer of the bondwire.
         """
@@ -1623,7 +1625,7 @@ class _PadstackInstanceQueryBuilder:
 
 
 class PadstackInstance(Primitive):
-    """Class representing a Padstack Instance object."""
+    """Representis a padstack instance object."""
 
     __stub: padstack_instance_pb2_grpc.PadstackInstanceServiceStub = StubAccessor(
         StubType.padstack_instance
@@ -1643,33 +1645,34 @@ class PadstackInstance(Primitive):
         solder_ball_layer,
         layer_map,
     ):
-        """Create a PadstackInstance object.
+        """Create a padstack instance.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout this padstack instance will be in.
+            Layout to create the padstack instance in.
         net : :class:`Net <ansys.edb.core.net.Net>`
-            Net of this padstack instance.
+            Net of the padstack instance.
         name : str
-            Name of padstack instance.
+            Name of the padstack instance.
         padstack_def : PadstackDef
-            Padstack definition of this padstack instance.
+            Padstack definition of the padstack instance.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
-            Rotation of this padstack instance.
+            Rotation of the padstack instance.
         top_layer : :class:`Layer <ansys.edb.core.layer.Layer>`
-            Top layer of this padstack instance.
+            Top layer of the padstack instance.
         bottom_layer : :class:`Layer <ansys.edb.core.layer.Layer>`
-            Bottom layer of this padstack instance.
+            Bottom layer of the padstack instance.
         solder_ball_layer : :class:`Layer <ansys.edb.core.layer.Layer>`
-            Solder ball layer of this padstack instance, or None for none.
+            Solder ball layer of the padstack instance or ``None`` for none.
         layer_map : :class:`LayerMap <ansys.edb.core.utility.LayerMap>`
-            Layer map of this padstack instance. None or empty means do auto-mapping.
+            Layer map of the padstack instance. ``None`` or empty results in
+            auto-mapping.
 
         Returns
         -------
         PadstackInstance
-            Padstack instance object created.
+            Padstack instance created.
         """
         return PadstackInstance(
             cls.__stub.Create(
@@ -1689,12 +1692,12 @@ class PadstackInstance(Primitive):
 
     @property
     def padstack_def(self):
-        """:class:`PadstackDef <ansys.edb.core.definition.padstack_def>`: PadstackDef of a Padstack Instance."""
+        """:class:`PadstackDef <ansys.edb.core.definition.padstack_def>`: Definition of the padstack instance."""
         return PadstackDef(self.__stub.GetPadstackDef(self.msg))
 
     @property
     def name(self):
-        """:obj:`str`: Name of a Padstack Instance."""
+        """:obj:`str`: Name of the padstack instance."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
@@ -1702,7 +1705,7 @@ class PadstackInstance(Primitive):
         self.__stub.SetName(_PadstackInstanceQueryBuilder.set_name_message(self, name))
 
     def get_position_and_rotation(self):
-        """Get the position and rotation of a Padstack Instance.
+        """Get the position and rotation of the padstack instance.
 
         Returns
         -------
@@ -1712,7 +1715,7 @@ class PadstackInstance(Primitive):
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(x, y, rotation)**
 
@@ -1730,7 +1733,7 @@ class PadstackInstance(Primitive):
         )
 
     def set_position_and_rotation(self, x, y, rotation):
-        """Set the position and rotation of a Padstack Instance.
+        """Set the position and rotation of the padstack instance.
 
         Parameters
         ----------
@@ -1746,7 +1749,7 @@ class PadstackInstance(Primitive):
         )
 
     def get_layer_range(self):
-        """Get the top and bottom layers of a Padstack Instance.
+        """Get the top and bottom layers of the padstack instance.
 
         Returns
         -------
@@ -1755,7 +1758,7 @@ class PadstackInstance(Primitive):
             :class:`Layer <ansys.edb.core.layer.Layer>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(top_layer, bottom_layer)**
 
@@ -1770,14 +1773,14 @@ class PadstackInstance(Primitive):
         )
 
     def set_layer_range(self, top_layer, bottom_layer):
-        """Set the top and bottom layers of a Padstack Instance.
+        """Set the top and bottom layers of the padstack instance.
 
         Parameters
         ----------
         top_layer : :class:`Layer <ansys.edb.core.layer.Layer>`
-            Top layer of the Padstack instance.
+            Top layer of the padstack instance.
         bottom_layer : :class:`Layer <ansys.edb.core.layer.Layer>`
-            Bottom layer of the Padstack instance.
+            Bottom layer of the padstack instance.
         """
         self.__stub.SetLayerRange(
             _PadstackInstanceQueryBuilder.set_layer_range_message(self, top_layer, bottom_layer)
@@ -1785,7 +1788,7 @@ class PadstackInstance(Primitive):
 
     @property
     def solderball_layer(self):
-        """:class:`Layer <ansys.edb.core.layer.Layer>`: SolderBall Layer of Padstack Instance."""
+        """:class:`Layer <ansys.edb.core.layer.Layer>`: Solderball layer of the padstack instance."""
         return Layer(self.__stub.GetSolderBallLayer(self.msg)).cast()
 
     @solderball_layer.setter
@@ -1796,7 +1799,7 @@ class PadstackInstance(Primitive):
 
     @property
     def layer_map(self):
-        """:class:`LayerMap <ansys.edb.core.utility.LayerMap>`: Layer Map of the Padstack Instance."""
+        """:class:`LayerMap <ansys.edb.core.utility.LayerMap>`: Layer map of the padstack instance."""
         return LayerMap(self.__stub.GetLayerMap(self.msg))
 
     @layer_map.setter
@@ -1804,7 +1807,7 @@ class PadstackInstance(Primitive):
         self.__stub.SetLayerMap(messages.pointer_property_message(self, layer_map))
 
     def get_hole_overrides(self):
-        """Get the hole overrides of Padstack Instance.
+        """Get the hole overrides of the padstack instance.
 
         Returns
         -------
@@ -1813,7 +1816,7 @@ class PadstackInstance(Primitive):
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(is_hole_override, hole_override)**
 
@@ -1828,14 +1831,14 @@ class PadstackInstance(Primitive):
         )
 
     def set_hole_overrides(self, is_hole_override, hole_override):
-        """Set the hole overrides of Padstack Instance.
+        """Set the hole overrides of the padstack instance.
 
         Parameters
         ----------
         is_hole_override : bool
-            If padstack instance is hole override.
+            Whether the padstack instance is a hole override.
         hole_override : :class:`Value <ansys.edb.core.utility.Value>`
-            Hole override diameter of this padstack instance.
+            Hole override diameter of the padstack instance.
         """
         self.__stub.SetHoleOverrides(
             _PadstackInstanceQueryBuilder.set_hole_overrides_message(
@@ -1845,7 +1848,7 @@ class PadstackInstance(Primitive):
 
     @property
     def is_layout_pin(self):
-        """:obj:`bool`: If padstack instance is layout pin."""
+        """:obj:`bool`: Flag indicating if the padstack instance is a layout pin."""
         return self.__stub.GetIsLayoutPin(self.msg).value
 
     @is_layout_pin.setter
@@ -1855,17 +1858,17 @@ class PadstackInstance(Primitive):
         )
 
     def get_back_drill_type(self, from_bottom):
-        """Get the back drill type of Padstack Instance.
+        """Get the back drill type of the padstack instance.
 
         Parameters
         ----------
         from_bottom : bool
-            True to get drill type from bottom.
+            Whether to get the back drill type from the bottom.
 
         Returns
         -------
         :class:`BackDrillType`
-            Back-Drill Type of padastack instance.
+            Back drill type of the padastack instance.
         """
         return BackDrillType(
             self.__stub.GetBackDrillType(
@@ -1874,12 +1877,12 @@ class PadstackInstance(Primitive):
         )
 
     def get_back_drill_by_layer(self, from_bottom):
-        """Get the back drill by layer.
+        """Get the back drill type by the layer.
 
         Parameters
         ----------
         from_bottom : bool
-            True to get drill type from bottom.
+            Whether to get the back drill type from the bottom.
 
         Returns
         -------
@@ -1889,7 +1892,7 @@ class PadstackInstance(Primitive):
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(drill_to_layer, offset, diameter)**
 
@@ -1911,19 +1914,20 @@ class PadstackInstance(Primitive):
         )
 
     def set_back_drill_by_layer(self, drill_to_layer, offset, diameter, from_bottom):
-        """Set the back drill by layer.
+        """Set the back drill by the layer.
 
         Parameters
         ----------
         drill_to_layer : :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer drills to. If drill from top, drill stops at the upper elevation of the layer.
-            If from bottom, drill stops at the lower elevation of the layer.
+            Layer to drill to. If drilling from the top, the drill stops at the upper
+            elevation of the layer. If drilling from the bottom, the drill stops at
+            the lower elevation of the layer.
         offset : :class:`Value <ansys.edb.core.utility.Value>`
-            Layer offset (or depth if layer is empty).
+            Layer offset (or depth if the layer is empty).
         diameter : :class:`Value <ansys.edb.core.utility.Value>`
             Drilling diameter.
         from_bottom : bool
-            True to set drill type from bottom.
+            Whether to set the back drill type from the bottom.
         """
         self.__stub.SetBackDrillByLayer(
             _PadstackInstanceQueryBuilder.set_back_drill_by_layer_message(
@@ -1932,12 +1936,12 @@ class PadstackInstance(Primitive):
         )
 
     def get_back_drill_by_depth(self, from_bottom):
-        """Get the back drill by depth.
+        """Get the back drill type by depth.
 
         Parameters
         ----------
         from_bottom : bool
-            True to get drill type from bottom.
+            Whether to get the back drill type from the bottom.
 
         Returns
         -------
@@ -1945,7 +1949,7 @@ class PadstackInstance(Primitive):
             bool,
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(drill_depth, diameter)**
 
@@ -1959,16 +1963,16 @@ class PadstackInstance(Primitive):
         return Value(params.drill_depth), Value(params.diameter)
 
     def set_back_drill_by_depth(self, drill_depth, diameter, from_bottom):
-        """Set the back drill by Depth.
+        """Set the back drill type by depth.
 
         Parameters
         ----------
         drill_depth : :class:`Value <ansys.edb.core.utility.Value>`
-            Drilling depth, may not align with layer.
+            Drilling depth, which may not align with the layer.
         diameter : :class:`Value <ansys.edb.core.utility.Value>`
             Drilling diameter.
         from_bottom : bool
-            True to set drill type from bottom.
+            Whether to set the back drill type from the bottom.
         """
         self.__stub.SetBackDrillByDepth(
             _PadstackInstanceQueryBuilder.set_back_drill_by_depth_message(
@@ -1977,21 +1981,21 @@ class PadstackInstance(Primitive):
         )
 
     def get_padstack_instance_terminal(self):
-        """:class:`TerminalInstance <ansys.edb.core.terminal.TerminalInstance>`: Padstack Instance's terminal."""
+        """:class:`TerminalInstance <ansys.edb.core.terminal.TerminalInstance>`: Terminal of the padstack instance."""
         return terminal.TerminalInstance(self.__stub.GetPadstackInstanceTerminal(self.msg))
 
     def is_in_pin_group(self, pin_group):
-        """Check if Padstack instance is in the Pin Group.
+        """Determine if the padstack instance is in a pin group.
 
         Parameters
         ----------
         pin_group : :class:`PinGroup <ansys.edb.core.hierarchy.PinGroup>`
-            Pin group to check if padstack instance is in.
+            Pin group to check if the padstack instance is in it.
 
         Returns
         -------
         bool
-            True if padstack instance is in pin group.
+            Whether the padstack instance is in a pin group.
         """
         return self.__stub.IsInPinGroup(
             _PadstackInstanceQueryBuilder.is_in_pin_group_message(self, pin_group)
@@ -1999,16 +2003,16 @@ class PadstackInstance(Primitive):
 
     @property
     def pin_groups(self):
-        """:obj:`list` of :class:`PinGroup <ansys.edb.core.hierarchy.PinGroup>`: Pin groups of Padstack instance object.
+        """:obj:`list` of :class:`PinGroup <ansys.edb.core.hierarchy.PinGroup>`: Pin groups of the padstack instance.
 
-        Read-Only.
+        This property is read-only.
         """
         pins = self.__stub.GetPinGroups(self.msg).items
         return [hierarchy.PinGroup(p) for p in pins]
 
 
 class BoardBendDef(Primitive):
-    """Class representing board bending definitions."""
+    """Represents a board bend definition instance."""
 
     __stub: board_bend_def_pb2_grpc.BoardBendDefServiceStub = StubAccessor(StubType.board_bend_def)
 
@@ -2019,11 +2023,12 @@ class BoardBendDef(Primitive):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout this board bend definition will be in.
+            Layout to create the board bend definition in.
         zone_prim : :class:`Primitive <Primitive>`
-            Zone primitive this board bend definition exists on.
+            Zone primitive to create the board bend definition on.
         bend_middle : :term:`PointDataTuple`
-            Tuple containing the starting and ending points of the line that represents the middle of the bend.
+            Tuple containing the starting and ending points of the line that represents
+            the middle of the bend.
         bend_radius : :term:`ValueLike`
             Radius of the bend.
         bend_angle : :term:`ValueLike`
@@ -2032,7 +2037,7 @@ class BoardBendDef(Primitive):
         Returns
         -------
         BoardBendDef
-            BoardBendDef that was created.
+            Board bend definition created.
         """
         return BoardBendDef(
             cls.__stub.Create(
@@ -2057,7 +2062,7 @@ class BoardBendDef(Primitive):
     @property
     @parser.to_point_data_pair
     def bend_middle(self):
-        """:term:`PointDataTuple`: Tuple of the bend middle starting and ending points."""
+        """:term:`PointDataTuple`: Tuple of the bend middle based on starting and ending points."""
         return self.__stub.GetBendMiddle(self.msg)
 
     @bend_middle.setter
@@ -2087,8 +2092,8 @@ class BoardBendDef(Primitive):
     def bent_regions(self):
         """:obj:`list` of :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Bent region polygons.
 
-            Collection of polygon data representing the areas bent by this bend definition.
+            This list of a collection of polygon data representing the areas bent by the bend definition.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.GetBentRegions(self.msg)

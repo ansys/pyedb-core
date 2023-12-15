@@ -17,7 +17,7 @@ from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
 
 
 class CellType(Enum):
-    """Enum representing possible types of cells.
+    """Provides an enum representing the types of cells.
 
     - CIRCUIT_CELL
     - FOOTPRINT_CELL
@@ -28,7 +28,7 @@ class CellType(Enum):
 
 
 class DesignMode(Enum):
-    """Enum representing possible modes.
+    """Provides an enum representing design modes.
 
     - GENERAL
     - IC
@@ -66,17 +66,17 @@ def _return_value(value):
 
 
 def _translate_hfss_extent(hfss_extent_msg):
-    """Convert HfssExtentMessage to tuple of expected values."""
+    """Convert an ``HfssExtentMessage`` object to a tuple of expected values."""
     return hfss_extent_msg.value, hfss_extent_msg.absolute
 
 
 def _translate_hfss_extents_enums(msg):
-    """Convert HfssExtent enums to get it's values."""
+    """Convert ``HfssExtent`` enums to get their values."""
     return msg.value
 
 
 def primitive_helper(msg):
-    """Convert message to primitive."""
+    """Convert a message to a primitive."""
     return Primitive(msg).cast()
 
 
@@ -120,7 +120,7 @@ def sanitize_args(args):
 
 
 def parse_args(msg):
-    """Extract extent options values from Hfss Extent message and add them into a dictionary."""
+    """Extract extent option values from an HFFSS extent message and add them into a dictionary."""
     res = {}
     for attribute in HFSS_EXTENT_ARGS.keys():
         value = getattr(msg, attribute)
@@ -142,7 +142,7 @@ class _QueryBuilder:
 
 
 class Cell(ObjBase, variable_server.VariableServer):
-    """Cell."""
+    """Represents a cell object."""
 
     __stub: CellServiceStub = StubAccessor(StubType.cell)
     layout_obj_type = LayoutObjType.CELL
@@ -173,7 +173,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         Returns
         -------
         Cell
-            Newly created cell.
+            Cell created.
         """
         return Cell(cls.__stub.Create(_QueryBuilder.create(db, cell_type, cell_name)))
 
@@ -181,7 +181,7 @@ class Cell(ObjBase, variable_server.VariableServer):
     def layout(self):
         """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout of the cell.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return layout.Layout(self.__stub.GetLayout(self.msg))
 
@@ -189,42 +189,44 @@ class Cell(ObjBase, variable_server.VariableServer):
     def flattened_layout(self):
         """:class:`Layout <ansys.edb.core.layout.Layout>`: Flattened layout of the cell.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return layout.Layout(self.__stub.GetFlattenedLayout(self.msg))
 
     @classmethod
     def find(cls, database, cell_type, name=None, cell_id=None):
-        """Find a cell in a database by either name or id.
+        """Find a cell in a database by either name or ID.
 
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-            Database to search for the cell in.
+            Database to search for the cell.
         cell_type : CellType
-            Type of the cell to create.
+            Type of the cell.
         name : str, optional
-            Name of the cell.
+            Name of the cell. The default is ``None``, in which case a name
+            is automatically assigned.
         cell_id : int, optional
-            ID of the cell.
+            ID of the cell. The default is ``None``, in which case an ID
+            is automatically assigned.
 
         Returns
         -------
         Cell
-            Cell that was found, None otherwise.
+            Cell that was found, ``None`` otherwise.
         """
         cell = Cell(cls.__stub.Find(messages.cell_find_message(database, cell_type, name, cell_id)))
         return None if cell.is_null else cell
 
     def delete(self):
-        """Delete a cell."""
+        """Delete the cell."""
         self.__stub.Delete(self.msg)
 
     @property
     def database(self):
-        """:class:`Database <ansys.edb.core.database.Database>`: Owning database of cell.
+        """:class:`Database <ansys.edb.core.database.Database>`: Owning database of the cell.
 
-        Read-Only.
+        This attribute is read-only.
         """
         from ansys.edb.core.database import Database
 
@@ -232,15 +234,15 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def is_footprint(self):
-        """:obj:`bool` : Flag to indicate if the cell is a footprint.
+        """:obj:`bool` : Flag indicating if the cell is a footprint.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return self.__stub.IsFootprint(self.msg).value
 
     @property
     def is_blackbox(self):
-        """:obj:`bool` : Flag to indicate if the cell is a blackbox."""
+        """:obj:`bool` : Flag indicating if the cell is a blackbox."""
         return self.__stub.IsBlackBox(self.msg).value
 
     @is_blackbox.setter
@@ -249,9 +251,10 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def anti_pads_always_on(self):
-        """:obj:`bool` : Determine whether antipads are always enabled.
+        """:obj:`bool` : Flat indicating whether antipads are always enabled.
 
-        True if enabled, false otherwise. If not enabled, they are triggered only when the via center point falls \
+        ``True`` if antipads are always enabled, ``False`` otherwise. If antipads
+        are not always enabled, they are triggered only when the via center point falls \
         within fill from another net.
         """
         return self.__stub.GetAntiPadsAlwaysOn(self.msg).value
@@ -264,9 +267,9 @@ class Cell(ObjBase, variable_server.VariableServer):
     def anti_pads_option(self):
         """:obj:`int` : Mode for activating antipads.
 
-        | 0 for Center-point Intersection
-        | 1 for Always On
-        | 2 for Pad Intersection.
+        - ``0`` for center-point intersection
+        - ``1`` for always on
+        - ``2`` for pad intersection
         """
         return self.__stub.GetAntiPadsOption(self.msg)
 
@@ -276,9 +279,9 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def is_symbolic_footprint(self):
-        """:obj:`bool` : Flag to indicate if the cell is a symbolic footprint.
+        """:obj:`bool` : Flag indicating if the cell is a symbolic footprint.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return self.__stub.IsSymbolicFootprint(self.msg).value
 
@@ -302,12 +305,12 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def hfss_extent_info(self):
-        """:class: HfssExtentInfo <ansys.edb.core.utility.HfssExtentInfo> : HFSS Extents for the cell."""
+        """:class: HfssExtentInfo <ansys.edb.core.utility.HfssExtentInfo> : HFSS extents for the cell."""
         msg = self.__stub.GetHfssExtentInfo(self.msg)
         return HfssExtentInfo(**parse_args(msg))
 
     def set_hfss_extent_info(self, extents):
-        """Set HFSS Extents of this cell.
+        """Set the HFSS extents of this cell.
 
         Parameters
         ----------
@@ -330,23 +333,23 @@ class Cell(ObjBase, variable_server.VariableServer):
         )
 
     def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True):
-        """Cutout an existing cell into a new cell.
+        """Cut out an existing cell into a new cell.
 
         Parameters
         ----------
         included_nets : list[:class:`Net <ansys.edb.core.net.Net>`]
-            Nets to be kept after cutout.
+            Nets to keep after cutout.
         clipped_nets : list[:class:`Net <ansys.edb.core.net.Net>`]
-            Nets to be kept and clipped at the boundary after cutout.
+            Nets to kept and clip at the boundary after cutout.
         clipping_polygon : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
             Clipping polygon.
         clean_clipping : bool, optional
-            Whether to perform clean clipping.
+            Whether to perform clean clipping. The default is ``True``.
 
         Returns
         -------
         Cell
-            The newly created cell.
+            Cell created.
         """
         return Cell(
             self.__stub.CutOut(
@@ -357,17 +360,17 @@ class Cell(ObjBase, variable_server.VariableServer):
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute ids corresponding to the provided product id for the cell.
+        """Get a list of attribute IDS for a given product ID for the cell.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
-            ID representing a product that supports the EDB.
+            ID representing a product that supports EDB.
 
         Returns
         -------
         list[int]
-            List of the user-defined attribute IDs for properties stored in this object
+            List of user-defined attribute IDs for properties stored in this object.
         """
         ids = self.__stub.GetProductPropertyIds(
             messages.get_product_property_ids_message(self, prod_id)
@@ -375,35 +378,35 @@ class Cell(ObjBase, variable_server.VariableServer):
         return [prop_id for prop_id in ids]
 
     def get_product_property(self, prod_id, attr_id):
-        """Get the product specific property of the cell.
+        """Get the product-specific property of the cell.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
-            ID representing a product that supports the EDB.
+            ID representing a product that supports EDB.
         attr_id : int
-            A user-defined id that identifies the string value stored in the property.
+            User-defined ID that identifies the string value stored in the property.
 
         Returns
         -------
         str
-            The string stored in this property.
+            String stored in the product-specific property.
         """
         return self.__stub.GetProductProperty(
             messages.get_product_property_message(self, prod_id, attr_id)
         )
 
     def set_product_property(self, prod_id, attr_id, prop_value):
-        """Set the product property of the cell associated with the given product and attribute ids.
+        """Set the product property of the cell for a given product ID and attribute ID.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
-            ID representing a product that supports the EDB.
+            ID representing a product that supports EDB.
         attr_id : int
-            A user-defined id that identifies the string value stored in the property.
+            A user-defined ID that identifies the string value stored in the property.
         prop_value : str
-            The string stored in this property.
+            New string to store in this property.
         """
         self.__stub.SetProductProperty(
             messages.set_product_property_message(self, prod_id, attr_id, prop_value)
@@ -415,19 +418,20 @@ class Cell(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         name : str
-            Name of the setup to delete.
+            Name of the setup.
         """
         self.__stub.DeleteSimulationSetup(messages.string_property_message(self, name))
 
     @property
     def simulation_setups(self):
-        """All simulation setups of the cell.
+        """List of all simulation setups of the cell.
 
         .. seealso:: :obj:`add_simulation_setup`, :obj:`delete_simulation_setup`
 
         Returns
         -------
         list[:class:`SimulationSetup <ansys.edb.core.simulation_setup.SimulationSetup>`]
+            List of simulation setups.
         """
         return [
             SimulationSetup(msg).cast() for msg in self.__stub.GetSimulationSetups(self.msg).items
@@ -436,23 +440,23 @@ class Cell(ObjBase, variable_server.VariableServer):
     def generate_auto_hfss_regions(self):
         """Generate auto HFSS regions.
 
-        Automatically identifies areas for use as HFSS regions in SIwave simulations.
+        This method automatically identifies areas for use as HFSS regions in SIwave simulations.
         """
         self.__stub.GenerateAutoHFSSRegions(self.msg)
 
     def generate_via_smart_box(self, net_name):
-        """Generate via smart box.
+        """Generate a via smart box.
 
-        Automatically identifies the locations of vias and significant geometry around them.
+        This method automatically identifies the locations of vias and significant geometry around them.
 
         Parameters
         ----------
         net_name : str
-            Name of the :class:`Net <ansys.edb.core.net.Net>` to be crawled in the search for vias.
+            Name of the net to crawl in the search for vias.
 
         Returns
         -------
         list[:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`]
-            A list of boxes; one around each via discovered.
+            List of boxes, one around each via discovered.
         """
         self.__stub.GenerateViaSmartBox(messages.string_property_message(self, net_name))

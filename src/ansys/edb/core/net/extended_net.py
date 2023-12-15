@@ -1,4 +1,4 @@
-"""Extended Net."""
+"""Extended net."""
 
 import ansys.api.edb.v1.extended_net_pb2 as enet_pb2
 
@@ -22,7 +22,7 @@ class _ExtendedNetQueryBuilder:
 
 
 class ExtendedNet(net_class.NetClass):
-    """ExtendedNet class."""
+    """Represents an extended net."""
 
     __stub = StubAccessor(StubType.extended_net)
     layout_obj_type = LayoutObjType.EXTENDED_NET
@@ -34,14 +34,14 @@ class ExtendedNet(net_class.NetClass):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout containing new extended net.
+            Layout to create the extended net in.
         name : str
-            Name of the new extended net
+            Name of the extended net.
 
         Returns
         -------
         ExtendedNet
-            Newly created extended net
+            Extended net created.
         """
         return ExtendedNet(
             cls.__stub.Create(_ExtendedNetQueryBuilder.extnet_create_msg(layout, name))
@@ -49,45 +49,45 @@ class ExtendedNet(net_class.NetClass):
 
     @classmethod
     def find_by_name(cls, layout, name):
-        """Find an extended net in a layout by name.
+        """Find an extended net by name in a given layout.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout being searched for extended net
+            Layout to search for the extended net.
         name : str
-            Name of the extended net to find
+            Name of the extended net.
 
         Returns
         -------
         ExtendedNet
-            The extended net that was found. Check the returned extended net's \
-            :obj:`is_null <ansys.edb.core.net.ExtendedNet.is_null>` property to see if it exists.
+            Extended net that was found. Check the :obj:`is_null <ansys.edb.core.net.ExtendedNet.is_null>`
+            property of the extended net to see if it exists.
         """
         return ExtendedNet(
             cls.__stub.FindByName(_ExtendedNetQueryBuilder.extenet_find_by_name_msg(layout, name))
         )
 
     def add_net(self, net):
-        """Add net to this extended net.
+        """Add a net to the extended net.
 
         Parameters
         ----------
         net : Net
-            The net to be added.
+            Net to add.
         """
         self.__stub.AddNet(_ExtendedNetQueryBuilder.extnet_modify_net_msg(self, net))
 
     def remove_net(self, net):
-        """Remove net from this extended net.
+        """Remove a net from the extended net.
 
         Parameters
         ----------
         net : Net
-            The net to be removed.
+            Net to remove.
         """
         self.__stub.RemoveNet(_ExtendedNetQueryBuilder.extnet_modify_net_msg(self, net))
 
     def remove_all_nets(self):
-        """Remove all nets from this extended net."""
+        """Remove all nets from the extended net."""
         self.__stub.RemoveAllNets(self.msg)

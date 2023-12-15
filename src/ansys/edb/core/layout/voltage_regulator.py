@@ -9,20 +9,20 @@ from ansys.edb.core.utility import Value
 
 
 class PowerModule:
-    """Class representing a Power Module.
+    """Represents a power module.
 
     Attributes
     ----------
     comp_group_name : str
-        Component Group Name.
+        Component group name.
     pos_output_terminal : str
-        Name of the Positive Output Terminal.
+        Name of the positive output terminal.
     neg_output_terminal : str
-        Name of the Negative Output Terminal
+        Name of the negative output terminal
     relative_strength : :class:`Value <ansys.edb.core.utility.Value>`
-        Relative strength in %
+        Relative strength as a percentage value.
     active : bool
-        True if active
+        Whether the power module is active.
     """
 
     def __init__(
@@ -33,7 +33,7 @@ class PowerModule:
         relative_strength=Value(100),
         active=True,
     ):
-        """Construct a Power Module."""
+        """Construct a power module."""
         self._comp_group_name = comp_group_name
         self._pos_output_terminal = pos_output_terminal
         self._neg_output_terminal = neg_output_terminal
@@ -43,7 +43,7 @@ class PowerModule:
 
     @property
     def comp_group_name(self):
-        """:obj:`str`: Component Group Name of this Power Module."""
+        """:obj:`str`: Component group name of the power module."""
         return self._comp_group_name
 
     @comp_group_name.setter
@@ -52,7 +52,7 @@ class PowerModule:
 
     @property
     def pos_output_terminal(self):
-        """:obj:`str`: Positive Output Terminal name for this Power Module."""
+        """:obj:`str`: Positive output terminal name for the power module."""
         return self._pos_output_terminal
 
     @pos_output_terminal.setter
@@ -61,7 +61,7 @@ class PowerModule:
 
     @property
     def neg_output_terminal(self):
-        """:obj:`str`: Negative Output Terminal name for this Power Module."""
+        """:obj:`str`: Negative output terminal name for the power module."""
         return self._neg_output_terminal
 
     @neg_output_terminal.setter
@@ -70,7 +70,7 @@ class PowerModule:
 
     @property
     def relative_strength(self):
-        """:class:`Value <ansys.edb.core.utility.Value>` : Relative Strength for this Power Module in percent.
+        """:class:`Value <ansys.edb.core.utility.Value>` : Relative strength for the power module as a percentage.
 
         Property can be set with :term:`ValueLike`
         """
@@ -82,7 +82,7 @@ class PowerModule:
 
     @property
     def active(self):
-        """:obj:`bool`: True if this Power Module is active."""
+        """:obj:`bool`: Flag indicating if the power module is active."""
         return self._active
 
     @active.setter
@@ -91,9 +91,9 @@ class PowerModule:
 
     @property
     def needs_sync(self):
-        """:obj:`bool`: True if this Power Module needs to be synchronized.
+        """:obj:`bool`: Flat indicating if the power module needs to be synchronized.
 
-        Read-Only
+        This property is read-only.
         """
         return self._needs_sync
 
@@ -117,7 +117,7 @@ class _QueryBuilder:
 
 
 class VoltageRegulator(conn_obj.ConnObj):
-    """Voltage regulator."""
+    """Represents a voltage regulator."""
 
     __stub = StubAccessor(StubType.voltage_regulator)
     layout_obj_type = LayoutObjType.VOLTAGE_REGULATOR
@@ -130,22 +130,22 @@ class VoltageRegulator(conn_obj.ConnObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout the voltage regulator will be in.
+            Layout to create the voltage regulator in.
         name : str
-            The name of the voltage regulator.
+            Name of the voltage regulator.
         active : bool
-            The voltage regulators active state.
+            Active state of the voltage regulator.
         voltage : :term:`ValueLike`
-            The voltage of the VoltageRegulator
+            Voltage of the voltage regulator.
         lrc : :term:`ValueLike`
-            The load regulation current
+            Load regulation current.
         lrp : :term:`ValueLike`
-            The load regulation percent.
+            Load regulation percentage.
 
         Returns
         -------
         VoltageRegulator
-            Newly created voltage regulator.
+            Voltage regulator created.
         """
         return VoltageRegulator(
             cls.__stub.Create(
@@ -171,7 +171,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def active(self):
-        """:obj:`bool`: Active status of the Voltage Regulator."""
+        """:obj:`bool`: Active status of the voltage regulator."""
         return self.__stub.IsActive(self.msg).value
 
     @active.setter
@@ -180,9 +180,9 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def voltage(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Voltage of the Voltage Regulator.
+        """:class:`Value <ansys.edb.core.utility.Value>`: Voltage of the voltage regulator.
 
-        Property can be set with :term:`ValueLike`
+        This property can be set with :term:`ValueLike`.
         """
         return Value(self.__stub.GetVoltage(self.msg))
 
@@ -194,9 +194,9 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def lrc(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation current of the Voltage Regulator.
+        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation current of the voltage regulator.
 
-        Property can be set with :term:`ValueLike`
+        This property can be set with :term:`ValueLike`.
         """
         return Value(self.__stub.GetLoadRegulationCurrent(self.msg))
 
@@ -208,9 +208,9 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def lrp(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation percent of the Voltage Regulator.
+        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation percent of the voltage regulator.
 
-        Property can be set with :term:`ValueLike`
+        This property can be set with :term:`ValueLike`.
         """
         return Value(self.__stub.GetLoadRegulationPercent(self.msg))
 
@@ -223,7 +223,7 @@ class VoltageRegulator(conn_obj.ConnObj):
     @property
     def pos_remote_sense_pin(self):
         """:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`: Positive remote sense pin of the \
-        Voltage Regulator.
+        voltage regulator.
 
         .. seealso:: :obj:`neg_remote_sense_pin`
         """
@@ -236,7 +236,7 @@ class VoltageRegulator(conn_obj.ConnObj):
     @property
     def neg_remote_sense_pin(self):
         """:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`: Negative remote sense pin of the \
-        Voltage Regulator.
+        voltage regulator.
 
         .. seealso:: :obj:`pos_remote_sense_pin`
         """
@@ -258,17 +258,17 @@ class VoltageRegulator(conn_obj.ConnObj):
     def num_active_power_modules(self):
         """:obj: `int` : Number of active power modules.
 
-        Read-Only
+        This attribute is read-only
         """
         return self.__stub.GetNActivePowerModules(self.msg).value
 
     def get_power_module(self, comp_group_name):
-        """Get power module corresponding to the component group name.
+        """Get the power module for a given component group name.
 
         Parameters
         ----------
         comp_group_name : str
-            Component group name of the power module
+            Component group name of the power module.
 
         Returns
         -------
@@ -279,23 +279,24 @@ class VoltageRegulator(conn_obj.ConnObj):
         )
 
     def get_all_power_modules(self):
-        """Get all power modules in this voltage regulator.
+        """Get all power modules in the voltage regulator.
 
         Returns
         -------
         list[PowerModule]
+            List of all power modules.
         """
         all_pms = self.__stub.GetAllPowerModules(self.msg)
 
         return [_QueryBuilder.create_power_module(msg=msg) for msg in all_pms.data]
 
     def add_power_module(self, power_module):
-        """Add a Power Module to this Voltage Regulator.
+        """Add a power module to the voltage regulator.
 
         Parameters
         ----------
         power_module : PowerModule
-            PowerModule to be added
+            Power module.
         """
         self.__stub.AddPowerModule(
             vr_pb2.PowerModulePropertyMessage(
@@ -304,36 +305,36 @@ class VoltageRegulator(conn_obj.ConnObj):
         )
 
     def remove_power_module(self, name):
-        """Remove a Power Module from this Voltage Regulator.
+        """Remove a power module from the voltage regulator.
 
         Parameters
         ----------
         name : str
-            Component Group Name of the Power Module to be removed.
+            Component group name of the power module.
         """
         self.__stub.RemovePowerModule(messages.string_property_message(target=self, value=name))
 
     def add_power_modules(self, power_modules):
-        """Add multiple Power Modules to this Voltage Regulator.
+        """Add multiple power modules to the voltage regulator.
 
         Parameters
         ----------
         power_modules : list[PowerModule]
-            Power Modules to be added
+            List of power modules to add.
         """
         self.__stub.AddPowerModules([messages.power_module_message(pm) for pm in power_modules])
 
     def remove_power_modules(self, names):
-        """Remove multiple Power Modules.
+        """Remove multiple power modules from the voltage regulator.
 
         Parameters
         ----------
         names : list[str]
-            Component Group Names of each Power Module to remove.
+            List of component group names of each power module to remove.
 
         """
         self.__stub.RemovePowerModules(messages.strings_property_message(target=self, value=names))
 
     def remove_all_power_modules(self):
-        """Remove all Power Modules in this Voltage Regulator."""
+        """Remove all power modules in the voltage regulator."""
         self.__stub.RemoveAllPowerModules(self.msg)

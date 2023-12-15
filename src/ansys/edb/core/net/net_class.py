@@ -14,7 +14,7 @@ class _QueryBuilder:
 
 
 class NetClass(layout_obj.LayoutObj):
-    """Net class."""
+    """Represents a net class."""
 
     __stub = StubAccessor(StubType.netclass)
     layout_obj_type = LayoutObjType.NET_CLASS
@@ -22,45 +22,45 @@ class NetClass(layout_obj.LayoutObj):
     @classmethod
     def create(cls, layout, name):
         """
-        Create net class.
+        Create a net.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout containing new net class.
+            Layout to create the net class in.
         name : str
-            Name of the new net class.
+            Name of the net.
 
         Returns
         -------
         NetClass
-            Newly created net class.
+            Net class created.
         """
         return NetClass(cls.__stub.Create(_QueryBuilder.create(layout, name)))
 
     @classmethod
     def find_by_name(cls, layout, name):
         """
-        Find net class by name.
+        Find a net class by name in a given layout.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout being searched for net class.
+            Layout to search for the net class.
         name : str
-            Name of net class being searched for.
+            Name of the net class.
 
         Returns
         -------
         NetClass
-            Net class matching the requested name. Check the returned net class's \
-            :obj:`is_null <ansys.edb.core.net.NetClass.is_null>` property to see if it exists.
+            Net class found. Check the :obj:`is_null <ansys.edb.core.net.NetClass.is_null>` property
+            of the returned net class to see if it exists.
         """
         return NetClass(cls.__stub.FindByName(messages.edb_obj_name_message(layout, name)))
 
     @property
     def name(self):
-        """:obj:`str`: Name of this object."""
+        """:obj:`str`: Name of the net class."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
@@ -69,7 +69,7 @@ class NetClass(layout_obj.LayoutObj):
 
     @property
     def description(self):
-        """:obj:`str` : Description of this object."""
+        """:obj:`str` : Description of the net class."""
         return self.__stub.GetDescription(self.msg).value
 
     @description.setter
@@ -78,17 +78,18 @@ class NetClass(layout_obj.LayoutObj):
 
     @property
     def is_power_ground(self):
-        """:class:`bool`: True if object belongs to Power/Ground :class:`NetClass`.
+        """:class:`bool`: Flag indicating in the net class belongs to the power/ground :class:`NetClass`
+        class.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.IsPowerGround(messages.edb_obj_message(self.msg)).value
 
     @property
     def nets(self):
-        """:obj:`list` of :class:`Net <ansys.edb.core.net.Net>`: List of nets in this object.
+        """:obj:`list` of :class:`Net <ansys.edb.core.net.Net>`: List of nets in the net class.
 
-        Read-Only.
+        This property is read-only.
         """
         from ansys.edb.core.net.net import Net
 
@@ -97,39 +98,39 @@ class NetClass(layout_obj.LayoutObj):
 
     def add_net(self, net):
         """
-        Add net to this this object.
+        Add a net to the net class.
 
         Parameters
         ----------
         net : Net
-            Net to add
+            Net to add.
         """
         return self.__stub.AddNet(nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg))
 
     def remove_net(self, net):
         """
-        Remove net from this object.
+        Remove a net from the net class.
 
         Parameters
         ----------
         net : Net
-            Net to remove
+            Net to remove.
         """
         self.__stub.RemoveNet(nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg))
 
     def contains_net(self, net):
         """
-        Check if net exists in this object.
+        Determine if a net exists in the net class.
 
         Parameters
         ----------
         net : Net
-            Net to check for.
+            Net to search for.
 
         Returns
         -------
         bool
-            True if net is in this object
+            ``True`` if the net is in the net class, ``False`` otherwise.
         """
         return self.__stub.ContainsNet(
             nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg)

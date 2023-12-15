@@ -40,7 +40,7 @@ class PortProperty(ObjBase):
     def reference_height(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Reference height of the port property.
 
-        This attribute can be set with the :term:`ValueLike` term.
+        This property can be set with the :term:`ValueLike` term.
         """
         return Value(self.__stub.GetReferenceHeight(messages.edb_obj_message(self)))
 

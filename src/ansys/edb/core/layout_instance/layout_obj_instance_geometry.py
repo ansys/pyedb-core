@@ -1,4 +1,4 @@
-"""Layout Obj Instance Geometry."""
+"""Layout object instance geometry."""
 
 from ansys.api.edb.v1.layout_obj_instance_geometry_pb2 import LayoutObjInstanceGeometryMessage
 
@@ -8,14 +8,14 @@ from ansys.edb.core.session import LayoutObjInstanceGeometryServiceStub, StubAcc
 
 
 class LayoutObjInstanceGeometry(ObjBase):
-    """Class representing layout object instance geometry."""
+    """Represents layout object instance geometry."""
 
     __stub: LayoutObjInstanceGeometryServiceStub = StubAccessor(
         StubType.layout_obj_instance_geometry
     )
 
     def __init__(self, geometry, owning_drawing, placement_lyr):
-        """Initialize layout obj instance geometry object.
+        """Initialize the layout object instance geometry object.
 
         Parameters
         ----------
@@ -29,7 +29,7 @@ class LayoutObjInstanceGeometry(ObjBase):
 
     @ObjBase.msg.getter
     def msg(self):
-        """Return protobuf message that represents this object's ID.
+        """Protobuf message that represents this object's ID.
 
         Returns
         -------
@@ -43,16 +43,16 @@ class LayoutObjInstanceGeometry(ObjBase):
 
     @property
     def material(self):
-        """:obj:`str`: The material of the geometry.
+        """:obj:`str`: Material of the geometry.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.GetMaterial(self.msg).value
 
     @property
     def color(self):
-        """:obj:`int`: The color of the geometry.
+        """:obj:`int`: Color of the geometry.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.GetColor(self.msg).value

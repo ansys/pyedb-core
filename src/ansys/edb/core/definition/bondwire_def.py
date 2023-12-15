@@ -342,7 +342,7 @@ class Jedec5BondwireDef(BondwireDef):
             :class:`Value <ansys.edb.core.utility.Value>`
         ]
 
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
 
             **(top_to_die_distance,die_pad_angle,lead_pad_angle)**
 

@@ -1,4 +1,4 @@
-"""Stackup Layer."""
+"""Stackup layer."""
 
 from enum import Enum
 
@@ -11,7 +11,7 @@ from ansys.edb.core.utility import Value
 
 
 class DCThicknessType(Enum):
-    """Enum representing DC thickness types of StackupLayers.
+    """Provides an enum representing DC thickness types of stackup layers.
 
     - EFFECTIVE
     - LAYER
@@ -24,7 +24,7 @@ class DCThicknessType(Enum):
 
 
 class RoughnessRegion(Enum):
-    """Enum representing regions for roughness models of StackupLayers.
+    """Provides an enum representing regions for roughness models of stackup layers.
 
     - TOP
     - BOTTOM
@@ -37,31 +37,31 @@ class RoughnessRegion(Enum):
 
 
 def _set_layer_material_name_message(layer, mat_name):
-    """Convert to SetLayerMaterialNameMessage."""
+    """Convert to a ``SetLayerMaterialNameMessage`` object."""
     return stackup_layer_pb2.SetLayerMaterialMessage(layer=layer.msg, material=mat_name)
 
 
 def _get_layer_material_name_message(layer, evaluated):
-    """Convert to GetLayerMaterialNameMessage."""
+    """Convert to a ``GetLayerMaterialNameMessage`` object."""
     return stackup_layer_pb2.GetLayerMaterialMessage(layer=layer.msg, evaluated=evaluated)
 
 
 def _stackup_layer_value_message(layer, value):
-    """Convert to StackupLayerValueMessage."""
+    """Convert to a ``StackupLayerValueMessage`` object."""
     return stackup_layer_pb2.StackupLayerValueMessage(
         layer=layer.msg, value=messages.value_message(value)
     )
 
 
 def _layer_roughness_region_message(layer, region):
-    """Convert to LayerRoughnessRegionMessage."""
+    """Convert to a ``LayerRoughnessRegionMessage`` object."""
     return stackup_layer_pb2.LayerRoughnessRegionMessage(
         layer=layer.msg, roughness_region=region.value
     )
 
 
 class StackupLayer(Layer):
-    """Stackup layer."""
+    """Represents a stackup layer."""
 
     @staticmethod
     def create(name, layer_type, thickness, elevation, material):
@@ -70,14 +70,20 @@ class StackupLayer(Layer):
         Parameters
         ----------
         name : str
+            Name of the stackup layer.
         layer_type : LayerType
+            Type of the stackup layer.
         thickness : :term:`ValueLike`
+           Thickness of the stackup layer.
         elevation : :term:`ValueLike`
+            Elevation  of the stackup layer.
         material : str
+            Material  of the stackup layer.
 
         Returns
         -------
         StackupLayer
+            Stackup layer created.
         """
         params = {
             "name": name,
@@ -107,7 +113,7 @@ class StackupLayer(Layer):
     def thickness(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Thickness value of the layer.
 
-        Setter accepts a :term:`ValueLike`
+        The setter accepts a :term:`ValueLike` term.
         """
         return Value(get_stackup_layer_stub().GetThickness(self.msg))
 
@@ -119,7 +125,7 @@ class StackupLayer(Layer):
     def lower_elevation(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Lower elevation value of the layer.
 
-        Setter accepts a :term:`ValueLike`
+        The setter accepts a :term:`ValueLike` term.
         """
         return Value(get_stackup_layer_stub().GetLowerElevation(self.msg))
 
@@ -133,7 +139,7 @@ class StackupLayer(Layer):
     def upper_elevation(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Upper elevation value of the layer.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return Value(get_stackup_layer_stub().GetUpperElevation(self.msg))
 
@@ -143,10 +149,12 @@ class StackupLayer(Layer):
         Parameters
         ----------
         evaluated : bool, optional
+            Whether to evaluate the material if it is parameterized. The default is ``True``.
 
         Returns
         -------
         str
+            Material name.
         """
         return (
             get_stackup_layer_stub()
@@ -160,6 +168,7 @@ class StackupLayer(Layer):
         Parameters
         ----------
         material_name : str
+            New name of the material.
         """
         get_stackup_layer_stub().SetMaterial(_set_layer_material_name_message(self, material_name))
 
@@ -169,11 +178,12 @@ class StackupLayer(Layer):
         Parameters
         ----------
         evaluated : bool, optional
-            If true and the material name is parameterized, the material name will be evaluated.
+            Whether to evaluate the material if it is parameterized. The default is ``True``.
 
         Returns
         -------
         str
+            Name of the fill material.
         """
         return (
             get_stackup_layer_stub()
@@ -187,6 +197,7 @@ class StackupLayer(Layer):
         Parameters
         ----------
         fill_material_name : str
+            New name of the fill material.
         """
         get_stackup_layer_stub().SetFillMaterial(
             _set_layer_material_name_message(self, fill_material_name)
@@ -246,7 +257,7 @@ class StackupLayer(Layer):
 
     @property
     def etch_factor_enabled(self):
-        """:obj:`bool`: Flag indicating if etch factor is used by the layer."""
+        """:obj:`bool`: Flag indicating if an etch factor is used by the layer."""
         return get_stackup_layer_stub().IsEtchFactorEnabled(self.msg).value
 
     @etch_factor_enabled.setter
@@ -259,7 +270,7 @@ class StackupLayer(Layer):
     def etch_factor(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Etch factor of the layer.
 
-        Setter accepts a :term:`ValueLike`
+        The setter accepts a :term:`ValueLike` term.
         """
         return Value(get_stackup_layer_stub().GetEtchFactor(self.msg))
 
@@ -282,7 +293,7 @@ class StackupLayer(Layer):
 
     @property
     def hfss_solver_properties(self):
-        """:term:`HFSSSolverProperties`: The HFSS solver properties of the layer."""
+        """:term:`HFSSSolverProperties`: HFSS solver properties of the layer."""
         response = get_stackup_layer_stub().GetHFSSSolverProperties(self.msg)
         return (
             DCThicknessType(response.dc_thickness_type),
@@ -305,9 +316,9 @@ class StackupLayer(Layer):
 
     @property
     def referencing_via_layer_ids(self):
-        r""":obj:`list`\[:obj:`int`\]: Retrieve the layer ids of all via layers referencing the layer.
+        r""":obj:`list`\[:obj:`int`\]: List of layer IDs for all via layers referencing the layer.
 
-        Read-Only.
+        This attribute is read-only.
         """
         return [
             via_lyr_id

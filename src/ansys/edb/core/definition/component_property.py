@@ -28,7 +28,7 @@ class ComponentProperty(ObjBase):
     def package_mounting_offset(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Offset of the package definition object.
 
-        This attribute can be set with the :term:`ValueLike` term.
+        This property can be set with :term:`ValueLike`.
         """
         return Value(self.__stub.GetPackageMountingOffset(messages.edb_obj_message(self)))
 
@@ -51,9 +51,7 @@ class ComponentProperty(ObjBase):
     def model(self):
         """:class:`Model <ansys.edb.core.hierarchy.Model>` : Model object.
 
-        Returns
-        -------
-        Copy of the model object. Use the setter for any modifications to be reflected.
+        This is a copy of the model object. Use the setter for any modifications to be reflected.
         """
         comp_model_msg = self.__stub.GetModel(messages.edb_obj_message(self))
 

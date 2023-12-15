@@ -1,21 +1,22 @@
-"""Mesh Operation."""
+"""Mesh operation."""
 
 
 class MeshOperation:
-    """Class representing mesh operations.
+    """Represents mesh operations.
 
     Attributes
     ----------
-    name : str
-        Name of the operation.
-    net_layer_info : list[tuple(str, str, bool)]
-        Each entry has net name, layer name, and isSheet which is True if it is a sheet object.
-    enabled : bool
-        True if mesh operation is enabled.
+    name : str, optional
+        Name of the operation. The default is ``""``, in which case a name is automatically assigned.
+    net_layer_info : list[tuple(str, str, bool)], optional
+        List with each entry having a net name, layer name, and ``isSheet`` flag indicating
+        if the entry is a sheet. The default is ``None``.
+    enabled : bool, optional
+        Whether the mesh operation is enabled. The default is ``True``.
     refine_inside : bool
-        True if should refine inside.
-    mesh_region : str
-        Mesh region.
+        Whether to refine inside. The default is ``"False``.
+    mesh_region : str, optional
+        Mesh region. The default is ``""``.
     """
 
     def __init__(
@@ -26,7 +27,7 @@ class MeshOperation:
         refine_inside=False,
         mesh_region="",
     ):
-        """Create a MeshOperation."""
+        """Create a mesh operation."""
         self._name = name
         self._net_layer_info = [] if net_layer_info is None else net_layer_info
         self._enabled = enabled
@@ -35,7 +36,7 @@ class MeshOperation:
 
     @property
     def name(self):
-        """:obj:`str`: Mesh operation name."""
+        """:obj:`str`: Name of the mesh operation."""
         return self._name
 
     @name.setter
@@ -44,9 +45,9 @@ class MeshOperation:
 
     @property
     def net_layer_info(self):
-        """:obj:`list` of :obj:`tuple` of (:obj:`str`, :obj:`str`, :obj:`bool`): List of mesh op net layer info.
+        """:obj:`list` of :obj:`tuple` of (:obj:`str`, :obj:`str`, :obj:`bool`): List of net layer information for the mesh operation.
 
-        tuple is of the form (net_name, layer_name, is_sheet)
+        The tuple is in this form: (net_name, layer_name, is_sheet)``.
         """
         return self._net_layer_info
 
@@ -56,7 +57,7 @@ class MeshOperation:
 
     @property
     def enabled(self):
-        """:obj:`bool`: Flag for enabling the mesh operation."""
+        """:obj:`bool`: Flag indicated if the mesh operation is enabled."""
         return self._enabled
 
     @enabled.setter
@@ -65,7 +66,7 @@ class MeshOperation:
 
     @property
     def refine_inside(self):
-        """:obj:`bool`: Flag for enabling refine inside."""
+        """:obj:`bool`: Flag indicating if refining inside is enabled."""
         return self._refine_inside
 
     @refine_inside.setter
@@ -74,7 +75,7 @@ class MeshOperation:
 
     @property
     def mesh_region(self):
-        """:obj:`str`: Name of mesh region."""
+        """:obj:`str`: Name of the mesh region."""
         return self._mesh_region
 
     @mesh_region.setter
@@ -83,30 +84,31 @@ class MeshOperation:
 
 
 class SkinDepthMeshOperation(MeshOperation):
-    """Class representing skin depth mesh op.
+    """Represents a skin depth mesh operation.
 
     Attributes
     ----------
-    name : str
-        Name of the operation.
-    net_layer_info : list[tuple[str, str, bool]]
-        Each entry has net name, layer name, and isSheet which is True if it is a sheet object.
-    enabled : bool
-        True if mesh operation is enabled.
-    refine_inside : bool
-        True if should refine inside.
-    mesh_region : str
-        Mesh region.
-    skin_depth : str
-        Skin depth (number with optional length units).
-    surface_triangle_length : str
-        Surface triangle length (number with optional length units).
-    num_layers : str
-        Number of layers (integer).
-    max_elements : str
-        Maximum number of elements (integer).
-    restrict_max_elements : bool
-        True if we restrict the number of elements.
+    name : str, optional
+         The default is ``""``, in which case a name is automatically assigned.
+    net_layer_info : list[tuple(str, str, bool)], optional
+        List with each entry having a net name, layer name, and ``isSheet`` flag indicating
+        if the entry is a sheet. The default is ``None``.
+    enabled : bool, optional
+        Whether the mesh operation is enabled. The default is ``True``.
+    refine_inside : bool, optional
+        Whether to refine inside. The default is ``"False``.
+    mesh_region : str, optional
+        Mesh region. The default is ``""``.
+    skin_depth : str, optional
+        Skin depth. The default is ``"1um"``.
+    surface_triangle_length : str, optional
+        Surface triangle length with units. The default is ``"1mm"``.
+    num_layers : str, optional
+        Number of layers. The default is ``2``.
+    max_elements : str, optional
+        Maximum number of elements. The default is ``"1000"``.
+    restrict_max_elements : bool, optional
+        Whether to restrict the number of elements. The default is ``False``.
     """
 
     def __init__(
@@ -122,7 +124,7 @@ class SkinDepthMeshOperation(MeshOperation):
         max_elements="1000",
         restrict_max_elements=False,
     ):
-        """Create a SkinDepthMeshOperation."""
+        """Create a skin depth mesh operation."""
         super().__init__(name, net_layer_info, enabled, refine_inside, mesh_region)
         self._skin_depth = skin_depth
         self._surface_triangle_length = surface_triangle_length
@@ -168,7 +170,7 @@ class SkinDepthMeshOperation(MeshOperation):
 
     @property
     def restrict_max_elements(self):
-        """:obj:`bool`: Flag to restrict the maximum number of mesh elements."""
+        """:obj:`bool`: Flag indicating if the maximum number of mesh elements is restricted."""
         return self._restrict_max_elements
 
     @restrict_max_elements.setter
@@ -177,28 +179,29 @@ class SkinDepthMeshOperation(MeshOperation):
 
 
 class LengthMeshOperation(MeshOperation):
-    """Class representing skin depth mesh op.
+    """Represents a length mesh operation.
 
     Attributes
     ----------
-    name : str
-        Name of the operation.
-    net_layer_info : list[tuple(str, str, bool)]
-        Each entry has net name, layer name, and isSheet which is True if it is a sheet object.
-    enabled : bool
-        True if mesh operation is enabled.
-    refine_inside : bool
-        True if should refine inside.
-    mesh_region : str
-        Mesh region.
-    max_length : str
-        maximum length of mesh elements (number with optional length units).
-    restrict_max_length : str
-        True if we restrict length of mesh elements (number with optional length units).
-    max_elements : str
-        Number of layers (integer).
-    restrict_max_elements : bool
-        True if we restrict the number of elements.
+    name : str, optional
+         The default is ``""``, in which case a name is automatically assigned.
+    net_layer_info : list[tuple(str, str, bool)], optional
+        List with each entry having a net name, layer name, and ``isSheet`` flag indicating
+        if the entry is a sheet. The default is ``None``.
+    enabled : bool, optional
+        Whether the mesh operation is enabled. The default is ``True``.
+    refine_inside : bool, optional
+        Whether to refine inside. The default is ``"False``.
+    mesh_region : str, optional
+        Mesh region. The default is ``""``.
+    max_length : str, optional
+        maximum length of the mesh elements. The default is ``"1mm"``.
+    restrict_max_length : str, optional
+        Whether to restrict the length of the mesh elements. The default is ``True``.
+    max_elements : str, optional
+        Number of layers. The default is ``"1000"``.
+    restrict_max_elements : bool, optional
+        Whether to restrict the number of elements. The default is ``False``.
     """
 
     def __init__(
@@ -213,7 +216,7 @@ class LengthMeshOperation(MeshOperation):
         max_elements="1000",
         restrict_max_elements=False,
     ):
-        """Class representing skin depth mesh op."""
+        """Represents a skin depth mesh operation."""
         super().__init__(name, net_layer_info, enabled, refine_inside, mesh_region)
         self._max_length = max_length
         self._restrict_max_length = restrict_max_length
@@ -222,7 +225,7 @@ class LengthMeshOperation(MeshOperation):
 
     @property
     def max_length(self):
-        """:obj:`str`: Maximum length of mesh elements."""
+        """:obj:`str`: Maximum length of the mesh elements."""
         return self._max_length
 
     @max_length.setter
@@ -231,7 +234,7 @@ class LengthMeshOperation(MeshOperation):
 
     @property
     def restrict_max_length(self):
-        """:obj:`bool`: Flag to restrict the maximum length of mesh elements."""
+        """:obj:`bool`: Flag indicating if the maximum length of mesh elements is restricted."""
         return self._restrict_max_length
 
     @restrict_max_length.setter
@@ -249,7 +252,7 @@ class LengthMeshOperation(MeshOperation):
 
     @property
     def restrict_max_elements(self):
-        """:obj:`bool`: Flag to restrict the maximum number of mesh elements."""
+        """:obj:`bool`: Flag indicating if the maximum number of mesh elements is restricted."""
         return self._restrict_max_elements
 
     @restrict_max_elements.setter

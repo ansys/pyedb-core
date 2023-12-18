@@ -304,7 +304,7 @@ class PadstackDefData(ObjBase):
     def layer_names(self):
         """:obj:`list` of :obj:`str`: List of layer names in the padstack definition data object.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         layer_names_msg = self.__stub.GetLayerNames(self.msg).names
         return layer_names_msg

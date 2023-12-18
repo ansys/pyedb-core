@@ -139,7 +139,7 @@ class StackupLayer(Layer):
     def upper_elevation(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Upper elevation value of the layer.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return Value(get_stackup_layer_stub().GetUpperElevation(self.msg))
 
@@ -318,7 +318,7 @@ class StackupLayer(Layer):
     def referencing_via_layer_ids(self):
         r""":obj:`list`\[:obj:`int`\]: List of layer IDs for all via layers referencing the layer.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return [
             via_lyr_id

@@ -109,7 +109,7 @@ class Group(HierarchyObj):
     def members(self):
         """:obj:`list` of :term:`Connectables <Connectable>`: List of all group members.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         from ansys.edb.core.inner import factory
 

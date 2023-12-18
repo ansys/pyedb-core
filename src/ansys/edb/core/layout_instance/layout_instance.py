@@ -78,16 +78,15 @@ class LayoutInstance(ObjBase):
             return utils.map_list(hits.hits.items, LayoutObjInstance)
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
-        """Get the layout object instance of the given :term:`connectable <Connectable>`
-        in the provided context.
+        """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.
 
         Parameters
         ----------
         layout_obj : :term:`Connectable <Connectable>`
             Layout object with the instances to search.
         context : list[str]
-            List of strings specifying the :class:`context <LayoutInstanceContext>` that the layout object instance
-            is retrieved from.
+            List of strings specifying the :class:`context <LayoutInstanceContext>` that the /
+            layout object instance is retrieved from.
 
             .. seealso:: :func:`LayoutObjInstance.context`
 

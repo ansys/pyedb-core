@@ -54,7 +54,7 @@ class LayoutObj(ObjBase):
     def layout(self):
         """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout owning the object.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return layout.Layout(
             self.__stub.GetLayout(_QueryBuilder.layout_obj_target_msg(self, self.layout_obj_type))

@@ -166,7 +166,7 @@ class ApdBondwireDef(BondwireDef):
     def bondwire_type(self):
         """:class:`BondwireDefType`: Type of the APD bondwire.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return BondwireDefType.APD_BONDWIRE_DEF
 
@@ -255,7 +255,7 @@ class Jedec4BondwireDef(BondwireDef):
     def bondwire_type(self):
         """:class:`BondwireDefType`: Type of the JEDEC4 bondwire.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return BondwireDefType.JEDEC4_BONDWIRE_DEF
 
@@ -381,6 +381,6 @@ class Jedec5BondwireDef(BondwireDef):
     def bondwire_type(self):
         """:class:`BondwireDefType`: Type of the JEDEC5 bondwire.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return BondwireDefType.JEDEC5_BONDWIRE_DEF

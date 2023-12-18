@@ -89,7 +89,7 @@ class ViaGroup(Group):
     def outline(self):
         """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Via group outline.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetOutline(self.msg)
 
@@ -97,7 +97,7 @@ class ViaGroup(Group):
     def conductor_percentage(self):
         """:obj:`float`: Conductor percentage of the via group.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetConductorPercentage(self.msg).value
 
@@ -105,6 +105,6 @@ class ViaGroup(Group):
     def persistent(self):
         """:obj:`bool`: Flag indicating if the primitives in the via group are persistent.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.IsPersistent(self.msg).value

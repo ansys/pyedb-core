@@ -99,7 +99,7 @@ class PadstackDef(ObjBase):
     def name(self):
         """:obj:`str`: Name of the padstack definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetName(self.msg).value
 

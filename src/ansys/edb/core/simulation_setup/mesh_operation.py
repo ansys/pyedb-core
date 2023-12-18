@@ -45,7 +45,8 @@ class MeshOperation:
 
     @property
     def net_layer_info(self):
-        """:obj:`list` of :obj:`tuple` of (:obj:`str`, :obj:`str`, :obj:`bool`): List of net layer information for the mesh operation.
+        """:obj:`list` of :obj:`tuple` of (:obj:`str`, :obj:`str`, :obj:`bool`): List of net layer \
+        information for the mesh operation.
 
         The tuple is in this form: (net_name, layer_name, is_sheet)``.
         """
@@ -216,7 +217,7 @@ class LengthMeshOperation(MeshOperation):
         max_elements="1000",
         restrict_max_elements=False,
     ):
-        """Represents a skin depth mesh operation."""
+        """Initialize an instance of a skin depth mesh operation."""
         super().__init__(name, net_layer_info, enabled, refine_inside, mesh_region)
         self._max_length = max_length
         self._restrict_max_length = restrict_max_length

@@ -283,8 +283,8 @@ class Layer(ObjBase):
     def transparency(self):
         """:obj:`int`: Transparency value of the layer.
 
-        The transparency value falls between 0 and 100, where 0 indicates a completely opaque layer and 100 indicates a \
-        completely transparent layer.
+        The transparency value falls between 0 and 100, where 0 indicates a completely
+        opaque layer and 100 indicates a completely transparent layer.
         """
         return self.__stub.GetTransparency(self.msg).value
 
@@ -390,7 +390,7 @@ class Layer(ObjBase):
     def zones(self):
         r""":obj:`list`\[:obj:`int`\]: Zone IDs of all zones containing the layer.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return [zone for zone in self.__stub.GetZones(self.msg).zones]
 
@@ -401,6 +401,6 @@ class Layer(ObjBase):
         If the owner is invalid, the index is ``0``. If the owner is multizone,
         the index is ``-1``.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetZone(self.msg).value

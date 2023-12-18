@@ -362,7 +362,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @property
     def enable_intra_plane_coupling(self):
-        """:obj:`bool`: Flag indicating whether to enable intra-plane coupling of power/ground nets for enhanced accuracy."""
+        """:obj:`bool`: Flag indicating if intra-plane coupling of power/ground nets is enabled to enhance accuracy."""
         return self.__stub.GetIntraPlaneCouplingEnabled(self.msg).value
 
     @enable_intra_plane_coupling.setter

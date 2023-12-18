@@ -86,7 +86,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
     def reference_layout(self):
         """:class:`Layout <ansys.edb.core.layout.Layout>`: Reference layout of the cell instance.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return layout.Layout(self.__stub.GetReferenceLayout(self.msg))
 

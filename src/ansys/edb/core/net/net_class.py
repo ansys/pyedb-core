@@ -78,8 +78,8 @@ class NetClass(layout_obj.LayoutObj):
 
     @property
     def is_power_ground(self):
-        """:class:`bool`: Flag indicating in the net class belongs to the power/ground :class:`NetClass`
-        class.
+        """:class:`bool`: Flag indicating in the net class belongs to the power/ground \
+            :class:`NetClass` class.
 
         This property is read-only.
         """

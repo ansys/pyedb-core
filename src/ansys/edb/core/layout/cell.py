@@ -181,7 +181,7 @@ class Cell(ObjBase, variable_server.VariableServer):
     def layout(self):
         """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout of the cell.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return layout.Layout(self.__stub.GetLayout(self.msg))
 
@@ -189,7 +189,7 @@ class Cell(ObjBase, variable_server.VariableServer):
     def flattened_layout(self):
         """:class:`Layout <ansys.edb.core.layout.Layout>`: Flattened layout of the cell.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return layout.Layout(self.__stub.GetFlattenedLayout(self.msg))
 
@@ -226,7 +226,7 @@ class Cell(ObjBase, variable_server.VariableServer):
     def database(self):
         """:class:`Database <ansys.edb.core.database.Database>`: Owning database of the cell.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         from ansys.edb.core.database import Database
 
@@ -236,7 +236,7 @@ class Cell(ObjBase, variable_server.VariableServer):
     def is_footprint(self):
         """:obj:`bool` : Flag indicating if the cell is a footprint.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.IsFootprint(self.msg).value
 
@@ -281,7 +281,7 @@ class Cell(ObjBase, variable_server.VariableServer):
     def is_symbolic_footprint(self):
         """:obj:`bool` : Flag indicating if the cell is a symbolic footprint.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.IsSymbolicFootprint(self.msg).value
 

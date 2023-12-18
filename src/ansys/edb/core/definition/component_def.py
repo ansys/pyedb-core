@@ -84,7 +84,7 @@ class ComponentDef(ObjBase):
         """:obj:`list` of :class:`ComponentModel <ansys.edb.core.definition.component_model.ComponentModel>`: \
         List of component models associated with the component definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         objs = self.__stub.GetComponentModels(self.msg).items
         return map_list(objs, component_model.ComponentModel)
@@ -94,7 +94,7 @@ class ComponentDef(ObjBase):
         """:obj:`list` of :class:`ComponentPin <ansys.edb.core.definition.ComponentPin>`: \
         List of component pins of the component definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         objs = self.__stub.GetComponentPins(self.msg).items
         return map_list(objs, component_pin.ComponentPin)

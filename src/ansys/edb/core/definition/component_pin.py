@@ -60,7 +60,7 @@ class ComponentPin(ObjBase):
     def number(self):
         """:obj:`int`: Serial number of the component pin inside its component definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetNumber(self.msg).value
 
@@ -69,6 +69,6 @@ class ComponentPin(ObjBase):
         """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition that the component \
         pin belongs to.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return component_def.ComponentDef(self.__stub.GetComponentDef(self.msg))

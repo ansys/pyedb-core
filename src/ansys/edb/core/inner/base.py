@@ -19,7 +19,7 @@ class ObjBase:
     def is_null(self):
         """:obj:`bool`: Determine whether the object exists in EDB.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.id == 0
 
@@ -27,7 +27,7 @@ class ObjBase:
     def id(self):
         """:obj:`int`: Unique ID of an EDB object. A ``0`` indicates an invalid object.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self._id
 

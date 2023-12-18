@@ -74,7 +74,7 @@ class PinGroup(ObjBase):
     def name(self):
         """:obj:`str`: Name of the pin group.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetName(self.msg).value
 
@@ -83,7 +83,7 @@ class PinGroup(ObjBase):
         """:obj:`list` of :class:`PadstackInstances <ansys.edb.core.primitive.PadstackInstance>`: \
         List of padstack instances.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         ps = self.__stub.GetPins(self.msg).items
         return [PadstackInstance(p) for p in ps]

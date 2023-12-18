@@ -99,8 +99,10 @@ class MatrixConvergenceData:
 
     @property
     def mag_min_threshold(self):
-        """:obj:`float`: Minimum magnitude threshold. When magnitude is less than the
-        minimal threshold value, the phase is ignored."""
+        """:obj:`float`: Minimum magnitude threshold.
+
+        When magnitude is less than the minimal threshold value, the phase is ignored.
+        """
         return self._mag_minThreshold
 
     @mag_min_threshold.setter

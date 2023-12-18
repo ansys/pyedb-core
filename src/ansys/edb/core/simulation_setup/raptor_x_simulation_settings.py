@@ -58,8 +58,8 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @property
     def use_gold_em_solver(self):
-        """:obj:`bool`: Flag indicating if the gold em solver is used. If ``False``, the fast em solver
-        is used."""
+        """:obj:`bool`: Flag indicating if the gold em solver is used. If ``False``, \
+        the fast em solver is used."""
         return self.__stub.GetUseGoldEMSolver(self.msg).value
 
     @use_gold_em_solver.setter
@@ -86,7 +86,7 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @property
     def save_netlist(self):
-        """:obj:`bool`: Flag indicating whether to generate netlist output."""
+        """:obj:`bool`: Flag indicating if netlist output is saved."""
         return self.__stub.GetSaveNetlist(self.msg).value
 
     @save_netlist.setter
@@ -95,7 +95,7 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @property
     def netlist_export_spectre(self):
-        """:obj:`bool`: Flag indicating whether to export the netlist in spectre format."""
+        """:obj:`bool`: Flag indicating if the netlist is exported in spectre format."""
         return self.__stub.GetNetlistExportSpectre(self.msg).value
 
     @netlist_export_spectre.setter
@@ -106,7 +106,7 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @property
     def save_rfm(self):
-        """:obj:`bool`: Flag indicating whether to export the RFM file."""
+        """:obj:`bool`: Flag indicating if an RFM file is exported."""
         return self.__stub.GetSaveRFM(self.msg).value
 
     @save_rfm.setter
@@ -121,7 +121,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_mesh_frequency(self):
-        """:obj:`bool`: Flag indicating whether to override the default meshing frequency."""
+        """:obj:`bool`: Flag indicating if the default meshing frequency is overridden."""
         return self.__stub.GetUseMeshFrequency(self.msg).value
 
     @use_mesh_frequency.setter
@@ -139,7 +139,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_edge_mesh(self):
-        """:obj:`bool`: Flag indicating whether to use edge mesh."""
+        """:obj:`bool`: Flag indicating if the edge mesh is used."""
         return self.__stub.GetUseEdgeMesh(self.msg).value
 
     @use_edge_mesh.setter
@@ -157,7 +157,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_cells_per_wavelength(self):
-        """:obj:`bool`: Flag indicating whether to use cells per wavelength."""
+        """:obj:`bool`: Flag indicating if cells per wavelength are used."""
         return self.__stub.GetUseCellsPerWavelength(self.msg).value
 
     @use_cells_per_wavelength.setter
@@ -177,7 +177,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_plane_projection_factor(self):
-        """:obj:`bool`: Flag indicating whether to use plane projection factor."""
+        """:obj:`bool`: Flag indicating if plane projection factor is used."""
         return self.__stub.GetUsePlaneProjectionFactor(self.msg).value
 
     @use_plane_projection_factor.setter
@@ -199,7 +199,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_relaxed_z_axis(self):
-        """:obj:`bool`: Flag indicating whether to use simplified meshing along the z axis."""
+        """:obj:`bool`: Flag indicating if simplified meshing is used along the z axis."""
         return self.__stub.GetUseRelaxedZAxis(self.msg).value
 
     @use_relaxed_z_axis.setter
@@ -208,7 +208,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_eliminate_slit_per_holes(self):
-        """:obj:`bool`: Flag indicating whether to remove strain relief or thermal relief slits and holes."""
+        """:obj:`bool`: Flag indicating if strain relief or thermal relief slits and holes are removed."""
         return self.__stub.GetUseEliminateSlitPerHoles(self.msg).value
 
     @use_eliminate_slit_per_holes.setter
@@ -230,7 +230,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_arc_resolution(self):
-        """:obj:`bool`: Flag indicating whether to approximate arcs with polygons."""
+        """:obj:`bool`: Flag indicating if arcs with polygons are approximated."""
         return self.__stub.GetUseArcResolution(self.msg).value
 
     @use_arc_resolution.setter
@@ -248,7 +248,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_auto_removal_sliver_poly(self):
-        """:obj:`bool`: Flag indicating whether to automatically align slight misaligned overlapping polygons."""
+        """:obj:`bool`: Flag indicating if slight misaligned overlapping polygons are to be automatically aligned."""
         return self.__stub.GetUseAutoRemovalSliverPoly(self.msg).value
 
     @use_auto_removal_sliver_poly.setter
@@ -270,7 +270,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_accelerate_via_extraction(self):
-        """:obj:`bool`: Flag indicating whether to simplify/merge neighboring vias."""
+        """:obj:`bool`: Flag indicating if neighboring vias are simplified/merged."""
         return self.__stub.GetUseAccelerateViaExtraction(self.msg).value
 
     @use_accelerate_via_extraction.setter
@@ -281,7 +281,8 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_enable_substrate_network_extraction(self):
-        """:obj:`bool`: Flag indicating whether to enable modeling of substrate coupling effects using equivalent distributed RC networks."""
+        """:obj:`bool`: Flag indicating if modeling of substrate coupling effects \
+        is enabled using equivalent distributed RC networks."""
         return self.__stub.GetUseEnableSubstrateNetworkExtraction(self.msg).value
 
     @use_enable_substrate_network_extraction.setter
@@ -292,7 +293,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_lde(self):
-        """:obj:`bool`: Flag indicating whether to take variations in resistivity into account."""
+        """:obj:`bool`: Flag indicating if variations in resistivity are taken into account."""
         return self.__stub.GetUseLDE(self.msg).value
 
     @use_lde.setter
@@ -301,7 +302,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_extract_floating_metals_dummy(self):
-        """:obj:`bool`: Flag indicating whether to model floating metals as dummy fills."""
+        """:obj:`bool`: Flag indicating if floating metals are modeled as dummy fills."""
         return self.__stub.GetUseExtractFloatingMetalsDummy(self.msg).value
 
     @use_extract_floating_metals_dummy.setter
@@ -312,7 +313,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_extract_floating_metals_floating(self):
-        """:obj:`bool`: Flag indicating whether to model floating metals as floating nets."""
+        """:obj:`bool`: Flag indicating if floating metals are modeled as floating nets."""
         return self.__stub.GetUseExtractFloatingMetalsFloating(self.msg).value
 
     @use_extract_floating_metals_floating.setter
@@ -323,7 +324,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_enable_etch_transform(self):
-        """:obj:`bool`: Flag indicating whether to "pre-distort" the layout based on foundry rules."""
+        """:obj:`bool`: Flag indicating if layout is "pre-distorted" based on foundry rules."""
         return self.__stub.GetUseEnableEtchTransform(self.msg).value
 
     @use_enable_etch_transform.setter
@@ -334,7 +335,8 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_enable_hybrid_extraction(self):
-        """:obj:`bool`: Flag indicating whether the modeler is to split the layout into two parts in an attempt to decrease the complexity."""
+        """:obj:`bool`: Flag indicating if the modeler is to split the layout into \
+        two parts in an attempt to decrease the complexity."""
         return self.__stub.GetUseEnableHybridExtraction(self.msg).value
 
     @use_enable_hybrid_extraction.setter
@@ -345,7 +347,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_enable_advanced_cap_effects(self):
-        """:obj:`bool`: Flag indicating whether to apply capacitance-related effects such as conformal dielectrics."""
+        """:obj:`bool`: Flag indicating capacitance-related effects such as conformal dielectrics are applied."""
         return self.__stub.GetUseEnableAdvancedCapEffects(self.msg).value
 
     @use_enable_advanced_cap_effects.setter
@@ -356,7 +358,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_override_shrink_factor(self):
-        """:obj:`bool`: Flag indicating whether to override the shrink factor."""
+        """:obj:`bool`: Flag indicating if shrink factor is overridden."""
         return self.__stub.GetUseOverrideShrinkFac(self.msg).value
 
     @use_override_shrink_factor.setter

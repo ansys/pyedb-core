@@ -14,7 +14,8 @@ class McadModel(ObjBase):
     def create_stride(cls, connectable=None, layout=None, filename=None):
         """Create a Stride model.
 
-        This method makes a call directly on a :term:`Connectable` or :func:`Layout<ansys.edb.core.layout.Layout.create_stride>`.
+        This method makes a call directly on a :term:`Connectable` or
+        :func:`Layout<ansys.edb.core.layout.Layout.create_stride>`.
         """
         return cls(
             cls.__stub.CreateStride(
@@ -26,7 +27,8 @@ class McadModel(ObjBase):
     def create_hfss(cls, connectable=None, layout=None, filename=None, design=None):
         """Create an HFSS model.
 
-        This method makes a call directly on a :term:`Connectable` or :func:`Layout<ansys.edb.core.layout.Layout.create_hfss>`.
+        This method makes a call directly on a :term:`Connectable` or
+        :func:`Layout<ansys.edb.core.layout.Layout.create_hfss>`.
         """
         return cls(
             cls.__stub.CreateHfss(
@@ -38,7 +40,8 @@ class McadModel(ObjBase):
     def create_3d_comp(cls, connectable=None, layout=None, filename=None):
         """Create a 3D component model.
 
-        This method makes a call directly on a :term:`Connectable` or :func:`Layout<ansys.edb.core.layout.Layout.create_3d_comp>`.
+        This method makes a call directly on a :term:`Connectable` or
+        :func:`Layout<ansys.edb.core.layout.Layout.create_3d_comp>`.
         """
         return cls(
             cls.__stub.Create3dComp(
@@ -80,31 +83,32 @@ class McadModel(ObjBase):
 
     @property
     def cell_instance(self):
-        """:class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>` Cell instance of an MCAD model.
+        """:class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>` Cell instance \
+        of the MCAD model.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return hierarchy.CellInstance(self.__stub.GetCellInst(messages.edb_obj_message(self)))
 
     @property
     def model_name(self):
-        """:obj:`str` Model name of an MCAD model.
+        """:obj:`str` Name of the MCAD model.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetModelName(messages.edb_obj_message(self)).value
 
     @property
     def design_name(self):
-        """:obj:`str` Design name of an MCAD model.
+        """:obj:`str` Design name of the MCAD model.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetDesignName(messages.edb_obj_message(self)).value
 
     @property
     def origin(self):
-        """:class:`Point3DData <ansys.edb.core.geometry.Point3DData>` Origin 3D point of an MCAD model."""
+        """:class:`Point3DData <ansys.edb.core.geometry.Point3DData>` Origin 3D point of the MCAD model."""
         return self.__stub.GetOrigin(messages.edb_obj_message(self))
 
     @origin.setter
@@ -149,7 +153,7 @@ class McadModel(ObjBase):
         self.__stub.SetScale(messages.double_property_message(self, scale))
 
     def material(self, index):
-        """Get the material name of an MCAD model part at a given index.
+        """Get the material name of the MCAD model part at a given index.
 
         Parameters
         ----------
@@ -164,7 +168,7 @@ class McadModel(ObjBase):
         return self.__stub.GetMaterial(messages.int_property_message(self, index)).value
 
     def set_material(self, index, material):
-        """Set material name of an MCAD model part at a given index.
+        """Set material name of a MCAD model part at a given index.
 
         Parameters
         ----------
@@ -176,7 +180,7 @@ class McadModel(ObjBase):
         self.__stub.SetMaterial(messages.mcad_model_string_message(self, index, material))
 
     def visible(self, index):
-        """Get visibility of an MCAD model part at a given index.
+        """Get visibility of a MCAD model part at a given index.
 
         Parameters
         ----------

@@ -96,18 +96,22 @@ class DifferentialPair(NetClass):
 
     @property
     def is_power_ground(self):
-        """This propery is invalid for a differential pair."""
+        """This property is invalid for a differential pair."""
         return False
 
     def add_net(self, net):
-        """This method is invalid for a differential pair.
+        """Add a net.
 
-        Use :obj:`ansys.edb.core.net.DifferentialPair.differential_pair` = (pos_net, neg_net) instead.
+        This method is invalid for a differential pair. Use
+        :obj:`ansys.edb.core.net.DifferentialPair.differential_pair` = (pos_net, neg_net) instead.
         """
         raise TypeError("Net cannot be added to a differential pair.")
 
     def remove_net(self, net):
-        """This method is invalid for a differential pair."""
+        """Remove a net.
+
+        This method is invalid for a differential pair.
+        """
         raise TypeError("Net cannot be removed from a differential pair.")
 
     @property

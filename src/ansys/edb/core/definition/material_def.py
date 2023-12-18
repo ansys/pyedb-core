@@ -204,7 +204,7 @@ class MaterialDef(ObjBase):
     def name(self):
         """:obj:`str`: Name of the material definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetName(messages.edb_obj_message(self)).value
 

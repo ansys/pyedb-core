@@ -93,7 +93,7 @@ class ConnObj(layout_obj.LayoutObj):
         This ID is unique across all :term:`Connectable` objects in the cell and persistent across closing and \
         reopening the database.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetId(self.msg).id
 
@@ -161,7 +161,7 @@ class ConnObj(layout_obj.LayoutObj):
     def is_mcad(self):
         """:obj:`bool`: Flag indicating if this is an Mcad model.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad(self)
 
@@ -169,7 +169,7 @@ class ConnObj(layout_obj.LayoutObj):
     def is_mcad_stride(self):
         """:obj:`bool`: Flag indicating if this is a stride Mcad model.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad_stride(self)
 
@@ -177,7 +177,7 @@ class ConnObj(layout_obj.LayoutObj):
     def is_mcad_hfss(self):
         """:obj:`bool`: Flag indicating if this is an HFSS Mcad model.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad_hfss(self)
 
@@ -185,6 +185,6 @@ class ConnObj(layout_obj.LayoutObj):
     def is_mcad_3d_comp(self):
         """:obj:`bool`: Flag indicating if this is a 3D composite Mcad model.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad_3d_comp(self)

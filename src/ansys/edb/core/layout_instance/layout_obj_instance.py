@@ -66,7 +66,7 @@ class LayoutObjInstance(ObjBase):
 
         The list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names
         representing the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>`
-        resides on. The first list entry represents the top-level context and the last lsit entry represents
+        resides on. The first entry represents the top-level context and the last entry represents
         the context that the layout object instance exists in.
 
         This property is read-only.
@@ -83,8 +83,7 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def layout_obj(self):
-        """:term:`Connectable <Connectable>`: Definition layout object that the layout object instance
-        is an instance of.
+        """:term:`Connectable <Connectable>`: Definition layout object that layout object instance is an instance of.
 
         This property is read-only.
         """

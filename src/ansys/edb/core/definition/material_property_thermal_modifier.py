@@ -70,7 +70,7 @@ class MaterialPropertyThermalModifier(ObjBase):
             PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]
         where PropValRef = The original property value without the thermal modifier applied
 
-        This attribute is read-only.
+        This property is read-only.
         """
         msg = self.__stub.GetQuadraticModelParams(messages.edb_obj_message(self))
         return BasicQuadraticParams(
@@ -89,6 +89,6 @@ class MaterialPropertyThermalModifier(ObjBase):
     def expression(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Expression value representing the thermal modifier.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return Value(self.__stub.GetThermalModifierExpression(messages.edb_obj_message(self)))

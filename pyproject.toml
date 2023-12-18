@@ -47,7 +47,6 @@ tests = [
     "pytest==7.4.3",
     "pytest-cov==4.1.0",
     "pytest-mock==3.11.1",
-    "python-dotenv>=0.20.0",
     "tox",
 ]
 # FIXME: update to newer versions

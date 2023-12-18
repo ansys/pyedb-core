@@ -15,7 +15,7 @@ from ansys.edb.core.utility import PortPostProcessingProp, Value
 
 
 class TerminalType(Enum):
-    """Enum class representing terminal types."""
+    """Provides an enum representing terminal types."""
 
     EDGE = term_pb2.EDGE_TERM
     POINT = term_pb2.POINT_TERM
@@ -26,7 +26,7 @@ class TerminalType(Enum):
 
 
 class BoundaryType(Enum):
-    """Enum class representing terminal boundary types."""
+    """Provides an enum representing terminal boundary types."""
 
     PORT = term_pb2.PORT_BOUNDARY
     PEC = term_pb2.PEC_BOUNDARY
@@ -40,7 +40,7 @@ class BoundaryType(Enum):
 
 
 class SourceTermToGroundType(Enum):
-    """Enum class representing source terminal to ground types."""
+    """Provides an enum representing source terminal-to-ground types."""
 
     NO_GROUND = term_pb2.NO_GROUND
     NEGATIVE = term_pb2.NEGATIVE
@@ -48,7 +48,7 @@ class SourceTermToGroundType(Enum):
 
 
 class HfssPIType(Enum):
-    """Enum class representing HFSS PI types."""
+    """Provides an enum representing HFSS PI types."""
 
     DEFAULT = term_pb2.PI_DEFAULT
     COAXIAL_OPEN = term_pb2.PI_COAXIAL_OPEN
@@ -58,20 +58,20 @@ class HfssPIType(Enum):
 
 
 class EdgeType(Enum):
-    """Enum class representing edge types."""
+    """Provides an enum representing edge types."""
 
     PRIMITIVE = edge_term_pb2.PRIMITIVE_EDGE
     PADSTACK = edge_term_pb2.PAD_EDGE
 
 
 class Edge(ObjBase):
-    """Class representing an edge."""
+    """Represents an edge."""
 
     __stub = StubAccessor(StubType.edge)
     type = TypeField(None)
 
     def cast(self):
-        """Cast the base Edge object to correct subclass, if possible.
+        """Cast the base edge object to the correct subclass, if possible.
 
         Returns
         -------
@@ -104,13 +104,13 @@ class Edge(ObjBase):
 
 
 class PadEdge(Edge):
-    """Class representing a padstack edge."""
+    """Represents a padstack edge."""
 
     type = TypeField(EdgeType.PADSTACK)
 
     @classmethod
     def create(cls, padstack_instance, layer, arc):
-        """Create a PadEdge.
+        """Create a padstack edge.
 
         Parameters
         ----------
@@ -126,7 +126,7 @@ class PadEdge(Edge):
 
     @property
     def padstack_instance(self):
-        """Return the padstack instance this edge is on.
+        """Padstack instance the edge is on.
 
         Returns
         -------
@@ -136,7 +136,7 @@ class PadEdge(Edge):
 
     @property
     def layer(self):
-        """Return the layer this edge is on.
+        """Layer the edge is on.
 
         Returns
         -------
@@ -146,7 +146,7 @@ class PadEdge(Edge):
 
     @property
     def arc(self):
-        """Return the arc of this edge.
+        """Arc of the edge.
 
         Returns
         -------
@@ -177,7 +177,7 @@ class PrimitiveEdge(Edge):
 
     @property
     def primitive(self):
-        """Return primitive of this terminal.
+        """Primitive of the terminal.
 
         Returns
         -------
@@ -187,7 +187,7 @@ class PrimitiveEdge(Edge):
 
     @property
     def point(self):
-        """Return the x, y coordinates of this terminal.
+        """Coordinates (x, y) of the terminal.
 
         Returns
         -------
@@ -197,18 +197,19 @@ class PrimitiveEdge(Edge):
 
 
 class Terminal(conn_obj.ConnObj):
-    """Class representing a terminal object."""
+    """Represents a terminal object."""
 
     __stub = StubAccessor(StubType.terminal)
     type = TypeField(None)
     layout_obj_type = LayoutObjType.TERMINAL
 
     def cast(self, term_type=None):
-        """Cast the terminal object to correct concrete type. Fetch the type if necessary.
+        """Cast the terminal object to the correct concrete type, fetching the type if necessary.
 
         Parameters
-        term_type : TerminalType
         ----------
+        term_type : TerminalType
+
         Returns
         -------
         Terminal
@@ -235,12 +236,14 @@ class Terminal(conn_obj.ConnObj):
 
     @classmethod
     def find(cls, layout, name):
-        """Find a terminal by name.
+        """Find a terminal by name in a given layout.
 
         Parameters
         ----------
         layout : Layout
+           Layout to search for the terminal.
         name : str
+            Name of the terminal.
 
         Returns
         -------
@@ -260,12 +263,12 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def _type(self):
-        """Return the terminal type."""
+        """Terminal type."""
         return TerminalType(self._params.term_type)
 
     @property
     def bundle_terminal(self):
-        """Return a bundle terminal this terminal belongs to, if any.
+        """Bundle terminal that the terminal belongs to, if any.
 
         Returns
         -------
@@ -275,7 +278,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def reference_terminal(self):
-        """Return a terminal this terminal references, if any.
+        """Terminal that the terminal references, if any.
 
         Returns
         -------
@@ -285,17 +288,11 @@ class Terminal(conn_obj.ConnObj):
 
     @reference_terminal.setter
     def reference_terminal(self, value):
-        """Set a terminal this terminal references.
-
-        Parameters
-        ----------
-        value : Terminal
-        """
         self._params = {"ref_term": value}
 
     @property
     def reference_layer(self):
-        """Return a layer this terminal references, if any.
+        """Layer that the terminal references, if any, by either layer object or name.
 
         Returns
         -------
@@ -305,17 +302,11 @@ class Terminal(conn_obj.ConnObj):
 
     @reference_layer.setter
     def reference_layer(self, value):
-        """Set a layer this terminal references by Layer object or by layer name.
-
-        Parameters
-        ----------
-        value : Layer or str
-        """
         self._params = {"ref_layer": value}
 
     @property
     def is_interface_terminal(self):
-        """Return whether this terminal is an interface.
+        """Flag indicating if the terminal is an interface.
 
         Returns
         -------
@@ -325,7 +316,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def is_reference_terminal(self):
-        """Return whether this terminal is a reference terminal.
+        """Flag indicating if the terminal is a reference terminal.
 
         Returns
         -------
@@ -335,87 +326,62 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def use_reference_from_hierarchy(self):
-        """Return whether this terminal can use references from hierarchy.
+        """Flag indicating if the terminal can use references from the hierarchy.
 
         Returns
         -------
         bool
+            ``True`` when the terminal can use references from the hierarchy,
+            ``Fale`` otherwise.
         """
         return self._params.use_ref_from_hierarchy
 
     @use_reference_from_hierarchy.setter
     def use_reference_from_hierarchy(self, value):
-        """Set whether this terminal can use references from hierarchy.
-
-        Parameters
-        ----------
-        value : bool
-        """
         self._params = {"use_ref_from_hierarchy": value}
 
     @property
     def is_auto_port(self):
-        """Return whether this terminal is an auto port.
+        """Flag indicating if the terminal is an auto port.
 
         Returns
         -------
         bool
+            ``True`` if the terminal is an auto port, ``False`` otherwise.
         """
         return self._params.is_auto_port
 
     @is_auto_port.setter
     def is_auto_port(self, value):
-        """Set whether this terminal is an auto port.
-
-        Parameters
-        ----------
-        value : bool
-        """
         self._params = {"is_auto_port": value}
 
     @property
     def is_circuit_port(self):
-        """Return whether this terminal is a circuit port.
+        """Flag indicating if the terminal is a circuit port.
 
         Returns
         -------
         bool
+            ``True`` when the terminal is a circuit port, ``False`` otherwise.
         """
         return self._params.is_circuit_port
 
     @is_circuit_port.setter
     def is_circuit_port(self, value):
-        """Set whether this terminal is a circuit port.
-
-        Parameters
-        ----------
-        value : bool
-        """
         self._params = {"is_circuit_port": value}
 
     @property
     def name(self):
-        """Return the name of this terminal.
-
-        Returns
-        -------
-        str
-        """
+        """Name of the terminal."""
         return self._params.name
 
     @name.setter
     def name(self, value):
-        """Set the name of this terminal.
-
-        Parameters
-        ----------
-        value : str
-        """
         self._params = {"name": value}
 
     @property
     def boundary_type(self):
-        """Return the boundary type of this terminal.
+        """Boundary type of the terminal.
 
         Returns
         -------
@@ -425,37 +391,26 @@ class Terminal(conn_obj.ConnObj):
 
     @boundary_type.setter
     def boundary_type(self, value):
-        """Set the boundary type of this terminal.
-
-        Parameters
-        ----------
-        value : BoundaryType
-        """
         self._params = {"boundary_type": value.value}
 
     @property
     def impedance(self):
-        """Return the impedance of this terminal.
+        """Impedance of the terminal.
 
         Returns
         -------
         Value
+            Im
         """
         return Value(self._params.impedance)
 
     @impedance.setter
     def impedance(self, value):
-        """Set the impedance of this terminal.
-
-        Parameters
-        ----------
-        value : Value
-        """
         self._params = {"impedance": value}
 
     @property
     def source_amplitude(self):
-        """Return the source amplitude of this terminal.
+        """Source amplitude of the terminal.
 
         Returns
         -------
@@ -465,17 +420,11 @@ class Terminal(conn_obj.ConnObj):
 
     @source_amplitude.setter
     def source_amplitude(self, value):
-        """Set the source amplitude of this terminal.
-
-        Parameters
-        ----------
-        value : Value
-        """
         self._params = {"source_amplitude": value}
 
     @property
     def source_phase(self):
-        """Return the source phase of this terminal.
+        """Source phase of the terminal.
 
         Returns
         -------
@@ -485,17 +434,11 @@ class Terminal(conn_obj.ConnObj):
 
     @source_phase.setter
     def source_phase(self, value):
-        """Set the source phase of this terminal.
-
-        Parameters
-        ----------
-        value : Value
-        """
         self._params = {"source_phase": value}
 
     @property
     def term_to_ground(self):
-        """Return source term to ground type.
+        """Source terminal-to-ground type.
 
         Returns
         -------
@@ -505,17 +448,11 @@ class Terminal(conn_obj.ConnObj):
 
     @term_to_ground.setter
     def term_to_ground(self, value):
-        """Set the source term to ground type.
-
-        Parameters
-        ----------
-        value : SourceTermToGroundType
-        """
         self._params = {"term_to_ground": value.value}
 
     @property
     def hfss_pi_type(self):
-        """Return the HFSS PI type.
+        """HFSS PI type.
 
         Returns
         -------
@@ -525,17 +462,11 @@ class Terminal(conn_obj.ConnObj):
 
     @hfss_pi_type.setter
     def hfss_pi_type(self, value):
-        """Set the HFSS PI type.
-
-        Parameters
-        ----------
-        value : HfssPIType
-        """
         self._params = {"hfss_pi_type": value.value}
 
     @property
     def model(self):
-        """Return the S-parameter model.
+        """S-parameter model.
 
         Returns
         -------
@@ -545,18 +476,12 @@ class Terminal(conn_obj.ConnObj):
 
     @model.setter
     def model(self, value):
-        """Set the S-parameter model.
-
-        Parameters
-        ----------
-        value : str
-        """
         self._params = {"s_param_model": value}
 
     @property
     @parser.to_rlc
     def rlc_boundary_parameters(self):
-        """Return the RLC boundary parameters.
+        """RLC boundary parameters.
 
         Returns
         -------
@@ -566,17 +491,11 @@ class Terminal(conn_obj.ConnObj):
 
     @rlc_boundary_parameters.setter
     def rlc_boundary_parameters(self, value):
-        """Set the RLC boundary parameters.
-
-        Parameters
-        ----------
-        value : Rlc
-        """
         self._params = {"rlc": value}
 
     @property
     def port_post_processing_prop(self):
-        """Return the port post processing props.
+        """Port postprocessing properties.
 
         Returns
         -------
@@ -595,12 +514,6 @@ class Terminal(conn_obj.ConnObj):
 
     @port_post_processing_prop.setter
     def port_post_processing_prop(self, value):
-        """Set the port post processing props.
-
-        Parameters
-        ----------
-        value : PortPostProcessingProp
-        """
         self._params = {"port_post_processing_prop": value}
 
     def _product_solvers(self, product_id):
@@ -609,16 +522,19 @@ class Terminal(conn_obj.ConnObj):
         )
 
     def product_solver_option(self, product_id, solver_name):
-        """Return product solver option name.
+        """Get the name of the product solver option.
 
         Parameters
         ----------
         product_id : ProductIdType
+            ID of the product.
         solver_name : str
+            Name of the solver.
 
         Returns
         -------
         str
+            Name of the product solver option.
         """
         return next(
             solver.option
@@ -627,44 +543,52 @@ class Terminal(conn_obj.ConnObj):
         )
 
     def set_product_solver_option(self, product_id, solver_name, option):
-        """Set product solver option name.
+        """Set the product solver option.
 
         Parameters
         ----------
         product_id : ProductIdType
+            ID of the product.
         solver_name : str
+            Name of the solver.
         option : str
+           Name of the product solver option.
         """
         self.__stub.SetProductSolverOptions(
             messages.term_set_solver_option_message(self, product_id, solver_name, option)
         )
 
     def product_solver_names(self, product_id):
-        """Return the list of solver names.
+        """Get the list of solver names.
 
         Parameters
         ----------
         product_id : ProductIdType
+            ID of the product.
         """
         return [solver.name for solver in self._product_solvers(product_id)]
 
 
 class TerminalInstance(conn_obj.ConnObj):
-    """Class representing a terminal instance."""
+    """Represents a terminal instance."""
 
     __stub = StubAccessor(StubType.terminal_instance)
     layout_obj_type = LayoutObjType.TERMINAL_INSTANCE
 
     @classmethod
     def create(cls, layout, cell_instance, name, net_ref):
-        """Create a terminal instance object.
+        """Create a terminal instance.
 
         Parameters
         ----------
         layout : Layout
+            Layout to create the terminal instance in.
         cell_instance : CellInstance
+            Name of the cell instance to create the terminal instance on.
         name : str
+            Name of the terminal instance.
         net_ref : Net or str or None
+            Net reference.
 
         Returns
         -------
@@ -678,7 +602,7 @@ class TerminalInstance(conn_obj.ConnObj):
 
     @property
     def owning_cell_instance(self):
-        """Return an cell instance that owns this terminal.
+        """Cell instance that owns the terminal.
 
         Returns
         -------
@@ -688,7 +612,7 @@ class TerminalInstance(conn_obj.ConnObj):
 
     @property
     def definition_terminal(self):
-        """Return a definition terminal, if any.
+        """Definition terminal, if any.
 
         Returns
         -------
@@ -698,7 +622,7 @@ class TerminalInstance(conn_obj.ConnObj):
 
     @property
     def definition_terminal_name(self):
-        """Return a name of definition terminal.
+        """Name of the definition terminal.
 
         Returns
         -------
@@ -708,7 +632,7 @@ class TerminalInstance(conn_obj.ConnObj):
 
 
 class TerminalInstanceTerminal(Terminal):
-    """Class representing a terminal instance terminal."""
+    """Represents a terminal instance terminal."""
 
     __stub = StubAccessor(StubType.terminal_instance_terminal)
     type = TypeField(TerminalType.TERM_INST)
@@ -720,10 +644,16 @@ class TerminalInstanceTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
+            Layout to create the terminal instance terminal in.
         term_instance : TerminalInstance
+            Terminal instance to create the terminal instance terminal on.
         name
+            Name of the terminal instance terminal.
         net_ref : Net or str or None
+            Net reference.
         is_ref : bool, optional
+            Wjetjer the terminal instance terminal is a reference terminal.
+            The default is ``False``.
 
         Returns
         -------
@@ -739,7 +669,7 @@ class TerminalInstanceTerminal(Terminal):
 
     @property
     def terminal_instance(self):
-        """Return the terminal instance.
+        """Terminal instance.
 
         Returns
         -------
@@ -749,17 +679,11 @@ class TerminalInstanceTerminal(Terminal):
 
     @terminal_instance.setter
     def terminal_instance(self, value):
-        """Set the terminal instance.
-
-        Parameters
-        ----------
-        value : TerminalInstance
-        """
         self.__stub.SetTerminalInstance(messages.term_inst_term_set_instance_message(self, value))
 
 
 class BundleTerminal(Terminal):
-    """Class representing a bundle terminal object."""
+    """Represents a bundle terminal object."""
 
     __stub = StubAccessor(StubType.bundle_terminal)
     type = TypeField(TerminalType.BUNDLE)
@@ -781,7 +705,7 @@ class BundleTerminal(Terminal):
 
     @property
     def terminals(self):
-        """Get list of terminals grouped in this terminal.
+        """Get a list of terminals grouped in the terminal.
 
         Returns
         -------
@@ -790,13 +714,13 @@ class BundleTerminal(Terminal):
         return [Terminal(msg).cast() for msg in self.__stub.GetTerminals(self.msg)]
 
     def ungroup(self):
-        """Delete this grouping."""
+        """Delete the grouping."""
         self.__stub.Ungroup(self.msg)
         self.msg = None
 
 
 class PointTerminal(Terminal):
-    """Class representing a point terminal object."""
+    """Represents a point terminal object."""
 
     __stub = StubAccessor(StubType.point_terminal)
     type = TypeField(TerminalType.POINT)
@@ -809,10 +733,15 @@ class PointTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
+            Layout to create the point terminal in.
         net : str or Net or None
+            Net.
         layer : str or Layer
+            Layer to place the point terminal on.
         name : str
+            Name of the point terminal.
         point : PointLike
+            Type of the point terminal.
 
         Returns
         -------
@@ -824,7 +753,7 @@ class PointTerminal(Terminal):
 
     @property
     def params(self):
-        """Get x, y coordinates and the layer this point terminal is placed on.
+        """Get the x, y coordinates and the layer that the point terminal is placed on.
 
         Returns
         -------
@@ -840,7 +769,7 @@ class PointTerminal(Terminal):
 
     @property
     def layer(self):
-        """Get the layer the point terminal is placed on.
+        """Layer that the point terminal is placed on.
 
         Returns
         -------
@@ -850,7 +779,10 @@ class PointTerminal(Terminal):
 
     @property
     def point(self):
-        """Get the x, y coordinates of the point terminal.
+        """Coordinates (x, y) of the point terminal.
+
+        To set the x, y coordinates and the layer that the point terminal is placed on,
+        use a tuple in this format: ``[str or Layer, PointData]``.
 
         Returns
         -------
@@ -860,17 +792,11 @@ class PointTerminal(Terminal):
 
     @params.setter
     def params(self, params):
-        """Set x, y coordinates and the layer this point terminal is placed on.
-
-        Parameters
-        ----------
-        params : tuple[str or Layer, PointData]
-        """
         self.__stub.SetParameters(messages.point_term_set_params_message(self, *params))
 
 
 class PadstackInstanceTerminal(Terminal):
-    """Class representing Padstack Instance Terminal."""
+    """Represents a padstack instance terminal."""
 
     __stub = StubAccessor(StubType.padstack_instance_terminal)
     type = TypeField(TerminalType.PADSTACK_INST)
@@ -882,11 +808,18 @@ class PadstackInstanceTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
+            Layout to create the padstack instance terminal in.
         name : str
+            Name of the padstack instance terminal.
         padstack_instance : PadstackInstance
+            Padstack instance.
         layer : Layer or str
+            Layer to place the padstack instance terminal on.
         net : Net or str or None
+            Net.
         is_ref : bool, optional
+            Whether the padstack instance terminal is a reference terminal.
+            The default is ``False``.
 
         Returns
         -------
@@ -902,7 +835,7 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def params(self):
-        """Return padstack instance and layer.
+        """Padstack instance and layer.
 
         Returns
         -------
@@ -915,12 +848,6 @@ class PadstackInstanceTerminal(Terminal):
 
     @params.setter
     def params(self, params):
-        """Set padstack instance and layer for this terminal.
-
-        Parameters
-        ----------
-        params : (PadstackInstance, Layer)
-        """
         (padstack_instance, layer) = params
         self.__stub.SetParameters(
             messages.padstack_inst_term_set_params_message(self, padstack_instance, layer)
@@ -928,7 +855,7 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def padstack_instance(self):
-        """Return the padstack instance of this terminal.
+        """Padstack instance of the terminal.
 
         Returns
         -------
@@ -938,7 +865,7 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def layer(self):
-        """Return the layer this terminal is on.
+        """Layer the terminal is placed on.
 
         Returns
         -------
@@ -948,7 +875,7 @@ class PadstackInstanceTerminal(Terminal):
 
 
 class PinGroupTerminal(Terminal):
-    """Class representing a pin group terminal."""
+    """Represents a pin group terminal."""
 
     __stub = StubAccessor(StubType.pin_group_terminal)
     type = TypeField(TerminalType.PIN_GROUP)
@@ -960,10 +887,16 @@ class PinGroupTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
+            Layout to place the pin group terminal on.
         net_ref : Net or str or None
+            Net reference.
         name : str
+            Name of the pin group terminal.
         pin_group : PinGroup
+            Pin group.
         is_ref : bool, optional
+            Whether the pin group terminal is a reference terminal.
+            The default is ``False``.
 
         Returns
         -------
@@ -977,7 +910,7 @@ class PinGroupTerminal(Terminal):
 
     @property
     def pin_group(self):
-        """Return the pin group of this terminal.
+        """Pin group of the terminal.
 
         Returns
         -------
@@ -987,17 +920,11 @@ class PinGroupTerminal(Terminal):
 
     @pin_group.setter
     def pin_group(self, value):
-        """Set the pin group of this terminal.
-
-        Parameters
-        ----------
-        value : PinGroup
-        """
         self.__stub.SetPinGroup(messages.pin_group_term_set_pin_group_message(self, value))
 
     @property
     def layer(self):
-        """Return the layer.
+        """Layer.
 
         Returns
         -------
@@ -1007,17 +934,11 @@ class PinGroupTerminal(Terminal):
 
     @layer.setter
     def layer(self, value):
-        """Set the layer.
-
-        Parameters
-        ----------
-        value : Layer
-        """
         self.__stub.SetLayer(messages.pin_group_term_set_layer_message(self, value))
 
 
 class EdgeTerminal(Terminal):
-    """Class representing Edge Terminal."""
+    """Represents an edge terminal."""
 
     __stub = StubAccessor(StubType.edge_terminal)
     type = TypeField(TerminalType.EDGE)
@@ -1029,10 +950,15 @@ class EdgeTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
+            Layout to create the edge terminal in.
         name : str
+            Name of the edge terminal.
         edges : list of Edge
         net_ref : Net or str or None
+            Net reference. The default is ``None``.
         is_ref : bool, optional
+            Whether the edge terminal is a reference terminal.
+            The default is ``False``.
 
         Returns
         -------
@@ -1046,7 +972,7 @@ class EdgeTerminal(Terminal):
 
     @property
     def edges(self):
-        """Return the edges on this terminal.
+        """Edges on the terminal.
 
         Returns
         -------
@@ -1056,10 +982,4 @@ class EdgeTerminal(Terminal):
 
     @edges.setter
     def edges(self, edges):
-        """Set the edges on this terminal.
-
-        Parameters
-        ----------
-        edges : list of Edge
-        """
         self.__stub.GetEdges(messages.edge_term_set_edges_message(self, edges))

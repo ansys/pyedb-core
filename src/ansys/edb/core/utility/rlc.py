@@ -4,24 +4,28 @@ from ansys.edb.core.utility.value import Value
 
 
 class Rlc:
-    """Class representing RLC.
+    """Represents an RLC.
 
     Attributes
     ----------
-    r : str, int, float, complex, Value
-        Resistance value. Only used if r_enabled is True
-    r_enabled : bool
-        Resistance enabled.
+    r : str, int, float, complex, Value, optional
+        Resistance value. The default is ``0``. This parameter is only used if
+        ``r_enabled=True``.
+    r_enabled : bool, optional
+        Whether resistance is enabled. The default is ``False``.
     l : str, int, float, complex, Value
-        Inductance value. Only used if c-l_enabled is True
-    l_enabled : bool
-        Inductance enabled.
+        Inductance value. The default is ``0``. This parameter is only used if
+        ``c-l_enabled=True``.
+    l_enabled : bool, optional
+        Whether inductance is enabled. The default is ``False``.
     c : str, int, float, complex, Value
-        Capacitance value.  Only used if c_enabled is True
-    c_enabled : bool
-        Capacitance enabled.
-    is_parallel : bool
-        True means r,l,c elements are in parallel. Otherwise they are in series.
+        Capacitance value. The default is ``0``. This parameter is only used if
+        ``c_enabled=True``.
+    c_enabled : bool, optional
+        Whether capacitance is enabled. The default is ``False``.
+    is_parallel : bool, optional
+        Whether the r, l, and c elements are in parallel. The default
+        is ``True``. If ``False``, these elements are in series.
     """
 
     def __init__(
@@ -34,24 +38,28 @@ class Rlc:
         c_enabled=False,
         is_parallel=True,
     ):
-        """Construct a Rlc object using given values.
+        """Initialize an RLC object using given values.
 
         Parameters
         ----------
         r : str, int, float, complex, Value, optional
-            Resistance value. Only used if r_enabled is True
+            Resistance value. The default is ``0``. This parameter is only used if
+            ``r_enabled=True``.
         r_enabled : bool, optional
-            Resistance enabled.
-        l : str, int, float, complex, Value, optional
-            Inductance value. Only used if l_enabled is True
+            Whether resistance is enabled. The default is ``False``.
+        l : str, int, float, complex, Value
+            Inductance value. The default is ``0``. This parameter is only used if
+            ``c-l_enabled=True``.
         l_enabled : bool, optional
-            Inductance enabled.
-        c : str, int, float, complex, Value, optional
-            Capacitance value.  Only used if c_enabled is True
+            Whether inductance is enabled. The default is ``False``.
+        c : str, int, float, complex, Value
+            Capacitance value. The default is ``0``. This parameter is only used if
+            ``c_enabled=True``.
         c_enabled : bool, optional
-            Capacitance enabled.
+            Whether capacitance is enabled. The default is ``False``.
         is_parallel : bool, optional
-            True means r,l,c elements are in parallel. Otherwise they are in series.
+            Whether the r, l, and c elements are in parallel. The default
+            is ``True``. If ``False``, these elements are in series.
         """
         self.r = r
         self.l = l
@@ -63,7 +71,7 @@ class Rlc:
 
 
 class PinPair:
-    """Class representing PinPair.
+    """Represents a pin pair.
 
     Attributes
     ----------
@@ -74,7 +82,7 @@ class PinPair:
     """
 
     def __init__(self, pin1, pin2):
-        """Construct a pin pair object.
+        """Initialize a pin pair object.
 
         Parameters
         ----------
@@ -88,25 +96,25 @@ class PinPair:
 
 
 class PinPairRlc:
-    """Class representing PinPairRlc.
+    """Represents a pin pair RLC.
 
     Attributes
     ----------
     pin_pair : PinPair
         Pin pair property.
     rlc : Rlc
-        Rlc value
+        RLC value.
     """
 
     def __init__(self, pin_pair, rlc):
-        """Construct a pin pair rlc object.
+        """Initialize a pin pair RLC object.
 
         Parameters
         ----------
         pin_pair: PinPair
             Pin pair property.
         rlc: Rlc
-            Rlc property
+            RLC property.
         """
         self.pin_pair = pin_pair
         self.rlc = rlc

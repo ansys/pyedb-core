@@ -1,4 +1,4 @@
-"""SIWave DCIR Simulation Settings."""
+"""SIWave DCIR simulation settings."""
 
 import ansys.api.edb.v1.siwave_dcir_simulation_settings_pb2 as pb
 
@@ -8,7 +8,7 @@ from ansys.edb.core.simulation_setup.siwave_simulation_settings import SIWaveSim
 
 
 class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
-    """Class representing SIWave DCIR simulation settings."""
+    """Represents SIWave DCIR simulation settings."""
 
     __stub: SIWaveDCIRSimulationSettingsServiceStub = StubAccessor(
         StubType.siwave_dcir_sim_settings
@@ -16,7 +16,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def icepak_temp_file(self):
-        """:obj:`bool`: File path to file containing Icepak temperature map to be imported."""
+        """:obj:`bool`: Path to the file containing the Icepak temperature map to import."""
         return self.__stub.GetIcepakTempFile(self.msg).value
 
     @icepak_temp_file.setter
@@ -25,9 +25,9 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def source_terms_to_ground(self):
-        """:obj:`dict` { :obj:`str` : :obj:`int` }: A dictionary of SourceName, NodeToGround pairs.
+        """:obj:`dict` { :obj:`str` : :obj:`int` }: Dictionary of ``SourceName, NodeToGround`` pairs.
 
-        NodeToGround is one of 0 (unspecified), 1 (negative), 2 (positive)
+        ``NodeToGround`` options are ``0`` (unspecified), ``1`` (negative), and ``2`` (positive).
         """
         return {
             source: t_to_g
@@ -47,7 +47,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def export_dc_thermal_data(self):
-        """:obj:`bool`: Flag indicating whether to export dc thermal data."""
+        """:obj:`bool`: Flag indicating if DC thermal data is exported."""
         return self.__stub.GetExportDCThermalData(self.msg).value
 
     @export_dc_thermal_data.setter
@@ -58,7 +58,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def import_thermal_data(self):
-        """:obj:`bool`: Flag indicating whether to import thermal data."""
+        """:obj:`bool`: Flag indicating if thermal data is imported."""
         return self.__stub.GetImportThermalData(self.msg).value
 
     @import_thermal_data.setter
@@ -67,7 +67,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def full_dc_report_path(self):
-        """:obj:`str`: DC report path."""
+        """:obj:`str`: Path to the DC report."""
         return self.__stub.GetFullDCReportPath(self.msg).value
 
     @full_dc_report_path.setter
@@ -76,7 +76,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def via_report_path(self):
-        """:obj:`str`: Via report path."""
+        """:obj:`str`: Path to the via report."""
         return self.__stub.GetViaReportPath(self.msg).value
 
     @via_report_path.setter
@@ -85,7 +85,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def per_pin_res_path(self):
-        """:obj:`str`: Per pin res path."""
+        """:obj:`str`: Path to the per pin resolution."""
         return self.__stub.GetPerPinResPath(self.msg).value
 
     @per_pin_res_path.setter
@@ -94,7 +94,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def dc_report_config_file(self):
-        """:obj:`str`: DC report config file."""
+        """:obj:`str`: Configuration file for the DC report."""
         return self.__stub.GetDCReportConfigFile(self.msg).value
 
     @dc_report_config_file.setter
@@ -105,7 +105,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def dc_report_show_active_devices(self):
-        """:obj:`bool`: Flag indicating whether to show active devices in the DC report."""
+        """:obj:`bool`: Flag indicating if active devices are shown in the DC report."""
         return self.__stub.GetDCReportShowActiveDevices(self.msg).value
 
     @dc_report_show_active_devices.setter
@@ -116,7 +116,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def per_pin_use_pin_format(self):
-        """:obj:`bool`: Flag indicating per pin use pin format."""
+        """:obj:`bool`: Flag indicating if the per pin uses the pin format."""
         return self.__stub.GetPerPinUsePinFormat(self.msg).value
 
     @per_pin_use_pin_format.setter
@@ -127,7 +127,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @property
     def use_loop_res_for_per_pin(self):
-        """:obj:`bool`: Flag indicating whether to use loop res for per pin."""
+        """:obj:`bool`: Flag indicating if the per pin uses the loop resolution."""
         return self.__stub.GetUseLoopResForPerPin(self.msg).value
 
     @use_loop_res_for_per_pin.setter

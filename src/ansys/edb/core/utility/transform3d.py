@@ -1,4 +1,4 @@
-"""Transform 3D Class."""
+"""3D transformformations."""
 import ansys.api.edb.v1.transform3d_pb2 as pb
 from ansys.api.edb.v1.transform3d_pb2_grpc import Transform3DServiceStub
 from google.protobuf import empty_pb2
@@ -28,7 +28,7 @@ class _Transform3DQueryBuilder:
 
 
 class Transform3D(ObjBase):
-    """Represents a 3d transformation.
+    """Represents a 3D transformation.
 
     Parameters
     ----------
@@ -36,17 +36,18 @@ class Transform3D(ObjBase):
     rot_axis_from : :term:`Point3DLike`
     rot_axis_to : :term:`Point3DLike`
     rot_angle : str, int, float, complex, Value
-        Rotation angle, specified CCW in radians, from rot_axis_from towards rot_axis_to
+        Rotation angle, specified counter-clockwise in radians, from the ``rot_axis_from`` parameter
+        towards the ``rot_axis_to`` parameter.
     offset : :term:`Point3DLike`
     mirror : bool
-        Mirror against YZ plane
+        Mirror against the YZ plane.
     """
 
     __stub: Transform3DServiceStub = StubAccessor(StubType.transform3d)
 
     @classmethod
     def create_identity(cls):
-        """Create an identity transformation 3d matrix.
+        """Create an identity transformation 3D matrix.
 
         Returns
         -------
@@ -56,7 +57,7 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_copy(cls, transform3d):
-        """Create a Transform3D by copying another Transform3D.
+        """Create a 3D transformation by copying another 3D transformation.
 
         Returns
         -------
@@ -66,12 +67,13 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_matrix(cls, matrix):
-        """Create from general matrix data.
+        """Create a 3D transformation from general matrix data.
 
         Parameters
         ----------
         matrix : :obj:`list` of :obj:`list` of :obj:`floats`
-            The 4x4 array to copy from.
+            Array (4x4) to copy from.
+
         Returns
         -------
         Transform3D
@@ -82,12 +84,12 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_offset(cls, offset):
-        """Create a Transform3D with offset.
+        """Create a 3D transformation with an offset.
 
         Parameters
         ----------
         offset : :term:`Point3DLike`
-            The vector offset.
+            Vector offset.
         Returns
         -------
         Transform3D
@@ -96,14 +98,14 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_center_scale(cls, center, scale):
-        """Create a Transform3D for scaling about a point.
+        """Create a 3D transformation for scaling about a point.
 
         Parameters
         ----------
         center : :term:`Point3DLike`
-            The center of the transformation.
+            Center of the transformation.
         scale : :obj:`float`
-            The scale factor of the transformation.
+            Scale factor of the transformation.
 
         Returns
         -------
@@ -115,12 +117,13 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_angle(cls, zyx_decomposition):
-        """Create a Transform3D from zyx decomposition.
+        """Create a 3D transformation from ZYX decomposition.
 
         Parameters
         ----------
         zyx_decomposition : :term:`Point3DLike`
-             ZYX decomposition.
+            ZYX decomposition.
+
         Returns
         -------
         Transform3D
@@ -131,7 +134,7 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_axis(cls, x, y, z):
-        """Create a Transform3D with rotation matrix from 3 axis.
+        """Create a 3D transformation with a rotation matrix from three axes.
 
         Parameters
         ----------
@@ -152,7 +155,7 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_axis_and_angle(cls, axis, angle):
-        """Create a Transform3D with axis and angle.
+        """Create a 3D transformation with the given axis and angle.
 
         Parameters
         ----------
@@ -171,7 +174,7 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_one_axis_to_another(cls, from_axis, to_axis):
-        """Create a Transform3D with rotation from to axis.
+        """Create a 3D transformformation with rotation from an axis to an axis.
 
         Parameters
         ----------
@@ -190,7 +193,7 @@ class Transform3D(ObjBase):
 
     @classmethod
     def create_from_transform_2d(cls, transform, z_off):
-        """Create a Transform3D with Transform data.
+        """Create a 3D transformation with transform data.
 
         Parameters
         ----------
@@ -208,15 +211,15 @@ class Transform3D(ObjBase):
         )
 
     def transpose(self):
-        """Transpose transfrom3d."""
+        """Transpose the 3D transformation."""
         self.__stub.Transpose(messages.edb_obj_message(self))
 
     def invert(self):
-        """Invert transfrom3d."""
+        """Invert the 3D transformation."""
         self.__stub.Invert(messages.edb_obj_message(self))
 
     def is_identity(self, eps, rotation):
-        """Get is identity of a Transform3d.
+        """Get identity of the 3D transformation.
 
         Parameters
         ----------
@@ -232,7 +235,7 @@ class Transform3D(ObjBase):
         ).value
 
     def is_equal(self, other_transform, rotation, eps):
-        """Equality check for two 3d transformations.
+        """Equality check for two #D transformations.
 
         Parameters
         ----------
@@ -243,7 +246,7 @@ class Transform3D(ObjBase):
         Returns
         -------
         :obj:`bool`
-            Result of equality check
+            Result of equality check.
 
         """
         return self.__stub.IsEqual(
@@ -251,17 +254,17 @@ class Transform3D(ObjBase):
         ).value
 
     def __add__(self, other_transform):
-        """Add operator, concatenate two 3d transformations.
+        """Add operator and concatenate two 3D transformations.
 
         Parameters
         ----------
         other_transform : Transform3D
-            Second transformation3D
+            Second 3D transformation.
 
         Returns
         -------
         Transform
-            A new transformation3d object.
+            3D transformation object created.
         """
         return Transform3D(
             self.__stub.OperatorPlus(messages.pointer_property_message(self, other_transform))
@@ -275,7 +278,7 @@ class Transform3D(ObjBase):
 
     @to_point3d_data
     def transform_point(self, point):
-        """Get the transform point of the Transform3d.
+        """Get the transform point of the 3D transformation.
 
         Parameters
         ----------
@@ -284,14 +287,14 @@ class Transform3D(ObjBase):
         Returns
         -------
         :term:`Point3DLike`
-            TransformPoint.
+            Transform point.
         """
         return self.__stub.TransformPoint(messages.cpos_3d_property_message(self, point))
 
     @property
     @to_point3d_data
     def z_y_x_rotation(self):
-        """:term:`Point3DLike`: ZYXRotation."""
+        """:term:`Point3DLike`: ZYX rotation."""
         return self.__stub.GetZYXRotation(messages.edb_obj_message(self))
 
     @property
@@ -308,7 +311,7 @@ class Transform3D(ObjBase):
 
     @property
     def matrix(self):
-        """:obj:`list` of :obj:`list` of :obj:`floats` : Transformation matrix as a 2D 4x4 Array."""
+        """:obj:`list` of :obj:`list` of :obj:`floats` : Transformation matrix as a 2D 4x4 array."""
         msg = self.__stub.GetMatrix(messages.edb_obj_message(self))
         matrix = [[float(_) for _ in msg.doubles[(i - 1) * 4 : i * 4]] for i in range(1, 5)]
         return matrix

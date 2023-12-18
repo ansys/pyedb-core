@@ -1,10 +1,10 @@
-"""Port Post Processing Prop."""
+"""Port postprocessing properties."""
 
 from ansys.edb.core.utility.value import Value
 
 
 class PortPostProcessingProp:
-    """Represents Port Post Processing Prop."""
+    """Represents the port postprocessing properties."""
 
     def __init__(
         self,
@@ -16,24 +16,27 @@ class PortPostProcessingProp:
         do_deembed_gap_l=False,
         do_renormalize=False,
     ):
-        """Initialize post processing properties.
+        """Initialize port postprocessing properties.
 
         Parameters
         ----------
-        voltage_magnitude : str, int, float, complex, Value, optional
-            Excitation voltage magnitude.
-        voltage_phase : str, int, float, complex, Value, optional
-            Excitation voltage phase.
-        deembed_length : str, int, float, complex, Value, optional
-            Dembeed distance. Only applied if do_deembed is True.
-        renormalization_impedance : str, int, float, complex, Value, optional
-            Renormalization impedance. Only applied if do_renormalize is True.
+        voltage_magnitude : str or int or float or complex or Value, optional
+            Excitation voltage magnitude. The default is ``0``.
+        voltage_phase : str or int or float or complex or Value, optional
+            Excitation voltage phase.  The default is ``0``.
+        deembed_length : str or int or float or complex or Value, optional
+            Dembeed distance.  The default is ``0``. This parameter is only
+            applied if ``do_deembed=True``.
+        renormalization_impedance : str or int or float or complex or Value, optional
+            Renormalization impedance. The default is ``0``. This parameter is only
+            applied if ``do_renormalize=True``.
         do_deembed : bool, optional
-            Enable port to be deembedded.
+            Whether to enable the port to be deembedded. The default is ``False``.
         do_deembed_gap_l : bool, optional
-            Enable port impedance renormalization.
+            Whether to enable port impedance renormalization. The default is ``False``.
         do_renormalize : bool, optional
-            Enable the gap port inductance to be deembedded.
+            Whether to enable the gap port inductance to be deembedded.  The default
+            is ``False``.
         """
         self.voltage_magnitude = voltage_magnitude
         self.voltage_phase = voltage_phase
@@ -45,6 +48,7 @@ class PortPostProcessingProp:
         Returns
         -------
         bool
+            ``True`` when successful, ``False`` when failed.
         """
         self.do_deembed_gap_l = do_deembed_gap_l
         """Enable port impedance renormalization.
@@ -52,6 +56,7 @@ class PortPostProcessingProp:
         Returns
         -------
         bool
+            ``True`` when successful, ``False`` when failed.
         """
         self.do_renormalize = do_renormalize
         """Enable port impedance renormalization.
@@ -59,68 +64,49 @@ class PortPostProcessingProp:
         Returns
         -------
         bool
+            ``True`` when successful, ``False`` when failed.
         """
 
     @property
     def voltage_magnitude(self):
-        """
-        Excitation voltage magnitude.
-
-        Returns
-        -------
-        Value
-        """
+        """Excitation voltage magnitude."""
         return self._voltage_magnitude
 
     @voltage_magnitude.setter
     def voltage_magnitude(self, value):
-        """Set excitation voltage magnitude."""
         self._voltage_magnitude = Value(value)
 
     @property
     def voltage_phase(self):
-        """
-        Excitation voltage phase.
-
-        Returns
-        -------
-        Value
-        """
+        """Excitation voltage phase."""
         return self._voltage_phase
 
     @voltage_phase.setter
     def voltage_phase(self, value):
-        """Set excitation voltage phase."""
         self._voltage_phase = Value(value)
 
     @property
     def deembed_length(self):
         """
-        Deembed Length. Only applied if do_deembed is True.
+        Deembed length.
 
-        Returns
-        -------
-        Value
+        This property is only applied if ``do_deembed=True``.
         """
         return self._deembed_length
 
     @deembed_length.setter
     def deembed_length(self, value):
-        """Set deembed length."""
         self._deembed_length = Value(value)
 
     @property
     def renormalization_impedance(self):
         """
-        Renormalization Impedance. Only applied if do_renormalize is True.
+        Renormalization impedance.
 
-        Returns
-        -------
-        Value
+        This property is only applied if ``do_renormalize=True``.
         """
         return self._renormalization_impedance
 
     @renormalization_impedance.setter
     def renormalization_impedance(self, value):
-        """Set renormalization impedance."""
         self._renormalization_impedance = Value(value)

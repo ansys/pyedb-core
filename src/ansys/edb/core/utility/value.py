@@ -1,4 +1,4 @@
-"""Value Class."""
+"""Value."""
 import math
 
 from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
@@ -15,23 +15,26 @@ class Value:
     Attributes
     ----------
     val : :term:`ValueLike`
-        The value assigned to the new Value
+        Value assigned to the new value.
     _owner :    None, :class:`Database <ansys.edb.core.database.Database>`, :class:`Cell <ansys.edb.core.layout.Cell>`,
                 :class:`Layout <ansys.edb.core.layout.Layout>`, \
                 :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
 
     Notes
     -----
-    Values can be either constant (e.g. 1, 2.35, 7+0.3i, 23mm) or parametric (e.g. w1 + w2)
+    A value can be either a constant (such as ``1``, ``2.35``, ``"7+0.3i"``, and ``"23mm"``) or
+    parametric (such as.``w1 + w2``).
 
-    if the Value is parametric, it needs _owner set to the object that hosts the variables used. If the owner is
-    Cell or Layout, the expression can reference both Database variables and Cell variables. A better way to create
-    parametric values is to call obj_with_variables.create_value(str) which will automatically set the _owner to
-    the correct object.
+    If the value is parametric, the ``_owner`` attribute must be set to the object that hosts the
+    variables used. If the owner is :class:`Cell <ansys.edb.core.layout.Cell>` or
+    :class:`Layout <ansys.edb.core.layout.Layout>`, the expression can reference both database variables
+    and cell variables. A better way to create a parametric values is to call the
+    ``obj_with_variables.create_value(str)`` method, which automatically sets the
+    ``_owner`` parameter to the correct object.
 
     Values can be used in expressions with the following operators:
 
-    .. list-table:: Mathematical operators supported by Values
+    .. list-table:: **Mathematical operators supported by values**
        :widths: 25 25 25
        :header-rows: 1
 
@@ -66,13 +69,13 @@ class Value:
          - greater than
          - bool
 
-    The Value will be evaluated to a constant (if it is parametric) before applying the operators.
+    The value is evaluated to a constant (if it is parametric) before applying the operators.
     """
 
     __stub: value_pb2_grpc.ValueServiceStub = session.StubAccessor(session.StubType.value)
 
     def __init__(self, val, _owner=None):
-        """Construct a Value object."""
+        """Initialize a value object."""
         self.msg = ValueMessage()
         if isinstance(val, ValueMessage):
             self.msg = val
@@ -107,90 +110,97 @@ class Value:
             return str(complex(self.msg.constant.real, self.msg.constant.imag))
 
     def __eq__(self, other):
-        """Compare if two values are equivalent by evaluated value.
+        """Compare this value to another value to determine if they are equivalent.
 
         Parameters
         ----------
         other : Value
-            Value that will be compared to self
+            Value to compare.
 
         Returns
         -------
         bool
+            ``True`` if the two values are equivalent, ``False`` otherwise.
         """
         return self.equals(other)
 
     def __add__(self, other):
-        """Perform addition of two values.
+        """Add this value and another value.
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+            Other value to add.
+
 
         Returns
         -------
         Value
-            this is a constant Value wrapping either real or complex number
+            Constant value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value + other.value)
 
     def __sub__(self, other):
-        """Perform subtraction of two values.
+        """Subtract this value from another value.
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+           Other value to subtract.
 
         Returns
         -------
         Value
-            this is a constant Value wrapping either real or complex number
+            Constant Value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value - other.value)
 
     def __mul__(self, other):
-        """Perform multiplication of two values.
+        """Multiply this value and another value.
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+            Other value to multiply.
 
         Returns
         -------
         Value
-            this is a constant Value wrapping either real or complex number
+            Constant Value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value * other.value)
 
     def __truediv__(self, other):
-        """Perform floating-point division of two values.
+        """Perform floating-point division of this value and another value.
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+             Other value for the floating-point division.
 
         Returns
         -------
         Value
-            this is a constant Value wrapping either real or complex number
+            Constant value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value / other.value)
 
     def __floordiv__(self, other):
-        """Perform division of two values and return its floor (integer part).
+        """Divide this value by another value and return its floor (integer part).
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+            Other value for the division.
 
         Returns
         -------
         Value
-            this is a constant Value wrapping an integer number
+            Constant value wrapping an integer.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value // other.value)
@@ -201,12 +211,12 @@ class Value:
         Parameters
         ----------
         power : int, float
-            the exponent applied to this Value.
+            Exponent to apply to the value.
 
         Returns
         -------
         Value
-            this is a constant Value wrapping either real or complex number
+            Constant value wrapping either a real or complex number.
         """
         return self.__class__(self.value**power)
 
@@ -216,47 +226,54 @@ class Value:
         Returns
         -------
         Value
-            this is a constant Value wrapping either real or complex number
+            Constant value wrapping either a real or complex number.
         """
         return self.__class__(-self.value)
 
     def __gt__(self, other):
-        """Compare if this value is greater than another value.
+        """Compare this value to another to see if this value is greater.
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+            Other value to compare to.
 
         Returns
         -------
         bool
+            ``True`` if this value is greater than the other value.
         """
         return self.value > other.value
 
     def __lt__(self, other):
-        """Compare if this value is less than another value.
+        """Compare this value to another to see if this value is less.
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+            Other value to compare to.
 
         Returns
         -------
         bool
+            ``True`` if this value is less than the other value.
         """
         return self.value < other.value
 
     def equals(self, other, tolerance=1e-9):
-        """Check if two values are equivalent when evaluated.
+        """Check if this value and other value are equivalent when evaluated.
 
         Parameters
         ----------
         other : str, int, float, complex, Value
+            Other value to compare to.
         tolerance : float, optional
+            Tolerance. The default is ``1e-9``.
 
         Returns
         -------
         bool
+            `True`` if this value and the other value are equivalent when evaluated.
         """
         try:
             other = conversions.to_value(other)
@@ -271,55 +288,40 @@ class Value:
 
     @property
     def is_parametric(self):
-        """Is Value object parametric (dependent on variables).
-
-        Returns
-        -------
-        bool
-        """
+        """Flag indicating if the value is parametric (dependent on variables)."""
         return not self.msg.HasField("constant")
 
     @property
     def is_complex(self):
-        """Is Value a complex number (has a non-zero imaginary part).
-
-        Returns
-        -------
-        bool
-        """
+        """Flag indicating if the the value is a complex number (has a non-zero imaginary part)."""
         return type(self.value) == complex
 
     @property
     def double(self):
-        """Get float from Value object.
+        """Float from the value object.
 
         Returns
         -------
         float
-            If number is complex, this returns real part.
+            If the number is complex, this returns the real part.
         """
         evaluated = self.value
         return evaluated.real if type(evaluated) == complex else evaluated
 
     @property
     def complex(self):
-        """Get complex value from Value object.
+        """Complex value from the value object.
 
         Returns
         -------
         complex
-            If number is real, the imaginary part will be 0.
+            If the number is real, the imaginary part is ``0``.
         """
         return complex(self.value)
 
     @property
     def value(self):
-        """Evaluate to a constant and return as a float or complex.
-
-        Returns
-        -------
-        complex, float
-        """
+        """Evaluation to a constant and return as a float or complex."""
         if self.is_parametric:
             evaluated = self.__stub.GetComplex(
                 value_pb2.ValueTextMessage(
@@ -336,10 +338,5 @@ class Value:
 
     @property
     def sqrt(self):
-        """Compute square root of this value as a constant Value.
-
-        Returns
-        -------
-        Value
-        """
+        """Square root of this value as a constant value."""
         return self**0.5

@@ -317,5 +317,5 @@ def do_test():
 
 
 def test_sim_setup():
-    with session(settings.configs.get("RPC_SERVER_ROOT"), 50051):
+    with session(settings.server_exe_dir(), 50051):
         do_test()

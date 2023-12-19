@@ -29,6 +29,12 @@ dependencies = [
     "grpcio>=1.44.0"
 ]
 
+[project.urls]
+Documentation = "https://edb.core.docs.pyansys.com"
+Source = "https://github.com/ansys/pyedb-core"
+Homepage = "https://github.com/ansys/pyedb-core"
+Tracker = "https://github.com/ansys/pyedb-core/issues"
+
 # FIXME: add versions
 [project.optional-dependencies]
 notebook = [
@@ -36,16 +42,13 @@ notebook = [
     "matplotlib",
     "ipynbname"
 ]
-
 # FIXME: update to newer versions
 tests = [
     "pytest==7.4.3",
     "pytest-cov==4.1.0",
     "pytest-mock==3.11.1",
-    "python-dotenv>=0.20.0",
     "tox",
 ]
-
 # FIXME: update to newer versions
 doc = [
     "sphinx==7.1.2",
@@ -53,10 +56,6 @@ doc = [
     "ansys_sphinx_theme>=0.12.2",
     "sphinx-copybutton==0.5.2",
 ]
-
-[project.urls]
-Source = "https://github.com/ansys/pyedb"
-
 
 [tool.flit.module]
 name = "ansys.edb.core"

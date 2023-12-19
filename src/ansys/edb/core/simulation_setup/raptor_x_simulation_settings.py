@@ -68,7 +68,7 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @property
     def max_frequency(self):
-        """:obj:`str`: Maximum frequency value, which controls how tight the model mesh is to be."""
+        """:obj:`str`: Maximum frequency value, which controls the tightness of the model mesh."""
         return self.__stub.GetMaxFrequency(self.msg).value
 
     @max_frequency.setter
@@ -86,7 +86,7 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @property
     def save_netlist(self):
-        """:obj:`bool`: Flag indicating if netlist output is saved."""
+        """:obj:`bool`: Flag indicating if the netlist output is saved."""
         return self.__stub.GetSaveNetlist(self.msg).value
 
     @save_netlist.setter
@@ -95,7 +95,7 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @property
     def netlist_export_spectre(self):
-        """:obj:`bool`: Flag indicating if the netlist is exported in spectre format."""
+        """:obj:`bool`: Flag indicating if the netlist is exported in Spectre format."""
         return self.__stub.GetNetlistExportSpectre(self.msg).value
 
     @netlist_export_spectre.setter
@@ -177,7 +177,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_plane_projection_factor(self):
-        """:obj:`bool`: Flag indicating if plane projection factor is used."""
+        """:obj:`bool`: Flag indicating if the plane projection factor is used."""
         return self.__stub.GetUsePlaneProjectionFactor(self.msg).value
 
     @use_plane_projection_factor.setter
@@ -347,7 +347,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_enable_advanced_cap_effects(self):
-        """:obj:`bool`: Flag indicating capacitance-related effects such as conformal dielectrics are applied."""
+        """:obj:`bool`: Flag indicating if capacitance-related effects such as conformal dielectrics are applied."""
         return self.__stub.GetUseEnableAdvancedCapEffects(self.msg).value
 
     @use_enable_advanced_cap_effects.setter

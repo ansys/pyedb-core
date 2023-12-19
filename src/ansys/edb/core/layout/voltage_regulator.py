@@ -70,9 +70,9 @@ class PowerModule:
 
     @property
     def relative_strength(self):
-        """:class:`Value <ansys.edb.core.utility.Value>` : Relative strength for the power module as a percentage.
+        """:class:`Value <ansys.edb.core.utility.Value>`: Relative strength for the power module as a percentage.
 
-        Property can be set with :term:`ValueLike`
+        This property can be set with :term:`ValueLike`.
         """
         return self._relative_strength
 
@@ -91,7 +91,7 @@ class PowerModule:
 
     @property
     def needs_sync(self):
-        """:obj:`bool`: Flat indicating if the power module needs to be synchronized.
+        """:obj:`bool`: Flag indicating if the power module needs to be synchronized.
 
         This property is read-only.
         """
@@ -171,7 +171,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def active(self):
-        """:obj:`bool`: Active status of the voltage regulator."""
+        """:obj:`bool`: Flag indicating if the voltage regular is active."""
         return self.__stub.IsActive(self.msg).value
 
     @active.setter
@@ -248,7 +248,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def num_power_modules(self):
-        """:obj: `int` : Number of power modules.
+        """:obj: `int`: Number of power modules.
 
         Read-Only
         """
@@ -256,7 +256,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def num_active_power_modules(self):
-        """:obj: `int` : Number of active power modules.
+        """:obj: `int`: Number of active power modules.
 
         This attribute is read-only
         """

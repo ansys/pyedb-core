@@ -1,4 +1,4 @@
-"""Pin Group."""
+"""Pin group."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import ObjBase, messages
@@ -81,7 +81,7 @@ class PinGroup(ObjBase):
     @property
     def pins(self):
         """:obj:`list` of :class:`PadstackInstances <ansys.edb.core.primitive.PadstackInstance>`: \
-        List of padstack instances.
+        Padstack instances.
 
         This property is read-only.
         """

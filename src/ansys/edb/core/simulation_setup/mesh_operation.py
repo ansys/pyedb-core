@@ -6,17 +6,17 @@ class MeshOperation:
 
     Attributes
     ----------
-    name : str, optional
-        Name of the operation. The default is ``""``, in which case a name is automatically assigned.
-    net_layer_info : list[tuple(str, str, bool)], optional
+    name : str, default: ""
+        Name of the mesh operation. The default is ``""``, in which case a name is automatically assigned.
+    net_layer_info : list[tuple(str, str, bool)], default: None
         List with each entry having a net name, layer name, and ``isSheet`` flag indicating
-        if the entry is a sheet. The default is ``None``.
-    enabled : bool, optional
-        Whether the mesh operation is enabled. The default is ``True``.
-    refine_inside : bool
-        Whether to refine inside. The default is ``"False``.
-    mesh_region : str, optional
-        Mesh region. The default is ``""``.
+        if the entry is a sheet.
+    enabled : bool, default: True
+        Whether the mesh operation is enabled.
+    refine_inside : bool, default: False
+        Whether to refine inside.
+    mesh_region : str, default: ""
+        Mesh region.
     """
 
     def __init__(
@@ -58,7 +58,7 @@ class MeshOperation:
 
     @property
     def enabled(self):
-        """:obj:`bool`: Flag indicated if the mesh operation is enabled."""
+        """:obj:`bool`: Flag indicating if the mesh operation is enabled."""
         return self._enabled
 
     @enabled.setter
@@ -89,27 +89,27 @@ class SkinDepthMeshOperation(MeshOperation):
 
     Attributes
     ----------
-    name : str, optional
-         The default is ``""``, in which case a name is automatically assigned.
-    net_layer_info : list[tuple(str, str, bool)], optional
+    name : str, default: ""
+        Name of the mesh operation. The default is ``""``, in which case a name is automatically assigned.
+    net_layer_info : list[tuple(str, str, bool)], default: None
         List with each entry having a net name, layer name, and ``isSheet`` flag indicating
-        if the entry is a sheet. The default is ``None``.
-    enabled : bool, optional
-        Whether the mesh operation is enabled. The default is ``True``.
-    refine_inside : bool, optional
-        Whether to refine inside. The default is ``"False``.
-    mesh_region : str, optional
-        Mesh region. The default is ``""``.
-    skin_depth : str, optional
-        Skin depth. The default is ``"1um"``.
-    surface_triangle_length : str, optional
-        Surface triangle length with units. The default is ``"1mm"``.
-    num_layers : str, optional
-        Number of layers. The default is ``2``.
-    max_elements : str, optional
-        Maximum number of elements. The default is ``"1000"``.
-    restrict_max_elements : bool, optional
-        Whether to restrict the number of elements. The default is ``False``.
+        if the entry is a sheet.
+    enabled : bool, default: True
+        Whether the mesh operation is enabled.
+    refine_inside : bool, default: False
+        Whether to refine inside.
+    mesh_region : str, default: ""
+        Mesh region.
+    skin_depth : str, default: "1um"
+        Skin depth.`.
+    surface_triangle_length : str, default: "1mm"
+        Surface triangle length with units.
+    num_layers : str, default: 2
+        Number of layers.
+    max_elements : str, default: "1000"
+        Maximum number of elements.
+    restrict_max_elements : bool, default: False
+        Whether to restrict the number of elements.
     """
 
     def __init__(
@@ -184,25 +184,25 @@ class LengthMeshOperation(MeshOperation):
 
     Attributes
     ----------
-    name : str, optional
-         The default is ``""``, in which case a name is automatically assigned.
-    net_layer_info : list[tuple(str, str, bool)], optional
+    name : str, default: ""
+        Name of the mesh operation. The default is ``""``, in which case a name is automatically assigned.
+    net_layer_info : list[tuple(str, str, bool)], default: None
         List with each entry having a net name, layer name, and ``isSheet`` flag indicating
-        if the entry is a sheet. The default is ``None``.
-    enabled : bool, optional
-        Whether the mesh operation is enabled. The default is ``True``.
-    refine_inside : bool, optional
-        Whether to refine inside. The default is ``"False``.
-    mesh_region : str, optional
-        Mesh region. The default is ``""``.
-    max_length : str, optional
-        maximum length of the mesh elements. The default is ``"1mm"``.
-    restrict_max_length : str, optional
-        Whether to restrict the length of the mesh elements. The default is ``True``.
-    max_elements : str, optional
-        Number of layers. The default is ``"1000"``.
-    restrict_max_elements : bool, optional
-        Whether to restrict the number of elements. The default is ``False``.
+        if the entry is a sheet.
+    enabled : bool, default: True
+        Whether the mesh operation is enabled.
+    refine_inside : bool, default: False
+        Whether to refine inside.
+    mesh_region : str, default: ""
+        Mesh region.
+    max_length : str, default: "1mm"
+        maximum length of the mesh elements.
+    restrict_max_length : str, default: True
+        Whether to restrict the length of the mesh elements.
+    max_elements : str, default: "1000"
+        Number of layers.
+    restrict_max_elements : bool, default: False
+        Whether to restrict the number of elements.
     """
 
     def __init__(

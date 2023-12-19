@@ -46,7 +46,7 @@ class LayoutObj(ObjBase):
     def obj_type(self):
         """:class:`LayoutObjType <ansys.edb.core.edb_defs.LayoutObjType>`: Layout object type.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.layout_obj_type
 
@@ -65,7 +65,7 @@ class LayoutObj(ObjBase):
         self.__stub.Delete(_QueryBuilder.layout_obj_target_msg(self, self.layout_obj_type))
 
     def get_product_property(self, prod_id, attr_id):
-        """Get the product property of the layout object for given a product ID and attribute ID.
+        """Get the product property of the layout object for a given product ID and attribute ID.
 
         Parameters
         ----------

@@ -28,12 +28,12 @@ class LayoutInstance(ObjBase):
 
         Parameters
         ----------
-        layer_filter : list[:class:`Layer <ansys.edb.core.layer.Layer>` or str or None], optional
+        layer_filter : list[:class:`Layer <ansys.edb.core.layer.Layer>` or str or None], default: None
             Layers to query. The default is ``None``, in which case all layers are queried.
-        net_filter : list[:class:`Net <ansys.edb.core.net.Net>` or str or None], optional
+        net_filter : list[:class:`Net <ansys.edb.core.net.Net>` or str or None], default: None
             Nets to query. The default is ``None``, in which case all nets are queried.
         spatial_filter : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` or
-         :class:`PointData <ansys.edb.core.geometry.PointData>` or None, optional
+         :class:`PointData <ansys.edb.core.geometry.PointData>` or None, default: None
             Area of the design to query. The default is ``None``, in which case the entire
             spatial domain of the design is queried.
 

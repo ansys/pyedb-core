@@ -67,14 +67,14 @@ class BondwireDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType` of the bondwire definition."""
+        """:class:`DefinitionObjType`: Object type of the bondwire definition."""
         return DefinitionObjType.BONDWIRE_DEF
 
     @property
     def name(self):
         """:obj:`str`: Name of the bondwire definition.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.GetName(self.msg)
 

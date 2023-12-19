@@ -267,8 +267,8 @@ class Value:
         ----------
         other : str, int, float, complex, Value
             Other value to compare to.
-        tolerance : float, optional
-            Tolerance. The default is ``1e-9``.
+        tolerance : float, default: 1e-9
+            Tolerance.
 
         Returns
         -------
@@ -288,40 +288,34 @@ class Value:
 
     @property
     def is_parametric(self):
-        """Flag indicating if the value is parametric (dependent on variables)."""
+        """:obj:`bool`: Flag indicating if the value is parametric (dependent on variables)."""
         return not self.msg.HasField("constant")
 
     @property
     def is_complex(self):
-        """Flag indicating if the the value is a complex number (has a non-zero imaginary part)."""
+        """:obj:`bool`: Flag indicating if the the value is a complex number (has a non-zero imaginary part)."""
         return type(self.value) == complex
 
     @property
     def double(self):
-        """Float from the value object.
+        """:obj:`float`: Float from the value object.
 
-        Returns
-        -------
-        float
-            If the number is complex, this returns the real part.
+        If the number is complex, this returns the real part.
         """
         evaluated = self.value
         return evaluated.real if type(evaluated) == complex else evaluated
 
     @property
     def complex(self):
-        """Complex value from the value object.
+        """:obj:`complex`: Complex value from the value object.
 
-        Returns
-        -------
-        complex
-            If the number is real, the imaginary part is ``0``.
+        If the number is real, the imaginary part is ``0``.
         """
         return complex(self.value)
 
     @property
     def value(self):
-        """Evaluation to a constant and return as a float or complex."""
+        """:obj:`complex`: Evaluation to a constant and return as a float or complex."""
         if self.is_parametric:
             evaluated = self.__stub.GetComplex(
                 value_pb2.ValueTextMessage(

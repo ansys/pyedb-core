@@ -100,16 +100,17 @@ class RTree(ObjBase):
     @property
     @parser.to_box
     def extent(self):
-        """Tuple[geometry.PointData, geometry.PointData]: Bounding-box for the contents of the RTree."""
+        """:obj:`tuple` of [:class:`geometry.PointData`, :class:`geometry.PointData`]: Bounding box \
+        for the contents of the RTree."""
         return self.__stub.GetExtent(self.msg)
 
     def insert(self, rtree_obj):
-        """Insert an RTreeObj from the RTree object.
+        """Insert an RTree object from a given RTree object.
 
         Parameters
         ----------
         rtree_obj: RTreeObj
-            R-tree data object with index.
+            R-tree data object with an index.
         """
         unique_id = 1 if self._unique_id is None else self._unique_id + 1
         self.__stub.InsertIntObject(
@@ -121,7 +122,7 @@ class RTree(ObjBase):
         self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)] = unique_id
 
     def delete(self, rtree_obj):
-        """Delete the RTreeObj from the RTree object.
+        """Delete the RTree object from a given RTree object.
 
         Parameters
         ----------
@@ -147,7 +148,7 @@ class RTree(ObjBase):
         return msg_empty
 
     def search(self, box, bb_search):
-        """Search all objects intersecting the given box.
+        """Search all objects intersecting a given box.
 
         Parameters
         ----------
@@ -167,7 +168,7 @@ class RTree(ObjBase):
         return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     def nearest_neighbor(self, rtree_obj):
-        """Find the nearest neighbor of the given RTree object (polygon, id pair).
+        """Find the nearest neighbor of a given RTree object (polygon, id pair).
 
         Parameters
         ----------
@@ -239,7 +240,7 @@ class RTree(ObjBase):
 
     @property
     def connected_geometry_sets(self):
-        """:obj:`list` of :obj:`list` of RTreeObj: Connected geometry sets of an RTree \
+        """:obj:`list` of :obj:`list` of :class:`RTreeObj`: Connected geometry sets of an RTree \
         (ids, sizes)."""
         msg = self.__stub.GetConnectedGeometrySets(messages.edb_obj_message(self))
         set_start = 0
@@ -289,5 +290,5 @@ class RTree(ObjBase):
 
     @property
     def get_visit(self):
-        """Int: Visit count for the R-tree."""
+        """:obj:`int`: Visit count for the R-tree."""
         return self.__stub.GetVisit(messages.edb_obj_message(self)).value

@@ -92,7 +92,7 @@ class PadstackDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Type."""
+        """:class:`DefinitionObjType`: Definition type."""
         return DefinitionObjType.PADSTACK_DEF
 
     @property

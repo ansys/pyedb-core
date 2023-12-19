@@ -40,15 +40,17 @@ class MaterialPropertyThermalModifier(ObjBase):
 
         Parameters
         ----------
-        basic_quadratic_params: :class:`BasicQuadraticParams <ansys.edb.core.utility.BasicQuadraticParams>`
+        basic_quadratic_params: :class:`BasicQuadraticParams <ansys.edb.core.utility.BasicQuadraticParams>`, \
+        default: None
             Basic parameters needed for the thermal modifier.
-        advanced_quadratic_params : :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`
-            Advanced parameeteres needed for the thermal modifier advanced parameters.
+        advanced_quadratic_params : :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`, \
+        default: None
+            Advanced parameeteres needed for the thermal modifier.
 
         Returns
         -------
         MaterialPropertyThermalModifier
-            Material property thermal modifiers created.
+            Material property thermal modifier created.
         """
         if basic_quadratic_params is None:
             basic_quadratic_params = BasicQuadraticParams()
@@ -66,7 +68,7 @@ class MaterialPropertyThermalModifier(ObjBase):
         :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`: \
         Quadratic model parameters of the thermal modifier.
 
-        The quadratic model is of the following form:
+        The quadratic model is in this form:
             PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]
         where PropValRef = The original property value without the thermal modifier applied
 

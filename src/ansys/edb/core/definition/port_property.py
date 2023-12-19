@@ -52,7 +52,7 @@ class PortProperty(ObjBase):
 
     @property
     def reference_size_auto(self):
-        """:obj:`bool`: If the reference size is automatic."""
+        """:obj:`bool`: Flag indicating if the reference size is automatic."""
         return self.__stub.GetReferenceSizeAuto(messages.edb_obj_message(self)).value
 
     @reference_size_auto.setter

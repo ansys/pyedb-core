@@ -57,13 +57,13 @@ class PolygonData:
 
         Parameters
         ----------
-        points : list[ansys.edb.core.typing.PointLike], optional
-        arcs : list[ArcData], optional
-        lower_left : ansys.edb.core.typing.PointLike, optional
-        upper_right : ansys.edb.core.typing.PointLike, optional
-        holes : List[ansys.edb.core.geometry.PolygonData]
-        sense : ansys.edb.core.geometry.PolygonSenseType, optional
-        closed : bool, optional
+        points : list[ansys.edb.core.typing.PointLike], default: None
+        arcs : list[ArcData], default: None
+        lower_left : ansys.edb.core.typing.PointLike, default: None
+        upper_right : ansys.edb.core.typing.PointLike, default: None
+        holes : List[ansys.edb.core.geometry.PolygonData], default: None
+        sense : ansys.edb.core.geometry.PolygonSenseType, default: SENSE_CCW
+        closed : bool, default: True
         """
         self._holes, self._sense, self._is_closed = (
             [] if holes is None else holes,
@@ -99,32 +99,17 @@ class PolygonData:
 
     @property
     def points(self):
-        """Get the list of coordinates.
-
-        Returns
-        -------
-        list[ansys.edb.core.geometry.PointData]
-        """
+        """:obj:`list` of :class:`ansys.edb.core.geometry.PointData`: List of coordinates."""
         return self._points
 
     @property
     def holes(self):
-        """List of holes.
-
-        Returns
-        -------
-        list[PolygonData]
-        """
+        """:obj:`list` of :class:`PolygonData`: List of holes."""
         return self._holes
 
     @property
     def arc_data(self):
-        """List of segments that represent the arc data of a polygon.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`list`: List of segments that represent the arc data of a polygon."""
         i, n = 0, len(self)
         i_max = n if self.is_closed else n - 1
         segments = []
@@ -144,22 +129,12 @@ class PolygonData:
 
     @property
     def is_closed(self):
-        """Flag indicating if a polygon is closed between the first and last points.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if a polygon is closed between the first and last points."""
         return self._is_closed
 
     @property
     def sense(self):
-        """Polygon sense type.
-
-        Returns
-        -------
-        PolygonSenseType
-        """
+        """:class:`PolygonSenseType`: Polygon sense type."""
         return self._sense
 
     def is_hole(self):
@@ -242,12 +217,12 @@ class PolygonData:
         return self.__stub.GetArea(messages.polygon_data_message(self)).value
 
     def has_self_intersections(self, tol=1e-9):
-        """Determine whether the polygon contains self-intersections.
+        """Determine whether the polygon contains any self-intersections.
 
         Parameters
         ----------
-        tol : float, optional
-            Tolerance. The default is ``1e-9``.
+        tol : float, default: 1e-9
+            Tolerance.
 
         Returns
         -------
@@ -264,8 +239,8 @@ class PolygonData:
 
         Parameters
         ----------
-        tol : float, optional
-            Tolerance. The default is ``1e-9``.
+        tol : float, default: 1e-9
+            Tolerance.
 
         Returns
         -------
@@ -409,9 +384,9 @@ class PolygonData:
 
         Parameters
         ----------
-        max_chord_error : float, optional
-        max_arc_angle : float, optional
-        max_points : int, optional
+        max_chord_error : float, default: 0
+        max_arc_angle : float, default: math.pi
+        max_points : int, default: 8
 
         Returns
         -------
@@ -429,8 +404,8 @@ class PolygonData:
 
         Parameters
         ----------
-        tol : float, optional
-            Tolerance. The default is ``1e-9``.
+        tol : float, default: 1e-9
+            Tolerance.
 
         Returns
         -------
@@ -459,8 +434,8 @@ class PolygonData:
         ----------
         other : PolygonData
             Other polygon.
-        tol : float, optional
-            Tolerance. The default is ``1e-9``.
+        tol : float, default: 1e-9
+            Tolerance.
 
         Returns
         -------
@@ -604,8 +579,8 @@ class PolygonData:
             are straight edges.
         max_corner_ext : float
             Maximum corner extension at which point the corner is clipped.
-        tol : float, optional
-            Tolerance. The default is ``1e-9``.
+        tol : float, default: 1e-9
+            Tolerance.
         Returns
         -------
         list[PolygonData]

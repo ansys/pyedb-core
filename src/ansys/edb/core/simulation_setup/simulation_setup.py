@@ -42,12 +42,12 @@ class SweepData:
       End frequency is number with optional frequency units.
     step : str
       Step is either frequency with optional frequency units or an integer when a count is needed.
-    fast_sweep : bool
-      True if this is a fast sweep.
+    fast_sweep : bool, default: False
+      Whether this is a fast sweep.
 
     Notes
     -----
-    Here are the choices for the distribution parameter
+    Here are the choices for the distribution parameter:
 
     .. list-table:: Values for distribution parameter
        :widths: 20 45 25
@@ -123,7 +123,7 @@ class SimulationSetup(ObjBase):
 
     @property
     def position(self):
-        """:obj:`int`: Position of simulation in setup order."""
+        """:obj:`int`: Position of the simulation in the setup order."""
         return self.__stub.GetPosition(self.msg).value
 
     @position.setter

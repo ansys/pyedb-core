@@ -161,7 +161,7 @@ class Layer(ObjBase):
 
     @property
     def type(self):
-        """:class:`LayerType`: Layer type of the layer."""
+        """:class:`LayerType`: Type of the layer."""
         return LayerType(self.__stub.GetLayerType(self.msg).type)
 
     @type.setter
@@ -283,7 +283,7 @@ class Layer(ObjBase):
     def transparency(self):
         """:obj:`int`: Transparency value of the layer.
 
-        The transparency value falls between 0 and 100, where 0 indicates a completely
+        The transparency value is between 0 and 100, where 0 indicates a completely
         opaque layer and 100 indicates a completely transparent layer.
         """
         return self.__stub.GetTransparency(self.msg).value
@@ -379,8 +379,8 @@ class Layer(ObjBase):
         ----------
         zone : int
            Zone.
-        in_zone : bool, optional
-           Whether the layer exists in this zone. The default is ``True``.
+        in_zone : bool, default: True
+           Whether the layer exists in this zone.
         """
         return self.__stub.SetIsInZone(
             layer_pb2.SetIsInZoneMessage(zone_msg=_is_in_zone_message(self, zone), in_zone=in_zone)

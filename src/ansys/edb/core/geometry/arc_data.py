@@ -61,32 +61,17 @@ class ArcData:
 
     @property
     def start(self):
-        """Start point of the arc.
-
-        Returns
-        -------
-        geometry.PointData
-        """
+        """:class:`geometry.PointData`: Start point of the arc."""
         return self._start
 
     @property
     def end(self):
-        """End point of the arc.
-
-        Returns
-        -------
-        geometry.PointData
-        """
+        """:class:`geometry.PointData`: End point of the arc."""
         return self._end
 
     @property
     def height(self):
-        """Height of the arc.
-
-        Returns
-        -------
-        float
-        """
+        """:obj:`float`: Height of the arc."""
         if self._height is None:
             self._height = self.__stub.GetHeight(messages.arc_message(self)).value
 
@@ -125,44 +110,24 @@ class ArcData:
     @property
     @parser.to_point_data
     def center(self):
-        """Center point of arc.
-
-        Returns
-        -------
-        geometry.PointData
-        """
+        """:class:`geometry.PointData`: Center point of the arc."""
         return self.__stub.GetCenter(messages.arc_message(self))
 
     @property
     @parser.to_point_data
     def midpoint(self):
-        """Midpoint of arc.
-
-        Returns
-        -------
-        geometry.PointData
-        """
+        """:class:`geometry.PointData`: Midpoint of the arc."""
         return self.__stub.GetMidpoint(messages.arc_message(self))
 
     @property
     def radius(self):
-        """Radius of arc.
-
-        Returns
-        -------
-        float
-        """
+        """:obj:`float`: Radius of the arc."""
         return self.__stub.GetRadius(messages.arc_message(self)).value
 
     @property
     @parser.to_polygon_data
     def bbox(self):
-        """Rectangular bounding box of arc.
-
-        Returns
-        -------
-        geometry.PolygonData
-        """
+        """:class:`geometry.PolygonData`: Rectangular bounding box of the arc."""
         return self.__stub.GetBoundingBox(messages.arc_message(self))
 
     def is_big(self):
@@ -177,7 +142,7 @@ class ArcData:
         return 2 * math.fabs(self.height) > dist
 
     def is_left(self):
-        """Determine if arc rotates clockwise.
+        """Determine if the arc rotates clockwise.
 
         This method is the same as the ``is_cw`` method.
 
@@ -212,12 +177,7 @@ class ArcData:
 
     @property
     def direction(self):
-        """Rotational direction of arc.
-
-        Returns
-        -------
-        Literal["cw", "ccw", "colinear"]
-        """
+        """:obj:`Literal["cw", "ccw", "colinear"]`: Rotational direction of arc."""
         if self.is_cw():
             return "cw"
         elif self.is_ccw():
@@ -226,11 +186,11 @@ class ArcData:
             return "colinear"
 
     def angle(self, arc=None):
-        """Get the angle between another arc if provided or the angle of this itself.
+        """Get the angle between another this arc and another arc if provided or the angle of this arc.
 
         Parameters
         ----------
-        arc : ArcData
+        arc : ArcData, default: None
 
         Returns
         -------
@@ -251,12 +211,7 @@ class ArcData:
 
     @property
     def length(self):
-        """Circumference length of arc.
-
-        Returns
-        -------
-        float
-        """
+        """:obj:`str`: Circumference length of the arc."""
         if self.is_segment():
             return self.start.distance(self.end)
         else:
@@ -264,12 +219,7 @@ class ArcData:
 
     @property
     def points(self):
-        """Geometric points representing the arc.
-
-        Returns
-        -------
-        list[geometry.PointData]
-        """
+        """:obj:`list` of :class:`geometry.PointData`: Geometric points representing the arc."""
         return [self._start, geometry.PointData(self.height), self._end]
 
     def tangent_at(self, point):
@@ -296,7 +246,7 @@ class ArcData:
 
     @parser.to_box
     def closest_points(self, other):
-        """Get the closest point from one arc to another, and vice versa.
+        """Get the closest points from one arc to another, and vice versa.
 
         Parameters
         ----------

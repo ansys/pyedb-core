@@ -92,7 +92,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def term_instances(self):
-        """:obj:`list` of :class:`TerminalInstances <ansys.edb.core.terminal.TerminalInstances>`: List of terminal \
+        """:obj:`list` of :class:`TerminalInstances <ansys.edb.core.terminal.TerminalInstances>`: Terminal \
         instances associated with the cell instance.
 
         Read-Only.
@@ -104,7 +104,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def placement_3d(self):
-        """:obj:`bool`: Determine if this cell instance is 3D placed in the owning layout.
+        """:obj:`bool`: Flag indicating if the cell instance is 3D placed in the owning layout.
 
         If ``True``, transformation can be set using the :obj:`transform3d` object.
         """
@@ -150,7 +150,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         )
 
     def set_parameter_override(self, param_name, param_value):
-        """Set override value for the given cell instance parameter.
+        """Set an override value for a given cell instance parameter.
 
         Parameters
         ----------

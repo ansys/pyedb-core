@@ -70,21 +70,19 @@ class AdvancedQuadraticParams:
 
         Parameters
         ----------
-        temp_lower_limit_val : str or int or float or complex or Value, optional
-            Lower temperature limit where the quadratic model is valid. The default
-            is ``"-273.15cel"``.
-        temp_upper_limit_val : str or int or float or complex, or Value, optional
-            Upper temperature limit where the quadratic model is valid. The default
-            is ``"1000cel"``.
-        auto_calc_constant_thermal_modifier_vals : str or int or float or complex or Value, optional
+        temp_lower_limit_val : str or int or float or complex or Value, default: "-273.15cel
+            Lower temperature limit where the quadratic model is valid.
+        temp_upper_limit_val : str or int or float or complex, or Value, default: "1000cel"
+            Upper temperature limit where the quadratic model is valid.
+        auto_calc_constant_thermal_modifier_vals : str or int or float or complex or Value, default: True
             Flag indicating if the values for the lower and upper constant thermal modifieries
-            are to be automatically calculated. The defaults is ``True``.
-        lower_constant_thermal_modifier_val : str or int or float or complex or Value, optional
+            are to be automatically calculated.
+        lower_constant_thermal_modifier_val : str or int or float or complex or Value, default: 1
             Constant thermal modifier value for temperatures less than the lower constant
-            thermal modifier value. The default is ``1``.
-        upper_constant_thermal_modifier_val : str or int or float or complex or Value, optional
+            thermal modifier value.
+        upper_constant_thermal_modifier_val : str or int or float or complex or Value, default: 1
             Constant thermal modifier value for temperatures greater than the upper
-            constant thermal modifier value. The default is ``1``.
+            constant thermal modifier value.
         """
         self.temp_lower_limit_val = Value(temp_lower_limit_val)
         self.temp_upper_limit_val = Value(temp_upper_limit_val)

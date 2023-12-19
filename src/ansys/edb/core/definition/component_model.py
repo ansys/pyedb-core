@@ -17,7 +17,7 @@ class ComponentModel(ObjBase):
 
     @property
     def reference_file(self):
-        """:obj:`str`: Name of the reference file associated with this component model."""
+        """:obj:`str`: Name of the reference file associated with the component model."""
         return self.__stub.GetReferenceFile(self.msg).value
 
     @reference_file.setter

@@ -57,7 +57,7 @@ class DatasetDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: type."""
+        """:class:`DefinitionObjType`: Definition type."""
         return DefinitionObjType.DATASET_DEF
 
     @property

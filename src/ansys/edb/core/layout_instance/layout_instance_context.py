@@ -46,7 +46,7 @@ class LayoutInstanceContext(ObjBase):
 
     @property
     def top_or_black_box(self):
-        """:class:`LayoutInstanceContext`: The top-level or blackbox :class:`context <LayoutInstanceContext>`.
+        """:class:`LayoutInstanceContext`: Top-level or blackbox :class:`context <LayoutInstanceContext>` instance.
 
         This property is read-only.
         """

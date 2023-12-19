@@ -75,7 +75,7 @@ class MatrixConvergenceData:
 
     @property
     def all_constant(self):
-        """:obj:`bool`: All matrix entries are the same.
+        """:obj:`bool`: Flag indicating if all matrix entries are the same.
 
         This property is read-only.
         """
@@ -83,7 +83,7 @@ class MatrixConvergenceData:
 
     @property
     def all_diag_constant(self):
-        """:obj:`bool`: All diagonal matrix entries are the same.
+        """:obj:`bool`: Flag indicating if all diagonal matrix entries are the same.
 
         This property is read-only.
         """
@@ -91,7 +91,7 @@ class MatrixConvergenceData:
 
     @property
     def all_off_diag_constant(self):
-        """:obj:`bool`: All off-diagonal matrix entries are the same.
+        """:obj:`bool`: Flag indicating if all off-diagonal matrix entries are the same.
 
         This property is read-only.
         """
@@ -101,7 +101,7 @@ class MatrixConvergenceData:
     def mag_min_threshold(self):
         """:obj:`float`: Minimum magnitude threshold.
 
-        When magnitude is less than the minimal threshold value, the phase is ignored.
+        When the magnitude is less than the minimal threshold value, the phase is ignored.
         """
         return self._mag_minThreshold
 

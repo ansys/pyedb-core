@@ -108,51 +108,44 @@ class HfssExtentInfo:
 
         Parameters
         ----------
-        use_open_region: bool, optional
-            Whether an open region is used. The default is ``True``.
-        extent_type: HfssExtentInfo.HFSSExtentInfoType, optional
-            Extent type. The defaults is ``BOUNDING_BOX``.
-        open_region_type: HfssExtentInfo.OpenRegionType, optional
-            Open region type. The default is ``RADIATION``.
-        base_polygon: Primitive, optional
+        use_open_region: bool, default: True
+            Whether an open region is used.
+        extent_type: HfssExtentInfo.HFSSExtentInfoType, default: BOUNDING_BOX
+            Extent type.
+        open_region_type: HfssExtentInfo.OpenRegionType, default: RADIATION
+            Open region type.
+        base_polygon: Primitive, default: None
             Polygon to use if the extent is the ``Polygon`` type.
-            The default is ``None``.
-        dielectric_extent_type: HfssExtentInfo.HFSSExtentInfoType, optional
-            Dielectric extent type. The default is ``BOUNDING_BOX``.
-        dielectric_base_polygon: :class:`Primitive <ansys.edb.core.primitive.Primitive>`, optional
-            Polygon to use if dielectric extent is the ``Polygon`` type. The default is ``None``.
-        dielectric: (float, bool), optional
-            Dielectric extent size. The first parameter is the value. The default is ``0``.
-            The second parameter is a Boolean indicating if the value is a multiple. The
-            default is ``True``.
-        honor_user_dielectric: bool, optional
+        dielectric_extent_type: HfssExtentInfo.HFSSExtentInfoType, default: BOUNDING_BOX
+            Dielectric extent type.
+        dielectric_base_polygon: :class:`Primitive <ansys.edb.core.primitive.Primitive>`, default: None
+            Polygon to use if dielectric extent is the ``Polygon`` type.
+        dielectric: (float, bool), default: (0, True)
+            Dielectric extent size. The first parameter is the value.
+            The second parameter is a Boolean indicating if the value is a multiple.
+        honor_user_dielectric: bool, default: True
             Whether to honor a user-defined dielectric primitive when calculating the dielectric
-            extent. The default is ``True``.
-        airbox_truncate_at_ground: bool, optional
-            Whether to truncate the airbox at the ground layers. The default is ``False``.
-        airbox_horizontal: (float, bool), optional
-            Airbox horizontal extent size. The first parameter is the value. The default is ``0.15``.
-            The second parameter is a Boolean indicating if the value is a multiple. The default is
-            ``True``.
-        airbox_vertical_positive: (float, bool), optional
-            Airbox positive vertical extent size. The first parameter is the value. The default is
-            ``0.15``. The second parameter is a Boolean indicating if the value is a multiple. The
-            default is ``True``.
-        airbox_vertical_negative: (float, bool), optional
-            Airbox negative vertical extent size. The first parameter is the value. The default is
-            ``0.15``. The second parameter is a Boolean indicating if the value is a multiple. The
-            default is ``True``.
-        sync_airbox_vertical_extent: bool, optional
-            Whether to synchronize the airbox positive and negative vertical extent. The default is
-            ``True``.
-        is_pml_visible: bool, optional
-            Whether to check to see if PML boxes are to be rendered. The default is ``False``.
-        operating_frequency: :class:`Value <ansys.edb.core.utility.Value>`, optional
-            PML operating frequency. The default is ``"5GHz"``.
-        radiation_level: :class:`Value <ansys.edb.core.utility.Value>`, optional
+            extent.
+        airbox_truncate_at_ground: bool, default: False
+            Whether to truncate the airbox at the ground layers.
+        airbox_horizontal: (float, bool), default: (0.15, True)
+            Airbox horizontal extent size. The first parameter is the value.
+            The second parameter is a Boolean indicating if the value is a multiple.
+        airbox_vertical_positive: (float, bool), default: (0.15, True)
+            Airbox positive vertical extent size. The first parameter is the value.
+            The second parameter is a Boolean indicating if the value is a multiple.
+        airbox_vertical_negative: (float, bool), default: (0.15, True)
+            Airbox negative vertical extent size. The first parameter is the value.
+            The second parameter is a Boolean indicating if the value is a multiple.
+        sync_airbox_vertical_extent: bool, default: True
+            Whether to synchronize the airbox positive and negative vertical extent.
+        is_pml_visible: bool, default: False
+            Whether to check to see if PML boxes are to be rendered.
+        operating_frequency: :class:`Value <ansys.edb.core.utility.Value>`, default: "5GHz"
+            PML operating frequency.
+        radiation_level: :class:`Value <ansys.edb.core.utility.Value>`, default: 0
             PML radiation level for calculating the thickness of the boundary.
-            The default is ``0``.
-        user_xy_data_extent_for_vertical_expansion: bool, optional
+        user_xy_data_extent_for_vertical_expansion: bool, default: True
             Whether to retain the old behavior for the vertical expansion of the airbox.
             The default is ``True``, in which case the vertical extent is calculated from
             the XY data extent.

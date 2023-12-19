@@ -35,7 +35,7 @@ class VariableServer:
         value : str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`
             Value, which can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
             instance.
-        is_param : bool, optional
+        is_param : bool, default: False
             Whether the new variable is a parameter. The default is ``False``, which means it is a local variable.
 
         Notes
@@ -46,7 +46,7 @@ class VariableServer:
         * :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
         * :class:`Cell <ansys.edb.core.layout.Cell>`
         * :class:`Layout <ansys.edb.core.layout.Layout>` (Adds variable to the corresponding
-          :class:`Cell <ansys.edb.core.layout.Cell>` instance.
+          :class:`Cell <ansys.edb.core.layout.Cell>` instance.)
 
         Examples
         --------
@@ -77,10 +77,10 @@ class VariableServer:
         values : list[str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`]
             Each element can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
             instance.
-        is_param : bool, optional
+        is_param : bool, default: False
             Whether the new variable is a parameter. The default is ``False``, which means it is a local variable.
-        index : int, optional
-            Index of the value that is initially selected. The default is ``0``.
+        index : int, default: 0
+            Index of the value that is initially selected.
         """
         list_of_vms = []
         for value in values:
@@ -203,9 +203,9 @@ class VariableServer:
         get_variable_server_stub().SetVariableDesc(temp)
 
     def create_value(self, val):
-        """Create a :class:`Value <ansys.edb.core.utility.Value>` instance.
+        """Create a value instance.
 
-        This instancc can reference variables on the variable server.
+        This value instance can reference variables on the variable server.
 
         Parameters
         ----------

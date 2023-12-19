@@ -175,7 +175,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def save_fields(self):
-        """:obj:`bool`: Flag indicating whether to save field data during the simulation."""
+        """:obj:`bool`: Flag indicating if field data is to be saved during the simulation."""
         return self.__stub.GetSaveFieldsFlag(self.msg).value
 
     @save_fields.setter
@@ -184,7 +184,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def save_rad_fields_only(self):
-        """:obj:`bool`: Flag indicating whether to save only radiated field data during simulation."""
+        """:obj:`bool`: Flag indicating if only radiated field data is to be saved during the simulation."""
         return self.__stub.GetSaveRadFieldsOnlyFlag(self.msg).value
 
     @save_rad_fields_only.setter
@@ -195,7 +195,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def use_mesh_region(self):
-        """:obj:`bool`: Flag indicating whether to use mesh regions."""
+        """:obj:`bool`: Flag indicating if mesh regions are used."""
         return self.__stub.GetUseMeshRegion(self.msg).value
 
     @use_mesh_region.setter
@@ -204,7 +204,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def mesh_region_name(self):
-        """:obj:`str`: Name of mesh region to use."""
+        """:obj:`str`: Name of the mesh region to use."""
         return self.__stub.GetMeshRegionName(self.msg).value
 
     @mesh_region_name.setter
@@ -213,7 +213,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def use_parallel_refinement(self):
-        """:obj:`bool`: Flag indicating whether to use parallel refinement."""
+        """:obj:`bool`: Flag indicating if parallel refinement is used."""
         return self.__stub.GetUseParallelRefinement(self.msg).value
 
     @use_parallel_refinement.setter
@@ -230,7 +230,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def use_max_refinement(self):
-        """:obj:`bool`: Flag indicating whether to use maximum refinement values during simulation."""
+        """:obj:`bool`: Flag indicating if maximum refinement values are used during simulation."""
         return self.__stub.GetUseMaxRefinement(self.msg).value
 
     @use_max_refinement.setter
@@ -294,7 +294,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def relative_residual(self):
-        """:class:`float`: Relative residual value to be used by the HFSS iterative solver."""
+        """:class:`float`: Relative residual value that the HFSS iterative solver is to use."""
         return self.__stub.GetRelativeResidual(self.msg).value
 
     @relative_residual.setter
@@ -303,7 +303,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def enhanced_low_frequency_accuracy(self):
-        """:obj:`bool`: Flag indicating whether to enable enhanced low-frequency accuracy during simulation."""
+        """:obj:`bool`: Flag indicating if enhanced low-frequency accuracy is enabled during simulation."""
         return self.__stub.GetEnhancedLowFrequencyAccuracy(self.msg).value
 
     @enhanced_low_frequency_accuracy.setter
@@ -329,7 +329,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @property
     def set_triangles_for_wave_port(self):
-        """:obj:`bool`: Flag indicating whether to use minimum and maximum triangle values for waveports."""
+        """:obj:`bool`: Flag indicating ifthe minimum and maximum triangle values for waveports are used."""
         return self.__stub.GetSetTrianglesForWaveport(self.msg).value
 
     @set_triangles_for_wave_port.setter
@@ -379,7 +379,7 @@ class HFSSAdvancedSettings(AdvancedSettings):
 
     @property
     def ic_mode_auto_resolution(self):
-        """:obj:`bool`: Flag indicating whether to automatically calculate model resolution for IC designs."""
+        """:obj:`bool`: Flag indicating if model resolution is automatically calculated for IC designs."""
         return self.__stub.GetICModeAutoResolution(self.msg).value
 
     @ic_mode_auto_resolution.setter

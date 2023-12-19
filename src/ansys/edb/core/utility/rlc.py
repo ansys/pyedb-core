@@ -8,24 +8,24 @@ class Rlc:
 
     Attributes
     ----------
-    r : str, int, float, complex, Value, optional
-        Resistance value. The default is ``0``. This parameter is only used if
+    r : str, int, float, complex, Value, default: 0
+        Resistance value. This parameter is only used if
         ``r_enabled=True``.
-    r_enabled : bool, optional
-        Whether resistance is enabled. The default is ``False``.
-    l : str, int, float, complex, Value
-        Inductance value. The default is ``0``. This parameter is only used if
+    r_enabled : bool, default: False
+        Whether resistance is enabled.
+    l : str, int, float, complex, Value, default: 0
+        Inductance value. This parameter is only used if
         ``c-l_enabled=True``.
-    l_enabled : bool, optional
-        Whether inductance is enabled. The default is ``False``.
-    c : str, int, float, complex, Value
-        Capacitance value. The default is ``0``. This parameter is only used if
+    l_enabled : bool, default: False
+        Whether inductance is enabled.
+    c : str, int, float, complex, Value, default: 0
+        Capacitance value. This parameter is only used if
         ``c_enabled=True``.
-    c_enabled : bool, optional
-        Whether capacitance is enabled. The default is ``False``.
-    is_parallel : bool, optional
-        Whether the r, l, and c elements are in parallel. The default
-        is ``True``. If ``False``, these elements are in series.
+    c_enabled : bool, default: False
+        Whether capacitance is enabled.
+    is_parallel : bool, default: True
+        Whether the r, l, and c elements are in parallel. If ``False``, these
+        elements are in series.
     """
 
     def __init__(
@@ -42,24 +42,21 @@ class Rlc:
 
         Parameters
         ----------
-        r : str, int, float, complex, Value, optional
-            Resistance value. The default is ``0``. This parameter is only used if
-            ``r_enabled=True``.
-        r_enabled : bool, optional
-            Whether resistance is enabled. The default is ``False``.
-        l : str, int, float, complex, Value
-            Inductance value. The default is ``0``. This parameter is only used if
-            ``c-l_enabled=True``.
-        l_enabled : bool, optional
-            Whether inductance is enabled. The default is ``False``.
-        c : str, int, float, complex, Value
-            Capacitance value. The default is ``0``. This parameter is only used if
-            ``c_enabled=True``.
-        c_enabled : bool, optional
-            Whether capacitance is enabled. The default is ``False``.
-        is_parallel : bool, optional
-            Whether the r, l, and c elements are in parallel. The default
-            is ``True``. If ``False``, these elements are in series.
+        r : str, int, float, complex, Value, default: 0
+            Resistance value. This parameter is only used if ``r_enabled=True``.
+        r_enabled : bool, default: False
+            Whether resistance is enabled.
+        l : str, int, float, complex, Value, default: 0
+            Inductance value. This parameter is only used if ``c-l_enabled=True``.
+        l_enabled : bool, default: False
+            Whether inductance is enabled.
+        c : str, int, float, complex, Value, default: 0
+            Capacitance value. This parameter is only used if ``c_enabled=True``.
+        c_enabled : bool, default: False
+            Whether capacitance is enabled.
+        is_parallel : bool, default: True
+            Whether the r, l, and c elements are in parallel. If ``False``, these
+            elements are in series.
         """
         self.r = r
         self.l = l

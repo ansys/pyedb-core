@@ -234,7 +234,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def is_footprint(self):
-        """:obj:`bool` : Flag indicating if the cell is a footprint.
+        """:obj:`bool`: Flag indicating if the cell is a footprint.
 
         This property is read-only.
         """
@@ -242,7 +242,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def is_blackbox(self):
-        """:obj:`bool` : Flag indicating if the cell is a blackbox."""
+        """:obj:`bool`: Flag indicating if the cell is a blackbox."""
         return self.__stub.IsBlackBox(self.msg).value
 
     @is_blackbox.setter
@@ -251,7 +251,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def anti_pads_always_on(self):
-        """:obj:`bool` : Flat indicating whether antipads are always enabled.
+        """:obj:`bool`: Flag indicating whether antipads are always enabled.
 
         ``True`` if antipads are always enabled, ``False`` otherwise. If antipads
         are not always enabled, they are triggered only when the via center point falls \
@@ -265,7 +265,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def anti_pads_option(self):
-        """:obj:`int` : Mode for activating antipads.
+        """:obj:`int`: Mode for activating antipads.
 
         - ``0`` for center-point intersection
         - ``1`` for always on
@@ -279,7 +279,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def is_symbolic_footprint(self):
-        """:obj:`bool` : Flag indicating if the cell is a symbolic footprint.
+        """:obj:`bool`: Flag indicating if the cell is a symbolic footprint.
 
         This property is read-only.
         """
@@ -287,7 +287,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def name(self):
-        """:obj:`str` : Name of the cell."""
+        """:obj:`str`: Name of the cell."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
@@ -296,7 +296,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def design_mode(self):
-        """:obj:`DesignMode` : Design mode of the cell."""
+        """:obj:`DesignMode`: Design mode of the cell."""
         return DesignMode(self.__stub.GetDesignMode(self.msg).mode)
 
     @design_mode.setter
@@ -305,7 +305,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def hfss_extent_info(self):
-        """:class: HfssExtentInfo <ansys.edb.core.utility.HfssExtentInfo> : HFSS extents for the cell."""
+        """:class:`HfssExtentInfo <ansys.edb.core.utility.HfssExtentInfo>`: HFSS extents for the cell."""
         msg = self.__stub.GetHfssExtentInfo(self.msg)
         return HfssExtentInfo(**parse_args(msg))
 
@@ -320,7 +320,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def temperature_settings(self):
-        """:class:`TemperatureSettings <ansys.edb.core.utility.TemperatureSettings>` :Temperature settings."""
+        """:class:`TemperatureSettings <ansys.edb.core.utility.TemperatureSettings>`: Temperature settings."""
         msg = self.__stub.GetTemperatureSettings(self.msg)
         return TemperatureSettings(
             msg.include_temp_dependence, msg.enable_thermal_feedback, Value(msg.temperature)
@@ -424,14 +424,10 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def simulation_setups(self):
-        """List of all simulation setups of the cell.
+        """:obj:`list` of [:class:`SimulationSetup <ansys.edb.core.simulation_setup.SimulationSetup>`]: List of \
+        all simulation setups of the cell.
 
         .. seealso:: :obj:`add_simulation_setup`, :obj:`delete_simulation_setup`
-
-        Returns
-        -------
-        list[:class:`SimulationSetup <ansys.edb.core.simulation_setup.SimulationSetup>`]
-            List of simulation setups.
         """
         return [
             SimulationSetup(msg).cast() for msg in self.__stub.GetSimulationSetups(self.msg).items

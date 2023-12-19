@@ -33,15 +33,9 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def layers(self):
-        """List of layer instances.
+        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: List of layer instances.
 
-        This list contains the :class:`layer <ansys.edb.core.layer.Layer>` instances that the layout
-        object instance has geometry on.
-
-        Returns
-        -------
-        list[ansys.edb.core.layer.Layer]
-            List of layer instances.
+        This list contains the layer` instances that the layout object instance has geometry on.
         """
         return [Layer(msg).cast() for msg in self.__stub.GetLayers(self.msg).items]
 

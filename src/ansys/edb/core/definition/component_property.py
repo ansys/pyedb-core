@@ -40,7 +40,7 @@ class ComponentProperty(ObjBase):
 
     @property
     def package_def(self):
-        """:obj:`PackageDef` : Package definition object."""
+        """:obj:`PackageDef`: Package definition object."""
         return package_def.PackageDef(self.__stub.GetPackageDef(messages.edb_obj_message(self)))
 
     @package_def.setter
@@ -49,7 +49,7 @@ class ComponentProperty(ObjBase):
 
     @property
     def model(self):
-        """:class:`Model <ansys.edb.core.hierarchy.Model>` : Model object.
+        """:class:`Model <ansys.edb.core.hierarchy.Model>`: Model object.
 
         This is a copy of the model object. Use the setter for any modifications to be reflected.
         """

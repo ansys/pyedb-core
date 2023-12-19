@@ -103,8 +103,8 @@ class Point3DData:
         Parameters
         ----------
         other : Point3DData
-        tolerance : float, optional
-            Tolerance. The default is ``1e-9``.
+        tolerance : float, default: 1e-9
+            Tolerance.
 
         Returns
         -------

@@ -130,12 +130,7 @@ class PointData:
 
     @property
     def _matrix_values(self):
-        """Return coordinates of the point as a list of values.
-
-        Returns
-        -------
-        list of utility.Value
-        """
+        """:obj:`list` of :class:`utility.Value`: Coordinates of the point as a list of values."""
         return [self.arc_height] if self.is_arc else [self.x, self.y]
 
     def _map_reduce(self, other, op):
@@ -144,54 +139,27 @@ class PointData:
 
     @property
     def is_arc(self):
-        """Flag indicating if the point represents an arc.
-
-        Returns
-        -------
-        bool
-            ``True`` when the point represents an arc, ``False`` otherwise.
-        """
+        """:obj:`bool`: Flag indicating if the point represents an arc."""
         return self._arc_h is not None
 
     @property
     def arc_height(self):
-        """Height of arc.
-
-        Returns
-        -------
-        utility.Value
-        """
+        """:class:`utility.Value`: Height of the arc."""
         return self._arc_h
 
     @property
     def x(self):
-        """X coordinate.
-
-        Returns
-        -------
-        utility.Value
-        """
+        """:class:`utility.Value`: X coordinate."""
         return self._x
 
     @property
     def y(self):
-        """Y coordinate.
-
-        Returns
-        -------
-        utility.Value
-        """
+        """:class:`utility.Value`: Y coordinate."""
         return self._y
 
     @property
     def is_parametric(self):
-        """Flag indicating if the point contains parametric values (variable expressions).
-
-        Returns
-        -------
-        bool
-            ``True`` when the point contains parametric values, ``False`` otherwise.
-        """
+        """:obj:`bool`: Flag indicating if the point contains parametric values (variable expressions)."""
         return any(val.is_parametric for val in self._matrix_values)
 
     def magnitude(self):
@@ -241,7 +209,7 @@ class PointData:
         Parameters
         ----------
         start : ansys.edb.core.typing.PointLike
-        end : ansys.edb.core.typing.PointLike, optional
+        end : ansys.edb.core.typing.PointLike, default: None
 
         Returns
         -------

@@ -17,7 +17,7 @@ class ObjBase:
 
     @property
     def is_null(self):
-        """:obj:`bool`: Determine whether the object exists in EDB.
+        """:obj:`bool`: Flag indicating if the object exists in EDB.
 
         This property is read-only.
         """
@@ -25,7 +25,7 @@ class ObjBase:
 
     @property
     def id(self):
-        """:obj:`int`: Unique ID of an EDB object. A ``0`` indicates an invalid object.
+        """:obj:`int`: Unique ID of the EDB object. A ``0`` indicates an invalid object.
 
         This property is read-only.
         """
@@ -33,9 +33,9 @@ class ObjBase:
 
     @property
     def msg(self):
-        """:obj:`EDBObjMessage` : Protobuf message that represents the object's ID.
+        """:obj:`EDBObjMessage`: Protobuf message that represents the object's ID.
 
-        This attribute can only be set to ``None``.
+        This property can only be set to ``None``.
         """
         return EDBObjMessage(id=self.id)
 
@@ -48,7 +48,7 @@ class ObjBase:
 class TypeField(object):
     """Provides a descriptor for a type field that can be overridden by subclasses.
 
-    You can have optional ``@property def _type(self)`` in the same class as a fallback method to
+    You can have an optional ``@property def _type(self)`` in the same class as a fallback method to
     fetch the type from the server in case the static type is unknown.
 
     Examples

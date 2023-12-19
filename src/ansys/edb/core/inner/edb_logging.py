@@ -82,15 +82,16 @@ class EDBLogger:
 
         Parameters
         ----------
-        level : int, optional
-            Level of logging as defined in the ``logging`` package. The default is `'DEBUG'`.
-        to_file : bool, optional
-            Whether to record the logs in a file. The default is ``False``.
-        to_stdout : bool, optional
+        level : int, default: DEBUG
+            Level of logging as defined in the ``logging`` package.
+        to_file : bool, default: False
+            Whether to record the logs in a file.
+        to_stdout : bool, default: True
             Whether to output the logs to the standard output, which is the
-            command line. The default is ``True``.
-        filename : str, optional
-            Name of the output file. The default is ``edb_client.log``.
+            command line.
+        filename : str, default: FILE_NAME
+            Name of the output file. The default is ``FILE_NAME, in which case
+            ``edb_client.log`` is used.
         """
         self.logger = logging.getLogger("edb_client")  # Creating default main logger.
         self.logger.setLevel(level)
@@ -126,10 +127,10 @@ class EDBLogger:
 
         Parameters
         ----------
-        filename : str, optional
-            Name of the file where logs are recorded. The default is ``FILE_NAME``.
-        level : str, optional
-            Level of logging, such as ``DEBUG``. The default is ``LOG_LEVEL``.
+        filename : str, default: FILE_NAME
+            Name of the file where logs are recorded.
+        level : str, default: default: LOG_LEVEL
+            Level of logging, such as ``DEBUG``.
         """
         addfile_handler(self, filename=filename, level=level, write_headers=True)
 
@@ -138,8 +139,8 @@ class EDBLogger:
 
         Parameters
         ----------
-        level : str, optional
-            Level of logging record. The default is ``LOG_LEVEL``.
+        level : str, default: LOG_LEVEL
+            Level of logging record.
         """
         add_stdout_handler(self, level=level)
 
@@ -167,12 +168,12 @@ def addfile_handler(edb_logger, filename=FILE_NAME, level=LOG_LEVEL, write_heade
     ----------
     edb_logger : EDBLogger
         EDB logger to add the file handler to.
-    filename : str, optional
-        Name of the output file. The default is ``FILE_NAME``.
-    level : str, optional
-        Level of log recording. The default is ``LOG_LEVEL``.
-    write_headers : bool, optional
-        Whether to write the headers to the file. The default is ``False``.
+    filename : str, default: FILE_NAME.
+        Name of the output file.
+    level : str, default: LOG_LEVEL
+        Level of log recording.
+    write_headers : bool, default: False
+        Whether to write the headers to the file.
 
     Returns
     -------
@@ -201,10 +202,11 @@ def add_stdout_handler(edb_logger, level=LOG_LEVEL, write_headers=False):
     ----------
     edb_logger : EDBLogger
         EDBLogger to add the file handler to.
-    level : str, optional
-        Level of log recording. The default is ``logging.DEBUG``.
-    write_headers : bool, optional
-        Whether to write the headers to the file. The default is ``False``.
+    level : str, default: LOG_LEVEL
+        Level of log recording. The default is ``LOG_LEVEL``, in which
+        case ``logging.DEBUG`` is used.
+    write_headers : bool, default: False
+        Whether to write the headers to the file.
 
     Returns
     -------

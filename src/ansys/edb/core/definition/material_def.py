@@ -234,11 +234,11 @@ class MaterialDef(ObjBase):
             Property ID.
         value : :class:`Value <ansys.edb.core.utility.Value>`
             New value.
-        component_id : int, optional
+        component_id : int, default: None
             Component ID.
-        row : int, optional
+        row : int, default: None
             Tensor row.
-        col : int, optional
+        col : int, default: None
             Tensor column.
         """
         self.__stub.SetProperty(
@@ -250,14 +250,14 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property : :class:`MaterialProperty`
-            Property ID. The default is ``None``.
-        component_id : int, optional
-            Component ID. The default is ``None``.
-        row : int, optional
-            Tensor row. The default is ``None``.
-        col : int, optional
-            Tensor column. The default is ``None``.
+        material_property : :class:`MaterialProperty`, default: None
+            Property ID.
+        component_id : int, default: None
+            Component ID.
+        row : int, default: None
+            Tensor row.
+        col : int, default: None
+            Tensor column.
 
         Returns
         -------

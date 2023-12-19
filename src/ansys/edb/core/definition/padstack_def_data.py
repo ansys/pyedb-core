@@ -412,11 +412,11 @@ class PadstackDefData(ObjBase):
             Y offset.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
             Rotation.
-        type_geom : PadGeometryType, optional
+        type_geom : PadGeometryType, default: None
             Pad geometry type. The default is ``None`` if setting polygonal pad parameters.
-        sizes : List[:class:`Value <ansys.edb.core.utility.Value>`]
+        sizes : List[:class:`Value <ansys.edb.core.utility.Value>`], default: None
             Pad sizes. The default is ``None`` if setting polygonal pad parameters.
-        fp : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        fp : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`, default: None
             Polygon geometry. The default is ``None`` if not setting polygonal pad parameters.
         """
         self.__stub.SetPadParameters(
@@ -458,20 +458,16 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        type_geom : PadGeometryType
-            Pad geometry type.
-        sizes : List[:class:`Value <ansys.edb.core.utility.Value>`]
-            Pad parameters.
         offset_x : :class:`Value <ansys.edb.core.utility.Value>`
             X offset.
         offset_y : :class:`Value <ansys.edb.core.utility.Value>`
             Y offset.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
             Rotation.
-        type_geom : PadGeometryType, optional
-            Pad geometry type. The default is ``None`` if setting polygonal pad parameters.
+        type_geom : PadGeometryType
+            Pad geometry type.
         sizes : List[:class:`Value <ansys.edb.core.utility.Value>`]
-            Pad sizes. The default is ``None`` if setting polygonal pad parameters.
+            Pad sizes.
         """
         return self.set_pad_parameters(
             -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes
@@ -490,7 +486,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def plating_percentage(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`:Hole plating percentage."""
+        """:class:`Value <ansys.edb.core.utility.Value>`: Hole plating percentage."""
         return Value(self.__stub.GetPlatingPercentage(self.msg))
 
     @plating_percentage.setter
@@ -529,22 +525,14 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_param(self):
-        """
-        Get solder ball parameters in their original values in the database.
+        """:obj:`tuple` of [:class:`Value <ansys.edb.core.utility.Value>`, \
+        :class:`Value <ansys.edb.core.utility.Value>`]: Solder ball parameters **(d1, d2)** \
+        in their original values in the database.
 
-        Returns
-        -------
-        tuple[
-            :class:`Value <ansys.edb.core.utility.Value>`,
-            :class:`Value <ansys.edb.core.utility.Value>`
-        ]
+        ``d1`` is the diameter for a cylinder solder ball or the top diameter for a spheroid
+        solder ball.
 
-            Returns a tuple in this format:
-            **(d1, d2)**
-
-            **d1** : Diameter for a cylinder solder ball or top diameter for a spheroid solder ball.
-
-            **d2** : Middle diameter for a spheroid solder ball. Not used for a cylinder solder ball.
+        ``d2`` is the middle diameter for a spheroid solder ball. It is not used for a cylinder solder ball.
         """
         params = self.__stub.GetSolderBallParam(self.msg)
         return (

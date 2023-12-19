@@ -1,4 +1,4 @@
-"""Common definitions used in the EDB."""
+"""Common definitions used in EDB."""
 
 import enum
 

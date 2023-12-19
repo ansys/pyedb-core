@@ -1,4 +1,4 @@
-"""Primitive."""
+"""Primitive classes."""
 
 from enum import Enum
 
@@ -519,8 +519,8 @@ class Rectangle(Primitive):
             Corner radius.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
             Rotation.
-        is_hole : bool, optional
-            Whether the rectangle is hole. The default is ``False``.
+        is_hole : bool, default: False
+            Whether the rectangle is hole.
 
         Returns
         -------
@@ -1014,9 +1014,8 @@ class Path(Primitive):
         ----------
         clipping_poly: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
             Polygon data to use to clip the path.
-        keep_inside: bool, optional
+        keep_inside: bool, default: True
             Whether the part of the path inside the polygon should be preserved.
-            The default is ``True``.
         """
         self.__stub.SetClipInfo(
             path_pb2.SetClipInfoMessage(
@@ -1271,9 +1270,8 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        evaluated : bool, optional
+        evaluated : bool, default: True
             Whether an evaluated (in variable namespace) material name is wanted.
-            The default is ``True``.
 
         Returns
         -------
@@ -1329,9 +1327,8 @@ class Bondwire(Primitive):
 
         Parameters
         ----------
-        evaluated : bool, optional
+        evaluated : bool, default: True
             Whether an evaluated (in variable namespace) material name is wanted.
-            The default is ``True``.
 
         Returns
         -------
@@ -2055,14 +2052,14 @@ class BoardBendDef(Primitive):
     def boundary_primitive(self):
         """:class:`Primitive <Primitive>`: Zone primitive the board bend is placed on.
 
-        Read-Only.
+        This property is read-only.
         """
         return Primitive(self.__stub.GetBoundaryPrim(self.msg)).cast()
 
     @property
     @parser.to_point_data_pair
     def bend_middle(self):
-        """:term:`PointDataTuple`: Tuple of the bend middle based on starting and ending points."""
+        """:term:`PointDataTuple`: Tuple of the bend middle based on the starting and ending points."""
         return self.__stub.GetBendMiddle(self.msg)
 
     @bend_middle.setter
@@ -2092,7 +2089,7 @@ class BoardBendDef(Primitive):
     def bent_regions(self):
         """:obj:`list` of :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Bent region polygons.
 
-            This list of a collection of polygon data representing the areas bent by the bend definition.
+        This list of a collection of polygon data represents the areas bent by the bend definition.
 
         This property is read-only.
         """

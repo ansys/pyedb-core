@@ -300,7 +300,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def include_inf_gnd(self):
-        """:obj:`bool`: Flag indicating an infinite ground plane is included."""
+        """:obj:`bool`: Flag indicating if an infinite ground plane is included."""
         return self.__stub.GetIncludeInfGnd(self.msg).value
 
     @include_inf_gnd.setter
@@ -541,7 +541,7 @@ class SIWaveSParameterSettings(SimulationSettingsBase):
 
     @property
     def use_state_space(self):
-        """:obj:`bool`: Flag indicating if state space or a custom model is used."""
+        """:obj:`bool`: Flag indicating if state space is used. If ``False``, a custom model is used."""
         return self.__stub.GetUseStateSpace(self.msg).value
 
     @use_state_space.setter

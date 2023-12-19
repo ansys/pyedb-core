@@ -14,7 +14,7 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def transform(self):
-        """:class:`Transform <ansys.edb.core.utility.Transform>`: Transformation information of the object."""
+        """:class:`Transform <ansys.edb.core.utility.Transform>`: Transformation information of the hierarchy object."""
         transform_msg = self.__stub.GetTransform(self.msg)
         return Transform(
             transform_msg.scale,
@@ -60,7 +60,7 @@ class HierarchyObj(conn_obj.ConnObj):
     def location(self):
         """:obj:`tuple` (:class:`Value <ansys.edb.core.utility.Value>`, \
         :class:`Value <ansys.edb.core.utility.Value>`): \
-        [x, y] location of the hierarchy object on the :obj:`placement_layer` object."""
+        Location [x, y] of the hierarchy object on the :obj:`placement_layer` object."""
         pnt_msg = self.__stub.GetLocation(self.msg)
         return [Value(pnt_msg.x), Value(pnt_msg.y)]
 

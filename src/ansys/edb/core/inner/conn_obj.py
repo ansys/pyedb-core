@@ -120,7 +120,7 @@ class ConnObj(layout_obj.LayoutObj):
     def net(self):
         """:class:`Net <ansys.edb.core.net.Net>`: Net of the :term:`Connectable` object.
 
-        This property can be set with :class:`Net <ansys.edb.core.net.Net>` class, a string, or `None``.
+        This property can be set with a :class:`Net <ansys.edb.core.net.Net>` instance, a string, or `None``.
         """
         from ansys.edb.core.net import Net
 
@@ -131,7 +131,7 @@ class ConnObj(layout_obj.LayoutObj):
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))
 
     def create_stride(self):
-        """Create a stride model.
+        """Create a Stride model.
 
         Returns
         -------
@@ -149,7 +149,7 @@ class ConnObj(layout_obj.LayoutObj):
         return mm.McadModel.create_hfss(connectable=self)
 
     def create_3d_comp(self):
-        """Create a 3D Composite model.
+        """Create a 3D composite model.
 
         Returns
         -------
@@ -159,7 +159,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def is_mcad(self):
-        """:obj:`bool`: Flag indicating if this is an Mcad model.
+        """:obj:`bool`: Flag indicating if this is an MCAD model.
 
         This property is read-only.
         """
@@ -167,7 +167,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def is_mcad_stride(self):
-        """:obj:`bool`: Flag indicating if this is a stride Mcad model.
+        """:obj:`bool`: Flag indicating if this is a Stride MCAD model.
 
         This property is read-only.
         """
@@ -175,7 +175,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def is_mcad_hfss(self):
-        """:obj:`bool`: Flag indicating if this is an HFSS Mcad model.
+        """:obj:`bool`: Flag indicating if this is an HFSS MCAD model.
 
         This property is read-only.
         """
@@ -183,7 +183,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def is_mcad_3d_comp(self):
-        """:obj:`bool`: Flag indicating if this is a 3D composite Mcad model.
+        """:obj:`bool`: Flag indicating if this is a 3D composite MCAD model.
 
         This property is read-only.
         """

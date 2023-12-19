@@ -58,7 +58,7 @@ class ComponentDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Type."""
+        """:class:`DefinitionObjType`: Definition type."""
         return DefinitionObjType.COMPONENT_DEF
 
     @property

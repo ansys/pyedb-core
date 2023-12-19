@@ -41,7 +41,7 @@ class SimulationSettingsBase:
 
     @property
     def msg(self):
-        """:obj:`EDBObjMessage` : Protobuf message that represents this object's ID.
+        """:obj:`EDBObjMessage`: Protobuf message that represents this object's ID.
 
         Read-Only.
         """
@@ -55,7 +55,7 @@ class SimulationSettings(SimulationSettingsBase):
 
     @property
     def enabled(self):
-        """:obj:`bool`: Flag indicating if this simulation setup is enabled."""
+        """:obj:`bool`: Flag indicating if the simulation setup is enabled."""
         return self.__stub.GetEnabled(self.msg).value
 
     @enabled.setter
@@ -70,7 +70,7 @@ class SettingsOptions(SimulationSettingsBase):
 
     @property
     def do_lamda_refine(self):
-        """:obj:`bool`: Flag indicating indicating whether or not lambda refinement will be used during meshing."""
+        """:obj:`bool`: Flag indicating if lambda refinement is used during meshing."""
         return self.__stub.GetDoLamdaRefineFlag(self.msg).value
 
     @do_lamda_refine.setter
@@ -88,7 +88,7 @@ class SettingsOptions(SimulationSettingsBase):
 
     @property
     def use_default_lamda_value(self):
-        """:obj:`bool`: Flag indicating indicating whether or not to use default lambda target value."""
+        """:obj:`bool`: Flag indicating if the default lambda target value is used."""
         return self.__stub.GetLamdaTarget(self.msg).value
 
     @use_default_lamda_value.setter
@@ -103,7 +103,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @property
     def union_polygons(self):
-        """:obj:`bool`: Flag indicating whether or not to union polygons before meshing."""
+        """:obj:`bool`: Flag indicating if polygons are unioned before meshing."""
         return self.__stub.GetUnionPolygons(self.msg).value
 
     @union_polygons.setter
@@ -112,7 +112,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_defeature(self):
-        """:obj:`bool`: Flag indicating whether or to perform polygon defeaturing."""
+        """:obj:`bool`: Flag indicating if polygon defeaturing is performed."""
         return self.__stub.GetUseDefeature(self.msg).value
 
     @use_defeature.setter
@@ -121,7 +121,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @property
     def use_defeature_absolute_length(self):
-        """:obj:`bool`: Flag for whether or not to use absolute length or extent ratio when defeaturing polygons."""
+        """:obj:`bool`: Flag indicating if absolute length or extent ratio is used when defeaturing polygons."""
         return self.__stub.GetUseDefeatureAbsoluteLength(self.msg).value
 
     @use_defeature_absolute_length.setter
@@ -132,7 +132,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @property
     def remove_floating_geometry(self):
-        """:obj:`bool`: Flag indicating whether or not to remove geometry not connected to any other geometry."""
+        """:obj:`bool`: Flag indicating if a geometry not connected to any other geometry is removed."""
         return self.__stub.GetRemoveFloatingGeometry(self.msg).value
 
     @remove_floating_geometry.setter
@@ -163,7 +163,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @property
     def small_void_area(self):
-        """:obj:`float`: Voids with an area smaller than this value will be ignored during simulation."""
+        """:obj:`float`: Voids with an area smaller than this value are ignored during simulation."""
         return self.__stub.GetSmallVoidArea(self.msg).value
 
     @small_void_area.setter
@@ -245,7 +245,7 @@ class AdvancedMeshingSettings(SimulationSettingsBase):
 
     @property
     def use_arc_chord_error_approx(self):
-        """:obj:`bool`: Flag indicating whether or not to use arc chord error approximation."""
+        """:obj:`bool`: Flag indicating if arc chord error approximation is used."""
         return self.__stub.GetUseArcChordErrorApprox(self.msg).value
 
     @use_arc_chord_error_approx.setter

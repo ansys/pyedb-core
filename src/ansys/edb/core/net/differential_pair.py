@@ -25,9 +25,9 @@ class DifferentialPair(NetClass):
             Layout oto place the new differential pair on.
         name : str
             Name of the new differential pair.
-        pos_net : Net or str, optional
+        pos_net : Net or str, default: None
             Positive net or name of the positive net.
-        neg_net : Net or str, optional
+        neg_net : Net or str, default: None
             Negative net or the name of negative net.
 
         Returns
@@ -96,7 +96,10 @@ class DifferentialPair(NetClass):
 
     @property
     def is_power_ground(self):
-        """This property is invalid for a differential pair."""
+        """Flag indicating if the new is power/ground.
+
+        This property is invalid for a differential pair.
+        """
         return False
 
     def add_net(self, net):

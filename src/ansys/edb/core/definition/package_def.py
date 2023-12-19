@@ -79,7 +79,7 @@ class PackageDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Type."""
+        """:class:`DefinitionObjType`: Definition type."""
         return DefinitionObjType.PACKAGE_DEF
 
     @property
@@ -94,7 +94,7 @@ class PackageDef(ObjBase):
     @property
     @parser.to_polygon_data
     def exterior_boundary(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary for the package definition."""
+        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary of the package definition."""
         return self.__stub.GetExteriorBoundary(edb_obj_message(self))
 
     @exterior_boundary.setter

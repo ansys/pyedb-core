@@ -70,7 +70,7 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def is_power_ground(self):
-        """:class:`bool`: Flag indicating if the net belongs to the power/ground :class:`NetClass` class.
+        """:class:`bool`: Flag indicating if the net belongs to a power/ground :class:`NetClass` instance.
 
         This property is read-only.
         """
@@ -82,7 +82,7 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def primitives(self):
-        r""":obj:`list`\[:class:`Primitive <ansys.edb.core.primitive.Primitive>`\]: List of all primitives on the net.
+        r""":obj:`list` of :class:`Primitive <ansys.edb.core.primitive.Primitive>`: All primitives on the net.
 
         This property is read-only.
         """
@@ -90,46 +90,24 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def padstack_instances(self):
-        """List of padstack instances on the net.
-
-        This list contains the :class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>` \
-        instances on the net object instance.
-
-        Returns
-        -------
-        list[ansys.edb.core.primitive.PadstackInstance]
-        """
+        """:obj:`list` of :class:`ansys.edb.core.primitive.PadstackInstance`: All padstack instances on the net \
+        object instance."""
         return [PadstackInstance(lo) for lo in self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)]
 
     @property
     def terminals(self):
-        """List of terminal instances.
-
-        This list contains the :class:`Terminal <ansys.edb.core.terminal.Terminal>` \
-        instances on the net object instance.
-
-        Returns
-        -------
-        list[ansys.edb.core.terminal.Terminal]
-        """
+        """:obj:`list` of :class:`ansys.edb.core.terminal.Terminal`: All terminal instances on the \
+            net object instance."""
         return [Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
 
     @property
     def terminal_instances(self):
-        """List of terminal instances.
-
-        This list contains the :class:`TerminalInstance <ansys.edb.core.terminal.TerminalInstance>` instances \
-        that are on the net object instance.
-
-        Returns
-        -------
-        list[ansys.edb.core.layer.Layer]
-        """
+        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: All terminal instances on the net object instance."""
         return [TerminalInstance(lo) for lo in self._layout_objs(LayoutObjType.TERMINAL_INSTANCE)]
 
     @property
     def net_classes(self):
-        r""":obj:`list`\[:class:`NetClass`\]: List of all net classes on the net.
+        r""":obj:`list` of :class:`NetClass`: All net classes on the net.
 
         This property is read-only.
         """

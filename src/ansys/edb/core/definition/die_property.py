@@ -74,7 +74,7 @@ class DieProperty(ObjBase):
 
     @property
     def height(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Height of the die property.
+        """:class:`Value <ansys.edb.core.utility.Value>`: Die height.
 
         This property can be set with the :term:`ValueLike` term.
         """

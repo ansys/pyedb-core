@@ -74,8 +74,8 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        mode : LayerCollectionMode, optional
-            Mode of the layer collection. The default is ``LAMINATE``.
+        mode : LayerCollectionMode, default: LAMINATE
+            Mode of the layer collection.
 
         Returns
         -------
@@ -134,7 +134,7 @@ class LayerCollection(ObjBase):
         ----------
         control_file_path : str
             Full path to the control file.
-        schema_file_path : str, optional
+        schema_file_path : str, default: None
             Full path to the XML schema file.
         """
         import_msg = layer_collection_pb2.ImportFromControlFileMessage(
@@ -355,8 +355,8 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        layer_filter : LayerTypeSet or LayerType or list[LayerType], optional
-            Layer filter. The defaault is ``ALL_LAYER_SET``.
+        layer_filter : LayerTypeSet or LayerType or list[LayerType], default: ALL_LAYER_SET
+            Layer filter.
 
         Returns
         -------
@@ -517,8 +517,8 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        copy_zone : int, optional
-            Zone to copy from when inserting a new zone. The default is ``-1``.
+        copy_zone : int, default: -1
+            Zone to copy from when inserting a new zone.
             If valid, the new zone is inserted as a copy of the given zone.
             Otherwise, the new zone is empty.
 
@@ -553,10 +553,10 @@ class LayerCollection(ObjBase):
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-        layer_thickness_thresh : float, optional
-           Thickness threshold for the layer. The default is ``-1``.
-        merging_method : DielectricMergingMethod, optional
-           Method for merging. The default is ``WEIGHTED_CAPACITANCE``.
+        layer_thickness_thresh : float, default: -1
+           Thickness threshold for the layer.
+        merging_method : DielectricMergingMethod, default: WEIGHTED_CAPACITANCE
+           Method for merging.
 
         Returns
         -------

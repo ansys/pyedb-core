@@ -50,8 +50,8 @@ class ViaGroup(Group):
         conductivity_ratio : float
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
             Placement layer for the via group.
-        net : str or :class:`Net <ansys.edb.core.net.Net>`, optional
-            Net the via group is to belong to.
+        net : str or :class:`Net <ansys.edb.core.net.Net>`, default: None
+            Net that the via group is to belong to.
 
         Returns
         -------

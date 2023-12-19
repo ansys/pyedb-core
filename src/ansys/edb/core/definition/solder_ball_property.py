@@ -71,7 +71,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def material_name(self):
-        """:obj:`str`: Material name of the solder ball property."""
+        """:obj:`str`: Material name of the solder ball."""
         return self.__stub.GetMaterialName(edb_obj_message(self)).value
 
     @material_name.setter
@@ -80,7 +80,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def height(self):
-        """:term:`ValueLike`: Height of the solder ball property."""
+        """:term:`ValueLike`: Height of the solder ball."""
         return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter

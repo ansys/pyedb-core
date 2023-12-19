@@ -39,7 +39,7 @@ class SPICEModel(Model):
 
     @property
     def model_path(self):
-        """:obj:`str`: File path to the SPICE model file."""
+        """:obj:`str`: Path to the SPICE model file."""
         return self._properties.path
 
     @model_path.setter

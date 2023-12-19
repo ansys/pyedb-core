@@ -43,7 +43,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def layer_collection(self):
-        """:class:`LayerCollection <ansys.edb.core.layer.LayerCollection>` : Layer collection of the layout."""
+        """:class:`LayerCollection <ansys.edb.core.layer.LayerCollection>`: Layer collection of the layout."""
         return LayerCollection(self.__stub.GetLayerCollection(self.msg))
 
     @layer_collection.setter
@@ -64,7 +64,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def primitives(self):
-        """:obj:`list` of :class:`Primitive <ansys.edb.core.primitive.Primitive>` : List of all \
+        """:obj:`list` of :class:`Primitive <ansys.edb.core.primitive.Primitive>`: List of all \
             primitives in the layout.
 
         This property is read-only.
@@ -73,7 +73,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def padstack_instances(self):
-        """:obj:`list` of :class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>` : List of \
+        """:obj:`list` of :class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`: List of \
             all padstack instances in the layout.
 
         This property is read-only.
@@ -82,7 +82,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def terminals(self):
-        """:obj:`list` of :class:`Terminal <ansys.edb.core.terminal.Terminal>` : \
+        """:obj:`list` of :class:`Terminal <ansys.edb.core.terminal.Terminal>`: \
         List of all terminals in the layout.
 
         This property is read-only.
@@ -91,7 +91,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def cell_instances(self):
-        """:obj:`list` of :class:`CellInstance <ansys.edb.core.hierarchy.CellInstances>` : \
+        """:obj:`list` of :class:`CellInstance <ansys.edb.core.hierarchy.CellInstances>`: \
         List of all cell instances in the layout.
 
         This property is read-only.
@@ -100,7 +100,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def nets(self):
-        """:obj:`list` of :class:`Net <ansys.edb.core.net.Net>` : List of all nets \
+        """:obj:`list` of :class:`Net <ansys.edb.core.net.Net>`: List of all nets \
         in the layout.
 
         This property is read-only.
@@ -109,7 +109,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def groups(self):
-        """:obj:`list` of :class:`Group <ansys.edb.core.hierarchy.Group>` : List of all groups \
+        """:obj:`list` of :class:`Group <ansys.edb.core.hierarchy.Group>`: List of all groups \
         in the layout.
 
         This property is read-only.
@@ -118,7 +118,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def net_classes(self):
-        """:obj:`list` of :class:`NetClass <ansys.edb.core.net.NetClass>` : List of all \
+        """:obj:`list` of :class:`NetClass <ansys.edb.core.net.NetClass>`: List of all \
         net classes in the layout.
 
         This property is read-only.
@@ -127,7 +127,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def differential_pairs(self):
-        """:obj:`list` of :class:`DifferentialPair <ansys.edb.core.net.DifferentialPair>` : \
+        """:obj:`list` of :class:`DifferentialPair <ansys.edb.core.net.DifferentialPair>`: \
         List of all differential pairs in the layout.
 
         This property is read-only.
@@ -145,7 +145,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def voltage_regulators(self):
-        """:obj:`list` of :class:`VoltageRegulator <ansys.edb.core.hierarchy.VoltageRegulator>` : \
+        """:obj:`list` of :class:`VoltageRegulator <ansys.edb.core.hierarchy.VoltageRegulator>`: \
         List of all voltage regulators in the layout.
 
         This property is read-only.
@@ -154,7 +154,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def extended_nets(self):
-        """:obj:`list` of :class:`ExtendedNet <ansys.edb.core.net.ExtendedNet>` : \
+        """:obj:`list` of :class:`ExtendedNet <ansys.edb.core.net.ExtendedNet>`: \
         List of all extended nets in the layout.
 
         This property is read-only.
@@ -215,7 +215,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         ----------
         primitives : list[:class:`Primitive <ansys.edb.core.primitive.Primitive>`]
             List of primitives.
-        is_pins : bool, optional
+        is_pins : bool, default: False
             Whether the list consists of pins. The default is ``False``, in which
             case the list consists of vias.
         """
@@ -236,7 +236,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def zone_primitives(self):
-        """:obj:`list` of :class:`Primitive <ansys.edb.core.primitive.Primitive>` : List of \
+        """:obj:`list` of :class:`Primitive <ansys.edb.core.primitive.Primitive>`: List of \
         all primitives in the :term:`zones <Zone>`.
 
         This property is read-only.
@@ -245,7 +245,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def fixed_zone_primitive(self):
-        """:class:`Primitive <ansys.edb.core.primitive.Primitive>` : Fixed :term:`zones <Zone>` primitive."""
+        """:class:`Primitive <ansys.edb.core.primitive.Primitive>`: Fixed :term:`zones <Zone>` primitive."""
         msg = self.__stub.GetFixedZonePrimitive(self.msg)
         return None if msg is None else Primitive(msg).cast()
 
@@ -255,7 +255,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def board_bend_defs(self):
-        """:obj:`list` of :class:`BoardBendDef <ansys.edb.core.primitive.BoardBendDef>` : List of all \
+        """:obj:`list` of :class:`BoardBendDef <ansys.edb.core.primitive.BoardBendDef>`: List of all \
         board bend definitions in the layout.
 
         This property is read-only.
@@ -268,14 +268,14 @@ class Layout(ObjBase, variable_server.VariableServer):
 
     @property
     def layout_instance(self):
-        """:class:`LayoutInstance <ansys.edb.core.layout_instance.LayoutInstance>` : Instance of the layout.
+        """:class:`LayoutInstance <ansys.edb.core.layout_instance.LayoutInstance>`: Instance of the layout.
 
         This property is read-only.
         """
         return LayoutInstance(self.__stub.GetLayoutInstance(self.msg))
 
     def create_stride(self, filename):
-        """Create a stride model from an MCAD file.
+        """Create a Stride model from an MCAD file.
 
         Parameters
         ----------

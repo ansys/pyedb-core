@@ -126,32 +126,17 @@ class PadEdge(Edge):
 
     @property
     def padstack_instance(self):
-        """Padstack instance the edge is on.
-
-        Returns
-        -------
-        PadstackInstance
-        """
+        """:class:`PadstackInstance`: Padstack instance that the edge is on."""
         return primitive.PadstackInstance(self._params.padstack_instance)
 
     @property
     def layer(self):
-        """Layer the edge is on.
-
-        Returns
-        -------
-        Layer
-        """
+        """:class:`Layer`: Layer that the edge is on."""
         return Layer(self._params.layer.id).cast()
 
     @property
     def arc(self):
-        """Arc of the edge.
-
-        Returns
-        -------
-        ArcData
-        """
+        """:class:`ArcData`: Arc of the edge."""
         return ArcData(self._params.arc)
 
 
@@ -177,22 +162,12 @@ class PrimitiveEdge(Edge):
 
     @property
     def primitive(self):
-        """Primitive of the terminal.
-
-        Returns
-        -------
-        Primitive
-        """
+        """:class:`Primitive`: Primitive of the terminal."""
         return primitive.Primitive(self._params.primitive).cast()
 
     @property
     def point(self):
-        """Coordinates (x, y) of the terminal.
-
-        Returns
-        -------
-        (Value, Value)
-        """
+        """:obj:`list`: Coordinates (x, y) of the terminal."""
         return self._params.point
 
 
@@ -263,27 +238,17 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def _type(self):
-        """Terminal type."""
+        """:class:`TerminalType`: Terminal type."""
         return TerminalType(self._params.term_type)
 
     @property
     def bundle_terminal(self):
-        """Bundle terminal that the terminal belongs to, if any.
-
-        Returns
-        -------
-        BundleTerminal
-        """
+        """:class:`BundleTerminal`: Bundle terminal that the terminal belongs to, if any."""
         return BundleTerminal(self._params.bundle_term)
 
     @property
     def reference_terminal(self):
-        """Terminal that the terminal references, if any.
-
-        Returns
-        -------
-        Terminal
-        """
+        """:class:`Terminal`: Terminal that the terminal references, if any."""
         return Terminal(self._params.ref_term).cast()
 
     @reference_terminal.setter
@@ -292,12 +257,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def reference_layer(self):
-        """Layer that the terminal references, if any, by either layer object or name.
-
-        Returns
-        -------
-        Layer
-        """
+        """:class:`Layer`: Layer that the terminal references, if any, by either layer object or name."""
         return Layer(self._params.ref_layer).cast()
 
     @reference_layer.setter
@@ -306,34 +266,17 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def is_interface_terminal(self):
-        """Flag indicating if the terminal is an interface.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if the terminal is an interface."""
         return self._params.is_interface
 
     @property
     def is_reference_terminal(self):
-        """Flag indicating if the terminal is a reference terminal.
-
-        Returns
-        -------
-        bool
-        """
+        """:obj:`bool`: Flag indicating if the terminal is a reference terminal."""
         return self._params.is_reference
 
     @property
     def use_reference_from_hierarchy(self):
-        """Flag indicating if the terminal can use references from the hierarchy.
-
-        Returns
-        -------
-        bool
-            ``True`` when the terminal can use references from the hierarchy,
-            ``Fale`` otherwise.
-        """
+        """:obj:`bool`: Flag indicating if the terminal can use references from the hierarchy."""
         return self._params.use_ref_from_hierarchy
 
     @use_reference_from_hierarchy.setter
@@ -342,13 +285,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def is_auto_port(self):
-        """Flag indicating if the terminal is an auto port.
-
-        Returns
-        -------
-        bool
-            ``True`` if the terminal is an auto port, ``False`` otherwise.
-        """
+        """:obj:`bool`: Flag indicating if the terminal is an auto port."""
         return self._params.is_auto_port
 
     @is_auto_port.setter
@@ -357,13 +294,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def is_circuit_port(self):
-        """Flag indicating if the terminal is a circuit port.
-
-        Returns
-        -------
-        bool
-            ``True`` when the terminal is a circuit port, ``False`` otherwise.
-        """
+        """:obj:`bool`: Flag indicating if the terminal is a circuit port."""
         return self._params.is_circuit_port
 
     @is_circuit_port.setter
@@ -372,7 +303,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def name(self):
-        """Name of the terminal."""
+        """:obj:`str`: Name of the terminal."""
         return self._params.name
 
     @name.setter
@@ -381,12 +312,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def boundary_type(self):
-        """Boundary type of the terminal.
-
-        Returns
-        -------
-        BoundaryType
-        """
+        """:class:`BoundaryType`: Boundary type of the terminal."""
         return BoundaryType(self._params.boundary_type)
 
     @boundary_type.setter
@@ -395,13 +321,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def impedance(self):
-        """Impedance of the terminal.
-
-        Returns
-        -------
-        Value
-            Im
-        """
+        """:class:`Value`: Impedance of the terminal."""
         return Value(self._params.impedance)
 
     @impedance.setter
@@ -410,12 +330,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def source_amplitude(self):
-        """Source amplitude of the terminal.
-
-        Returns
-        -------
-        Value
-        """
+        """:class:`Value`: Source amplitude of the terminal."""
         return Value(self._params.source_amplitude)
 
     @source_amplitude.setter
@@ -424,12 +339,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def source_phase(self):
-        """Source phase of the terminal.
-
-        Returns
-        -------
-        Value
-        """
+        """:class:`Value`: Source phase of the terminal."""
         return Value(self._params.source_phase)
 
     @source_phase.setter
@@ -438,12 +348,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def term_to_ground(self):
-        """Source terminal-to-ground type.
-
-        Returns
-        -------
-        SourceTermToGroundType
-        """
+        """:class:`SourceTermToGroundType`: Source terminal-to-ground type."""
         return SourceTermToGroundType(self._params.term_to_ground)
 
     @term_to_ground.setter
@@ -452,12 +357,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def hfss_pi_type(self):
-        """HFSS PI type.
-
-        Returns
-        -------
-        HfssPIType
-        """
+        """:class:`HfssPIType`: HFSS PI type."""
         return HfssPIType(self._params.hfss_pi_type)
 
     @hfss_pi_type.setter
@@ -466,12 +366,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def model(self):
-        """S-parameter model.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str`: S-parameter model."""
         return self._params.s_param_model
 
     @model.setter
@@ -481,12 +376,7 @@ class Terminal(conn_obj.ConnObj):
     @property
     @parser.to_rlc
     def rlc_boundary_parameters(self):
-        """RLC boundary parameters.
-
-        Returns
-        -------
-        Rlc
-        """
+        """:class:`Rlc`: RLC boundary parameters."""
         return self._params.rlc
 
     @rlc_boundary_parameters.setter
@@ -495,12 +385,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def port_post_processing_prop(self):
-        """Port postprocessing properties.
-
-        Returns
-        -------
-        PortPostProcessingProp
-        """
+        """:class:`PortPostProcessingProp`: Port postprocessing properties."""
         msg = self._params.port_post_processing_prop
         return PortPostProcessingProp(
             voltage_magnitude=msg.voltage_magnitude,
@@ -602,32 +487,17 @@ class TerminalInstance(conn_obj.ConnObj):
 
     @property
     def owning_cell_instance(self):
-        """Cell instance that owns the terminal.
-
-        Returns
-        -------
-        CellInstance
-        """
+        """:class:`CellInstance`: Cell instance that owns the terminal."""
         return hierarchy.CellInstance(self.__stub.GetOwningCellInstance(self.msg))
 
     @property
     def definition_terminal(self):
-        """Definition terminal, if any.
-
-        Returns
-        -------
-        Terminal
-        """
+        """:class:`Terminal`: Definition terminal, if any."""
         return Terminal(self.__stub.GetDefinitionTerminal(self.msg)).cast()
 
     @property
     def definition_terminal_name(self):
-        """Name of the definition terminal.
-
-        Returns
-        -------
-        str
-        """
+        """:obj:`str`: Name of the definition terminal."""
         return self.__stub.GetDefinitionTerminalName(self.msg).value
 
 
@@ -651,9 +521,8 @@ class TerminalInstanceTerminal(Terminal):
             Name of the terminal instance terminal.
         net_ref : Net or str or None
             Net reference.
-        is_ref : bool, optional
-            Wjetjer the terminal instance terminal is a reference terminal.
-            The default is ``False``.
+        is_ref : bool, default: False
+            Whether the terminal instance terminal is a reference terminal.
 
         Returns
         -------
@@ -669,12 +538,7 @@ class TerminalInstanceTerminal(Terminal):
 
     @property
     def terminal_instance(self):
-        """Terminal instance.
-
-        Returns
-        -------
-        TerminalInstance
-        """
+        """:class:`TerminalInstance`: Terminal instance."""
         return TerminalInstance(self.__stub.GetTerminalInstance(self.msg))
 
     @terminal_instance.setter
@@ -705,12 +569,7 @@ class BundleTerminal(Terminal):
 
     @property
     def terminals(self):
-        """Get a list of terminals grouped in the terminal.
-
-        Returns
-        -------
-        list of Terminal
-        """
+        """:obj:`list`: All terminals grouped in the terminal."""
         return [Terminal(msg).cast() for msg in self.__stub.GetTerminals(self.msg)]
 
     def ungroup(self):
@@ -753,12 +612,8 @@ class PointTerminal(Terminal):
 
     @property
     def params(self):
-        """Get the x, y coordinates and the layer that the point terminal is placed on.
-
-        Returns
-        -------
-        (Layer, (Value, Value))
-        """
+        """:class:`layer`, :object:`list (Value, Value)`: Layer that the point terminal is placed on and a list of \
+        the (x, y) coordinates."""
         res = self.__stub.GetParameters(self.msg)
         point = (
             Value(res.point.x),
@@ -769,24 +624,15 @@ class PointTerminal(Terminal):
 
     @property
     def layer(self):
-        """Layer that the point terminal is placed on.
-
-        Returns
-        -------
-        Layer
-        """
+        """:class:`Layer`: Layer that the point terminal is placed on."""
         return self.params[0]
 
     @property
     def point(self):
-        """Coordinates (x, y) of the point terminal.
+        """:obj:`list (Value, Value)`: Coordinates (x, y) of the point terminal.
 
-        To set the x, y coordinates and the layer that the point terminal is placed on,
+        To set the (x, y) coordinates and the layer that the point terminal is placed on,
         use a tuple in this format: ``[str or Layer, PointData]``.
-
-        Returns
-        -------
-        (Value, Value)
         """
         return self.params[1]
 
@@ -817,9 +663,8 @@ class PadstackInstanceTerminal(Terminal):
             Layer to place the padstack instance terminal on.
         net : Net or str or None
             Net.
-        is_ref : bool, optional
+        is_ref : bool, default: False
             Whether the padstack instance terminal is a reference terminal.
-            The default is ``False``.
 
         Returns
         -------
@@ -835,12 +680,7 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def params(self):
-        """Padstack instance and layer.
-
-        Returns
-        -------
-        (PadstackInstance, Layer)
-        """
+        """obj:`list` of :class:`PadstackInstance` and :class:`Layer`: Padstack instance and layer."""
         res = self.__stub.GetParameters(self.msg)
         padstack_instance = primitive.PadstackInstance(res.padstack_instance)
         layer = Layer(res.layer).cast()
@@ -855,22 +695,12 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def padstack_instance(self):
-        """Padstack instance of the terminal.
-
-        Returns
-        -------
-        PadstackInstance
-        """
+        """:class:`PadstackInstance`: Padstack instance of the terminal."""
         return self.params[0]
 
     @property
     def layer(self):
-        """Layer the terminal is placed on.
-
-        Returns
-        -------
-        Layer
-        """
+        """:class:`Layer`: Layer the terminal is placed on."""
         return self.params[1]
 
 
@@ -894,9 +724,8 @@ class PinGroupTerminal(Terminal):
             Name of the pin group terminal.
         pin_group : PinGroup
             Pin group.
-        is_ref : bool, optional
+        is_ref : bool, default: False
             Whether the pin group terminal is a reference terminal.
-            The default is ``False``.
 
         Returns
         -------
@@ -910,12 +739,7 @@ class PinGroupTerminal(Terminal):
 
     @property
     def pin_group(self):
-        """Pin group of the terminal.
-
-        Returns
-        -------
-        PinGroup
-        """
+        """:class:`PinGroup`: Pin group of the terminal."""
         return hierarchy.PinGroup(self.__stub.GetPinGroup(self.msg))
 
     @pin_group.setter
@@ -924,12 +748,7 @@ class PinGroupTerminal(Terminal):
 
     @property
     def layer(self):
-        """Layer.
-
-        Returns
-        -------
-        Layer
-        """
+        """:class:`Layer`: Layer."""
         return Layer(self.__stub.GetLayer(self.msg)).cast()
 
     @layer.setter
@@ -956,9 +775,8 @@ class EdgeTerminal(Terminal):
         edges : list of Edge
         net_ref : Net or str or None
             Net reference. The default is ``None``.
-        is_ref : bool, optional
+        is_ref : bool, default: False
             Whether the edge terminal is a reference terminal.
-            The default is ``False``.
 
         Returns
         -------
@@ -972,12 +790,7 @@ class EdgeTerminal(Terminal):
 
     @property
     def edges(self):
-        """Edges on the terminal.
-
-        Returns
-        -------
-        list of Edge
-        """
+        """:obj:`list` of :class:`Edge`: All edges on the terminal."""
         return [Edge(msg).cast() for msg in self.__stub.GetEdges(self.msg)]
 
     @edges.setter

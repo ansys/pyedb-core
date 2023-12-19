@@ -148,8 +148,8 @@ class StackupLayer(Layer):
 
         Parameters
         ----------
-        evaluated : bool, optional
-            Whether to evaluate the material if it is parameterized. The default is ``True``.
+        evaluated : bool, default: True
+            Whether to evaluate the material if it is parameterized.
 
         Returns
         -------
@@ -177,8 +177,8 @@ class StackupLayer(Layer):
 
         Parameters
         ----------
-        evaluated : bool, optional
-            Whether to evaluate the material if it is parameterized. The default is ``True``.
+        evaluated : bool, default: True
+            Whether to evaluate the material if it is parameterized.
 
         Returns
         -------

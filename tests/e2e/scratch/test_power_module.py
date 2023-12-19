@@ -6,9 +6,9 @@ from ansys.edb.core.session import launch_session
 
 
 def test_power_module():
-    session = launch_session(settings.configs.get("RPC_SERVER_ROOT"), 50051)
+    session = launch_session(settings.server_exe_dir(), 50051)
 
-    db = Database.create(settings.configs.get("RPC_SERVER_TEMP"))
+    db = Database.create(settings.temp_dir())
 
     cell = Cell.create(db, CellType.CIRCUIT_CELL, "my_cell")
     layout = cell.layout

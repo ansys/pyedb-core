@@ -21,7 +21,7 @@ from ansys.edb.core.utility import Rlc
 
 
 def do_test():
-    db = Database.create(settings.configs.get("RPC_SERVER_TEMP"))
+    db = Database.create(settings.temp_dir())
     cell = Cell.create(db, CellType.CIRCUIT_CELL, "my_cell")
     layout = cell.layout
 
@@ -130,5 +130,5 @@ def do_test():
 
 
 def test_component_property():
-    with session(settings.configs.get("RPC_SERVER_ROOT"), 50051):
+    with session(settings.server_exe_dir(), 50051):
         do_test()

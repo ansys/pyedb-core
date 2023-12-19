@@ -10,9 +10,9 @@ from ansys.edb.core.utility import Value
 
 
 def test_value():
-    session = launch_session(settings.configs.get("RPC_SERVER_ROOT"), 50051)
+    session = launch_session(settings.server_exe_dir(), 50051)
 
-    db = Database.create(settings.configs.get("RPC_SERVER_TEMP"))
+    db = Database.create(settings.temp_dir())
     db.add_variable("$green", 0.5)
 
     print(db.get_all_variable_names())

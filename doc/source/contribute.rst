@@ -24,7 +24,6 @@ This package supports Python 3.9 through 3.12 on Windows, Linux, and MacOS.
    .. code:: bash
 
        git clone https://github.com/ansys/pyedb-core
-       cd pyedb
 
 #. Create a fresh-clean Python `virtual environment <venv_>`_ and activate it:
 
@@ -34,7 +33,7 @@ This package supports Python 3.9 through 3.12 on Windows, Linux, and MacOS.
        python -m venv .venv
 
        # Activate it in a Linux environment
-       python -m venv .venv && source .venv/bin/activate
+       source .venv/bin/activate
 
        # Activate it in a Windows CMD environment
        .venv\Scripts\activate.bat
@@ -46,12 +45,9 @@ This package supports Python 3.9 through 3.12 on Windows, Linux, and MacOS.
 
    .. code:: bash
 
-       python -m pip install -U pip tox
+       python -m pip install -U pip
 
-       # Copy default environment variables for test
-       cp .env.test.example .env.test
-
-       # Modify .env.test if necessary
+       python -m pip install .[tests]
 
 #. Verify your development installation:
 

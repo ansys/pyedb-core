@@ -79,7 +79,6 @@ class Database(ObjBase, variable_server.VariableServer):
         Database
         """
         msg = cls.__stub.Create(proto_wrappers.StringValue(value=db_path))
-        print(msg)
         return Database(msg)
 
     @classmethod

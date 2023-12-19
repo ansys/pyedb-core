@@ -425,5 +425,5 @@ class SpiralInductor(BaseExample):
 
 
 def test_spiral_inductor():
-    with session(settings.configs.get("RPC_SERVER_ROOT"), 50051):
+    with session(settings.server_exe_dir(), 50051):
         SpiralInductor().run(r"spiral_inductor.aedb")

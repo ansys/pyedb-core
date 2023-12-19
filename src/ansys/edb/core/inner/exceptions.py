@@ -7,12 +7,10 @@ class ErrorCode(Enum):
     """Provides EDB exception types."""
 
     UNKNOWN = "Unknown exception: {}."
-    UNAVAILABLE = "EDB server is not accessible. Make sure it is up and running."
-
+    UNAVAILABLE = "EDB server is not accessible. Make sure an instance is listening on the specified port.."
     NO_SESSIONS = "No active session is detected."
-
     STARTUP_UNEXPECTED = "An unexpected error occurred when starting the local server: {}."
-    STARTUP_TIMEOUT = "There can be only one session active at a time."
+    STARTUP_TIMEOUT = "Could not start local server: Time out"
     STARTUP_MULTI_SESSIONS = "There can be only one session active at a time."
     STARTUP_NO_EXECUTABLE = (
         "Could not find necessary executables. Make sure the Ansys EM root directory is correct."

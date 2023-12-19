@@ -35,7 +35,7 @@ class Point3DData:
         return NotImplemented
 
     def __mul__(self, other):
-        """Compute a cross product if ``Point3DData` is provided. Otherwise, perform scalar multiplication."""
+        """Compute a cross product if ``Point3DData`` is provided. Otherwise, perform scalar multiplication."""
         if isinstance(other, Point3DData):
             x = self.y * other.z - self.z * other.y
             y = self.z * other.x - self.x * other.y

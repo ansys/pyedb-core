@@ -7,7 +7,9 @@ class ErrorCode(Enum):
     """Provides EDB exception types."""
 
     UNKNOWN = "Unknown exception: {}."
-    UNAVAILABLE = "EDB server is not accessible. Make sure an instance is listening on the specified port.."
+    UNAVAILABLE = (
+        "EDB server is not accessible. Make sure an instance is listening on the specified port.."
+    )
     NO_SESSIONS = "No active session is detected."
     STARTUP_UNEXPECTED = "An unexpected error occurred when starting the local server: {}."
     STARTUP_TIMEOUT = "Could not start local server: Time out"

@@ -47,7 +47,7 @@ class NPortComponentModel(ComponentModel):
         Notes
         -----
         The component model does not belong to a specific database until it is added to a
-        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` class.
+        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance.
         """
         return NPortComponentModel(cls.__stub.Create(proto_wrappers.StringValue(value=name)))
 

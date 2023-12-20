@@ -67,7 +67,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def create(cls, db_path):
-        """Create a database in the specified location.
+        """Create a database in a given location.
 
         Parameters
         ----------
@@ -83,7 +83,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def open(cls, db_path, read_only):
-        """Open a database in the specified location.
+        """Open a database in a given location.
 
         Parameters
         ----------
@@ -108,7 +108,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def delete(cls, db_path):
-        """Delete a database in the specified location.
+        """Delete a database in a given specified location.
 
         Parameters
         ----------
@@ -118,7 +118,7 @@ class Database(ObjBase, variable_server.VariableServer):
         cls.__stub.Delete(proto_wrappers.StringValue(value=db_path))
 
     def save(self):
-        """Save any changes to the file."""
+        """Save any changes to the database."""
         self.__stub.Save(self.msg)
 
     def close(self):
@@ -232,7 +232,7 @@ class Database(ObjBase, variable_server.VariableServer):
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property associated with the given product and attribute IDs.
+        """Set the product property associated with the given product ID and attribute ID.
 
         Parameters
         ----------
@@ -289,10 +289,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def version(self):
-        """:obj:`tuple` of (:obj:`int`, :obj:`int`): Version of the database.
-
-        The tuple contains the version numbers [major, minor].
-        """
+        """:obj:`tuple` of (:obj:`int`, :obj:`int`): Version [major, minor] of the database."""
         version_msg = self.__stub.GetVersion(self.msg)
         return version_msg.major.id, version_msg.minor.id
 
@@ -364,13 +361,13 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def apd_bondwire_defs(self):
-        """:obj:`list[:class:`ApdBondwireDef <ansys.edb.core.definition.ApdBondwireDef>`]`: All APD \
+        """:obj:`list of :class:`ApdBondwireDef <ansys.edb.core.definition.ApdBondwireDef>`: All APD \
         bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(ApdBondwireDef, BondwireDefType.APD_BONDWIRE_DEF)
 
     @property
     def jedec4_bondwire_defs(self):
-        """:obj:`list of :class:`Jedec4BondwireDef <ansys.edb.core.definition.Jedec4BondwireDef>`: All JEDEC4 \
+        """:obj:`list` of :class:`Jedec4BondwireDef <ansys.edb.core.definition.Jedec4BondwireDef>`: All JEDEC4 \
         bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(
             Jedec4BondwireDef, BondwireDefType.JEDEC4_BONDWIRE_DEF
@@ -378,7 +375,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def jedec5_bondwire_defs(self):
-        """:obj:`list of:class:`Jedec5BondwireDef <ansys.edb.core.definition.Jedec5BondwireDef>`: All JEDEC5 \
+        """:obj:`list` of:class:`Jedec5BondwireDef <ansys.edb.core.definition.Jedec5BondwireDef>`: All JEDEC5 \
         bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(
             Jedec5BondwireDef, BondwireDefType.JEDEC5_BONDWIRE_DEF
@@ -386,30 +383,30 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def padstack_defs(self):
-        """:obj:`list of :class:`PadstackDef <ansys.edb.core.definition.PadstackDef>`: All padstack definitions \
+        """:obj:`list` of :class:`PadstackDef <ansys.edb.core.definition.PadstackDef>`: All padstack definitions \
         in the database."""
         return self._get_definition_objs(PadstackDef, DefinitionObjType.PADSTACK_DEF)
 
     @property
     def package_defs(self):
-        """:obj:`list of :class:`PackageDef <ansys.edb.core.definition.PackageDef>`: All package definitions \
+        """:obj:`list` of :class:`PackageDef <ansys.edb.core.definition.PackageDef>`: All package definitions \
         in the database."""
         return self._get_definition_objs(PackageDef, DefinitionObjType.PACKAGE_DEF)
 
     @property
     def component_defs(self):
-        """:obj:`list of :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: All component \
+        """:obj:`list` of :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: All component \
         definitions in the database."""
         return self._get_definition_objs(ComponentDef, DefinitionObjType.COMPONENT_DEF)
 
     @property
     def material_defs(self):
-        """:obj:`list of :class:`MaterialDef <ansys.edb.core.definition.MaterialDef>`: All material \
+        """:obj:`list` of :class:`MaterialDef <ansys.edb.core.definition.MaterialDef>`: All material \
         definitions in the database."""
         return self._get_definition_objs(MaterialDef, DefinitionObjType.MATERIAL_DEF)
 
     @property
     def dataset_defs(self):
-        """:obj:`list of :class:`DatasetDef <ansys.edb.core.definition.DatasetDef>`: All dataset \
+        """:obj:`list` of :class:`DatasetDef <ansys.edb.core.definition.DatasetDef>`: All dataset \
         definitions in the database."""
         return self._get_definition_objs(DatasetDef, DefinitionObjType.DATASET_DEF)

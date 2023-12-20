@@ -17,7 +17,7 @@ class ObjBase:
 
     @property
     def is_null(self):
-        """:obj:`bool`: Flag indicating if the object exists in EDB.
+        """:obj:`bool`: Flag indicating if the object exists in the database.
 
         This property is read-only.
         """
@@ -25,7 +25,9 @@ class ObjBase:
 
     @property
     def id(self):
-        """:obj:`int`: Unique ID of the EDB object. A ``0`` indicates an invalid object.
+        """:obj:`int`: Unique ID of the EDB object.
+
+        A ``0`` indicates an invalid object.
 
         This property is read-only.
         """

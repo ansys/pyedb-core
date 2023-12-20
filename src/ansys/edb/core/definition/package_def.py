@@ -40,6 +40,7 @@ class PackageDef(ObjBase):
         Returns
         -------
         PackageDef
+            Package definition created.
         """
         return PackageDef(cls.__stub.Create(string_property_message(db, name)))
 
@@ -57,6 +58,7 @@ class PackageDef(ObjBase):
         Returns
         -------
         PackageDef
+            Package definition found, ``None`` otherwise.
         """
         return PackageDef(cls.__stub.FindByName(string_property_message(db, name)))
 
@@ -74,6 +76,7 @@ class PackageDef(ObjBase):
         Returns
         -------
         PackageDef
+            Package definition found, ``None`` otherwise.
         """
         return PackageDef(cls.__stub.FindByEDBUId(int_property_message(db, uid)))
 
@@ -84,7 +87,7 @@ class PackageDef(ObjBase):
 
     @property
     def name(self):
-        """:obj:`str`: Name of the package definition object."""
+        """:obj:`str`: Name of the package definition."""
         return self.__stub.GetName(edb_obj_message(self)).value
 
     @name.setter
@@ -188,7 +191,7 @@ class PackageDef(ObjBase):
         Returns
         -------
         str
-            Property value for the specified product and attribute IDs.
+            Product property for the given product ID and attribute ID.
         """
         return self.__stub.GetProductProperty(
             get_product_property_message(self, prod_id, attr_it)
@@ -221,7 +224,7 @@ class PackageDef(ObjBase):
         Returns
         -------
         list[int]
-            List of attribute IDs for the givens product ID.
+            Attribute IDs for the given product ID.
         """
         attr_ids = self.__stub.GetProductPropertyIds(
             get_product_property_ids_message(self, prod_id)

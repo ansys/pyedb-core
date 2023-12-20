@@ -85,6 +85,7 @@ class ArcData:
         Parameters
         ----------
         tolerance : float, optional
+           Tolearance.
 
         Returns
         -------
@@ -99,6 +100,7 @@ class ArcData:
         Parameters
         ----------
         tolerance : float, optional
+            Tolearance.
 
         Returns
         -------
@@ -177,7 +179,7 @@ class ArcData:
 
     @property
     def direction(self):
-        """:obj:`Literal["cw", "ccw", "colinear"]`: Rotational direction of arc."""
+        """:obj:`Literal["cw", "ccw", "colinear"]`: Rotational direction of the arc."""
         if self.is_cw():
             return "cw"
         elif self.is_ccw():
@@ -186,11 +188,12 @@ class ArcData:
             return "colinear"
 
     def angle(self, arc=None):
-        """Get the angle between another this arc and another arc if provided or the angle of this arc.
+        """Get the angle between this arc and another arc if provided or the angle of this arc.
 
         Parameters
         ----------
         arc : ArcData, default: None
+           Other arc.
 
         Returns
         -------
@@ -228,6 +231,7 @@ class ArcData:
         Parameters
         ----------
         point : ansys.edb.core.typing.PointLike
+            Point.
 
         Returns
         -------
@@ -246,11 +250,12 @@ class ArcData:
 
     @parser.to_box
     def closest_points(self, other):
-        """Get the closest points from one arc to another, and vice versa.
+        """Get the closest points from this arc to another arc, and vice versa.
 
         Parameters
         ----------
         other : ArcData
+            Other arc.
 
         Returns
         -------

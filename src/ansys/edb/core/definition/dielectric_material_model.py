@@ -21,7 +21,7 @@ class DielectricMaterialModelType(Enum):
 
 
 class DielectricMaterialModel(ObjBase):
-    """Represents a dielectric material model object."""
+    """Represents a dielectric material model."""
 
     __stub: dielectric_material_model_pb2_grpc.DielectricMaterialModelServiceStub = (
         session.StubAccessor(session.StubType.dielectric_material_model)

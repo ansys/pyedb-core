@@ -58,14 +58,14 @@ class PadstackDef(ObjBase):
         Parameters
         ----------
         db : :class:`Database <ansys.edb.core.database.Database>`
-            Database object to create the padstack definition in.
+            Database to create the padstack definition in.
         name : str
             Data to set on the padstack definition.
 
         Returns
         -------
         PadstackDef
-            Padstack definition created in the given database.
+            Padstack definition created.
         """
         return PadstackDef(
             cls.__stub.Create(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
@@ -85,6 +85,7 @@ class PadstackDef(ObjBase):
         Returns
         -------
         PadstackDef
+            Padstack definition found.
         """
         return PadstackDef(
             cls.__stub.FindByName(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))

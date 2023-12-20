@@ -124,7 +124,7 @@ class VariableServer:
         get_variable_server_stub().SetVariableValue(temp)
 
     def get_variable_value(self, name):
-        """Get the value from an existing variable.
+        """Get the value for a given variable.
 
         Parameters
         ----------
@@ -142,7 +142,7 @@ class VariableServer:
         return Value(get_variable_server_stub().GetVariableValue(temp))
 
     def is_parameter(self, name):
-        """Determine if the variable is parameter.
+        """Determine if the variable is a parameter.
 
         Parameters
         ----------

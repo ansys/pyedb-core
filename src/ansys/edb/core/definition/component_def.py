@@ -50,7 +50,7 @@ class ComponentDef(ObjBase):
         Returns
         -------
         ComponentDef
-            Component definition that was found or ``None`` otherwise.
+            Component definition found, ``None`` otherwise.
         """
         return ComponentDef(
             cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
@@ -82,7 +82,7 @@ class ComponentDef(ObjBase):
     @property
     def component_models(self):
         """:obj:`list` of :class:`ComponentModel <ansys.edb.core.definition.component_model.ComponentModel>`: \
-        List of component models associated with the component definition.
+        All component models associated with the component definition.
 
         This property is read-only.
         """
@@ -92,7 +92,7 @@ class ComponentDef(ObjBase):
     @property
     def component_pins(self):
         """:obj:`list` of :class:`ComponentPin <ansys.edb.core.definition.ComponentPin>`: \
-        List of component pins of the component definition.
+        All component pins of the component definition.
 
         This property is read-only.
         """

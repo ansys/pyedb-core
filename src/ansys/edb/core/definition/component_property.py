@@ -20,13 +20,13 @@ class ComponentProperty(ObjBase):
         Returns
         -------
         ComponentProperty
-            Clone of the component property.
+            Component property cloned.
         """
         return ComponentProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
     @property
     def package_mounting_offset(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Offset of the package definition object.
+        """:class:`Value <ansys.edb.core.utility.Value>`: Mounting offset of the package definition object.
 
         This property can be set with :term:`ValueLike`.
         """

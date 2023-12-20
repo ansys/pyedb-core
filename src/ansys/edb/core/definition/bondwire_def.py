@@ -79,7 +79,7 @@ class BondwireDef(ObjBase):
         return self.__stub.GetName(self.msg)
 
     def delete(self):
-        """Delete a bondwire definition."""
+        """Delete the bondwire definition."""
         self.__stub.Delete(self.msg)
 
 
@@ -92,11 +92,11 @@ class ApdBondwireDef(BondwireDef):
 
     @classmethod
     def create(cls, database, name):
-        """Create an APD bondwire definition.
+        """Create an APD bondwire definition in a given database.
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`.
+        database : :class:`Database <ansys.edb.core.database.Database>`
             Database to create the APD bondwire definition in.
         name : str
             Name of the APD bondwire definition.
@@ -116,7 +116,7 @@ class ApdBondwireDef(BondwireDef):
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-            Database to load the APD bondwire to.
+            Database to load the APD bondwire into.
         name : str
             Name of the APD bondwire definition.
         """
@@ -143,12 +143,12 @@ class ApdBondwireDef(BondwireDef):
         )
 
     def get_parameters(self):
-        """Get parameters of the APD bondwire definition.
+        """Get the parameters of the APD bondwire definition.
 
         Returns
         -------
         str
-            String block of bondwire parameters.
+            String block of the bondwire parameters.
         """
         return self.__stub.GetParameters(self.msg)
 
@@ -158,7 +158,7 @@ class ApdBondwireDef(BondwireDef):
         Parameters
         ----------
         name : str
-            String block of bondwire parameters.
+            String block of the bondwire parameters.
         """
         self.__stub.SetParameters(_QueryBuilder.bondwire_def_str_message(self, name))
 
@@ -228,7 +228,7 @@ class Jedec4BondwireDef(BondwireDef):
         )
 
     def get_parameters(self):
-        """Get parameters of a JEDEC4 bondwire definition.
+        """Get parameters of the JEDEC4 bondwire definition.
 
         Returns
         -------
@@ -305,7 +305,7 @@ class Jedec5BondwireDef(BondwireDef):
         Returns
         -------
         Jedec5BondwireDef
-            Jedec5 Bondwire definition created.
+            JEDEC5 bondwire definition created.
         """
         return Jedec5BondwireDef(
             cls.__stub.Create(_QueryBuilder.bondwire_def_str_message(database, name))
@@ -332,25 +332,18 @@ class Jedec5BondwireDef(BondwireDef):
         )
 
     def get_parameters(self):
-        """Get parameters of a JEDEC5 bondwire definition.
+        """Get parameters of the JEDEC5 bondwire definition.
 
         Returns
         -------
-        tuple[
-            :class:`Value <ansys.edb.core.utility.Value>`,
-            :class:`Value <ansys.edb.core.utility.Value>`,
-            :class:`Value <ansys.edb.core.utility.Value>`
-        ]
+        tuple[:class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`, \
+        :class:`Value <ansys.edb.core.utility.Value>`]
 
-            Returns a tuple in this format:
+        The tuple is in this format: ``(top_to_die_distance,die_pad_angle,lead_pad_angle)``
 
-            **(top_to_die_distance,die_pad_angle,lead_pad_angle)**
-
-            **top_to_die_distance** : Bondwire top to die distance.
-
-            **die_pad_angle** : Bondwire die pad angle.
-
-            **lead_pad_angle** : Bondwire lead pad angle.
+        - ``top_to_die_distance``: Bondwire top-to-die distance.
+        - ``die_pad_angle``: Bondwire die pad angle.
+        - `` lead_pad_angle``: Bondwire lead pad angle.
         """
         get_parameters_msg = self.__stub.GetParameters(self.msg)
         return (
@@ -360,7 +353,7 @@ class Jedec5BondwireDef(BondwireDef):
         )
 
     def set_parameters(self, top_to_die_distance, die_pad_angle, lead_pad_angle):
-        """Set parameters of a JEDEC5 bondwire definition.
+        """Set parameters of the JEDEC5 bondwire definition.
 
         Parameters
         ----------

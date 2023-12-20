@@ -18,9 +18,9 @@ class ComponentPin(ObjBase):
         Parameters
         ----------
         comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
-            Component definition that the component pin is to belong to.
+            Component definition to create the component pin in.
         name : str
-            Name of the component pin to create.
+            Name of the component pin.
 
         Returns
         -------
@@ -43,7 +43,7 @@ class ComponentPin(ObjBase):
         Returns
         -------
         ComponentPin
-            Component pin that was found, ``None`` otherwise.
+            Component pin found, ``None`` otherwise.
         """
         return ComponentPin(cls.__stub.FindByName(messages.edb_obj_name_message(comp_def, name)))
 

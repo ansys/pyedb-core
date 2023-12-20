@@ -12,7 +12,7 @@ from ansys.edb.core.utility import Value
 
 
 class MaterialProperty(Enum):
-    """Provides an enum representing property types.
+    """Provides an enum representing material property types.
 
     - PERMITTIVITY
        Permittivity property.
@@ -29,11 +29,11 @@ class MaterialProperty(Enum):
     - MASS_DENSITY
        Mass density property.
     - SPECIFIC_HEAT
-       Specific Heat property.
+       Specific heat property.
     - YOUNGS_MODULUS
-       Youngs Modulus property.
+       Young's modulus property.
     - POISSONS_RATIO
-       Poissons Ratio property.
+       Poisson's ratio property.
     - THERMAL_EXPANSION_COEFFICIENT
        Thermal expansion coefficient property.
     - INVALID_PROPERTY
@@ -154,21 +154,21 @@ class MaterialDef(ObjBase):
         name : str
             Name of the material definition.
         kwargs : dict{ str : :class:`Value <ansys.edb.core.utility.Value>` }
-            Provide the dictionary to convert to a ``MaterialDefPropertiesMessage`` object.
+            Dictionary to convert to a ``MaterialDefPropertiesMessage`` object.
             The dictionary key is the material property name. The dictionary value is the
-            material property value. The expected keys for kwargs are:
+            material property value. The expected keys for the kwargs are:
 
-            - permittivity
-            - permeability
-            - conductivity
-            - dielectric_loss_tangent
-            - magnetic_loss_tangent
-            - thermal_conductivity
-            - mass_density
-            - specific_heat
-            - youngs_modulus
-            - poissons_ratio
-            - thermal_expansion_coefficient
+            - ``permittivity``
+            - ``permeability``
+            - ``conductivity``
+            - ``dielectric_loss_tangent``
+            - ``magnetic_loss_tangent``
+            - ``thermal_conductivity``
+            - ``mass_density``
+            - ``specific_heat``
+            - ``youngs_modulus``
+            - ``poissons_ratio``
+            - ``thermal_expansion_coefficient``
 
         Returns
         -------
@@ -191,7 +191,7 @@ class MaterialDef(ObjBase):
         Returns
         -------
         MaterialDef
-            Naterial definition object found.
+            Naterial definition found.
         """
         return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))
 
@@ -226,16 +226,16 @@ class MaterialDef(ObjBase):
         self.__stub.Delete(messages.edb_obj_message(self))
 
     def set_property(self, material_property, value, component_id=None, col=None, row=None):
-        """Set a property value of the material.
+        """Set a material property for a given component.
 
         Parameters
         ----------
         material_property : :class:`MaterialProperty`
-            Property ID.
+            ID of the material property.
         value : :class:`Value <ansys.edb.core.utility.Value>`
             New value.
         component_id : int, default: None
-            Component ID.
+            ID of the component.
         row : int, default: None
             Tensor row.
         col : int, default: None
@@ -251,7 +251,7 @@ class MaterialDef(ObjBase):
         Parameters
         ----------
         material_property : :class:`MaterialProperty`, default: None
-            Property ID.
+            Material property ID.
         component_id : int, default: None
             Component ID.
         row : int, default: None
@@ -271,12 +271,12 @@ class MaterialDef(ObjBase):
         )
 
     def get_all_properties(self):
-        """Get all property values of the material.
+        """Get all properties of the material.
 
         Returns
         -------
-        list [:class:`MaterialProperty`]
-            List of properties for the material definition.
+        list of :class:`MaterialProperty``
+            All properties for the material definition.
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
         return [MaterialProperty(i) for i in msg.properties]
@@ -310,11 +310,10 @@ class MaterialDef(ObjBase):
         -------
         tuple[int, int]
 
-            Returns a tuple in the a **(col, row)** format:
+        The tuple is in a ``(col, row)`` format:
 
-            **col** : Number of rows of the material property.
-
-            **row** : Number of columns of the material property.
+        - ``col``: Number of rows of the material property.
+        - ``row``: Number of columns of the material property.
         """
         msg = self.__stub.GetDimensions(
             _QueryBuilder.material_def_get_property_message(self, material_property_id)

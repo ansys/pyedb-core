@@ -1982,7 +1982,7 @@ class PadstackInstance(Primitive):
         return terminal.TerminalInstance(self.__stub.GetPadstackInstanceTerminal(self.msg))
 
     def is_in_pin_group(self, pin_group):
-        """Determine if the padstack instance is in a pin group.
+        """Determine if the padstack instance is in a given pin group.
 
         Parameters
         ----------

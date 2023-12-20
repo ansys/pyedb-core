@@ -141,7 +141,7 @@ class PadEdge(Edge):
 
 
 class PrimitiveEdge(Edge):
-    """Class representing a primitive edge."""
+    """Represents a primitive edge."""
 
     type = TypeField(EdgeType.PRIMITIVE)
 
@@ -554,8 +554,7 @@ class BundleTerminal(Terminal):
 
     @classmethod
     def create(cls, terminals):
-        """
-        Create a bundle terminal.
+        """Create a bundle terminal.
 
         Parameters
         ----------
@@ -586,8 +585,7 @@ class PointTerminal(Terminal):
 
     @classmethod
     def create(cls, layout, net, layer, name, point):
-        """
-        Create a point terminal.
+        """Create a point terminal.
 
         Parameters
         ----------
@@ -680,7 +678,7 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def params(self):
-        """obj:`list` of :class:`PadstackInstance` and :class:`Layer`: Padstack instance and layer."""
+        """:obj:`list` of :class:`PadstackInstance` and :class:`Layer`: Padstack instance and layer."""
         res = self.__stub.GetParameters(self.msg)
         padstack_instance = primitive.PadstackInstance(res.padstack_instance)
         layer = Layer(res.layer).cast()

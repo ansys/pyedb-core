@@ -19,7 +19,7 @@ class PointData:
     )
 
     def __init__(self, *data):
-        """Initialize a point data from a list of coordinates.
+        """Initialize point data from a list of coordinates.
 
         Parameters
         ----------
@@ -50,7 +50,7 @@ class PointData:
             )
 
     def __eq__(self, other):
-        """Compare if two objects represent the same coordinates.
+        """Determine if two objects represent the same coordinates.
 
         Parameters
         ----------
@@ -108,7 +108,7 @@ class PointData:
         return f"<{coord}>" if self.is_arc else f"({coord})"
 
     def equals(self, other, tolerance=0.0):
-        """Get if two points are located at the same coordinates.
+        """Determine if two points are located at the same coordinates.
 
         Parameters
         ----------
@@ -118,6 +118,8 @@ class PointData:
         Returns
         -------
         bool
+            ``True`` if the two points are located at the same coordinates,
+            ``False`` otherwise.
         """
 
         def value_equals(a, b):
@@ -163,11 +165,12 @@ class PointData:
         return any(val.is_parametric for val in self._matrix_values)
 
     def magnitude(self):
-        """Magnitude of point vector.
+        """Get the magnitude of the point vector.
 
         Returns
         -------
         float
+            Magnitude of the point vector.
         """
         if self.is_arc:
             return 0
@@ -186,30 +189,32 @@ class PointData:
 
     @parser.to_point_data
     def closest(self, start, end):
-        """Get the closest point on the line segment [start, end] from the point.
-
-        Return ``None`` if either point is an arc.
+        """Get the closest point on a line segment from the point.
 
         Parameters
         ----------
         start : ansys.edb.core.typing.PointLike
+            Start point of the line segment.
         end : ansys.edb.core.typing.PointLike
+            End point of the line segment.
 
         Returns
         -------
-        typing.Optional[PointData]
+        typing.Optional[PointData] or ``None`` if either point is an arc.
         """
         if not self.is_arc:
             return self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
 
     def distance(self, start, end=None):
-        """Compute the shortest distance from the point to the line segment [start, end] when the end point is given. \
+        """Compute the shortest distance from the point to a line segment when an end point is given. \
         Otherwise, compute the distance between this point and another point.
 
         Parameters
         ----------
         start : ansys.edb.core.typing.PointLike
+            Start point of the line segment.
         end : ansys.edb.core.typing.PointLike, default: None
+            End point of the line segment.
 
         Returns
         -------
@@ -225,15 +230,14 @@ class PointData:
     def cross(self, other):
         """Compute the cross product of the point vector with another point vector.
 
-        Return ``None`` if either point is an arc.
-
         Parameters
         ----------
         other : ansys.edb.core.typing.PointLike
+            Other point vector.
 
         Returns
         -------
-        typing.Optional[utility.Value]
+        typing.Optional[utility.Value] or ``None`` if either point is an arc.
         """
         other = conversions.to_point(other)
         if not self.is_arc and not other.is_arc:
@@ -242,15 +246,14 @@ class PointData:
     def move(self, vector):
         """Move the point by a vector.
 
-        Return ``None`` if either point is an arc.
-
         Parameters
         ----------
         vector : ansys.edb.core.typing.PointLike
+           Vector.
 
         Returns
         -------
-        typing.Optional[PointData]
+        typing.Optional[PointData] or ``None`` if either point is an arc.
         """
         vector = conversions.to_point(vector)
         if not self.is_arc and not vector.is_arc:
@@ -259,8 +262,6 @@ class PointData:
     @parser.to_point_data
     def rotate(self, angle, center):
         """Rotate a point at a given center by a given angle.
-
-        Return ``None`` if either point is an arc.
 
         Parameters
         ----------
@@ -271,21 +272,23 @@ class PointData:
 
         Returns
         -------
-        typing.Optional[PointData]
+        typing.Optional[PointData] or ``None`` if either point is an arc.
         """
         if not self.is_arc:
             return self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))
 
     def dot(self, other):
-        """Perform per-component multiplication (dot product) of two points.
+        """Perform per-component multiplication (dot product) of this point and another point.
 
         Parameters
         ----------
         other : ansys.edb.core.typing.PointLike
+            Other point.
 
         Returns
         -------
         float
+            Dot product of the two points.
         """
         return sum(self._map_reduce(other, operator.__mul__), utility.Value(0)).value
 

@@ -109,6 +109,7 @@ class Point3DData:
         Returns
         -------
         bool
+            ``True`` if the 3D points are equal, ``False`` otherwise.
         """
         if isinstance(other, Point3DData):
             return (
@@ -120,30 +121,34 @@ class Point3DData:
 
     def distance(self, other):
         """
-        Compute the distance to another point.
+        Compute the distance from this point to another point.
 
         Parameters
         ----------
         other : Point3DData
+            Other point
 
         Returns
         -------
         float
+           Distance to the other point.
         """
         if isinstance(other, Point3DData):
             return (self - other).magnitude
 
     def midpoint(self, other):
         """
-        Compute the midpoint of two points.
+        Compute the midpoint of this point and another point.
 
         Parameters
         ----------
         other : Point3DData
+            Other point
 
         Returns
         -------
         Point3DData
+            Midpoint of the two points.
         """
         if isinstance(other, Point3DData):
             return 0.5 * (self + other)

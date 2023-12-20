@@ -99,7 +99,7 @@ class PolygonData:
 
     @property
     def points(self):
-        """:obj:`list` of :class:`ansys.edb.core.geometry.PointData`: List of coordinates."""
+        """:obj:`list` of :class:`ansys.edb.core.geometry.PointData`: List of coordinates for the points."""
         return self._points
 
     @property
@@ -143,7 +143,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the polygon is a hole, ``Fale`` otherwise.
+            ``True`` when the polygon is a hole, ``False`` otherwise.
         """
         return self.is_closed and not self._is_ccw()
 
@@ -153,7 +153,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the polygon contains parametrized points, ``Fale`` otherwise.
+            ``True`` when the polygon contains parametrized points, ``False`` otherwise.
         """
         return any(pt.is_parametric for pt in self.points)
 
@@ -163,7 +163,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the polygon contains arcs, ``Fale`` otherwise.
+            ``True`` when the polygon contains arcs, ``False`` otherwise.
         """
         return any(pt.is_arc for pt in self.points)
 
@@ -173,7 +173,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the polygon contains holes, ``Fale`` otherwise.
+            ``True`` when the polygon contains holes, ``False`` otherwise.
         """
         return len(self.holes) > 0
 
@@ -183,7 +183,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the outer contour of the polygon is a circle holes, ``Fale`` otherwise.
+            ``True`` when the outer contour of the polygon is a circle holes, ``False`` otherwise.
         """
         return self.__stub.IsCircle(messages.polygon_data_message(self)).value
 
@@ -193,7 +193,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the outer corner of the polygon is a box, ``Fale`` otherwise.
+            ``True`` when the outer corner of the polygon is a box, ``False`` otherwise.
         """
         return self.__stub.IsBox(messages.polygon_data_message(self)).value
 
@@ -203,7 +203,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the polygon is a convex hull, ``Fale`` otherwise.
+            ``True`` when the polygon is a convex hull, ``False`` otherwise.
         """
         return self.__stub.IsConvex(messages.polygon_data_message(self)).value
 
@@ -213,6 +213,7 @@ class PolygonData:
         Returns
         -------
         float
+            Area of the polygon.
         """
         return self.__stub.GetArea(messages.polygon_data_message(self)).value
 
@@ -227,7 +228,7 @@ class PolygonData:
         Returns
         -------
         bool
-            ``True`` when the polygon contains self-intersections, ``Fale`` otherwise.
+            ``True`` when the polygon contains self-intersections, ``False`` otherwise.
         """
         return self.__stub.HasSelfIntersections(
             messages.polygon_data_with_tol_message(self, tol)
@@ -262,11 +263,12 @@ class PolygonData:
 
     @parser.to_polygon_data
     def move(self, vector):
-        """Move the polygon by a (x, y) vector.
+        """Move the polygon by a vector.
 
         Parameters
         ----------
         vector : ansys.edb.core.typing.PointLikeT
+            Vector in the form: ``(x, y)``.
 
         Returns
         -------
@@ -319,6 +321,7 @@ class PolygonData:
         Parameters
         ----------
         x : float
+            X line.
 
         Returns
         -------
@@ -447,7 +450,7 @@ class PolygonData:
         )
 
     def circle_intersect(self, center, radius):
-        """Determine whether a circle intersects with a polygon.
+        """Determine whether the circle intersects with a polygon.
 
         Parameters
         ----------
@@ -459,7 +462,7 @@ class PolygonData:
         Returns
         -------
         bool
-        ``True`` if the circle intersects with a polygon, ``False`` otherwise.
+            ``True`` if the circle intersects with a polygon, ``False`` otherwise.
         """
         return self.__stub.CircleIntersectsPolygon(
             messages.polygon_data_with_circle_message(self, center, radius)
@@ -477,6 +480,7 @@ class PolygonData:
         Returns
         -------
         ansys.edb.core.geometry.PointData
+            Point closest to the given point.
         """
         return self.__stub.GetClosestPoints(
             messages.polygon_data_with_points_message(self, point=point)
@@ -521,8 +525,10 @@ class PolygonData:
 
         Parameters
         ----------
-        polygons1: list[PolygonData] or PolygonData
-        polygons2: list[PolygonData] or PolygonData, optional
+        polygons1: list of :class:`PolygonData` or `PolygonData`
+            First list of polygons.
+        polygons2: list of :class:`PolygonData` or `PolygonData`
+            Second optional list of polygons.
 
         Returns
         -------
@@ -578,9 +584,10 @@ class PolygonData:
             Whether the corners are rounded corners. If ``False``, the corners
             are straight edges.
         max_corner_ext : float
-            Maximum corner extension at which point the corner is clipped.
+            Maximum corner extension to clip the corner at.
         tol : float, default: 1e-9
             Tolerance.
+
         Returns
         -------
         list[PolygonData]

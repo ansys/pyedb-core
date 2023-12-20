@@ -361,7 +361,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def apd_bondwire_defs(self):
-        """:obj:`list of :class:`ApdBondwireDef <ansys.edb.core.definition.ApdBondwireDef>`: All APD \
+        """:obj:`list` of :class:`ApdBondwireDef <ansys.edb.core.definition.ApdBondwireDef>`: All APD \
         bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(ApdBondwireDef, BondwireDefType.APD_BONDWIRE_DEF)
 

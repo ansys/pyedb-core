@@ -44,7 +44,7 @@ class ComponentGroup(Group):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout that owns the component group.
+            Layout to create the component group in.
         name : str
             Name of the component group.
         comp_name : str
@@ -64,7 +64,7 @@ class ComponentGroup(Group):
     def num_pins(self):
         """:obj:`int`: Number of pins in the component group.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.GetNumberOfPins(self.msg).value
 

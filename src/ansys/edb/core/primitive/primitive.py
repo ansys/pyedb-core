@@ -574,7 +574,7 @@ class Circle(Primitive):
         layout: :class:`Layout <ansys.edb.core.layout.Layout>`
             Layout to create this circle in.
         layer: str or :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer to create the circle on.
+            Layer to place the circle on.
         net: str or :class:`Net <ansys.edb.core.net.Net>` or None
             Net of the circle.
         center_x: :class:`Value <ansys.edb.core.utility.Value>`
@@ -706,7 +706,7 @@ class Text(Primitive):
         layout: :class:`Layout <ansys.edb.core.layout.Layout>`
             Layout to create the text object in.
         layer: str or Layer
-            Layer to create the text object on.
+            Layer to place the text object on.
         center_x: :class:`Value <ansys.edb.core.utility.Value>`
             X value of the center point.
         center_y: :class:`Value <ansys.edb.core.utility.Value>`
@@ -807,7 +807,7 @@ class Polygon(Primitive):
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
             Layout to create the polygon in.
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer to create the Polygon on.
+            Layer to place the polygon on.
         net : str or :class:`Net <ansys.edb.core.net.Net>` or None
             Net of the polygon.
         polygon_data : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
@@ -874,7 +874,7 @@ class Path(Primitive):
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
             Layout to create the path in.
         layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
-            Layer to create the path on.
+            Layer to place the path on.
         net : str or :class:`Net <ansys.edb.core.net.Net>` or None
             Net of the path.
         width: :class:`Value <ansys.edb.core.utility.Value>`
@@ -1739,7 +1739,7 @@ class PadstackInstance(Primitive):
         y : :class:`Value <ansys.edb.core.utility.Value>`
             y : Y coordinate.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
-            rotation : Rotation in radians.
+            Rotation in radians.
         """
         self.__stub.SetPositionAndRotation(
             _PadstackInstanceQueryBuilder.set_position_and_rotation_message(self, x, y, rotation)
@@ -1750,18 +1750,12 @@ class PadstackInstance(Primitive):
 
         Returns
         -------
-        tuple[
-            :class:`Layer <ansys.edb.core.layer.Layer>`,
-            :class:`Layer <ansys.edb.core.layer.Layer>`
-        ]
+        tuple[:class:`Layer <ansys.edb.core.layer.Layer>`, :class:`Layer <ansys.edb.core.layer.Layer>`]
 
-            Returns a tuple in this format:
+        The tuple is in this format: ``(top_layer, bottom_layer)``.
 
-            **(top_layer, bottom_layer)**
-
-            **top_layer** : Top layer of the Padstack instance
-
-            **bottom_layer** : Bottom layer of the Padstack instance
+        - ``top_layer``: Top layer of the padstack instance
+        - ``bottom_layer``: Bottom layer of the padstack instance
         """
         params = self.__stub.GetLayerRange(self.msg)
         return (

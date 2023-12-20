@@ -43,7 +43,7 @@ class HierarchyObj(conn_obj.ConnObj):
         """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition for the \
         hierarchy object if it exists, ``None`` otherwise.
 
-        Read-Only.
+        This property is read-only.
         """
         return component_def.ComponentDef(self.__stub.GetComponent(self.msg))
 
@@ -75,12 +75,13 @@ class HierarchyObj(conn_obj.ConnObj):
         Returns
         -------
         bool
-            ``True`` if the object is solving independently, ``False`` if it is embedded.
+            ``True`` if the object is assigned to solve independently, ``False`` if the object is embedded.
 
         Notes
         -----
         For a :class:`ComponentModel <ansys.edb.core.definition.ComponentModel>` instance, this flag indicates if the
         model is embedded with the field solver, when applicable.
+
         For a :class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>` instance, it indicates if the design's
         geometry is flattened/meshed with the parent, when applicable.
         """

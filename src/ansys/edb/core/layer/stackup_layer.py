@@ -316,7 +316,7 @@ class StackupLayer(Layer):
 
     @property
     def referencing_via_layer_ids(self):
-        r""":obj:`list`\[:obj:`int`\]: List of layer IDs for all via layers referencing the layer.
+        r""":obj:`list`\[:obj:`int`\]: Layer IDs for all via layers referencing the layer.
 
         This property is read-only.
         """

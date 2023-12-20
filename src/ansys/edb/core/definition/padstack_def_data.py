@@ -311,7 +311,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def layer_ids(self):
-        """:obj:`list` of :obj:`int`: List of layer IDs in the padstack definition data object.
+        """:obj:`list` of :obj:`int`: All layer IDs in the padstack definition data object.
 
         This property is read-only.
         """

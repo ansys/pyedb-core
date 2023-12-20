@@ -80,6 +80,7 @@ class LayerCollection(ObjBase):
         Returns
         -------
         LayerCollection
+            Layer collection created.
         """
         return LayerCollection(
             get_layer_collection_stub().Create(
@@ -93,17 +94,13 @@ class LayerCollection(ObjBase):
         Returns
         -------
         LayerCollection
+           Layer collection cloned.
         """
         return LayerCollection(get_layer_collection_stub().Clone(self.msg))
 
     @property
     def mode(self):
-        """:class:`LayerCollectionMode`: Mode of the layer collection.
-
-        Returns
-        -------
-        LayerCollectionMode
-        """
+        """:class:`LayerCollectionMode`: Mode of the layer collection."""
         return LayerCollectionMode(get_layer_collection_stub().GetMode(self.msg).mode)
 
     @mode.setter
@@ -115,7 +112,7 @@ class LayerCollection(ObjBase):
         )
 
     def add_layers(self, layers):
-        """Add layers to the layer collection.
+        """Add a list of layers to the layer collection.
 
         Parameters
         ----------
@@ -325,7 +322,7 @@ class LayerCollection(ObjBase):
         return LayerCollection._get_layer_filter(_get_layer_type_list())
 
     def get_top_bottom_stackup_layers(self, layer_type_set):
-        """Get the top and bottom steackup layers of a specific type and their elevations.
+        """Get the top and bottom stackup layers of a specific type and their elevations.
 
         Parameters
         ----------
@@ -415,7 +412,7 @@ class LayerCollection(ObjBase):
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute IDS for a given product ID for the layer collection.
+        """Get a list of attribute IDs for a given product ID for the layer collection.
 
         Parameters
         ----------

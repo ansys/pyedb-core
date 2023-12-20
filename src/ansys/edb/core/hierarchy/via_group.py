@@ -19,7 +19,7 @@ class ViaGroup(Group):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout that owns the via groups.
+            Layout to create the via groups in.
         primitives : list[:class:`Primitive <ansys.edb.core.primitive.Primitive>`]
             List of primitives to use to create the via groups.
         is_persistent : bool

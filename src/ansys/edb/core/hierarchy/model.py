@@ -13,6 +13,6 @@ class Model(ObjBase):
 
         Returns
         -------
-        Model
+        Model cloned.
         """
         return self.__class__(self.__stub.Clone(messages.edb_obj_message(self)))

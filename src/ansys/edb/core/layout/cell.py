@@ -365,7 +365,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
-            ID representing a product that supports EDB.
+            ID representing a product that supports the EDB.
 
         Returns
         -------
@@ -383,7 +383,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
-            ID representing a product that supports EDB.
+            ID representing a product that supports the EDB.
         attr_id : int
             User-defined ID that identifies the string value stored in the property.
 
@@ -402,9 +402,9 @@ class Cell(ObjBase, variable_server.VariableServer):
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
-            ID representing a product that supports EDB.
+            ID representing a product that supports the EDB.
         attr_id : int
-            A user-defined ID that identifies the string value stored in the property.
+            User-defined ID that identifies the string value stored in the property.
         prop_value : str
             New string to store in this property.
         """

@@ -19,10 +19,11 @@ class PinGroup(ObjBase):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout that owns the pin group.
+            Layout to create the pin group in.
         name : str
             Name of the pin group.
         padstack_instances : list[:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`]
+            List of padstack instances.
 
         Returns
         -------
@@ -47,7 +48,7 @@ class PinGroup(ObjBase):
         Returns
         -------
         PinGroup
-            Pin group that is found, None otherwise.
+            Pin group found, ``None`` otherwise.
         """
         return PinGroup(cls.__stub.FindByName(messages.pin_group_lookup_message(layout, name)))
 
@@ -65,6 +66,7 @@ class PinGroup(ObjBase):
         Returns
         -------
         str
+            Name of the pin group found.
         """
         return cls.__stub.GetUniqueName(
             messages.pin_group_get_unique_name_message(layout, prefix)

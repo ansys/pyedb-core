@@ -172,7 +172,7 @@ class Layer(ObjBase):
     def is_stackup_layer(self):
         """:obj:`bool`: Flag indicating if the layer is a :class:`StackupLayer` instance.
 
-        Read-Only.
+        This property is read-only.
         """
         layer_type = self.type
         return (
@@ -185,7 +185,7 @@ class Layer(ObjBase):
     def is_via_layer(self):
         """:obj:`bool`: Flag indicating if the layer is a :class:`ViaLayer` instance.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.IsViaLayer(self.msg).value
 
@@ -209,6 +209,7 @@ class Layer(ObjBase):
         Returns
         -------
         Layer
+            Layer cloned.
         """
         return Layer(self.__stub.Clone(layer_pb2.CloneMessage(layer=self.msg, copy_id=copy_id)))
 
@@ -234,9 +235,9 @@ class Layer(ObjBase):
 
     @property
     def color(self):
-        r""":obj:`tuple`\[:obj:`int`, :obj:`int`, :obj:`int`\]: Color of the layer.
+        r""":obj:`tuple`\[:obj:`int`, :obj:`int`, :obj:`int`\]: Color of the layer in (R,G,B) format.
 
-        Tuple contains the RGB values of the color in the (R,G,B) format.
+        Tuple contains the color values in (R,G,B) format.
         """
         color_int = self.__stub.GetColor(self.msg).value
         r = color_int & 0x000000FF
@@ -341,7 +342,7 @@ class Layer(ObjBase):
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute IDS for a given product ID for the layer.
+        """Get a list of attribute IDs for a given product ID for the layer.
 
         Parameters
         ----------
@@ -388,7 +389,7 @@ class Layer(ObjBase):
 
     @property
     def zones(self):
-        r""":obj:`list`\[:obj:`int`\]: Zone IDs of all zones containing the layer.
+        r""":obj:`list`\[:obj:`int`\]: IDs of all zones containing the layer.
 
         This property is read-only.
         """

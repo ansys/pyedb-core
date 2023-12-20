@@ -38,9 +38,9 @@ class Structure3D(Group):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout that owns the 3D structure.
+            Layout to create the 3D structure in.
         name : str
-            Name of the 3D structure3.
+            Name of the 3D structure.
 
         Returns
         -------

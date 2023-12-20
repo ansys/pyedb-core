@@ -33,7 +33,7 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def layers(self):
-        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: List of layer instances.
+        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: All layer instances.
 
         This list contains the layer` instances that the layout object instance has geometry on.
         """
@@ -56,9 +56,9 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def context(self):
-        r""":obj:`list`\[:obj:`str`\]: List of strings representing the context of the layout object instance.
+        r""":obj:`list`\[:obj:`str`\]: All strings representing the context of the layout object instance.
 
-        The list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names
+        This list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names
         representing the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>`
         resides on. The first entry represents the top-level context and the last entry represents
         the context that the layout object instance exists in.
@@ -77,7 +77,8 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def layout_obj(self):
-        """:term:`Connectable <Connectable>`: Definition layout object that layout object instance is an instance of.
+        """:term:`Connectable <Connectable>`: Definition layout object that the layout object \
+        instance is an instance of.
 
         This property is read-only.
         """

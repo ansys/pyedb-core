@@ -10,7 +10,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class Group(HierarchyObj):
-    """Class representing a group object."""
+    """Represents a group object."""
 
     __stub: GroupServiceStub = StubAccessor(StubType.group)
     layout_obj_type = LayoutObjType.GROUP
@@ -44,7 +44,7 @@ class Group(HierarchyObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout that owns the group.
+            Layout to create the group in.
         name : str
             Name of the group.
 
@@ -107,7 +107,7 @@ class Group(HierarchyObj):
 
     @property
     def members(self):
-        """:obj:`list` of :term:`Connectables <Connectable>`: List of all group members.
+        """:obj:`list` of :term:`Connectables <Connectable>`: All group members.
 
         This property is read-only.
         """

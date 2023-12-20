@@ -35,7 +35,7 @@ class Layout(ObjBase, variable_server.VariableServer):
     def cell(self):
         """:class:`Cell <ansys.edb.core.layout.Cell>`: Owning cell for the layout.
 
-        Read-Only.
+        This property is read-only.
         """
         from ansys.edb.core.layout.cell import Cell
 

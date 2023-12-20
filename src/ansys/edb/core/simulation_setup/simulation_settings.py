@@ -43,7 +43,7 @@ class SimulationSettingsBase:
     def msg(self):
         """:obj:`EDBObjMessage`: Protobuf message that represents this object's ID.
 
-        Read-Only.
+        This property is read-only.
         """
         return self._sim_setup.msg
 

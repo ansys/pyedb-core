@@ -22,7 +22,7 @@ class DifferentialPair(NetClass):
         Parameters
         ----------
         layout : :class:`Layout<ansys.edb.core.layout.Layout>`
-            Layout oto place the new differential pair on.
+            Layout to create the differential pair in.
         name : str
             Name of the new differential pair.
         pos_net : Net or str, default: None

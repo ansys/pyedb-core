@@ -22,9 +22,9 @@ class InstArray(cell_instance.CellInstance):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout that owns the instance array.
+            Layout to create the instance array in.
         name : str
-            Name of instance array.
+            Name of the instance array.
         ref : :class:`Layout <ansys.edb.core.layout.Layout>`
             Layout that the instance array refers to.
         orig : :class:`PointData <ansys.edb.core.geometry.PointData>`
@@ -32,11 +32,11 @@ class InstArray(cell_instance.CellInstance):
         xaxis : :class:`PointData <ansys.edb.core.geometry.PointData>`
             Point data that represents the x axis of the instance array.
         yaxis : :class:`PointData <ansys.edb.core.geometry.PointData>`
-            PointData that represents the y axis of the instance array.
+            Point data that represents the y axis of the instance array.
         xcount : :class:`Value <ansys.edb.core.layout.Value>`
-            Value of x count of the instance array.
+            Value for the x count of the instance array.
         ycount : :class:`Value <ansys.edb.core.utility.Value>`
-            Value of y count of the instance array.
+            Value for the y count of the instance array.
 
         Returns
         -------

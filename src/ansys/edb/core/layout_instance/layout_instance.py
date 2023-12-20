@@ -24,7 +24,7 @@ class LayoutInstance(ObjBase):
         self.__stub.Refresh(self.msg)
 
     def query_layout_obj_instances(self, layer_filter=None, net_filter=None, spatial_filter=None):
-        """Query :class:`layout object instances <LayoutObjInstance>` using the provided filters.
+        """Query layout object instances using the provided filters.
 
         Parameters
         ----------
@@ -33,7 +33,7 @@ class LayoutInstance(ObjBase):
         net_filter : list[:class:`Net <ansys.edb.core.net.Net>` or str or None], default: None
             Nets to query. The default is ``None``, in which case all nets are queried.
         spatial_filter : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` or
-         :class:`PointData <ansys.edb.core.geometry.PointData>` or None, default: None
+         :class:`PointData <ansys.edb.core.geometry.PointData>` or ``None``, default: None
             Area of the design to query. The default is ``None``, in which case the entire
             spatial domain of the design is queried.
 

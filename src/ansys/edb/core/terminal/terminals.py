@@ -715,7 +715,7 @@ class PinGroupTerminal(Terminal):
         Parameters
         ----------
         layout : Layout
-            Layout to place the pin group terminal on.
+            Layout to create the pin group terminal in.
         net_ref : Net or str or None
             Net reference.
         name : str

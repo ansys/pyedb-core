@@ -16,7 +16,7 @@ class SParameterModel(Model):
         Parameters
         ----------
         name : str
-            Name of the component model.
+            Name of the S-parameter model.
         ref_net : str
             Name of the reference net.
         """

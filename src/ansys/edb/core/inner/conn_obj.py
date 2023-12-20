@@ -70,14 +70,14 @@ class ConnObj(layout_obj.LayoutObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Owning Layout.
+            Layout to search for the :term:`Connectable` object.
         uid : int
-            Database ID
+            Database ID.
 
         Returns
         -------
         :term:`Connectable`
-            Connectable object of the given database ID.
+            Connectable object with the given database ID.
         """
         found_edb_obj_msg = cls.__stub.FindByIdAndType(
             _QueryBuilder.find_id_layout_obj_message(
@@ -120,7 +120,7 @@ class ConnObj(layout_obj.LayoutObj):
     def net(self):
         """:class:`Net <ansys.edb.core.net.Net>`: Net of the :term:`Connectable` object.
 
-        This property can be set with a :class:`Net <ansys.edb.core.net.Net>` instance, a string, or `None``.
+        This property can be set with a :class:`Net <ansys.edb.core.net.Net>` instance, a string, or ``None``.
         """
         from ansys.edb.core.net import Net
 
@@ -131,29 +131,32 @@ class ConnObj(layout_obj.LayoutObj):
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))
 
     def create_stride(self):
-        """Create a Stride model.
+        """Create a Stride model from an MCAD file.
 
         Returns
         -------
         :class:`McadModel <ansys.edb.core.layout.McadModel>`
+            Stride model created.
         """
         return mm.McadModel.create_stride(connectable=self)
 
     def create_hfss(self):
-        """Create an HFSS model.
+        """Create an HFSS model from an MCAD file.
 
         Returns
         -------
         :class:`McadModel <ansys.edb.core.layout.McadModel>`
+            HFSS model created.
         """
         return mm.McadModel.create_hfss(connectable=self)
 
     def create_3d_comp(self):
-        """Create a 3D composite model.
+        """Create a 3D composite model from an MCAD file.
 
         Returns
         -------
         :class:`McadModel <ansys.edb.core.layout.McadModel>`
+            3D composite model created.
         """
         return mm.McadModel.create_3d_comp(connectable=self)
 

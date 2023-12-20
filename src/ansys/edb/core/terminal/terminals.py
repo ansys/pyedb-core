@@ -610,7 +610,7 @@ class PointTerminal(Terminal):
 
     @property
     def params(self):
-        """:class:`layer`, :object:`list (Value, Value)`: Layer that the point terminal is placed on and a list of \
+        """:class:`layer`, :obj:`list (Value, Value)`: Layer that the point terminal is placed on and a list of \
         the (x, y) coordinates."""
         res = self.__stub.GetParameters(self.msg)
         point = (

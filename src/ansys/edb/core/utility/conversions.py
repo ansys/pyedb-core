@@ -5,7 +5,7 @@ from ansys.edb.core import geometry, utility
 
 
 def to_value(val):
-    """Take a value implicitly convertible to Value and return as Value.
+    """Take a value implicitly convertible to a ``Value``type and return as a ``Value`` type.
 
     Parameters
     ----------
@@ -21,12 +21,12 @@ def to_value(val):
         return utility.Value(val)
     else:
         raise TypeError(
-            f"value-like objects must be either of type Value or int/float/complex/str. - Received '{val}'"
+            f"Value-like objects must be either of type Value or int/float/complex/str. - Received '{val}'"
         )
 
 
 def to_point(val):
-    """Take a value implicitly convertible to PointData and return as PointData.
+    """Take a value implicitly convertible to a ``PointData`` type and return as a ``PointData`` type.
 
     Parameters
     ----------
@@ -45,16 +45,17 @@ def to_point(val):
         return geometry.PointData(val)
 
     raise TypeError(
-        "point-like objects must be either of type PointData or a list/tuple containing (start, end) or (arc_height)."
+        "Point-like objects must be either of type PointData or a list/tuple containing (start, end) or (arc_height)."
     )
 
 
 def to_point3d(val):
-    """Convert a value to Point3DData object.
+    """Convert a value to a ``Point3DData`` object.
 
     Parameters
     ----------
     val : geometry.Point3DData, tuple[:term:`ValueLike`,:term:`ValueLike`,:term:`ValueLike`]
+        Value to convert.
 
     Returns
     -------

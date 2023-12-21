@@ -17,12 +17,12 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 # Message creation helper method
 def _is_in_zone_message(lyr, zone):
-    """Convert to IsInZoneMessage."""
+    """Convert to an ``IsInZoneMessage`` object."""
     return layer_pb2.ZoneMessage(layer=lyr.msg, zone=zone)
 
 
 class LayerType(Enum):
-    """Enum representing types of layers.
+    """Provides an enum representing the types of layers.
 
     - SIGNAL_LAYER
     - DIELECTRIC_LAYER
@@ -68,7 +68,7 @@ class LayerType(Enum):
 
 
 class TopBottomAssociation(Enum):
-    """Enum representing the top-bottom association of layers.
+    """Provides an enum representing the top-bottom association of layers.
 
     - TOP_ASSOCIATED
     - NO_TOP_BOTTOM_ASSOCIATED
@@ -85,7 +85,7 @@ class TopBottomAssociation(Enum):
 
 
 class DrawOverride(Enum):
-    """Enum representing draw override options for layers.
+    """Provides an enum representing draw override options for layers.
 
     - NO_OVERRIDE
     - FILL
@@ -98,7 +98,7 @@ class DrawOverride(Enum):
 
 
 class LayerVisibility(Enum):
-    """Enum representing visibility options for layers.
+    """Provides an enum representing visibility options for layers.
 
     - PRIMITIVE_VISIBLE
     - PATH_VISIBLE
@@ -117,13 +117,13 @@ class LayerVisibility(Enum):
 
 
 class Layer(ObjBase):
-    """Base class representing a layer."""
+    """Provides the base class representing a layer."""
 
     layout_obj_type = LayoutObjType.LAYER
     __stub: LayerServiceStub = StubAccessor(StubType.layer)
 
     def cast(self):
-        """Cast the layer object to correct concrete type.
+        """Cast the layer object to the correct concrete type.
 
         Returns
         -------
@@ -147,7 +147,9 @@ class Layer(ObjBase):
         Parameters
         ----------
         name : string
+            Layer name.
         lyr_type : :class:`LayerType`
+            Layer type.
 
         Returns
         -------
@@ -159,7 +161,7 @@ class Layer(ObjBase):
 
     @property
     def type(self):
-        """:class:`LayerType`: Layer type of the layer."""
+        """:class:`LayerType`: Type of the layer."""
         return LayerType(self.__stub.GetLayerType(self.msg).type)
 
     @type.setter
@@ -168,9 +170,9 @@ class Layer(ObjBase):
 
     @property
     def is_stackup_layer(self):
-        """:obj:`bool`: Flag indicating if the layer is a :class:`StackupLayer`.
+        """:obj:`bool`: Flag indicating if the layer is a :class:`StackupLayer` instance.
 
-        Read-Only.
+        This property is read-only.
         """
         layer_type = self.type
         return (
@@ -181,9 +183,9 @@ class Layer(ObjBase):
 
     @property
     def is_via_layer(self):
-        """:obj:`bool`: Flag indicating if the layer is a :class:`ViaLayer`.
+        """:obj:`bool`: Flag indicating if the layer is a :class:`ViaLayer` instance.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.IsViaLayer(self.msg).value
 
@@ -202,16 +204,18 @@ class Layer(ObjBase):
         Parameters
         ----------
         copy_id : bool
+            ID of the layer to clone.
 
         Returns
         -------
         Layer
+            Layer cloned.
         """
         return Layer(self.__stub.Clone(layer_pb2.CloneMessage(layer=self.msg, copy_id=copy_id)))
 
     @property
     def layer_id(self):
-        """:obj:`int`: Layer id of the layer."""
+        """:obj:`int`: Layer ID."""
         return self.__stub.GetLayerId(self.msg).value
 
     @property
@@ -231,9 +235,9 @@ class Layer(ObjBase):
 
     @property
     def color(self):
-        r""":obj:`tuple`\[:obj:`int`, :obj:`int`, :obj:`int`\]: Color of the layer.
+        r""":obj:`tuple`\[:obj:`int`, :obj:`int`, :obj:`int`\]: Color of the layer in (R,G,B) format.
 
-        Tuple contains the color RGB values in the format (R,G,B)
+        Tuple contains the color values in (R,G,B) format.
         """
         color_int = self.__stub.GetColor(self.msg).value
         r = color_int & 0x000000FF
@@ -252,13 +256,12 @@ class Layer(ObjBase):
     def visibility_mask(self):
         """:obj:`int`: Visibility mask of the layer.
 
-        Setter can take either an :obj:`int` or :class:`LayerVisibility`.
+        The setter can take either an :obj:`int` object or a :class:`LayerVisibility` instance.
         """
         return self.__stub.GetVisibilityMask(self.msg).value
 
     @visibility_mask.setter
     def visibility_mask(self, visibility_mask):
-        """Set the visibility mask of the layer."""
         vis_mask_int = (
             visibility_mask.value
             if isinstance(visibility_mask, LayerVisibility)
@@ -281,8 +284,8 @@ class Layer(ObjBase):
     def transparency(self):
         """:obj:`int`: Transparency value of the layer.
 
-        Transparency value falls between 0 and 100 where 0 indicates a completely opaque layer and 100 indicates a \
-        completely transparent layer.
+        The transparency value is between 0 and 100, where 0 indicates a completely
+        opaque layer and 100 indicates a completely transparent layer.
         """
         return self.__stub.GetTransparency(self.msg).value
 
@@ -304,44 +307,52 @@ class Layer(ObjBase):
         )
 
     def get_product_property(self, prod_id, attr_it):
-        """Get the product property of the layer associated with the given product and attribute ids.
+        """Get the product property of the layer for a given product ID and attribute ID.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+            Product ID.
         attr_it : int
+            Attribute ID.
 
         Returns
         -------
         str
+            Product property.
         """
         return self.__stub.GetProductProperty(
             get_product_property_message(self, prod_id, attr_it)
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property of the layer associated with the given product and attribute ids.
+        """Set the product property of the layer for a given product ID and attribute ID.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+            Product ID.
         attr_it : int
+            Attribute ID.
         prop_value : str
+            New product property value.
         """
         self.__stub.SetProductProperty(
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute ids corresponding to the provided product id for the layer.
+        """Get a list of attribute IDs for a given product ID for the layer.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+            Product ID.
 
         Returns
         -------
         list[int]
+            List of attribute IDs.
         """
         attr_ids = self.__stub.GetProductPropertyIds(
             get_product_property_ids_message(self, prod_id)
@@ -349,7 +360,7 @@ class Layer(ObjBase):
         return [attr_id for attr_id in attr_ids]
 
     def is_in_zone(self, zone):
-        """Check if the layer exists in the provided zone.
+        """Determine if the layer exists in the given zone.
 
         Parameters
         ----------
@@ -358,16 +369,19 @@ class Layer(ObjBase):
         Returns
         -------
         bool
+            ``True`` when the layer exists in the given zone, ``False`` otherwise.
         """
         return self.__stub.IsInZone(_is_in_zone_message(self, zone)).value
 
     def set_is_in_zone(self, zone, in_zone=True):
-        """Set whether the layer exists in the specified zone.
+        """Set whether the layer exists in a given zone.
 
         Parameters
         ----------
         zone : int
-        in_zone : bool, optional
+           Zone.
+        in_zone : bool, default: True
+           Whether the layer exists in this zone.
         """
         return self.__stub.SetIsInZone(
             layer_pb2.SetIsInZoneMessage(zone_msg=_is_in_zone_message(self, zone), in_zone=in_zone)
@@ -375,18 +389,19 @@ class Layer(ObjBase):
 
     @property
     def zones(self):
-        r""":obj:`list`\[:obj:`int`\]: Zone ids of all zones containing the layer.
+        r""":obj:`list`\[:obj:`int`\]: IDs of all zones containing the layer.
 
-        Read-Only.
+        This property is read-only.
         """
         return [zone for zone in self.__stub.GetZones(self.msg).zones]
 
     @property
     def zone(self):
-        """:obj:`int`: Zone index associated with owning layer collection.
+        """:obj:`int`: Zone index associated with the owning layer collection.
 
-        If owner is invalid the index is 0. If owner is multizone the index is -1.
+        If the owner is invalid, the index is ``0``. If the owner is multizone,
+        the index is ``-1``.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.GetZone(self.msg).value

@@ -71,7 +71,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def material_name(self):
-        """:obj:`str`: Material name of the solder ball property."""
+        """:obj:`str`: Name of the solder ball material."""
         return self.__stub.GetMaterialName(edb_obj_message(self)).value
 
     @material_name.setter
@@ -80,7 +80,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def height(self):
-        """:term:`ValueLike`: Height of the solder ball property."""
+        """:term:`ValueLike`: Height of the solder ball."""
         return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter
@@ -88,7 +88,7 @@ class SolderBallProperty(ObjBase):
         self.__stub.SetHeight(value_property_message(self, value_message(height)))
 
     def get_diameter(self):
-        """Get the diameter parameters.
+        """Get the diameter parameters of the solder ball property.
 
         Returns
         -------
@@ -101,7 +101,7 @@ class SolderBallProperty(ObjBase):
         return Value(diameter_paramaters.diameter1), Value(diameter_paramaters.diameter2)
 
     def set_diameter(self, diameter1, diameter2):
-        """Set the diameter parameters.
+        """Set the diameter parameters of the solder ball property.
 
         Parameters
         ----------
@@ -116,7 +116,7 @@ class SolderBallProperty(ObjBase):
     def uses_solderball(self):
         """:obj:`bool`: Flag indicating if the solder ball is used.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.UsesSolderball(self.msg).value
 
@@ -131,7 +131,7 @@ class SolderBallProperty(ObjBase):
 
     @property
     def placement(self):
-        """:class:`SolderballPlacement`: Solder ball shape."""
+        """:class:`SolderballPlacement`: Solder ball placement."""
         return SolderballPlacement(self.__stub.GetPlacement(self.msg).solderball_placement)
 
     @placement.setter
@@ -145,6 +145,6 @@ class SolderBallProperty(ObjBase):
         Returns
         -------
         SolderBallProperty
-            Clone of the solder ball property created.
+            Solder ball property cloned.
         """
         return SolderBallProperty(self.__stub.Clone(edb_obj_message(self)))

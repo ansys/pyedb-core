@@ -1,4 +1,4 @@
-"""Layer Collection."""
+"""Layer collection."""
 
 from enum import Enum
 
@@ -16,7 +16,7 @@ from ansys.edb.core.session import get_layer_collection_stub
 
 
 class LayerCollectionMode(Enum):
-    """Enum representing possible modes of layer collection.
+    """Provides an enum representing possible modes of the layer collection.
 
     - LAMINATE
     - OVERLAPPING
@@ -29,7 +29,7 @@ class LayerCollectionMode(Enum):
 
 
 class LayerTypeSet(Enum):
-    """Enum representing layer type sets used for filtering layers.
+    """Provides an enum representing layer type sets used for filtering layers.
 
     - STACKUP_LAYER_SET
     - SIGNAL_LAYER_SET
@@ -46,7 +46,7 @@ class LayerTypeSet(Enum):
 
 
 class DielectricMergingMethod(Enum):
-    """Enum representing dielectric merging method options.
+    """Provides an enum representing dielectric merging method options.
 
     - WEIGHTED_AVERAGE
     - KRASZEWSKI
@@ -59,14 +59,14 @@ class DielectricMergingMethod(Enum):
 
 
 def _layer_collection_zone_message(layer_collection, zone):
-    """Convert to LayerCollectionZoneMessage."""
+    """Convert to a ``LayerCollectionZoneMessage`` object."""
     return layer_collection_pb2.LayerCollectionZoneMessage(
         layer_collection=layer_collection.msg, zone=zone
     )
 
 
 class LayerCollection(ObjBase):
-    """Layer Collection."""
+    """Represents a layer collection."""
 
     @staticmethod
     def create(mode=LayerCollectionMode.LAMINATE):
@@ -74,11 +74,13 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        mode : LayerCollectionMode
+        mode : LayerCollectionMode, default: LAMINATE
+            Mode of the layer collection.
 
         Returns
         -------
         LayerCollection
+            Layer collection created.
         """
         return LayerCollection(
             get_layer_collection_stub().Create(
@@ -92,17 +94,13 @@ class LayerCollection(ObjBase):
         Returns
         -------
         LayerCollection
+           Layer collection cloned.
         """
         return LayerCollection(get_layer_collection_stub().Clone(self.msg))
 
     @property
     def mode(self):
-        """:class:`LayerCollectionMode`: Get the mode the layer collection.
-
-        Returns
-        -------
-        LayerCollectionMode
-        """
+        """:class:`LayerCollectionMode`: Mode of the layer collection."""
         return LayerCollectionMode(get_layer_collection_stub().GetMode(self.msg).mode)
 
     @mode.setter
@@ -114,11 +112,12 @@ class LayerCollection(ObjBase):
         )
 
     def add_layers(self, layers):
-        """Add layers to a layer collection.
+        """Add a list of layers to the layer collection.
 
         Parameters
         ----------
         layers : list[Layer]
+           List of layers.
         """
         layer_msgs = [lyr.msg for lyr in layers]
         get_layer_collection_stub().AddLayers(
@@ -126,12 +125,14 @@ class LayerCollection(ObjBase):
         )
 
     def import_from_control_file(self, control_file_path, schema_file_path=None):
-        """Import layers from the provided control file and optional XML schema.
+        """Import layers from a control file and optional XML schema file.
 
         Parameters
         ----------
         control_file_path : str
-        schema_file_path : str, optional
+            Full path to the control file.
+        schema_file_path : str, default: None
+            Full path to the XML schema file.
         """
         import_msg = layer_collection_pb2.ImportFromControlFileMessage(
             layer_collection=self.msg, control_file_path=control_file_path
@@ -141,7 +142,7 @@ class LayerCollection(ObjBase):
         get_layer_collection_stub().ImportFromControlFile(import_msg)
 
     def _add_layer(self, layer, above_below=None, add_top=None):
-        """Pack layer addition arguments into AddLayersMessage and send to server."""
+        """Pack layer addition arguments into the ``AddLayersMessage`` object and send to the server."""
         add_layer_msg = layer_collection_pb2.AddLayerMessage(
             layer_collection=self.msg, layer=layer.msg
         )
@@ -161,12 +162,14 @@ class LayerCollection(ObjBase):
     def add_layer_above(self, layer_to_add, layer_to_add_above_name):
         """Add a new layer above the specified layer.
 
-         Adjusts existing layers as needed to maintain stackup consistency.
+        This method adjusts existing layers as needed to maintain stackup consistency.
 
         Parameters
         ----------
         layer_to_add : Layer
+            Name of the layer to add.
         layer_to_add_above_name : str
+            Name of the layer above which to add the new layer.
 
         Returns
         -------
@@ -177,12 +180,14 @@ class LayerCollection(ObjBase):
     def add_layer_below(self, layer_to_add, layer_to_add_below_name):
         """Add a new layer below the specified layer.
 
-         Adjusts existing layers as needed to maintain stackup consistency.
+        This method adjusts existing layers as needed to maintain stackup consistency.
 
         Parameters
         ----------
         layer_to_add : Layer
+            Name of the layer to add.
         layer_to_add_below_name : str
+            Name of the layer below which to add the new layer.
 
         Returns
         -------
@@ -191,13 +196,14 @@ class LayerCollection(ObjBase):
         return self._add_layer_relative(layer_to_add, layer_to_add_below_name, False)
 
     def add_layer_top(self, layer_to_add):
-        """Add a new layer to the top of the LayerCollection.
+        """Add a new layer to the top of the layer collection.
 
-         Adjusts existing layers as needed to maintain stackup consistency.
+        This method adjusts existing layers as needed to maintain stackup consistency.
 
         Parameters
         ----------
         layer_to_add : Layer
+            Name of the layer to add.
 
         Returns
         -------
@@ -206,13 +212,14 @@ class LayerCollection(ObjBase):
         return self._add_layer(layer_to_add, add_top=True)
 
     def add_layer_bottom(self, layer_to_add):
-        """Add a new layer to the bottom of the LayerCollection.
+        """Add a new layer to the bottom of the layer collection.
 
-         Adjusts existing layers as needed to maintain stackup consistency.
+        This method adjusts existing layers as needed to maintain stackup consistency.
 
         Parameters
         ----------
         layer_to_add : Layer
+            Name of the layer to add.
 
         Returns
         -------
@@ -221,9 +228,9 @@ class LayerCollection(ObjBase):
         return self._add_layer(layer_to_add, add_top=False)
 
     def add_stackup_layer_at_elevation(self, stackup_layer_to_add):
-        """Add a :class:`StackupLayer` at user specified elevation.
+        """Add a stackup layer at a user-specified elevation.
 
-         Doesn't change other stackup layer's elevation.
+        This method doe not change the elevenation of other stackup layers.
 
         Parameters
         ----------
@@ -236,7 +243,7 @@ class LayerCollection(ObjBase):
         return self._add_layer(stackup_layer_to_add)
 
     def add_via_layer(self, via_layer_to_add):
-        """Add a :class:`ViaLayer` to the layer collection.
+        """Add a via layer to the layer collection.
 
         Parameters
         ----------
@@ -249,14 +256,16 @@ class LayerCollection(ObjBase):
         return self._add_layer(via_layer_to_add)
 
     def is_valid(self):
-        """Check if the layer collection is  in a valid state.
+        """Determine if the layer collection is in a valid state.
 
-        Check whether there is layer overlapping or gap for laminate stackup.
-        Check whether there is dielectric layer overlapping or gap for overlapping stackup.
+        For a laminate stackup, this method checks whether there is layer overlapping or a gap.
+        For an overlapping stackup, this method checks whether there is a dielectric layer
+        overlapping or a gap.
 
         Returns
         -------
         bool
+            ``True`` if the layer collection is in a valid state, ``False`` otherwise.
         """
         return get_layer_collection_stub().IsValid(self.msg).value
 
@@ -266,6 +275,7 @@ class LayerCollection(ObjBase):
         Parameters
         ----------
         layer_name : str
+           Layer name.
 
         Returns
         -------
@@ -312,17 +322,17 @@ class LayerCollection(ObjBase):
         return LayerCollection._get_layer_filter(_get_layer_type_list())
 
     def get_top_bottom_stackup_layers(self, layer_type_set):
-        """Get the top and bottom :class:`StackupLayers <StackupLayer>` of specific type and their elevations.
+        """Get the top and bottom stackup layers of a specific type and their elevations.
 
         Parameters
         ----------
         layer_type_set : LayerTypeSet
-            LayerTypeSet indicating which layer types to retrieve
+            Layer type set indicating the layer types to retrieve.
 
         Returns
         -------
         tuple[Layer, float, Layer, float]
-            Returns a tuple of the following format:
+            Returns a tuple in this format:
             (upper_layer, upper_layer_top_elevation, lower_layer, lower_layer_lower_elevation)
         """
         request = layer_collection_pb2.GetTopBottomStackupLayersMessage(
@@ -338,15 +348,17 @@ class LayerCollection(ObjBase):
         )
 
     def get_layers(self, layer_filter=LayerTypeSet.ALL_LAYER_SET):
-        """Retrieve a list of :class:`Layers <Layer>` in the layer collection filtered by the given layer filter.
+        """Get a list of layers in the layer collection using a layer filter.
 
         Parameters
         ----------
-        layer_filter : LayerTypeSet or LayerType or list[LayerType], optional
+        layer_filter : LayerTypeSet or LayerType or list[LayerType], default: ALL_LAYER_SET
+            Layer filter.
 
         Returns
         -------
         list[Layer]
+            List of layers based on the filter used.
         """
         layer_filter_int = (
             LayerCollection._get_layer_filter_from_layer_type_set(layer_filter)
@@ -363,16 +375,19 @@ class LayerCollection(ObjBase):
         return [Layer(msg).cast() for msg in response.items]
 
     def get_product_property(self, prod_id, attr_it):
-        """Get the product property of the layer collection associated with the given product and attribute ids.
+        """Get the product property of the layer collection for a given product ID and attribute ID.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+            Product ID.
         attr_it : int
+            Attribute ID.
 
         Returns
         -------
         str
+            Product property.
         """
         return (
             get_layer_collection_stub()
@@ -381,28 +396,33 @@ class LayerCollection(ObjBase):
         )
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property of the layer collection associated with the given product and attribute ids.
+        """Set the product property of the layer collection for a given product ID and attribute ID.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+            Product ID.
         attr_it : int
+            Attribute ID.
         prop_value : str
+            New property value.
         """
         get_layer_collection_stub().SetProductProperty(
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute ids corresponding to the provided product id for the layer collection.
+        """Get a list of attribute IDs for a given product ID for the layer collection.
 
         Parameters
         ----------
         prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+            Product ID.
 
         Returns
         -------
         list[int]
+            List of attribute IDs for the given product ID.
         """
         attr_ids = (
             get_layer_collection_stub()
@@ -451,20 +471,22 @@ class LayerCollection(ObjBase):
 
     @property
     def zone_ids(self):
-        r""":obj:`list`\[:obj:`int`\]: Get a list of all zones in the layer collection."""
+        r""":obj:`list`\[:obj:`int`\]: List of all zones in the layer collection."""
         zones = get_layer_collection_stub().GetZoneIds(self.msg).zones
         return [zone for zone in zones]
 
     def get_zone_name(self, zone):
-        """Get the name corresponding to the specified zone.
+        """Get the name for a given zone.
 
         Parameters
         ----------
         zone : int
+           Zone ID.
 
         Returns
         -------
         str
+            Name of the zone.
         """
         return (
             get_layer_collection_stub()
@@ -473,12 +495,14 @@ class LayerCollection(ObjBase):
         )
 
     def set_zone_name(self, zone, name):
-        """Set the name corresponding to the specified zone.
+        """Set the name for a given zone.
 
         Parameters
         ----------
         zone : int
+            Zone ID.
         name : str
+            New name to give the zone.
         """
         request = layer_collection_pb2.SetZoneNameMessage(
             layer_collection=self.msg, zone=zone, zone_name=name
@@ -486,18 +510,19 @@ class LayerCollection(ObjBase):
         get_layer_collection_stub().SetZoneName(request)
 
     def insert_zone(self, copy_zone=-1):
-        """Insert a new zone.
+        """Insert a zone.
 
         Parameters
         ----------
-        copy_zone : int, optional
-            If valid the new zone is inserted as a copy of the specified
-            zone, otherwise the new zone is empty
+        copy_zone : int, default: -1
+            Zone to copy from when inserting a new zone.
+            If valid, the new zone is inserted as a copy of the given zone.
+            Otherwise, the new zone is empty.
 
         Returns
         -------
         int
-            If successful, the id of the newly added zone is returned
+            ID of the zone inserted if successful.
         """
         request = layer_collection_pb2.InsertZoneMessage(
             layer_collection=self.msg, copy_zone=copy_zone
@@ -505,11 +530,12 @@ class LayerCollection(ObjBase):
         return get_layer_collection_stub().InsertZone(request).value
 
     def remove_zone(self, zone):
-        """Remove the specified zone.
+        """Remove a zone.
 
         Parameters
         ----------
         zone : int
+           ID of the zone.
         """
         get_layer_collection_stub().RemoveZone(_layer_collection_zone_message(self, zone))
 
@@ -524,13 +550,15 @@ class LayerCollection(ObjBase):
         Parameters
         ----------
         database : :class:`Database <ansys.edb.core.database.Database>`
-        layer_thickness_thresh : float
-        merging_method : DielectricMergingMethod
+        layer_thickness_thresh : float, default: -1
+           Thickness threshold for the layer.
+        merging_method : DielectricMergingMethod, default: WEIGHTED_CAPACITANCE
+           Method for merging.
 
         Returns
         -------
         list[StackupLayer]
-            returns a list of dielectric layers created during the dielectric simplification process
+            List of dielectric layers created during the dielectric simplification process.
         """
         simplified_lyrs = (
             get_layer_collection_stub()

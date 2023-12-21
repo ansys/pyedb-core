@@ -12,7 +12,7 @@ from ansys.edb.core.utility import Value
 
 
 class MaterialProperty(Enum):
-    """Provides an enum representing property types.
+    """Provides an enum representing material property types.
 
     - PERMITTIVITY
        Permittivity property.
@@ -29,11 +29,11 @@ class MaterialProperty(Enum):
     - MASS_DENSITY
        Mass density property.
     - SPECIFIC_HEAT
-       Specific Heat property.
+       Specific heat property.
     - YOUNGS_MODULUS
-       Youngs Modulus property.
+       Young's modulus property.
     - POISSONS_RATIO
-       Poissons Ratio property.
+       Poisson's ratio property.
     - THERMAL_EXPANSION_COEFFICIENT
        Thermal expansion coefficient property.
     - INVALID_PROPERTY
@@ -145,7 +145,7 @@ class MaterialDef(ObjBase):
 
     @classmethod
     def create(cls, database, name, **kwargs):
-        """Create a material definition in the given database.
+        """Create a material definition in a given database.
 
         Parameters
         ----------
@@ -154,22 +154,21 @@ class MaterialDef(ObjBase):
         name : str
             Name of the material definition.
         kwargs : dict{ str : :class:`Value <ansys.edb.core.utility.Value>` }
-            Dictionary to convert to MaterialDefPropertiesMessage.
-            Dictionary key is the material property name.
-            Dictionary value is the material property value.
-            Expected keys for kwargs are:
+            Dictionary to convert to a ``MaterialDefPropertiesMessage`` object.
+            The dictionary key is the material property name. The dictionary value is the
+            material property value. The expected keys for the kwargs are:
 
-            - permittivity
-            - permeability
-            - conductivity
-            - dielectric_loss_tangent
-            - magnetic_loss_tangent
-            - thermal_conductivity
-            - mass_density
-            - specific_heat
-            - youngs_modulus
-            - poissons_ratio
-            - thermal_expansion_coefficient
+            - ``permittivity``
+            - ``permeability``
+            - ``conductivity``
+            - ``dielectric_loss_tangent``
+            - ``magnetic_loss_tangent``
+            - ``thermal_conductivity``
+            - ``mass_density``
+            - ``specific_heat``
+            - ``youngs_modulus``
+            - ``poissons_ratio``
+            - ``thermal_expansion_coefficient``
 
         Returns
         -------
@@ -180,7 +179,7 @@ class MaterialDef(ObjBase):
 
     @classmethod
     def find_by_name(cls, database, name):
-        """Find a material definition in the database by name.
+        """Find a material definition by name in a given database.
 
         Parameters
         ----------
@@ -192,7 +191,7 @@ class MaterialDef(ObjBase):
         Returns
         -------
         MaterialDef
-            Naterial definition object found.
+            Naterial definition found.
         """
         return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))
 
@@ -205,7 +204,7 @@ class MaterialDef(ObjBase):
     def name(self):
         """:obj:`str`: Name of the material definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetName(messages.edb_obj_message(self)).value
 
@@ -227,19 +226,19 @@ class MaterialDef(ObjBase):
         self.__stub.Delete(messages.edb_obj_message(self))
 
     def set_property(self, material_property, value, component_id=None, col=None, row=None):
-        """Set a property value of the material.
+        """Set a material property for a given component.
 
         Parameters
         ----------
         material_property : :class:`MaterialProperty`
-            Property ID.
+            ID of the material property.
         value : :class:`Value <ansys.edb.core.utility.Value>`
             New value.
-        component_id : int, optional
-            Component ID.
-        row : int, optional
+        component_id : int, default: None
+            ID of the component.
+        row : int, default: None
             Tensor row.
-        col : int, optional
+        col : int, default: None
             Tensor column.
         """
         self.__stub.SetProperty(
@@ -251,14 +250,14 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        material_property : :class:`MaterialProperty`
-            Property ID. The default is ``None``.
-        component_id : int, optional
-            Component ID. The default is ``None``.
-        row : int, optional
-            Tensor row. The default is ``None``.
-        col : int, optional
-            Tensor column. The default is ``None``.
+        material_property : :class:`MaterialProperty`, default: None
+            Material property ID.
+        component_id : int, default: None
+            Component ID.
+        row : int, default: None
+            Tensor row.
+        col : int, default: None
+            Tensor column.
 
         Returns
         -------
@@ -272,12 +271,12 @@ class MaterialDef(ObjBase):
         )
 
     def get_all_properties(self):
-        """Get all property value of the material.
+        """Get all properties of the material.
 
         Returns
         -------
-        list [:class:`MaterialProperty`]
-            List of properties for the material definition.
+        list of :class:`MaterialProperty``
+            All properties for the material definition.
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
         return [MaterialProperty(i) for i in msg.properties]
@@ -297,7 +296,7 @@ class MaterialDef(ObjBase):
         )
 
     def get_dimensions(self, material_property_id):
-        """Get dimensions of a material definition.
+        """Get dimensions of a given material definition.
 
         Types are Simple 1x1, Anisotropic 3x1, and Tensor 3x3.
 
@@ -311,13 +310,10 @@ class MaterialDef(ObjBase):
         -------
         tuple[int, int]
 
-            Returns a tuple of the following format:
+        The tuple is in a ``(col, row)`` format:
 
-            **(col, row)**
-
-            **col** : Number of rows of the material property.
-
-            **row** : Number of columns of the material property.
+        - ``col``: Number of rows of the material property.
+        - ``row``: Number of columns of the material property.
         """
         msg = self.__stub.GetDimensions(
             _QueryBuilder.material_def_get_property_message(self, material_property_id)
@@ -325,7 +321,7 @@ class MaterialDef(ObjBase):
         return [msg.tensor.col, msg.tensor.row]
 
     def get_thermal_modifier(self, material_property_id):
-        """Get the thermal modifier of a material definition.
+        """Get the thermal modifier of a given material definition.
 
         Parameters
         ----------
@@ -362,7 +358,7 @@ class MaterialDef(ObjBase):
         )
 
     def get_anisotropic_thermal_modifier(self, material_property_id, component_id):
-        """Get the anisotropic thermal modifier of a material definition.
+        """Get the anisotropic thermal modifier of a given material definition.
 
         Parameters
         ----------
@@ -388,7 +384,7 @@ class MaterialDef(ObjBase):
     def set_anisotropic_thermal_modifier(
         self, material_property_id, component_id, thermal_modifier
     ):
-        """Set the anisotropic thermal modifier of a material definition.
+        """Set the anisotropic thermal modifier of a given material definition.
 
         Parameters
         ----------

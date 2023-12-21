@@ -16,7 +16,7 @@ class ComponentDef(ObjBase):
 
     @classmethod
     def create(cls, db, comp_def_name, fp):
-        """Create a component definition.
+        """Create a component definition in a given database.
 
         Parameters
         ----------
@@ -38,7 +38,7 @@ class ComponentDef(ObjBase):
 
     @classmethod
     def find(cls, db, comp_def_name):
-        """Find a component definition in a database.
+        """Find a component definition in a given database.
 
         Parameters
         ----------
@@ -50,7 +50,7 @@ class ComponentDef(ObjBase):
         Returns
         -------
         ComponentDef
-            Component definition that was found or ``None`` otherwise.
+            Component definition found, ``None`` otherwise.
         """
         return ComponentDef(
             cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
@@ -58,7 +58,7 @@ class ComponentDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: type."""
+        """:class:`DefinitionObjType`: Definition type."""
         return DefinitionObjType.COMPONENT_DEF
 
     @property
@@ -82,9 +82,9 @@ class ComponentDef(ObjBase):
     @property
     def component_models(self):
         """:obj:`list` of :class:`ComponentModel <ansys.edb.core.definition.component_model.ComponentModel>`: \
-        List of component models associated with the component definition.
+        All component models associated with the component definition.
 
-        Read-Only.
+        This property is read-only.
         """
         objs = self.__stub.GetComponentModels(self.msg).items
         return map_list(objs, component_model.ComponentModel)
@@ -92,9 +92,9 @@ class ComponentDef(ObjBase):
     @property
     def component_pins(self):
         """:obj:`list` of :class:`ComponentPin <ansys.edb.core.definition.ComponentPin>`: \
-        List of component pins of the component definition.
+        All component pins of the component definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         objs = self.__stub.GetComponentPins(self.msg).items
         return map_list(objs, component_pin.ComponentPin)

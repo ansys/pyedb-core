@@ -53,19 +53,19 @@ class PadstackDef(ObjBase):
 
     @classmethod
     def create(cls, db, name):
-        """Create a padstack definition object.
+        """Create a padstack definition in a given database.
 
         Parameters
         ----------
         db : :class:`Database <ansys.edb.core.database.Database>`
-            Database object to create the padstack definition in.
+            Database to create the padstack definition in.
         name : str
             Data to set on the padstack definition.
 
         Returns
         -------
         PadstackDef
-            Padstack definition created in the given database.
+            Padstack definition created.
         """
         return PadstackDef(
             cls.__stub.Create(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
@@ -73,7 +73,7 @@ class PadstackDef(ObjBase):
 
     @classmethod
     def find_by_name(cls, db, name):
-        """Find a padstack definition by name.
+        """Find a padstack definition by name in a given database.
 
         Parameters
         ----------
@@ -85,6 +85,7 @@ class PadstackDef(ObjBase):
         Returns
         -------
         PadstackDef
+            Padstack definition found.
         """
         return PadstackDef(
             cls.__stub.FindByName(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
@@ -92,21 +93,21 @@ class PadstackDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Type."""
+        """:class:`DefinitionObjType`: Definition type."""
         return DefinitionObjType.PADSTACK_DEF
 
     @property
     def name(self):
         """:obj:`str`: Name of the padstack definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetName(self.msg).value
 
     @property
     def data(self):
         """:class:`PadstackDefData <ansys.edb.core.definition.padstack_def_data.PadstackDefData>`: \
-        Data of the Padstack definition."""
+        Data for the padstack definition."""
         return PadstackDefData(self.__stub.GetData(self.msg))
 
     @data.setter

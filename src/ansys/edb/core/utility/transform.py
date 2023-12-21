@@ -1,4 +1,4 @@
-"""Transform Class."""
+"""Transformations."""
 import ansys.api.edb.v1.transform_pb2 as pb
 from ansys.api.edb.v1.transform_pb2_grpc import TransformServiceStub
 
@@ -27,7 +27,7 @@ class _TransformQueryBuilder:
 
 
 class Transform(ObjBase):
-    """Class representing a transformation."""
+    """Represents a transformation."""
 
     __stub: TransformServiceStub = StubAccessor(StubType.transform)
 
@@ -38,15 +38,15 @@ class Transform(ObjBase):
         Parameters
         ----------
         scale : :term:`ValueLike`
-            Scale parameter
+            Scale parameter.
         angle : :term:`ValueLike`
-            Rotation angle, specified CCW in radians.
+            Rotation angle, specified counter-clockwise in radians.
         mirror : :obj:`bool`
-            Mirror about Y-axis
+            Mirror about Y-axis.
         offset_x : :term:`ValueLike`
-            X offset
+            X offset.
         offset_y : :term:`ValueLike`
-            Y offset
+            Y offset.
 
         Returns
         -------
@@ -62,7 +62,7 @@ class Transform(ObjBase):
     def scale(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Scale property.
 
-        This property can be set to :term:`ValueLike`
+        This property can be set to :term:`ValueLike`.
         """
         return Value(self.__stub.GetScale(messages.edb_obj_message(self)))
 
@@ -74,7 +74,7 @@ class Transform(ObjBase):
     def rotation(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Rotation property.
 
-        This property can be set to :term:`ValueLike`
+        This property can be set to :term:`ValueLike`.
         """
         return Value(self.__stub.GetRotation(messages.edb_obj_message(self)))
 
@@ -86,7 +86,7 @@ class Transform(ObjBase):
     def offset_x(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: X offset property.
 
-        This property can be set to :term:`ValueLike`
+        This property can be set to :term:`ValueLike`.
         """
         return Value(self.__stub.GetOffsetX(messages.edb_obj_message(self)))
 
@@ -98,7 +98,7 @@ class Transform(ObjBase):
     def offset_y(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Y offset property.
 
-        This property can be set to :term:`ValueLike`
+        This property can be set to :term:`ValueLike`.
         """
         return Value(self.__stub.GetOffsetY(messages.edb_obj_message(self)))
 
@@ -108,7 +108,7 @@ class Transform(ObjBase):
 
     @property
     def mirror(self):
-        """:obj:`bool`: Mirror property. If true, mirror about Y-axis."""
+        """:obj:`bool`: Mirror property. If ``True``, mirror about y axis."""
         return self.__stub.GetMirror(messages.edb_obj_message(self)).value
 
     @mirror.setter
@@ -117,11 +117,11 @@ class Transform(ObjBase):
 
     @property
     def is_identity(self):
-        """:obj:`bool`: Gets whether the transformation is an identity transformation."""
+        """:obj:`bool`: Flag indicating if the transformation is an identity transformation."""
         return self.__stub.IsIdentity(messages.edb_obj_message(self)).value
 
     def __add__(self, other_transform):
-        """Add operator, concatenate two transformations.
+        """Add operator and concatenate two transformations.
 
         Parameters
         ----------
@@ -131,7 +131,7 @@ class Transform(ObjBase):
         Returns
         -------
         Transform
-            A new transformation object
+            Transformation object created.
         """
         return Transform(
             self.__stub.TransformPlus(
@@ -145,12 +145,12 @@ class Transform(ObjBase):
         Parameters
         ----------
         point: :class:`PointData <ansys.edb.core.geometry.PointData>`
-            The point to transform [x, y] Point values.
+            Point values [x, y] to transform.
 
         Returns
         -------
         :class:`PointData <ansys.edb.core.geometry.PointData>`
-            The transformed point
+            Transformed point.
         """
         pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))
         return Value(pnt_msg.x), Value(pnt_msg.y)
@@ -162,11 +162,11 @@ class Transform(ObjBase):
         Parameters
         ----------
         polygon: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            The polygon to transform.
+            Polygon to transform.
 
         Returns
         -------
         :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
-            The transformed polygon.
+            Transformed polygon.
         """
         return self.__stub.TransformPolygon(messages.polygon_data_property_message(self, polygon))

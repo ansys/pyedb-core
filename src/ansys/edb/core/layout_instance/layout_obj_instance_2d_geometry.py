@@ -1,4 +1,4 @@
-"""Layout Obj Instance 2D Geometry."""
+"""Layout object instance 2D geometry."""
 
 from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2 import GetPolygonDataMessage
 
@@ -8,7 +8,7 @@ from ansys.edb.core.session import LayoutObjInstance2DGeometryServiceStub, StubA
 
 
 class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
-    """Class representing layout object instance 2D geometry."""
+    """Represents a layout object instance 2D geometry."""
 
     __stub: LayoutObjInstance2DGeometryServiceStub = StubAccessor(
         StubType.layout_obj_instance_2d_geometry
@@ -18,7 +18,7 @@ class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
     def is_negative(self):
         """:obj:`bool`: Flag indicating if the geometry is negative.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.IsNegative(self.msg).value
 

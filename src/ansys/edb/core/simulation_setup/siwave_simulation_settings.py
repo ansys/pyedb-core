@@ -1,4 +1,4 @@
-"""SIWave Simulation Settings."""
+"""SIWave simulation settings."""
 
 from enum import Enum
 
@@ -21,7 +21,7 @@ from ansys.edb.core.simulation_setup.simulation_settings import (
 
 
 class SParamInterpolation(Enum):
-    """Enum representing s parameter interpolation types.
+    """Provides an enum representing s parameter interpolation types.
 
     - POINT_IN
     - LINEAR_IN
@@ -34,7 +34,7 @@ class SParamInterpolation(Enum):
 
 
 class SParamExtrapolation(Enum):
-    """Enum representing s parameter extrapolation types.
+    """Provides an enum representing s parameter extrapolation types.
 
     - ZERO_EX
     - SAME_EX
@@ -49,7 +49,7 @@ class SParamExtrapolation(Enum):
 
 
 class SParamDCBehavior(Enum):
-    """Enum representing s parameter dc behavior types.
+    """Provides an enum representing s parameter DC behavior types.
 
     - ZERO_DC
     - SAME_DC
@@ -68,7 +68,7 @@ class SParamDCBehavior(Enum):
 
 
 class SIWaveSimulationSettings(SimulationSettings):
-    """Class representing SIWave simulation settings."""
+    """Represents SIWave simulation settings."""
 
     @property
     def general(self):
@@ -87,7 +87,7 @@ class SIWaveSimulationSettings(SimulationSettings):
 
     @property
     def dc_advanced(self):
-        """:class:`SIWaveDCAdvancedSettings`: Advanced dc settings for SIWave simulations."""
+        """:class:`SIWaveDCAdvancedSettings`: Advanced DC settings for SIWave simulations."""
         return SIWaveDCAdvancedSettings(self._sim_setup)
 
     @property
@@ -97,13 +97,13 @@ class SIWaveSimulationSettings(SimulationSettings):
 
 
 class SIWaveGeneralSettings(SimulationSettingsBase):
-    """Class representing general settings for SIWave simulations."""
+    """Represents general settings for SIWave simulations."""
 
     __stub: SIWaveGeneralSettingsServiceStub = StubAccessor(StubType.siwave_general_sim_settings)
 
     @property
     def use_si_settings(self):
-        """:obj:`bool`: Flag indicating whether to use SI or PI settings."""
+        """:obj:`bool`: Flag indicating if SI or PI settings are used."""
         return self.__stub.GetUseSISettings(self.msg).value
 
     @use_si_settings.setter
@@ -112,7 +112,7 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
     @property
     def use_custom_settings(self):
-        """:obj:`bool`: Flag indicating whether to use custom settings rather than PI/SI settings."""
+        """:obj:`bool`: Flag indicating if custom settings are used rather than SI or PI settings."""
         return self.__stub.GetUseCustomSettings(self.msg).value
 
     @use_custom_settings.setter
@@ -139,13 +139,13 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
 
 class SIWaveAdvancedSettings(SimulationSettingsBase):
-    """Class representing advanced settings for SIWave simulations."""
+    """Represents advanced settings for SIWave simulations."""
 
     __stub: SIWaveAdvancedSettingsServiceStub = StubAccessor(StubType.siwave_advanced_sim_settings)
 
     @property
     def include_co_plane_coupling(self):
-        """:obj:`bool`: Flag indicating whether to include co-plane coupling."""
+        """:obj:`bool`: Flag indicating if the co-plane coupling is included."""
         return self.__stub.GetIncludeCoPlaneCoupling(self.msg).value
 
     @include_co_plane_coupling.setter
@@ -156,7 +156,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def include_inter_plane_coupling(self):
-        """:obj:`bool`: Flag indicating whether to include inter-plane coupling."""
+        """:obj:`bool`: Flag indicating if the inter-plane coupling is included."""
         return self.__stub.GetIncludeInterPlaneCoupling(self.msg).value
 
     @include_inter_plane_coupling.setter
@@ -167,7 +167,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def include_split_plane_coupling(self):
-        """:obj:`bool`: Flag indicating whether to include split-plane coupling."""
+        """:obj:`bool`: Flag indicating if the split-plane coupling is included."""
         return self.__stub.GetIncludeSplitPlaneCoupling(self.msg).value
 
     @include_split_plane_coupling.setter
@@ -178,7 +178,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def include_fringe_plane_coupling(self):
-        """:obj:`bool`: Flag indicating whether to include fringe-plane coupling."""
+        """:obj:`bool`: Flag indicating if the fringe-plane coupling is included."""
         return self.__stub.GetIncludeFringePlaneCoupling(self.msg).value
 
     @include_fringe_plane_coupling.setter
@@ -189,7 +189,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def include_trace_plane_coupling(self):
-        """:obj:`bool`: Flag indicating whether to include trace-plane coupling."""
+        """:obj:`bool`: Flag indicating if the trace-plane coupling is included."""
         return self.__stub.GetIncludeTracePlaneCoupling(self.msg).value
 
     @include_trace_plane_coupling.setter
@@ -262,7 +262,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def mesh_automatic(self):
-        """:obj:`bool`: Flag indicating whether to automatically determine mesh refinement frequency."""
+        """:obj:`bool`: Flag indicating it mesh refinement frequency is automatically determined."""
         return self.__stub.GetMeshAutomatic(self.msg).value
 
     @mesh_automatic.setter
@@ -280,7 +280,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def return_current_distribution(self):
-        """:obj:`bool`: Flag indicating whether to trace return current distribution."""
+        """:obj:`bool`: Flag indicating if return current distribution is traced."""
         return self.__stub.Get3DReturnCurrentDistribution(self.msg).value
 
     @return_current_distribution.setter
@@ -291,7 +291,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def include_vi_sources(self):
-        """:obj:`bool`: Flag indicating whether to include voltage/current source connections/parasitics."""
+        """:obj:`bool`: Flag indicating if voltage/current source connections/parasitics are included."""
         return self.__stub.GetIncludeVISources(self.msg).value
 
     @include_vi_sources.setter
@@ -300,7 +300,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def include_inf_gnd(self):
-        """:obj:`bool`: Flag indicating whether to include an infinite ground plane."""
+        """:obj:`bool`: Flag indicating if an infinite ground plane is included."""
         return self.__stub.GetIncludeInfGnd(self.msg).value
 
     @include_inf_gnd.setter
@@ -318,7 +318,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def perform_erc(self):
-        """:obj:`bool`: Flag indicating whether to perform ERC during simulation setup."""
+        """:obj:`bool`: Flag indicating if ERC is performed during simulation setup."""
         return self.__stub.GetPerformERC(self.msg).value
 
     @perform_erc.setter
@@ -327,7 +327,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @property
     def ignore_non_functional_pads(self):
-        """:obj:`bool`: Flag indicating whether to ignore non-functional pads."""
+        """:obj:`bool`: Flag indicating if non-functional pads are ignored."""
         return self.__stub.GetIgnoreNonFunctionalPads(self.msg).value
 
     @ignore_non_functional_pads.setter
@@ -338,13 +338,13 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
 
 class SIWaveDCSettings(SimulationSettingsBase):
-    """Class representing dc settings for SIWave simulations."""
+    """Represents DC settings for SIWave simulations."""
 
     __stub: SIWaveDCSettingsServiceStub = StubAccessor(StubType.siwave_dc_sim_settings)
 
     @property
     def use_dc_custom_settings(self):
-        """:obj:`bool`: Flag indicating whether to use custom dc settings."""
+        """:obj:`bool`: Flag indicating if custom DC settings are used."""
         return self.__stub.GetUseDCCustomSettings(self.msg).value
 
     @use_dc_custom_settings.setter
@@ -355,7 +355,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @property
     def compute_inductance(self):
-        """:obj:`bool`: Flag indicating whether to calculate inductance."""
+        """:obj:`bool`: Flag indicating if inductance is calculated."""
         return self.__stub.GetComputeInductance(self.msg).value
 
     @compute_inductance.setter
@@ -364,7 +364,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @property
     def plot_jv(self):
-        """:obj:`bool`: Flag indicating whether to plot current density and voltage distribution."""
+        """:obj:`bool`: Flag indicating if current density and voltage distribution are plotted."""
         return self.__stub.GetPlotJV(self.msg).value
 
     @plot_jv.setter
@@ -391,7 +391,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
 
 class SIWaveDCAdvancedSettings(SimulationSettingsBase):
-    """Class representing advanced dc settings for SIWave simulations."""
+    """Represents advanced DC settings for SIWave simulations."""
 
     __stub: SIWaveDCAdvancedSettingsServiceStub = StubAccessor(
         StubType.siwave_dc_advanced_sim_settings
@@ -399,7 +399,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def dc_min_plane_area_to_mesh(self):
-        """:obj:`str`: Geometry with an area smaller than this will be ignored."""
+        """:obj:`str`: Geometry with an area smaller than this value is ignored."""
         return self.__stub.GetDCMinPlaneAreaToMesh(self.msg).value
 
     @dc_min_plane_area_to_mesh.setter
@@ -410,7 +410,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def dc_min_void_area_to_mesh(self):
-        """:obj:`str`: Voids with an area smaller than this will be ignored."""
+        """:obj:`str`: Voids with an area smaller than this value are ignored."""
         return self.__stub.GetDCMinVoidAreaToMesh(self.msg).value
 
     @dc_min_void_area_to_mesh.setter
@@ -421,7 +421,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def max_init_mesh_edge_length(self):
-        """:obj:`str`: Initial max edge length."""
+        """:obj:`str`: Initial maximum edge length."""
         return self.__stub.GetMaxInitMeshEdgeLength(self.msg).value
 
     @max_init_mesh_edge_length.setter
@@ -432,7 +432,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def perform_adaptive_refinement(self):
-        """:obj:`bool`: Flag indicating whether to perform adaptive refinement."""
+        """:obj:`bool`: Flag indicating if adaptive refinement is performed."""
         return self.__stub.GetPerformAdaptiveRefinement(self.msg).value
 
     @perform_adaptive_refinement.setter
@@ -461,7 +461,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def percent_local_refinement(self):
-        """:obj:`int`: Percent local refinement used for adaptive mesh refinement."""
+        """:obj:`int`: Percent of local refinement used for adaptive mesh refinement."""
         return self.__stub.GetPercentLocalRefinement(self.msg).value
 
     @percent_local_refinement.setter
@@ -472,7 +472,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def energy_error(self):
-        """:obj:`float`: Percent energy error used for adaptive mesh refinement."""
+        """:obj:`float`: Percent of energy error used for adaptive mesh refinement."""
         return self.__stub.GetEnergyError(self.msg).value
 
     @energy_error.setter
@@ -481,7 +481,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def mesh_bws(self):
-        """:obj:`bool`: Flag indicating whether to mesh bondwires."""
+        """:obj:`bool`: Flag indicating if bondwires are meshed."""
         return self.__stub.GetMeshBws(self.msg).value
 
     @mesh_bws.setter
@@ -490,7 +490,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def refine_bws(self):
-        """:obj:`bool`: Flag indicating whether to refine mesh along bondwires."""
+        """:obj:`bool`: Flag indicating if the mesh along bondwires is refined."""
         return self.__stub.GetRefineBws(self.msg).value
 
     @refine_bws.setter
@@ -499,7 +499,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def mesh_vias(self):
-        """:obj:`bool`: Flag indicating whether to mesh vias."""
+        """:obj:`bool`: Flag indicating if vias are meshed."""
         return self.__stub.GetMeshVias(self.msg).value
 
     @mesh_vias.setter
@@ -508,7 +508,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def refine_vias(self):
-        """:obj:`bool`: Flag indicating whether to refine mesh along vias."""
+        """:obj:`bool`: Flag indicating if the mesh along vias is refined."""
         return self.__stub.GetRefineVias(self.msg).value
 
     @refine_vias.setter
@@ -517,7 +517,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def num_bw_sides(self):
-        """:obj:`int`: Number of sides used to approximate cylindrical bondwires."""
+        """:obj:`int`: Number of sides to use to approximate cylindrical bondwires."""
         return self.__stub.GetNumBwSides(self.msg).value
 
     @num_bw_sides.setter
@@ -526,7 +526,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @property
     def num_via_sides(self):
-        """:obj:`int`: Number of sides used to approximate cylindrical vias."""
+        """:obj:`int`: Number of sides to use to approximate cylindrical vias."""
         return self.__stub.GetNumViaSides(self.msg).value
 
     @num_via_sides.setter
@@ -535,13 +535,13 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
 
 class SIWaveSParameterSettings(SimulationSettingsBase):
-    """Class representing s parameter settings for SIWave simulations."""
+    """Represents s parameter settings for SIWave simulations."""
 
     __stub: SIWaveSParameterSettingsServiceStub = StubAccessor(StubType.siwave_s_param_sim_settings)
 
     @property
     def use_state_space(self):
-        """:obj:`bool`: Flag indicating whether to use state space or custom model."""
+        """:obj:`bool`: Flag indicating if state space is used. If ``False``, a custom model is used."""
         return self.__stub.GetUseStateSpace(self.msg).value
 
     @use_state_space.setter

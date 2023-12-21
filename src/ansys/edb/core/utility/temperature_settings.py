@@ -1,16 +1,19 @@
-"""Temperature Settings."""
+"""Temperature settings."""
 from ansys.edb.core.utility.value import Value
 
 
 class TemperatureSettings:
     """
-    Temperature settings class.
+    Provides temperature settings.
 
     Attributes
     ----------
     include_temp_dependence : bool
+        Whether to include temperature dependence.
     enable_thermal_feedback : bool
+        Whether to enable thermal feedback.
     temperature : :term:`ValueLike`
+        Temperature value.
     """
 
     def __init__(self, include_temp_dependence, enable_thermal_feedback, temperature):

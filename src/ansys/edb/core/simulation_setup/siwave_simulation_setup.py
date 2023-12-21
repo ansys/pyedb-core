@@ -1,27 +1,27 @@
-"""SIWave Simulation Setup."""
+"""SIWave simulation setup."""
 
 from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
 from ansys.edb.core.simulation_setup.siwave_simulation_settings import SIWaveSimulationSettings
 
 
 class SIWaveSimulationSetup(SimulationSetup):
-    """Class representing SIWave simulation setup data."""
+    """Represents SIWave simulation setup data."""
 
     @classmethod
     def create(cls, cell, name):
-        """Create a SIWaveSimulationSetup.
+        """Create a SIWave simulationsetup.
 
         Parameters
         ----------
         cell : :class:`Cell <ansys.edb.core.layout.Cell>`
-            Cell containing new simulation setup.
+            Cell to create simulation setup in.
         name : str
-            Name of new simulation setup
+            Name of the simulation setup.
 
         Returns
         -------
         SIWaveSimulationSetup
-            Newly created simulation setup.
+            Simulation setup created.
         """
         return super()._create(cell, name, SimulationSetupType.SI_WAVE)
 

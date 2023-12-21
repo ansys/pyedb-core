@@ -1,8 +1,8 @@
 Hierarchy
 =========
 
-Hierarchy objects are :term:`Connectables <Connectable>` that can act as a container for other :term:`Connectables <Connectable>`.
-Sub-designs, MCAD Components, Coordinate systems etc.. are all examples of hierarchy objects.
+Hierarchy objects are :term:`connectables <Connectable>` that can act as a container for other :term:`connectables <Connectable>`.
+Examples of hierarchy objects include subdesigns, MCAD components, and coordinate systems.
 
 
 Object types

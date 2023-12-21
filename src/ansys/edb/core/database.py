@@ -37,7 +37,7 @@ class ProductIdType(Enum):
     """Provides an enum representing IDs of Ansys products that support EDB usage.
 
     - HFSS_3D_LAYOUT
-    - DESIGNER (Deprecated. Use HFSS_3D_LAYOUT instead.)
+    - DESIGNER (Deprecated. Use ``HFSS_3D_LAYOUT`` instead.)
     - SIWAVE
     - GENERIC_TRANSLATOR
     - USER_DEFINED
@@ -67,12 +67,12 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def create(cls, db_path):
-        """Create a database at the specified file location.
+        """Create a database in a given location.
 
         Parameters
         ----------
         db_path : str
-            Path to the top-level database folder.
+            Path to the top-level database directory.
 
         Returns
         -------
@@ -83,19 +83,19 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def open(cls, db_path, read_only):
-        """Open an existing database at the specified file location.
+        """Open a database in a given location.
 
         Parameters
         ----------
         db_path : str
-            Path to the top-level database folder.
+            Path to the top-level database directory.
         read_only : bool
             Whether to open the database in read-only mode.
 
         Returns
         -------
         Database object or None
-            Opened database object or ``None`` if no database object is found.
+            Database object opened or ``None`` if no database object is found.
         """
         return Database(
             cls.__stub.Open(
@@ -108,17 +108,17 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def delete(cls, db_path):
-        """Delete a database at the specified file location.
+        """Delete a database in a given specified location.
 
         Parameters
         ----------
         db_path : str
-            Path to the top-level database folder.
+            Path to the top-level database directory.
         """
         cls.__stub.Delete(proto_wrappers.StringValue(value=db_path))
 
     def save(self):
-        """Save any changes to a file."""
+        """Save any changes to the database."""
         self.__stub.Save(self.msg)
 
     def close(self):
@@ -137,54 +137,27 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def top_circuit_cells(self):
-        """Top circuit cells in the database.
-
-        Returns
-        -------
-        list[:class:`Cell <ansys.edb.core.layout.Cell>`]
-        """
+        """:obj:`list` of :class:`Cell <ansys.edb.core.layout.Cell>`: Top circuit cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetTopCircuits(self.msg))
 
     @property
     def circuit_cells(self):
-        """All circuit cells in the database.
-
-        Returns
-        -------
-        list[:class:`Cell <ansys.edb.core.layout.Cell>`]
-        """
+        """:obj:`list` of :class:`Cell <ansys.edb.core.layout.Cell>`: All circuit cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetCircuits(self.msg))
 
     @property
     def footprint_cells(self):
-        """All footprint cells in the database.
-
-        Returns
-        -------
-        list[:class:`Cell <ansys.edb.core.layout.Cell>`]
-        """
+        """:obj:`list` of :class:`Cell <ansys.edb.core.layout.Cell>`: All footprint cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetFootprints(self.msg))
 
     @property
     def edb_uid(self):
-        """Unique EDB ID of the database.
-
-        Returns
-        -------
-        int
-            Unique EDB ID of the database.
-        """
+        """:obj:`int`: Unique EDB ID of the database."""
         return self.__stub.GetId(self.msg).value
 
     @property
     def is_read_only(self):
-        """Flag indicating if the database is open in read-only mode.
-
-        Returns
-        -------
-        bool
-            ``True`` when the database is open in read-only mode, ``False`` otherwise.
-        """
+        """:obj:`bool`: Flag indicating if the database is open in read-only mode."""
         return self.__stub.IsReadOnly(self.msg).value
 
     @classmethod
@@ -210,8 +183,8 @@ class Database(ObjBase, variable_server.VariableServer):
         ----------
         path : str
             Location for saving the new database file to.
-        version : str, optional
-            EDB version for the new database file. The default is ``""``, which means that
+        version : str, default: ""
+            EDB version for the new database file. The default is ``""``, in which case
             the new database file is saved for the current version.
         """
         self.__stub.SaveAs(
@@ -220,7 +193,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def get_version_by_release(cls, release):
-        """Get the EDB version corresponding to a given release name.
+        """Get the EDB version for a given release name.
 
         Parameters
         ----------
@@ -236,17 +209,11 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def directory(self):
-        """Directory of the database.
-
-        Returns
-        -------
-        str
-            Directory of the Database.
-        """
+        """:obj:`str`: Directory where the database is located."""
         return self.__stub.GetDirectory(self.msg).value
 
     def get_product_property(self, prod_id, attr_it):
-        """Get the product-specific property value.
+        """Get a product-specific property value.
 
         Parameters
         ----------
@@ -265,7 +232,7 @@ class Database(ObjBase, variable_server.VariableServer):
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property associated with the given product and attribute IDs.
+        """Set the product property associated with the given product ID and attribute ID.
 
         Parameters
         ----------
@@ -281,7 +248,7 @@ class Database(ObjBase, variable_server.VariableServer):
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get a list of attribute IDs corresponding to a product property ID.
+        """Get a list of attribute IDs for a given product property ID.
 
         Parameters
         ----------
@@ -307,9 +274,9 @@ class Database(ObjBase, variable_server.VariableServer):
             Full path to the control file.
         schema_dir : str
             Path to the schema directory.
-        append : bool, optional
-            Whether to keep existing materials in the database. The default is ``True``. If
-            ``False``, the existing materials in the database are removed.
+        append : bool, default: True
+            Whether to keep existing materials in the database. If ``False``, the
+            existing materials in the database are removed.
         """
         self.__stub.ImportMaterialFromControlFile(
             database_pb2.ImportMaterialFromControlFileMessage(
@@ -322,13 +289,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def version(self):
-        """Version of the database.
-
-        Returns
-        -------
-        tuple(int, int)
-            Tuple of the version numbers [major, minor].
-        """
+        """:obj:`tuple` of (:obj:`int`, :obj:`int`): Version [major, minor] of the database."""
         version_msg = self.__stub.GetVersion(self.msg)
         return version_msg.major.id, version_msg.minor.id
 
@@ -344,15 +305,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def source(self):
-        """Source name for this database.
-
-        This attribute is also used to set the source name.
-
-        Returns
-        -------
-        str
-            Name of the source
-        """
+        """:obj:`str`: Name of the source database."""
         return self.__stub.GetSource(self.msg).value
 
     @source.setter
@@ -361,16 +314,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def source_version(self):
-        """Source version for this database.
-
-        This attribute is also used to set the version.
-
-        Returns
-        -------
-        str
-            version string
-
-        """
+        """:obj:`str`: Source version for the database."""
         return self.__stub.GetSourceVersion(self.msg).value
 
     @source_version.setter
@@ -378,7 +322,7 @@ class Database(ObjBase, variable_server.VariableServer):
         self.__stub.SetSourceVersion(edb_obj_name_message(self, source_version))
 
     def copy_cells(self, cells_to_copy):
-        """Copy Cells from other databases or this database into this database.
+        """Copy cells from other databases or this database into this database.
 
         Parameters
         ----------
@@ -417,84 +361,52 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def apd_bondwire_defs(self):
-        """All APD bondwire definitions in the database.
-
-        Returns
-        -------
-        list[:class:`ApdBondwireDef <ansys.edb.core.definition.ApdBondwireDef>`]
-        """
+        """:obj:`list` of :class:`ApdBondwireDef <ansys.edb.core.definition.ApdBondwireDef>`: All APD \
+        bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(ApdBondwireDef, BondwireDefType.APD_BONDWIRE_DEF)
 
     @property
     def jedec4_bondwire_defs(self):
-        """All JEDEC4 bondwire definitions in the database.
-
-        Returns
-        -------
-        list[:class:`Jedec4BondwireDef <ansys.edb.core.definition.Jedec4BondwireDef>`]
-        """
+        """:obj:`list` of :class:`Jedec4BondwireDef <ansys.edb.core.definition.Jedec4BondwireDef>`: All JEDEC4 \
+        bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(
             Jedec4BondwireDef, BondwireDefType.JEDEC4_BONDWIRE_DEF
         )
 
     @property
     def jedec5_bondwire_defs(self):
-        """All JEDEC5 bondwire definitions in the database.
-
-        Returns
-        -------
-        list[:class:`Jedec5BondwireDef <ansys.edb.core.definition.Jedec5BondwireDef>`]
-        """
+        """:obj:`list` of:class:`Jedec5BondwireDef <ansys.edb.core.definition.Jedec5BondwireDef>`: All JEDEC5 \
+        bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(
             Jedec5BondwireDef, BondwireDefType.JEDEC5_BONDWIRE_DEF
         )
 
     @property
     def padstack_defs(self):
-        """All padstack definitions in the database.
-
-        Returns
-        -------
-        list[:class:`PadstackDef <ansys.edb.core.definition.PadstackDef>`]
-        """
+        """:obj:`list` of :class:`PadstackDef <ansys.edb.core.definition.PadstackDef>`: All padstack definitions \
+        in the database."""
         return self._get_definition_objs(PadstackDef, DefinitionObjType.PADSTACK_DEF)
 
     @property
     def package_defs(self):
-        """All package definitions in the database.
-
-        Returns
-        -------
-        list[:class:`PackageDef <ansys.edb.core.definition.PackageDef>`]
-        """
+        """:obj:`list` of :class:`PackageDef <ansys.edb.core.definition.PackageDef>`: All package definitions \
+        in the database."""
         return self._get_definition_objs(PackageDef, DefinitionObjType.PACKAGE_DEF)
 
     @property
     def component_defs(self):
-        """All component definitions in the database.
-
-        Returns
-        -------
-        list[:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`]
-        """
+        """:obj:`list` of :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: All component \
+        definitions in the database."""
         return self._get_definition_objs(ComponentDef, DefinitionObjType.COMPONENT_DEF)
 
     @property
     def material_defs(self):
-        """All material definitions in the database.
-
-        Returns
-        -------
-        list[:class:`MaterialDef <ansys.edb.core.definition.MaterialDef>`]
-        """
+        """:obj:`list` of :class:`MaterialDef <ansys.edb.core.definition.MaterialDef>`: All material \
+        definitions in the database."""
         return self._get_definition_objs(MaterialDef, DefinitionObjType.MATERIAL_DEF)
 
     @property
     def dataset_defs(self):
-        """All dataset definitions in the database.
-
-        Returns
-        -------
-        list[:class:`DatasetDef <ansys.edb.core.definition.DatasetDef>`]
-        """
+        """:obj:`list` of :class:`DatasetDef <ansys.edb.core.definition.DatasetDef>`: All dataset \
+        definitions in the database."""
         return self._get_definition_objs(DatasetDef, DefinitionObjType.DATASET_DEF)

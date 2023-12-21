@@ -1,4 +1,4 @@
-"""Layout Instance Context."""
+"""Layout instance context."""
 
 from ansys.edb.core.inner import ObjBase, parser
 from ansys.edb.core.inner.messages import bool_property_message
@@ -7,7 +7,7 @@ from ansys.edb.core.session import LayoutInstanceContextServiceStub, StubAccesso
 
 
 class LayoutInstanceContext(ObjBase):
-    """Class representing layout instance context object."""
+    """Represents the layout instance context object."""
 
     __stub: LayoutInstanceContextServiceStub = StubAccessor(StubType.layout_instance_context)
 
@@ -15,7 +15,7 @@ class LayoutInstanceContext(ObjBase):
     def layout(self):
         """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout of the context.
 
-        Read-Only.
+        This property is read-only.
         """
         return layout.Layout(self.__stub.GetLayout(self.msg))
 
@@ -26,12 +26,13 @@ class LayoutInstanceContext(ObjBase):
         Parameters
         ----------
         local : bool
-            If true, return the bounding-box in the local :class:`context <LayoutInstanceContext>`.  Otherwise, \
-            return the bounding-box in the global context.
+            Whether to return the bounding box in the local :class:`context <LayoutInstanceContext>`.
+            If ``False``, the bounding-box in the global context is returned.
 
         Returns
         -------
         :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+            Bounding box of the context.
         """
         return self.__stub.GetBBox(bool_property_message(self, local))
 
@@ -39,27 +40,28 @@ class LayoutInstanceContext(ObjBase):
     def is_top_or_black_box(self):
         """:obj:`bool`: Flag indicating if this is a top-level or blackbox context.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.IsTopOrBlackBox(self.msg).value
 
     @property
     def top_or_black_box(self):
-        """:class:`LayoutInstanceContext`: The top-level or blackbox :class:`context <LayoutInstanceContext>`.
+        """:class:`LayoutInstanceContext`: Top-level or blackbox :class:`context <LayoutInstanceContext>` instance.
 
-        Read-Only.
+        This property is read-only.
         """
         return LayoutInstanceContext(self.__stub.GetTopOrBlackBox(self.msg))
 
     @property
     def placement_elevation(self):
-        """:obj:`float`: The placement elevation of the context.
+        """:obj:`float`: Placement elevation of the context.
 
-        Only applies if the context doesn't have 3D placement. \
-        If the context has 3D placement is enabled, :obj:`None` is returned because the placement of the context is \
-        dictated by the underlying 3d transformation. Otherwise, the placement elevation of the context is returned.
+        This parameter only applies if the context does not have 3D placement enabled.
+        If the context has 3D placement enabled, ``None`` is returned because the
+        placement of the context is dictated by the underlying 3D transformation.
+        Otherwise, the placement elevation of the context is returned.
 
-        Read-Only.
+        This property is read-only.
         """
         return (
             self.__stub.GetPlacementElevation(self.msg).value
@@ -68,16 +70,18 @@ class LayoutInstanceContext(ObjBase):
         )
 
     def get_is_3d_placement(self, local):
-        """Check if the context has 3d placement enabled.
+        """Determine if the context has 3D placement enabled.
 
         Parameters
         ----------
         local : bool
-            If true, check the local :class:`context <LayoutInstanceContext>` only.  If false, check for a 3D \
-            Placement anywhere up the hierarchy.
+            Whether 3D placement is enabled only in the local :class:`context <LayoutInstanceContext>`.
+            If ``False``, a check is run to see if 3D placement is enabled anywhere higher in the
+            hierarchy.
 
         Returns
         -------
         bool
+            ``True`` if 3D placement is enabled in the local context.
         """
         return self.__stub.Is3DPlacement(bool_property_message(self, local)).value

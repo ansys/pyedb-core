@@ -59,7 +59,7 @@ class DieProperty(ObjBase):
         Returns
         -------
         DieProperty
-            Cloned die property created.
+            Die property cloned.
         """
         return DieProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
@@ -74,9 +74,9 @@ class DieProperty(ObjBase):
 
     @property
     def height(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Height of the die property.
+        """:class:`Value <ansys.edb.core.utility.Value>`: Die height.
 
-        This attribute can be set with the :term:`ValueLike` term.
+        This property can be set with :term:`ValueLike`.
         """
         return Value(self.__stub.GetHeight(messages.edb_obj_message(self)))
 

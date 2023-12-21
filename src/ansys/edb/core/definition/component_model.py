@@ -17,7 +17,7 @@ class ComponentModel(ObjBase):
 
     @property
     def reference_file(self):
-        """:obj:`str`: Name of the reference file associated with this component model."""
+        """:obj:`str`: Name of the reference file associated with the component model."""
         return self.__stub.GetReferenceFile(self.msg).value
 
     @reference_file.setter
@@ -47,7 +47,7 @@ class NPortComponentModel(ComponentModel):
         Notes
         -----
         The component model does not belong to a specific database until it is added to a
-        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` class.
+        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance.
         """
         return NPortComponentModel(cls.__stub.Create(proto_wrappers.StringValue(value=name)))
 

@@ -1,27 +1,27 @@
-"""RaptorX Simulation Setup."""
+"""RaptorX simulation setup."""
 
 from ansys.edb.core.simulation_setup.raptor_x_simulation_settings import RaptorXSimulationSettings
 from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
 
 
 class RaptorXSimulationSetup(SimulationSetup):
-    """Class representing RaptorX simulation setup data."""
+    """Represents RaptorX simulation setup data."""
 
     @classmethod
     def create(cls, cell, name):
-        """Create a RaptorXSimulationSetup.
+        """Create a RaptorX simulation setup.
 
         Parameters
         ----------
         cell : :class:`Cell <ansys.edb.core.layout.Cell>`
-            Cell containing new simulation setup.
+            Cell to create the simulation setup in.
         name : str
-            Name of new simulation setup
+            Name of the simulation setup.
 
         Returns
         -------
         RaptorXSimulationSetup
-            Newly created simulation setup.
+            RaptorX simulation setup created.
         """
         return super()._create(cell, name, SimulationSetupType.RAPTOR_X)
 

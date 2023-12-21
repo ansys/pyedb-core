@@ -1,4 +1,4 @@
-"""HeatSink."""
+"""Heat sink."""
 
 from enum import Enum
 
@@ -8,7 +8,7 @@ from ansys.edb.core.utility import conversions
 
 
 class HeatSinkFinOrientation(Enum):
-    """Enum representing bondwire types.
+    """Provides an enum representing bondwire types.
 
     - X_ORIENTED
        X axis oriented.
@@ -24,20 +24,20 @@ class HeatSinkFinOrientation(Enum):
 
 
 class HeatSink:
-    """Class representing HeatSink.
+    """Represents a heat sink.
 
     Attributes
     ----------
         fin_thickness : :term:`ValueLike`
-            HeatSink's fin thickness.
+            Fin thickness of the heat sink.
         fin_spacing : :term:`ValueLike`
-            HeatSink's fin spacing.
+            Fin spacing of the heat sink.
         fin_base_height : :term:`ValueLike`
-            Base elevation of the HeatSink
+            Base elevation of the the heat sink.
         fin_height : :term:`ValueLike`
-            HeatSink's fin height.
+            Fin height of the heat sink.
         fin_orientation : HeatSinkFinOrientation
-            HeatSink's fin orientation if not set is set to X axis orientation.
+            Fin orientation of the heat sink if it is not set to the X axis.
 
     """
 
@@ -49,7 +49,7 @@ class HeatSink:
         fin_height=0,
         fin_orientation=HeatSinkFinOrientation.X_ORIENTED,
     ):
-        """Construct a HeatSink object using given values."""
+        """Initialize a heat sink object using given values."""
         self.fin_thickness = conversions.to_value(fin_thickness)
         self.fin_spacing = conversions.to_value(fin_spacing)
         self.fin_base_height = conversions.to_value(fin_base_height)

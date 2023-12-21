@@ -14,7 +14,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class ICComponentProperty(component_property.ComponentProperty):
-    """Representing an IC component property."""
+    """Represents an IC component property."""
 
     __stub: ICComponentPropertyServiceStub = StubAccessor(StubType.ic_component_property)
 
@@ -32,7 +32,7 @@ class ICComponentProperty(component_property.ComponentProperty):
 
     @property
     def solder_ball_property(self):
-        """:obj:`SolderBallProperty` : Solder ball property.
+        """:obj:`SolderBallProperty`: Solder ball property.
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
@@ -48,7 +48,7 @@ class ICComponentProperty(component_property.ComponentProperty):
 
     @property
     def die_property(self):
-        """:obj:`DieProperty` : Die property.
+        """:obj:`DieProperty`: Die property.
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
@@ -60,7 +60,7 @@ class ICComponentProperty(component_property.ComponentProperty):
 
     @property
     def port_property(self):
-        """:obj:`PortProperty` : Port property.
+        """:obj:`PortProperty`: Port property.
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """

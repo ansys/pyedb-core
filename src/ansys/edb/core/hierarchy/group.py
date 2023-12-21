@@ -10,13 +10,13 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class Group(HierarchyObj):
-    """Class representing a group object."""
+    """Represents a group object."""
 
     __stub: GroupServiceStub = StubAccessor(StubType.group)
     layout_obj_type = LayoutObjType.GROUP
 
     def cast(self):
-        """Cast the group object to correct concrete type.
+        """Cast the group object to the correct concrete type.
 
         Returns
         -------
@@ -44,14 +44,14 @@ class Group(HierarchyObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout that owns the group.
+            Layout to create the group in.
         name : str
-            Name of group to be created.
+            Name of the group.
 
         Returns
         -------
         Group
-            Newly created group.
+           Group created.
         """
         return Group(cls.__stub.Create(messages.object_name_in_layout_message(layout, name)))
 
@@ -62,14 +62,14 @@ class Group(HierarchyObj):
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            Layout to search the group in.
+            Layout to search for the group.
         name : str
-            Name of the group to be searched.
+            Name of the group.
 
         Returns
         -------
         Group
-            Group that is found, None otherwise.
+            Group that is found, ``None`` otherwise.
         """
         return Group(
             cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name))
@@ -81,7 +81,7 @@ class Group(HierarchyObj):
         Parameters
         ----------
         member : :term:`Connectable`
-            Object to be added to the group.
+            Object to add to the group.
         """
         self.__stub.AddMember(messages.group_modify_member_message(self, member))
 
@@ -91,25 +91,25 @@ class Group(HierarchyObj):
         Parameters
         ----------
         member : :term:`Connectable`
-            Object to be removed from the group.
+            Object to remove from the group.
         """
         self.__stub.RemoveMember(messages.group_modify_member_message(self, member))
 
     def ungroup(self, recursive):
-        """Dissolves the group.
+        """Dissolve the group.
 
         Parameters
         ----------
         recursive : bool
-            True if all containing groups should also be dissolved, False otherwise.
+            Whether all containing groups should also be resolved.
         """
         self.__stub.Ungroup(messages.bool_property_message(self, recursive))
 
     @property
     def members(self):
-        """:obj:`list` of :term:`Connectables <Connectable>`: List of all the group members.
+        """:obj:`list` of :term:`Connectables <Connectable>`: All group members.
 
-        Read-Only.
+        This property is read-only.
         """
         from ansys.edb.core.inner import factory
 

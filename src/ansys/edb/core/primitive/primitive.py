@@ -1968,7 +1968,7 @@ class BoardBendDef(Primitive):
             Layout to create the board bend definition in.
         zone_prim : :class:`Primitive <Primitive>`
             Zone primitive to create the board bend definition on.
-        bend_middle : :term:`PointDataTuple`
+        bend_middle : (:term:`Point2DLike`, :term:`Point2DLike`)
             Tuple containing the starting and ending points of the line that represents
             the middle of the bend.
         bend_radius : :term:`ValueLike`
@@ -2004,7 +2004,7 @@ class BoardBendDef(Primitive):
     @property
     @parser.to_point_data_pair
     def bend_middle(self):
-        """:term:`PointDataTuple`: Tuple of the bend middle based on the starting and ending points."""
+        """(:term:`Point2DLike`, :term:`Point2DLike`): Tuple of the bend middle based on starting and ending points."""
         return self.__stub.GetBendMiddle(self.msg)
 
     @bend_middle.setter

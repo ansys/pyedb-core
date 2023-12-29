@@ -114,9 +114,9 @@ class PadEdge(Edge):
 
         Parameters
         ----------
-        padstack_instance : PadstackInstance
-        layer : Layer or str
-        arc : ArcData
+        padstack_instance : :class:`.PadstackInstance`
+        layer : :class:`.Layer` or :obj:`str`
+        arc : :class:`.ArcData`
 
         Returns
         -------
@@ -126,17 +126,17 @@ class PadEdge(Edge):
 
     @property
     def padstack_instance(self):
-        """:class:`PadstackInstance`: Padstack instance that the edge is on."""
+        """:class:`.PadstackInstance`: Padstack instance that the edge is on."""
         return primitive.PadstackInstance(self._params.padstack_instance)
 
     @property
     def layer(self):
-        """:class:`Layer`: Layer that the edge is on."""
+        """:class:`.Layer`: Layer that the edge is on."""
         return Layer(self._params.layer.id).cast()
 
     @property
     def arc(self):
-        """:class:`ArcData`: Arc of the edge."""
+        """:class:`.ArcData`: Arc of the edge."""
         return ArcData(self._params.arc)
 
 
@@ -151,8 +151,8 @@ class PrimitiveEdge(Edge):
 
         Parameters
         ----------
-        prim : Primitive
-        point : (float, float)
+        prim : :class:`.Primitive`
+        point : :term:`Point2DLike`
 
         Returns
         -------
@@ -162,12 +162,13 @@ class PrimitiveEdge(Edge):
 
     @property
     def primitive(self):
-        """:class:`Primitive`: Primitive of the terminal."""
+        """:class:`.Primitive`: Primitive of the terminal."""
         return primitive.Primitive(self._params.primitive).cast()
 
     @property
+    @parser.to_point_data
     def point(self):
-        """:obj:`list`: Coordinates (x, y) of the terminal."""
+        """:class:`.PointData`: Coordinates (x, y) of the terminal."""
         return self._params.point
 
 
@@ -215,9 +216,9 @@ class Terminal(conn_obj.ConnObj):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`.Layout`
            Layout to search for the terminal.
-        name : str
+        name : .str
             Name of the terminal.
 
         Returns
@@ -257,7 +258,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def reference_layer(self):
-        """:class:`Layer`: Layer that the terminal references, if any, by either layer object or name."""
+        """:class:`.Layer`: Layer that the terminal references, if any, by either layer object or name."""
         return Layer(self._params.ref_layer).cast()
 
     @reference_layer.setter
@@ -321,7 +322,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def impedance(self):
-        """:class:`Value`: Impedance of the terminal."""
+        """:class:`.Value`: Impedance of the terminal."""
         return Value(self._params.impedance)
 
     @impedance.setter
@@ -330,7 +331,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def source_amplitude(self):
-        """:class:`Value`: Source amplitude of the terminal."""
+        """:class:`.Value`: Source amplitude of the terminal."""
         return Value(self._params.source_amplitude)
 
     @source_amplitude.setter
@@ -339,7 +340,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def source_phase(self):
-        """:class:`Value`: Source phase of the terminal."""
+        """:class:`.Value`: Source phase of the terminal."""
         return Value(self._params.source_phase)
 
     @source_phase.setter
@@ -376,7 +377,7 @@ class Terminal(conn_obj.ConnObj):
     @property
     @parser.to_rlc
     def rlc_boundary_parameters(self):
-        """:class:`Rlc`: RLC boundary parameters."""
+        """:class:`.Rlc`: RLC boundary parameters."""
         return self._params.rlc
 
     @rlc_boundary_parameters.setter
@@ -385,7 +386,7 @@ class Terminal(conn_obj.ConnObj):
 
     @property
     def port_post_processing_prop(self):
-        """:class:`PortPostProcessingProp`: Port postprocessing properties."""
+        """:class:`.PortPostProcessingProp`: Port postprocessing properties."""
         msg = self._params.port_post_processing_prop
         return PortPostProcessingProp(
             voltage_magnitude=msg.voltage_magnitude,
@@ -413,12 +414,12 @@ class Terminal(conn_obj.ConnObj):
         ----------
         product_id : ProductIdType
             ID of the product.
-        solver_name : str
+        solver_name : :obj:`str`
             Name of the solver.
 
         Returns
         -------
-        str
+        :obj:`str`
             Name of the product solver option.
         """
         return next(
@@ -434,9 +435,9 @@ class Terminal(conn_obj.ConnObj):
         ----------
         product_id : ProductIdType
             ID of the product.
-        solver_name : str
+        solver_name : obj:`str`
             Name of the solver.
-        option : str
+        option : obj:`str`
            Name of the product solver option.
         """
         self.__stub.SetProductSolverOptions(
@@ -450,6 +451,10 @@ class Terminal(conn_obj.ConnObj):
         ----------
         product_id : ProductIdType
             ID of the product.
+
+        Returns
+        -------
+        list of str
         """
         return [solver.name for solver in self._product_solvers(product_id)]
 
@@ -466,13 +471,13 @@ class TerminalInstance(conn_obj.ConnObj):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`.Layout`
             Layout to create the terminal instance in.
-        cell_instance : CellInstance
+        cell_instance : :class:`.CellInstance`
             Name of the cell instance to create the terminal instance on.
-        name : str
+        name : :obj:`str`
             Name of the terminal instance.
-        net_ref : Net or str or None
+        net_ref : :class:`.Net` or :obj:`str` or None
             Net reference.
 
         Returns
@@ -487,7 +492,7 @@ class TerminalInstance(conn_obj.ConnObj):
 
     @property
     def owning_cell_instance(self):
-        """:class:`CellInstance`: Cell instance that owns the terminal."""
+        """:class:`.CellInstance`: Cell instance that owns the terminal."""
         return hierarchy.CellInstance(self.__stub.GetOwningCellInstance(self.msg))
 
     @property
@@ -513,13 +518,13 @@ class TerminalInstanceTerminal(Terminal):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`.Layout`
             Layout to create the terminal instance terminal in.
         term_instance : TerminalInstance
             Terminal instance to create the terminal instance terminal on.
-        name
+        name: :obj:`str`
             Name of the terminal instance terminal.
-        net_ref : Net or str or None
+        net_ref : :class:`.Net` or :obj:`str` or None
             Net reference.
         is_ref : bool, default: False
             Whether the terminal instance terminal is a reference terminal.
@@ -568,7 +573,7 @@ class BundleTerminal(Terminal):
 
     @property
     def terminals(self):
-        """:obj:`list`: All terminals grouped in the terminal."""
+        """:obj:`list` of Terminal: All terminals grouped in the terminal."""
         return [Terminal(msg).cast() for msg in self.__stub.GetTerminals(self.msg)]
 
     def ungroup(self):
@@ -589,15 +594,15 @@ class PointTerminal(Terminal):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`.Layout`
             Layout to create the point terminal in.
-        net : str or Net or None
+        net : :class:`.Net` or :obj:`str` or None
             Net.
-        layer : str or Layer
+        layer : :class:`.Layer` or :obj:`str`
             Layer to place the point terminal on.
-        name : str
+        name : :obj:`str`
             Name of the point terminal.
-        point : PointLike
+        point : :term:`Point2DLike`
             Type of the point terminal.
 
         Returns
@@ -610,33 +615,34 @@ class PointTerminal(Terminal):
 
     @property
     def params(self):
-        """:class:`layer`, :obj:`list (Value, Value)`: Layer that the point terminal is placed on and a list of \
+        """:class:`.Layer`, :class:`.PointData`: Layer that the point terminal is placed on and \
         the (x, y) coordinates."""
         res = self.__stub.GetParameters(self.msg)
-        point = (
-            Value(res.point.x),
-            Value(res.point.y),
-        )
+        point = parser.to_point_data(res.point)
         layer = Layer(res.layer.id).cast()
         return layer, point
-
-    @property
-    def layer(self):
-        """:class:`Layer`: Layer that the point terminal is placed on."""
-        return self.params[0]
-
-    @property
-    def point(self):
-        """:obj:`list (Value, Value)`: Coordinates (x, y) of the point terminal.
-
-        To set the (x, y) coordinates and the layer that the point terminal is placed on,
-        use a tuple in this format: ``[str or Layer, PointData]``.
-        """
-        return self.params[1]
 
     @params.setter
     def params(self, params):
         self.__stub.SetParameters(messages.point_term_set_params_message(self, *params))
+
+    @property
+    def layer(self):
+        """:class:`.Layer`: Layer that the point terminal is placed on."""
+        return self.params[0]
+
+    @layer.setter
+    def layer(self, value):
+        self.params = (messages.edb_obj_message(value), self.point)
+
+    @property
+    def point(self):
+        """:class:`.PointData`: Coordinates (x, y) of the point terminal."""
+        return self.params[1]
+
+    @point.setter
+    def point(self, value):
+        self.params = (self.layer, messages.point_message(value))
 
 
 class PadstackInstanceTerminal(Terminal):
@@ -651,17 +657,17 @@ class PadstackInstanceTerminal(Terminal):
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`.Layout`
             Layout to create the padstack instance terminal in.
-        name : str
+        name : :obj:`str`
             Name of the padstack instance terminal.
-        padstack_instance : PadstackInstance
+        padstack_instance : :class:`.PadstackInstance`
             Padstack instance.
-        layer : Layer or str
+        layer : :class:`.Layer` or :obj:`str`
             Layer to place the padstack instance terminal on.
-        net : Net or str or None
+        net : :class:`.Net` or :obj:`str` or None
             Net.
-        is_ref : bool, default: False
+        is_ref : :obj:`bool`, default: False
             Whether the padstack instance terminal is a reference terminal.
 
         Returns
@@ -678,7 +684,7 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def params(self):
-        """:obj:`list` of :class:`PadstackInstance` and :class:`Layer`: Padstack instance and layer."""
+        """:obj:`list` of :class:`.PadstackInstance` and :class:`.Layer`: Padstack instance and layer."""
         res = self.__stub.GetParameters(self.msg)
         padstack_instance = primitive.PadstackInstance(res.padstack_instance)
         layer = Layer(res.layer).cast()
@@ -693,12 +699,12 @@ class PadstackInstanceTerminal(Terminal):
 
     @property
     def padstack_instance(self):
-        """:class:`PadstackInstance`: Padstack instance of the terminal."""
+        """:class:`.PadstackInstance`: Padstack instance of the terminal."""
         return self.params[0]
 
     @property
     def layer(self):
-        """:class:`Layer`: Layer the terminal is placed on."""
+        """:class:`.Layer`: Layer the terminal is placed on."""
         return self.params[1]
 
 
@@ -709,20 +715,20 @@ class PinGroupTerminal(Terminal):
     type = TypeField(TerminalType.PIN_GROUP)
 
     @classmethod
-    def create(cls, layout, name, pin_group, net_ref, is_ref=False):
+    def create(cls, layout, name, pin_group, net, is_ref=False):
         """Create a pin group terminal.
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`.Layout`
             Layout to create the pin group terminal in.
-        net_ref : Net or str or None
+        net : :class:`.Net` or :obj:`str` or None
             Net reference.
-        name : str
+        name : :obj:`str`
             Name of the pin group terminal.
-        pin_group : PinGroup
+        pin_group : :class:`.PinGroup`
             Pin group.
-        is_ref : bool, default: False
+        is_ref : :obj:`bool`, default: False
             Whether the pin group terminal is a reference terminal.
 
         Returns
@@ -731,13 +737,13 @@ class PinGroupTerminal(Terminal):
         """
         return PinGroupTerminal(
             cls.__stub.Create(
-                messages.pin_group_term_creation_message(layout, net_ref, name, pin_group, is_ref)
+                messages.pin_group_term_creation_message(layout, net, name, pin_group, is_ref)
             )
         )
 
     @property
     def pin_group(self):
-        """:class:`PinGroup`: Pin group of the terminal."""
+        """:class:`.PinGroup`: Pin group of the terminal."""
         return hierarchy.PinGroup(self.__stub.GetPinGroup(self.msg))
 
     @pin_group.setter
@@ -746,7 +752,7 @@ class PinGroupTerminal(Terminal):
 
     @property
     def layer(self):
-        """:class:`Layer`: Layer."""
+        """:class:`.Layer`: Layer."""
         return Layer(self.__stub.GetLayer(self.msg)).cast()
 
     @layer.setter
@@ -761,19 +767,19 @@ class EdgeTerminal(Terminal):
     type = TypeField(TerminalType.EDGE)
 
     @classmethod
-    def create(cls, layout, name, edges, net_ref=None, is_ref=False):
+    def create(cls, layout, name, edges, net=None, is_ref=False):
         """Create an edge terminal.
 
         Parameters
         ----------
-        layout : Layout
+        layout : :class:`.Layout`
             Layout to create the edge terminal in.
-        name : str
+        name : :obj:`str`
             Name of the edge terminal.
         edges : list of Edge
-        net_ref : Net or str or None
+        net : :class:`.Net` or :obj:`str` or None
             Net reference. The default is ``None``.
-        is_ref : bool, default: False
+        is_ref : :obj:`bool`, default: False
             Whether the edge terminal is a reference terminal.
 
         Returns
@@ -781,14 +787,12 @@ class EdgeTerminal(Terminal):
         EdgeTerminal
         """
         return EdgeTerminal(
-            cls.__stub.Create(
-                messages.edge_term_creation_message(layout, net_ref, name, edges, is_ref)
-            )
+            cls.__stub.Create(messages.edge_term_creation_message(layout, net, name, edges, is_ref))
         )
 
     @property
     def edges(self):
-        """:obj:`list` of :class:`Edge`: All edges on the terminal."""
+        """:obj:`list` of :class:`.Edge`: All edges on the terminal."""
         return [Edge(msg).cast() for msg in self.__stub.GetEdges(self.msg)]
 
     @edges.setter

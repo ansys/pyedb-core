@@ -1,8 +1,8 @@
-"""Triangle3DData Class."""
+"""Triangle 3D data."""
 
 
 class Triangle3DData:
-    """Triangle defined by three 3D points."""
+    """Represents a triangle defined by three 3D points."""
 
     def __init__(self, point_1, point_2, point_3):
         """Create a 3D triangle.
@@ -19,7 +19,7 @@ class Triangle3DData:
 
     @property
     def point_1(self):
-        """:class:`Point3DData`: First point."""
+        """:class:`Point3DData`: First 3D point."""
         return self._point_1
 
     @point_1.setter
@@ -28,7 +28,7 @@ class Triangle3DData:
 
     @property
     def point_2(self):
-        """:class:`Point3DData`: Second point."""
+        """:class:`Point3DData`: Second 3D point."""
         return self._point_2
 
     @point_2.setter
@@ -37,7 +37,7 @@ class Triangle3DData:
 
     @property
     def point_3(self):
-        """:class:`Point3DData`: Third point."""
+        """:class:`Point3DData`: Third 3D point."""
         return self._point_3
 
     @point_3.setter

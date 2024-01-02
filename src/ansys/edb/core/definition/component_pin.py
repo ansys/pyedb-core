@@ -13,14 +13,14 @@ class ComponentPin(ObjBase):
 
     @classmethod
     def create(cls, comp_def, name):
-        """Create a component pin.
+        """Create a component pin in a given component definition.
 
         Parameters
         ----------
         comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
-            Component definition that the component pin is to belong to.
+            Component definition to create the component pin in.
         name : str
-            Name of the component pin to create.
+            Name of the component pin.
 
         Returns
         -------
@@ -31,7 +31,7 @@ class ComponentPin(ObjBase):
 
     @classmethod
     def find(cls, comp_def, name):
-        """Find a component pin in a component definition.
+        """Find a component pin in a given component definition.
 
         Parameters
         ----------
@@ -43,7 +43,7 @@ class ComponentPin(ObjBase):
         Returns
         -------
         ComponentPin
-            Component pin that was found, ``None`` otherwise.
+            Component pin found, ``None`` otherwise.
         """
         return ComponentPin(cls.__stub.FindByName(messages.edb_obj_name_message(comp_def, name)))
 
@@ -60,15 +60,15 @@ class ComponentPin(ObjBase):
     def number(self):
         """:obj:`int`: Serial number of the component pin inside its component definition.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return self.__stub.GetNumber(self.msg).value
 
     @property
     def component_def(self):
-        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition that this component \
+        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition that the component \
         pin belongs to.
 
-        This attribute is read-only.
+        This property is read-only.
         """
         return component_def.ComponentDef(self.__stub.GetComponentDef(self.msg))

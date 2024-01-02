@@ -28,7 +28,7 @@ class PackageDef(ObjBase):
 
     @classmethod
     def create(cls, db, name):
-        """Create a package definition object.
+        """Create a package definition in a given database.
 
         Parameters
         ----------
@@ -40,12 +40,13 @@ class PackageDef(ObjBase):
         Returns
         -------
         PackageDef
+            Package definition created.
         """
         return PackageDef(cls.__stub.Create(string_property_message(db, name)))
 
     @classmethod
     def find_by_name(cls, db, name):
-        """Find a package definition object by name.
+        """Find a package definition object by name in a given database.
 
         Parameters
         ----------
@@ -57,12 +58,13 @@ class PackageDef(ObjBase):
         Returns
         -------
         PackageDef
+            Package definition found, ``None`` otherwise.
         """
         return PackageDef(cls.__stub.FindByName(string_property_message(db, name)))
 
     @classmethod
     def find_by_id(cls, db, uid):
-        """Find a package definition object by ID.
+        """Find a package definition object by ID in a given database.
 
         Parameters
         ----------
@@ -74,17 +76,18 @@ class PackageDef(ObjBase):
         Returns
         -------
         PackageDef
+            Package definition found, ``None`` otherwise.
         """
         return PackageDef(cls.__stub.FindByEDBUId(int_property_message(db, uid)))
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Type."""
+        """:class:`DefinitionObjType`: Definition type."""
         return DefinitionObjType.PACKAGE_DEF
 
     @property
     def name(self):
-        """:obj:`str`: Name of the package definition object."""
+        """:obj:`str`: Name of the package definition."""
         return self.__stub.GetName(edb_obj_message(self)).value
 
     @name.setter
@@ -94,7 +97,7 @@ class PackageDef(ObjBase):
     @property
     @parser.to_polygon_data
     def exterior_boundary(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary for the package definition."""
+        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary of the package definition."""
         return self.__stub.GetExteriorBoundary(edb_obj_message(self))
 
     @exterior_boundary.setter
@@ -157,7 +160,7 @@ class PackageDef(ObjBase):
 
     @property
     def heat_sink(self):
-        """:class:`HeatSink <ansys.edb.core.utility.HeatSink>`: Assigned heat sink model for the package."""
+        """:class:`HeatSink <ansys.edb.core.utility.HeatSink>`: Heat sink model assigned to the package."""
         heat_sink_paramaters = self.__stub.GetHeatSink(edb_obj_message(self))
         return HeatSink(
             heat_sink_paramaters.thickness,
@@ -176,7 +179,7 @@ class PackageDef(ObjBase):
         self.__stub.Delete(edb_obj_message(self))
 
     def get_product_property(self, prod_id, attr_it):
-        """Get the product-specific property value.
+        """Get the product property for a given product ID and attribute ID.
 
         Parameters
         ----------
@@ -188,14 +191,14 @@ class PackageDef(ObjBase):
         Returns
         -------
         str
-            Property value for the specified product and attribute IDs.
+            Product property for the given product ID and attribute ID.
         """
         return self.__stub.GetProductProperty(
             get_product_property_message(self, prod_id, attr_it)
         ).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
-        """Set the product property associated with the given product and attribute IDs.
+        """Set the product property for the given product ID and attribute ID.
 
         Parameters
         ----------
@@ -211,7 +214,7 @@ class PackageDef(ObjBase):
         )
 
     def get_product_property_ids(self, prod_id):
-        """Get the list of attribute IDS for a given property ID.
+        """Get the list of property IDs for a given property ID.
 
         Parameters
         ----------
@@ -221,7 +224,7 @@ class PackageDef(ObjBase):
         Returns
         -------
         list[int]
-            List of attribute IDs for the givens product ID.
+            Attribute IDs for the given product ID.
         """
         attr_ids = self.__stub.GetProductPropertyIds(
             get_product_property_ids_message(self, prod_id)

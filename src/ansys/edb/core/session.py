@@ -434,11 +434,11 @@ def attach_session(ip_address=None, port_num=50051):
 
     Parameters
     ----------
-    ip_address : str, optional
+    ip_address : str, default: None
         IP address of the machine that is running the server. The default is ``None``,
         in which case localhost is used.
-    port_num : int, optional
-        Port number that the server is listening on. The default is ``50051``.
+    port_num : int, default: 50051
+        Port number that the server is listening on.
     """
     MOD.current_session = _Session(ip_address, port_num, None)
     MOD.current_session.connect()
@@ -454,9 +454,9 @@ def launch_session(ansys_em_root, port_num=None):
     ----------
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
-    port_num : int, optional
+    port_num : int, default: None
         Port number to listen on. The default is ``None``, in which
-        case local host is used.
+        case localhost is used.
 
     Examples
     --------
@@ -487,10 +487,10 @@ def session(ansys_em_root, port_num, ip_address=None):
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
     port_num : int
-        Port number to listen on. The default is ``None``.
-    ip_address : str, optional
+        Port number to listen on.
+    ip_address : str, default: None
         IP address where the server executable file is running. The default is ``None``, in which
-        case local host is used.
+        case localhost is used.
 
         .. note::
            This parameter is currently not supported. In future releases, this parameter is to

@@ -1,4 +1,4 @@
-"""Layout Obj Instance."""
+"""Layout object instance."""
 
 from ansys.edb.core.inner import ObjBase, parser, utils
 from ansys.edb.core.inner.factory import create_conn_obj
@@ -16,7 +16,7 @@ from ansys.edb.core.session import LayoutObjInstanceServiceStub, StubAccessor, S
 
 def _parse_layout_obj_instance_geometry_message(lyt_obj_inst_geom_msg):
     if lyt_obj_inst_geom_msg.type == -1:
-        raise TypeError("Encountered an unknown layout obj instance geometry type")
+        raise TypeError("Encountered an unknown geometry type for the layout object instance.")
     geom_type = (
         LayoutObjInstance2DGeometry
         if lyt_obj_inst_geom_msg.type == 0
@@ -27,29 +27,25 @@ def _parse_layout_obj_instance_geometry_message(lyt_obj_inst_geom_msg):
 
 
 class LayoutObjInstance(ObjBase):
-    """Class representing layout object instance."""
+    """Represents a layout object instance."""
 
     __stub: LayoutObjInstanceServiceStub = StubAccessor(StubType.layout_obj_instance)
 
     @property
     def layers(self):
-        """Return a list of Layer instances.
+        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: All layer instances.
 
-        This list contains the :class:`Layer <ansys.edb.core.layer.Layer>` instances that this layout
-        object instance has geometry on.
-
-        Returns
-        -------
-        list[ansys.edb.core.layer.Layer]
+        This list contains the layer` instances that the layout object instance has geometry on.
         """
         return [Layer(msg).cast() for msg in self.__stub.GetLayers(self.msg).items]
 
     def get_geometries(self, layer):
-        """Get the geometry that exists on the specified layer.
+        """Get the geometry that exists on a given layer.
 
         Parameters
         ----------
         layer : :class:`Layer <ansys.edb.core.layer.Layer>` or str
+           Layer.
 
         Returns
         -------
@@ -60,31 +56,31 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def context(self):
-        r""":obj:`list`\[:obj:`str`\]: List of strings representing the context of the layout object instance.
+        r""":obj:`list`\[:obj:`str`\]: All strings representing the context of the layout object instance.
 
-        The list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names \
-        representing the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>` \
-        resides on. The the first entry in the list represents the top level context and the last entry \
-        represents the context the layout obj instance exists in.
+        This list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names
+        representing the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>`
+        resides on. The first entry represents the top-level context and the last entry represents
+        the context that the layout object instance exists in.
 
-        Read-Only
+        This property is read-only.
         """
         return utils.map_list(self.__stub.GetContext(self.msg).strings)
 
     @property
     def layout_instance_context(self):
-        """:class:`LayoutInstanceContext`: The context this layout object instance exists in.
+        """:class:`LayoutInstanceContext`: Context that the layout object instance exists in.
 
-        Read-Only.
+        This property is read-only.
         """
         return LayoutInstanceContext(self.__stub.GetLayoutInstanceContext(self.msg))
 
     @property
     def layout_obj(self):
-        """:term:`Connectable <Connectable>`: The definition layout object this layout object instance \
-        is an instance of.
+        """:term:`Connectable <Connectable>`: Definition layout object that the layout object \
+        instance is an instance of.
 
-        Read-Only.
+        This property is read-only.
         """
         return create_conn_obj(self.__stub.GetLayoutObj(self.msg))
 
@@ -95,11 +91,12 @@ class LayoutObjInstance(ObjBase):
         Parameters
         ----------
         local : bool
-            If true, return the bounding-box in the local :class:`context <LayoutInstanceContext>`.  Otherwise, \
-            return the bounding-box in the global context.
+            Whether to return the bounding box in the local :class:`context <LayoutInstanceContext>`.
+            If ``False``, the bounding box is returned in the global context.
 
         Returns
         -------
         :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+            Bounding box of the layout object instance.
         """
         return self.__stub.GetBBox(bool_property_message(self, local))

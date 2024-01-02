@@ -1,4 +1,4 @@
-"""This package contains common type definitions used throughout edb codebase."""
+"""This package contains common type definitions used throughout the EDB codebase."""
 
 from typing import Iterable, Tuple, Union
 

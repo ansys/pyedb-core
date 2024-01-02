@@ -1,13 +1,13 @@
-"""Base Model."""
+"""Base model."""
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 
 
 class ObjBase:
-    """Class representing a base object that all gRPC-related models extend from."""
+    """Provides the base object that all gRPC-related models extend from."""
 
     def __init__(self, msg):
-        """Initialize object.
+        """Initialize the base object.
 
         Parameters
         ----------
@@ -17,40 +17,41 @@ class ObjBase:
 
     @property
     def is_null(self):
-        """:obj:`bool`: Determine whether this object exists in EDB.
+        """:obj:`bool`: Flag indicating if the object exists in the database.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.id == 0
 
     @property
     def id(self):
-        """:obj:`int`: The unique ID of an EDB object. 0 indicates invalid object.
+        """:obj:`int`: Unique ID of the EDB object.
 
-        Read-Only.
+        A ``0`` indicates an invalid object.
+
+        This property is read-only.
         """
         return self._id
 
     @property
     def msg(self):
-        """:obj:`EDBObjMessage` : Protobuf message that represents this object's ID.
+        """:obj:`EDBObjMessage`: Protobuf message that represents the object's ID.
 
-        This property can only be set to None.
+        This property can only be set to ``None``.
         """
         return EDBObjMessage(id=self.id)
 
     @msg.setter
     def msg(self, val):
-        """Modify protobuf message that represents this object's ID. can only be used to reset ID to None."""
         if val is None:
             self._id = 0
 
 
 class TypeField(object):
-    """A descriptor for a type field that can be overridden by subclasses.
+    """Provides a descriptor for a type field that can be overridden by subclasses.
 
-    Can have optional `@property def _type(self)` in the same class as a fallback method to
-    fetch the type from server, in case static type is unknown.
+    You can have an optional ``@property def _type(self)`` in the same class as a fallback method to
+    fetch the type from the server in case the static type is unknown.
 
     Examples
     --------
@@ -77,7 +78,7 @@ class TypeField(object):
         self._type = tp
 
     def __get__(self, instance, owner):
-        """Return the static type if possible, otherwise fetch and return the instance type."""
+        """Get the static type if possible. Otherwise, fetch and return the instance type."""
         if self._type is not None:
             # return static type
             return self._type

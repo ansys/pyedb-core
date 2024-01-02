@@ -1,4 +1,4 @@
-"""Layout Obj Instance 3D Geometry."""
+"""Layout object instance 3D geometry."""
 
 from ansys.edb.core.geometry import Triangle3DData
 from ansys.edb.core.inner import utils
@@ -8,7 +8,7 @@ from ansys.edb.core.session import LayoutObjInstance3DGeometryServiceStub, StubA
 
 
 class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
-    """Class representing layout object instance 3D geometry."""
+    """Represents a layout object instance 3D geometry."""
 
     __stub: LayoutObjInstance3DGeometryServiceStub = StubAccessor(
         StubType.layout_obj_instance_3d_geometry
@@ -16,14 +16,10 @@ class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
 
     @property
     def tesselation_data(self):
-        """Return a list of Triangle3DData instances.
+        """:obj:`list` of :class:`ansys.edb.core.geometry.Triangle3DData`: All triangle 3D data instances.
 
-        This list contains :class:`Triangle3DData <ansys.edb.core.geometry.Triangle3DData>` instances
-        that correspond to the underlying tessellation data of the geometry.
-
-        Returns
-        -------
-        list[ansys.edb.core.geometry.Triangle3DData]
+        This list contains triangle 3D data instances that correspond to the
+        underlying tessellation data of the geometry.
         """
         tesselation_data = self.__stub.GetTesselationData(self.msg)
 

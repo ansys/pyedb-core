@@ -1,4 +1,4 @@
-"""Pin Pair Model."""
+"""Pin pair model."""
 
 import google.protobuf.empty_pb2 as empty_pb2
 
@@ -8,22 +8,23 @@ from ansys.edb.core.session import PinPairModelServiceStub, StubAccessor, StubTy
 
 
 class PinPairModel(Model):
-    """Class representing a Pin Pair model object."""
+    """Represents a pin pair model object."""
 
     __stub: PinPairModelServiceStub = StubAccessor(StubType.pin_pair_model)
 
     @classmethod
     def create(cls):
-        """Create a new pin pair model.
+        """Create a pin pair model.
 
         Returns
         -------
         PinPairModel
+            Pin pair model created.
         """
         return cls(cls.__stub.Create(empty_pb2.Empty()))
 
     def rlc(self, pin_pair):
-        """Get RLC value for a pin pair.
+        """Get the RLC value for a pin pair.
 
         Parameters
         ----------
@@ -40,7 +41,7 @@ class PinPairModel(Model):
             return None
 
     def set_rlc(self, pin_pair, rlc):
-        """Set RLC value for a pin pair.
+        """Set the RLC value for a pin pair.
 
         Parameters
         ----------
@@ -50,7 +51,7 @@ class PinPairModel(Model):
         self.__stub.SetRlc(messages.pin_pair_model_rlc_message(self, pin_pair, rlc))
 
     def delete_rlc(self, pin_pair):
-        """Delete RLC value for a pin pair.
+        """Delete the RLC value for a pin pair.
 
         Parameters
         ----------

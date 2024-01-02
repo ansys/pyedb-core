@@ -1,4 +1,4 @@
-"""This module parses message back to client data types."""
+"""This module parses messages back to client data types."""
 
 import functools
 
@@ -6,82 +6,82 @@ from ansys.edb.core import geometry, simulation_setup, utility
 
 
 def to_point_data(fn):
-    """Decorate a function that returns a message to return as PointData."""
+    """Decorate a function that returns a message to return it as a ``PointData`` object."""
     return _wraps(fn, _to_point_data)
 
 
 def to_point_data_list(fn):
-    """Decorate a function that returns a message to return as list[PointData]."""
+    """Decorate a function that returns a message to return it as a list of ``PointData`` objects."""
     return _wraps(fn, _to_point_data_list)
 
 
 def to_point3d_data(fn):
-    """Decorate a function that returns a message to return as Point3DData."""
+    """Decorate a function that returns a message to return it as a ``Point3DData`` object."""
     return _wraps(fn, _to_point3d_data)
 
 
 def to_point_data_pair(fn):
-    """Decorate a function that returns a message to return as tuple[PointData, PointData]."""
+    """Decorate a function that returns a message to return it as a ``[PointData, PointData]`` tuple."""
     return _wraps(fn, _to_point_data_pair)
 
 
 def to_3_point3d_data(fn):
-    """Decorate a function that returns a message to return as List of Point3DData."""
+    """Decorate a function that returns a message to return it as a list of ``Point3DData`` objects."""
     return _wraps(fn, _to_3_point3d_data)
 
 
 def to_polygon_data(fn):
-    """Decorate a function that returns a message to return as PolygonData."""
+    """Decorate a function that returns a message to return it as a ``PolygonData`` object."""
     return _wraps(fn, _to_polygon_data)
 
 
 def to_polygon_data_list(fn):
-    """Decorate a function that returns a message to return as list[PolygonData]."""
+    """Decorate a function that returns a message to return it as a list of ``PolygonData`` objects."""
     return _wraps(fn, _to_polygon_data_list)
 
 
 def to_rlc(fn):
-    """Decorate a function that returns a message to return as RLC."""
+    """Decorate a function that returns a message to return it as an RLC."""
     return _wraps(fn, _to_rlc)
 
 
 def to_box(fn):
-    """Decorate a function that returns a message to return as (lower_left, upper_right)."""
+    """Decorate a function that returns a message to return it as ``(lower_left, upper_right)``."""
     return _wraps(fn, _to_box)
 
 
 def to_circle(fn):
-    """Decorate a function that returns a message to return as (center, radius)."""
+    """Decorate a function that returns a message to return it as ``(center, radius)``."""
     return _wraps(fn, _to_circle)
 
 
 def to_base_adaptive_frequency_solution(fn):
-    """Decorate a function that returns a message to return as tuple[`str`, `str`]."""
+    """Decorate a function that returns a message to return it as a ``[`str`, `str`]`` tuple."""
     return _wraps(fn, _to_base_adaptive_frequency_solution)
 
 
 def to_single_frequency_adaptive_solution(fn):
-    """Decorate a function that returns a message to return as SingleFrequencyAdaptiveSolution."""
+    """Decorate a function that returns a message to return it as a ``SingleFrequencyAdaptiveSolution`` object."""
     return _wraps(fn, _to_single_frequency_adaptive_solution)
 
 
 def to_multi_adaptive_freq(fn):
-    """Decorate a function that returns a message to return as AdaptiveFrequency."""
+    """Decorate a function that returns a message to return it as an ``AdaptiveFrequency`` object."""
     return _wraps(fn, _to_multi_adaptive_freq)
 
 
 def to_multi_frequency_adaptive_solution(fn):
-    """Decorate a function that returns a message to return as MultiFrequencyAdaptiveSolution."""
+    """Decorate a function that returns a message to return it as a ``MultiFrequencyAdaptiveSolution`` object."""
     return _wraps(fn, _to_multi_frequency_adaptive_solution)
 
 
 def to_broadband_adaptive_solution(fn):
-    """Decorate a function that returns a message to return as BroadbandAdaptiveSolution."""
+    """Decorate a function that returns a message to return it as a ``BroadbandAdaptiveSolution`` object."""
     return _wraps(fn, _to_broadband_adaptive_solution)
 
 
 def to_mesh_op(fn):
-    """Decorate a function that returns a message to return as MeshOperation."""
+    """Decorate a function that returns a message to return it as a ``MeshOperation`` object."""
     return _wraps(fn, _to_mesh_op)
 
 
@@ -98,7 +98,7 @@ def _wraps(fn, wrapper_fn):
 
 
 def _to_point_data(message):
-    """Convert PointMessage to PointData.
+    """Convert a ``PointMessage`` object to a ``PointData`` object.
 
     Parameters
     ----------
@@ -112,7 +112,7 @@ def _to_point_data(message):
 
 
 def _to_point_data_pair(message):
-    """Convert PointPairMessage to tuple[PointData, PointData].
+    """Convert a ``PointPairMessage`` object to a ``[PointData, PointData]`` tuple.
 
     Parameters
     ----------
@@ -126,7 +126,7 @@ def _to_point_data_pair(message):
 
 
 def _to_point_data_list(message):
-    """Convert a message to list of PointData.
+    """Convert a message to list of ``PointData`` objects.
 
     Parameters
     ----------
@@ -140,7 +140,7 @@ def _to_point_data_list(message):
 
 
 def _to_3_point3d_data(message):
-    """Convert Point3DMessage to PointData.
+    """Convert a ``Point3DMessage`` object to a ``PointData`` object.
 
     Parameters
     ----------
@@ -154,7 +154,7 @@ def _to_3_point3d_data(message):
 
 
 def _to_point3d_data(message):
-    """Convert Point3DMessage to PointData.
+    """Convert a ``Point3DMessage`` object to a ``PointData`` object.
 
     Parameters
     ----------
@@ -170,7 +170,7 @@ def _to_point3d_data(message):
 
 
 def _to_polygon_data(message):
-    """Convert arbitrary message to PolygonData if possible.
+    """Convert an arbitrary message to a ``PolygonData`` object if possible.
 
     Parameters
     ----------
@@ -195,7 +195,7 @@ def _to_polygon_data(message):
 
 
 def _to_polygon_data_list(message):
-    """Convert arbitrary messages to list of PolygonData if possible.
+    """Convert arbitrary messages to list of ``PolygonData`` objects if possible.
 
     Returns
     -------
@@ -210,7 +210,7 @@ def _to_polygon_data_list(message):
 
 
 def _to_box(message):
-    """Convert message to box.
+    """Convert a message to box.
 
     Parameters
     ----------
@@ -225,7 +225,7 @@ def _to_box(message):
 
 
 def _to_circle(message):
-    """Convert message to circle containing center point and radius.
+    """Convert a message to a circle containing a center point and radius.
 
     Parameters
     ----------
@@ -240,7 +240,7 @@ def _to_circle(message):
 
 
 def _to_rlc(message):
-    """Convert message to rlc containing values related to resistance inductance capacitance.
+    """Convert a message to an RLC containing values related to resistance inductance capacitance.
 
     Parameters
     ----------
@@ -262,7 +262,7 @@ def _to_rlc(message):
 
 
 def _to_mx_convergence_data(message):
-    """Convert message to matrix convergence data.
+    """Convert a message to matrix convergence data.
 
     Parameters
     ----------
@@ -328,7 +328,7 @@ def _to_mx_convergence_data(message):
 
 
 def _to_base_adaptive_frequency_solution(message):
-    """Convert message to adaptive frequency solution data.
+    """Convert a message to adaptive frequency solution data.
 
     Parameters
     ----------
@@ -342,7 +342,7 @@ def _to_base_adaptive_frequency_solution(message):
 
 
 def _to_single_frequency_adaptive_solution(message):
-    """Convert message to single frequency adaptive solution data.
+    """Convert a message to single frequency adaptive solution data.
 
     Parameters
     ----------
@@ -363,7 +363,7 @@ def _to_single_frequency_adaptive_solution(message):
 
 
 def _to_multi_adaptive_freq(message):
-    """Convert message to a multi-frequency adaptive solution adaptive frequency entry.
+    """Convert a message to a multi-frequency adaptive solution adaptive frequency entry.
 
     Parameters
     ----------
@@ -382,7 +382,7 @@ def _to_multi_adaptive_freq(message):
 
 
 def _to_multi_frequency_adaptive_solution(message):
-    """Convert message to a multi-frequency adaptive solution data.
+    """Convert a message to a multi-frequency adaptive solution data.
 
     Parameters
     ----------
@@ -399,7 +399,7 @@ def _to_multi_frequency_adaptive_solution(message):
 
 
 def _to_broadband_adaptive_solution(message):
-    """Convert message to broadband adaptive solution data.
+    """Convert a message to broadband adaptive solution data.
 
     Parameters
     ----------
@@ -415,7 +415,7 @@ def _to_broadband_adaptive_solution(message):
 
 
 def _length_mesh_op(message):
-    """Convert message to a length mesh op.
+    """Convert a message to a length mesh operation.
 
     Parameters
     ----------
@@ -434,7 +434,7 @@ def _length_mesh_op(message):
 
 
 def _to_skin_depth_mesh_op(message):
-    """Convert message to a skin depth mesh op.
+    """Convert a message to a skin depth mesh operation.
 
     Parameters
     ----------
@@ -454,7 +454,7 @@ def _to_skin_depth_mesh_op(message):
 
 
 def _to_mesh_op(message):
-    """Convert message to a mesh op.
+    """Convert a message to a mesh operation.
 
     Parameters
     ----------

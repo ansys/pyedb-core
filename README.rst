@@ -25,7 +25,7 @@ The documentation has five sections:
 - `API reference <https://edb.core.docs.pyansys.com/version/dev/api/index.html>`_: Provides API member descriptions
   and usage examples.
 - `Examples <https://edb.core.docs.pyansys.com/version/dev/examples/index.html>`_: Provides examples showing
-- end-to-end workflows for using PyEDB-Core.
+  end-to-end workflows for using PyEDB-Core.
 - `Contribute <https://edb.core.docs.pyansys.com/version/dev/contribute.html>`_: Describes how to install
   PyEDB-Core in developer mode and how to contribute to this PyAnsys library.
 

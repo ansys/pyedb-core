@@ -32,7 +32,7 @@ class PortProperty(ObjBase):
         Returns
         -------
         PortProperty
-            Clone of port property created.
+            Port property cloned.
         """
         return PortProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
@@ -40,7 +40,7 @@ class PortProperty(ObjBase):
     def reference_height(self):
         """:class:`Value <ansys.edb.core.utility.Value>`: Reference height of the port property.
 
-        This attribute can be set with the :term:`ValueLike` term.
+        This property can be set with :term:`ValueLike`.
         """
         return Value(self.__stub.GetReferenceHeight(messages.edb_obj_message(self)))
 
@@ -52,7 +52,7 @@ class PortProperty(ObjBase):
 
     @property
     def reference_size_auto(self):
-        """:obj:`bool`: If the reference size is automatic."""
+        """:obj:`bool`: Flag indicating if the reference size is automatic."""
         return self.__stub.GetReferenceSizeAuto(messages.edb_obj_message(self)).value
 
     @reference_size_auto.setter
@@ -64,11 +64,7 @@ class PortProperty(ObjBase):
 
         Returns
         -------
-        tuple[
-            :class:`Value <ansys.edb.core.utility.Value>`,
-            :class:`Value <ansys.edb.core.utility.Value>`
-        ]
-            X and Y reference sizes.
+        tuple[:class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`]
         """
         value_pair_message = self.__stub.GetReferenceSize(messages.edb_obj_message(self))
         return Value(value_pair_message.val1), Value(value_pair_message.val2)

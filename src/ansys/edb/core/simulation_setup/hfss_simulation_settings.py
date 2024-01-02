@@ -1,4 +1,4 @@
-"""HFSS Simulation Settings."""
+"""HFSS simulation settings."""
 
 from enum import Enum
 
@@ -26,7 +26,7 @@ from ansys.edb.core.simulation_setup.simulation_settings import (
 
 
 class BasisFunctionOrder(Enum):
-    """Enum representing basis function order types.
+    """Provides an enum representing basis function order types.
 
     - ZERO_ORDER
     - FIRST_ORDER
@@ -41,7 +41,7 @@ class BasisFunctionOrder(Enum):
 
 
 class SolverType(Enum):
-    """Enum representing hfss solver types.
+    """Provides an enum representing HFSS solver types.
 
     - AUTO_SOLVER
     - DIRECT_SOLVER
@@ -57,7 +57,7 @@ class SolverType(Enum):
 
 
 class AdaptType(Enum):
-    """Enum representing hfss adaptive solution types.
+    """Provides an enum representing HFSS adaptive solution types.
 
     - SINGLE
     - MULTI_FREQUENCIES
@@ -72,7 +72,7 @@ class AdaptType(Enum):
 
 
 class HFSSSimulationSettings(SimulationSettings):
-    """Class representing HFSS simulation settings."""
+    """Represents HFSS simulation settings."""
 
     @property
     def general(self):
@@ -81,7 +81,7 @@ class HFSSSimulationSettings(SimulationSettings):
 
     @property
     def options(self):
-        """:class:`HFSSSettingsOptions`: HFSS simulation settings options."""
+        """:class:`HFSSSettingsOptions`: HFSS simulation setting options."""
         return HFSSSettingsOptions(self._sim_setup)
 
     @property
@@ -106,13 +106,13 @@ class HFSSSimulationSettings(SimulationSettings):
 
 
 class HFSSGeneralSettings(SimulationSettingsBase):
-    """Class representing general settings for HFSS simulations."""
+    """Represents general settings for HFSS simulations."""
 
     __stub: HFSSGeneralSettingsServiceStub = StubAccessor(StubType.hfss_general_sim_settings)
 
     @property
     def single_frequency_adaptive_solution(self):
-        """:class:`SingleFrequencyAdaptiveSolution`: Single frequency adaptive solution settings."""
+        """:class:`SingleFrequencyAdaptiveSolution`: Settings for a single frequency adaptive solution."""
         return parser.to_single_frequency_adaptive_solution(
             self.__stub.GetSingleFrequencyAdaptiveSolution(self.msg)
         )
@@ -130,7 +130,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def multi_frequency_adaptive_solution(self):
-        """:class:`MultiFrequencyAdaptiveSolution`: Multi-frequency adaptive solution settings."""
+        """:class:`MultiFrequencyAdaptiveSolution`: Settings for a multi-frequency adaptive solution."""
         return parser.to_multi_frequency_adaptive_solution(
             self.__stub.GetMultiFrequencyAdaptiveSolution(self.msg)
         )
@@ -148,7 +148,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def broadband_adaptive_solution(self):
-        """:class:`BroadbandAdaptiveSolution`: Broadband adaptive solution settings."""
+        """:class:`BroadbandAdaptiveSolution`: Settings for a broadband adaptive solution."""
         return parser.to_broadband_adaptive_solution(
             self.__stub.GetBroadbandFrequencyAdaptiveSolution(self.msg)
         )
@@ -164,7 +164,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def adaptive_solution_type(self):
-        """:class:`AdaptType`: Adaptive solution type that is currently set for the simulation."""
+        """:class:`AdaptType`: Adaptive solution type that is set for the simulation."""
         return AdaptType(self.__stub.GetAdaptType(self.msg).adapt_type)
 
     @adaptive_solution_type.setter
@@ -175,7 +175,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def save_fields(self):
-        """:obj:`bool`: Flag indicating whether or not to save fields data during simulation."""
+        """:obj:`bool`: Flag indicating if field data is to be saved during the simulation."""
         return self.__stub.GetSaveFieldsFlag(self.msg).value
 
     @save_fields.setter
@@ -184,7 +184,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def save_rad_fields_only(self):
-        """:obj:`bool`: Flag indicating whether or not to only save radiated fields data during simulation."""
+        """:obj:`bool`: Flag indicating if only radiated field data is to be saved during the simulation."""
         return self.__stub.GetSaveRadFieldsOnlyFlag(self.msg).value
 
     @save_rad_fields_only.setter
@@ -195,7 +195,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def use_mesh_region(self):
-        """:obj:`bool`: Flag indicating whether or not to use mesh regions."""
+        """:obj:`bool`: Flag indicating if mesh regions are used."""
         return self.__stub.GetUseMeshRegion(self.msg).value
 
     @use_mesh_region.setter
@@ -204,7 +204,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def mesh_region_name(self):
-        """:obj:`str`: Name of mesh region to be used."""
+        """:obj:`str`: Name of the mesh region to use."""
         return self.__stub.GetMeshRegionName(self.msg).value
 
     @mesh_region_name.setter
@@ -213,7 +213,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def use_parallel_refinement(self):
-        """:obj:`bool`: Flag indicating whether or not to use parallel refinement."""
+        """:obj:`bool`: Flag indicating if parallel refinement is used."""
         return self.__stub.GetUseParallelRefinement(self.msg).value
 
     @use_parallel_refinement.setter
@@ -224,13 +224,13 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
 
 class HFSSSettingsOptions(SettingsOptions):
-    """Class representing HFSS simulation settings options."""
+    """Represents options for HFSS simulation settings."""
 
     __stub: HFSSOptionsSettingsServiceStub = StubAccessor(StubType.hfss_options_sim_settings)
 
     @property
     def use_max_refinement(self):
-        """:obj:`bool`: Flag indicating whether or not to use max refinement values during simulation."""
+        """:obj:`bool`: Flag indicating if maximum refinement values are used during simulation."""
         return self.__stub.GetUseMaxRefinement(self.msg).value
 
     @use_max_refinement.setter
@@ -239,7 +239,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def max_refinement_per_pass(self):
-        """:obj:`int`: Max mesh refinement per adaptive pass."""
+        """:obj:`int`: Maximum mesh refinement per adaptive pass."""
         return self.__stub.GetMaxRefinementPerPass(self.msg).value
 
     @max_refinement_per_pass.setter
@@ -294,7 +294,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def relative_residual(self):
-        """:class:`float`: Relative residual value used by hfss iterative solver."""
+        """:class:`float`: Relative residual value that the HFSS iterative solver is to use."""
         return self.__stub.GetRelativeResidual(self.msg).value
 
     @relative_residual.setter
@@ -303,7 +303,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def enhanced_low_frequency_accuracy(self):
-        """:obj:`bool`: Flag indicating whether or not to enable enhanced low frequency accuracy during simulation."""
+        """:obj:`bool`: Flag indicating if enhanced low-frequency accuracy is enabled during simulation."""
         return self.__stub.GetEnhancedLowFrequencyAccuracy(self.msg).value
 
     @enhanced_low_frequency_accuracy.setter
@@ -314,7 +314,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
 
 class HFSSSolverSettings(SolverSettings):
-    """Class representing solver settings for HFSS simulations."""
+    """Representis solver settings for HFSS simulations."""
 
     __stub: HFSSSolverSettingsServiceStub = StubAccessor(StubType.hfss_solver_sim_settings)
 
@@ -329,7 +329,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @property
     def set_triangles_for_wave_port(self):
-        """:obj:`bool`: Flag indicating whether or not to use min/max triangle values for waveports."""
+        """:obj:`bool`: Flag indicating ifthe minimum and maximum triangle values for waveports are used."""
         return self.__stub.GetSetTrianglesForWaveport(self.msg).value
 
     @set_triangles_for_wave_port.setter
@@ -340,7 +340,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @property
     def min_triangles_for_wave_port(self):
-        """:obj:`int`: Minimum number of triangles used for meshing waveports."""
+        """:obj:`int`: Minimum number of triangles to use for meshing waveports."""
         return self.__stub.GetMinTrianglesForWavePort(self.msg).value
 
     @min_triangles_for_wave_port.setter
@@ -351,7 +351,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @property
     def max_triangles_for_wave_port(self):
-        """:obj:`int`: Maximum number of triangles used for meshing waveports."""
+        """:obj:`int`: Maximum number of triangles to use for meshing waveports."""
         return self.__stub.GetMaxTrianglesForWavePort(self.msg).value
 
     @max_triangles_for_wave_port.setter
@@ -362,7 +362,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @property
     def enable_intra_plane_coupling(self):
-        """:obj:`bool`: Enable intra-plane coupling of pwr/gnd nets for enhanced accuracy."""
+        """:obj:`bool`: Flag indicating if intra-plane coupling of power/ground nets is enabled to enhance accuracy."""
         return self.__stub.GetIntraPlaneCouplingEnabled(self.msg).value
 
     @enable_intra_plane_coupling.setter
@@ -373,13 +373,13 @@ class HFSSSolverSettings(SolverSettings):
 
 
 class HFSSAdvancedSettings(AdvancedSettings):
-    """Class representing advanced settings for HFSS simulations."""
+    """Represents advanced settings for HFSS simulations."""
 
     __stub: HFSSAdvancedSettingsServiceStub = StubAccessor(StubType.hfss_advanced_sim_settings)
 
     @property
     def ic_mode_auto_resolution(self):
-        """:obj:`bool`: Flag indicating whether or not to auto calculate model resolution for IC designs."""
+        """:obj:`bool`: Flag indicating if model resolution is automatically calculated for IC designs."""
         return self.__stub.GetICModeAutoResolution(self.msg).value
 
     @ic_mode_auto_resolution.setter
@@ -390,7 +390,7 @@ class HFSSAdvancedSettings(AdvancedSettings):
 
     @property
     def ic_mode_length(self):
-        """:obj:`str`: Model resolution used when manually settings model resolution of IC designs."""
+        """:obj:`str`: Model resolution to use when manually setting the model resolution of IC designs."""
         return self.__stub.GetICModeLength(self.msg).value
 
     @ic_mode_length.setter
@@ -399,7 +399,7 @@ class HFSSAdvancedSettings(AdvancedSettings):
 
 
 class HFSSAdvancedMeshingSettings(AdvancedMeshingSettings):
-    """Class representing advanced meshing settings for HFSS simulations."""
+    """Represents advanced meshing settings for HFSS simulations."""
 
     __stub: HFSSAdvancedMeshingSettingsServiceStub = StubAccessor(
         StubType.hfss_advanced_sim_meshing_settings
@@ -409,7 +409,7 @@ class HFSSAdvancedMeshingSettings(AdvancedMeshingSettings):
     def layer_snap_tol(self):
         """:obj:`str`: Snapping tolerance for hierarchical layer alignment.
 
-        Unitless values represent fraction of total stackup height
+        Unitless values represent a fraction of the total stackup height.
         """
         return self.__stub.GetLayerAlignment(self.msg).value
 
@@ -419,7 +419,7 @@ class HFSSAdvancedMeshingSettings(AdvancedMeshingSettings):
 
 
 class HFSSDCRSettings(SimulationSettingsBase):
-    """Class representing DCR settings for HFSS simulations."""
+    """Represents DCR settings for HFSS simulations."""
 
     __stub: DCRSettingsServiceStub = StubAccessor(StubType.hfss_dcr_sim_settings)
 
@@ -461,7 +461,7 @@ class HFSSDCRSettings(SimulationSettingsBase):
 
     @property
     def percent_refinement_per_pass(self):
-        """:obj:`float`: Mesh refinement percent per conduction adaptive pass."""
+        """:obj:`float`: Mesh refinement percentage per conduction adaptive pass."""
         return self.__stub.GetPercentRefinementPerPass(self.msg).value
 
     @percent_refinement_per_pass.setter

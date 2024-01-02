@@ -1,4 +1,4 @@
-"""SIWave Simulation Setup."""
+"""SIWave simulation setup."""
 
 from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
 from ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings import (
@@ -7,27 +7,27 @@ from ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings import (
 
 
 class SIWaveDCIRSimulationSetup(SimulationSetup):
-    """Class representing SIWave DCIR simulation setup data."""
+    """Represents SIWave DCIR simulation setup data."""
 
     @classmethod
     def create(cls, cell, name):
-        """Create a SIWaveDCIRSimulationSetup.
+        """Create a SIWave DCIR simulation setup.
 
         Parameters
         ----------
         cell : :class:`Cell <ansys.edb.core.layout.Cell>`
-            Cell containing new simulation setup.
+            Cell to create the simulation setup in.
         name : str
-            Name of new simulation setup
+            Name of the simulation setup.
 
         Returns
         -------
         SIWaveDCIRSimulationSetup
-            Newly created simulation setup.
+            Simulation setup created.
         """
         return super()._create(cell, name, SimulationSetupType.SI_WAVE_DCIR)
 
     @property
     def settings(self):
-        """:class:`SIWaveSimulationSettings`: Simulation settings of the siwave simulation setup."""
+        """:class:`SIWaveSimulationSettings`: Simulation settings of the simulation setup."""
         return SIWaveDCIRSimulationSettings(self)

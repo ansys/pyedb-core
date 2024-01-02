@@ -1,4 +1,4 @@
-"""HFSS Simulation Setup."""
+"""HFSS simulation setup."""
 
 import ansys.api.edb.v1.hfss_simulation_setup_pb2 as pb
 
@@ -10,31 +10,31 @@ from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, Si
 
 
 class HfssSimulationSetup(SimulationSetup):
-    """Class representing hfss simulation setup data."""
+    """Represents HFSS simulation setup data."""
 
     __stub: HfssSimulationSetupServiceStub = StubAccessor(StubType.hfss_sim_setup)
 
     @classmethod
     def create(cls, cell, name):
-        """Create a HfssSimulationSetup.
+        """Create an HFSS simulation setup.
 
         Parameters
         ----------
         cell : :class:`Cell <ansys.edb.core.layout.Cell>`
-            Cell containing new simulation setup.
+            Cell to create the simulation setup in.
         name : str
-            Name of new simulation setup
+            Name of the simulation setup.
 
         Returns
         -------
         HfssSimulationSetup
-            Newly created simulation setup.
+            HFSS simulation setup created.
         """
         return super()._create(cell, name, SimulationSetupType.HFSS)
 
     @property
     def mesh_operations(self):
-        """:obj:`list` of :class:`MeshOperation`: Mesh operations of the hfss simulation setup."""
+        """:obj:`list` of :class:`MeshOperation`: Mesh operations of the HFSS simulation setup."""
         return map_list(self.__stub.GetMeshOperations(self.msg).mesh_ops, parser.to_mesh_op)
 
     @mesh_operations.setter
@@ -50,5 +50,5 @@ class HfssSimulationSetup(SimulationSetup):
 
     @property
     def settings(self):
-        """:class:`HfssSimulationSettings`: Simulation settings of the hfss simulation setup."""
+        """:class:`HfssSimulationSettings`: Simulation settings of the HFSS simulation setup."""
         return HFSSSimulationSettings(self)

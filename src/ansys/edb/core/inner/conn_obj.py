@@ -1,4 +1,4 @@
-"""ConnObj."""
+"""Connection object."""
 from ansys.api.edb.v1 import connectable_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
@@ -23,7 +23,7 @@ class _QueryBuilder:
 
 
 class ConnObj(layout_obj.LayoutObj):
-    """Base class representing ConnObj."""
+    """Provides the base class representing the connection object."""
 
     __stub: ConnectableServiceStub = StubAccessor(StubType.connectable)
     layout_obj_type = LayoutObjType.INVALID_LAYOUT_OBJ
@@ -65,19 +65,19 @@ class ConnObj(layout_obj.LayoutObj):
 
     @classmethod
     def find_by_id(cls, layout, uid):
-        """Find a :term:`Connectable` object by Database ID.
+        """Find a :term:`Connectable` object by database ID in a given layout.
 
         Parameters
         ----------
         layout : :class:`Layout <ansys.edb.core.layout.Layout>`
-            The owning Layout.
+            Layout to search for the :term:`Connectable` object.
         uid : int
-             Database ID
+            Database ID.
 
         Returns
         -------
         :term:`Connectable`
-            Connectable of the given uid.
+            Connectable object with the given database ID.
         """
         found_edb_obj_msg = cls.__stub.FindByIdAndType(
             _QueryBuilder.find_id_layout_obj_message(
@@ -88,12 +88,12 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def edb_uid(self):
-        """:obj:`int`: The unique, persistent ID for the :term:`Connectable` object.
+        """:obj:`int`: Unique, persistent ID for the :term:`Connectable` object.
 
-        This id is unique across the all :term:`Connectable` objects in the cell and persistent across closing and \
+        This ID is unique across all :term:`Connectable` objects in the cell and persistent across closing and \
         reopening the database.
 
-        Read-Only.
+        This property is read-only.
         """
         return self.__stub.GetId(self.msg).id
 
@@ -114,14 +114,13 @@ class ConnObj(layout_obj.LayoutObj):
 
     @group.setter
     def group(self, group):
-        """Set the group of the connectable object."""
         self.__stub.SetGroup(messages.pointer_property_message(target=self, value=group))
 
     @property
     def net(self):
         """:class:`Net <ansys.edb.core.net.Net>`: Net of the :term:`Connectable` object.
 
-        This property can be set with :class:`Net <ansys.edb.core.net.Net>`, str, None.
+        This property can be set with a :class:`Net <ansys.edb.core.net.Net>` instance, a string, or ``None``.
         """
         from ansys.edb.core.net import Net
 
@@ -129,64 +128,66 @@ class ConnObj(layout_obj.LayoutObj):
 
     @net.setter
     def net(self, net):
-        """Set the net of the connectable object."""
         self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))
 
     def create_stride(self):
-        """Create a stride model.
+        """Create a Stride model from an MCAD file.
 
         Returns
         -------
         :class:`McadModel <ansys.edb.core.layout.McadModel>`
+            Stride model created.
         """
         return mm.McadModel.create_stride(connectable=self)
 
     def create_hfss(self):
-        """Create a HFSS model.
+        """Create an HFSS model from an MCAD file.
 
         Returns
         -------
         :class:`McadModel <ansys.edb.core.layout.McadModel>`
+            HFSS model created.
         """
         return mm.McadModel.create_hfss(connectable=self)
 
     def create_3d_comp(self):
-        """Create a 3dComp model.
+        """Create a 3D composite model from an MCAD file.
 
         Returns
         -------
         :class:`McadModel <ansys.edb.core.layout.McadModel>`
+            3D composite model created.
         """
         return mm.McadModel.create_3d_comp(connectable=self)
 
     @property
     def is_mcad(self):
-        """:obj:`bool`: True if this is a Mcad Model.
+        """:obj:`bool`: Flag indicating if this is an MCAD model.
 
-        Read-Only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad(self)
 
     @property
     def is_mcad_stride(self):
-        """:obj:`bool`: True if this is a Stride Mcad Model.
+        """:obj:`bool`: Flag indicating if this is a Stride MCAD model.
 
-        Read-Only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad_stride(self)
 
     @property
     def is_mcad_hfss(self):
-        """:obj:`bool`: True if this is a HFSS Mcad Model.
+        """:obj:`bool`: Flag indicating if this is an HFSS MCAD model.
 
-        Read-Only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad_hfss(self)
 
     @property
     def is_mcad_3d_comp(self):
-        """:obj:`bool`: True if this is a 3D Comp Mcad Model.
+        """:obj:`bool`: Flag indicating if this is a 3D composite MCAD model.
 
-        Read-Only.
+        This property is read-only.
         """
         return mm.McadModel.is_mcad_3d_comp(self)

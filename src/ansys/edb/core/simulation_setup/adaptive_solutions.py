@@ -21,7 +21,7 @@ class MatrixConvergenceDataEntry:
 
     @property
     def port_1_name(self):
-        """:obj:`str`: Name of first port."""
+        """:obj:`str`: Name of the first port."""
         return self._port_1_name
 
     @port_1_name.setter
@@ -30,7 +30,7 @@ class MatrixConvergenceDataEntry:
 
     @property
     def port_2_name(self):
-        """:obj:`str`: Name of second port."""
+        """:obj:`str`: Name of the second port."""
         return self._port_2_name
 
     @port_2_name.setter
@@ -57,7 +57,7 @@ class MatrixConvergenceDataEntry:
 
 
 class MatrixConvergenceData:
-    """Class representing matrix convergence data for an adaptive frequency solution.
+    """Represents matrix convergence data for an adaptive frequency solution.
 
     Attributes
     ----------
@@ -75,31 +75,34 @@ class MatrixConvergenceData:
 
     @property
     def all_constant(self):
-        """:obj:`bool`: All matrix entries are the same.
+        """:obj:`bool`: Flag indicating if all matrix entries are the same.
 
-        Read-Only.
+        This property is read-only.
         """
         return self._all_constant
 
     @property
     def all_diag_constant(self):
-        """:obj:`bool`: All diagonal matrix entries are the same.
+        """:obj:`bool`: Flag indicating if all diagonal matrix entries are the same.
 
-        Read-Only.
+        This property is read-only.
         """
         return self._all_diag_constant
 
     @property
     def all_off_diag_constant(self):
-        """:obj:`bool`: All off-diagonal matrix entries are the same.
+        """:obj:`bool`: Flag indicating if all off-diagonal matrix entries are the same.
 
-        Read-Only.
+        This property is read-only.
         """
         return self._all_off_diag_constant
 
     @property
     def mag_min_threshold(self):
-        """:obj:`float`: When magnitude is less than this value, phase is ignored."""
+        """:obj:`float`: Minimum magnitude threshold.
+
+        When the magnitude is less than the minimal threshold value, the phase is ignored.
+        """
         return self._mag_minThreshold
 
     @mag_min_threshold.setter
@@ -124,8 +127,11 @@ class MatrixConvergenceData:
         Parameters
         ----------
         mag_limit : float
+           Magnitude limit.
         phase_limit : float
+            Phase limit.
         port_names : list[:obj:`str`]
+            List of port names.
         """
         self._entry_list.clear()
 
@@ -145,9 +151,13 @@ class MatrixConvergenceData:
         Parameters
         ----------
         mag_limit : float
+           Magnitude limit.
         phase_limit : float
+            Phase limit.
         port_names : list[:obj:`str`]
+            List of port names.
         clear_entries : bool
+            Whether to clear entries.
         """
         if clear_entries:
             self._entry_list.clear()
@@ -168,9 +178,13 @@ class MatrixConvergenceData:
         Parameters
         ----------
         mag_limit : float
+           Magnitude limit.
         phase_limit : float
+            Phase limit.
         port_names : list[:obj:`str`]
+            List of port names.
         clear_entries : bool
+            Whether to clear entries.
         """
         if clear_entries:
             self._entry_list.clear()
@@ -188,14 +202,18 @@ class MatrixConvergenceData:
         self._all_off_diag_constant = True
 
     def add_entry(self, port_name_1, port_name_2, mag_limit, phase_limit):
-        """Add matrix entry.
+        """Add a matrix entry.
 
         Parameters
         ----------
         port_name_1 : str
+            Name of the first port.
         port_name_2 : str
+            Name of the second port.
         mag_limit : float
+            Magnitude limit.
         phase_limit : float
+            Phase limit.
         """
         new_entry = MatrixConvergenceDataEntry(port_name_1, port_name_2, mag_limit, phase_limit)
         for idx, entry in enumerate(self._entry_list):
@@ -209,7 +227,7 @@ class MatrixConvergenceData:
 
 
 class SingleFrequencyAdaptiveSolution:
-    """Class representing a single frequency adaptive solution.
+    """Represents a single frequency adaptive solution.
 
     Attributes
     ----------
@@ -273,7 +291,7 @@ class SingleFrequencyAdaptiveSolution:
 
     @property
     def use_mx_conv_data(self):
-        """:obj:`bool`: Flag enabling usage of matrix convergence data."""
+        """:obj:`bool`: Flag indicating whether matrix convergence data is used."""
         return self._use_mx_conv_data
 
     @use_mx_conv_data.setter
@@ -282,7 +300,7 @@ class SingleFrequencyAdaptiveSolution:
 
 
 class AdaptiveFrequency:
-    """Class representing an adaptive frequency.
+    """Represents an adaptive frequency.
 
     Attributes
     ----------
@@ -292,7 +310,7 @@ class AdaptiveFrequency:
     """
 
     def __init__(self, adaptive_frequency, max_delta="0.02", output_variables=None):
-        """Class representing adaptive frequency."""
+        """Create an adaptive frequency."""
         self._adaptive_frequency = adaptive_frequency
         self._max_delta = max_delta
         self._output_variables = output_variables if output_variables is not None else {}
@@ -317,7 +335,7 @@ class AdaptiveFrequency:
 
     @property
     def output_variables(self):
-        """:obj:`dict` { :obj:`str` : :obj:`str` }: Map of output variable name to maximum delta S."""
+        """:obj:`dict` { :obj:`str` : :obj:`str` }: Map of output variable names to maximum delta S."""
         return self._output_variables
 
     @output_variables.setter
@@ -326,11 +344,12 @@ class AdaptiveFrequency:
 
 
 class MultiFrequencyAdaptiveSolution:
-    """Class representing a multi-frequency adaptive solution.
+    """Represents a multi-frequency adaptive solution.
 
     Attributes
     ----------
-    max_passes: int
+    max_passes : int
+        Maximum number of adaptive passes.
     adaptive_frequencies : list[:class:`AdaptiveFrequency`]
     """
 
@@ -346,7 +365,7 @@ class MultiFrequencyAdaptiveSolution:
 
     @property
     def adaptive_frequencies(self):
-        """:obj:`list` of :class:`AdaptiveFrequency`: Frequencies adaptive solutions will be calculated for."""
+        """:obj:`list` of :class:`AdaptiveFrequency`: Frequencies that adaptive solutions are calculated for."""
         return self._adaptive_frequencies
 
     @adaptive_frequencies.setter
@@ -364,7 +383,7 @@ class MultiFrequencyAdaptiveSolution:
 
 
 class BroadbandAdaptiveSolution:
-    """Class representing a broadband adaptive solution.
+    """Represents a broadband adaptive solution.
 
     Attributes
     ----------
@@ -385,7 +404,7 @@ class BroadbandAdaptiveSolution:
 
     @property
     def low_frequency(self):
-        """:obj:`str`: Lower bound adaptive frequency."""
+        """:obj:`str`: Lower-bound adaptive frequency."""
         return self._low_frequency
 
     @low_frequency.setter
@@ -394,7 +413,7 @@ class BroadbandAdaptiveSolution:
 
     @property
     def high_frequency(self):
-        """:obj:`str`: Higher bound adaptive frequency."""
+        """:obj:`str`: Higher-bound adaptive frequency."""
         return self._high_frequency
 
     @high_frequency.setter

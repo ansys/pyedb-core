@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.package_def_pb2 as pb
 
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility.conversions import to_value
 
 
 class HeatSinkFinOrientation(Enum):
@@ -50,8 +50,8 @@ class HeatSink:
         fin_orientation=HeatSinkFinOrientation.X_ORIENTED,
     ):
         """Construct a HeatSink object using given values."""
-        self.fin_thickness = conversions.to_value(fin_thickness)
-        self.fin_spacing = conversions.to_value(fin_spacing)
-        self.fin_base_height = conversions.to_value(fin_base_height)
-        self.fin_height = conversions.to_value(fin_height)
+        self.fin_thickness = to_value(fin_thickness)
+        self.fin_spacing = to_value(fin_spacing)
+        self.fin_base_height = to_value(fin_base_height)
+        self.fin_height = to_value(fin_height)
         self.fin_orientation = fin_orientation

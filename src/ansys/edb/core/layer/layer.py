@@ -6,7 +6,7 @@ import ansys.api.edb.v1.layer_pb2 as layer_pb2
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.messages import (
     get_product_property_ids_message,
     get_product_property_message,
@@ -129,7 +129,8 @@ class Layer(ObjBase):
         -------
         Layer
         """
-        from ansys.edb.core.layer import StackupLayer, ViaLayer
+        from ansys.edb.core.layer.stackup_layer import StackupLayer
+        from ansys.edb.core.layer.via_layer import ViaLayer
 
         lyr = Layer(self.msg)
         if lyr.is_stackup_layer:

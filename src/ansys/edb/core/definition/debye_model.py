@@ -5,15 +5,18 @@ from google.protobuf import empty_pb2
 
 from ansys.edb.core import session
 from ansys.edb.core.definition.dielectric_material_model import DielectricMaterialModel
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    double_message,
+    double_property_message,
+    edb_obj_message,
+)
 
 
 class _DebyeModelQueryBuilder:
     @staticmethod
     def frequency_range_message(low, high):
-        return pb.FrequencyRangeMessage(
-            low=messages.double_message(low), high=messages.double_message(high)
-        )
+        return pb.FrequencyRangeMessage(low=double_message(low), high=double_message(high))
 
     @staticmethod
     def set_frequency_range_message(target, low, high):
@@ -38,12 +41,12 @@ class DebyeModel(DielectricMaterialModel):
         -------
         DebyeModelService
         """
-        return DebyeModel(DielectricMaterialModel(cls.__stub.Create(empty_pb2.Empty())))
+        return DebyeModel(cls.__stub.Create(empty_pb2.Empty()))
 
     @property
     def frequency_range(self):
         """:obj:`tuple` of :obj:`float`, :obj:`float`: Frequency range (low, high)."""
-        range_msg = self.__stub.GetFrequencyRange(messages.edb_obj_message(self))
+        range_msg = self.__stub.GetFrequencyRange(edb_obj_message(self))
         return range_msg.low.value, range_msg.high.value
 
     @frequency_range.setter
@@ -57,9 +60,7 @@ class DebyeModel(DielectricMaterialModel):
     @property
     def relative_permitivity_at_high_low_frequency(self):
         """:obj:`tuple` of :obj:`float`, :obj:`float`: Relative permitivity frequency range (low, high)."""
-        range_msg = self.__stub.GetRelativePermitivityAtHighLowFrequency(
-            messages.edb_obj_message(self)
-        )
+        range_msg = self.__stub.GetRelativePermitivityAtHighLowFrequency(edb_obj_message(self))
         return range_msg.low.value, range_msg.high.value
 
     @relative_permitivity_at_high_low_frequency.setter
@@ -73,7 +74,7 @@ class DebyeModel(DielectricMaterialModel):
     @property
     def loss_tangent_at_high_low_frequency(self):
         """:obj:`tuple` of :obj:`float`, :obj:`float`: Loss tangent frequency range (low, high)."""
-        range_msg = self.__stub.GetLossTangentAtHighLowFrequency(messages.edb_obj_message(self))
+        range_msg = self.__stub.GetLossTangentAtHighLowFrequency(edb_obj_message(self))
         return range_msg.low.value, range_msg.high.value
 
     @loss_tangent_at_high_low_frequency.setter
@@ -92,7 +93,7 @@ class DebyeModel(DielectricMaterialModel):
     @is_relative_permitivity_enabled_at_optical_frequency.setter
     def is_relative_permitivity_enabled_at_optical_frequency(self, enabled):
         self.__stub.SetRelativePermitivityEnabledAtOpticalFrequency(
-            messages.bool_property_message(self, enabled)
+            bool_property_message(self, enabled)
         )
 
     @property
@@ -102,7 +103,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @use_dc_conductivity.setter
     def use_dc_conductivity(self, enabled):
-        self.__stub.SetUseDCConductivity(messages.bool_property_message(self, enabled))
+        self.__stub.SetUseDCConductivity(bool_property_message(self, enabled))
 
     @property
     def relative_permitivity_at_optical_frequency(self):
@@ -112,7 +113,7 @@ class DebyeModel(DielectricMaterialModel):
     @relative_permitivity_at_optical_frequency.setter
     def relative_permitivity_at_optical_frequency(self, frequency):
         self.__stub.SetRelativePermitivityAtOpticalFrequency(
-            messages.double_property_message(self, frequency)
+            double_property_message(self, frequency)
         )
 
     @property
@@ -122,4 +123,4 @@ class DebyeModel(DielectricMaterialModel):
 
     @dc_conductivity.setter
     def dc_conductivity(self, conductivity):
-        self.__stub.SetDCConductivity(messages.double_property_message(self, conductivity))
+        self.__stub.SetDCConductivity(double_property_message(self, conductivity))

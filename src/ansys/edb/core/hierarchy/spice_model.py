@@ -1,6 +1,11 @@
 """SPICE Model."""
 from ansys.edb.core.hierarchy.model import Model
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import (
+    edb_obj_message,
+    spice_model_message,
+    spice_model_net_terminal_pin_message,
+    string_property_message,
+)
 from ansys.edb.core.session import SpiceModelServiceStub, StubAccessor, StubType
 
 
@@ -22,11 +27,11 @@ class SPICEModel(Model):
         sub_circuit : str
             Sub circuit name of SPICE model.
         """
-        return cls(cls.__stub.Create(messages.spice_model_message(name, path, sub_circuit)))
+        return cls(cls.__stub.Create(spice_model_message(name, path, sub_circuit)))
 
     @property
     def _properties(self):
-        return self.__stub.GetProperties(messages.edb_obj_message(self))
+        return self.__stub.GetProperties(edb_obj_message(self))
 
     @property
     def model_name(self):
@@ -35,7 +40,7 @@ class SPICEModel(Model):
 
     @model_name.setter
     def model_name(self, name):
-        self.__stub.SetModelName(messages.string_property_message(self, name))
+        self.__stub.SetModelName(string_property_message(self, name))
 
     @property
     def model_path(self):
@@ -44,7 +49,7 @@ class SPICEModel(Model):
 
     @model_path.setter
     def model_path(self, path):
-        self.__stub.SetModelPath(messages.string_property_message(self, path))
+        self.__stub.SetModelPath(string_property_message(self, path))
 
     @property
     def sub_circuit(self):
@@ -53,7 +58,7 @@ class SPICEModel(Model):
 
     @sub_circuit.setter
     def sub_circuit(self, name):
-        self.__stub.SetSubCkt(messages.string_property_message(self, name))
+        self.__stub.SetSubCkt(string_property_message(self, name))
 
     def add_terminal(self, terminal, pin):
         """Add a terminal with pin number.
@@ -65,9 +70,7 @@ class SPICEModel(Model):
         pin : str
             The pin number.
         """
-        self.__stub.AddTerminalPinPair(
-            messages.spice_model_net_terminal_pin_message(self, terminal, pin)
-        )
+        self.__stub.AddTerminalPinPair(spice_model_net_terminal_pin_message(self, terminal, pin))
 
     def remove_terminal(self, terminal):
         """Remove a terminal with pin number.
@@ -77,4 +80,4 @@ class SPICEModel(Model):
         terminal : str
             The terminal name.
         """
-        self.__stub.RemoveTerminalPinPair(messages.string_property_message(self, terminal))
+        self.__stub.RemoveTerminalPinPair(string_property_message(self, terminal))

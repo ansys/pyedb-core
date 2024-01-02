@@ -5,9 +5,13 @@ from enum import Enum
 from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core.definition import component_property
 from ansys.edb.core.hierarchy.group import Group
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import (
+    component_group_create_message,
+    object_name_in_layout_message,
+    pointer_property_message,
+    set_component_group_type_message,
+)
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -57,7 +61,7 @@ class ComponentGroup(Group):
             Newly created component group.
         """
         return ComponentGroup(
-            cls.__stub.Create(messages.component_group_create_message(layout, name, comp_name))
+            cls.__stub.Create(component_group_create_message(layout, name, comp_name))
         )
 
     @property
@@ -74,11 +78,12 @@ class ComponentGroup(Group):
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
+        from ansys.edb.core.definition.component_property import ComponentProperty
         from ansys.edb.core.definition.ic_component_property import ICComponentProperty
         from ansys.edb.core.definition.io_component_property import IOComponentProperty
         from ansys.edb.core.definition.rlc_component_property import RLCComponentProperty
 
-        comp_prop = component_property.ComponentProperty(self.__stub.GetComponentProperty(self.msg))
+        comp_prop = ComponentProperty(self.__stub.GetComponentProperty(self.msg))
         comp_type = self.__stub.GetComponentType(self.msg).comp_type
         if (
             comp_type == edb_defs_pb2.ComponentType.RESISTOR
@@ -98,7 +103,7 @@ class ComponentGroup(Group):
     @component_property.setter
     def component_property(self, value):
         """Set the component property on the component group."""
-        self.__stub.SetComponentProperty(messages.pointer_property_message(self, value))
+        self.__stub.SetComponentProperty(pointer_property_message(self, value))
 
     @property
     def component_type(self):
@@ -108,7 +113,7 @@ class ComponentGroup(Group):
     @component_type.setter
     def component_type(self, value):
         """Set the component type on the component group."""
-        self.__stub.SetComponentType(messages.set_component_group_type_message(self, value))
+        self.__stub.SetComponentType(set_component_group_type_message(self, value))
 
     @classmethod
     def find_by_def(cls, layout, comp_def_name):
@@ -126,7 +131,5 @@ class ComponentGroup(Group):
         list[ComponentGroup]
             List of component group(s) that are found.
         """
-        objs = cls.__stub.FindByDef(
-            messages.object_name_in_layout_message(layout, comp_def_name)
-        ).items
+        objs = cls.__stub.FindByDef(object_name_in_layout_message(layout, comp_def_name)).items
         return [ComponentGroup(cg) for cg in objs]

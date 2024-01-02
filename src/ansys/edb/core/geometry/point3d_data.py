@@ -1,5 +1,5 @@
 """Point3D Data."""
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility.conversions import to_value
 
 
 class Point3DData:
@@ -66,7 +66,7 @@ class Point3DData:
 
     @x.setter
     def x(self, x):
-        self._x = conversions.to_value(x)
+        self._x = to_value(x)
 
     @property
     def y(self):
@@ -75,7 +75,7 @@ class Point3DData:
 
     @y.setter
     def y(self, y):
-        self._y = conversions.to_value(y)
+        self._y = to_value(y)
 
     @property
     def z(self):
@@ -84,7 +84,7 @@ class Point3DData:
 
     @z.setter
     def z(self, z):
-        self._z = conversions.to_value(z)
+        self._z = to_value(z)
 
     @property
     def magnitude(self):

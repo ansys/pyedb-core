@@ -2,7 +2,16 @@
 import ansys.api.edb.v1.transform_pb2 as pb
 from ansys.api.edb.v1.transform_pb2_grpc import TransformServiceStub
 
-from ansys.edb.core.inner import ObjBase, messages, parser
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    edb_obj_message,
+    point_property_message,
+    polygon_data_property_message,
+    value_message,
+    value_property_message,
+)
+from ansys.edb.core.inner.parser import to_polygon_data
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.value import Value
 
@@ -11,18 +20,18 @@ class _TransformQueryBuilder:
     @staticmethod
     def transform_message(scale, angle, mirror, offset_x, offset_y):
         return pb.TransformMessage(
-            scale=messages.value_message(scale),
-            angle=messages.value_message(angle),
+            scale=value_message(scale),
+            angle=value_message(angle),
             mirror=mirror,
-            offset_x=messages.value_message(offset_x),
-            offset_y=messages.value_message(offset_y),
+            offset_x=value_message(offset_x),
+            offset_y=value_message(offset_y),
         )
 
     @staticmethod
     def transform_operator_message(target, target_2):
         return pb.TransformOperatorMessage(
-            target_1=messages.edb_obj_message(target.msg),
-            target_2=messages.edb_obj_message(target_2.msg),
+            target_1=edb_obj_message(target.msg),
+            target_2=edb_obj_message(target_2.msg),
         )
 
 
@@ -64,11 +73,11 @@ class Transform(ObjBase):
 
         This property can be set to :term:`ValueLike`
         """
-        return Value(self.__stub.GetScale(messages.edb_obj_message(self)))
+        return Value(self.__stub.GetScale(edb_obj_message(self)))
 
     @scale.setter
     def scale(self, value):
-        self.__stub.SetScale(messages.value_property_message(target=self, value=value))
+        self.__stub.SetScale(value_property_message(target=self, value=value))
 
     @property
     def rotation(self):
@@ -76,11 +85,11 @@ class Transform(ObjBase):
 
         This property can be set to :term:`ValueLike`
         """
-        return Value(self.__stub.GetRotation(messages.edb_obj_message(self)))
+        return Value(self.__stub.GetRotation(edb_obj_message(self)))
 
     @rotation.setter
     def rotation(self, value):
-        self.__stub.SetRotation(messages.value_property_message(target=self, value=value))
+        self.__stub.SetRotation(value_property_message(target=self, value=value))
 
     @property
     def offset_x(self):
@@ -88,11 +97,11 @@ class Transform(ObjBase):
 
         This property can be set to :term:`ValueLike`
         """
-        return Value(self.__stub.GetOffsetX(messages.edb_obj_message(self)))
+        return Value(self.__stub.GetOffsetX(edb_obj_message(self)))
 
     @offset_x.setter
     def offset_x(self, value):
-        self.__stub.SetOffsetX(messages.value_property_message(target=self, value=value))
+        self.__stub.SetOffsetX(value_property_message(target=self, value=value))
 
     @property
     def offset_y(self):
@@ -100,25 +109,25 @@ class Transform(ObjBase):
 
         This property can be set to :term:`ValueLike`
         """
-        return Value(self.__stub.GetOffsetY(messages.edb_obj_message(self)))
+        return Value(self.__stub.GetOffsetY(edb_obj_message(self)))
 
     @offset_y.setter
     def offset_y(self, value):
-        self.__stub.SetOffsetY(messages.value_property_message(target=self, value=value))
+        self.__stub.SetOffsetY(value_property_message(target=self, value=value))
 
     @property
     def mirror(self):
         """:obj:`bool`: Mirror property. If true, mirror about Y-axis."""
-        return self.__stub.GetMirror(messages.edb_obj_message(self)).value
+        return self.__stub.GetMirror(edb_obj_message(self)).value
 
     @mirror.setter
     def mirror(self, value):
-        self.__stub.SetMirror(messages.bool_property_message(self, value))
+        self.__stub.SetMirror(bool_property_message(self, value))
 
     @property
     def is_identity(self):
         """:obj:`bool`: Gets whether the transformation is an identity transformation."""
-        return self.__stub.IsIdentity(messages.edb_obj_message(self)).value
+        return self.__stub.IsIdentity(edb_obj_message(self)).value
 
     def __add__(self, other_transform):
         """Add operator, concatenate two transformations.
@@ -152,10 +161,10 @@ class Transform(ObjBase):
         :class:`PointData <ansys.edb.core.geometry.PointData>`
             The transformed point
         """
-        pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))
+        pnt_msg = self.__stub.TransformPoint(point_property_message(self, point))
         return Value(pnt_msg.x), Value(pnt_msg.y)
 
-    @parser.to_polygon_data
+    @to_polygon_data
     def transform_polygon(self, polygon):
         """Transform a polygon.
 
@@ -169,4 +178,4 @@ class Transform(ObjBase):
         :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
             The transformed polygon.
         """
-        return self.__stub.TransformPolygon(messages.polygon_data_property_message(self, polygon))
+        return self.__stub.TransformPolygon(polygon_data_property_message(self, polygon))

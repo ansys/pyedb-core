@@ -2,10 +2,20 @@
 import ansys.api.edb.v1.voltage_regulator_pb2 as vr_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import conn_obj, messages
-from ansys.edb.core.primitive import PadstackInstance
+from ansys.edb.core.inner.conn_obj import ConnObj
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    edb_obj_collection_message,
+    edb_obj_name_message,
+    power_module_message,
+    string_property_message,
+    strings_property_message,
+    value_message,
+    value_property_message,
+)
+from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class PowerModule:
@@ -116,7 +126,7 @@ class _QueryBuilder:
         )
 
 
-class VoltageRegulator(conn_obj.ConnObj):
+class VoltageRegulator(ConnObj):
     """Voltage regulator."""
 
     __stub = StubAccessor(StubType.voltage_regulator)
@@ -153,9 +163,9 @@ class VoltageRegulator(conn_obj.ConnObj):
                     layout,
                     name,
                     active,
-                    messages.value_message(voltage),
-                    messages.value_message(lrc),
-                    messages.value_message(lrp),
+                    value_message(voltage),
+                    value_message(lrc),
+                    value_message(lrp),
                 )
             )
         )
@@ -167,7 +177,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @name.setter
     def name(self, newname):
-        self.__stub.SetName(messages.edb_obj_name_message(self.msg, newname))
+        self.__stub.SetName(edb_obj_name_message(self.msg, newname))
 
     @property
     def active(self):
@@ -176,7 +186,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @active.setter
     def active(self, newactive):
-        self.__stub.SetIsActive(messages.bool_property_message(self, newactive))
+        self.__stub.SetIsActive(bool_property_message(self, newactive))
 
     @property
     def voltage(self):
@@ -188,9 +198,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @voltage.setter
     def voltage(self, newvoltage):
-        self.__stub.SetVoltage(
-            messages.value_property_message(self.msg, messages.value_message(newvoltage))
-        )
+        self.__stub.SetVoltage(value_property_message(self.msg, value_message(newvoltage)))
 
     @property
     def lrc(self):
@@ -203,7 +211,7 @@ class VoltageRegulator(conn_obj.ConnObj):
     @lrc.setter
     def lrc(self, newlrc):
         self.__stub.SetLoadRegulationCurrent(
-            messages.value_property_message(self.msg, messages.value_message(newlrc))
+            value_property_message(self.msg, value_message(newlrc))
         )
 
     @property
@@ -217,7 +225,7 @@ class VoltageRegulator(conn_obj.ConnObj):
     @lrp.setter
     def lrp(self, newlrp):
         self.__stub.SetLoadRegulationPercent(
-            messages.value_property_message(self.msg, messages.value_message(newlrp))
+            value_property_message(self.msg, value_message(newlrp))
         )
 
     @property
@@ -231,7 +239,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @pos_remote_sense_pin.setter
     def pos_remote_sense_pin(self, newpin):
-        self.__stub.SetPosRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))
+        self.__stub.SetPosRemoteSensePin(edb_obj_collection_message([self, newpin]))
 
     @property
     def neg_remote_sense_pin(self):
@@ -244,7 +252,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @neg_remote_sense_pin.setter
     def neg_remote_sense_pin(self, newpin):
-        self.__stub.SetNegRemoteSensePin(messages.edb_obj_collection_message([self, newpin]))
+        self.__stub.SetNegRemoteSensePin(edb_obj_collection_message([self, newpin]))
 
     @property
     def num_power_modules(self):
@@ -275,7 +283,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         PowerModule
         """
         return _QueryBuilder.create_power_module(
-            msg=self.__stub.GetPowerModule(messages.string_property_message(self, comp_group_name))
+            msg=self.__stub.GetPowerModule(string_property_message(self, comp_group_name))
         )
 
     def get_all_power_modules(self):
@@ -299,7 +307,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         """
         self.__stub.AddPowerModule(
             vr_pb2.PowerModulePropertyMessage(
-                vrm=self.msg, module=messages.power_module_message(power_module)
+                vrm=self.msg, module=power_module_message(power_module)
             )
         )
 
@@ -311,7 +319,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         name : str
             Component Group Name of the Power Module to be removed.
         """
-        self.__stub.RemovePowerModule(messages.string_property_message(target=self, value=name))
+        self.__stub.RemovePowerModule(string_property_message(target=self, value=name))
 
     def add_power_modules(self, power_modules):
         """Add multiple Power Modules to this Voltage Regulator.
@@ -321,7 +329,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         power_modules : list[PowerModule]
             Power Modules to be added
         """
-        self.__stub.AddPowerModules([messages.power_module_message(pm) for pm in power_modules])
+        self.__stub.AddPowerModules([power_module_message(pm) for pm in power_modules])
 
     def remove_power_modules(self, names):
         """Remove multiple Power Modules.
@@ -332,7 +340,7 @@ class VoltageRegulator(conn_obj.ConnObj):
             Component Group Names of each Power Module to remove.
 
         """
-        self.__stub.RemovePowerModules(messages.strings_property_message(target=self, value=names))
+        self.__stub.RemovePowerModules(strings_property_message(target=self, value=names))
 
     def remove_all_power_modules(self):
         """Remove all Power Modules in this Voltage Regulator."""

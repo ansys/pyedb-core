@@ -3,7 +3,18 @@ import ansys.api.edb.v1.transform3d_pb2 as pb
 from ansys.api.edb.v1.transform3d_pb2_grpc import Transform3DServiceStub
 from google.protobuf import empty_pb2
 
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import (
+    cpos_3d_double_message,
+    cpos_3d_message,
+    cpos_3d_pair_message,
+    cpos_3d_property_message,
+    cpos_3d_triple_message,
+    double_property_message,
+    doubles_property_message,
+    edb_obj_message,
+    pointer_property_message,
+)
 from ansys.edb.core.inner.parser import to_3_point3d_data, to_point3d_data
 from ansys.edb.core.session import StubAccessor, StubType
 
@@ -12,7 +23,7 @@ class _Transform3DQueryBuilder:
     @staticmethod
     def is_identity_message(target, eps, rotation):
         return pb.IsIdentityMessage(
-            target=messages.edb_obj_message(target),
+            target=edb_obj_message(target),
             eps=eps,
             rotation=rotation,
         )
@@ -20,8 +31,8 @@ class _Transform3DQueryBuilder:
     @staticmethod
     def is_equal_message(target, value, eps, rotation):
         return pb.IsEqualMessage(
-            target=messages.edb_obj_message(target),
-            value=messages.edb_obj_message(value),
+            target=edb_obj_message(target),
+            value=edb_obj_message(value),
             eps=eps,
             rotation=rotation,
         )
@@ -62,7 +73,7 @@ class Transform3D(ObjBase):
         -------
         Transform3D
         """
-        return Transform3D(cls.__stub.CreateCopy(messages.edb_obj_message(transform3d)))
+        return Transform3D(cls.__stub.CreateCopy(edb_obj_message(transform3d)))
 
     @classmethod
     def create_from_matrix(cls, matrix):
@@ -92,7 +103,7 @@ class Transform3D(ObjBase):
         -------
         Transform3D
         """
-        return Transform3D(cls.__stub.CreateOffset(messages.cpos_3d_message(offset)))
+        return Transform3D(cls.__stub.CreateOffset(cpos_3d_message(offset)))
 
     @classmethod
     def create_from_center_scale(cls, center, scale):
@@ -109,9 +120,7 @@ class Transform3D(ObjBase):
         -------
         Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateCenterScale(messages.cpos_3d_double_message(center, scale))
-        )
+        return Transform3D(cls.__stub.CreateCenterScale(cpos_3d_double_message(center, scale)))
 
     @classmethod
     def create_from_angle(cls, zyx_decomposition):
@@ -125,9 +134,7 @@ class Transform3D(ObjBase):
         -------
         Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateRotationFromAngle(messages.cpos_3d_message(zyx_decomposition))
-        )
+        return Transform3D(cls.__stub.CreateRotationFromAngle(cpos_3d_message(zyx_decomposition)))
 
     @classmethod
     def create_from_axis(cls, x, y, z):
@@ -146,9 +153,7 @@ class Transform3D(ObjBase):
         -------
         Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateRotationFromAxis(messages.cpos_3d_triple_message(x, y, z))
-        )
+        return Transform3D(cls.__stub.CreateRotationFromAxis(cpos_3d_triple_message(x, y, z)))
 
     @classmethod
     def create_from_axis_and_angle(cls, axis, angle):
@@ -166,7 +171,7 @@ class Transform3D(ObjBase):
         Transform3D
         """
         return Transform3D(
-            cls.__stub.CreateRotationFromAxisAndAngle(messages.cpos_3d_double_message(axis, angle))
+            cls.__stub.CreateRotationFromAxisAndAngle(cpos_3d_double_message(axis, angle))
         )
 
     @classmethod
@@ -185,7 +190,7 @@ class Transform3D(ObjBase):
         Transform3D
         """
         return Transform3D(
-            cls.__stub.CreateRotationFromToAxis(messages.cpos_3d_pair_message(from_axis, to_axis))
+            cls.__stub.CreateRotationFromToAxis(cpos_3d_pair_message(from_axis, to_axis))
         )
 
     @classmethod
@@ -203,17 +208,15 @@ class Transform3D(ObjBase):
         -------
         Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateTransform2D(messages.double_property_message(transform, z_off))
-        )
+        return Transform3D(cls.__stub.CreateTransform2D(double_property_message(transform, z_off)))
 
     def transpose(self):
         """Transpose transfrom3d."""
-        self.__stub.Transpose(messages.edb_obj_message(self))
+        self.__stub.Transpose(edb_obj_message(self))
 
     def invert(self):
         """Invert transfrom3d."""
-        self.__stub.Invert(messages.edb_obj_message(self))
+        self.__stub.Invert(edb_obj_message(self))
 
     def is_identity(self, eps, rotation):
         """Get is identity of a Transform3d.
@@ -264,14 +267,14 @@ class Transform3D(ObjBase):
             A new transformation3d object.
         """
         return Transform3D(
-            self.__stub.OperatorPlus(messages.pointer_property_message(self, other_transform))
+            self.__stub.OperatorPlus(pointer_property_message(self, other_transform))
         )
 
     @property
     @to_3_point3d_data
     def axis(self):
         """:obj:`list` of :term:`Point3DLike`: Axis."""
-        return self.__stub.GetAxis(messages.edb_obj_message(self))
+        return self.__stub.GetAxis(edb_obj_message(self))
 
     @to_point3d_data
     def transform_point(self, point):
@@ -286,30 +289,30 @@ class Transform3D(ObjBase):
         :term:`Point3DLike`
             TransformPoint.
         """
-        return self.__stub.TransformPoint(messages.cpos_3d_property_message(self, point))
+        return self.__stub.TransformPoint(cpos_3d_property_message(self, point))
 
     @property
     @to_point3d_data
     def z_y_x_rotation(self):
         """:term:`Point3DLike`: ZYXRotation."""
-        return self.__stub.GetZYXRotation(messages.edb_obj_message(self))
+        return self.__stub.GetZYXRotation(edb_obj_message(self))
 
     @property
     @to_point3d_data
     def scaling(self):
         """:term:`Point3DLike`: Scaling."""
-        return self.__stub.GetScaling(messages.edb_obj_message(self))
+        return self.__stub.GetScaling(edb_obj_message(self))
 
     @property
     @to_point3d_data
     def shift(self):
         """:term:`Point3DLike`: Shift."""
-        return self.__stub.GetShift(messages.edb_obj_message(self))
+        return self.__stub.GetShift(edb_obj_message(self))
 
     @property
     def matrix(self):
         """:obj:`list` of :obj:`list` of :obj:`floats` : Transformation matrix as a 2D 4x4 Array."""
-        msg = self.__stub.GetMatrix(messages.edb_obj_message(self))
+        msg = self.__stub.GetMatrix(edb_obj_message(self))
         matrix = [[float(_) for _ in msg.doubles[(i - 1) * 4 : i * 4]] for i in range(1, 5)]
         return matrix
 
@@ -323,4 +326,4 @@ class Transform3D(ObjBase):
             and len(value[3]) == 4
         ):
             unrolled_matrix = [float(j) for submatrix in value for j in submatrix]
-            self.__stub.SetMatrix(messages.doubles_property_message(self, unrolled_matrix))
+            self.__stub.SetMatrix(doubles_property_message(self, unrolled_matrix))

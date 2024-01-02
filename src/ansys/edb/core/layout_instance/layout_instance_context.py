@@ -1,8 +1,9 @@
 """Layout Instance Context."""
 
-from ansys.edb.core.inner import ObjBase, parser
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.messages import bool_property_message
-import ansys.edb.core.layout as layout
+from ansys.edb.core.inner.parser import to_polygon_data
+from ansys.edb.core.layout.layout import Layout
 from ansys.edb.core.session import LayoutInstanceContextServiceStub, StubAccessor, StubType
 
 
@@ -17,9 +18,9 @@ class LayoutInstanceContext(ObjBase):
 
         Read-Only.
         """
-        return layout.Layout(self.__stub.GetLayout(self.msg))
+        return Layout(self.__stub.GetLayout(self.msg))
 
-    @parser.to_polygon_data
+    @to_polygon_data
     def get_bbox(self, local):
         """Get the bounding box of the context.
 

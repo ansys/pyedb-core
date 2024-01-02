@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility.conversions import to_value
 from ansys.edb.core.utility.value import Value
 
 
@@ -162,6 +162,6 @@ class HfssExtentInfo:
         self.airbox_vertical_negative = airbox_vertical_negative
         self.sync_airbox_vertical_extent = sync_airbox_vertical_extent
         self.is_pml_visible = is_pml_visible
-        self.operating_frequency = conversions.to_value(operating_frequency)
+        self.operating_frequency = to_value(operating_frequency)
         self.radiation_level = radiation_level
         self.user_xy_data_extent_for_vertical_expansion = user_xy_data_extent_for_vertical_expansion

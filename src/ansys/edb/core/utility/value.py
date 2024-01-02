@@ -5,8 +5,8 @@ from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
 from ansys.edb.core import session
-from ansys.edb.core.inner import messages
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.inner.messages import edb_obj_message
+from ansys.edb.core.utility.conversions import to_value
 
 
 class Value:
@@ -79,9 +79,7 @@ class Value:
         elif isinstance(val, Value):
             self.msg = val.msg
         elif isinstance(val, str):
-            temp = value_pb2.ValueTextMessage(
-                text=val, variable_owner=messages.edb_obj_message(_owner)
-            )
+            temp = value_pb2.ValueTextMessage(text=val, variable_owner=edb_obj_message(_owner))
             self.msg = self.__stub.CreateValue(temp)
         elif isinstance(val, float) or isinstance(val, int):
             self.msg.constant.real = val
@@ -132,7 +130,7 @@ class Value:
         Value
             this is a constant Value wrapping either real or complex number
         """
-        other = conversions.to_value(other)
+        other = to_value(other)
         return self.__class__(self.value + other.value)
 
     def __sub__(self, other):
@@ -147,7 +145,7 @@ class Value:
         Value
             this is a constant Value wrapping either real or complex number
         """
-        other = conversions.to_value(other)
+        other = to_value(other)
         return self.__class__(self.value - other.value)
 
     def __mul__(self, other):
@@ -162,7 +160,7 @@ class Value:
         Value
             this is a constant Value wrapping either real or complex number
         """
-        other = conversions.to_value(other)
+        other = to_value(other)
         return self.__class__(self.value * other.value)
 
     def __truediv__(self, other):
@@ -177,7 +175,7 @@ class Value:
         Value
             this is a constant Value wrapping either real or complex number
         """
-        other = conversions.to_value(other)
+        other = to_value(other)
         return self.__class__(self.value / other.value)
 
     def __floordiv__(self, other):
@@ -192,7 +190,7 @@ class Value:
         Value
             this is a constant Value wrapping an integer number
         """
-        other = conversions.to_value(other)
+        other = to_value(other)
         return self.__class__(self.value // other.value)
 
     def __pow__(self, power, modulo=None):
@@ -259,7 +257,7 @@ class Value:
         bool
         """
         try:
-            other = conversions.to_value(other)
+            other = to_value(other)
             diff = self.value - other.value
 
             if type(diff) == complex:

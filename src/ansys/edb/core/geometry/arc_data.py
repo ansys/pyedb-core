@@ -4,9 +4,11 @@ import math
 
 from ansys.api.edb.v1 import arc_data_pb2_grpc
 
-from ansys.edb.core import geometry, session
-from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.geometry.point_data import PointData
+from ansys.edb.core.inner.messages import arc_data_two_points, arc_message
+from ansys.edb.core.inner.parser import to_box, to_point_data, to_polygon_data
+from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.utility.conversions import to_point
 
 
 class RotationDirection(enum.Enum):
@@ -20,7 +22,7 @@ class RotationDirection(enum.Enum):
 class ArcData:
     """Class representing arc data."""
 
-    __stub: arc_data_pb2_grpc.ArcDataServiceStub = session.StubAccessor(session.StubType.arc_data)
+    __stub: arc_data_pb2_grpc.ArcDataServiceStub = StubAccessor(StubType.arc_data)
 
     def __init__(self, start, end, **kwargs):
         """Create an arc.
@@ -36,8 +38,8 @@ class ArcData:
         center : ansys.edb.core.typing.PointLike, optional
         is_big : bool, optional
         """
-        self._start = conversions.to_point(start)
-        self._end = conversions.to_point(end)
+        self._start = to_point(start)
+        self._end = to_point(end)
         self._height = None
         self._height_options = kwargs
 
@@ -56,7 +58,7 @@ class ArcData:
         if self.height == 0:
             return f"{self.start} {self.end}"
         else:
-            arc = geometry.PointData(self.height)
+            arc = PointData(self.height)
             return f"{self.start} {arc} {self.end}"
 
     @property
@@ -88,7 +90,7 @@ class ArcData:
         float
         """
         if self._height is None:
-            self._height = self.__stub.GetHeight(messages.arc_message(self)).value
+            self._height = self.__stub.GetHeight(arc_message(self)).value
 
         return self._height
 
@@ -119,7 +121,7 @@ class ArcData:
         return math.fabs(self.height) <= tolerance
 
     @property
-    @parser.to_point_data
+    @to_point_data
     def center(self):
         """Get the center point of arc.
 
@@ -127,10 +129,10 @@ class ArcData:
         -------
         geometry.PointData
         """
-        return self.__stub.GetCenter(messages.arc_message(self))
+        return self.__stub.GetCenter(arc_message(self))
 
     @property
-    @parser.to_point_data
+    @to_point_data
     def midpoint(self):
         """Get the midpoint of arc.
 
@@ -138,7 +140,7 @@ class ArcData:
         -------
         geometry.PointData
         """
-        return self.__stub.GetMidpoint(messages.arc_message(self))
+        return self.__stub.GetMidpoint(arc_message(self))
 
     @property
     def radius(self):
@@ -148,18 +150,18 @@ class ArcData:
         -------
         float
         """
-        return self.__stub.GetRadius(messages.arc_message(self)).value
+        return self.__stub.GetRadius(arc_message(self)).value
 
     @property
-    @parser.to_polygon_data
+    @to_polygon_data
     def bbox(self):
         """Get the rectangular bounding box of arc.
 
         Returns
         -------
-        geometry.PolygonData
+        PolygonData
         """
-        return self.__stub.GetBoundingBox(messages.arc_message(self))
+        return self.__stub.GetBoundingBox(arc_message(self))
 
     def is_big(self):
         """Get if the arc is big.
@@ -226,7 +228,7 @@ class ArcData:
             angle in radian
         """
         if arc is None:
-            return self.__stub.GetAngle(messages.arc_message(self)).value
+            return self.__stub.GetAngle(arc_message(self)).value
 
         if self.is_segment() and arc.is_segment():
             vec1 = self.end - self.start
@@ -258,7 +260,7 @@ class ArcData:
         -------
         list[geometry.PointData]
         """
-        return [self._start, geometry.PointData(self.height), self._end]
+        return [self._start, PointData(self.height), self._end]
 
     def tangent_at(self, point):
         """Get the tangent vector of arc at a point.
@@ -274,15 +276,15 @@ class ArcData:
         if self.is_segment():
             return self.end - self.start
 
-        point = conversions.to_point(point)
+        point = to_point(point)
         vec = point - self.center
 
         if self.is_ccw():
-            return geometry.PointData(-vec.y, vec.x)
+            return PointData(-vec.y, vec.x)
         else:
-            return geometry.PointData(vec.y, -vec.x)
+            return PointData(vec.y, -vec.x)
 
-    @parser.to_box
+    @to_box
     def closest_points(self, other):
         """Get the closest point from one arc to another, and vice versa.
 
@@ -294,4 +296,4 @@ class ArcData:
         -------
         tuple[geometry.PointData, geometry.PointData]
         """
-        return self.__stub.ClosestPoints(messages.arc_data_two_points(self, other))
+        return self.__stub.ClosestPoints(arc_data_two_points(self, other))

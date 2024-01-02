@@ -6,9 +6,16 @@ import ansys.api.edb.v1.structure3d_pb2 as structure3d_pb2
 from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 
 from ansys.edb.core.hierarchy.group import Group
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import (
+    bool_property_message,
+    object_name_in_layout_message,
+    set_closure_message,
+    string_property_message,
+    value_message,
+    value_property_message,
+)
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class MeshClosure(Enum):
@@ -47,7 +54,7 @@ class Structure3D(Group):
         Structure3D
             Newly created structure3d.
         """
-        return Structure3D(cls.__stub.Create(messages.object_name_in_layout_message(layout, name)))
+        return Structure3D(cls.__stub.Create(object_name_in_layout_message(layout, name)))
 
     def get_material(self, evaluate):
         """Get material for the structure3d.
@@ -61,7 +68,7 @@ class Structure3D(Group):
         -------
         str
         """
-        return self.__stub.GetMaterial(messages.bool_property_message(self, evaluate)).value
+        return self.__stub.GetMaterial(bool_property_message(self, evaluate)).value
 
     def set_material(self, mat_name):
         """Set material for the structure3d.
@@ -70,7 +77,7 @@ class Structure3D(Group):
         ----------
         mat_name : str
         """
-        self.__stub.SetMaterial(messages.string_property_message(self, mat_name))
+        self.__stub.SetMaterial(string_property_message(self, mat_name))
 
     @property
     def thickness(self):
@@ -80,9 +87,7 @@ class Structure3D(Group):
     @thickness.setter
     def thickness(self, value):
         """Set thickness for the structure3d."""
-        self.__stub.SetThickness(
-            messages.value_property_message(self, messages.value_message(value))
-        )
+        self.__stub.SetThickness(value_property_message(self, value_message(value)))
 
     @property
     def mesh_closure(self):
@@ -92,4 +97,4 @@ class Structure3D(Group):
     @mesh_closure.setter
     def mesh_closure(self, value):
         """Set mesh closure property for the structure3d."""
-        self.__stub.SetMeshClosureProp(messages.set_closure_message(self, value))
+        self.__stub.SetMeshClosureProp(set_closure_message(self, value))

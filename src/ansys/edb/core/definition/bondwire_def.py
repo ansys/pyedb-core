@@ -6,9 +6,10 @@ from ansys.api.edb.v1 import bondwire_def_pb2_grpc
 import ansys.api.edb.v1.bondwire_def_pb2 as pb
 
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import value_message
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class _QueryBuilder:
@@ -176,7 +177,7 @@ class _Jedec4QueryBuilder:
     def jedec4_bondwire_def_set_parameters_message(j, top_to_die_distance):
         return pb.Jedec4BondwireDefSetParametersMessage(
             target=j.msg,
-            top_to_die_distance=messages.value_message(top_to_die_distance),
+            top_to_die_distance=value_message(top_to_die_distance),
         )
 
 
@@ -264,9 +265,9 @@ class _Jedec5QueryBuilder:
     @staticmethod
     def jedec5_bondwire_def_parameters_message(top_to_die_distance, die_pad_angle, lead_pad_angle):
         return pb.Jedec5BondwireDefParametersMessage(
-            top_to_die_distance=messages.value_message(top_to_die_distance),
-            die_pad_angle=messages.value_message(die_pad_angle),
-            lead_pad_angle=messages.value_message(lead_pad_angle),
+            top_to_die_distance=value_message(top_to_die_distance),
+            die_pad_angle=value_message(die_pad_angle),
+            lead_pad_angle=value_message(lead_pad_angle),
         )
 
     @staticmethod

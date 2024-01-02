@@ -5,15 +5,15 @@ from google.protobuf import empty_pb2
 
 from ansys.edb.core import session
 from ansys.edb.core.definition.dielectric_material_model import DielectricMaterialModel
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import double_message, edb_obj_message
 
 
 class _MultipoleDebyeModelQueryBuilder:
     @staticmethod
     def multmultipole_debye_model_params(frequencies, permitivities, loss_tangents):
-        frequencies_msg = [messages.double_message(i) for i in frequencies]
-        permitivities_msg = [messages.double_message(i) for i in permitivities]
-        loss_tangents_msg = [messages.double_message(i) for i in loss_tangents]
+        frequencies_msg = [double_message(i) for i in frequencies]
+        permitivities_msg = [double_message(i) for i in permitivities]
+        loss_tangents_msg = [double_message(i) for i in loss_tangents]
         return pb.MultipoleDebyeModelGetParams(
             frequencies=frequencies_msg,
             relative_permitivities=permitivities_msg,
@@ -59,7 +59,7 @@ class MultipoleDebyeModel(DielectricMaterialModel):
         loss_tangents : list[float]
             List of loss tangents at each frequency.
         """
-        parameters_msg = self.__stub.GetParameters(messages.edb_obj_message(self))
+        parameters_msg = self.__stub.GetParameters(edb_obj_message(self))
         return (
             [i.value for i in parameters_msg.frequencies],
             [i.value for i in parameters_msg.relative_permitivities],

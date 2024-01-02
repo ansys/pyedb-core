@@ -2,7 +2,7 @@
 
 import ansys.api.edb.v1.siwave_dcir_simulation_settings_pb2 as pb
 
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import bool_property_message, string_property_message
 from ansys.edb.core.session import SIWaveDCIRSimulationSettingsServiceStub, StubAccessor, StubType
 from ansys.edb.core.simulation_setup.siwave_simulation_settings import SIWaveSimulationSettings
 
@@ -21,7 +21,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @icepak_temp_file.setter
     def icepak_temp_file(self, icepak_temp_file):
-        self.__stub.SetIcepakTempFile(messages.string_property_message(self, icepak_temp_file))
+        self.__stub.SetIcepakTempFile(string_property_message(self, icepak_temp_file))
 
     @property
     def source_terms_to_ground(self):
@@ -52,9 +52,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @export_dc_thermal_data.setter
     def export_dc_thermal_data(self, export_dc_thermal_data):
-        self.__stub.SetExportDCThermalData(
-            messages.bool_property_message(self, export_dc_thermal_data)
-        )
+        self.__stub.SetExportDCThermalData(bool_property_message(self, export_dc_thermal_data))
 
     @property
     def import_thermal_data(self):
@@ -63,7 +61,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @import_thermal_data.setter
     def import_thermal_data(self, import_thermal_data):
-        self.__stub.SetImportThermalData(messages.bool_property_message(self, import_thermal_data))
+        self.__stub.SetImportThermalData(bool_property_message(self, import_thermal_data))
 
     @property
     def full_dc_report_path(self):
@@ -72,7 +70,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @full_dc_report_path.setter
     def full_dc_report_path(self, full_dc_report_path):
-        self.__stub.SetFullDCReportPath(messages.string_property_message(self, full_dc_report_path))
+        self.__stub.SetFullDCReportPath(string_property_message(self, full_dc_report_path))
 
     @property
     def via_report_path(self):
@@ -81,7 +79,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @via_report_path.setter
     def via_report_path(self, via_report_path):
-        self.__stub.SetViaReportPath(messages.string_property_message(self, via_report_path))
+        self.__stub.SetViaReportPath(string_property_message(self, via_report_path))
 
     @property
     def per_pin_res_path(self):
@@ -90,7 +88,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @per_pin_res_path.setter
     def per_pin_res_path(self, per_pin_res_path):
-        self.__stub.SetPerPinResPath(messages.string_property_message(self, per_pin_res_path))
+        self.__stub.SetPerPinResPath(string_property_message(self, per_pin_res_path))
 
     @property
     def dc_report_config_file(self):
@@ -99,9 +97,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @dc_report_config_file.setter
     def dc_report_config_file(self, dc_report_config_file):
-        self.__stub.SetDCReportConfigFile(
-            messages.string_property_message(self, dc_report_config_file)
-        )
+        self.__stub.SetDCReportConfigFile(string_property_message(self, dc_report_config_file))
 
     @property
     def dc_report_show_active_devices(self):
@@ -111,7 +107,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
     @dc_report_show_active_devices.setter
     def dc_report_show_active_devices(self, dc_report_show_active_devices):
         self.__stub.SetDCReportShowActiveDevices(
-            messages.bool_property_message(self, dc_report_show_active_devices)
+            bool_property_message(self, dc_report_show_active_devices)
         )
 
     @property
@@ -121,9 +117,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @per_pin_use_pin_format.setter
     def per_pin_use_pin_format(self, per_pin_use_pin_format):
-        self.__stub.SetPerPinUsePinFormat(
-            messages.bool_property_message(self, per_pin_use_pin_format)
-        )
+        self.__stub.SetPerPinUsePinFormat(bool_property_message(self, per_pin_use_pin_format))
 
     @property
     def use_loop_res_for_per_pin(self):
@@ -132,6 +126,4 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @use_loop_res_for_per_pin.setter
     def use_loop_res_for_per_pin(self, use_loop_res_for_per_pin):
-        self.__stub.SetUseLoopResForPerPin(
-            messages.bool_property_message(self, use_loop_res_for_per_pin)
-        )
+        self.__stub.SetUseLoopResForPerPin(bool_property_message(self, use_loop_res_for_per_pin))

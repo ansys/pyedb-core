@@ -1,8 +1,8 @@
 """Layout Instance."""
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
-from ansys.edb.core.geometry import PointData
-from ansys.edb.core.inner import ObjBase, utils
+from ansys.edb.core.geometry.point_data import PointData
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.messages import (
     layer_ref_message,
     net_ref_message,
@@ -10,6 +10,7 @@ from ansys.edb.core.inner.messages import (
     polygon_data_message,
     strings_message,
 )
+from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.layout_instance.layout_obj_instance import LayoutObjInstance
 from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
 
@@ -46,9 +47,7 @@ class LayoutInstance(ObjBase):
         """
 
         def to_msg_filter_list(client_filter, ref_msg_type):
-            return (
-                utils.map_list(client_filter, ref_msg_type) if client_filter is not None else None
-            )
+            return map_list(client_filter, ref_msg_type) if client_filter is not None else None
 
         msg_params = {
             "layout_inst": self.msg,
@@ -71,11 +70,11 @@ class LayoutInstance(ObjBase):
 
         if hits.HasField("full_partial_hits"):
             full_partial_hits = hits.full_partial_hits
-            return utils.map_list(full_partial_hits.full.items, LayoutObjInstance), utils.map_list(
+            return map_list(full_partial_hits.full.items, LayoutObjInstance), utils.map_list(
                 full_partial_hits.partial.items, LayoutObjInstance
             )
         else:
-            return utils.map_list(hits.hits.items, LayoutObjInstance)
+            return map_list(hits.hits.items, LayoutObjInstance)
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the :class:`layout object instance <LayoutObjInstance>` of the given :term:`Connectable <Connectable>` \
@@ -131,4 +130,4 @@ class LayoutInstance(ObjBase):
                 touching_only=touching_only,
             )
         )
-        return utils.map_list(hits.items, LayoutObjInstance)
+        return map_list(hits.items, LayoutObjInstance)

@@ -4,7 +4,7 @@ from enum import Enum
 
 import ansys.api.edb.v1.layer_collection_pb2 as layer_collection_pb2
 
-from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.messages import (
     get_product_property_ids_message,
     get_product_property_message,

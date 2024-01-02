@@ -9,9 +9,11 @@ import ansys.api.edb.v1.padstack_def_data_pb2 as pb
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.inner import ObjBase, messages, parser
+from ansys.edb.core.inner.base import ObjBase
+from ansys.edb.core.inner.messages import polygon_data_message, value_message
+from ansys.edb.core.inner.parser import to_polygon_data
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class _PadstackDefDataQueryBuilder:
@@ -56,10 +58,10 @@ class _PadstackDefDataQueryBuilder:
     ):
         return pb.PadstackDefDataGetPadParametersParametersMessage(
             geometry_type=geometry_type.value,
-            sizes=[messages.value_message(val) for val in sizes],
-            offset_x=messages.value_message(offset_x),
-            offset_y=messages.value_message(offset_y),
-            rotation=messages.value_message(rotation),
+            sizes=[value_message(val) for val in sizes],
+            offset_x=value_message(offset_x),
+            offset_y=value_message(offset_y),
+            rotation=value_message(rotation),
         )
 
     @staticmethod
@@ -87,10 +89,10 @@ class _PadstackDefDataQueryBuilder:
             return pb.PadstackDefDataPadParametersSetMessage(
                 polygon=pb.PadstackDefDataSetPolygonalPadParametersMessage(
                     params1=p1,
-                    fp=messages.polygon_data_message(fp),
-                    offset_x=messages.value_message(offset_x),
-                    offset_y=messages.value_message(offset_y),
-                    rotation=messages.value_message(rotation),
+                    fp=polygon_data_message(fp),
+                    offset_x=value_message(offset_x),
+                    offset_y=value_message(offset_y),
+                    rotation=value_message(rotation),
                 )
             )
 
@@ -105,7 +107,7 @@ class _PadstackDefDataQueryBuilder:
     @staticmethod
     def padstack_def_data_set_plating_percentage(target, plating_percentage):
         return pb.PadstackDefDataSetPlatingPercentage(
-            target=target.msg, plating_percentage=messages.value_message(plating_percentage)
+            target=target.msg, plating_percentage=value_message(plating_percentage)
         )
 
     @staticmethod
@@ -133,13 +135,13 @@ class _PadstackDefDataQueryBuilder:
     @staticmethod
     def padstack_def_data_get_solder_ball_param_message(d1, d2):
         return pb.PadstackDefDataGetSolderBallParamMessage(
-            d1=messages.value_message(d1), d2=messages.value_message(d2)
+            d1=value_message(d1), d2=value_message(d2)
         )
 
     @staticmethod
     def padstack_def_data_set_solder_ball_param_message(target, d1, d2):
         return pb.PadstackDefDataSetSolderBallParamMessage(
-            target=target.msg, d1=messages.value_message(d1), d2=messages.value_message(d2)
+            target=target.msg, d1=value_message(d1), d2=value_message(d2)
         )
 
     @staticmethod
@@ -390,7 +392,7 @@ class PadstackDefData(ObjBase):
             )
         else:
             return (
-                parser.to_polygon_data(message.polygon.fp),
+                to_polygon_data(message.polygon.fp),
                 Value(message.polygon.offset_x),
                 Value(message.polygon.offset_y),
                 Value(message.polygon.rotation),

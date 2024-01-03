@@ -25,7 +25,7 @@ class ComponentDef(ObjBase):
         comp_def_name : str
             Name of the component definition to create.
         fp : :class:`Cell <ansys.edb.core.layout.Cell>`
-            Footprint cell of the component definition.
+            Footprint cell of the component definition, optional
 
         Returns
         -------

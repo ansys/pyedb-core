@@ -242,6 +242,15 @@ class Cell(ObjBase, variable_server.VariableServer):
         self.__stub.SetBlackBox(messages.bool_property_message(self, value))
 
     @property
+    def suppress_pads(self):
+        """:obj:`bool`: Flag indicating if the internal non-functional pads are suppressed from rendering/analysis."""
+        return self.__stub.GetSuppressPads(self.msg).value
+
+    @suppress_pads.setter
+    def suppress_pads(self, value):
+        self.__stub.SetSuppressPads(messages.bool_property_message(self, value))
+
+    @property
     def anti_pads_always_on(self):
         """:obj:`bool`: Flag indicating whether antipads are always enabled.
 

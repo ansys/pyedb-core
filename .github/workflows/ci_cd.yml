@@ -100,57 +100,22 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   release:
+    name: Release project
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [build, tests, doc-build]
+    needs: [package, tests, doc-build]
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v4.3.0
+      - name: Release to the public PyPI repository
+        uses: ansys/actions/release-pypi-public@v5
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          library-name: ${{ env.PACKAGE_NAME }}
+          twine-username: "__token__"
+          twine-token: ${{ secrets.PYPI_TOKEN }}
 
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v3
-
-      - name: Display structure of downloaded files
-        run: ls -R
-
-      - name: Generate release notes
-        uses: docker://pandoc/core:2.9
+      - name: Release to GitHub
+        uses: ansys/actions/release-github@v5
         with:
-          args: --output=release_notes.md doc/source/api/release_notes.rst
-
-      - name: Publish release
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: release_notes.md
-          files: ./**/pyedb.zip
-          token: ${{ secrets.PYANSYS_PYEDB_BOT_TOKEN }}
-          prerelease: true
-
-      - name: Notify Success
-        uses: skitionek/notify-microsoft-teams@master
-        if: success()
-        with:
-          webhook_url: ${{ secrets.MS_TEAMS_PUBLIC }}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
-          overwrite: "{
-            title: `New release has been published at https://github.com/ansys/pyedb/releases`,
-            }"
-
-      - name: Notify Failure
-        uses: skitionek/notify-microsoft-teams@master
-        if: failure()
-        with:
-          webhook_url: ${{ secrets.MS_TEAMS_DEV }}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
-          overwrite: "{
-            title: `Release FAILED!`,
-            }"
+          library-name: ${{ env.PACKAGE_NAME }}
 
   doc-deploy-dev:
     name: "Deploy development documentation"

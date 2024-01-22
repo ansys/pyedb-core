@@ -45,7 +45,8 @@ class _QueryBuilder:
 
 
 class BondwireDefType(Enum):
-    """Enum representing different types of bondwires.
+    """
+    Enum representing different types of bondwires.
 
     The different types of bondwires this enum represents are:
 

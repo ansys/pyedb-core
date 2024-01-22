@@ -45,15 +45,7 @@ class _QueryBuilder:
 
 
 class BondwireDefType(Enum):
-    """
-    Enum representing different types of bondwires.
-
-    The different types of bondwires this enum represents are:
-
-    - APD_BONDWIRE_DEF: APD bondwire.
-    - JEDEC4_BONDWIRE_DEF: JEDEC4 bondwire.
-    - JEDEC5_BONDWIRE_DEF: JEDEC5 bondwire.
-    """
+    """Enum representing different types of bondwires."""
 
     APD_BONDWIRE_DEF = pb.APD_BONDWIRE_DEF
     JEDEC4_BONDWIRE_DEF = pb.JEDEC4_BONDWIRE_DEF

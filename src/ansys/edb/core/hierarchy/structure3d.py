@@ -12,13 +12,7 @@ from ansys.edb.core.utility import Value
 
 
 class MeshClosure(Enum):
-    """Provides an enum representing mesh closure types.
-
-    - OPEN_ENDED
-    - ENDS_CLOSED
-    - FILLED_CLOSED
-    - UNDEFINED_CLOSURE
-    """
+    """Provides an enum representing mesh closure types."""
 
     OPEN_ENDED = structure3d_pb2.OPEN_ENDED
     ENDS_CLOSED = structure3d_pb2.ENDS_CLOSED

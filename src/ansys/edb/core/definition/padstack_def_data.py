@@ -148,19 +148,7 @@ class _PadstackDefDataQueryBuilder:
 
 
 class PadType(Enum):
-    """Provides an enum representing pad types.
-
-    - REGULAR_PAD
-        Regular pad.
-    - ANTI_PAD
-        Anti pad.
-    - THERMAL_PAD
-         Thermal pad.
-    - HOLE
-        Hole.
-    - UNKNOWN_GEOM_TYPE
-        Undefined pad type.
-    """
+    """Provides an enum representing pad types."""
 
     REGULAR_PAD = pb.REGULAR_PAD
     ANTI_PAD = pb.ANTI_PAD
@@ -170,35 +158,7 @@ class PadType(Enum):
 
 
 class PadGeometryType(Enum):
-    """Provides an enum representing pad geometry types.
-
-    - PADGEOMTYPE_NO_GEOMETRY
-        No geometry.
-    - PADGEOMTYPE_CIRCLE
-        Circle shape.
-    - PADGEOMTYPE_SQUARE
-        Square shape.
-    - PADGEOMTYPE_RECTANGLE
-        Rectangle shape.
-    - PADGEOMTYPE_OVAL
-        Oval shape.
-    - PADGEOMTYPE_BULLET
-        Bullet shape.
-    - PADGEOMTYPE_NSIDED_POLYGON
-        N-sided polygon shape.
-    - PADGEOMTYPE_POLYGON
-        Polygonal shape.
-    - PADGEOMTYPE_ROUND45
-        Round gap with 45-degree thermal ties.
-    - PADGEOMTYPE_ROUND90
-        Round gap with 90-degree thermal ties.
-    - PADGEOMTYPE_SQUARE45
-        Square gap with 45-degree thermal ties.
-    - PADGEOMTYPE_SQUARE90
-        Square gap with 90-degree thermal ties.
-    - PADGEOMTYPE_INVALID_GEOMETRY
-        Invalid geometry.
-    """
+    """Provides an enum representing pad geometry types."""
 
     PADGEOMTYPE_NO_GEOMETRY = pb.PADGEOMTYPE_NO_GEOMETRY
     PADGEOMTYPE_CIRCLE = pb.PADGEOMTYPE_CIRCLE
@@ -216,19 +176,7 @@ class PadGeometryType(Enum):
 
 
 class PadstackHoleRange(Enum):
-    """Provides an enum representing pad hole ranges.
-
-    - THROUGH
-        Hole through all layers of the board.
-    - BEGIN_ON_UPPER_PAD
-        Hole from the upper pad to the bottom of the board.
-    - END_ON_LOWER_PAD
-        Hole from the top of the board to the lower pad.
-    - UPPER_PAD_TO_LOWER_PAD
-        Hole from the upper pad to the lower pad.
-    - UNKNOWN_RANGE
-        Undefined hole range.
-    """
+    """Provides an enum representing pad hole ranges."""
 
     THROUGH = pb.THROUGH
     BEGIN_ON_UPPER_PAD = pb.BEGIN_ON_UPPER_PAD
@@ -238,17 +186,7 @@ class PadstackHoleRange(Enum):
 
 
 class SolderballShape(Enum):
-    """Provides an enum representing solder ball shapes.
-
-    - NO_SOLDERBALL
-        No solder ball.
-    - SOLDERBALL_CYLINDER
-        Cylinder solder ball.
-    - SOLDERBALL_SPHEROID
-        Spheroid solder ball.
-    - UNKNOWN_SOLDERBALL_SHAPE
-        Undefined solder ball shape.
-    """
+    """Provides an enum representing solder ball shapes."""
 
     NO_SOLDERBALL = pb.NO_SOLDERBALL
     SOLDERBALL_CYLINDER = pb.SOLDERBALL_CYLINDER
@@ -257,15 +195,7 @@ class SolderballShape(Enum):
 
 
 class SolderballPlacement(Enum):
-    """Provides an enum representing solder ball placement.
-
-    - ABOVE_PADSTACK
-        Solder ball is placed above the padstack.
-    - BELOW_PADSTACK
-        Solder ball is placed below the padstack.
-    - UNKNOWN_PLACEMENT
-        Undefined solder ball placement type.
-    """
+    """Provides an enum representing solder ball placement."""
 
     ABOVE_PADSTACK = pb.ABOVE_PADSTACK
     BELOW_PADSTACK = pb.BELOW_PADSTACK

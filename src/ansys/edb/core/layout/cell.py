@@ -17,22 +17,14 @@ from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
 
 
 class CellType(Enum):
-    """Provides an enum representing the types of cells.
-
-    - CIRCUIT_CELL
-    - FOOTPRINT_CELL
-    """
+    """Provides an enum representing the types of cells."""
 
     CIRCUIT_CELL = edb_defs_pb2.CIRCUIT_CELL
     FOOTPRINT_CELL = edb_defs_pb2.FOOTPRINT_CELL
 
 
 class DesignMode(Enum):
-    """Provides an enum representing design modes.
-
-    - GENERAL
-    - IC
-    """
+    """Provides an enum representing design modes."""
 
     GENERAL = edb_defs_pb2.GENERAL_MODE
     IC = edb_defs_pb2.IC_MODE

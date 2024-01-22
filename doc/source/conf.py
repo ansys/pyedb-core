@@ -71,7 +71,6 @@ extensions = [
     "numpydoc",
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
-    "sphinx.ext.napoleon",
 ]
 
 # Intersphinx mapping

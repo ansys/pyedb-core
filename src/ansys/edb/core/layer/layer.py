@@ -22,29 +22,7 @@ def _is_in_zone_message(lyr, zone):
 
 
 class LayerType(Enum):
-    """Provides an enum representing the types of layers.
-
-    - SIGNAL_LAYER
-    - DIELECTRIC_LAYER
-    - CONDUCTING_LAYER
-    - AIRLINES_LAYER
-    - AIRLINES_LAYER
-    - ERRORS_LAYER
-    - SYMBOL_LAYER
-    - MEASURE_LAYER
-    - ASSEMBLY_LAYER
-    - SILKSCREEN_LAYER
-    - SOLDER_MASK_LAYER
-    - SOLDER_PASTE_LAYER
-    - GLUE_LAYER
-    - WIREBOND_LAYER
-    - USER_LAYER
-    - SIWAVE_HFSS_SOLVER_REGIONS
-    - POST_PROCESSING_LAYER
-    - OUTLINE_LAYER
-    - LAYER_TYPES_COUNT
-    - UNDEFINED_LAYER_TYPE
-    """
+    """Provides an enum representing the types of layers."""
 
     SIGNAL_LAYER = layer_pb2.SIGNAL_LAYER
     DIELECTRIC_LAYER = layer_pb2.DIELECTRIC_LAYER
@@ -68,14 +46,7 @@ class LayerType(Enum):
 
 
 class TopBottomAssociation(Enum):
-    """Provides an enum representing the top-bottom association of layers.
-
-    - TOP_ASSOCIATED
-    - NO_TOP_BOTTOM_ASSOCIATED
-    - BOTTOM_ASSOCIATED
-    - TOP_BOTTOM_ASSOCIATION_COUNT
-    - INVALID_TOP_BOTTOM_ASSOCIATION
-    """
+    """Provides an enum representing the top-bottom association of layers."""
 
     TOP_ASSOCIATED = layer_pb2.TOP_ASSOCIATED
     NO_TOP_BOTTOM_ASSOCIATED = layer_pb2.NO_TOP_BOTTOM_ASSOCIATED
@@ -85,12 +56,7 @@ class TopBottomAssociation(Enum):
 
 
 class DrawOverride(Enum):
-    """Provides an enum representing draw override options for layers.
-
-    - NO_OVERRIDE
-    - FILL
-    - WIREFRAME
-    """
+    """Provides an enum representing draw override options for layers."""
 
     NO_OVERRIDE = layer_pb2.NO_OVERRIDE
     FILL = layer_pb2.FILL
@@ -98,15 +64,7 @@ class DrawOverride(Enum):
 
 
 class LayerVisibility(Enum):
-    """Provides an enum representing visibility options for layers.
-
-    - PRIMITIVE_VISIBLE
-    - PATH_VISIBLE
-    - PAD_VISIBLE
-    - HOLE_VISIBLE
-    - COMPONENT_VISIBLE
-    - ALL_VISIBLE
-    """
+    """Provides an enum representing visibility options for layers."""
 
     PRIMITIVE_VISIBLE = layer_pb2.PRIMITIVE_VISIBLE
     PATH_VISIBLE = layer_pb2.PATH_VISIBLE

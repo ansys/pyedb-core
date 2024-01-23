@@ -21,12 +21,7 @@ from ansys.edb.core.simulation_setup.simulation_settings import (
 
 
 class SParamInterpolation(Enum):
-    """Provides an enum representing s parameter interpolation types.
-
-    - POINT_IN
-    - LINEAR_IN
-    - STEP_IN
-    """
+    """Provides an enum representing s parameter interpolation types."""
 
     POINT_IN = pb.POINT_IN
     LINEAR_IN = pb.LINEAR_IN
@@ -34,13 +29,7 @@ class SParamInterpolation(Enum):
 
 
 class SParamExtrapolation(Enum):
-    """Provides an enum representing s parameter extrapolation types.
-
-    - ZERO_EX
-    - SAME_EX
-    - LINEAR_EX
-    - CONSTANT_EX
-    """
+    """Provides an enum representing s parameter extrapolation types."""
 
     ZERO_EX = pb.ZERO_EX
     SAME_EX = pb.SAME_EX
@@ -49,15 +38,7 @@ class SParamExtrapolation(Enum):
 
 
 class SParamDCBehavior(Enum):
-    """Provides an enum representing s parameter DC behavior types.
-
-    - ZERO_DC
-    - SAME_DC
-    - LINEAR_DC
-    - CONSTANT_DC
-    - ONE_PORT_CAPACITOR_DC
-    - OPEN_DC
-    """
+    """Provides an enum representing s parameter DC behavior types."""
 
     ZERO_DC = pb.ZERO_DC
     SAME_DC = pb.SAME_DC

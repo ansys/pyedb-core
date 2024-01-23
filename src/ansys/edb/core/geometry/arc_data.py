@@ -1,5 +1,5 @@
 """Arc data."""
-import enum
+from enum import Enum
 import math
 
 from ansys.api.edb.v1 import arc_data_pb2_grpc
@@ -9,7 +9,7 @@ from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.utility import conversions
 
 
-class RotationDirection(enum.Enum):
+class RotationDirection(Enum):
     """Represents arc directions."""
 
     CW = "cw"

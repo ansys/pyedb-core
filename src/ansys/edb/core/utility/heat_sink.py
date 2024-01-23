@@ -8,15 +8,7 @@ from ansys.edb.core.utility import conversions
 
 
 class HeatSinkFinOrientation(Enum):
-    """Provides an enum representing bondwire types.
-
-    - X_ORIENTED
-       X axis oriented.
-    - Y_ORIENTED
-       Y axis oriented.
-    - OTHER_ORIENTED
-       Other oriented.
-    """
+    """Provides an enum representing bondwire types."""
 
     X_ORIENTED = pb.X_ORIENTED
     Y_ORIENTED = pb.Y_ORIENTED

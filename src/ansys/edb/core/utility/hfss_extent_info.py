@@ -55,17 +55,7 @@ class HfssExtentInfo:
     """
 
     class HFSSExtentInfoType(Enum):
-        """Provides an enum representing available HFSS extent information types.
-
-        - BOUNDING_BOX
-           Bounding box extent.
-        - CONFORMING
-           Conforming extent.
-        - CONVEX_HUL
-           Convex hull extent.
-        - POLYGON
-           Use user-defined polygon as the extent.
-        """
+        """Provides an enum representing available HFSS extent information types."""
 
         BOUNDING_BOX = edb_defs_pb2.HFSS_EXTENT_BOUNDING_BOX
         CONFORMING = edb_defs_pb2.HFSS_EXTENT_CONFIRMING
@@ -73,13 +63,7 @@ class HfssExtentInfo:
         POLYGON = edb_defs_pb2.HFSS_EXTENT_POLYGON
 
     class OpenRegionType(Enum):
-        """Provides an enum representing open region types.
-
-        - RADIATION
-           Bounding box extent.
-        - PML
-           Conforming extent.
-        """
+        """Provides an enum representing open region types."""
 
         RADIATION = edb_defs_pb2.HFSS_EXTENT_RADIATION
         PML = edb_defs_pb2.HFSS_EXTENT_PML

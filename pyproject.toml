@@ -51,7 +51,7 @@ tests = [
 ]
 # FIXME: update to newer versions
 doc = [
-    "sphinx==7.1.2",
+    "sphinx==7.2.6",
     "numpydoc==1.6.0",
     "ansys_sphinx_theme>=0.12.2",
     "sphinx-copybutton==0.5.2",

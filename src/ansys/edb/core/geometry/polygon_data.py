@@ -13,12 +13,7 @@ from ansys.edb.core.utility import conversions
 
 
 class PolygonSenseType(Enum):
-    """Provides an enum representing the direction of polygon sense.
-
-    - SENSE_UNKNOWN
-    - SENSE_CW
-    - SENSE_CCW
-    """
+    """Provides an enum representing the direction of polygon sense."""
 
     SENSE_UNKNOWN = point_data_pb2.SENSE_UNKNOWN
     SENSE_CW = point_data_pb2.SENSE_CW
@@ -26,11 +21,7 @@ class PolygonSenseType(Enum):
 
 
 class ExtentType(Enum):
-    """Provides an enum representing extent types for geometries.
-
-    - CONFORMING
-    - BOUNDING_BOX
-    """
+    """Provides an enum representing extent types for geometries."""
 
     CONFORMING = edb_defs_pb2.CONFORMING
     BOUNDING_BOX = edb_defs_pb2.BOUNDING_BOX

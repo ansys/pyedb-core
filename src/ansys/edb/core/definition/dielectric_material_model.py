@@ -8,12 +8,7 @@ from ansys.edb.core.inner import ObjBase
 
 
 class DielectricMaterialModelType(Enum):
-    """Provides an eum representing dielectric material model types.
-
-    - DEBYE
-    - MULTIPOLE_DEBYE
-    - DJORDJECVIC_SARKAR
-    """
+    """Provides an eum representing dielectric material model types."""
 
     DEBYE = 0
     MULTIPOLE_DEBYE = 1

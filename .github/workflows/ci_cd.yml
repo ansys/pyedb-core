@@ -13,7 +13,6 @@ env:
   PACKAGE_NAME: 'ansys-edb-core'
   DOCUMENTATION_CNAME: 'edb.core.docs.pyansys.com'
   MAIN_PYTHON_VERSION: '3.10'
-  PIP_EXTRA_INDEX_URL: 'https://${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}@pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/simple/'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

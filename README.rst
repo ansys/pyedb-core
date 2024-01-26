@@ -40,7 +40,7 @@ read into AEDT and their designs simulated.
 
 Documentation and issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Documentation for the latest stable release of PyMEDB-Core is hosted at
+Documentation for the latest stable release of PyEDB-Core is hosted at
 `PyEDB-Core documentation <https://edb.core.docs.pyansys.com/version/dev/index.html#>`_.
 The documentation has five sections:
 

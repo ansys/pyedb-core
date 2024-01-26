@@ -41,18 +41,18 @@ read into AEDT and their designs simulated.
 Documentation and issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Documentation for the latest stable release of PyEDB-Core is hosted at
-`PyEDB-Core documentation <https://edb.core.docs.pyansys.com/version/dev/index.html#>`_.
+`PyEDB-Core documentation <https://edb.core.docs.pyansys.com/version/stable/index.html#>`_.
 The documentation has five sections:
 
-- `Getting started <https://edb.core.docs.pyansys.com/version/dev/getting_started/index.html#>`_: Describes
+- `Getting started <https://edb.core.docs.pyansys.com/version/stable/getting_started/index.html#>`_: Describes
   how to install PyEDB-Core in user mode.
-- `User guide <https://edb.core.docs.pyansys.com/version/dev/user_guide/index.html>`_: Describes how to
+- `User guide <https://edb.core.docs.pyansys.com/version/stable/user_guide/index.html>`_: Describes how to
   use PyEDB-Core.
-- `API reference <https://edb.core.docs.pyansys.com/version/dev/api/index.html>`_: Provides API member descriptions
+- `API reference <https://edb.core.docs.pyansys.com/version/stable/api/index.html>`_: Provides API member descriptions
   and usage examples.
-- `Examples <https://edb.core.docs.pyansys.com/version/dev/examples/index.html>`_: Provides examples showing
+- `Examples <https://edb.core.docs.pyansys.com/version/stable/examples/index.html>`_: Provides examples showing
   end-to-end workflows for using PyEDB-Core.
-- `Contribute <https://edb.core.docs.pyansys.com/version/dev/contribute.html>`_: Describes how to install
+- `Contribute <https://edb.core.docs.pyansys.com/version/stable/contribute.html>`_: Describes how to install
   PyEDB-Core in developer mode and how to contribute to this PyAnsys library.
 
 In the upper right corner of the documentation's title bar, there is an option for switching from

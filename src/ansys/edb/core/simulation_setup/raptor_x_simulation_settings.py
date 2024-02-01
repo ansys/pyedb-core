@@ -229,24 +229,6 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
         )
 
     @property
-    def use_arc_resolution(self):
-        """:obj:`bool`: Flag indicating if arcs with polygons are approximated."""
-        return self.__stub.GetUseArcResolution(self.msg).value
-
-    @use_arc_resolution.setter
-    def use_arc_resolution(self, use_arc_resolution):
-        self.__stub.SetUseArcResolution(messages.bool_property_message(self, use_arc_resolution))
-
-    @property
-    def arc_resolution(self):
-        """:obj:`str`: Number of vertices to approximate arcs with."""
-        return self.__stub.GetArcResolution(self.msg).value
-
-    @arc_resolution.setter
-    def arc_resolution(self, arc_resolution):
-        self.__stub.SetArcResolution(messages.string_property_message(self, arc_resolution))
-
-    @property
     def use_auto_removal_sliver_poly(self):
         """:obj:`bool`: Flag indicating if slight misaligned overlapping polygons are to be automatically aligned."""
         return self.__stub.GetUseAutoRemovalSliverPoly(self.msg).value

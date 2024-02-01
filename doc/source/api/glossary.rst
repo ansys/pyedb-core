@@ -26,32 +26,44 @@ Glossary
 
 	ValueLike
 
-		:obj:`Union <typing.Union>`\[:obj:`int`, :obj:`float`, :obj:`complex`, :obj:`str`, :class:`Value <ansys.edb.core.utility.Value>`\]
+		Any of the following data types that represents a numeric value
+
+		- :obj:`int`
+		- :obj:`float`
+		- :obj:`complex`
+		- :obj:`str` for expressions ('1nm', 'x + 1' etc)
+		- :class:`Value <ansys.edb.core.utility.Value>`
+
+	Point2DLike
+
+		Any of the following data types that represents (x, y) point on a 2D coordinate system.
+
+		- :class:`PointData <ansys.edb.core.geometry.PointData>`
+		- (:term:`ValueLike`, :term:`ValueLike`) or any other iterable with 2 :term:`ValueLike` inside
 
 	Point3DLike
 
-		:obj:`tuple`\[:term:`ValueLike`, :term:`ValueLike`, :term:`ValueLike`\]
+		Any of the following data types that represents (x, y, z) point on a 3D coordinate system.
 
-	PointDataTuple
-
-		:obj:`tuple`\[:class:`PointData <ansys.edb.core.geometry.PointData>`, :class:`PointData <ansys.edb.core.geometry.PointData>`\]`
+		- :class:`Point3DData <ansys.edb.core.geometry.Point3DData>`
+		- (:term:`ValueLike`, :term:`ValueLike`, :term:`ValueLike`) or any other iterable with 3 :term:`ValueLike` inside
 
 	Triangle3DLike
 
-		:obj:`tuple`\[:term:`Point3DLike`, :term:`Point3DLike`, :term:`Point3DLike`\]
+		(:term:`Point3DLike`, :term:`Point3DLike`, :term:`Point3DLike`)
 
 	RoughnessModel
 
 		A Groisse roughness model is represented by a single value containing the roughness value.
 		A Huray roughness model is represented  by a tuple of the form [nodule_radius_value, surface_ratio_value]
 
-		:obj:`Union <typing.Union>`\[:term:`ValueLike`, :obj:`tuple`\[:term:`ValueLike`, :term:`ValueLike`\]]
+		:obj:`Union <typing.Union>`\[:term:`ValueLike`, (:term:`ValueLike`, :term:`ValueLike`)]
 
 	HFSSSolverProperties
 
 		HFSS solver properties are represented by a tuple of the form [dc_thickness_type, dc_thickness_value, solve_inside_enabled]
 
-		:obj:`tuple`\[:class:`DCThicknessType <ansys.edb.core.layer.DCThicknessType>`, :term:`ValueLike`, :obj:`bool`\]
+		(:class:`DCThicknessType <ansys.edb.core.layer.DCThicknessType>`, :term:`ValueLike`, :obj:`bool`)
 
 	HFSSExtents
 

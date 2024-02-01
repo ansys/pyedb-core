@@ -12,23 +12,14 @@ from ansys.edb.core.utility import Value
 
 
 class DieOrientation(Enum):
-    """Provides an enum representing die orientations.
-
-    - CHIP_UP
-    - CHIP_DOWN
-    """
+    """Provides an enum representing die orientations."""
 
     CHIP_UP = die_property_pb2.DIE_ORIENTATION_CHIP_UP
     CHIP_DOWN = die_property_pb2.DIE_ORIENTATION_CHIP_DOWN
 
 
 class DieType(Enum):
-    """Provides an enum representing die types.
-
-    - NONE
-    - FLIPCHIP
-    - WIREBOND
-    """
+    """Provides an enum representing die types."""
 
     NONE = die_property_pb2.DIE_TYPE_NONE
     FLIPCHIP = die_property_pb2.DIE_TYPE_FLIPCHIP

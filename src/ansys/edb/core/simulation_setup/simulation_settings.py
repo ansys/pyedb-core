@@ -16,14 +16,7 @@ from ansys.edb.core.session import (
 
 
 class ViaStyle(Enum):
-    """Enum representing via modeling styles.
-
-    - WIREBOND
-    - RIBBON
-    - MESH
-    - FIELD
-    - NUM_VIA_STYLE
-    """
+    """Enum representing via modeling styles."""
 
     WIREBOND = pb.WIREBOND
     RIBBON = pb.RIBBON

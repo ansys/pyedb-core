@@ -4,7 +4,6 @@ on:
   pull_request:
     types: [opened, edited, synchronize]
     branches:
-      - develop
       - main
   workflow_dispatch:
 
@@ -12,7 +11,6 @@ jobs:
   pr-title:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run a PR title validation
-        run: grep -E "((T|S|D|B)[0-9]+\:\s[A-Z])" <<< "${{ github.event.pull_request.title }}"
-
+        run: grep -E "^(CI:|DOC:|REFACT:|FIX:|MAINT:|TEST:|FEATURE:)" <<< "${{ github.event.pull_request.title }}"

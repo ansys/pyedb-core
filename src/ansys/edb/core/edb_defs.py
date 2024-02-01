@@ -1,12 +1,12 @@
 """Common definitions used in EDB."""
 
-import enum
+from enum import Enum
 
 import ansys.api.edb.v1.definition_obj_pb2 as definition_obj_pb2
 import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 
 
-class LayoutObjType(enum.Enum):
+class LayoutObjType(Enum):
     """Provides an enum representing layout object types."""
 
     INVALID_LAYOUT_OBJ = layout_obj_pb2.INVALID_LAYOUT_OBJ
@@ -28,23 +28,8 @@ class LayoutObjType(enum.Enum):
     EXTENDED_NET = layout_obj_pb2.EXTENDED_NET
 
 
-class DefinitionObjType(enum.Enum):
-    """
-    Provides an enum representing definition object types.
-
-    - PADSTACK_DEF
-       Padstack definition.
-    - COMPONENT_DEF
-       Component definition.
-    - BONDWIRE_DEF
-       Bondwire definition.
-    - MATERIAL_DEF
-       Material definition.
-    - DATASET_DEF
-       Dataset definition.
-    - PACKAGE_DEF
-       Package definition.
-    """
+class DefinitionObjType(Enum):
+    """Provides an enum representing definition object types."""
 
     INVALID_DEFINITION_TYPE = definition_obj_pb2.INVALID_DEFINITION_TYPE
     PADSTACK_DEF = definition_obj_pb2.PADSTACK_DEF

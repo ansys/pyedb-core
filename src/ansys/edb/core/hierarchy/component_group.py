@@ -12,16 +12,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 
 
 class ComponentType(Enum):
-    """Provides an enum representing component types.
-
-    - OTHER
-    - RESISTOR
-    - INDUCTOR
-    - CAPACITOR
-    - IC
-    - IO
-    - INVALID
-    """
+    """Provides an enum representing component types."""
 
     OTHER = edb_defs_pb2.OTHER
     RESISTOR = edb_defs_pb2.RESISTOR

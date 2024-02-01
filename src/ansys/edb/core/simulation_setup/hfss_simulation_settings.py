@@ -26,13 +26,7 @@ from ansys.edb.core.simulation_setup.simulation_settings import (
 
 
 class BasisFunctionOrder(Enum):
-    """Provides an enum representing basis function order types.
-
-    - ZERO_ORDER
-    - FIRST_ORDER
-    - SECOND_ORDER
-    - MIXED_ORDER
-    """
+    """Provides an enum representing basis function order types."""
 
     ZERO_ORDER = pb.ZERO_ORDER
     FIRST_ORDER = pb.FIRST_ORDER
@@ -41,14 +35,7 @@ class BasisFunctionOrder(Enum):
 
 
 class SolverType(Enum):
-    """Provides an enum representing HFSS solver types.
-
-    - AUTO_SOLVER
-    - DIRECT_SOLVER
-    - ITERATIVE_SOLVER
-    - MIXED_ORDER
-    - NUM_SOLVER_TYPES
-    """
+    """Provides an enum representing HFSS solver types."""
 
     AUTO_SOLVER = pb.AUTO_SOLVER
     DIRECT_SOLVER = pb.DIRECT_SOLVER
@@ -57,13 +44,7 @@ class SolverType(Enum):
 
 
 class AdaptType(Enum):
-    """Provides an enum representing HFSS adaptive solution types.
-
-    - SINGLE
-    - MULTI_FREQUENCIES
-    - BROADBAND
-    - NUM_ADAPT_TYPE
-    """
+    """Provides an enum representing HFSS adaptive solution types."""
 
     SINGLE = pb.SINGLE
     MULTI_FREQUENCIES = pb.MULTI_FREQUENCIES

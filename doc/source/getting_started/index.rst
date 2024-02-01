@@ -21,7 +21,7 @@ Installation
 
    .. code:: bash
 
-       python -m pip install ansys-edb
+       python -m pip install ansys-edb-core
 
 .. LINKS AND REFERENCES
 .. _pip: https://pypi.org/project/pip/

@@ -16,10 +16,7 @@ from ansys.edb.core.session import SimulationSetupServiceStub, StubAccessor, Stu
 
 
 class SimulationSetupType(Enum):
-    """Enum representing available simulation setup types.
-
-    - HFSS
-    """
+    """Enum representing available simulation setup types."""
 
     HFSS = edb_defs_pb2.HFSS_SIM
     SI_WAVE = edb_defs_pb2.SI_WAVE_SIM

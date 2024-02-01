@@ -34,14 +34,7 @@ from ansys.edb.core.session import DatabaseServiceStub, StubAccessor, StubType
 
 
 class ProductIdType(Enum):
-    """Provides an enum representing IDs of Ansys products that support EDB usage.
-
-    - HFSS_3D_LAYOUT
-    - DESIGNER (Deprecated. Use ``HFSS_3D_LAYOUT`` instead.)
-    - SIWAVE
-    - GENERIC_TRANSLATOR
-    - USER_DEFINED
-    """
+    """Provides an enum representing IDs of Ansys products that support EDB usage."""
 
     HFSS_3D_LAYOUT = DESIGNER = edb_defs_pb2.DESIGNER
     SIWAVE = edb_defs_pb2.SI_WAVE

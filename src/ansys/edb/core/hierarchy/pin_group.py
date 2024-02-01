@@ -1,12 +1,13 @@
 """Pin group."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import ObjBase, messages
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.conn_obj import ConnObj
 from ansys.edb.core.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class PinGroup(ObjBase):
+class PinGroup(ConnObj):
     """Represents a pin group object."""
 
     __stub = StubAccessor(StubType.pin_group)

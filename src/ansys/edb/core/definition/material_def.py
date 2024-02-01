@@ -12,33 +12,7 @@ from ansys.edb.core.utility import Value
 
 
 class MaterialProperty(Enum):
-    """Provides an enum representing material property types.
-
-    - PERMITTIVITY
-       Permittivity property.
-    - PERMEABILITY
-       Permeability property.
-    - CONDUCTIVITY
-       Conductivity property.
-    - DIELECTRIC_LOSS_TANGENT
-       Dielectric loss tangent property.
-    - MAGNETIC_LOSS_TANGENT
-       Magnetic loss tangent property.
-    - THERMAL_CONDUCTIVITY
-       Thermal conductivity property.
-    - MASS_DENSITY
-       Mass density property.
-    - SPECIFIC_HEAT
-       Specific heat property.
-    - YOUNGS_MODULUS
-       Young's modulus property.
-    - POISSONS_RATIO
-       Poisson's ratio property.
-    - THERMAL_EXPANSION_COEFFICIENT
-       Thermal expansion coefficient property.
-    - INVALID_PROPERTY
-       Invalid property.
-    """
+    """Provides an enum representing material property types."""
 
     PERMITTIVITY = pb.PERMITTIVITY
     PERMEABILITY = pb.PERMEABILITY

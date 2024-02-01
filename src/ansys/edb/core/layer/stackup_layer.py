@@ -11,12 +11,7 @@ from ansys.edb.core.utility import Value
 
 
 class DCThicknessType(Enum):
-    """Provides an enum representing DC thickness types of stackup layers.
-
-    - EFFECTIVE
-    - LAYER
-    - MANUAL
-    """
+    """Provides an enum representing DC thickness types of stackup layers."""
 
     EFFECTIVE = stackup_layer_pb2.HFSSSolverPropertiesMessage.EFFECTIVE
     LAYER = stackup_layer_pb2.HFSSSolverPropertiesMessage.LAYER
@@ -24,12 +19,7 @@ class DCThicknessType(Enum):
 
 
 class RoughnessRegion(Enum):
-    """Provides an enum representing regions for roughness models of stackup layers.
-
-    - TOP
-    - BOTTOM
-    - SIDE
-    """
+    """Provides an enum representing regions for roughness models of stackup layers."""
 
     TOP = stackup_layer_pb2.LayerRoughnessRegionMessage.RoughnessRegion.TOP
     BOTTOM = stackup_layer_pb2.LayerRoughnessRegionMessage.RoughnessRegion.BOTTOM

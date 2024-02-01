@@ -58,19 +58,7 @@ class _PrimitiveQueryBuilder:
 
 
 class PrimitiveType(Enum):
-    """Provides an enum representing primitive types.
-
-    - RECTANGLE
-    - CIRCLE
-    - POLYGON
-    - PATH
-    - BONDWIRE
-    - PRIM_PLUGIN
-    - TEXT
-    - PATH_3D
-    - BOARD_BEND
-    - INVALID_TYPE
-    """
+    """Provides an enum representing primitive types."""
 
     RECTANGLE = primitive_pb2.RECTANGLE
     CIRCLE = primitive_pb2.CIRCLE
@@ -85,15 +73,7 @@ class PrimitiveType(Enum):
 
 
 class RectangleRepresentationType(Enum):
-    """Provides an enum representing rectangle types.
-
-    - INVALID_RECT_TYPE
-       Undefined.
-    - CENTER_WIDTH_HEIGHT
-       Using center, width and height.
-    - LOWER_LEFT_UPPER_RIGHT
-       Using lower left point and upper right point.
-    """
+    """Provides an enum representing rectangle types."""
 
     INVALID_RECT_TYPE = rectangle_pb2.INVALID_RECT_TYPE
     CENTER_WIDTH_HEIGHT = rectangle_pb2.CENTER_WIDTH_HEIGHT
@@ -101,14 +81,7 @@ class RectangleRepresentationType(Enum):
 
 
 class PathEndCapType(Enum):
-    """Provides an enum representing end cap types.
-
-    - ROUND
-    - FLAT
-    - EXTENDED
-    - CLIPPED
-    - INVALID
-    """
+    """Provides an enum representing end cap types."""
 
     ROUND = path_pb2.ROUND
     FLAT = path_pb2.FLAT
@@ -118,12 +91,7 @@ class PathEndCapType(Enum):
 
 
 class PathCornerType(Enum):
-    """Provides an enum representing corner types.
-
-    - ROUND
-    - SHARP
-    - MITER
-    """
+    """Provides an enum representing corner types."""
 
     ROUND = path_pb2.ROUND_CORNER
     SHARP = path_pb2.SHARP_CORNER
@@ -131,14 +99,7 @@ class PathCornerType(Enum):
 
 
 class BondwireType(Enum):
-    """Provides an enum representing bondwire types.
-
-    - APD
-    - JEDEC4
-    - JEDEC5
-    - NUM_OF_TYPE
-    - INVALID
-    """
+    """Provides an enum representing bondwire types."""
 
     APD = bondwire_pb2.APD_BONDWIRE
     JEDEC4 = bondwire_pb2.JEDEC4_BONDWIRE
@@ -148,12 +109,7 @@ class BondwireType(Enum):
 
 
 class BondwireCrossSectionType(Enum):
-    """Provides an enum representing bondwire cross section types.
-
-    - ROUND
-    - RECTANGLE
-    - INVALID
-    """
+    """Provides an enum representing bondwire cross section types."""
 
     ROUND = bondwire_pb2.BONDWIRE_ROUND
     RECTANGLE = bondwire_pb2.BONDWIRE_RECTANGLE
@@ -161,12 +117,7 @@ class BondwireCrossSectionType(Enum):
 
 
 class BackDrillType(Enum):
-    """Provides an enum representing back drill types.
-
-    - NO_DRILL
-    - LAYER_DRILL
-    - DEPTH_DRILL
-    """
+    """Provides an enum representing back drill types."""
 
     NO_DRILL = padstack_instance_pb2.NO_DRILL
     LAYER_DRILL = padstack_instance_pb2.LAYER_DRILL
@@ -2017,7 +1968,7 @@ class BoardBendDef(Primitive):
             Layout to create the board bend definition in.
         zone_prim : :class:`Primitive <Primitive>`
             Zone primitive to create the board bend definition on.
-        bend_middle : :term:`PointDataTuple`
+        bend_middle : (:term:`Point2DLike`, :term:`Point2DLike`)
             Tuple containing the starting and ending points of the line that represents
             the middle of the bend.
         bend_radius : :term:`ValueLike`
@@ -2053,7 +2004,7 @@ class BoardBendDef(Primitive):
     @property
     @parser.to_point_data_pair
     def bend_middle(self):
-        """:term:`PointDataTuple`: Tuple of the bend middle based on the starting and ending points."""
+        """(:term:`Point2DLike`, :term:`Point2DLike`): Tuple of the bend middle based on starting and ending points."""
         return self.__stub.GetBendMiddle(self.msg)
 
     @bend_middle.setter

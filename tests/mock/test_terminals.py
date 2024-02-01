@@ -3,9 +3,10 @@ import ansys.api.edb.v1.term_pb2 as term_pb2
 from utils.fixtures import *  # noqa
 from utils.test_utils import create_edb_obj_msgs, equals
 
+from ansys.edb.core import layer as layer_api
 from ansys.edb.core import terminal
+from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import messages
-import ansys.edb.core.layer as layer_api
 from ansys.edb.core.utility import PortPostProcessingProp, Rlc
 
 
@@ -111,10 +112,10 @@ def test_point_terminal_get_params(mocked_stub, point_terminal, layer, lyr_type_
     assert isinstance(res, tuple)
     assert len(res) == 2
     assert isinstance(res[0], Layer)
-    assert isinstance(res[1], tuple)
+    assert isinstance(res[1], PointData)
     assert res[0].id == layer.id
-    assert res[1][0].double == point[0]
-    assert res[1][1].double == point[1]
+    assert res[1].x == point[0]
+    assert res[1].y == point[1]
 
 
 @pytest.mark.parametrize(

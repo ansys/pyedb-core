@@ -460,7 +460,10 @@ def inst_array_creation_message(layout, name, ref, orig, xaxis, yaxis, xcount, y
 
 def component_def_creation_message(db, comp_name, fp):
     """Convert to a ``ComponentDefCreateMessage`` object."""
-    return ComponentDefCreateMessage(db=db.msg, comp_name=comp_name, fp=fp.msg)
+    if fp is None:
+        return ComponentDefCreateMessage(db=db.msg, comp_name=comp_name, fp=None)
+    else:
+        return ComponentDefCreateMessage(db=db.msg, comp_name=comp_name, fp=fp.msg)
 
 
 def transform_message(transform):

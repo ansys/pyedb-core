@@ -1587,6 +1587,8 @@ class PadstackInstance(Primitive):
         net,
         name,
         padstack_def,
+        position_x,
+        position_y,
         rotation,
         top_layer,
         bottom_layer,
@@ -1605,6 +1607,10 @@ class PadstackInstance(Primitive):
             Name of the padstack instance.
         padstack_def : PadstackDef
             Padstack definition of the padstack instance.
+        position_x : :class:`Value <ansys.edb.utility.Value>`
+            Position x of the padstack instance.
+        position_y : :class:`Value <ansys.edb.utility.Value>`
+            Position y of the padstack instance.
         rotation : :class:`Value <ansys.edb.core.utility.Value>`
             Rotation of the padstack instance.
         top_layer : :class:`Layer <ansys.edb.core.layer.Layer>`
@@ -1622,7 +1628,7 @@ class PadstackInstance(Primitive):
         PadstackInstance
             Padstack instance created.
         """
-        return PadstackInstance(
+        padstack_instance = PadstackInstance(
             cls.__stub.Create(
                 _PadstackInstanceQueryBuilder.create_message(
                     layout,
@@ -1637,6 +1643,8 @@ class PadstackInstance(Primitive):
                 )
             )
         )
+        padstack_instance.set_position_and_rotation(position_x, position_y, rotation)
+        return padstack_instance
 
     @property
     def padstack_def(self):

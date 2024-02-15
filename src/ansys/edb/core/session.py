@@ -281,7 +281,7 @@ class _Session:
         local_server_proc_output = self.local_server_proc.stdout.readline()
         stdout = local_server_proc_output.decode().rstrip()
 
-        if not stdout.startswith("Server listening on 127.0.0.1."):
+        if not stdout.startswith("Server listening on 127.0.0.1:"):
             try:
                 print("Local server failed to start properly. Trying to shut down gracefully...")
                 if self.local_server_proc.wait(10):

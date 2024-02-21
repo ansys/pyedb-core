@@ -1,0 +1,22 @@
+﻿AdvancedQuadraticParams
+=======================
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. autoclass:: AdvancedQuadraticParams
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

@@ -1,0 +1,25 @@
+﻿MeshClosure
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoclass:: MeshClosure
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MeshClosure.OPEN_ENDED
+      MeshClosure.ENDS_CLOSED
+      MeshClosure.FILLED_CLOSED
+      MeshClosure.UNDEFINED_CLOSURE
+   
+   

@@ -1,0 +1,6 @@
+convex\_hull
+============
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.convex_hull

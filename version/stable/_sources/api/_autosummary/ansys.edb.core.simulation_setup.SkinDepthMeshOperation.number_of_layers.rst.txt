@@ -1,0 +1,6 @@
+number\_of\_layers
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SkinDepthMeshOperation.number_of_layers

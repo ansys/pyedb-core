@@ -1,0 +1,6 @@
+MULTIZONE
+=========
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerCollectionMode.MULTIZONE

@@ -1,0 +1,6 @@
+SPECIFIC\_HEAT
+==============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.SPECIFIC_HEAT

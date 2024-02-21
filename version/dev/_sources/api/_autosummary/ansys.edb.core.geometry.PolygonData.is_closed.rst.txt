@@ -1,0 +1,6 @@
+is\_closed
+==========
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. autoproperty:: PolygonData.is_closed

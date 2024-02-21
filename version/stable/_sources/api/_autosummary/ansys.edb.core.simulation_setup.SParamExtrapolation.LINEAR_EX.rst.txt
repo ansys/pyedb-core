@@ -1,0 +1,6 @@
+LINEAR\_EX
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoattribute:: SParamExtrapolation.LINEAR_EX

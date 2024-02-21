@@ -1,0 +1,6 @@
+use\_extract\_floating\_metals\_dummy
+=====================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXAdvancedSettings.use_extract_floating_metals_dummy

@@ -1,0 +1,6 @@
+touching\_geometry
+==================
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: RTree.touching_geometry

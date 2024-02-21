@@ -1,0 +1,6 @@
+SIGNAL\_LAYER\_SET
+==================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerTypeSet.SIGNAL_LAYER_SET

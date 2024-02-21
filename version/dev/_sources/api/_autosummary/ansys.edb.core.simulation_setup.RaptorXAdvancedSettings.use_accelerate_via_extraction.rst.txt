@@ -1,0 +1,6 @@
+use\_accelerate\_via\_extraction
+================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXAdvancedSettings.use_accelerate_via_extraction

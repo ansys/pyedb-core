@@ -1,0 +1,6 @@
+component\_def
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: ViaGroup.component_def

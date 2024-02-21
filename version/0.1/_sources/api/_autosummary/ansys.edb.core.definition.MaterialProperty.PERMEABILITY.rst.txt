@@ -1,0 +1,6 @@
+PERMEABILITY
+============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.PERMEABILITY

@@ -1,0 +1,6 @@
+num\_pins
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: ComponentGroup.num_pins

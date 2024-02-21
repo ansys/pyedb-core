@@ -1,0 +1,6 @@
+SAME\_EX
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoattribute:: SParamExtrapolation.SAME_EX

@@ -1,0 +1,6 @@
+rlc
+===
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: PinPairModel.rlc

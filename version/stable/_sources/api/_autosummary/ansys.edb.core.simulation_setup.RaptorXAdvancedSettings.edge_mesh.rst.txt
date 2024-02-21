@@ -1,0 +1,6 @@
+edge\_mesh
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXAdvancedSettings.edge_mesh

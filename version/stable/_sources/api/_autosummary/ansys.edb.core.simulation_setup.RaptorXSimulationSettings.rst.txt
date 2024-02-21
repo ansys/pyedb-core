@@ -1,0 +1,32 @@
+﻿RaptorXSimulationSettings
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoclass:: RaptorXSimulationSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RaptorXSimulationSettings.advanced
+      RaptorXSimulationSettings.enabled
+      RaptorXSimulationSettings.general
+      RaptorXSimulationSettings.msg
+   
+   

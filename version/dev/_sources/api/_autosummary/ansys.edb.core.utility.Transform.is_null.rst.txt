@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. autoproperty:: Transform.is_null

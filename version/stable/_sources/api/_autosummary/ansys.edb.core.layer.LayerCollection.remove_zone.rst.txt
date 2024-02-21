@@ -1,0 +1,6 @@
+remove\_zone
+============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. automethod:: LayerCollection.remove_zone

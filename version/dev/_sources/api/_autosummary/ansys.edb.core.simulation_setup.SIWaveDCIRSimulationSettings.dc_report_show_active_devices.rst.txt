@@ -1,0 +1,6 @@
+dc\_report\_show\_active\_devices
+=================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.dc_report_show_active_devices

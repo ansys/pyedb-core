@@ -1,0 +1,6 @@
+reference\_layer
+================
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoproperty:: PointTerminal.reference_layer

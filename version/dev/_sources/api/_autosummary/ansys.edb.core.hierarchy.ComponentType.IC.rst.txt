@@ -1,0 +1,6 @@
+IC
+==
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoattribute:: ComponentType.IC

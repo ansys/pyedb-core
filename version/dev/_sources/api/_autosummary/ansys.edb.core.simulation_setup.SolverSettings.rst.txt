@@ -1,0 +1,31 @@
+﻿SolverSettings
+==============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoclass:: SolverSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SolverSettings.msg
+      SolverSettings.thin_dielectric_layer_threshold
+      SolverSettings.thin_signal_layer_threshold
+   
+   

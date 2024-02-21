@@ -1,0 +1,6 @@
+PERMITTIVITY
+============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.PERMITTIVITY

@@ -1,0 +1,24 @@
+﻿PolygonSenseType
+================
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. autoclass:: PolygonSenseType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PolygonSenseType.SENSE_UNKNOWN
+      PolygonSenseType.SENSE_CW
+      PolygonSenseType.SENSE_CCW
+   
+   

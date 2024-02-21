@@ -1,0 +1,6 @@
+part\_name
+==========
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. automethod:: McadModel.part_name

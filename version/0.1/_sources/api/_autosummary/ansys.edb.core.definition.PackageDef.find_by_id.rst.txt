@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. automethod:: PackageDef.find_by_id

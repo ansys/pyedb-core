@@ -1,0 +1,6 @@
+connected\_geometry
+===================
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: RTree.connected_geometry

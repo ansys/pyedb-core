@@ -1,0 +1,32 @@
+﻿DielectricMaterialModel
+=======================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoclass:: DielectricMaterialModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DielectricMaterialModel.id
+      DielectricMaterialModel.is_null
+      DielectricMaterialModel.msg
+      DielectricMaterialModel.type
+   
+   

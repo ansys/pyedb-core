@@ -1,0 +1,6 @@
+EXTENDED
+========
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoattribute:: PathEndCapType.EXTENDED

@@ -1,0 +1,6 @@
+create\_from\_transform\_2d
+===========================
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. automethod:: Transform3D.create_from_transform_2d

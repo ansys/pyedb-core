@@ -1,0 +1,6 @@
+x\_axis
+=======
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: InstArray.x_axis

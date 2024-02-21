@@ -1,0 +1,6 @@
+UNKNOWN\_PLACEMENT
+==================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: SolderballPlacement.UNKNOWN_PLACEMENT

@@ -1,0 +1,6 @@
+is\_equal
+=========
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. automethod:: Transform3D.is_equal

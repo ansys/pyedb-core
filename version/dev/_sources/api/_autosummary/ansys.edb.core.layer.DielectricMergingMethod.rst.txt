@@ -1,0 +1,24 @@
+﻿DielectricMergingMethod
+=======================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoclass:: DielectricMergingMethod
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DielectricMergingMethod.WEIGHTED_AVERAGE
+      DielectricMergingMethod.KRASZEWSKI
+      DielectricMergingMethod.WEIGHTED_CAPACITANCE
+   
+   

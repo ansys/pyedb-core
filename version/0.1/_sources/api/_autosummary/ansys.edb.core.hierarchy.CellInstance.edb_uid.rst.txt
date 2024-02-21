@@ -1,0 +1,6 @@
+edb\_uid
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: CellInstance.edb_uid

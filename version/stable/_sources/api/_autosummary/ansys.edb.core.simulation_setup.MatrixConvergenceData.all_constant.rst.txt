@@ -1,0 +1,6 @@
+all\_constant
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: MatrixConvergenceData.all_constant

@@ -1,0 +1,6 @@
+add\_zone\_to\_layer
+====================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. automethod:: LayerCollection.add_zone_to_layer

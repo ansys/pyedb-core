@@ -1,0 +1,6 @@
+add\_via\_layer
+===============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. automethod:: LayerCollection.add_via_layer

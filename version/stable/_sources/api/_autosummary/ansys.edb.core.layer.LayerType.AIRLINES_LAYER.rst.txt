@@ -1,0 +1,6 @@
+AIRLINES\_LAYER
+===============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.AIRLINES_LAYER

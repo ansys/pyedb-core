@@ -1,0 +1,23 @@
+﻿ExtentType
+==========
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. autoclass:: ExtentType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ExtentType.CONFORMING
+      ExtentType.BOUNDING_BOX
+   
+   

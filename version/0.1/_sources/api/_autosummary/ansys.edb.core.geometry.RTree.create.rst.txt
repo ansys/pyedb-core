@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: RTree.create

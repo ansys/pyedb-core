@@ -1,0 +1,6 @@
+placement
+=========
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: SolderBallProperty.placement

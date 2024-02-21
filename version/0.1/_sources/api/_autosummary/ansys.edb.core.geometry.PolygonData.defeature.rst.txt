@@ -1,0 +1,6 @@
+defeature
+=========
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.defeature

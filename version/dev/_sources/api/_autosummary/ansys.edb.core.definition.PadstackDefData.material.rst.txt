@@ -1,0 +1,6 @@
+material
+========
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: PadstackDefData.material

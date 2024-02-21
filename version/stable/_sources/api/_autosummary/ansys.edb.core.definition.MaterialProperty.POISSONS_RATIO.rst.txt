@@ -1,0 +1,6 @@
+POISSONS\_RATIO
+===============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.POISSONS_RATIO

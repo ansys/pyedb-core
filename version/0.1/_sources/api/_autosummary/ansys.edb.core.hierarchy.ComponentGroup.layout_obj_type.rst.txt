@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoattribute:: ComponentGroup.layout_obj_type

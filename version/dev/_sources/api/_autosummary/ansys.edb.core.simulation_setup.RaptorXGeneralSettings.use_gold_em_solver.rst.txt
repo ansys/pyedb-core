@@ -1,0 +1,6 @@
+use\_gold\_em\_solver
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXGeneralSettings.use_gold_em_solver

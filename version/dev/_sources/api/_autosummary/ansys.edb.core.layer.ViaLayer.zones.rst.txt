@@ -1,0 +1,6 @@
+zones
+=====
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoproperty:: ViaLayer.zones

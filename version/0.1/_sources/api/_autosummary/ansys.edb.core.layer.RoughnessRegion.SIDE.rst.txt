@@ -1,0 +1,6 @@
+SIDE
+====
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: RoughnessRegion.SIDE

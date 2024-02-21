@@ -1,0 +1,6 @@
+DIELECTRIC\_LOSS\_TANGENT
+=========================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.DIELECTRIC_LOSS_TANGENT

@@ -1,0 +1,6 @@
+reference\_height
+=================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: PortProperty.reference_height

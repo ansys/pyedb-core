@@ -1,0 +1,6 @@
+FILL
+====
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: DrawOverride.FILL

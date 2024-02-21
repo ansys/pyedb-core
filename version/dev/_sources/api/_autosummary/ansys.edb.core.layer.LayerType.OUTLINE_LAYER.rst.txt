@@ -1,0 +1,6 @@
+OUTLINE\_LAYER
+==============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.OUTLINE_LAYER

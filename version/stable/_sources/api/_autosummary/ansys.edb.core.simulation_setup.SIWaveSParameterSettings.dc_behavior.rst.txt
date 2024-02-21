@@ -1,0 +1,6 @@
+dc\_behavior
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveSParameterSettings.dc_behavior

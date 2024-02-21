@@ -1,0 +1,6 @@
+reference\_terminal
+===================
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoproperty:: PadstackInstanceTerminal.reference_terminal

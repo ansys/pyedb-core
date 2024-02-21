@@ -1,0 +1,6 @@
+create\_copy
+============
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. automethod:: Transform3D.create_copy

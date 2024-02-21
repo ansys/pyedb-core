@@ -1,0 +1,6 @@
+top\_bottom\_association
+========================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoproperty:: ViaLayer.top_bottom_association

@@ -1,0 +1,6 @@
+component\_model
+================
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: SParameterModel.component_model

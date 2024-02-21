@@ -1,0 +1,6 @@
+is\_parameter
+=============
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. automethod:: Cell.is_parameter

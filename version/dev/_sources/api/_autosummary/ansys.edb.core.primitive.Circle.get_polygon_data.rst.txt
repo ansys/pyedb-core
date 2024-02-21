@@ -1,0 +1,6 @@
+get\_polygon\_data
+==================
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. automethod:: Circle.get_polygon_data

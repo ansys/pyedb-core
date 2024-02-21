@@ -1,0 +1,6 @@
+IO
+==
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoattribute:: ComponentType.IO

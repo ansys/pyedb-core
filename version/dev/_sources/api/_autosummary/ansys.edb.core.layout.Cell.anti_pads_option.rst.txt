@@ -1,0 +1,6 @@
+anti\_pads\_option
+==================
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: Cell.anti_pads_option

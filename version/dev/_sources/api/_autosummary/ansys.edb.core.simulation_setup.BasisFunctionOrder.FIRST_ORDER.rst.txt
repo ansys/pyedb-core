@@ -1,0 +1,6 @@
+FIRST\_ORDER
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoattribute:: BasisFunctionOrder.FIRST_ORDER

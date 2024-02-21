@@ -1,0 +1,6 @@
+SOLDER\_MASK\_LAYER
+===================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.SOLDER_MASK_LAYER

@@ -1,0 +1,6 @@
+defeature\_ratio
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSAdvancedSettings.defeature_ratio

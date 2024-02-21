@@ -1,0 +1,6 @@
+component\_def
+==============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: ComponentPin.component_def

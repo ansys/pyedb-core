@@ -1,0 +1,6 @@
+PACKAGE\_DEF
+============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: DefinitionObjType.PACKAGE_DEF

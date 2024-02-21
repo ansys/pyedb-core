@@ -1,0 +1,6 @@
+origin
+======
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: McadModel.origin

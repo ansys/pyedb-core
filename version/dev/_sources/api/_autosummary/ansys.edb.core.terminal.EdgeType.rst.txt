@@ -1,0 +1,23 @@
+﻿EdgeType
+========
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoclass:: EdgeType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      EdgeType.PRIMITIVE
+      EdgeType.PADSTACK
+   
+   

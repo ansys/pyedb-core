@@ -1,0 +1,6 @@
+LAYER\_TYPES\_COUNT
+===================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.LAYER_TYPES_COUNT

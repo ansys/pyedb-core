@@ -1,0 +1,24 @@
+﻿SolderballPlacement
+===================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoclass:: SolderballPlacement
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SolderballPlacement.ABOVE_PADSTACK
+      SolderballPlacement.BELOW_PADSTACK
+      SolderballPlacement.UNKNOWN_PLACEMENT
+   
+   

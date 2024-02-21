@@ -1,0 +1,6 @@
+do\_lamda\_refine
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSSettingsOptions.do_lamda_refine

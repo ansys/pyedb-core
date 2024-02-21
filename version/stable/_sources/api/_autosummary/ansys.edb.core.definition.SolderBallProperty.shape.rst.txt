@@ -1,0 +1,6 @@
+shape
+=====
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: SolderBallProperty.shape

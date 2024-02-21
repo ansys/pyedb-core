@@ -1,0 +1,6 @@
+is\_inside
+==========
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.is_inside

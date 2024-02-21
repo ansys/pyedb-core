@@ -1,0 +1,6 @@
+perform\_erc
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveAdvancedSettings.perform_erc

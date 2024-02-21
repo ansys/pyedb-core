@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: RTree.delete

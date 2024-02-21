@@ -1,0 +1,6 @@
+scale
+=====
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.scale

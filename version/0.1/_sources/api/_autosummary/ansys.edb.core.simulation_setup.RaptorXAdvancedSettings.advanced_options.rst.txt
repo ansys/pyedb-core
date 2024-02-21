@@ -1,0 +1,6 @@
+advanced\_options
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXAdvancedSettings.advanced_options

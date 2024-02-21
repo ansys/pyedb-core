@@ -1,0 +1,6 @@
+icepak\_temp\_file
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.icepak_temp_file

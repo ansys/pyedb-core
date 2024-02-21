@@ -1,0 +1,6 @@
+import\_thermal\_data
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.import_thermal_data

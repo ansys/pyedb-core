@@ -1,0 +1,6 @@
+mirror
+======
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. autoproperty:: Transform.mirror

@@ -1,0 +1,24 @@
+﻿BondwireCrossSectionType
+========================
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoclass:: BondwireCrossSectionType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BondwireCrossSectionType.ROUND
+      BondwireCrossSectionType.RECTANGLE
+      BondwireCrossSectionType.INVALID
+   
+   

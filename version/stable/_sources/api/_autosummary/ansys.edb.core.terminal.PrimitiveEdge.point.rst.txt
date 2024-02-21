@@ -1,0 +1,6 @@
+point
+=====
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoproperty:: PrimitiveEdge.point

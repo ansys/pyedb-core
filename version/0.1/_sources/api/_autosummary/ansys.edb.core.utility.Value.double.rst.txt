@@ -1,0 +1,6 @@
+double
+======
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. autoproperty:: Value.double

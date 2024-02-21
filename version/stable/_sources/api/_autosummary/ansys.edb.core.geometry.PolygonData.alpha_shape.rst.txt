@@ -1,0 +1,6 @@
+alpha\_shape
+============
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.alpha_shape

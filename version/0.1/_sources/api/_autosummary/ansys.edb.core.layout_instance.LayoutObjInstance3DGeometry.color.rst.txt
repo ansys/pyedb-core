@@ -1,0 +1,6 @@
+color
+=====
+
+.. currentmodule:: ansys.edb.core.layout_instance
+
+.. autoproperty:: LayoutObjInstance3DGeometry.color

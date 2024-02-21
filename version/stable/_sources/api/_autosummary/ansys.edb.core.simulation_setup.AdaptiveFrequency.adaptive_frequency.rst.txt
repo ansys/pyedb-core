@@ -1,0 +1,6 @@
+adaptive\_frequency
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: AdaptiveFrequency.adaptive_frequency

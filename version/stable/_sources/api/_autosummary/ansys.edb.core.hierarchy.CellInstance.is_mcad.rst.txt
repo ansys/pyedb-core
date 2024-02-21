@@ -1,0 +1,6 @@
+is\_mcad
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: CellInstance.is_mcad

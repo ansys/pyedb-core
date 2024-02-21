@@ -1,0 +1,6 @@
+roughness\_enabled
+==================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoproperty:: ViaLayer.roughness_enabled

@@ -1,0 +1,6 @@
+use\_state\_space
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveSParameterSettings.use_state_space

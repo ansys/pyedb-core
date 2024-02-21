@@ -1,0 +1,6 @@
+COMPONENT\_DEF
+==============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: DefinitionObjType.COMPONENT_DEF

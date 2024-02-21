@@ -1,0 +1,6 @@
+is\_power\_ground
+=================
+
+.. currentmodule:: ansys.edb.core.net
+
+.. autoproperty:: DifferentialPair.is_power_ground

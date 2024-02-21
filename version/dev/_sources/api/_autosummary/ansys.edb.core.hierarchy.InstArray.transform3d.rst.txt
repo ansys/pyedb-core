@@ -1,0 +1,6 @@
+transform3d
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: InstArray.transform3d

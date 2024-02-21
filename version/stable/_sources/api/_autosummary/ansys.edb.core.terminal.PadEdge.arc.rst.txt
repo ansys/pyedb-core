@@ -1,0 +1,6 @@
+arc
+===
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoproperty:: PadEdge.arc

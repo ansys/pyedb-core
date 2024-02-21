@@ -1,0 +1,6 @@
+SIWAVE\_HFSS\_SOLVER\_REGIONS
+=============================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.SIWAVE_HFSS_SOLVER_REGIONS

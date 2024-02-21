@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. autoproperty:: Transform3D.id

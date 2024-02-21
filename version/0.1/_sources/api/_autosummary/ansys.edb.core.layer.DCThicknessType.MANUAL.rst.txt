@@ -1,0 +1,6 @@
+MANUAL
+======
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: DCThicknessType.MANUAL

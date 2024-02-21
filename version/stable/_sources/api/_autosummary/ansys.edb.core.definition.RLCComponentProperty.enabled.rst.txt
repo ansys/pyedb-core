@@ -1,0 +1,6 @@
+enabled
+=======
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: RLCComponentProperty.enabled

@@ -1,0 +1,6 @@
+max\_delta
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: BroadbandAdaptiveSolution.max_delta

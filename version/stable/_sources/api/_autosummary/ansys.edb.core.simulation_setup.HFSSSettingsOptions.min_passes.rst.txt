@@ -1,0 +1,6 @@
+min\_passes
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSSettingsOptions.min_passes

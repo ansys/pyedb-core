@@ -1,0 +1,6 @@
+min\_triangles\_for\_wave\_port
+===============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSSolverSettings.min_triangles_for_wave_port

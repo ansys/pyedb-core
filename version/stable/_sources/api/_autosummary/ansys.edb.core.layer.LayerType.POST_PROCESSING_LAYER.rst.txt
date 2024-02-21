@@ -1,0 +1,6 @@
+POST\_PROCESSING\_LAYER
+=======================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.POST_PROCESSING_LAYER

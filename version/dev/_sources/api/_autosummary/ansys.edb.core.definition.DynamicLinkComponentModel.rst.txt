@@ -1,0 +1,36 @@
+﻿DynamicLinkComponentModel
+=========================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoclass:: DynamicLinkComponentModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      DynamicLinkComponentModel.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DynamicLinkComponentModel.design_name
+      DynamicLinkComponentModel.id
+      DynamicLinkComponentModel.is_null
+      DynamicLinkComponentModel.msg
+      DynamicLinkComponentModel.reference_file
+   
+   

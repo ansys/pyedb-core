@@ -1,0 +1,6 @@
+BEGIN\_ON\_UPPER\_PAD
+=====================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: PadstackHoleRange.BEGIN_ON_UPPER_PAD

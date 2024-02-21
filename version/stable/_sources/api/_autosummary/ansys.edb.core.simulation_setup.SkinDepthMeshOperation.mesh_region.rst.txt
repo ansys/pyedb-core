@@ -1,0 +1,6 @@
+mesh\_region
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SkinDepthMeshOperation.mesh_region

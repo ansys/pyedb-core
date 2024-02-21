@@ -1,0 +1,6 @@
+area
+====
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.area

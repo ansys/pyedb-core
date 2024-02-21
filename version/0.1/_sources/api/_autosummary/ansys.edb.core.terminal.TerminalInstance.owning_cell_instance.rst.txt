@@ -1,0 +1,6 @@
+owning\_cell\_instance
+======================
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoproperty:: TerminalInstance.owning_cell_instance

@@ -1,0 +1,6 @@
+WEIGHTED\_AVERAGE
+=================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: DielectricMergingMethod.WEIGHTED_AVERAGE

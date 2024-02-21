@@ -1,0 +1,6 @@
+roughness\_enabled
+==================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoproperty:: StackupLayer.roughness_enabled

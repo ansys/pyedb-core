@@ -1,0 +1,6 @@
+reference\_file
+===============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: DynamicLinkComponentModel.reference_file

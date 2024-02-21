@@ -1,0 +1,6 @@
+referencing\_via\_layer\_ids
+============================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoproperty:: StackupLayer.referencing_via_layer_ids

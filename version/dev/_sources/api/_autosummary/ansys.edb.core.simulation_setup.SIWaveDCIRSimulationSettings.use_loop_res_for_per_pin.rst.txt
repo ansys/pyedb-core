@@ -1,0 +1,6 @@
+use\_loop\_res\_for\_per\_pin
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.use_loop_res_for_per_pin

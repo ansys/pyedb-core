@@ -1,0 +1,6 @@
+max\_elements
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: LengthMeshOperation.max_elements

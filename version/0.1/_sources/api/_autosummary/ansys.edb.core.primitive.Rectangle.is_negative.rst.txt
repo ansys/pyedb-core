@@ -1,0 +1,6 @@
+is\_negative
+============
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoproperty:: Rectangle.is_negative

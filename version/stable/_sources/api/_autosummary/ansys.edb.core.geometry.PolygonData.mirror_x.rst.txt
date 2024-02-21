@@ -1,0 +1,6 @@
+mirror\_x
+=========
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.mirror_x

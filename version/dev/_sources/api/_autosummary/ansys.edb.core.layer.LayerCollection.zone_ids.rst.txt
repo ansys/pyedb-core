@@ -1,0 +1,6 @@
+zone\_ids
+=========
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoproperty:: LayerCollection.zone_ids

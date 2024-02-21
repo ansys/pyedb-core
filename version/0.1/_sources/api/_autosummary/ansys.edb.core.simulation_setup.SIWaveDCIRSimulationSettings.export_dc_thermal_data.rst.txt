@@ -1,0 +1,6 @@
+export\_dc\_thermal\_data
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.export_dc_thermal_data

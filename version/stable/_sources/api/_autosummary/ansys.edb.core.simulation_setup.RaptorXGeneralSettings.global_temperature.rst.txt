@@ -1,0 +1,6 @@
+global\_temperature
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXGeneralSettings.global_temperature

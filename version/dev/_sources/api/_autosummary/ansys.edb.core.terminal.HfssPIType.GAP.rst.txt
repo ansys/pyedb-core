@@ -1,0 +1,6 @@
+GAP
+===
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoattribute:: HfssPIType.GAP

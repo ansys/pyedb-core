@@ -1,0 +1,6 @@
+closest
+=======
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PointData.closest

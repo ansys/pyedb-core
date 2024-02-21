@@ -1,0 +1,6 @@
+OVERLAPPING
+===========
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerCollectionMode.OVERLAPPING

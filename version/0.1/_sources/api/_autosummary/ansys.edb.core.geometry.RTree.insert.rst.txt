@@ -1,0 +1,6 @@
+insert
+======
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: RTree.insert

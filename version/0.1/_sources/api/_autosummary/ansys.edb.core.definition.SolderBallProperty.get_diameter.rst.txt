@@ -1,0 +1,6 @@
+get\_diameter
+=============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. automethod:: SolderBallProperty.get_diameter

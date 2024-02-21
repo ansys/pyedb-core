@@ -1,0 +1,6 @@
+PADGEOMTYPE\_SQUARE
+===================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: PadGeometryType.PADGEOMTYPE_SQUARE

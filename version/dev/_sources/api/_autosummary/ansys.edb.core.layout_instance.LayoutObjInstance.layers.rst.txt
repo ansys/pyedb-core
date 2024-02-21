@@ -1,0 +1,6 @@
+layers
+======
+
+.. currentmodule:: ansys.edb.core.layout_instance
+
+.. autoproperty:: LayoutObjInstance.layers

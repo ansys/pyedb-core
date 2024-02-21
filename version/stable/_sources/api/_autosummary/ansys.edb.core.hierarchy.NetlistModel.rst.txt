@@ -1,0 +1,38 @@
+﻿NetlistModel
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoclass:: NetlistModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      NetlistModel.clone
+      
+      
+      NetlistModel.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      NetlistModel.id
+      NetlistModel.is_null
+      NetlistModel.msg
+      NetlistModel.netlist
+   
+   

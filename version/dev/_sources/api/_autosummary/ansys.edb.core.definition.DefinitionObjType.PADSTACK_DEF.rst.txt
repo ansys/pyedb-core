@@ -1,0 +1,6 @@
+PADSTACK\_DEF
+=============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: DefinitionObjType.PADSTACK_DEF

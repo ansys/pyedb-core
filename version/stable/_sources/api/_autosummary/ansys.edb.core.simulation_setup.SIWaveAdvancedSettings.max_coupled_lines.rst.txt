@@ -1,0 +1,6 @@
+max\_coupled\_lines
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveAdvancedSettings.max_coupled_lines

@@ -1,0 +1,6 @@
+DIELECTRIC\_LAYER\_SET
+======================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerTypeSet.DIELECTRIC_LAYER_SET

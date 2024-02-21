@@ -1,0 +1,6 @@
+add\_layer\_top
+===============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. automethod:: LayerCollection.add_layer_top

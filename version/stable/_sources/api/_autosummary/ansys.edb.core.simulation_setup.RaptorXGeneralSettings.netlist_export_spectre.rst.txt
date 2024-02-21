@@ -1,0 +1,6 @@
+netlist\_export\_spectre
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXGeneralSettings.netlist_export_spectre

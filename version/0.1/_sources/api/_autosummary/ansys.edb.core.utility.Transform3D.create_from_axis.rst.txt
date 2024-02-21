@@ -1,0 +1,6 @@
+create\_from\_axis
+==================
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. automethod:: Transform3D.create_from_axis

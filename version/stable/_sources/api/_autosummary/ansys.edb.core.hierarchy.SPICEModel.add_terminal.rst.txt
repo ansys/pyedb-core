@@ -1,0 +1,6 @@
+add\_terminal
+=============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: SPICEModel.add_terminal

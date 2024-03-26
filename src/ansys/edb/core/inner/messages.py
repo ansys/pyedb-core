@@ -71,7 +71,6 @@ from ansys.api.edb.v1.hfss_simulation_settings_pb2 import (
     AdaptiveMultiFrequencyDataMessage,
     BroadbandFrequencyAdaptiveSolutionMessage,
     MatrixConvergenceDataMessage,
-    MatrixConvergenceEntryMessage,
     MultiFrequencyAdaptiveSolutionMessage,
     SingleFrequencyAdaptiveSolutionMessage,
 )
@@ -120,6 +119,7 @@ from ansys.api.edb.v1.polygon_data_pb2 import *  # noqa
 from ansys.api.edb.v1.port_post_processing_prop_pb2 import PortPostProcessingPropMessage
 from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, LayerRefPropertyMessage, NetRefMessage
 from ansys.api.edb.v1.rlc_pb2 import RlcMessage
+from ansys.api.edb.v1.simulation_setup_pb2 import MatrixConvergenceEntryMessage
 from ansys.api.edb.v1.sparameter_model_pb2 import SParameterModelMessage
 from ansys.api.edb.v1.spice_model_pb2 import SpiceModelMessage, SpiceModelNewTerminalPinMessage
 from ansys.api.edb.v1.structure3d_pb2 import ClosureMessage, SetClosureMessage
@@ -1300,10 +1300,10 @@ def cpos_3d_double_message(pos, value):
     return CPos3DDoubleMessage(pos=cpos_3d_message(pos), value=value)
 
 
-def mx_convergence_data_msg(mx_data):
-    """Convert to a ``MatrixConvergenceDataMessage`` object."""
+def mx_convergence_entry_msg_list(mx_convergence_entry_list):
+    """Convert to a list ``of MatrixConvergenceEntryMessage`` objects."""
     mx_entry_msgs = []
-    for mx_entry in mx_data.entry_list:
+    for mx_entry in mx_convergence_entry_list:
         mx_entry_msgs.append(
             MatrixConvergenceEntryMessage(
                 port_1=mx_entry.port_1_name,
@@ -1312,13 +1312,17 @@ def mx_convergence_data_msg(mx_data):
                 phase_limit=mx_entry.phase_limit,
             )
         )
+    return mx_entry_msgs
 
+
+def mx_convergence_data_msg(mx_data):
+    """Convert to MatrixConvergenceDataMessage."""
     return MatrixConvergenceDataMessage(
         all_are_constant=mx_data.all_constant,
         all_diag_are_constant=mx_data.all_diag_constant,
         all_off_diag_are_constant=mx_data.all_off_diag_constant,
         mag_min_threashold=mx_data.mag_min_threshold,
-        entries=mx_entry_msgs,
+        entries=mx_convergence_entry_msg_list(mx_data.entry_list),
     )
 
 

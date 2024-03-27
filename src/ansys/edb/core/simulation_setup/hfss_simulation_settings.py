@@ -283,6 +283,15 @@ class HFSSSettingsOptions(SettingsOptions):
         self.__stub.SetRelativeResidual(messages.double_property_message(self, relative_residual))
 
     @property
+    def use_shell_elements(self):
+        """:class:`bool`: Flag indicating whether to use shell elements."""
+        return self.__stub.GetUseShellElements(self.msg).value
+
+    @use_shell_elements.setter
+    def use_shell_elements(self, use_shell_elements):
+        self.__stub.SetUseShellElements(messages.bool_property_message(self, use_shell_elements))
+
+    @property
     def enhanced_low_frequency_accuracy(self):
         """:obj:`bool`: Flag indicating if enhanced low-frequency accuracy is enabled during simulation."""
         return self.__stub.GetEnhancedLowFrequencyAccuracy(self.msg).value

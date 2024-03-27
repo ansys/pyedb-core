@@ -41,6 +41,9 @@ from ansys.edb.core.simulation_setup.simulation_settings import (
     ViaStyle,
 )
 from ansys.edb.core.simulation_setup.simulation_setup import (
+    FreqSweepType,
+    HFSSRegionComputeResource,
+    InterpolatingSweepData,
     SimulationSetup,
     SimulationSetupType,
     SweepData,

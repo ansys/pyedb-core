@@ -10,6 +10,7 @@ Classes
    :toctree: _autosummary
 
    HFSSSimulationSettings
+   HfssSimulationSetup
    HFSSGeneralSettings
    HFSSSettingsOptions
    HFSSSolverSettings
@@ -32,6 +33,9 @@ Classes
    SolverSettings
    SimulationSetup
    SweepData
+   FreqSweepType
+   HFSSRegionComputeResource
+   InterpolatingSweepData
    RaptorXSimulationSettings
    RaptorXGeneralSettings
    RaptorXAdvancedSettings

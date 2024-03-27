@@ -6,7 +6,6 @@ from ansys.api.edb.v1 import edb_defs_pb2
 from ansys.api.edb.v1.simulation_setup_pb2 import (
     HFSSRegionComputeResourceMessage,
     InterpolatingSweepDataMessage,
-    MatrixConvergenceEntryMessage,
     SimulationSetupCreationMessage,
     SweepDataListMessage,
     SweepDataListPropertyMessage,
@@ -30,12 +29,7 @@ class SimulationSetupType(Enum):
 
 
 class FreqSweepType(Enum):
-    """Enum representing frequency sweep types.
-
-    - INTERPOLATING_SWEEP
-    - DISCRETE_SWEEP
-    - BROADBAND_SWEEP
-    """
+    """Enum representing frequency sweep types."""
 
     INTERPOLATING_SWEEP = edb_defs_pb2.INTERPOLATING_SWEEP
     DISCRETE_SWEEP = edb_defs_pb2.DISCRETE_SWEEP
@@ -178,7 +172,7 @@ class SweepData:
       Start meshing frequency.
     mesh_freq_range_stop : str
       Stop meshing frequency.
-    interpolation_data : list[InterpolatingSweepData]
+    interpolation_data : InterpolatingSweepData
       Data for interpolating frequency sweeps.
 
     Notes
@@ -246,13 +240,15 @@ class SweepData:
         return self.distribution + " " + self.start_f + " " + self.end_f + " " + self.step
 
 
-def _hfss_region_compute_resource_message(res: HFSSRegionComputeResource):
+def _hfss_region_compute_resource_message(res):
+    """Create a ``HFSSRegionComputeResourceMessage`` from a ``HFSSRegionComputeResource``."""
     return HFSSRegionComputeResourceMessage(
         region_id=res.region_id, compute_resource_percentage=res.resource_percentage
     )
 
 
-def _interpolating_sweep_data_msg(interp_sweep_data: InterpolatingSweepData):
+def _interpolating_sweep_data_msg(interp_sweep_data):
+    """Create a ``InterpolatingSweepDataMessage`` from a ``InterpolatingSweepData``."""
     return InterpolatingSweepDataMessage(
         relative_s_error=interp_sweep_data.relative_s_error,
         enforce_causality=interp_sweep_data.enforce_causality,
@@ -274,7 +270,8 @@ def _interpolating_sweep_data_msg(interp_sweep_data: InterpolatingSweepData):
     )
 
 
-def _sweep_data_msg(sweep_data: SweepData):
+def _sweep_data_msg(sweep_data):
+    """Create a ``SweepDataMessage`` from a ``SweepData``."""
     return SweepDataMessage(
         name=sweep_data.name,
         frequency_string=sweep_data.frequency_string,
@@ -305,15 +302,18 @@ def _sweep_data_msg(sweep_data: SweepData):
     )
 
 
-def _msg_to_matrix_convergence_entry(msg: MatrixConvergenceEntryMessage):
+def _msg_to_matrix_convergence_entry(msg):
+    """Create a ``MatrixConvergenceDataEntry`` from a ``MatrixConvergenceEntryMessage``."""
     return MatrixConvergenceDataEntry(msg.port_1, msg.port_2, msg.mag_limit, msg.phase_limit)
 
 
-def _msg_to_hfss_region_compute_resource(msg: HFSSRegionComputeResourceMessage):
+def _msg_to_hfss_region_compute_resource(msg):
+    """Create a ``HFSSRegionComputeResource`` from a ``HFSSRegionComputeResourceMessage``."""
     return HFSSRegionComputeResource(msg.region_id, msg.compute_resource_percentage)
 
 
-def _msg_to_interpolating_sweep_data(msg: InterpolatingSweepDataMessage):
+def _msg_to_interpolating_sweep_data(msg):
+    """Create a ``InterpolatingSweepData`` from a ``InterpolatingSweepDataMessage``."""
     interp_sweep_data = InterpolatingSweepData()
     interp_sweep_data.relative_s_error = msg.relative_s_error
     interp_sweep_data.enforce_passivity = msg.enforce_passivity
@@ -335,7 +335,8 @@ def _msg_to_interpolating_sweep_data(msg: InterpolatingSweepDataMessage):
     return interp_sweep_data
 
 
-def _msg_to_sweep_data(msg: SweepDataMessage):
+def _msg_to_sweep_data(msg):
+    """Create a ``SweepData`` from a ``SweepDataMessage``."""
     freq_str_params = msg.frequency_string.split()
     sweep_data = SweepData(
         msg.name, freq_str_params[0], freq_str_params[1], freq_str_params[2], freq_str_params[3]

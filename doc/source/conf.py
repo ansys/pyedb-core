@@ -118,3 +118,6 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+# Ignore the following links during link checking
+linkcheck_ignore = ["https://www.ansys.com/products/electronics"]

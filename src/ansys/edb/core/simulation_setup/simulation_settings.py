@@ -80,6 +80,15 @@ class SettingsOptions(SimulationSettingsBase):
         self.__stub.SetLamdaTarget(messages.double_property_message(self, lamda_target))
 
     @property
+    def mesh_size_factor(self):
+        """:obj:`float`: Mesh size factor used for lambda refinement."""
+        return self.__stub.GetMeshSizefactor(self.msg).value
+
+    @mesh_size_factor.setter
+    def mesh_size_factor(self, mesh_size_factor):
+        self.__stub.SetMeshSizefactor(messages.double_property_message(self, mesh_size_factor))
+
+    @property
     def use_default_lamda_value(self):
         """:obj:`bool`: Flag indicating if the default lambda target value is used."""
         return self.__stub.GetLamdaTarget(self.msg).value
@@ -133,6 +142,15 @@ class AdvancedSettings(SimulationSettingsBase):
         self.__stub.SetRemoveFloatingGeometry(
             messages.bool_property_message(self, remove_floating_geometry)
         )
+
+    @property
+    def healing_option(self):
+        """:obj:`int`: Enable/disable healing of mis-aligned points and edges."""
+        return self.__stub.GetHealingOption(self.msg).value
+
+    @healing_option.setter
+    def healing_option(self, healing_option):
+        self.__stub.SetHealingOption(messages.int_property_message(self, healing_option))
 
     @property
     def defeature_absolute_length(self):

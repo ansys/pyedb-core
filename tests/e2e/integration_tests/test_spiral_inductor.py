@@ -421,7 +421,9 @@ class SpiralInductor(BaseExample):
                 name="SPIRAL_M9", net_layer_info=[("SPIRAL", "M9", False)], num_layers="3"
             )
         ]
-        setup.sweep_data = [SweepData("Sweep 1", "LIN", "0GHz", "30GHz", "0.01GHz", True)]
+        sweep_data = SweepData("Sweep 1", "LIN", "0GHz", "30GHz", "0.01GHz")
+        sweep_data.interpolation_data.fast_sweep = True
+        setup.sweep_data = [sweep_data]
 
 
 def test_spiral_inductor():

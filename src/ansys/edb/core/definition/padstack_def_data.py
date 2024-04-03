@@ -146,6 +146,10 @@ class _PadstackDefDataQueryBuilder:
     def padstack_def_data_set_solder_ball_material_message(target, material):
         return pb.PadstackDefDataSetSolderBallMaterialMessage(target=target.msg, material=material)
 
+    @staticmethod
+    def padstack_def_data_get_connection_pt_message(target, layer):
+        return pb.PadstackDefDataGetConnectionPtMessage(target=target.msg, layer=layer)
+
 
 class PadType(Enum):
     """Provides an enum representing pad types."""
@@ -200,6 +204,22 @@ class SolderballPlacement(Enum):
     ABOVE_PADSTACK = pb.ABOVE_PADSTACK
     BELOW_PADSTACK = pb.BELOW_PADSTACK
     UNKNOWN_PLACEMENT = pb.UNKNOWN_PLACEMENT
+
+
+class ConnectionPtDirection(Enum):
+    """Provides an enum representing connection pt direction."""
+
+    PS_NO_DIRECTION = pb.PS_NO_DIRECTION
+    PS_ANY_DIRECTION = pb.PS_ANY_DIRECTION
+    PS_0_DIRECTION = pb.PS_0_DIRECTION
+    PS_45_DIRECTION = pb.PS_45_DIRECTION
+    PS_90_DIRECTION = pb.PS_90_DIRECTION
+    PS_135_DIRECTION = pb.PS_135_DIRECTION
+    PS_180_DIRECTION = pb.PS_180_DIRECTION
+    PS_225_DIRECTION = pb.PS_225_DIRECTION
+    PS_270_DIRECTION = pb.PS_270_DIRECTION
+    PS_315_DIRECTION = pb.PS_315_DIRECTION
+    PS_UNKNOWN_DIRECTION = pb.PS_UNKNOWN_DIRECTION
 
 
 class PadstackDefData(ObjBase):
@@ -473,3 +493,26 @@ class PadstackDefData(ObjBase):
                 self, material
             )
         )
+
+    def get_connection_pt(self, layer):
+        """
+        Get connection point position and direction by layer name.
+
+        Parameters
+        ----------
+        layer : str
+            Layer name.
+
+        Returns
+        -------
+        tuple[:class:`geometry.PointData`, :class:`ConnectionPtDirection`]
+
+        The tuple is in a ``(position, direction)`` format:
+
+        - ``position``: Position of the connection point.
+        - ``direction``: Direction of the connection point.
+        """
+        msg = self.__stub.GetConnectionPt(
+            _PadstackDefDataQueryBuilder.padstack_def_data_get_connection_pt_message(self, layer)
+        )
+        return msg.position, ConnectionPtDirection(msg.direction)

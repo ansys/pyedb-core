@@ -17,6 +17,8 @@ class MeshOperation:
         Whether to refine inside.
     mesh_region : str, default: ""
         Mesh region.
+    solve_inside : bool, default: False
+        Whether to solve inside.
     """
 
     def __init__(
@@ -26,6 +28,7 @@ class MeshOperation:
         enabled=True,
         refine_inside=False,
         mesh_region="",
+        solve_inside=False,
     ):
         """Create a mesh operation."""
         self._name = name
@@ -33,6 +36,7 @@ class MeshOperation:
         self._enabled = enabled
         self._refine_inside = refine_inside
         self._mesh_region = mesh_region
+        self._solve_inside = solve_inside
 
     @property
     def name(self):
@@ -83,6 +87,15 @@ class MeshOperation:
     def mesh_region(self, mesh_region):
         self._mesh_region = mesh_region
 
+    @property
+    def solve_inside(self):
+        """:obj:`bool`: Flag indicating if solve inside is enabled."""
+        return self._solve_inside
+
+    @solve_inside.setter
+    def solve_inside(self, solve_inside):
+        self._solve_inside = solve_inside
+
 
 class SkinDepthMeshOperation(MeshOperation):
     """Represents a skin depth mesh operation.
@@ -100,6 +113,8 @@ class SkinDepthMeshOperation(MeshOperation):
         Whether to refine inside.
     mesh_region : str, default: ""
         Mesh region.
+    solve_inside : bool, default: False
+        Whether to solve inside.
     skin_depth : str, default: "1um"
         Skin depth.`.
     surface_triangle_length : str, default: "1mm"
@@ -119,6 +134,7 @@ class SkinDepthMeshOperation(MeshOperation):
         enabled=True,
         refine_inside=False,
         mesh_region="",
+        solve_inside=False,
         skin_depth="1um",
         surface_triangle_length="1mm",
         num_layers="2",
@@ -126,7 +142,7 @@ class SkinDepthMeshOperation(MeshOperation):
         restrict_max_elements=False,
     ):
         """Create a skin depth mesh operation."""
-        super().__init__(name, net_layer_info, enabled, refine_inside, mesh_region)
+        super().__init__(name, net_layer_info, enabled, refine_inside, mesh_region, solve_inside)
         self._skin_depth = skin_depth
         self._surface_triangle_length = surface_triangle_length
         self._num_layers = num_layers
@@ -195,6 +211,8 @@ class LengthMeshOperation(MeshOperation):
         Whether to refine inside.
     mesh_region : str, default: ""
         Mesh region.
+    solve_inside : bool, default: False
+        Whether to solve inside.
     max_length : str, default: "1mm"
         maximum length of the mesh elements.
     restrict_max_length : str, default: True
@@ -212,13 +230,14 @@ class LengthMeshOperation(MeshOperation):
         enabled=True,
         refine_inside=False,
         mesh_region="",
+        solve_inside=False,
         max_length="1mm",
         restrict_max_length=True,
         max_elements="1000",
         restrict_max_elements=False,
     ):
         """Initialize an instance of a skin depth mesh operation."""
-        super().__init__(name, net_layer_info, enabled, refine_inside, mesh_region)
+        super().__init__(name, net_layer_info, enabled, refine_inside, mesh_region, solve_inside)
         self._max_length = max_length
         self._restrict_max_length = restrict_max_length
         self._max_elements = max_elements

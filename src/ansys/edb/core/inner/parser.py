@@ -473,6 +473,7 @@ def _to_mesh_op(message):
     mesh_op.enabled = message.enabled
     mesh_op.mesh_region = message.mesh_region
     mesh_op.refine_inside = message.refine_inside
+    mesh_op.solve_inside = message.solve_inside
     for nli in message.net_layer_info:
         mesh_op.net_layer_info.append((nli.net, nli.layer, nli.is_sheet))
     return mesh_op

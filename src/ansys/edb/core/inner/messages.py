@@ -958,6 +958,7 @@ def mesh_operation_message(mesh_op):
         refine_inside=mesh_op.refine_inside,
         mesh_region=mesh_op.mesh_region,
         net_layer_info=[_mesh_op_net_layer_message(*nl) for nl in mesh_op.net_layer_info],
+        solve_inside=mesh_op.solve_inside,
     )
     if isinstance(mesh_op, LengthMeshOperation):
         mesh_op_msg.length_mesh_op.CopyFrom(_length_mesh_operation_message(mesh_op))

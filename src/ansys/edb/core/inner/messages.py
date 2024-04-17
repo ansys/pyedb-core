@@ -804,13 +804,13 @@ def term_find_by_name_message(layout, name):
 
 def term_get_product_solver_message(term, product_id):
     """Convert to a ``TermGetProductSolversMessage`` object."""
-    return TermGetProductSolversMessage(term=term.msg, product_id=product_id)
+    return TermGetProductSolversMessage(term=term.msg, product_id=product_id.value)
 
 
 def term_set_solver_option_message(term, product_id, name, option):
     """Convert to a ``TermSetSolverOptionMessage`` object."""
     return TermSetSolverOptionMessage(
-        term=term.msg, product_id=product_id, name=name, option=option
+        term=term.msg, product_id=product_id.value, name=name, option=option
     )
 
 

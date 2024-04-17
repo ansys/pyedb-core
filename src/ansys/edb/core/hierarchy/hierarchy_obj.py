@@ -16,7 +16,7 @@ class HierarchyObj(conn_obj.ConnObj):
     def transform(self):
         """:class:`Transform <ansys.edb.core.utility.Transform>`: Transformation information of the hierarchy object."""
         transform_msg = self.__stub.GetTransform(self.msg)
-        return Transform(
+        return Transform.create(
             transform_msg.scale,
             transform_msg.angle,
             transform_msg.mirror,

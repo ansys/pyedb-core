@@ -887,6 +887,12 @@ class Path(Primitive):
 
     @property
     @parser.to_polygon_data
+    def polygon_data(self):
+        """:class:`PolygonData <ansys.edb.geometry.PolygonData>`: Polygon data of this Path."""
+        return self.__stub.GetPolygonData(self.msg)
+
+    @property
+    @parser.to_polygon_data
     def center_line(self):
         """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Center line for the path."""
         return self.__stub.GetCenterLine(self.msg)

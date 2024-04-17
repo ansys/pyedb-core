@@ -51,6 +51,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     StringsMessage,
     StringsPropertyMessage,
     TemperatureSettingsMessage,
+    UInt64PropertyMessage,
     ValueMessage,
     ValuePairMessage,
     ValuePairPropertyMessage,
@@ -367,6 +368,11 @@ def arc_data_two_points(arc1, arc2):
 def int_property_message(target, value):
     """Convert to an ``IntPropertyMessage`` object."""
     return IntPropertyMessage(target=target.msg, value=value)
+
+
+def uint64_property_message(target, value):
+    """Convert to a ``UInt64PropertyMessage`` object."""
+    return UInt64PropertyMessage(target=target.msg, value=value)
 
 
 def bool_property_message(target, value):

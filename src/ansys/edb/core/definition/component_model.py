@@ -24,6 +24,44 @@ class ComponentModel(ObjBase):
     def reference_file(self, value):
         self.__stub.SetReferenceFile(messages.string_property_message(self, value))
 
+    @classmethod
+    def find_by_name(cls, comp_def, value):
+        """Find a component model by name in a given component def.
+
+        Parameters
+        ----------
+        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+            Component def to search for the component model.
+        value : str
+            Name of the cell instance.
+
+        Returns
+        -------
+        ComponentModel
+            Component model that is found, ``None`` otherwise.
+        """
+        return ComponentModel(
+            cls.__stub.FindByName(messages.string_property_message(comp_def, value))
+        )
+
+    @classmethod
+    def find_by_id(cls, comp_def, value):
+        """Find a component model by ID in a given component def.
+
+        Parameters
+        ----------
+        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+            Component def to search for the component model.
+        value : int
+            ID of the cell instance.
+
+        Returns
+        -------
+        ComponentModel
+            Component model that is found, ``None`` otherwise.
+        """
+        return ComponentModel(cls.__stub.FindById(messages.int_proprty_message(comp_def, value)))
+
 
 class NPortComponentModel(ComponentModel):
     """Represents an NPort component model."""

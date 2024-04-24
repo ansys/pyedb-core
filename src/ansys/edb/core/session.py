@@ -469,8 +469,7 @@ def launch_session(ansys_em_root, port_num=None):
     ip_address = None  # remote launch is not supported yet
 
     try:
-        MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
-        MOD.current_session.connect()
+        _ensure_session(ansys_em_root, port_num, ip_address)
         return MOD.current_session
     except Exception as e:  # noqa
         if MOD.current_session is not None:
@@ -504,8 +503,7 @@ def session(ansys_em_root, port_num, ip_address=None):
     >>>    # program goes here
     """
     try:
-        MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
-        MOD.current_session.connect()
+        _ensure_session(ansys_em_root, port_num, ip_address)
         yield
     except EDBSessionException:
         raise
@@ -553,3 +551,23 @@ def get_variable_server_stub():
     VariableServerServiceStub
     """
     return StubAccessor(StubType.variable_server).__get__()
+
+
+def _ensure_session(ansys_em_root, port_num, ip_address):
+    """Check for a running local session and create one if it doesn't exist.
+
+    Parameters
+    ----------
+    ansys_em_root : str
+        Directory where the ``EDB_RPC_Server.exe`` file is installed.
+    port_num : int
+        Port number to listen on.
+    ip_address : str, default: None
+        IP address where the server executable file is running.
+    """
+    if MOD.current_session is not None:
+        if MOD.current_session.port_num != port_num:
+            raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
+    else:
+        MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
+        MOD.current_session.connect()

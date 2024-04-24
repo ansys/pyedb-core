@@ -33,7 +33,7 @@ class ComponentModel(ObjBase):
         comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
             Component def to search for the component model.
         value : str
-            Name of the cell instance.
+            Name of the component model.
 
         Returns
         -------
@@ -53,7 +53,7 @@ class ComponentModel(ObjBase):
         comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
             Component def to search for the component model.
         value : int
-            ID of the cell instance.
+            ID of the component model.
 
         Returns
         -------

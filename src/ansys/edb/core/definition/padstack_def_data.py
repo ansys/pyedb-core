@@ -11,7 +11,8 @@ import google.protobuf.empty_pb2 as empty_pb2
 
 from ansys.edb.core.inner import ObjBase, messages, parser
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value, conversions
+from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility.value import Value
 
 
 class _PadstackDefDataQueryBuilder:

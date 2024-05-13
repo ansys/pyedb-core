@@ -18,7 +18,7 @@ from ansys.edb.core.inner.messages import (
     value_property_message,
 )
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class _QueryBuilder:

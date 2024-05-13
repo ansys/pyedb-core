@@ -9,11 +9,12 @@ import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import ObjBase, messages, variable_server
 from ansys.edb.core.layout import layout
-from ansys.edb.core.primitive import Primitive
+from ansys.edb.core.primitive.primitive import Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.simulation_setup import SimulationSetup
-from ansys.edb.core.utility import TemperatureSettings, Value
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
 from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
+from ansys.edb.core.utility.temperature_settings import TemperatureSettings
+from ansys.edb.core.utility.value import Value
 
 
 class CellType(Enum):

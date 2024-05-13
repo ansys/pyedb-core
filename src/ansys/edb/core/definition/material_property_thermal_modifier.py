@@ -5,7 +5,11 @@ import ansys.api.edb.v1.material_def_pb2 as pb
 
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import AdvancedQuadraticParams, BasicQuadraticParams, Value
+from ansys.edb.core.utility.material_property_thermal_modifier_params import (
+    AdvancedQuadraticParams,
+    BasicQuadraticParams,
+)
+from ansys.edb.core.utility.value import Value
 
 
 class _QueryBuilder:

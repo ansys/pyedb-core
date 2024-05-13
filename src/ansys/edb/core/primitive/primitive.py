@@ -27,10 +27,10 @@ from ansys.edb.core import hierarchy, terminal
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import conn_obj, messages, parser
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
 from ansys.edb.core.utility.layer_map import LayerMap
+from ansys.edb.core.utility.value import Value
 
 
 class _PrimitiveQueryBuilder:

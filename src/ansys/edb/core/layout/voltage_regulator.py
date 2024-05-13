@@ -3,9 +3,9 @@ import ansys.api.edb.v1.voltage_regulator_pb2 as vr_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import conn_obj, messages
-from ansys.edb.core.primitive import PadstackInstance
+from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class PowerModule:

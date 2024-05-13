@@ -8,7 +8,7 @@ from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class MeshClosure(Enum):

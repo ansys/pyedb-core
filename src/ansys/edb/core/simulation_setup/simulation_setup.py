@@ -16,7 +16,7 @@ from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.session import SimulationSetupServiceStub, StubAccessor, StubType
-from ansys.edb.core.simulation_setup import MatrixConvergenceDataEntry
+from ansys.edb.core.simulation_setup.adaptive_solutions import MatrixConvergenceDataEntry
 
 
 class SimulationSetupType(Enum):

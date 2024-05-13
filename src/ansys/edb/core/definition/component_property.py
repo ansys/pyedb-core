@@ -6,7 +6,7 @@ import ansys.api.edb.v1.model_pb2 as model_pb2
 from ansys.edb.core.definition import package_def
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class ComponentProperty(ObjBase):

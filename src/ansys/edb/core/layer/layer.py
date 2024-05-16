@@ -12,6 +12,7 @@ from ansys.edb.core.inner.messages import (
     get_product_property_message,
     set_product_property_message,
 )
+from ansys.edb.core.layer import stackup_layer, via_layer
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -87,15 +88,12 @@ class Layer(ObjBase):
         -------
         Layer
         """
-        from ansys.edb.core.layer.stackup_layer import StackupLayer
-        from ansys.edb.core.layer.via_layer import ViaLayer
-
         lyr = Layer(self.msg)
         if lyr.is_stackup_layer:
             if lyr.is_via_layer:
-                return ViaLayer(self.msg)
+                return via_layer.ViaLayer(self.msg)
             else:
-                return StackupLayer(self.msg)
+                return stackup_layer.StackupLayer(self.msg)
         else:
             return lyr
 

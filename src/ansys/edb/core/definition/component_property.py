@@ -56,12 +56,10 @@ class ComponentProperty(ObjBase):
         comp_model_msg = self.__stub.GetModel(messages.edb_obj_message(self))
 
         def get_model_obj_type():
-            from ansys.edb.core.hierarchy import (
-                NetlistModel,
-                PinPairModel,
-                SParameterModel,
-                SPICEModel,
-            )
+            from ansys.edb.core.hierarchy.netlist_model import NetlistModel
+            from ansys.edb.core.hierarchy.pin_pair_model import PinPairModel
+            from ansys.edb.core.hierarchy.sparameter_model import SParameterModel
+            from ansys.edb.core.hierarchy.spice_model import SPICEModel
 
             if comp_model_msg.model_type == model_pb2.SPICE_MODEL_TYPE:
                 return SPICEModel

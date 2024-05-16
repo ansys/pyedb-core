@@ -432,12 +432,12 @@ class SimulationSetup(ObjBase):
         -------
         SimulationSetup
         """
-        from ansys.edb.core.simulation_setup import (
-            HfssSimulationSetup,
-            RaptorXSimulationSetup,
+        from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
+        from ansys.edb.core.simulation_setup.raptor_x_simulation_setup import RaptorXSimulationSetup
+        from ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup import (
             SIWaveDCIRSimulationSetup,
-            SIWaveSimulationSetup,
         )
+        from ansys.edb.core.simulation_setup.siwave_simulation_setup import SIWaveSimulationSetup
 
         if self.is_null:
             return

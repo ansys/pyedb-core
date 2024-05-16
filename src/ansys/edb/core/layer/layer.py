@@ -87,7 +87,8 @@ class Layer(ObjBase):
         -------
         Layer
         """
-        from ansys.edb.core.layer.stackup_layer import StackupLayer, ViaLayer
+        from ansys.edb.core.layer.stackup_layer import StackupLayer
+        from ansys.edb.core.layer.via_layer import ViaLayer
 
         lyr = Layer(self.msg)
         if lyr.is_stackup_layer:

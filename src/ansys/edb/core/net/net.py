@@ -2,8 +2,7 @@
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import layout_obj, messages
-from ansys.edb.core.net.extended_net import ExtendedNet
-from ansys.edb.core.net.net_class import NetClass
+from ansys.edb.core.net import extended_net, net_class
 from ansys.edb.core.primitive.primitive import PadstackInstance, Primitive
 from ansys.edb.core.session import NetServiceStub, StubAccessor, StubType
 from ansys.edb.core.terminal.terminals import Terminal, TerminalInstance
@@ -111,7 +110,7 @@ class Net(layout_obj.LayoutObj):
 
         This property is read-only.
         """
-        return [NetClass(lo) for lo in self._layout_objs(LayoutObjType.NET_CLASS)]
+        return [net_class.NetClass(lo) for lo in self._layout_objs(LayoutObjType.NET_CLASS)]
 
     @property
     def extended_net(self):
@@ -121,5 +120,5 @@ class Net(layout_obj.LayoutObj):
 
         This property is read-only.
         """
-        en = ExtendedNet(self._layout_objs(LayoutObjType.NET_CLASS)[0])
+        en = extended_net.ExtendedNet(self._layout_objs(LayoutObjType.NET_CLASS)[0])
         return None if en.is_null else en

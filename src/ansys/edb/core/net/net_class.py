@@ -4,6 +4,7 @@ import ansys.api.edb.v1.netclass_pb2 as nc_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import layout_obj, messages
+from ansys.edb.core.net import net
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -91,10 +92,8 @@ class NetClass(layout_obj.LayoutObj):
 
         This property is read-only.
         """
-        from ansys.edb.core.net.net import Net
-
         nets = self.__stub.GetNets(self.msg).items
-        return [Net(n) for n in nets]
+        return [net.Net(n) for n in nets]
 
     def add_net(self, net):
         """

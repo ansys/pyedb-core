@@ -5,4 +5,4 @@ try:
 except ModuleNotFoundError:
     import importlib_metadata
 
-__version__ = importlib_metadata.version("ansys-edb-core")
+# __version__ = importlib_metadata.version("ansys-edb-core")

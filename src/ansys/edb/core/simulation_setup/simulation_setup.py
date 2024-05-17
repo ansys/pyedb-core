@@ -432,22 +432,23 @@ class SimulationSetup(ObjBase):
         -------
         SimulationSetup
         """
-        from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
-        from ansys.edb.core.simulation_setup.raptor_x_simulation_setup import RaptorXSimulationSetup
-        from ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup import (
-            SIWaveDCIRSimulationSetup,
-        )
-        from ansys.edb.core.simulation_setup.siwave_simulation_setup import SIWaveSimulationSetup
-
         if self.is_null:
             return
 
         sim_type = self.type
         if sim_type == SimulationSetupType.HFSS:
-            return HfssSimulationSetup(self.msg)
+            return hfss_simulation_setup.HfssSimulationSetup(self.msg)
         elif sim_type == SimulationSetupType.SI_WAVE:
-            return SIWaveSimulationSetup(self.msg)
+            return siwave_simulation_setup.SIWaveSimulationSetup(self.msg)
         elif sim_type == SimulationSetupType.SI_WAVE_DCIR:
-            return SIWaveDCIRSimulationSetup(self.msg)
+            return siwave_dcir_simulation_setup.SIWaveDCIRSimulationSetup(self.msg)
         elif sim_type == SimulationSetupType.RAPTOR_X:
-            return RaptorXSimulationSetup(self.msg)
+            return raptor_x_simulation_setup.RaptorXSimulationSetup(self.msg)
+
+
+from ansys.edb.core.simulation_setup import (
+    hfss_simulation_setup,
+    raptor_x_simulation_setup,
+    siwave_dcir_simulation_setup,
+    siwave_simulation_setup,
+)

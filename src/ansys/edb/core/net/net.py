@@ -3,9 +3,9 @@
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import layout_obj, messages
 from ansys.edb.core.net import extended_net, net_class
-from ansys.edb.core.primitive.primitive import PadstackInstance, Primitive
+from ansys.edb.core.primitive import primitive
 from ansys.edb.core.session import NetServiceStub, StubAccessor, StubType
-from ansys.edb.core.terminal.terminals import Terminal, TerminalInstance
+from ansys.edb.core.terminal import terminals
 
 
 class Net(layout_obj.LayoutObj):
@@ -85,24 +85,30 @@ class Net(layout_obj.LayoutObj):
 
         This property is read-only.
         """
-        return [Primitive(lo).cast() for lo in self._layout_objs(LayoutObjType.PRIMITIVE)]
+        return [primitive.Primitive(lo).cast() for lo in self._layout_objs(LayoutObjType.PRIMITIVE)]
 
     @property
     def padstack_instances(self):
         """:obj:`list` of :class:`ansys.edb.core.primitive.PadstackInstance`: All padstack instances on the net \
         object instance."""
-        return [PadstackInstance(lo) for lo in self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)]
+        return [
+            primitive.PadstackInstance(lo)
+            for lo in self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)
+        ]
 
     @property
     def terminals(self):
         """:obj:`list` of :class:`ansys.edb.core.terminal.Terminal`: All terminal instances on the \
             net object instance."""
-        return [Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
+        return [terminals.Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
 
     @property
     def terminal_instances(self):
         """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: All terminal instances on the net object instance."""
-        return [TerminalInstance(lo) for lo in self._layout_objs(LayoutObjType.TERMINAL_INSTANCE)]
+        return [
+            terminals.TerminalInstance(lo)
+            for lo in self._layout_objs(LayoutObjType.TERMINAL_INSTANCE)
+        ]
 
     @property
     def net_classes(self):

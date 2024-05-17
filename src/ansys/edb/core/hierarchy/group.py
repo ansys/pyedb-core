@@ -22,10 +22,6 @@ class Group(HierarchyObj):
         -------
         Group
         """
-        from ansys.edb.core.hierarchy.component_group import ComponentGroup
-        from ansys.edb.core.hierarchy.structure3d import Structure3D
-        from ansys.edb.core.hierarchy.via_group import ViaGroup
-
         if self.is_null:
             return
 
@@ -33,11 +29,11 @@ class Group(HierarchyObj):
         if group_type == GroupTypeMessage.GroupType.GROUP:
             return Group(self.msg)
         elif group_type == GroupTypeMessage.GroupType.COMPONENT:
-            return ComponentGroup(self.msg)
+            return component_group.ComponentGroup(self.msg)
         elif group_type == GroupTypeMessage.GroupType.STRUCTURE_3D:
-            return Structure3D(self.msg)
+            return structure3d.Structure3D(self.msg)
         elif group_type == GroupTypeMessage.GroupType.VIA_GROUP:
-            return ViaGroup(self.msg)
+            return via_group.ViaGroup(self.msg)
 
     @classmethod
     def create(cls, layout, name):
@@ -113,7 +109,9 @@ class Group(HierarchyObj):
 
         This property is read-only.
         """
-        from ansys.edb.core.inner import factory
-
         objs = self.__stub.GetMembers(self.msg).items
         return [factory.create_conn_obj(co) for co in objs]
+
+
+from ansys.edb.core.hierarchy import component_group, structure3d, via_group
+from ansys.edb.core.inner import factory

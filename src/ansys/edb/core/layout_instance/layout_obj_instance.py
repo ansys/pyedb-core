@@ -1,10 +1,9 @@
 """Layout object instance."""
 
-from ansys.edb.core.inner import ObjBase, parser, utils
-from ansys.edb.core.inner.factory import create_conn_obj
+from ansys.edb.core.inner import ObjBase, factory, parser, utils
 from ansys.edb.core.inner.messages import bool_property_message, layer_ref_property_message
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.layout_instance.layout_instance_context import LayoutInstanceContext
+from ansys.edb.core.layout_instance import layout_instance_context
 from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import (
     LayoutObjInstance2DGeometry,
 )
@@ -73,7 +72,9 @@ class LayoutObjInstance(ObjBase):
 
         This property is read-only.
         """
-        return LayoutInstanceContext(self.__stub.GetLayoutInstanceContext(self.msg))
+        return layout_instance_context.LayoutInstanceContext(
+            self.__stub.GetLayoutInstanceContext(self.msg)
+        )
 
     @property
     def layout_obj(self):
@@ -82,7 +83,7 @@ class LayoutObjInstance(ObjBase):
 
         This property is read-only.
         """
-        return create_conn_obj(self.__stub.GetLayoutObj(self.msg))
+        return factory.create_conn_obj(self.__stub.GetLayoutObj(self.msg))
 
     @parser.to_polygon_data
     def get_bbox(self, local=False):

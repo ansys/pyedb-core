@@ -5,7 +5,6 @@ from ansys.edb.core.definition import component_model, component_pin
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.layout import cell
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -73,6 +72,8 @@ class ComponentDef(ObjBase):
     @property
     def footprint(self):
         """:class:`Cell <ansys.edb.core.layout.Cell>`: Footprint of the component definition."""
+        from ansys.edb.core.layout import cell
+
         return cell.Cell(self.__stub.GetFootprintCell(self.msg))
 
     @footprint.setter

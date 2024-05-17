@@ -150,8 +150,7 @@ from ansys.edb.core.simulation_setup.mesh_operation import (
     LengthMeshOperation,
     SkinDepthMeshOperation,
 )
-from ansys.edb.core.utility import conversions
-from ansys.edb.core.utility.value import Value
+from ansys.edb.core.utility import conversions, value
 
 
 def str_message(s: str):
@@ -991,7 +990,7 @@ def value_message(val):
     -------
     ValueMessage
     """
-    if isinstance(val, Value):
+    if isinstance(val, value.Value):
         return val.msg
     if isinstance(val, ValueMessage):
         return val

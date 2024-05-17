@@ -1,7 +1,7 @@
 """This module allows for the creating of objects while avoid circular imports."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy.cell_instance import CellInstance
+from ansys.edb.core.hierarchy import cell_instance
 from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.hierarchy.pin_group import PinGroup
 from ansys.edb.core.layout import voltage_regulator
@@ -31,7 +31,7 @@ def create_conn_obj(msg):
     elif type == LayoutObjType.TERMINAL_INSTANCE:
         return TerminalInstance(msg)
     elif type == LayoutObjType.CELL_INSTANCE:
-        return CellInstance(msg)
+        return cell_instance.CellInstance(msg)
     elif type == LayoutObjType.GROUP:
         return Group(msg).cast()
     elif type == LayoutObjType.PIN_GROUP:

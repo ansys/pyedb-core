@@ -2,7 +2,17 @@
 
 import functools
 
-from ansys.edb.core import geometry, simulation_setup, utility
+from ansys.edb.core.simulation_setup.adaptive_solutions import (
+    AdaptiveFrequency,
+    BroadbandAdaptiveSolution,
+    MatrixConvergenceData,
+    MultiFrequencyAdaptiveSolution,
+    SingleFrequencyAdaptiveSolution,
+)
+from ansys.edb.core.simulation_setup.mesh_operation import (
+    LengthMeshOperation,
+    SkinDepthMeshOperation,
+)
 
 
 def to_point_data(fn):
@@ -108,7 +118,10 @@ def _to_point_data(message):
     -------
     geometry.PointData
     """
-    return geometry.PointData([utility.Value(message.x), utility.Value(message.y)])
+    from ansys.edb.core.geometry.point_data import PointData
+    from ansys.edb.core.utility.value import Value
+
+    return PointData([Value(message.x), Value(message.y)])
 
 
 def _to_point_data_pair(message):
@@ -164,9 +177,10 @@ def _to_point3d_data(message):
     -------
     geometry.Point3DData
     """
-    return geometry.Point3DData(
-        utility.Value(message.x), utility.Value(message.y), utility.Value(message.z)
-    )
+    from ansys.edb.core.geometry.point3d_data import Point3DData
+    from ansys.edb.core.utility.value import Value
+
+    return Point3DData(Value(message.x), Value(message.y), Value(message.z))
 
 
 def _to_polygon_data(message):
@@ -182,11 +196,13 @@ def _to_polygon_data(message):
     """
     from ansys.api.edb.v1.point_data_pb2 import BoxMessage
 
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+
     if isinstance(message, BoxMessage):
         b = _to_box(message)
-        return geometry.PolygonData(lower_left=b[0], upper_right=b[1])
+        return PolygonData(lower_left=b[0], upper_right=b[1])
     else:
-        return geometry.PolygonData(
+        return PolygonData(
             points=_to_point_data_list(message.points),
             holes=_to_polygon_data_list(message.holes),
             sense=message.sense,
@@ -235,8 +251,10 @@ def _to_circle(message):
     -------
     tuple[geometry.PointData, utility.Value]
     """
+    from ansys.edb.core.utility.value import Value
+
     if hasattr(message, "center") and hasattr(message, "radius"):
-        return _to_point_data(message.center), utility.Value(message.radius)
+        return _to_point_data(message.center), Value(message.radius)
 
 
 def _to_rlc(message):
@@ -250,12 +268,15 @@ def _to_rlc(message):
     -------
     Rlc
     """
-    return utility.Rlc(
-        utility.Value(message.r),
+    from ansys.edb.core.utility.rlc import Rlc
+    from ansys.edb.core.utility.value import Value
+
+    return Rlc(
+        Value(message.r),
         message.r_enabled.value,
-        utility.Value(message.l),
+        Value(message.l),
         message.l_enabled.value,
-        utility.Value(message.c),
+        Value(message.c),
         message.c_enabled.value,
         message.is_parallel.value,
     )
@@ -276,7 +297,7 @@ def _to_mx_convergence_data(message):
     if len(mx_entry_msgs) == 0:
         return
 
-    mx_conv_data = simulation_setup.MatrixConvergenceData()
+    mx_conv_data = MatrixConvergenceData()
     if (
         message.all_are_constant
         or message.all_diag_are_constant
@@ -353,7 +374,7 @@ def _to_single_frequency_adaptive_solution(message):
     SingleFrequencyAdaptiveSolution
     """
     adaptive_freq_data = _to_base_adaptive_frequency_solution(message.adaptive_frequency)
-    return simulation_setup.SingleFrequencyAdaptiveSolution(
+    return SingleFrequencyAdaptiveSolution(
         adaptive_freq_data[0],
         adaptive_freq_data[1],
         message.max_passes,
@@ -374,7 +395,7 @@ def _to_multi_adaptive_freq(message):
     AdaptiveFrequency
     """
     adaptive_freq_data = _to_base_adaptive_frequency_solution(message.adaptive_frequency)
-    return simulation_setup.AdaptiveFrequency(
+    return AdaptiveFrequency(
         adaptive_freq_data[0],
         adaptive_freq_data[1],
         {key: value for (key, value) in message.output_variables},
@@ -392,7 +413,7 @@ def _to_multi_frequency_adaptive_solution(message):
     -------
     MultiFrequencyAdaptiveSolution
     """
-    return simulation_setup.MultiFrequencyAdaptiveSolution(
+    return MultiFrequencyAdaptiveSolution(
         message.max_passes,
         [_to_multi_adaptive_freq(freq_msg) for freq_msg in message.adaptive_frequencies],
     )
@@ -409,7 +430,7 @@ def _to_broadband_adaptive_solution(message):
     -------
     BroadbandAdaptiveSolution
     """
-    return simulation_setup.BroadbandAdaptiveSolution(
+    return BroadbandAdaptiveSolution(
         message.low_frequency, message.high_frequency, message.max_passes, message.max_delta
     )
 
@@ -425,7 +446,7 @@ def _length_mesh_op(message):
     -------
     LengthMeshOperation
     """
-    return simulation_setup.LengthMeshOperation(
+    return LengthMeshOperation(
         max_length=message.max_length,
         restrict_max_length=message.restrict_length,
         max_elements=message.max_elements,
@@ -444,7 +465,7 @@ def _to_skin_depth_mesh_op(message):
     -------
     SkinDepthMeshOperation
     """
-    return simulation_setup.SkinDepthMeshOperation(
+    return SkinDepthMeshOperation(
         skin_depth=message.skin_depth,
         surface_triangle_length=message.surface_triangle_length,
         num_layers=message.num_layers,

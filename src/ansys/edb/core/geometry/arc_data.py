@@ -4,7 +4,8 @@ import math
 
 from ansys.api.edb.v1 import arc_data_pb2_grpc
 
-from ansys.edb.core import geometry, session
+from ansys.edb.core import session
+from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.utility import conversions
 
@@ -56,7 +57,7 @@ class ArcData:
         if self.height == 0:
             return f"{self.start} {self.end}"
         else:
-            arc = geometry.PointData(self.height)
+            arc = PointData(self.height)
             return f"{self.start} {arc} {self.end}"
 
     @property
@@ -223,7 +224,7 @@ class ArcData:
     @property
     def points(self):
         """:obj:`list` of :class:`geometry.PointData`: Geometric points representing the arc."""
-        return [self._start, geometry.PointData(self.height), self._end]
+        return [self._start, PointData(self.height), self._end]
 
     def tangent_at(self, point):
         """Get the tangent vector of the arc at a given point.
@@ -244,9 +245,9 @@ class ArcData:
         vec = point - self.center
 
         if self.is_ccw():
-            return geometry.PointData(-vec.y, vec.x)
+            return PointData(-vec.y, vec.x)
         else:
-            return geometry.PointData(vec.y, -vec.x)
+            return PointData(vec.y, -vec.x)
 
     @parser.to_box
     def closest_points(self, other):

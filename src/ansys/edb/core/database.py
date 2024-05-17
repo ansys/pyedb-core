@@ -6,17 +6,17 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.definition import (
+from ansys.edb.core.definition.bondwire_def import (
     ApdBondwireDef,
     BondwireDefType,
-    ComponentDef,
-    DatasetDef,
     Jedec4BondwireDef,
     Jedec5BondwireDef,
-    MaterialDef,
-    PackageDef,
-    PadstackDef,
 )
+from ansys.edb.core.definition.component_def import ComponentDef
+from ansys.edb.core.definition.dataset_def import DatasetDef
+from ansys.edb.core.definition.material_def import MaterialDef
+from ansys.edb.core.definition.package_def import PackageDef
+from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase, variable_server
 from ansys.edb.core.inner.messages import (
@@ -29,7 +29,7 @@ from ansys.edb.core.inner.messages import (
     str_message,
 )
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.layout import Cell
+from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.session import DatabaseServiceStub, StubAccessor, StubType
 
 

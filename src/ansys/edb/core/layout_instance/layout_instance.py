@@ -1,7 +1,7 @@
 """Layout instance."""
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
-from ansys.edb.core.geometry import PointData
+from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import ObjBase, utils
 from ansys.edb.core.inner.messages import (
     layer_ref_message,

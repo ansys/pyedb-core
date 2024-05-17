@@ -3,7 +3,7 @@
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.conn_obj import ConnObj
-from ansys.edb.core.primitive import PadstackInstance
+from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
 
 

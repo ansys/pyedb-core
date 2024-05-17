@@ -4,16 +4,21 @@ from ansys.api.edb.v1 import layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy import CellInstance, Group, PinGroup
+from ansys.edb.core.hierarchy.cell_instance import CellInstance
+from ansys.edb.core.hierarchy.group import Group
+from ansys.edb.core.hierarchy.pin_group import PinGroup
 from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
-from ansys.edb.core.layer import LayerCollection
-import ansys.edb.core.layout as layout
+from ansys.edb.core.layer.layer_collection import LayerCollection
+from ansys.edb.core.layout import voltage_regulator
 from ansys.edb.core.layout.mcad_model import McadModel
-from ansys.edb.core.layout_instance import LayoutInstance
-from ansys.edb.core.net import DifferentialPair, ExtendedNet, Net, NetClass
-from ansys.edb.core.primitive import BoardBendDef, PadstackInstance, Primitive
+from ansys.edb.core.layout_instance.layout_instance import LayoutInstance
+from ansys.edb.core.net.differential_pair import DifferentialPair
+from ansys.edb.core.net.extended_net import ExtendedNet
+from ansys.edb.core.net.net import Net
+from ansys.edb.core.net.net_class import NetClass
+from ansys.edb.core.primitive.primitive import BoardBendDef, PadstackInstance, Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal import Terminal
+from ansys.edb.core.terminal.terminals import Terminal
 
 
 class Layout(ObjBase, variable_server.VariableServer):
@@ -150,7 +155,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(layout.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
+        return self._get_items(voltage_regulator.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
 
     @property
     def extended_nets(self):

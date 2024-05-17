@@ -3,7 +3,7 @@
 from ansys.edb.core.inner import ObjBase, parser, utils
 from ansys.edb.core.inner.factory import create_conn_obj
 from ansys.edb.core.inner.messages import bool_property_message, layer_ref_property_message
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.layout_instance.layout_instance_context import LayoutInstanceContext
 from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import (
     LayoutObjInstance2DGeometry,

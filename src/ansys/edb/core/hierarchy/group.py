@@ -22,7 +22,9 @@ class Group(HierarchyObj):
         -------
         Group
         """
-        from ansys.edb.core.hierarchy import ComponentGroup, Structure3D, ViaGroup
+        from ansys.edb.core.hierarchy.component_group import ComponentGroup
+        from ansys.edb.core.hierarchy.structure3d import Structure3D
+        from ansys.edb.core.hierarchy.via_group import ViaGroup
 
         if self.is_null:
             return

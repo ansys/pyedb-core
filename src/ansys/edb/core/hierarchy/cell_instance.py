@@ -2,12 +2,13 @@
 
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
-from ansys.edb.core import layout
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import hierarchy_obj
 from ansys.edb.core.inner import messages
+from ansys.edb.core.layout import layout
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Transform3D, Value
+from ansys.edb.core.utility.transform3d import Transform3D
+from ansys.edb.core.utility.value import Value
 
 
 class CellInstance(hierarchy_obj.HierarchyObj):
@@ -97,7 +98,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         This property is read-only.
         """
-        from ansys.edb.core.terminal import TerminalInstance
+        from ansys.edb.core.terminal.terminals import TerminalInstance
 
         terms = self.__stub.GetTermInsts(self.msg).items
         return [TerminalInstance(ti) for ti in terms]

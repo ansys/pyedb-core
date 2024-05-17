@@ -7,11 +7,12 @@ import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb.core import hierarchy, primitive
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.geometry import ArcData
+from ansys.edb.core.geometry.arc_data import ArcData
 from ansys.edb.core.inner import ObjBase, TypeField, conn_obj, messages, parser
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import PortPostProcessingProp, Value
+from ansys.edb.core.utility.port_post_processing_prop import PortPostProcessingProp
+from ansys.edb.core.utility.value import Value
 
 
 class TerminalType(Enum):

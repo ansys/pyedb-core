@@ -10,6 +10,7 @@ from ansys.edb.core.hierarchy.pin_group import PinGroup
 from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
 from ansys.edb.core.layer.layer_collection import LayerCollection
 import ansys.edb.core.layout as layout
+from ansys.edb.core.layout import cell
 from ansys.edb.core.layout.mcad_model import McadModel
 from ansys.edb.core.layout_instance.layout_instance import LayoutInstance
 from ansys.edb.core.net.differential_pair import DifferentialPair
@@ -42,9 +43,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        from ansys.edb.core.layout.cell import Cell
-
-        return Cell(self.__stub.GetCell(self.msg))
+        return cell.Cell(self.__stub.GetCell(self.msg))
 
     @property
     def layer_collection(self):

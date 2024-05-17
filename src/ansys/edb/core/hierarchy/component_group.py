@@ -6,6 +6,9 @@ from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
 from ansys.edb.core.definition import component_property
+from ansys.edb.core.definition.ic_component_property import ICComponentProperty
+from ansys.edb.core.definition.io_component_property import IOComponentProperty
+from ansys.edb.core.definition.rlc_component_property import RLCComponentProperty
 from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import StubAccessor, StubType
@@ -65,10 +68,6 @@ class ComponentGroup(Group):
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
-        from ansys.edb.core.definition.ic_component_property import ICComponentProperty
-        from ansys.edb.core.definition.io_component_property import IOComponentProperty
-        from ansys.edb.core.definition.rlc_component_property import RLCComponentProperty
-
         comp_prop = component_property.ComponentProperty(self.__stub.GetComponentProperty(self.msg))
         comp_type = self.__stub.GetComponentType(self.msg).comp_type
         if (

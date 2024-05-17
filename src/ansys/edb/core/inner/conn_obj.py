@@ -33,7 +33,6 @@ class ConnObj(layout_obj.LayoutObj):
         """Verify that the object type received from the server matches the object type requested by the client."""
         client_obj = cls(edb_obj_msg)
         if cls.layout_obj_type == LayoutObjType.PRIMITIVE:
-            import ansys.edb.core.primitive.primitive as primitive
 
             def get_client_prim_type_from_class():
                 if cls == primitive.Circle:
@@ -54,8 +53,6 @@ class ConnObj(layout_obj.LayoutObj):
             if get_client_prim_type_from_class() == primitive.Primitive(edb_obj_msg).primitive_type:
                 return client_obj
         elif cls.layout_obj_type == LayoutObjType.TERMINAL:
-            from ansys.edb.core.terminal import terminals
-
             server_term_type = terminals.Terminal(edb_obj_msg).type
             if client_obj.type == server_term_type:
                 return client_obj
@@ -122,9 +119,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         This property can be set with a :class:`Net <ansys.edb.core.net.Net>` instance, a string, or ``None``.
         """
-        from ansys.edb.core.net.net import Net
-
-        return Net(self.__stub.GetNet(self.msg))
+        return net.Net(self.__stub.GetNet(self.msg))
 
     @net.setter
     def net(self, net):
@@ -191,3 +186,8 @@ class ConnObj(layout_obj.LayoutObj):
         This property is read-only.
         """
         return mm.McadModel.is_mcad_3d_comp(self)
+
+
+from ansys.edb.core.net import net
+from ansys.edb.core.primitive import primitive
+from ansys.edb.core.terminal import terminals

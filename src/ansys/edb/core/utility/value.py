@@ -5,8 +5,6 @@ from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
 from ansys.edb.core import session
-from ansys.edb.core.inner import messages
-from ansys.edb.core.utility import conversions
 
 
 class Value:
@@ -334,3 +332,7 @@ class Value:
     def sqrt(self):
         """Square root of this value as a constant value."""
         return self**0.5
+
+
+from ansys.edb.core.inner import messages
+from ansys.edb.core.utility import conversions

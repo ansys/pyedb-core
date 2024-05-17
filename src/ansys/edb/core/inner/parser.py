@@ -2,6 +2,8 @@
 
 import functools
 
+from ansys.api.edb.v1.point_data_pb2 import BoxMessage
+
 from ansys.edb.core.simulation_setup.adaptive_solutions import (
     AdaptiveFrequency,
     BroadbandAdaptiveSolution,
@@ -118,10 +120,7 @@ def _to_point_data(message):
     -------
     geometry.PointData
     """
-    from ansys.edb.core.geometry.point_data import PointData
-    from ansys.edb.core.utility.value import Value
-
-    return PointData([Value(message.x), Value(message.y)])
+    return point_data.PointData([value.Value(message.x), value.Value(message.y)])
 
 
 def _to_point_data_pair(message):
@@ -177,10 +176,9 @@ def _to_point3d_data(message):
     -------
     geometry.Point3DData
     """
-    from ansys.edb.core.geometry.point3d_data import Point3DData
-    from ansys.edb.core.utility.value import Value
-
-    return Point3DData(Value(message.x), Value(message.y), Value(message.z))
+    return point3d_data.Point3DData(
+        value.Value(message.x), value.Value(message.y), value.Value(message.z)
+    )
 
 
 def _to_polygon_data(message):
@@ -194,15 +192,11 @@ def _to_polygon_data(message):
     -------
     geometry.PolygonData
     """
-    from ansys.api.edb.v1.point_data_pb2 import BoxMessage
-
-    from ansys.edb.core.geometry.polygon_data import PolygonData
-
     if isinstance(message, BoxMessage):
         b = _to_box(message)
-        return PolygonData(lower_left=b[0], upper_right=b[1])
+        return polygon_data.PolygonData(lower_left=b[0], upper_right=b[1])
     else:
-        return PolygonData(
+        return polygon_data.PolygonData(
             points=_to_point_data_list(message.points),
             holes=_to_polygon_data_list(message.holes),
             sense=message.sense,
@@ -251,10 +245,8 @@ def _to_circle(message):
     -------
     tuple[geometry.PointData, utility.Value]
     """
-    from ansys.edb.core.utility.value import Value
-
     if hasattr(message, "center") and hasattr(message, "radius"):
-        return _to_point_data(message.center), Value(message.radius)
+        return _to_point_data(message.center), value.Value(message.radius)
 
 
 def _to_rlc(message):
@@ -268,15 +260,12 @@ def _to_rlc(message):
     -------
     Rlc
     """
-    from ansys.edb.core.utility.rlc import Rlc
-    from ansys.edb.core.utility.value import Value
-
-    return Rlc(
-        Value(message.r),
+    return rlc.Rlc(
+        value.Value(message.r),
         message.r_enabled.value,
-        Value(message.l),
+        value.Value(message.l),
         message.l_enabled.value,
-        Value(message.c),
+        value.Value(message.c),
         message.c_enabled.value,
         message.is_parallel.value,
     )
@@ -498,3 +487,7 @@ def _to_mesh_op(message):
     for nli in message.net_layer_info:
         mesh_op.net_layer_info.append((nli.net, nli.layer, nli.is_sheet))
     return mesh_op
+
+
+from ansys.edb.core.geometry import point3d_data, point_data, polygon_data
+from ansys.edb.core.utility import rlc, value

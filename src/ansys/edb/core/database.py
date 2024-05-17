@@ -6,17 +6,19 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
+from ansys.edb.core.definition import (
+    component_def,
+    dataset_def,
+    material_def,
+    package_def,
+    padstack_def,
+)
 from ansys.edb.core.definition.bondwire_def import (
     ApdBondwireDef,
     BondwireDefType,
     Jedec4BondwireDef,
     Jedec5BondwireDef,
 )
-from ansys.edb.core.definition.component_def import ComponentDef
-from ansys.edb.core.definition.dataset_def import DatasetDef
-from ansys.edb.core.definition.material_def import MaterialDef
-from ansys.edb.core.definition.package_def import PackageDef
-from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase, variable_server
 from ansys.edb.core.inner.messages import (
@@ -378,28 +380,30 @@ class Database(ObjBase, variable_server.VariableServer):
     def padstack_defs(self):
         """:obj:`list` of :class:`PadstackDef <ansys.edb.core.definition.PadstackDef>`: All padstack definitions \
         in the database."""
-        return self._get_definition_objs(PadstackDef, DefinitionObjType.PADSTACK_DEF)
+        return self._get_definition_objs(padstack_def.PadstackDef, DefinitionObjType.PADSTACK_DEF)
 
     @property
     def package_defs(self):
         """:obj:`list` of :class:`PackageDef <ansys.edb.core.definition.PackageDef>`: All package definitions \
         in the database."""
-        return self._get_definition_objs(PackageDef, DefinitionObjType.PACKAGE_DEF)
+        return self._get_definition_objs(package_def.PackageDef, DefinitionObjType.PACKAGE_DEF)
 
     @property
     def component_defs(self):
         """:obj:`list` of :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: All component \
         definitions in the database."""
-        return self._get_definition_objs(ComponentDef, DefinitionObjType.COMPONENT_DEF)
+        return self._get_definition_objs(
+            component_def.ComponentDef, DefinitionObjType.COMPONENT_DEF
+        )
 
     @property
     def material_defs(self):
         """:obj:`list` of :class:`MaterialDef <ansys.edb.core.definition.MaterialDef>`: All material \
         definitions in the database."""
-        return self._get_definition_objs(MaterialDef, DefinitionObjType.MATERIAL_DEF)
+        return self._get_definition_objs(material_def.MaterialDef, DefinitionObjType.MATERIAL_DEF)
 
     @property
     def dataset_defs(self):
         """:obj:`list` of :class:`DatasetDef <ansys.edb.core.definition.DatasetDef>`: All dataset \
         definitions in the database."""
-        return self._get_definition_objs(DatasetDef, DefinitionObjType.DATASET_DEF)
+        return self._get_definition_objs(dataset_def.DatasetDef, DefinitionObjType.DATASET_DEF)

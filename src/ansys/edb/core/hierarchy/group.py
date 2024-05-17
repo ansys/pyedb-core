@@ -5,7 +5,7 @@ from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import factory, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -114,4 +114,3 @@ class Group(HierarchyObj):
 
 
 from ansys.edb.core.hierarchy import component_group, structure3d, via_group
-from ansys.edb.core.inner import factory

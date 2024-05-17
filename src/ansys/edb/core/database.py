@@ -29,7 +29,7 @@ from ansys.edb.core.inner.messages import (
     str_message,
 )
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout import cell
 from ansys.edb.core.session import DatabaseServiceStub, StubAccessor, StubType
 
 
@@ -126,7 +126,7 @@ class Database(ObjBase, variable_server.VariableServer):
     @staticmethod
     def _map_cell_edb_obj_collection(cells_msg):
         """Get a list of cell objects from the ``EDBObjCollection`` message."""
-        return map_list(cells_msg.items, Cell)
+        return map_list(cells_msg.items, cell.Cell)
 
     @property
     def top_circuit_cells(self):

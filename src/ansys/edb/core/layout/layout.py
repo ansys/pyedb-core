@@ -7,7 +7,7 @@ from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import cell_instance, group, pin_group
 from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
 from ansys.edb.core.layer.layer_collection import LayerCollection
-from ansys.edb.core.layout import voltage_regulator
+from ansys.edb.core.layout import cell, voltage_regulator
 from ansys.edb.core.layout.mcad_model import McadModel
 from ansys.edb.core.layout_instance import layout_instance
 from ansys.edb.core.net.differential_pair import DifferentialPair
@@ -40,9 +40,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        from ansys.edb.core.layout.cell import Cell
-
-        return Cell(self.__stub.GetCell(self.msg))
+        return cell.Cell(self.__stub.GetCell(self.msg))
 
     @property
     def layer_collection(self):

@@ -7,7 +7,7 @@ import math
 from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2_grpc
 
 from ansys.edb.core import session
-from ansys.edb.core.geometry.arc_data import ArcData
+from ansys.edb.core.geometry import arc_data
 from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.utility import conversions
 
@@ -111,7 +111,7 @@ class PolygonData:
             if p2.is_arc:
                 h, incr = p2.arc_height, 2
                 p2 = self.points[(i + incr) % n]
-            segments.append(ArcData(p1, p2, height=h))
+            segments.append(arc_data.ArcData(p1, p2, height=h))
             i += incr
         return segments
 

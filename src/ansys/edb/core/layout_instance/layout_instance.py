@@ -10,7 +10,7 @@ from ansys.edb.core.inner.messages import (
     polygon_data_message,
     strings_message,
 )
-from ansys.edb.core.layout_instance.layout_obj_instance import LayoutObjInstance
+from ansys.edb.core.layout_instance import layout_obj_instance
 from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
 
 
@@ -71,11 +71,13 @@ class LayoutInstance(ObjBase):
 
         if hits.HasField("full_partial_hits"):
             full_partial_hits = hits.full_partial_hits
-            return utils.map_list(full_partial_hits.full.items, LayoutObjInstance), utils.map_list(
-                full_partial_hits.partial.items, LayoutObjInstance
+            return utils.map_list(
+                full_partial_hits.full.items, layout_obj_instance.LayoutObjInstance
+            ), utils.map_list(
+                full_partial_hits.partial.items, layout_obj_instance.LayoutObjInstance
             )
         else:
-            return utils.map_list(hits.hits.items, LayoutObjInstance)
+            return utils.map_list(hits.hits.items, layout_obj_instance.LayoutObjInstance)
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.
@@ -94,7 +96,7 @@ class LayoutInstance(ObjBase):
         -------
         LayoutObjInstance
         """
-        return LayoutObjInstance(
+        return layout_obj_instance.LayoutObjInstance(
             self.__stub.GetLayoutObjInstanceInContext(
                 layout_instance_pb2.GetLayoutObjInstanceInContextMessage(
                     layout_inst=self.msg,
@@ -129,4 +131,4 @@ class LayoutInstance(ObjBase):
                 touching_only=touching_only,
             )
         )
-        return utils.map_list(hits.items, LayoutObjInstance)
+        return utils.map_list(hits.items, layout_obj_instance.LayoutObjInstance)

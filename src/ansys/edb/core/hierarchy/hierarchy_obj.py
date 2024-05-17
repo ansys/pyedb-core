@@ -1,6 +1,5 @@
 """Hierarchy object."""
 
-from ansys.edb.core.definition import component_def
 from ansys.edb.core.inner import conn_obj, messages
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
@@ -91,3 +90,6 @@ class HierarchyObj(conn_obj.ConnObj):
     @solve_independent_preference.setter
     def solve_independent_preference(self, value):
         self.__stub.SetSolveIndependentPreference(messages.bool_property_message(self, value))
+
+
+from ansys.edb.core.definition import component_def

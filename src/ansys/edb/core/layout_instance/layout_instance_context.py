@@ -2,7 +2,7 @@
 
 from ansys.edb.core.inner import ObjBase, parser
 from ansys.edb.core.inner.messages import bool_property_message
-import ansys.edb.core.layout as layout
+from ansys.edb.core.layout import layout
 from ansys.edb.core.session import LayoutInstanceContextServiceStub, StubAccessor, StubType
 
 

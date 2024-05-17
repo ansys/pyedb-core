@@ -4,15 +4,12 @@ from ansys.api.edb.v1 import layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy.cell_instance import CellInstance
-from ansys.edb.core.hierarchy.group import Group
-from ansys.edb.core.hierarchy.pin_group import PinGroup
+from ansys.edb.core.hierarchy import cell_instance, group, pin_group
 from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
 from ansys.edb.core.layer.layer_collection import LayerCollection
-import ansys.edb.core.layout as layout
-from ansys.edb.core.layout import cell
+from ansys.edb.core.layout import cell, voltage_regulator
 from ansys.edb.core.layout.mcad_model import McadModel
-from ansys.edb.core.layout_instance.layout_instance import LayoutInstance
+from ansys.edb.core.layout_instance import layout_instance
 from ansys.edb.core.net.differential_pair import DifferentialPair
 from ansys.edb.core.net.extended_net import ExtendedNet
 from ansys.edb.core.net.net import Net
@@ -100,7 +97,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(CellInstance, LayoutObjType.CELL_INSTANCE)
+        return self._get_items(cell_instance.CellInstance, LayoutObjType.CELL_INSTANCE)
 
     @property
     def nets(self):
@@ -118,7 +115,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(Group, LayoutObjType.GROUP, True)
+        return self._get_items(group.Group, LayoutObjType.GROUP, True)
 
     @property
     def net_classes(self):
@@ -145,7 +142,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(PinGroup, LayoutObjType.PIN_GROUP)
+        return self._get_items(pin_group.PinGroup, LayoutObjType.PIN_GROUP)
 
     @property
     def voltage_regulators(self):
@@ -154,7 +151,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(layout.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
+        return self._get_items(voltage_regulator.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
 
     @property
     def extended_nets(self):
@@ -276,7 +273,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return LayoutInstance(self.__stub.GetLayoutInstance(self.msg))
+        return layout_instance.LayoutInstance(self.__stub.GetLayoutInstance(self.msg))
 
     def create_stride(self, filename):
         """Create a Stride model from an MCAD file.

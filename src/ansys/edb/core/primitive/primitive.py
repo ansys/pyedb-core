@@ -23,7 +23,6 @@ from ansys.api.edb.v1 import (
     text_pb2_grpc,
 )
 
-from ansys.edb.core import hierarchy, terminal
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import conn_obj, messages, parser
@@ -1938,7 +1937,9 @@ class PadstackInstance(Primitive):
 
     def get_padstack_instance_terminal(self):
         """:class:`TerminalInstance <ansys.edb.core.terminal.TerminalInstance>`: Terminal of the padstack instance."""
-        return terminal.TerminalInstance(self.__stub.GetPadstackInstanceTerminal(self.msg))
+        from ansys.edb.core.terminal import terminals
+
+        return terminals.TerminalInstance(self.__stub.GetPadstackInstanceTerminal(self.msg))
 
     def is_in_pin_group(self, pin_group):
         """Determine if the padstack instance is in a given pin group.
@@ -1963,8 +1964,10 @@ class PadstackInstance(Primitive):
 
         This property is read-only.
         """
+        from ansys.edb.core.hierarchy import pin_group
+
         pins = self.__stub.GetPinGroups(self.msg).items
-        return [hierarchy.PinGroup(p) for p in pins]
+        return [pin_group.PinGroup(p) for p in pins]
 
 
 class BoardBendDef(Primitive):

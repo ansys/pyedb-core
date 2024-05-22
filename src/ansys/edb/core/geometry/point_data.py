@@ -6,9 +6,9 @@ import sys
 
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
-from ansys.edb.core import session, utility
+from ansys.edb.core import session
 from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility import conversions, value
 
 
 class PointData:
@@ -174,7 +174,7 @@ class PointData:
         """
         if self.is_arc:
             return 0
-        return math.sqrt(sum([v**2 for v in self._matrix_values], utility.Value(0)).value)
+        return math.sqrt(sum([v**2 for v in self._matrix_values], value.Value(0)).value)
 
     def normalized(self):
         """Normalize the point vector.
@@ -290,7 +290,7 @@ class PointData:
         float
             Dot product of the two points.
         """
-        return sum(self._map_reduce(other, operator.__mul__), utility.Value(0)).value
+        return sum(self._map_reduce(other, operator.__mul__), value.Value(0)).value
 
     def angle(self, other):
         """Get the angle between this vector and another vector.

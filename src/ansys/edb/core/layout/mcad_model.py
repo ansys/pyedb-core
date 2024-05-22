@@ -1,6 +1,5 @@
 """MCAD model."""
 
-from ansys.edb.core import hierarchy
 from ansys.edb.core.inner import ObjBase, messages, parser
 from ansys.edb.core.session import McadModelServiceStub, StubAccessor, StubType
 
@@ -88,7 +87,9 @@ class McadModel(ObjBase):
 
         This property is read-only.
         """
-        return hierarchy.CellInstance(self.__stub.GetCellInst(messages.edb_obj_message(self)))
+        from ansys.edb.core.hierarchy import cell_instance
+
+        return cell_instance.CellInstance(self.__stub.GetCellInst(messages.edb_obj_message(self)))
 
     @property
     def model_name(self):

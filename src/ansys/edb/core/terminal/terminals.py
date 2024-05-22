@@ -5,7 +5,6 @@ from enum import Enum
 import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
-from ansys.edb.core import hierarchy, primitive
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.geometry.arc_data import ArcData
 from ansys.edb.core.inner import ObjBase, TypeField, conn_obj, messages, parser
@@ -128,6 +127,8 @@ class PadEdge(Edge):
     @property
     def padstack_instance(self):
         """:class:`.PadstackInstance`: Padstack instance that the edge is on."""
+        from ansys.edb.core.primitive import primitive
+
         return primitive.PadstackInstance(self._params.padstack_instance)
 
     @property
@@ -164,6 +165,8 @@ class PrimitiveEdge(Edge):
     @property
     def primitive(self):
         """:class:`.Primitive`: Primitive of the terminal."""
+        from ansys.edb.core.primitive import primitive
+
         return primitive.Primitive(self._params.primitive).cast()
 
     @property
@@ -494,7 +497,9 @@ class TerminalInstance(conn_obj.ConnObj):
     @property
     def owning_cell_instance(self):
         """:class:`.CellInstance`: Cell instance that owns the terminal."""
-        return hierarchy.CellInstance(self.__stub.GetOwningCellInstance(self.msg))
+        from ansys.edb.core.hierarchy import cell_instance
+
+        return cell_instance.CellInstance(self.__stub.GetOwningCellInstance(self.msg))
 
     @property
     def definition_terminal(self):
@@ -686,6 +691,8 @@ class PadstackInstanceTerminal(Terminal):
     @property
     def params(self):
         """:obj:`list` of :class:`.PadstackInstance` and :class:`.Layer`: Padstack instance and layer."""
+        from ansys.edb.core.primitive import primitive
+
         res = self.__stub.GetParameters(self.msg)
         padstack_instance = primitive.PadstackInstance(res.padstack_instance)
         layer = Layer(res.layer).cast()
@@ -745,7 +752,9 @@ class PinGroupTerminal(Terminal):
     @property
     def pin_group(self):
         """:class:`.PinGroup`: Pin group of the terminal."""
-        return hierarchy.PinGroup(self.__stub.GetPinGroup(self.msg))
+        from ansys.edb.core.hierarchy import pin_group
+
+        return pin_group.PinGroup(self.__stub.GetPinGroup(self.msg))
 
     @pin_group.setter
     def pin_group(self, value):

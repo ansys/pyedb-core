@@ -13,7 +13,7 @@ class InstArray(cell_instance.CellInstance):
     """Represents an instance array object."""
 
     __stub: InstArrayServiceStub = StubAccessor(StubType.inst_array)
-    layout_obj_type = LayoutObjType.INST_ARRAY
+    layout_obj_type = LayoutObjType.CELL_INSTANCE
 
     @classmethod
     def create(cls, layout, name, ref, orig, xaxis, yaxis, xcount, ycount):

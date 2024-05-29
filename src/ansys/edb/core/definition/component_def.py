@@ -98,3 +98,31 @@ class ComponentDef(ObjBase):
         """
         objs = self.__stub.GetComponentPins(self.msg).items
         return map_list(objs, component_pin.ComponentPin)
+
+    def add_component_model(self, value):
+        """Add a component model to this component def.
+
+        Parameters
+        ----------
+        value : :class:`Component Model <ansys.edb.core.definition.ComponentModel>`
+            Component Model to be added.
+
+        Notes
+        -----
+        Once a component model is added to one component def, it cannot be added to any other, even when removed.
+        """
+        self.__stub.AddComponentModel(messages.pointer_property_message(self, value))
+
+    def remove_component_model(self, value):
+        """Remove a component model from this component def.
+
+        Parameters
+        ----------
+        value : :class:`Component Model <ansys.edb.core.definition.ComponentModel>`
+            Component Model to be removed.
+
+        Notes
+        -----
+        Once a component model is added to one component def, it cannot be added to any other, even when removed.
+        """
+        self.__stub.RemoveComponentModel(messages.pointer_property_message(self, value))

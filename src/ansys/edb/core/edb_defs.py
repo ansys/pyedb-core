@@ -15,7 +15,6 @@ class LayoutObjType(Enum):
     TERMINAL = layout_obj_pb2.TERM
     TERMINAL_INSTANCE = layout_obj_pb2.TERM_INST
     CELL_INSTANCE = layout_obj_pb2.CELL_INST
-    INST_ARRAY = layout_obj_pb2.INST_ARRAY
     LAYER = layout_obj_pb2.LAYER
     NET = layout_obj_pb2.NET
     PADSTACK = layout_obj_pb2.PADSTACK

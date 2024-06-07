@@ -23,7 +23,7 @@ class HfssExtentInfo:
             Polygon to use if the extent is the ``Polygon`` type.
         dielectric_extent_type: HfssExtentInfo.HFSSExtentInfoType
             Dielectric extent type.
-        dielectric_base_polygon: :class:`Primitive <ansys.edb.core.primitive.Primitive>`
+        dielectric_base_polygon : :class:`.Primitive`
             Polygon to use if dielectric extent is is the ``Polygon`` type.
         dielectric: (float, bool)
             Dielectric extent size. The first parameter is the value, and the second parameter \
@@ -45,9 +45,9 @@ class HfssExtentInfo:
             Whether to synchronize the airbox positive and negative vertical extent.
         is_pml_visible: bool
             Whether to check to see if the PML boxes are to rendered.
-        operating_frequency: :class:`Value <ansys.edb.core.utility.Value>`
+        operating_frequency : :class:`.Value`
             PML operating frequency.
-        radiation_level: :class:`Value <ansys.edb.core.utility.Value>`
+        radiation_level : :class:`.Value`
             PML radiation level for calculating the thickness of the boundary.
         user_xy_data_extent_for_vertical_expansion: bool
             Whether to retain the old behavior for the vertical expansion of the airbox.
@@ -102,7 +102,7 @@ class HfssExtentInfo:
             Polygon to use if the extent is the ``Polygon`` type.
         dielectric_extent_type: HfssExtentInfo.HFSSExtentInfoType, default: BOUNDING_BOX
             Dielectric extent type.
-        dielectric_base_polygon: :class:`Primitive <ansys.edb.core.primitive.Primitive>`, default: None
+        dielectric_base_polygon : :class:`.Primitive`, default: None
             Polygon to use if dielectric extent is the ``Polygon`` type.
         dielectric: (float, bool), default: (0, True)
             Dielectric extent size. The first parameter is the value.
@@ -125,9 +125,9 @@ class HfssExtentInfo:
             Whether to synchronize the airbox positive and negative vertical extent.
         is_pml_visible: bool, default: False
             Whether to check to see if PML boxes are to be rendered.
-        operating_frequency: :class:`Value <ansys.edb.core.utility.Value>`, default: "5GHz"
+        operating_frequency : :class:`.Value`, default: "5GHz"
             PML operating frequency.
-        radiation_level: :class:`Value <ansys.edb.core.utility.Value>`, default: 0
+        radiation_level : :class:`.Value`, default: 0
             PML radiation level for calculating the thickness of the boundary.
         user_xy_data_extent_for_vertical_expansion: bool, default: True
             Whether to retain the old behavior for the vertical expansion of the airbox.

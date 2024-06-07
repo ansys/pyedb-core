@@ -123,11 +123,11 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to create the material definition in.
         name : str
             Name of the material definition.
-        kwargs : dict{ str : :class:`Value <ansys.edb.core.utility.Value>` }
+        kwargs : dict{ str : :class:`.Value` }
             Dictionary to convert to a ``MaterialDefPropertiesMessage`` object.
             The dictionary key is the material property name. The dictionary value is the
             material property value. The expected keys for the kwargs are:
@@ -157,7 +157,7 @@ class MaterialDef(ObjBase):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to search for the material definition.
         name : str
             Name of the material definition.
@@ -171,7 +171,7 @@ class MaterialDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Type of the material definition."""
+        """:class:`.DefinitionObjType`: Type of the material definition."""
         return DefinitionObjType.MATERIAL_DEF
 
     @property
@@ -184,8 +184,7 @@ class MaterialDef(ObjBase):
 
     @property
     def dielectric_material_model(self):
-        """:class:`DielectricMaterialModel \
-        <ansys.edb.core.definition.dielectric_material_model.DielectricMaterialModel>`: \
+        """:class:`.DielectricMaterialModel`: \
         Dielectric material model of the material definition."""
         return DielectricMaterialModel(
             self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
@@ -206,7 +205,7 @@ class MaterialDef(ObjBase):
         ----------
         material_property : :class:`MaterialProperty`
             ID of the material property.
-        value : :class:`Value <ansys.edb.core.utility.Value>`
+        value : :class:`.Value`
             New value.
         component_id : int, default: None
             ID of the component.
@@ -235,7 +234,7 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        :class:`Value <ansys.edb.core.utility.Value>`
+        :class:`.Value`
             Value of the material property.
         """
         return Value(
@@ -249,7 +248,7 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        list of :class:`MaterialProperty``
+        `list` of :class:`MaterialProperty`
             All properties for the material definition.
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
@@ -283,11 +282,10 @@ class MaterialDef(ObjBase):
         Returns
         -------
         tuple[int, int]
+            The tuple is in a ``(col, row)`` format:
 
-        The tuple is in a ``(col, row)`` format:
-
-        - ``col``: Number of rows of the material property.
-        - ``row``: Number of columns of the material property.
+            - ``col``: Number of rows of the material property.
+            - ``row``: Number of columns of the material property.
         """
         msg = self.__stub.GetDimensions(
             _QueryBuilder.material_def_get_property_message(self, material_property_id)
@@ -344,7 +342,7 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        :class:`ThermalModifier <ansys.edb.core.definition.material_def.ThermalModifier>`
+        :class:`.ThermalModifier`
             Anisotropic thermal modifier of the material definition.
         """
         return ThermalModifier(
@@ -367,7 +365,7 @@ class MaterialDef(ObjBase):
             Property ID.
         component_id : int
             Component ID.
-        thermal_modifier : :class:`ThermalModifier <ansys.edb.core.definition.material_def.ThermalModifier>`
+        thermal_modifier : :class:`.ThermalModifier`
             Anisotropic thermal modifier to set to the material definition.
         """
         self.__stub.SetAnisotropicThermalModifier(

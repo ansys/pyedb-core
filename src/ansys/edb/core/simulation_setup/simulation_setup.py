@@ -403,7 +403,7 @@ class SimulationSetup(ObjBase):
 
     @property
     def sweep_data(self):
-        """:obj:`list` of :class:`SweepData`: Frequency sweeps of the simulation setup."""
+        """:obj:`list` of :class:`.SweepData`: Frequency sweeps of the simulation setup."""
         sweep_data = []
         for sweep_data_msg in self.__stub.GetSweepData(self.msg).sweep_data:
             sweep_data.append(_msg_to_sweep_data(sweep_data_msg))
@@ -422,7 +422,7 @@ class SimulationSetup(ObjBase):
 
     @property
     def type(self):
-        """:class:`SimulationSetupType`: Type of the simulation setup."""
+        """:class:`.SimulationSetupType`: Type of the simulation setup."""
         return SimulationSetupType(self.__stub.GetType(self.msg).type)
 
     def cast(self):

@@ -270,7 +270,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
         attr_it : int
             Attribute ID.
@@ -289,7 +289,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
         attr_it : int
             Attribute ID.
@@ -305,7 +305,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
 
         Returns

@@ -984,7 +984,7 @@ def value_message(val):
 
     Parameters
     ----------
-    val : str, int, float, complex, utility.Value, ValueMessage
+    val : str, int, float, complex, ansys.edb.core.utility.value.Value, ValueMessage
 
     Returns
     -------

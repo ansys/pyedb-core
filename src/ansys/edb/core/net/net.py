@@ -28,7 +28,7 @@ class Net(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the net in.
         name : str
             Name of the net.
@@ -46,7 +46,7 @@ class Net(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the net.
         name : str
             Name of net.
@@ -54,7 +54,7 @@ class Net(layout_obj.LayoutObj):
         Returns
         -------
         Net
-            Net found. Check the :obj:`is_null <ansys.edb.core.net.Net.is_null>` property
+            Net found. Check the :obj:`is_null <.Net.is_null>` property
             of the returned net to see if it exists.
         """
         return Net(cls.__stub.FindByName(messages.string_property_message(layout, name)))
@@ -70,7 +70,7 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def is_power_ground(self):
-        """:class:`bool`: Flag indicating if the net belongs to a power/ground :class:`NetClass` instance.
+        """:class:`bool`: Flag indicating if the net belongs to a power/ground :class:`.NetClass` instance.
 
         This property is read-only.
         """
@@ -82,7 +82,7 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def primitives(self):
-        r""":obj:`list` of :class:`Primitive <ansys.edb.core.primitive.Primitive>`: All primitives on the net.
+        r""":obj:`list` of :class:`.Primitive`: All primitives on the net.
 
         This property is read-only.
         """
@@ -90,24 +90,24 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def padstack_instances(self):
-        """:obj:`list` of :class:`ansys.edb.core.primitive.PadstackInstance`: All padstack instances on the net \
+        """:obj:`list` of :class:`.PadstackInstance`: All padstack instances on the net \
         object instance."""
         return [PadstackInstance(lo) for lo in self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)]
 
     @property
     def terminals(self):
-        """:obj:`list` of :class:`ansys.edb.core.terminal.Terminal`: All terminal instances on the \
+        """:obj:`list` of :class:`.Terminal`: All terminal instances on the \
             net object instance."""
         return [Terminal(lo).cast() for lo in self._layout_objs(LayoutObjType.TERMINAL)]
 
     @property
     def terminal_instances(self):
-        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: All terminal instances on the net object instance."""
+        """:obj:`list` of :class:`.Layer`: All terminal instances on the net object instance."""
         return [TerminalInstance(lo) for lo in self._layout_objs(LayoutObjType.TERMINAL_INSTANCE)]
 
     @property
     def net_classes(self):
-        r""":obj:`list` of :class:`NetClass`: All net classes on the net.
+        r""":obj:`list` of :class:`.NetClass`: All net classes on the net.
 
         This property is read-only.
         """
@@ -115,7 +115,7 @@ class Net(layout_obj.LayoutObj):
 
     @property
     def extended_net(self):
-        """:class:`ExtendedNet` or :class:`None`: Extended net that the net belongs to.
+        """:class:`.ExtendedNet` or :class:`None`: Extended net that the net belongs to.
 
         :class:`None` means that the net does not belong to an extended net.
 

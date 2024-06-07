@@ -62,12 +62,12 @@ class ArcData:
 
     @property
     def start(self):
-        """:class:`geometry.PointData`: Start point of the arc."""
+        """:class:`.PointData`: Start point of the arc."""
         return self._start
 
     @property
     def end(self):
-        """:class:`geometry.PointData`: End point of the arc."""
+        """:class:`.PointData`: End point of the arc."""
         return self._end
 
     @property
@@ -113,13 +113,13 @@ class ArcData:
     @property
     @parser.to_point_data
     def center(self):
-        """:class:`geometry.PointData`: Center point of the arc."""
+        """:class:`.PointData`: Center point of the arc."""
         return self.__stub.GetCenter(messages.arc_message(self))
 
     @property
     @parser.to_point_data
     def midpoint(self):
-        """:class:`geometry.PointData`: Midpoint of the arc."""
+        """:class:`.PointData`: Midpoint of the arc."""
         return self.__stub.GetMidpoint(messages.arc_message(self))
 
     @property
@@ -130,7 +130,7 @@ class ArcData:
     @property
     @parser.to_polygon_data
     def bbox(self):
-        """:class:`geometry.PolygonData`: Rectangular bounding box of the arc."""
+        """:class:`.PolygonData`: Rectangular bounding box of the arc."""
         return self.__stub.GetBoundingBox(messages.arc_message(self))
 
     def is_big(self):
@@ -223,7 +223,7 @@ class ArcData:
 
     @property
     def points(self):
-        """:obj:`list` of :class:`geometry.PointData`: Geometric points representing the arc."""
+        """:obj:`list` of :class:`.PointData`: Geometric points representing the arc."""
         return [self._start, PointData(self.height), self._end]
 
     def tangent_at(self, point):
@@ -236,7 +236,7 @@ class ArcData:
 
         Returns
         -------
-        geometry.PointData
+        .PointData
         """
         if self.is_segment():
             return self.end - self.start
@@ -260,6 +260,6 @@ class ArcData:
 
         Returns
         -------
-        tuple[geometry.PointData, geometry.PointData]
+        tuple[.PointData, .PointData]
         """
         return self.__stub.ClosestPoints(messages.arc_data_two_points(self, other))

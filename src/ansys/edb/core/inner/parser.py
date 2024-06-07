@@ -116,7 +116,7 @@ def _to_point_data(message):
 
     Returns
     -------
-    geometry.PointData
+    :class:`.PointData`
     """
     from ansys.edb.core.geometry.point_data import PointData
     from ansys.edb.core.utility.value import Value
@@ -133,7 +133,7 @@ def _to_point_data_pair(message):
 
     Returns
     -------
-    tuple[geometry.PointData, geometry.PointData]
+    tuple[:class:`.PointData`, :class:`.PointData`]
     """
     return _to_point_data(message.point_0), _to_point_data(message.point_1)
 
@@ -147,7 +147,7 @@ def _to_point_data_list(message):
 
     Returns
     -------
-    list[geometry.PointData]
+    list[:class:`.PointData`]
     """
     return [_to_point_data(m) for m in message]
 
@@ -161,7 +161,7 @@ def _to_3_point3d_data(message):
 
     Returns
     -------
-    geometry.Point3DData
+    :class:`.Point3DData`
     """
     return [_to_point3d_data(message.x), _to_point3d_data(message.y), _to_point3d_data(message.z)]
 
@@ -175,7 +175,7 @@ def _to_point3d_data(message):
 
     Returns
     -------
-    geometry.Point3DData
+    :class:`.Point3DData`
     """
     from ansys.edb.core.geometry.point3d_data import Point3DData
     from ansys.edb.core.utility.value import Value
@@ -192,7 +192,7 @@ def _to_polygon_data(message):
 
     Returns
     -------
-    geometry.PolygonData
+    :class:`.PolygonData`
     """
     from ansys.api.edb.v1.point_data_pb2 import BoxMessage
 
@@ -215,7 +215,7 @@ def _to_polygon_data_list(message):
 
     Returns
     -------
-    list[geometry.PolygonData]
+    list[:class:`.PolygonData`]
     """
     if hasattr(message, "polygons"):
         return [_to_polygon_data(m) for m in message.polygons]
@@ -234,7 +234,7 @@ def _to_box(message):
 
     Returns
     -------
-    tuple[geometry.PointData, geometry.PointData]
+    tuple[:class:`.PointData`, :class:`.PointData`]
     """
     if hasattr(message, "lower_left") and hasattr(message, "upper_right"):
         return _to_point_data(message.lower_left), _to_point_data(message.upper_right)
@@ -249,7 +249,7 @@ def _to_circle(message):
 
     Returns
     -------
-    tuple[geometry.PointData, utility.Value]
+    tuple[:class:`.PointData`, :class:`.Value`]
     """
     from ansys.edb.core.utility.value import Value
 
@@ -266,7 +266,7 @@ def _to_rlc(message):
 
     Returns
     -------
-    Rlc
+    :class:`.Rlc`
     """
     from ansys.edb.core.utility.rlc import Rlc
     from ansys.edb.core.utility.value import Value

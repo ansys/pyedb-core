@@ -32,7 +32,7 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def layers(self):
-        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: All layer instances.
+        """:obj:`list` of :class:`.Layer`: All layer instances.
 
         This list contains the layer` instances that the layout object instance has geometry on.
         """
@@ -43,7 +43,7 @@ class LayoutObjInstance(ObjBase):
 
         Parameters
         ----------
-        layer : :class:`Layer <ansys.edb.core.layer.Layer>` or str
+        layer : :class:`.Layer` or str
            Layer.
 
         Returns
@@ -57,8 +57,8 @@ class LayoutObjInstance(ObjBase):
     def context(self):
         r""":obj:`list`\[:obj:`str`\]: All strings representing the context of the layout object instance.
 
-        This list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names
-        representing the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>`
+        This list of strings is a list of :class:`.CellInstance`
+        names representing the hierarchy level this layout obj instance's :class:`context <.LayoutInstanceContext>`
         resides on. The first entry represents the top-level context and the last entry represents
         the context that the layout object instance exists in.
 
@@ -92,12 +92,12 @@ class LayoutObjInstance(ObjBase):
         Parameters
         ----------
         local : bool
-            Whether to return the bounding box in the local :class:`context <LayoutInstanceContext>`.
+            Whether to return the bounding box in the local :class:`context <.LayoutInstanceContext>`.
             If ``False``, the bounding box is returned in the global context.
 
         Returns
         -------
-        :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        :class:`.PolygonData`
             Bounding box of the layout object instance.
         """
         return self.__stub.GetBBox(bool_property_message(self, local))

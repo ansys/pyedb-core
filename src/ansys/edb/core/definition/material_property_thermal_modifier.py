@@ -44,11 +44,9 @@ class MaterialPropertyThermalModifier(ObjBase):
 
         Parameters
         ----------
-        basic_quadratic_params: :class:`BasicQuadraticParams <ansys.edb.core.utility.BasicQuadraticParams>`, \
-        default: None
+        basic_quadratic_params : :class:`.BasicQuadraticParams`, default: None
             Basic parameters needed for the thermal modifier.
-        advanced_quadratic_params : :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`, \
-        default: None
+        advanced_quadratic_params : :class:`.AdvancedQuadraticParams`, default: None
             Advanced parameeteres needed for the thermal modifier.
 
         Returns
@@ -68,12 +66,11 @@ class MaterialPropertyThermalModifier(ObjBase):
 
     @property
     def quadratic_model_params(self):
-        """:class:`BasicQuadraticParams <ansys.edb.core.utility.BasicQuadraticParams>`, \
-        :class:`AdvancedQuadraticParams <ansys.edb.core.utility.AdvancedQuadraticParams>`: \
+        """:class:`.BasicQuadraticParams`, :class:`.AdvancedQuadraticParams`: \
         Quadratic model parameters of the thermal modifier.
 
-        The quadratic model is in this form:
-            PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]
+        The quadratic model is in this form: \
+        PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]
         where PropValRef = The original property value without the thermal modifier applied
 
         This property is read-only.
@@ -93,7 +90,7 @@ class MaterialPropertyThermalModifier(ObjBase):
 
     @property
     def expression(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Expression value representing the thermal modifier.
+        """:class:`.Value`: Expression value representing the thermal modifier.
 
         This property is read-only.
         """

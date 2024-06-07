@@ -69,7 +69,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the :term:`Connectable` object.
         uid : int
             Database ID.
@@ -99,7 +99,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def component(self):
-        """:class:`ComponentGroup <ansys.edb.core.hierarchy.ComponentGroup>`: \
+        """:class:`.ComponentGroup`: \
         Component of the :term:`Connectable` object."""
         from ansys.edb.core.hierarchy.component_group import ComponentGroup
 
@@ -107,7 +107,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def group(self):
-        """:class:`Group <ansys.edb.core.hierarchy.Group>`: Group of the :term:`Connectable` object."""
+        """:class:`.Group` object."""
         from ansys.edb.core.hierarchy.group import Group
 
         return Group(self.__stub.GetGroup(self.msg)).cast()
@@ -118,9 +118,9 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def net(self):
-        """:class:`Net <ansys.edb.core.net.Net>`: Net of the :term:`Connectable` object.
+        """:class:`.Net`: Net of the :term:`Connectable` object.
 
-        This property can be set with a :class:`Net <ansys.edb.core.net.Net>` instance, a string, or ``None``.
+        This property can be set with a :class:`.Net` instance, a string, or ``None``.
         """
         from ansys.edb.core.net.net import Net
 
@@ -135,7 +135,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Returns
         -------
-        :class:`McadModel <ansys.edb.core.layout.McadModel>`
+        :class:`.McadModel`
             Stride model created.
         """
         return mm.McadModel.create_stride(connectable=self)
@@ -145,7 +145,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Returns
         -------
-        :class:`McadModel <ansys.edb.core.layout.McadModel>`
+        :class:`.McadModel`
             HFSS model created.
         """
         return mm.McadModel.create_hfss(connectable=self)
@@ -155,7 +155,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Returns
         -------
-        :class:`McadModel <ansys.edb.core.layout.McadModel>`
+        :class:`.McadModel`
             3D composite model created.
         """
         return mm.McadModel.create_3d_comp(connectable=self)

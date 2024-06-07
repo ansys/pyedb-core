@@ -34,12 +34,12 @@ class ComponentGroup(Group):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the component group in.
         name : str
             Name of the component group.
         comp_name : str
-            Name of the :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance that \
+            Name of the :class:`.ComponentDef` instance that \
             the component group refers to.
 
         Returns
@@ -107,10 +107,10 @@ class ComponentGroup(Group):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for component groups.
         comp_def_name : str
-            Name of the :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance.
+            Name of the :class:`.ComponentDef` instance.
 
         Returns
         -------

@@ -60,7 +60,7 @@ class Transform(ObjBase):
 
     @property
     def scale(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Scale property.
+        """:class:`.Value`: Scale property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -72,7 +72,7 @@ class Transform(ObjBase):
 
     @property
     def rotation(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Rotation property.
+        """:class:`.Value`: Rotation property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -84,7 +84,7 @@ class Transform(ObjBase):
 
     @property
     def offset_x(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: X offset property.
+        """:class:`.Value`: X offset property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -96,7 +96,7 @@ class Transform(ObjBase):
 
     @property
     def offset_y(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Y offset property.
+        """:class:`.Value`: Y offset property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -144,12 +144,12 @@ class Transform(ObjBase):
 
         Parameters
         ----------
-        point: :class:`PointData <ansys.edb.core.geometry.PointData>`
+        point : :class:`.PointData`
             Point values [x, y] to transform.
 
         Returns
         -------
-        :class:`PointData <ansys.edb.core.geometry.PointData>`
+        :class:`.PointData`
             Transformed point.
         """
         pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))
@@ -161,12 +161,12 @@ class Transform(ObjBase):
 
         Parameters
         ----------
-        polygon: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        polygon : :class:`.PolygonData`
             Polygon to transform.
 
         Returns
         -------
-        :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        :class:`.PolygonData`
             Transformed polygon.
         """
         return self.__stub.TransformPolygon(messages.polygon_data_property_message(self, polygon))

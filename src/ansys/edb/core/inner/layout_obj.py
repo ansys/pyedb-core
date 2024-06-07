@@ -51,7 +51,7 @@ class LayoutObj(ObjBase):
 
     @property
     def layout(self):
-        """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout owning the object.
+        """:class:`.Layout`: Layout owning the object.
 
         This property is read-only.
         """
@@ -70,7 +70,7 @@ class LayoutObj(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
         attr_id : int
             User-defined ID that identifies the string value stored in the property.
@@ -91,7 +91,7 @@ class LayoutObj(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
         attr_id : int
            User-defined ID that identifies the string value stored in the property.
@@ -109,7 +109,7 @@ class LayoutObj(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
 
         Returns

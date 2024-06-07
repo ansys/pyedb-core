@@ -132,7 +132,7 @@ class PointData:
 
     @property
     def _matrix_values(self):
-        """:obj:`list` of :class:`utility.Value`: Coordinates of the point as a list of values."""
+        """:obj:`list` of :class:`.Value`: Coordinates of the point as a list of values."""
         return [self.arc_height] if self.is_arc else [self.x, self.y]
 
     def _map_reduce(self, other, op):
@@ -146,17 +146,17 @@ class PointData:
 
     @property
     def arc_height(self):
-        """:class:`utility.Value`: Height of the arc."""
+        """:class:`.Value`: Height of the arc."""
         return self._arc_h
 
     @property
     def x(self):
-        """:class:`utility.Value`: X coordinate."""
+        """:class:`.Value`: X coordinate."""
         return self._x
 
     @property
     def y(self):
-        """:class:`utility.Value`: Y coordinate."""
+        """:class:`.Value`: Y coordinate."""
         return self._y
 
     @property
@@ -237,7 +237,7 @@ class PointData:
 
         Returns
         -------
-        typing.Optional[utility.Value] or ``None`` if either point is an arc.
+        typing.Optional[.Value] or ``None`` if either point is an arc.
         """
         other = conversions.to_point(other)
         if not self.is_arc and not other.is_arc:

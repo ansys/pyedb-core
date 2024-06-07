@@ -32,7 +32,7 @@ class PinPairModel(Model):
 
         Returns
         -------
-        :class:`Rlc<ansys.edb.core.utility.Rlc>`
+        :class:`.Rlc`
         """
         res = self.__stub.GetRlc(messages.string_pair_property_message(self, pin_pair))
         if res.found:
@@ -46,7 +46,7 @@ class PinPairModel(Model):
         Parameters
         ----------
         pin_pair : tuple[str, str]
-        rlc : :class:`Rlc<ansys.edb.core.utility.Rlc>`
+        rlc : :class:`.Rlc`
         """
         self.__stub.SetRlc(messages.pin_pair_model_rlc_message(self, pin_pair, rlc))
 

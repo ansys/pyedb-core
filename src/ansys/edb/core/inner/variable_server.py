@@ -32,8 +32,8 @@ class VariableServer:
         ----------
         name : str
             Variable name.
-        value : str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`
-            Value, which can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+        value : str, int, float, complex, :class:`.Value`
+            Value, which can be any type that can be converted to a :class:`.Value`
             instance.
         is_param : bool, default: False
             Whether the new variable is a parameter. The default is ``False``, which means it is a local variable.
@@ -42,11 +42,11 @@ class VariableServer:
         -----
         Variables can be added to the following EDB objects:
 
-        * :class:`Database <ansys.edb.core.database.Database>` (Variable names must begin with a '$'.)
-        * :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
-        * :class:`Cell <ansys.edb.core.layout.Cell>`
-        * :class:`Layout <ansys.edb.core.layout.Layout>` (Adds variable to the corresponding
-          :class:`Cell <ansys.edb.core.layout.Cell>` instance.)
+        * :class:`.Database` (Variable names must begin with a '$'.)
+        * :class:`.ComponentDef`
+        * :class:`.Cell`
+        * :class:`.Layout` (Adds variable to the corresponding
+          :class:`.Cell` instance.)
 
         Examples
         --------
@@ -74,8 +74,8 @@ class VariableServer:
         ----------
         name : str
             Variable name.
-        values : list[str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`]
-            Each element can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+        values : list[str, int, float, complex, :class:`.Value`]
+            Each element can be any type that can be converted to a :class:`.Value`
             instance.
         is_param : bool, default: False
             Whether the new variable is a parameter. The default is ``False``, which means it is a local variable.
@@ -115,7 +115,7 @@ class VariableServer:
         ----------
         name : str
             Variable name.
-        new_value : str, int, float, complex, :class:`Value <ansys.edb.core.utility.Value>`
+        new_value : str, int, float, complex, :class:`.Value`
             New value.
         """
         temp = variable_server_msgs.SetVariableMessage(
@@ -133,7 +133,7 @@ class VariableServer:
 
         Returns
         -------
-        :class:`Value <ansys.edb.core.utility.Value>`
+        :class:`.Value`
             Variable value.
         """
         temp = variable_server_msgs.VariableNameMessage(
@@ -210,26 +210,26 @@ class VariableServer:
         Parameters
         ----------
         val : str, int, float, complex
-            Value, which can be any type that can be converted to a :class:`Value <ansys.edb.core.utility.Value>`
+            Value, which can be any type that can be converted to a :class:`.Value`
             instance.
 
 
         Returns
         -------
-        :class:`Value <ansys.edb.core.utility.Value>`
+        :class:`.Value`
 
         Notes
         -----
-        Creating a value from a :class:`Database <ansys.edb.core.database.Database>` instance can reference variables
-        in the :class:`Database <ansys.edb.core.database.Database>` instance.
+        Creating a value from a :class:`.Database` instance can reference variables
+        in the :class:`.Database` instance.
 
-        Creating a value from a :class:`Cell <ansys.edb.core.layout.Cell>` instance can reference variables in
-        both the :class:`Database <ansys.edb.core.database.Database>` instance and the
-        :class:`Cell <ansys.edb.core.layout.Cell>` instance
+        Creating a value from a :class:`.Cell` instance can reference variables in
+        both the :class:`.Database` instance and the
+        :class:`.Cell` instance
 
-        Creating a value from a :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance can reference
-        variables in both the :class:`Database <ansys.edb.core.database.Database>` instance and
-        the :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance.
+        Creating a value from a :class:`.ComponentDef`
+        instance can reference variables in both the :class:`.Database` instance and
+        the :class:`.ComponentDef` instance.
         """
         if isinstance(val, str):
             return Value(val, self)

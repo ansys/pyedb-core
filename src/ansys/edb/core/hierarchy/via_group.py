@@ -18,9 +18,9 @@ class ViaGroup(Group):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the via groups in.
-        primitives : list[:class:`Primitive <ansys.edb.core.primitive.Primitive>`]
+        primitives : list[:class:`.Primitive`]
             List of primitives to use to create the via groups.
         is_persistent : bool
             Whether to preserve primitives during via group creation. If ``False``
@@ -42,15 +42,15 @@ class ViaGroup(Group):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout that owns the via group.
-        outline : list[:class:`Point2D <ansys.edb.core.geometry.PointData>`] or \
-            list[:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`]
+        outline : list[:class:`Point2D <.PointData>`] or \
+            list[:class:`.PolygonData`]
             List of primitives to use to create the via group.
         conductivity_ratio : float
-        layer : str or :class:`Layer <ansys.edb.core.layer.Layer>`
+        layer : str or :class:`.Layer`
             Placement layer for the via group.
-        net : str or :class:`Net <ansys.edb.core.net.Net>`, default: None
+        net : str or :class:`.Net`, default: None
             Net that the via group is to belong to.
 
         Returns
@@ -72,7 +72,7 @@ class ViaGroup(Group):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the via group.
         name : str
             Name of the via group.
@@ -87,7 +87,7 @@ class ViaGroup(Group):
     @property
     @parser.to_polygon_data
     def outline(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Via group outline.
+        """:class:`.PolygonData`: Via group outline.
 
         This property is read-only.
         """

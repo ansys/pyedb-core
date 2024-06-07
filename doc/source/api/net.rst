@@ -9,7 +9,7 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
-   DifferentialPair
-   ExtendedNet
-   Net
-   NetClass
+   differential_pair.DifferentialPair
+   extended_net.ExtendedNet
+   net.Net
+   net_class.NetClass

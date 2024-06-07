@@ -52,8 +52,8 @@ class PolygonData:
         arcs : list[ArcData], default: None
         lower_left : ansys.edb.core.typing.PointLike, default: None
         upper_right : ansys.edb.core.typing.PointLike, default: None
-        holes : List[ansys.edb.core.geometry.PolygonData], default: None
-        sense : ansys.edb.core.geometry.PolygonSenseType, default: SENSE_CCW
+        holes : List[ansys.edb.core.geometry.polygon_data.PolygonData], default: None
+        sense : ansys.edb.core.geometry.polygon_data.PolygonSenseType, default: SENSE_CCW
         closed : bool, default: True
         """
         self._holes, self._sense, self._is_closed = (
@@ -90,12 +90,12 @@ class PolygonData:
 
     @property
     def points(self):
-        """:obj:`list` of :class:`ansys.edb.core.geometry.PointData`: List of coordinates for the points."""
+        """:obj:`list` of :class:`.PointData`: List of coordinates for the points."""
         return self._points
 
     @property
     def holes(self):
-        """:obj:`list` of :class:`PolygonData`: List of holes."""
+        """:obj:`list` of :class:`.PolygonData`: List of holes."""
         return self._holes
 
     @property
@@ -248,7 +248,7 @@ class PolygonData:
 
         Returns
         -------
-        list[ansys.edb.core.geometry.PointData]
+        list[.PointData]
         """
         return self.__stub.GetNormalizedPoints(messages.polygon_data_message(self))
 
@@ -326,7 +326,7 @@ class PolygonData:
 
         Returns
         -------
-        tuple[ansys.edb.core.geometry.PointData, ansys.edb.core.geometry.PointData]
+        tuple[.PointData, .PointData]
         """
         return self.__stub.GetBBox(messages.polygon_data_list_message([self]))
 
@@ -342,7 +342,7 @@ class PolygonData:
 
         Returns
         -------
-        tuple[ansys.edb.core.geometry.PointData, ansys.edb.core.geometry.PointData]
+        tuple[.PointData, .PointData]
         """
         return cls.__stub.GetBBox(messages.polygon_data_list_message(polygons))
 
@@ -352,7 +352,7 @@ class PolygonData:
 
         Returns
         -------
-        tuple[ansys.edb.core.geometry.PointData, ansys.edb.core.utility.Value]
+        tuple[.PointData, .Value]
         """
         return self.__stub.GetBoundingCircle(messages.polygon_data_message(self))
 
@@ -470,7 +470,7 @@ class PolygonData:
 
         Returns
         -------
-        ansys.edb.core.geometry.PointData
+        .PointData
             Point closest to the given point.
         """
         return self.__stub.GetClosestPoints(
@@ -487,7 +487,7 @@ class PolygonData:
 
         Returns
         -------
-        tuple[ansys.edb.core.geometry.PointData, ansys.edb.core.geometry.PointData]
+        tuple[.PointData, .PointData]
         """
         return self.__stub.GetClosestPoints(
             messages.polygon_data_with_points_message(self, polygon=polygon)
@@ -516,9 +516,9 @@ class PolygonData:
 
         Parameters
         ----------
-        polygons1: list of :class:`PolygonData` or `PolygonData`
+        polygons1: `list` of :class:`.PolygonData` or :class:`.PolygonData`
             First list of polygons.
-        polygons2: list of :class:`PolygonData` or `PolygonData`
+        polygons2: `list` of :class:`.PolygonData` or :class:`.PolygonData`
             Second optional list of polygons.
 
         Returns

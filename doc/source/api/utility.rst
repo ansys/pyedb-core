@@ -9,12 +9,14 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
-   HfssExtentInfo
-   AdvancedQuadraticParams
-   BasicQuadraticParams
-   PortPostProcessingProp
-   Rlc
-   TemperatureSettings
-   Transform
-   Transform3D
-   Value
+   heat_sink.HeatSink
+   hfss_extent_info.HfssExtentInfo
+   layer_map.LayerMap
+   material_property_thermal_modifier_params.AdvancedQuadraticParams
+   material_property_thermal_modifier_params.BasicQuadraticParams
+   port_post_processing_prop.PortPostProcessingProp
+   rlc.Rlc
+   temperature_settings.TemperatureSettings
+   transform.Transform
+   transform3d.Transform3D
+   value.Value

@@ -101,7 +101,7 @@ class StackupLayer(Layer):
 
     @property
     def thickness(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Thickness value of the layer.
+        """:class:`.Value`: Thickness value of the layer.
 
         The setter accepts a :term:`ValueLike` term.
         """
@@ -113,7 +113,7 @@ class StackupLayer(Layer):
 
     @property
     def lower_elevation(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Lower elevation value of the layer.
+        """:class:`.Value`: Lower elevation value of the layer.
 
         The setter accepts a :term:`ValueLike` term.
         """
@@ -127,7 +127,7 @@ class StackupLayer(Layer):
 
     @property
     def upper_elevation(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Upper elevation value of the layer.
+        """:class:`.Value`: Upper elevation value of the layer.
 
         This property is read-only.
         """
@@ -258,7 +258,7 @@ class StackupLayer(Layer):
 
     @property
     def etch_factor(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Etch factor of the layer.
+        """:class:`.Value`: Etch factor of the layer.
 
         The setter accepts a :term:`ValueLike` term.
         """

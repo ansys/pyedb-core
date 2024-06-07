@@ -13,18 +13,18 @@ Object types
 .. autosummary::
    :toctree: _autosummary
 
-   CellInstance
-   InstArray
-   ComponentGroup
-   Group
-   PinGroup
-   Model
-   PinPairModel
-   NetlistModel
-   SParameterModel
-   SPICEModel
-   Structure3D
-   ViaGroup
+   cell_instance.CellInstance
+   inst_array.InstArray
+   component_group.ComponentGroup
+   group.Group
+   pin_group.PinGroup
+   model.Model
+   pin_pair_model.PinPairModel
+   netlist_model.NetlistModel
+   sparameter_model.SParameterModel
+   spice_model.SPICEModel
+   structure3d.Structure3D
+   via_group.ViaGroup
 
 
 Enums
@@ -33,5 +33,5 @@ Enums
 .. autosummary::
    :toctree: _autosummary
 
-   ComponentType
-   MeshClosure
+   component_group.ComponentType
+   structure3d.MeshClosure

@@ -14,7 +14,7 @@ class McadModel(ObjBase):
         """Create a Stride model.
 
         This method makes a call directly on a :term:`Connectable` or
-        :func:`Layout<ansys.edb.core.layout.Layout.create_stride>`.
+        :func:`Layout <ansys.edb.core.layout.layout.Layout.create_stride>`.
         """
         return cls(
             cls.__stub.CreateStride(
@@ -27,7 +27,7 @@ class McadModel(ObjBase):
         """Create an HFSS model.
 
         This method makes a call directly on a :term:`Connectable` or
-        :func:`Layout<ansys.edb.core.layout.Layout.create_hfss>`.
+        :func:`Layout <ansys.edb.core.layout.layout.Layout.create_hfss>`.
         """
         return cls(
             cls.__stub.CreateHfss(
@@ -40,7 +40,7 @@ class McadModel(ObjBase):
         """Create a 3D component model.
 
         This method makes a call directly on a :term:`Connectable` or
-        :func:`Layout<ansys.edb.core.layout.Layout.create_3d_comp>`.
+        :func:`Layout <ansys.edb.core.layout.Layout.create_3d_comp>`.
         """
         return cls(
             cls.__stub.Create3dComp(
@@ -82,7 +82,7 @@ class McadModel(ObjBase):
 
     @property
     def cell_instance(self):
-        """:class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>`: Cell instance \
+        """:class:`.CellInstance`: Cell instance \
         of the MCAD model.
 
         This property is read-only.
@@ -109,7 +109,8 @@ class McadModel(ObjBase):
 
     @property
     def origin(self):
-        """:class:`Point3DData <ansys.edb.core.geometry.Point3DData>`: Origin 3D point of the MCAD model."""
+        """:class:`.Point3DData`: \
+        Origin 3D point of the MCAD model."""
         return self.__stub.GetOrigin(messages.edb_obj_message(self))
 
     @origin.setter
@@ -118,7 +119,7 @@ class McadModel(ObjBase):
 
     @property
     def rotation(self):
-        r""":obj:`tuple`\[:class:`Point3DData <ansys.edb.core.geometry.Point3DData>`, :class:`Point3DData <ansys.edb.core.geometry.Point3DData>`, :obj:`float`\]: Rotation from/to the axis and the angle."""  # noqa
+        r""":obj:`tuple`\[:class:`.Point3DData`, :class:`.Point3DData`, :obj:`float`\]: Rotation from/to the axis and the angle."""  # noqa
         msg = self.__stub.GetRotation(messages.edb_obj_message(self))
         return (
             parser.to_point3d_data(msg.axis_from),
@@ -135,8 +136,8 @@ class McadModel(ObjBase):
 
         Parameters
         ----------
-        axis_from : :class:`Point3DData <ansys.edb.core.geometry.Point3DData>`
-        axis_to : :class:`Point3DData <ansys.edb.core.geometry.Point3DData>`
+        axis_from : :class:`.Point3DData`
+        axis_to : :class:`.Point3DData`
         angle : float
             Angle in radians.
         """

@@ -45,7 +45,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the group in.
         name : str
             Name of the group.
@@ -63,7 +63,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the group.
         name : str
             Name of the group.

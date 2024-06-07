@@ -14,7 +14,7 @@ def to_value(val):
 
     Returns
     -------
-    utility.Value
+    :class:`.Value`
     """
     if isinstance(val, value.Value):
         return val
@@ -35,7 +35,7 @@ def to_point(val):
 
     Returns
     -------
-    geometry.PointData
+    :class:`.PointData`
     """
     if isinstance(val, point_data.PointData):
         return val
@@ -55,12 +55,12 @@ def to_point3d(val):
 
     Parameters
     ----------
-    val : geometry.Point3DData, tuple[:term:`ValueLike`,:term:`ValueLike`,:term:`ValueLike`]
+    val : Point3DData, tuple[:term:`ValueLike`,:term:`ValueLike`,:term:`ValueLike`]
         Value to convert.
 
     Returns
     -------
-    geometry.Point3DData
+    :class:`.Point3DData`
     """
     if isinstance(val, point3d_data.Point3DData):
         return val

@@ -528,7 +528,7 @@ class TerminalInstanceTerminal(Terminal):
             Layout to create the terminal instance terminal in.
         term_instance : TerminalInstance
             Terminal instance to create the terminal instance terminal on.
-        name: :obj:`str`
+        name : :obj:`str`
             Name of the terminal instance terminal.
         net_ref : :class:`.Net` or :obj:`str` or None
             Net reference.

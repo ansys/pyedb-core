@@ -61,7 +61,7 @@ class Point3DData:
 
     @property
     def x(self):
-        """:class:`Value<ansys.edb.core.utility.Value>`: X coordinate."""
+        """:class:`.Value`: X coordinate."""
         return self._x
 
     @x.setter
@@ -70,7 +70,7 @@ class Point3DData:
 
     @property
     def y(self):
-        """:class:`Value<ansys.edb.core.utility.Value>`: Y coordinate."""
+        """:class:`.Value`: Y coordinate."""
         return self._y
 
     @y.setter
@@ -79,7 +79,7 @@ class Point3DData:
 
     @property
     def z(self):
-        """:class:`Value<ansys.edb.core.utility.Value>`: Z coordinate."""
+        """:class:`.Value`: Z coordinate."""
         return self._z
 
     @z.setter

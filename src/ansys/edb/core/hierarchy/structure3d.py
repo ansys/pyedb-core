@@ -31,7 +31,7 @@ class Structure3D(Group):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the 3D structure in.
         name : str
             Name of the 3D structure.
@@ -69,7 +69,7 @@ class Structure3D(Group):
 
     @property
     def thickness(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Thickness for the 3D structure."""
+        """:class:`.Value`: Thickness for the 3D structure."""
         return Value(self.__stub.GetThickness(self.msg))
 
     @thickness.setter

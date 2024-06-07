@@ -13,7 +13,7 @@ class SIWaveSimulationSetup(SimulationSetup):
 
         Parameters
         ----------
-        cell : :class:`Cell <ansys.edb.core.layout.Cell>`
+        cell : :class:`.Cell`
             Cell to create simulation setup in.
         name : str
             Name of the simulation setup.
@@ -27,5 +27,5 @@ class SIWaveSimulationSetup(SimulationSetup):
 
     @property
     def settings(self):
-        """:class:`SIWaveSimulationSettings`: Simulation settings of the SIWave simulation setup."""
+        """:class:`.SIWaveSimulationSettings`: Simulation settings of the SIWave simulation setup."""
         return SIWaveSimulationSettings(self)

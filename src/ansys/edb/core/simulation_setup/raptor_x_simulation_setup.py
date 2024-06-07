@@ -13,7 +13,7 @@ class RaptorXSimulationSetup(SimulationSetup):
 
         Parameters
         ----------
-        cell : :class:`Cell <ansys.edb.core.layout.Cell>`
+        cell : :class:`.Cell`
             Cell to create the simulation setup in.
         name : str
             Name of the simulation setup.
@@ -27,5 +27,5 @@ class RaptorXSimulationSetup(SimulationSetup):
 
     @property
     def settings(self):
-        """:class:`RaptorXSimulationSettings`: Simulation settings of the RaptorX simulation setup."""
+        """:class:`.RaptorXSimulationSettings`: Simulation settings of the RaptorX simulation setup."""
         return RaptorXSimulationSettings(self)

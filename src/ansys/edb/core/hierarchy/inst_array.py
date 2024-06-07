@@ -21,21 +21,21 @@ class InstArray(cell_instance.CellInstance):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the instance array in.
         name : str
             Name of the instance array.
-        ref : :class:`Layout <ansys.edb.core.layout.Layout>`
+        ref : :class:`.Layout`
             Layout that the instance array refers to.
-        orig : :class:`PointData <ansys.edb.core.geometry.PointData>`
+        orig : :class:`.PointData`
             Point data that represents the origin of the instance array.
-        xaxis : :class:`PointData <ansys.edb.core.geometry.PointData>`
+        xaxis : :class:`.PointData`
             Point data that represents the x axis of the instance array.
-        yaxis : :class:`PointData <ansys.edb.core.geometry.PointData>`
+        yaxis : :class:`.PointData`
             Point data that represents the y axis of the instance array.
-        xcount : :class:`Value <ansys.edb.core.layout.Value>`
+        xcount : :class:`.Value`
             Value for the x count of the instance array.
-        ycount : :class:`Value <ansys.edb.core.utility.Value>`
+        ycount : :class:`.Value`
             Value for the y count of the instance array.
 
         Returns
@@ -57,7 +57,7 @@ class InstArray(cell_instance.CellInstance):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the instance array.
         name : str
             Name of the instance array.
@@ -72,13 +72,13 @@ class InstArray(cell_instance.CellInstance):
     @property
     @parser.to_point_data
     def orig(self):
-        """:class:`PointData <geometry.PointData>`: Origin of the instance array."""
+        """:class:`.PointData`: Origin of the instance array."""
         return self.__stub.GetOrig(self.msg)
 
     @property
     @parser.to_point_data
     def x_axis(self):
-        """:class:`PointData <geometry.PointData>`: X axis of the instance array."""
+        """:class:`.PointData`: X axis of the instance array."""
         return self.__stub.GetXAxis(self.msg)
 
     @x_axis.setter
@@ -88,7 +88,7 @@ class InstArray(cell_instance.CellInstance):
     @property
     @parser.to_point_data
     def y_axis(self):
-        """:class:`PointData <geometry.PointData>`: Y axis of the instance array."""
+        """:class:`.PointData`: Y axis of the instance array."""
         return self.__stub.GetYAxis(self.msg)
 
     @y_axis.setter
@@ -97,7 +97,7 @@ class InstArray(cell_instance.CellInstance):
 
     @property
     def x_count(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: X count of the instance array."""
+        """:class:`.Value`: X count of the instance array."""
         return Value(self.__stub.GetXCount(self.msg))
 
     @x_count.setter
@@ -106,7 +106,7 @@ class InstArray(cell_instance.CellInstance):
 
     @property
     def y_count(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Y count of the instance array."""
+        """:class:`.Value`: Y count of the instance array."""
         return Value(self.__stub.GetYCount(self.msg))
 
     @y_count.setter

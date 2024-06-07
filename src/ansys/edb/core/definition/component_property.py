@@ -26,7 +26,7 @@ class ComponentProperty(ObjBase):
 
     @property
     def package_mounting_offset(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Mounting offset of the package definition object.
+        """:class:`.Value`: Mounting offset of the package definition object.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -49,7 +49,7 @@ class ComponentProperty(ObjBase):
 
     @property
     def model(self):
-        """:class:`Model <ansys.edb.core.hierarchy.Model>`: Model object.
+        """:class:`.Model`: Model object.
 
         This is a copy of the model object. Use the setter for any modifications to be reflected.
         """

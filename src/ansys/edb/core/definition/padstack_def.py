@@ -18,7 +18,7 @@ class _PadstackDefQueryBuilder:
 
         Parameters
         ----------
-        target: :class:`Database <ansys.edb.core.database.Database>` or PadstackDef
+        target : :class:`.Database` or PadstackDef
         name : str
            Name of the string message.
 
@@ -36,7 +36,7 @@ class _PadstackDefQueryBuilder:
         ----------
         target: PadstackDef
             Padstack definition target.
-        data : :class:`PadstackDefData <ansys.edb.core.definition.padstack_def_data.PadstackDefData>`
+        data : :class:`.PadstackDefData`
             Data message to create on the padstack definition.
 
         Returns
@@ -57,7 +57,7 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.core.database.Database>`
+        db : :class:`.Database`
             Database to create the padstack definition in.
         name : str
             Data to set on the padstack definition.
@@ -77,7 +77,7 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.core.database.Database>`.
+        db : :class:`.Database`.
             Database to search for the padstack definition.
         name : str
             Name of the padstack definition.
@@ -93,7 +93,7 @@ class PadstackDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Definition type."""
+        """:class:`.DefinitionObjType`: Definition type."""
         return DefinitionObjType.PADSTACK_DEF
 
     @property
@@ -106,7 +106,7 @@ class PadstackDef(ObjBase):
 
     @property
     def data(self):
-        """:class:`PadstackDefData <ansys.edb.core.definition.padstack_def_data.PadstackDefData>`: \
+        """:class:`.PadstackDefData`: \
         Data for the padstack definition."""
         return PadstackDefData(self.__stub.GetData(self.msg))
 

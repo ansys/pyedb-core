@@ -52,7 +52,7 @@ class RTree(ObjBase):
 
             Parameters
             ----------
-            polygon: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+            polygon : :class:`.PolygonData`
                 Polygon representation for the object in the spatial index.
             obj: ObjBase
                 Object to store in the index.
@@ -100,7 +100,7 @@ class RTree(ObjBase):
     @property
     @parser.to_box
     def extent(self):
-        """:obj:`tuple` of [:class:`geometry.PointData`, :class:`geometry.PointData`]: Bounding box \
+        """:obj:`tuple` of [:class:.PointData, :class:.PointData]: Bounding box \
         for the contents of the RTree."""
         return self.__stub.GetExtent(self.msg)
 
@@ -109,7 +109,7 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        rtree_obj: RTreeObj
+        rtree_obj : :class:`.RTreeObj`
             R-tree data object with an index.
         """
         unique_id = 1 if self._unique_id is None else self._unique_id + 1
@@ -126,7 +126,7 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        rtree_obj: RTreeObj
+        rtree_obj : :class:`.RTreeObj`
             R-tree data object with index in this form: ``(polygon, id pair)``.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -152,17 +152,17 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        box: Tuple[:class:`PointData <geometry.PointData>`, :class:`PointData <geometry.PointData>`]
+        box : tuple[:class:`.PointData`, :class:`.PointData`]
             Testing region, described as a "lower-left, upper-right" box.
-        bb_search: bool
+        bb_search : bool
             Whether the RTree object intersects when the bounding-box of its
-            :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` instance
+            :class:`.PolygonData` instance
             intersects the testing  object. If ``False``, an explicit intersection
             is required for a hit.
 
         Returns
         -------
-        :obj:`list` of :class:`RTreeObj`
+        :obj:`list` of :class:`.RTreeObj`
            List of intersecting RTree objects.
         """
         msg = self.__stub.Search(_QueryBuilder.r_tree_search_message(self, box, bb_search))
@@ -173,15 +173,15 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        rtree_obj: RTreeObj
+        rtree_obj : :class:`.RTreeObj`
             R-tree object with index in this form: ``(polygon, id pair)``.
 
         Returns
         -------
-        :obj:`tuple` of RTreeObj, tuple[geometry.PointData, geometry.PointData]
+        :obj:`tuple` of :class:`.RTreeObj`, tuple[.PointData, .PointData]
 
         - ``RTreeObj``: Nearest-neighbor in the RTree to the provided object, or null if nothing is found.
-        - ``tuple[geometry.PointData, geometry.PointData]``: Line segment spanning the closest points between the object
+        - ``tuple[PointData, PointData]``: Line segment spanning the closest points between the object
           and the nearest neighbor.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -197,7 +197,7 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        rtree_obj: RTreeObj
+        rtree_obj : :class:`.RTreeObj`
             R-tree data object with index in this form: ``(polygon, id pair)``.
         increment_visit: bool
             Whether to increment the visit counter for items returned in the list
@@ -205,7 +205,7 @@ class RTree(ObjBase):
 
         Returns
         -------
-        :obj:`list` of :class:`RTreeObj`
+        :obj:`list` of :class:`.RTreeObj`
             All touching RTree objects.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -223,14 +223,14 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        rtree_obj: RTreeObj
+        rtree_obj : :class:`.RTreeObj`
             R-tree data object with index in this form: ``(polygon, id pair)``.
         increment_visit: bool
             Whether to increment the visit counter for items returned in the connected list.
 
         Returns
         -------
-        :obj:`list` of RTreeObj
+        :obj:`list` of :class:`.RTreeObj`
             List of connected geometries.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -243,7 +243,7 @@ class RTree(ObjBase):
 
     @property
     def connected_geometry_sets(self):
-        """:obj:`list` of :obj:`list` of :class:`RTreeObj`: Connected geometry sets of an RTree \
+        """:obj:`list` of :obj:`list` of :class:`.RTreeObj`: Connected geometry sets of an RTree \
          in this form: ``(ids, sizes)``."""
         msg = self.__stub.GetConnectedGeometrySets(messages.edb_obj_message(self))
         set_start = 0
@@ -265,7 +265,7 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        rtree_obj: RTreeObj
+        rtree_obj : :class:`.RTreeObj`
             R-tree data object with index in this form: ``(polygon, id pair)``.
 
         Returns
@@ -283,7 +283,7 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        rtree_obj: RTreeObj
+        rtree_obj : :class:`.RTreeObj`
             R-tree data object with index in this form: ``(polygon, id pair)``.
         """
         if self._handle_rtree_obj(rtree_obj):

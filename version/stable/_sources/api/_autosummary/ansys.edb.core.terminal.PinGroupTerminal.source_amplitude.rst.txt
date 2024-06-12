@@ -1,0 +1,6 @@
+source\_amplitude
+=================
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoproperty:: PinGroupTerminal.source_amplitude

@@ -1,0 +1,6 @@
+plot\_jv
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCSettings.plot_jv

@@ -1,0 +1,6 @@
+component\_def
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: InstArray.component_def

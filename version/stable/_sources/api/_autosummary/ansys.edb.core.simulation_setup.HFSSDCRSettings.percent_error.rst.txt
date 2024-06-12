@@ -1,0 +1,6 @@
+percent\_error
+==============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSDCRSettings.percent_error

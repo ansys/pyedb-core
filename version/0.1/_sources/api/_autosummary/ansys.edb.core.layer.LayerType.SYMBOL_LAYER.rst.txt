@@ -1,0 +1,6 @@
+SYMBOL\_LAYER
+=============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.SYMBOL_LAYER

@@ -1,0 +1,6 @@
+add\_net
+========
+
+.. currentmodule:: ansys.edb.core.net
+
+.. automethod:: DifferentialPair.add_net

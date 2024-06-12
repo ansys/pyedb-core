@@ -1,0 +1,6 @@
+create\_stride
+==============
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. automethod:: Bondwire.create_stride

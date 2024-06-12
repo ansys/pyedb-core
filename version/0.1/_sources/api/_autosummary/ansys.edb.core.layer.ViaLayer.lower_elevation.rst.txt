@@ -1,0 +1,6 @@
+lower\_elevation
+================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoproperty:: ViaLayer.lower_elevation

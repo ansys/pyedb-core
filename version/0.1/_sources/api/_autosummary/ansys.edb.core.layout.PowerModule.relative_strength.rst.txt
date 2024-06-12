@@ -1,0 +1,6 @@
+relative\_strength
+==================
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: PowerModule.relative_strength

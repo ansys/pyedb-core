@@ -1,0 +1,6 @@
+UNDEFINED\_CLOSURE
+==================
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoattribute:: MeshClosure.UNDEFINED_CLOSURE

@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoproperty:: Path.is_null

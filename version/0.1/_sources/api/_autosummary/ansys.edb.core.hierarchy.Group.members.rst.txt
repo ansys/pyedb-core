@@ -1,0 +1,6 @@
+members
+=======
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: Group.members

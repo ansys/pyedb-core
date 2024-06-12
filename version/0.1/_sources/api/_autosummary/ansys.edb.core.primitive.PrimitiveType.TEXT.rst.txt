@@ -1,0 +1,6 @@
+TEXT
+====
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoattribute:: PrimitiveType.TEXT

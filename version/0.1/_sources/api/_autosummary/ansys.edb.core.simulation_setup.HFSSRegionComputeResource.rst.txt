@@ -1,0 +1,22 @@
+﻿HFSSRegionComputeResource
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoclass:: HFSSRegionComputeResource
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

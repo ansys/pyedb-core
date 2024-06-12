@@ -1,0 +1,6 @@
+advanced\_meshing
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSSimulationSettings.advanced_meshing

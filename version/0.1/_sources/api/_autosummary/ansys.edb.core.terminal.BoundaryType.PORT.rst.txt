@@ -1,0 +1,6 @@
+PORT
+====
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoattribute:: BoundaryType.PORT

@@ -1,0 +1,6 @@
+terminals
+=========
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: Layout.terminals

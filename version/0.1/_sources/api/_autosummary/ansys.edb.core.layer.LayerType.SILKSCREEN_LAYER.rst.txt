@@ -1,0 +1,6 @@
+SILKSCREEN\_LAYER
+=================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.SILKSCREEN_LAYER

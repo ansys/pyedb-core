@@ -1,0 +1,6 @@
+has\_holes
+==========
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.has_holes

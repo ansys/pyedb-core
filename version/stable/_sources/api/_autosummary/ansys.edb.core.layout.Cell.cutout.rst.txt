@@ -1,0 +1,6 @@
+cutout
+======
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. automethod:: Cell.cutout

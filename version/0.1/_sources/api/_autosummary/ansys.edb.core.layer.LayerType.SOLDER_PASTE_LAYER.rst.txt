@@ -1,0 +1,6 @@
+SOLDER\_PASTE\_LAYER
+====================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.SOLDER_PASTE_LAYER

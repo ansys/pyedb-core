@@ -1,0 +1,6 @@
+ENDS\_CLOSED
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoattribute:: MeshClosure.ENDS_CLOSED

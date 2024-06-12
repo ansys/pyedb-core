@@ -1,0 +1,6 @@
+ZERO\_EX
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoattribute:: SParamExtrapolation.ZERO_EX

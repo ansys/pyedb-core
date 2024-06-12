@@ -1,0 +1,6 @@
+extended\_nets
+==============
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: Layout.extended_nets

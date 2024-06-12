@@ -1,0 +1,6 @@
+get\_roughness\_model
+=====================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. automethod:: ViaLayer.get_roughness_model

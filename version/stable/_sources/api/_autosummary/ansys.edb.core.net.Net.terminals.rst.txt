@@ -1,0 +1,6 @@
+terminals
+=========
+
+.. currentmodule:: ansys.edb.core.net
+
+.. autoproperty:: Net.terminals

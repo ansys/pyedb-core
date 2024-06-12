@@ -1,0 +1,24 @@
+﻿BondwireDefType
+===============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoclass:: BondwireDefType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BondwireDefType.APD_BONDWIRE_DEF
+      BondwireDefType.JEDEC4_BONDWIRE_DEF
+      BondwireDefType.JEDEC5_BONDWIRE_DEF
+   
+   

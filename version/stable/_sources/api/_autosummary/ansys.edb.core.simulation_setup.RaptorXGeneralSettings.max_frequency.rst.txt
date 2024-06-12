@@ -1,0 +1,6 @@
+max\_frequency
+==============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXGeneralSettings.max_frequency

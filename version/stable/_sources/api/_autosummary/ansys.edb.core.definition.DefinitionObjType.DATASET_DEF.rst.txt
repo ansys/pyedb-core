@@ -1,0 +1,6 @@
+DATASET\_DEF
+============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: DefinitionObjType.DATASET_DEF

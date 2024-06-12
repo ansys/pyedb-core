@@ -1,0 +1,6 @@
+entry\_list
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: MatrixConvergenceData.entry_list

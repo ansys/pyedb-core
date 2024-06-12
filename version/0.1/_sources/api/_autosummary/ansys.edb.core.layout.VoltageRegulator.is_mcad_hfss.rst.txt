@@ -1,0 +1,6 @@
+is\_mcad\_hfss
+==============
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: VoltageRegulator.is_mcad_hfss

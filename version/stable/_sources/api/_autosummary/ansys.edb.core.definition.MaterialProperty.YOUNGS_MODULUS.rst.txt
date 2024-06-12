@@ -1,0 +1,6 @@
+YOUNGS\_MODULUS
+===============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.YOUNGS_MODULUS

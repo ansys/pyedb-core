@@ -1,0 +1,6 @@
+is\_parameterized
+=================
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoproperty:: PadstackInstance.is_parameterized

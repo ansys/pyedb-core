@@ -1,0 +1,6 @@
+needs\_sync
+===========
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: PowerModule.needs_sync

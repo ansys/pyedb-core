@@ -1,0 +1,6 @@
+THERMAL\_CONDUCTIVITY
+=====================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.THERMAL_CONDUCTIVITY

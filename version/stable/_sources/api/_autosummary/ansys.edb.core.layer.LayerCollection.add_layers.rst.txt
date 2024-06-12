@@ -1,0 +1,6 @@
+add\_layers
+===========
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. automethod:: LayerCollection.add_layers

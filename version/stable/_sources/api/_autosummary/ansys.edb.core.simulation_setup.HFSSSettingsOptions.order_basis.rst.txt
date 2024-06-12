@@ -1,0 +1,6 @@
+order\_basis
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSSettingsOptions.order_basis

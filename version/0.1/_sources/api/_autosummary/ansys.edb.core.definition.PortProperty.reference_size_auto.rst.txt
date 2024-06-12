@@ -1,0 +1,6 @@
+reference\_size\_auto
+=====================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: PortProperty.reference_size_auto

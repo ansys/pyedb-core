@@ -1,0 +1,6 @@
+do\_deembed
+===========
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. autoattribute:: PortPostProcessingProp.do_deembed

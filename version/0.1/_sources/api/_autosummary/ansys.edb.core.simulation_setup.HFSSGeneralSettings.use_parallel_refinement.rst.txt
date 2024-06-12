@@ -1,0 +1,6 @@
+use\_parallel\_refinement
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: HFSSGeneralSettings.use_parallel_refinement

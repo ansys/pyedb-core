@@ -1,0 +1,6 @@
+plating\_percentage
+===================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: PadstackDefData.plating_percentage

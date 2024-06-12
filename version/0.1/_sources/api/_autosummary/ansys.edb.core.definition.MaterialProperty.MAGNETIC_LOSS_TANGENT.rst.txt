@@ -1,0 +1,6 @@
+MAGNETIC\_LOSS\_TANGENT
+=======================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.MAGNETIC_LOSS_TANGENT

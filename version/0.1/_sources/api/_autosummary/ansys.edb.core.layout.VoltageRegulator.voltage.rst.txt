@@ -1,0 +1,6 @@
+voltage
+=======
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: VoltageRegulator.voltage

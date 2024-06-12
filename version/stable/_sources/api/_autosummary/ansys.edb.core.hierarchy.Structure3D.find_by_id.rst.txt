@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: Structure3D.find_by_id

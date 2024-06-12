@@ -1,0 +1,6 @@
+PADGEOMTYPE\_CIRCLE
+===================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: PadGeometryType.PADGEOMTYPE_CIRCLE

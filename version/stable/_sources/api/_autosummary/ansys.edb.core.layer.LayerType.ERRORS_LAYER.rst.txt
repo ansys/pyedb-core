@@ -1,0 +1,6 @@
+ERRORS\_LAYER
+=============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.ERRORS_LAYER

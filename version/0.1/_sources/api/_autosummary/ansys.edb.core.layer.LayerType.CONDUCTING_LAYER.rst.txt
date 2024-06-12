@@ -1,0 +1,6 @@
+CONDUCTING\_LAYER
+=================
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.CONDUCTING_LAYER

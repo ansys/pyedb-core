@@ -1,0 +1,6 @@
+NEXXIM\_GROUND
+==============
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoattribute:: BoundaryType.NEXXIM_GROUND

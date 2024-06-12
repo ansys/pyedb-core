@@ -1,0 +1,6 @@
+INVALID\_PROPERTY
+=================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: MaterialProperty.INVALID_PROPERTY

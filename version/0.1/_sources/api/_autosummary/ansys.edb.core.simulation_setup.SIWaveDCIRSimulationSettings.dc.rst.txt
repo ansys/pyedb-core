@@ -1,0 +1,6 @@
+dc
+==
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.dc

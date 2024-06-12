@@ -1,0 +1,6 @@
+LUMPED
+======
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoattribute:: HfssPIType.LUMPED

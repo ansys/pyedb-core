@@ -1,0 +1,6 @@
+snap\_length\_threshold
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveAdvancedSettings.snap_length_threshold

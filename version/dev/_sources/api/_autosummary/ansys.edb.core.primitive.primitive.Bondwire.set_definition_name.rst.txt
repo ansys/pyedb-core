@@ -1,0 +1,6 @@
+set\_definition\_name
+=====================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Bondwire.set_definition_name

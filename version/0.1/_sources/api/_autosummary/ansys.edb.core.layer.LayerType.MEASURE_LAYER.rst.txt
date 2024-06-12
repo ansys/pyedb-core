@@ -1,0 +1,6 @@
+MEASURE\_LAYER
+==============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.MEASURE_LAYER

@@ -1,0 +1,6 @@
+KRASZEWSKI
+==========
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: DielectricMergingMethod.KRASZEWSKI

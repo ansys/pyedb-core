@@ -1,0 +1,33 @@
+﻿SIWaveGeneralSettings
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoclass:: SIWaveGeneralSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveGeneralSettings.msg
+      SIWaveGeneralSettings.pi_slider_pos
+      SIWaveGeneralSettings.si_slider_pos
+      SIWaveGeneralSettings.use_custom_settings
+      SIWaveGeneralSettings.use_si_settings
+   
+   

@@ -1,0 +1,6 @@
+bbox\_of\_polygons
+==================
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.bbox_of_polygons

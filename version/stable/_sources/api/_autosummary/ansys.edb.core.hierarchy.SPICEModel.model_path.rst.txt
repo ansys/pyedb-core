@@ -1,0 +1,6 @@
+model\_path
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: SPICEModel.model_path

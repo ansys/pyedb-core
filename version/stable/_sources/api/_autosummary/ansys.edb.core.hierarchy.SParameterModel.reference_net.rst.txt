@@ -1,0 +1,6 @@
+reference\_net
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: SParameterModel.reference_net

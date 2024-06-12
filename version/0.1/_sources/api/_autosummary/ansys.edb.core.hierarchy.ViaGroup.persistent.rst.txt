@@ -1,0 +1,6 @@
+persistent
+==========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: ViaGroup.persistent

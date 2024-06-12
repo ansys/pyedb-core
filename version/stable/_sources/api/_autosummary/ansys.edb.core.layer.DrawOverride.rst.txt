@@ -1,0 +1,24 @@
+﻿DrawOverride
+============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoclass:: DrawOverride
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DrawOverride.NO_OVERRIDE
+      DrawOverride.FILL
+      DrawOverride.WIREFRAME
+   
+   

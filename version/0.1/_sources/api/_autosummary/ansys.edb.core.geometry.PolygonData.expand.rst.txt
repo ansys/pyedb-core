@@ -1,0 +1,6 @@
+expand
+======
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.expand

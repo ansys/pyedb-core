@@ -1,0 +1,6 @@
+placement\_3d
+=============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: InstArray.placement_3d

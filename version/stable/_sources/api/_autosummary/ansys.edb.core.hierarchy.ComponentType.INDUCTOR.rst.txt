@@ -1,0 +1,6 @@
+INDUCTOR
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoattribute:: ComponentType.INDUCTOR

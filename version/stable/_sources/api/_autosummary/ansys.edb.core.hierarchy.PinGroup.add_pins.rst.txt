@@ -1,0 +1,6 @@
+add\_pins
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: PinGroup.add_pins

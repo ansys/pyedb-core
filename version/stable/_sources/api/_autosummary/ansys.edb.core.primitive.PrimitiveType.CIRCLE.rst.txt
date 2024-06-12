@@ -1,0 +1,6 @@
+CIRCLE
+======
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoattribute:: PrimitiveType.CIRCLE

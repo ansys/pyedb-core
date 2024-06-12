@@ -1,0 +1,6 @@
+save\_rfm
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXGeneralSettings.save_rfm

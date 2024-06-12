@@ -1,0 +1,29 @@
+﻿SweepData
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoclass:: SweepData
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SweepData.frequency_string
+   
+   

@@ -1,0 +1,6 @@
+primitive\_type
+===============
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoproperty:: Path.primitive_type

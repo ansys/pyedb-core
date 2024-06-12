@@ -1,0 +1,6 @@
+WIREBOND\_LAYER
+===============
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerType.WIREBOND_LAYER

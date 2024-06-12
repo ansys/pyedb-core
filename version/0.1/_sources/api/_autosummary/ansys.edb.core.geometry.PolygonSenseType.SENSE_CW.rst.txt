@@ -1,0 +1,6 @@
+SENSE\_CW
+=========
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. autoattribute:: PolygonSenseType.SENSE_CW

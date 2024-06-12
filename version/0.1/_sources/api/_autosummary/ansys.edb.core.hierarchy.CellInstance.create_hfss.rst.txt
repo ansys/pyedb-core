@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: CellInstance.create_hfss

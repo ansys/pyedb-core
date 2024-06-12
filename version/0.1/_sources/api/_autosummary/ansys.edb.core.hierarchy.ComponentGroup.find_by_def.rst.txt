@@ -1,0 +1,6 @@
+find\_by\_def
+=============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: ComponentGroup.find_by_def

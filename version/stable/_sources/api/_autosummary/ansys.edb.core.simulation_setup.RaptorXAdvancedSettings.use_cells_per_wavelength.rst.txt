@@ -1,0 +1,6 @@
+use\_cells\_per\_wavelength
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXAdvancedSettings.use_cells_per_wavelength

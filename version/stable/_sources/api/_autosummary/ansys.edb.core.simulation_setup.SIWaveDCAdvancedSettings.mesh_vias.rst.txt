@@ -1,0 +1,6 @@
+mesh\_vias
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: SIWaveDCAdvancedSettings.mesh_vias

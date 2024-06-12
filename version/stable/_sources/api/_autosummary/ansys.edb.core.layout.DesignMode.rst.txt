@@ -1,0 +1,23 @@
+﻿DesignMode
+==========
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoclass:: DesignMode
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DesignMode.GENERAL
+      DesignMode.IC
+   
+   

@@ -1,0 +1,6 @@
+SECOND\_ORDER
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoattribute:: BasisFunctionOrder.SECOND_ORDER

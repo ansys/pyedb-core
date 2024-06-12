@@ -1,0 +1,42 @@
+﻿ComponentDef
+============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoclass:: ComponentDef
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ComponentDef.create
+      
+      
+      ComponentDef.find
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ComponentDef.component_models
+      ComponentDef.component_pins
+      ComponentDef.definition_type
+      ComponentDef.footprint
+      ComponentDef.id
+      ComponentDef.is_null
+      ComponentDef.msg
+      ComponentDef.name
+   
+   

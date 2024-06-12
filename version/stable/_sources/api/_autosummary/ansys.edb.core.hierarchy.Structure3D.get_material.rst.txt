@@ -1,0 +1,6 @@
+get\_material
+=============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: Structure3D.get_material

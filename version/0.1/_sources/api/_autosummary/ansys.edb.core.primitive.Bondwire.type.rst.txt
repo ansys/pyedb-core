@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.primitive
+
+.. autoproperty:: Bondwire.type

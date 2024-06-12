@@ -1,0 +1,6 @@
+description
+===========
+
+.. currentmodule:: ansys.edb.core.net
+
+.. autoproperty:: DifferentialPair.description

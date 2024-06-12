@@ -1,0 +1,6 @@
+use\_enable\_hybrid\_extraction
+===============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoproperty:: RaptorXAdvancedSettings.use_enable_hybrid_extraction

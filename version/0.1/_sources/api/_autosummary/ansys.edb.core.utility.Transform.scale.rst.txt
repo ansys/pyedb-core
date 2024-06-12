@@ -1,0 +1,6 @@
+scale
+=====
+
+.. currentmodule:: ansys.edb.core.utility
+
+.. autoproperty:: Transform.scale

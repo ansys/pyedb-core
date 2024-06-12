@@ -1,0 +1,49 @@
+﻿PinPairModel
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoclass:: PinPairModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PinPairModel.clone
+      
+      
+      PinPairModel.create
+      
+      
+      PinPairModel.delete_rlc
+      
+      
+      PinPairModel.pin_pairs
+      
+      
+      PinPairModel.rlc
+      
+      
+      PinPairModel.set_rlc
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PinPairModel.id
+      PinPairModel.is_null
+      PinPairModel.msg
+   
+   

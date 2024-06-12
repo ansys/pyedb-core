@@ -1,0 +1,6 @@
+cell
+====
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: Layout.cell

@@ -1,0 +1,6 @@
+get\_all\_properties
+====================
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. automethod:: MaterialDef.get_all_properties

@@ -1,0 +1,6 @@
+set\_rlc
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. automethod:: PinPairModel.set_rlc

@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoproperty:: PadstackDefData.is_null

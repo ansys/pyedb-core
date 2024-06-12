@@ -1,0 +1,6 @@
+num\_active\_power\_modules
+===========================
+
+.. currentmodule:: ansys.edb.core.layout
+
+.. autoproperty:: VoltageRegulator.num_active_power_modules

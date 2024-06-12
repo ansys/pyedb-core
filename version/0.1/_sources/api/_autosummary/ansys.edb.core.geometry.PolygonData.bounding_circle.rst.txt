@@ -1,0 +1,6 @@
+bounding\_circle
+================
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.bounding_circle

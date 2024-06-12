@@ -1,0 +1,36 @@
+﻿BondwireDef
+===========
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoclass:: BondwireDef
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      BondwireDef.delete
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BondwireDef.definition_type
+      BondwireDef.id
+      BondwireDef.is_null
+      BondwireDef.msg
+      BondwireDef.name
+   
+   

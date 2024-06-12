@@ -1,0 +1,6 @@
+LAMINATE
+========
+
+.. currentmodule:: ansys.edb.core.layer
+
+.. autoattribute:: LayerCollectionMode.LAMINATE

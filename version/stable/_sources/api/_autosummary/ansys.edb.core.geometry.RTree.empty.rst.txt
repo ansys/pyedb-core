@@ -1,0 +1,6 @@
+empty
+=====
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: RTree.empty

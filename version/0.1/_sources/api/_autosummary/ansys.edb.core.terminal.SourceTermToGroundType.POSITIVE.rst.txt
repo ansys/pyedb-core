@@ -1,0 +1,6 @@
+POSITIVE
+========
+
+.. currentmodule:: ansys.edb.core.terminal
+
+.. autoattribute:: SourceTermToGroundType.POSITIVE

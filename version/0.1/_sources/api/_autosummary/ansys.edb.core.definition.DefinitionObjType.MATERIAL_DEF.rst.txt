@@ -1,0 +1,6 @@
+MATERIAL\_DEF
+=============
+
+.. currentmodule:: ansys.edb.core.definition
+
+.. autoattribute:: DefinitionObjType.MATERIAL_DEF

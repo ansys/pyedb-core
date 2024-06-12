@@ -1,0 +1,6 @@
+is\_mcad\_hfss
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoproperty:: Structure3D.is_mcad_hfss

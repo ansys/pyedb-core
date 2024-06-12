@@ -1,0 +1,6 @@
+CAPACITOR
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy
+
+.. autoattribute:: ComponentType.CAPACITOR

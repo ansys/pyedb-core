@@ -1,0 +1,6 @@
+circle\_intersect
+=================
+
+.. currentmodule:: ansys.edb.core.geometry
+
+.. automethod:: PolygonData.circle_intersect

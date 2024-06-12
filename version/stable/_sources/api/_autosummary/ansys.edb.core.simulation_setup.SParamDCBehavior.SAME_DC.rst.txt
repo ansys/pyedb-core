@@ -1,0 +1,6 @@
+SAME\_DC
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup
+
+.. autoattribute:: SParamDCBehavior.SAME_DC

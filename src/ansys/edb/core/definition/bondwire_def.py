@@ -11,39 +11,6 @@ from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.value import Value
 
 
-class _QueryBuilder:
-    @staticmethod
-    def bondwire_def_type(type):
-        """Create a bondwire type message.
-
-        Parameters
-        ----------
-        type : BondwireDefType
-
-        Returns
-        -------
-        pb.BondwireDefTypeMessage
-        """
-        return pb.BondwireDefTypeMessage(
-            type=type,
-        )
-
-    @staticmethod
-    def bondwire_def_str_message(obj, string):
-        """Create a bondwire definition string message.
-
-        Parameters
-        ----------
-        obj : Union[Database, 'ApdBondwireDef', 'Jedec4BondwireDef', 'Jedec5BondwireDef']
-        string : str
-
-        Returns
-        -------
-        pb.BondwireDefStrMessage
-        """
-        return pb.BondwireDefStrMessage(object=obj.msg, name=string)
-
-
 class BondwireDefType(Enum):
     """Enum representing different types of bondwires."""
 
@@ -98,7 +65,7 @@ class ApdBondwireDef(BondwireDef):
         ApdBondwireDef
             APD bondwire definition created.
         """
-        bw_msg = cls.__stub.Create(_QueryBuilder.bondwire_def_str_message(database, name))
+        bw_msg = cls.__stub.Create(pb.BondwireDefStrMessage(object=database.msg, name=name))
         return ApdBondwireDef(bw_msg)
 
     @classmethod
@@ -112,7 +79,7 @@ class ApdBondwireDef(BondwireDef):
         name : str
             Name of the APD bondwire definition.
         """
-        cls.__stub.LoadDefinitionsFromFile(_QueryBuilder.bondwire_def_str_message(database, name))
+        cls.__stub.LoadDefinitionsFromFile(pb.BondwireDefStrMessage(object=database.msg, name=name))
 
     @classmethod
     def find_by_name(cls, database, name):
@@ -131,7 +98,7 @@ class ApdBondwireDef(BondwireDef):
             APD bondwire definition found.
         """
         return ApdBondwireDef(
-            cls.__stub.FindByName(_QueryBuilder.bondwire_def_str_message(database, name))
+            cls.__stub.FindByName(pb.BondwireDefStrMessage(object=database.msg, name=name))
         )
 
     def get_parameters(self):
@@ -152,7 +119,7 @@ class ApdBondwireDef(BondwireDef):
         name : str
             String block of the bondwire parameters.
         """
-        self.__stub.SetParameters(_QueryBuilder.bondwire_def_str_message(self, name))
+        self.__stub.SetParameters(pb.BondwireDefStrMessage(object=self.msg, name=name))
 
     @property
     def bondwire_type(self):
@@ -161,15 +128,6 @@ class ApdBondwireDef(BondwireDef):
         This property is read-only.
         """
         return BondwireDefType.APD_BONDWIRE_DEF
-
-
-class _Jedec4QueryBuilder:
-    @staticmethod
-    def jedec4_bondwire_def_set_parameters_message(j, top_to_die_distance):
-        return pb.Jedec4BondwireDefSetParametersMessage(
-            target=j.msg,
-            top_to_die_distance=messages.value_message(top_to_die_distance),
-        )
 
 
 class Jedec4BondwireDef(BondwireDef):
@@ -196,7 +154,7 @@ class Jedec4BondwireDef(BondwireDef):
             JEDEC4 bondwire definition created.
         """
         return Jedec4BondwireDef(
-            cls.__stub.Create(_QueryBuilder.bondwire_def_str_message(database, name))
+            cls.__stub.Create(pb.BondwireDefStrMessage(object=database.msg, name=name))
         )
 
     @classmethod
@@ -216,7 +174,7 @@ class Jedec4BondwireDef(BondwireDef):
             JEDEC4 bondwire definition found.
         """
         return Jedec4BondwireDef(
-            cls.__stub.FindByName(_QueryBuilder.bondwire_def_str_message(database, name))
+            cls.__stub.FindByName(pb.BondwireDefStrMessage(object=database.msg, name=name))
         )
 
     def get_parameters(self):
@@ -238,8 +196,8 @@ class Jedec4BondwireDef(BondwireDef):
             Bondwire top-to-die distance.
         """
         self.__stub.SetParameters(
-            _Jedec4QueryBuilder.jedec4_bondwire_def_set_parameters_message(
-                self, top_to_die_distance
+            pb.Jedec4BondwireDefSetParametersMessage(
+                target=self.msg, top_to_die_distance=messages.value_message(top_to_die_distance)
             )
         )
 
@@ -250,30 +208,6 @@ class Jedec4BondwireDef(BondwireDef):
         This property is read-only.
         """
         return BondwireDefType.JEDEC4_BONDWIRE_DEF
-
-
-class _Jedec5QueryBuilder:
-    @staticmethod
-    def jedec5_bondwire_def_parameters_message(top_to_die_distance, die_pad_angle, lead_pad_angle):
-        return pb.Jedec5BondwireDefParametersMessage(
-            top_to_die_distance=messages.value_message(top_to_die_distance),
-            die_pad_angle=messages.value_message(die_pad_angle),
-            lead_pad_angle=messages.value_message(lead_pad_angle),
-        )
-
-    @staticmethod
-    def jedec5_bondwire_def_set_parameters_message(
-        j,
-        top_to_die_distance,
-        die_pad_angle,
-        lead_pad_angle,
-    ):
-        return pb.Jedec5BondwireDefSetParametersMessage(
-            target=j.msg,
-            parameters=_Jedec5QueryBuilder.jedec5_bondwire_def_parameters_message(
-                top_to_die_distance, die_pad_angle, lead_pad_angle
-            ),
-        )
 
 
 class Jedec5BondwireDef(BondwireDef):
@@ -300,7 +234,7 @@ class Jedec5BondwireDef(BondwireDef):
             JEDEC5 bondwire definition created.
         """
         return Jedec5BondwireDef(
-            cls.__stub.Create(_QueryBuilder.bondwire_def_str_message(database, name))
+            cls.__stub.Create(pb.BondwireDefStrMessage(object=database.msg, name=name))
         )
 
     @classmethod
@@ -320,7 +254,7 @@ class Jedec5BondwireDef(BondwireDef):
             JEDEC5 bondwire definition found.
         """
         return Jedec5BondwireDef(
-            cls.__stub.FindByName(_QueryBuilder.bondwire_def_str_message(database, name))
+            cls.__stub.FindByName(pb.BondwireDefStrMessage(object=database.msg, name=name))
         )
 
     def get_parameters(self):
@@ -355,8 +289,13 @@ class Jedec5BondwireDef(BondwireDef):
             Bondwire lead pad angle.
         """
         self.__stub.SetParameters(
-            _Jedec5QueryBuilder.jedec5_bondwire_def_set_parameters_message(
-                self, top_to_die_distance, die_pad_angle, lead_pad_angle
+            pb.Jedec5BondwireDefSetParametersMessage(
+                target=self.msg,
+                parameters=pb.Jedec5BondwireDefParametersMessage(
+                    top_to_die_distance=messages.value_message(top_to_die_distance),
+                    die_pad_angle=messages.value_message(die_pad_angle),
+                    lead_pad_angle=messages.value_message(lead_pad_angle),
+                ),
             )
         )
 

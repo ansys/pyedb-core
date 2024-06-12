@@ -16,9 +16,10 @@ class Value:
     ----------
     val : :term:`ValueLike`
         Value assigned to the new value.
-    _owner :    None, :class:`Database <ansys.edb.core.database.Database>`, :class:`Cell <ansys.edb.core.layout.Cell>`,
-                :class:`Layout <ansys.edb.core.layout.Layout>`, \
-                :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+    _owner :    None, :class:`.Database`,
+                :class:`.Cell`,
+                :class:`.Layout`,
+                :class:`.ComponentDef`
 
     Notes
     -----
@@ -26,8 +27,8 @@ class Value:
     parametric (such as.``w1 + w2``).
 
     If the value is parametric, the ``_owner`` attribute must be set to the object that hosts the
-    variables used. If the owner is :class:`Cell <ansys.edb.core.layout.Cell>` or
-    :class:`Layout <ansys.edb.core.layout.Layout>`, the expression can reference both database variables
+    variables used. If the owner is :class:`.Cell` or
+    :class:`.Layout`, the expression can reference both database variables
     and cell variables. A better way to create a parametric values is to call the
     ``obj_with_variables.create_value(str)`` method, which automatically sets the
     ``_owner`` parameter to the correct object.

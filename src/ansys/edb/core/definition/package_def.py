@@ -17,8 +17,8 @@ from ansys.edb.core.inner.messages import (
     value_property_message,
 )
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
 from ansys.edb.core.utility.heat_sink import HeatSink, HeatSinkFinOrientation
+from ansys.edb.core.utility.value import Value
 
 
 class PackageDef(ObjBase):
@@ -32,7 +32,7 @@ class PackageDef(ObjBase):
 
         Parameters
         ----------
-        db :class:`Database <ansys.edb.core.database.Database>`
+        db :class:`.Database`
             Database to create the package definition in.
         name : str
             Name of the package definition.
@@ -50,7 +50,7 @@ class PackageDef(ObjBase):
 
         Parameters
         ----------
-        db :class:`Database <ansys.edb.core.database.Database>`
+        db :class:`.Database`
             Database to search for the package definition.
         name : str
             Name of the package definition.
@@ -68,7 +68,7 @@ class PackageDef(ObjBase):
 
         Parameters
         ----------
-        db :class:`Database <ansys.edb.core.database.Database>`
+        db :class:`.Database`
             Database to search for the package definition.
         UID : int
             Unique identifier for the package definition.
@@ -82,7 +82,7 @@ class PackageDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Definition type."""
+        """:class:`.DefinitionObjType`: Definition type."""
         return DefinitionObjType.PACKAGE_DEF
 
     @property
@@ -97,7 +97,8 @@ class PackageDef(ObjBase):
     @property
     @parser.to_polygon_data
     def exterior_boundary(self):
-        """:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`: Exterior boundary of the package definition."""
+        """:class:`.PolygonData`: \
+        Exterior boundary of the package definition."""
         return self.__stub.GetExteriorBoundary(edb_obj_message(self))
 
     @exterior_boundary.setter
@@ -106,7 +107,7 @@ class PackageDef(ObjBase):
 
     @property
     def height(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Height of the package."""
+        """:class:`.Value`: Height of the package."""
         return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter
@@ -115,7 +116,7 @@ class PackageDef(ObjBase):
 
     @property
     def operating_power(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Operating power of the package."""
+        """:class:`.Value`: Operating power of the package."""
         return Value(self.__stub.GetOperatingPower(edb_obj_message(self)))
 
     @operating_power.setter
@@ -124,7 +125,7 @@ class PackageDef(ObjBase):
 
     @property
     def maximum_power(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Maximum power of the package."""
+        """:class:`.Value`: Maximum power of the package."""
         return Value(self.__stub.GetMaximumPower(edb_obj_message(self)))
 
     @maximum_power.setter
@@ -133,7 +134,7 @@ class PackageDef(ObjBase):
 
     @property
     def thermal_conductivity(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Thermal conductivity of the package."""
+        """:class:`.Value`: Thermal conductivity of the package."""
         return Value(self.__stub.GetTherm_Cond(edb_obj_message(self)))
 
     @thermal_conductivity.setter
@@ -142,7 +143,7 @@ class PackageDef(ObjBase):
 
     @property
     def theta_jb(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Theta JB (junction to board) of the package."""
+        """:class:`.Value`: Theta JB (junction to board) of the package."""
         return Value(self.__stub.GetTheta_JB(edb_obj_message(self)))
 
     @theta_jb.setter
@@ -151,7 +152,7 @@ class PackageDef(ObjBase):
 
     @property
     def theta_jc(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Theta JC (junction to case) of the package."""
+        """:class:`.Value`: Theta JC (junction to case) of the package."""
         return Value(self.__stub.GetTheta_JC(edb_obj_message(self)))
 
     @theta_jc.setter
@@ -160,7 +161,7 @@ class PackageDef(ObjBase):
 
     @property
     def heat_sink(self):
-        """:class:`HeatSink <ansys.edb.core.utility.HeatSink>`: Heat sink model assigned to the package."""
+        """:class:`.HeatSink`: Heat sink model assigned to the package."""
         heat_sink_paramaters = self.__stub.GetHeatSink(edb_obj_message(self))
         return HeatSink(
             heat_sink_paramaters.thickness,

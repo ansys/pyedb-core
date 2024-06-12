@@ -17,7 +17,7 @@ class ComponentPin(ObjBase):
 
         Parameters
         ----------
-        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+        comp_def : :class:`.ComponentDef`
             Component definition to create the component pin in.
         name : str
             Name of the component pin.
@@ -35,7 +35,7 @@ class ComponentPin(ObjBase):
 
         Parameters
         ----------
-        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+        comp_def : :class:`.ComponentDef`
             Component definition to search for the component pin.
         name : str
             Name of the component pin.
@@ -66,8 +66,7 @@ class ComponentPin(ObjBase):
 
     @property
     def component_def(self):
-        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition that the component \
-        pin belongs to.
+        """:class:`.ComponentDef`: Component definition that the component pin belongs to.
 
         This property is read-only.
         """

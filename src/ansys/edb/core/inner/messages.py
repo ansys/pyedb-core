@@ -146,9 +146,11 @@ from ansys.api.edb.v1.voltage_regulator_pb2 import PowerModuleMessage
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.wrappers_pb2 import BoolValue, DoubleValue, FloatValue, Int64Value, StringValue
 
-from ansys.edb.core import utility
-from ansys.edb.core.simulation_setup import LengthMeshOperation, SkinDepthMeshOperation
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.simulation_setup.mesh_operation import (
+    LengthMeshOperation,
+    SkinDepthMeshOperation,
+)
+from ansys.edb.core.utility import conversions, value
 
 
 def str_message(s: str):
@@ -982,13 +984,13 @@ def value_message(val):
 
     Parameters
     ----------
-    val : str, int, float, complex, utility.Value, ValueMessage
+    val : str, int, float, complex, ansys.edb.core.utility.value.Value, ValueMessage
 
     Returns
     -------
     ValueMessage
     """
-    if isinstance(val, utility.Value):
+    if isinstance(val, value.Value):
         return val.msg
     if isinstance(val, ValueMessage):
         return val

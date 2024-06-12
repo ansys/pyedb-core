@@ -5,7 +5,7 @@ import google.protobuf.empty_pb2 as empty_pb2
 
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class PortProperty(ObjBase):
@@ -38,7 +38,7 @@ class PortProperty(ObjBase):
 
     @property
     def reference_height(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Reference height of the port property.
+        """:class:`.Value`: Reference height of the port property.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -64,7 +64,7 @@ class PortProperty(ObjBase):
 
         Returns
         -------
-        tuple[:class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`]
+        tuple[:class:`.Value`, :class:`.Value`]
         """
         value_pair_message = self.__stub.GetReferenceSize(messages.edb_obj_message(self))
         return Value(value_pair_message.val1), Value(value_pair_message.val2)

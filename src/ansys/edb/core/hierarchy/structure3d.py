@@ -8,7 +8,7 @@ from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
 from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class MeshClosure(Enum):
@@ -31,7 +31,7 @@ class Structure3D(Group):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the 3D structure in.
         name : str
             Name of the 3D structure.
@@ -69,7 +69,7 @@ class Structure3D(Group):
 
     @property
     def thickness(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Thickness for the 3D structure."""
+        """:class:`.Value`: Thickness for the 3D structure."""
         return Value(self.__stub.GetThickness(self.msg))
 
     @thickness.setter

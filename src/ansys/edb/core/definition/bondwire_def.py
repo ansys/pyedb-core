@@ -8,7 +8,7 @@ import ansys.api.edb.v1.bondwire_def_pb2 as pb
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class _QueryBuilder:
@@ -59,7 +59,7 @@ class BondwireDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Object type of the bondwire definition."""
+        """:class:`.DefinitionObjType`: Object type of the bondwire definition."""
         return DefinitionObjType.BONDWIRE_DEF
 
     @property
@@ -88,7 +88,7 @@ class ApdBondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to create the APD bondwire definition in.
         name : str
             Name of the APD bondwire definition.
@@ -107,7 +107,7 @@ class ApdBondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to load the APD bondwire into.
         name : str
             Name of the APD bondwire definition.
@@ -120,7 +120,7 @@ class ApdBondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to search for the APD bondwire definition.
         name : str
             Name of the APD bondwire definition.
@@ -185,7 +185,7 @@ class Jedec4BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to create the JEDEC4 bondwire definition in.
         name : str
             Name of the JEDEC4 bondwire definition.
@@ -205,7 +205,7 @@ class Jedec4BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to search for the JEDEC4 bondwire definition.
         name : str
             Name of the JEDEC4 bondwire definition.
@@ -224,7 +224,7 @@ class Jedec4BondwireDef(BondwireDef):
 
         Returns
         -------
-        :class:`Value <ansys.edb.core.utility.Value>`
+        :class:`.Value`
             Bondwire top-to-die distance.
         """
         return Value(self.__stub.GetParameters(self.msg))
@@ -234,7 +234,7 @@ class Jedec4BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        top_to_die_distance : :class:`Value <ansys.edb.core.utility.Value>`
+        top_to_die_distance : :class:`.Value`
             Bondwire top-to-die distance.
         """
         self.__stub.SetParameters(
@@ -289,7 +289,7 @@ class Jedec5BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to create the JEDEC5 bondwire definition in.
         name : str
             Name of the JEDEC5 bondwire definition.
@@ -309,7 +309,7 @@ class Jedec5BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to search for the JEDEC5 bondwire definition.
         name : str
             Name of the JEDEC5 bondwire definition.
@@ -328,14 +328,12 @@ class Jedec5BondwireDef(BondwireDef):
 
         Returns
         -------
-        tuple[:class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`]
+        tuple[:class:`.Value`, :class:`.Value`, :class:`.Value`]
+            The tuple is in this format: ``(top_to_die_distance,die_pad_angle,lead_pad_angle)``
 
-        The tuple is in this format: ``(top_to_die_distance,die_pad_angle,lead_pad_angle)``
-
-        - ``top_to_die_distance``: Bondwire top-to-die distance.
-        - ``die_pad_angle``: Bondwire die pad angle.
-        - `` lead_pad_angle``: Bondwire lead pad angle.
+            - ``top_to_die_distance``: Bondwire top-to-die distance.
+            - ``die_pad_angle``: Bondwire die pad angle.
+            - ``lead_pad_angle``: Bondwire lead pad angle.
         """
         get_parameters_msg = self.__stub.GetParameters(self.msg)
         return (
@@ -349,11 +347,11 @@ class Jedec5BondwireDef(BondwireDef):
 
         Parameters
         ----------
-        top_to_die_distance : :class:`Value <ansys.edb.core.utility.Value>`
+        top_to_die_distance : :class:`.Value`
             Bondwire top-to-die distance.
-        die_pad_angle : :class:`Value <ansys.edb.core.utility.Value>`
+        die_pad_angle : :class:`.Value`
             Bondwire die pad angle.
-        lead_pad_angle : :class:`Value <ansys.edb.core.utility.Value>`
+        lead_pad_angle : :class:`.Value`
             Bondwire lead pad angle.
         """
         self.__stub.SetParameters(

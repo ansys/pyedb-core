@@ -183,7 +183,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @property
     def via_model_type(self):
-        """:class:`ViaStyle`: Via model type."""
+        """:class:`.ViaStyle`: Via model type."""
         return ViaStyle(self.__stub.GetViaModelType(self.msg).via_model_type)
 
     @via_model_type.setter

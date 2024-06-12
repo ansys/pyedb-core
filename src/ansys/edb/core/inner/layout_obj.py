@@ -5,7 +5,6 @@ import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import ObjBase
 import ansys.edb.core.inner.messages as messages
-from ansys.edb.core.layout import layout
 from ansys.edb.core.session import LayoutObjServiceStub, StubAccessor, StubType
 
 
@@ -52,10 +51,12 @@ class LayoutObj(ObjBase):
 
     @property
     def layout(self):
-        """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout owning the object.
+        """:class:`.Layout`: Layout owning the object.
 
         This property is read-only.
         """
+        from ansys.edb.core.layout import layout
+
         return layout.Layout(
             self.__stub.GetLayout(_QueryBuilder.layout_obj_target_msg(self, self.layout_obj_type))
         )
@@ -69,7 +70,7 @@ class LayoutObj(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
         attr_id : int
             User-defined ID that identifies the string value stored in the property.
@@ -90,7 +91,7 @@ class LayoutObj(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
         attr_id : int
            User-defined ID that identifies the string value stored in the property.
@@ -108,7 +109,7 @@ class LayoutObj(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
 
         Returns

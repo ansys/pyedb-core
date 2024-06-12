@@ -3,9 +3,9 @@ import ansys.api.edb.v1.voltage_regulator_pb2 as vr_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import conn_obj, messages
-from ansys.edb.core.primitive import PadstackInstance
+from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class PowerModule:
@@ -19,7 +19,7 @@ class PowerModule:
         Name of the positive output terminal.
     neg_output_terminal : str
         Name of the negative output terminal
-    relative_strength : :class:`Value <ansys.edb.core.utility.Value>`
+    relative_strength : :class:`.Value`
         Relative strength as a percentage value.
     active : bool
         Whether the power module is active.
@@ -70,7 +70,7 @@ class PowerModule:
 
     @property
     def relative_strength(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Relative strength for the power module as a percentage.
+        """:class:`.Value`: Relative strength for the power module as a percentage.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -129,7 +129,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the voltage regulator in.
         name : str
             Name of the voltage regulator.
@@ -180,7 +180,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def voltage(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Voltage of the voltage regulator.
+        """:class:`.Value`: Voltage of the voltage regulator.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -194,7 +194,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def lrc(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation current of the voltage regulator.
+        """:class:`.Value`: Load regulation current of the voltage regulator.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -208,7 +208,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def lrp(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation percent of the voltage regulator.
+        """:class:`.Value`: Load regulation percent of the voltage regulator.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -222,8 +222,8 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def pos_remote_sense_pin(self):
-        """:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`: Positive remote sense pin of the \
-        voltage regulator.
+        """:class:`.PadstackInstance`: \
+        Positive remote sense pin of the voltage regulator.
 
         .. seealso:: :obj:`neg_remote_sense_pin`
         """
@@ -235,8 +235,8 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def neg_remote_sense_pin(self):
-        """:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`: Negative remote sense pin of the \
-        voltage regulator.
+        """:class:`.PadstackInstance`: \
+        Negative remote sense pin of the voltage regulator.
 
         .. seealso:: :obj:`pos_remote_sense_pin`
         """

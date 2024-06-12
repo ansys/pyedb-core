@@ -20,7 +20,7 @@ class HfssSimulationSetup(SimulationSetup):
 
         Parameters
         ----------
-        cell : :class:`Cell <ansys.edb.core.layout.Cell>`
+        cell : :class:`.Cell`
             Cell to create the simulation setup in.
         name : str
             Name of the simulation setup.
@@ -34,7 +34,7 @@ class HfssSimulationSetup(SimulationSetup):
 
     @property
     def mesh_operations(self):
-        """:obj:`list` of :class:`MeshOperation`: Mesh operations of the HFSS simulation setup."""
+        """:obj:`list` of :class:`.MeshOperation`: Mesh operations of the HFSS simulation setup."""
         return map_list(self.__stub.GetMeshOperations(self.msg).mesh_ops, parser.to_mesh_op)
 
     @mesh_operations.setter
@@ -50,5 +50,5 @@ class HfssSimulationSetup(SimulationSetup):
 
     @property
     def settings(self):
-        """:class:`HfssSimulationSettings`: Simulation settings of the HFSS simulation setup."""
+        """:class:`.HfssSimulationSettings`: Simulation settings of the HFSS simulation setup."""
         return HFSSSimulationSettings(self)

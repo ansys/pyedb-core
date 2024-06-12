@@ -87,7 +87,8 @@ class Layer(ObjBase):
         -------
         Layer
         """
-        from ansys.edb.core.layer import StackupLayer, ViaLayer
+        from ansys.edb.core.layer.stackup_layer import StackupLayer
+        from ansys.edb.core.layer.via_layer import ViaLayer
 
         lyr = Layer(self.msg)
         if lyr.is_stackup_layer:
@@ -269,7 +270,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
         attr_it : int
             Attribute ID.
@@ -288,7 +289,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
         attr_it : int
             Attribute ID.
@@ -304,7 +305,7 @@ class Layer(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
 
         Returns

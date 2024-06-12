@@ -3,7 +3,7 @@
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.conn_obj import ConnObj
-from ansys.edb.core.primitive import PadstackInstance
+from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -19,11 +19,11 @@ class PinGroup(ConnObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the pin group in.
         name : str
             Name of the pin group.
-        padstack_instances : list[:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`]
+        padstack_instances : list[:class:`.PadstackInstance`]
             List of padstack instances.
 
         Returns
@@ -41,7 +41,7 @@ class PinGroup(ConnObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the pin group.
         name : str
             Name of the pin group.
@@ -59,7 +59,7 @@ class PinGroup(ConnObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the pin group.
         prefix : str
             Prefix of the unique name.
@@ -83,7 +83,7 @@ class PinGroup(ConnObj):
 
     @property
     def pins(self):
-        """:obj:`list` of :class:`PadstackInstances <ansys.edb.core.primitive.PadstackInstance>`: \
+        """:obj:`list` of :class:`PadstackInstances <.PadstackInstance>`: \
         Padstack instances.
 
         This property is read-only.
@@ -96,7 +96,7 @@ class PinGroup(ConnObj):
 
         Parameters
         ----------
-        pins : list[:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`]
+        pins : list[:class:`.PadstackInstance`]
             List of padstick instances.
         """
         self.__stub.AddPins(messages.pin_group_pins_modify_message(self, pins))
@@ -106,7 +106,7 @@ class PinGroup(ConnObj):
 
         Parameters
         ----------
-        pins : list[:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`]
+        pins : list[:class:`.PadstackInstance`]
             List of padstick instances.
         """
         self.__stub.RemovePins(messages.pin_group_pins_modify_message(self, pins))

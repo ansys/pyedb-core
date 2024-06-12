@@ -362,7 +362,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
         attr_it : int
             Attribute ID.
@@ -383,7 +383,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
         attr_it : int
             Attribute ID.
@@ -399,7 +399,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             Product ID.
 
         Returns
@@ -427,7 +427,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
         start_layer_name : str
         end_layer_name : str
         merging_method : DielectricMergingMethod
@@ -532,7 +532,7 @@ class LayerCollection(ObjBase):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
         layer_thickness_thresh : float, default: -1
            Thickness threshold for the layer.
         merging_method : DielectricMergingMethod, default: WEIGHTED_CAPACITANCE

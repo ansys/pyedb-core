@@ -24,7 +24,7 @@ class DatasetDef(ObjBase):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to create the dataset definition in.
         name : :obj:`str`
             Name of the dataset to create.
@@ -42,7 +42,7 @@ class DatasetDef(ObjBase):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to search for the dataset definition.
         name : :obj:`str`
             Name of the dataset definition.
@@ -57,7 +57,7 @@ class DatasetDef(ObjBase):
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Definition type."""
+        """:class:`.DefinitionObjType`: Definition type."""
         return DefinitionObjType.DATASET_DEF
 
     @property
@@ -75,7 +75,7 @@ class DatasetDef(ObjBase):
 
         Returns
         -------
-        list[:class:`PointData <ansys.edb.core.geometry.PointData>`]
+        list[:class:`.PointData`]
         """
         msg = self.__stub.GetData(edb_obj_message(self))
         return msg.points
@@ -85,6 +85,6 @@ class DatasetDef(ObjBase):
 
         Parameters
         ----------
-        points : list[:class:`PointData <ansys.edb.core.geometry.PointData>`]
+        points : list[:class:`.PointData`]
         """
         self.__stub.SetData(points_property_message(self, points))

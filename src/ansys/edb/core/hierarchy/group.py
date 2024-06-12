@@ -22,7 +22,9 @@ class Group(HierarchyObj):
         -------
         Group
         """
-        from ansys.edb.core.hierarchy import ComponentGroup, Structure3D, ViaGroup
+        from ansys.edb.core.hierarchy.component_group import ComponentGroup
+        from ansys.edb.core.hierarchy.structure3d import Structure3D
+        from ansys.edb.core.hierarchy.via_group import ViaGroup
 
         if self.is_null:
             return
@@ -43,7 +45,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the group in.
         name : str
             Name of the group.
@@ -61,7 +63,7 @@ class Group(HierarchyObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the group.
         name : str
             Name of the group.

@@ -53,27 +53,27 @@ class SIWaveSimulationSettings(SimulationSettings):
 
     @property
     def general(self):
-        """:class:`SIWaveGeneralSettings`: General settings for SIWave simulations."""
+        """:class:`.SIWaveGeneralSettings`: General settings for SIWave simulations."""
         return SIWaveGeneralSettings(self._sim_setup)
 
     @property
     def advanced(self):
-        """:class:`SIWaveAdvancedSettings`: Advanced settings for SIWave simulations."""
+        """:class:`.SIWaveAdvancedSettings`: Advanced settings for SIWave simulations."""
         return SIWaveAdvancedSettings(self._sim_setup)
 
     @property
     def dc(self):
-        """:class:`SIWaveDCSettings`: DC settings for SIWave simulations."""
+        """:class:`.SIWaveDCSettings`: DC settings for SIWave simulations."""
         return SIWaveDCSettings(self._sim_setup)
 
     @property
     def dc_advanced(self):
-        """:class:`SIWaveDCAdvancedSettings`: Advanced DC settings for SIWave simulations."""
+        """:class:`.SIWaveDCAdvancedSettings`: Advanced DC settings for SIWave simulations."""
         return SIWaveDCAdvancedSettings(self._sim_setup)
 
     @property
     def s_parameter(self):
-        """:class:`SIWaveSParameterSettings`: S parameter settings for SIWave simulations."""
+        """:class:`.SIWaveSParameterSettings`: S parameter settings for SIWave simulations."""
         return SIWaveSParameterSettings(self._sim_setup)
 
 

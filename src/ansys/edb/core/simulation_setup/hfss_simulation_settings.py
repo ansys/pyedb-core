@@ -57,32 +57,32 @@ class HFSSSimulationSettings(SimulationSettings):
 
     @property
     def general(self):
-        """:class:`HFSSGeneralSettings`: General settings for HFSS simulations."""
+        """:class:`.HFSSGeneralSettings`: General settings for HFSS simulations."""
         return HFSSGeneralSettings(self._sim_setup)
 
     @property
     def options(self):
-        """:class:`HFSSSettingsOptions`: HFSS simulation setting options."""
+        """:class:`.HFSSSettingsOptions`: HFSS simulation setting options."""
         return HFSSSettingsOptions(self._sim_setup)
 
     @property
     def advanced(self):
-        """:class:`HFSSAdvancedSettings`: Advanced settings for HFSS simulations."""
+        """:class:`.HFSSAdvancedSettings`: Advanced settings for HFSS simulations."""
         return HFSSAdvancedSettings(self._sim_setup)
 
     @property
     def advanced_meshing(self):
-        """:class:`HFSSAdvancedMeshingSettings`: Advanced meshing settings for HFSS simulations."""
+        """:class:`.HFSSAdvancedMeshingSettings`: Advanced meshing settings for HFSS simulations."""
         return HFSSAdvancedMeshingSettings(self._sim_setup)
 
     @property
     def solver(self):
-        """:class:`HFSSSolverSettings`: Solver settings for HFSS simulations."""
+        """:class:`.HFSSSolverSettings`: Solver settings for HFSS simulations."""
         return HFSSSolverSettings(self._sim_setup)
 
     @property
     def dcr(self):
-        """:class:`HFSSDCRSettings`: DCR settings for HFSS simulations."""
+        """:class:`.HFSSDCRSettings`: DCR settings for HFSS simulations."""
         return HFSSDCRSettings(self._sim_setup)
 
 
@@ -93,7 +93,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def single_frequency_adaptive_solution(self):
-        """:class:`SingleFrequencyAdaptiveSolution`: Settings for a single frequency adaptive solution."""
+        """.SingleFrequencyAdaptiveSolution`: Settings for a single frequency adaptive solution."""
         return parser.to_single_frequency_adaptive_solution(
             self.__stub.GetSingleFrequencyAdaptiveSolution(self.msg)
         )
@@ -111,7 +111,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def multi_frequency_adaptive_solution(self):
-        """:class:`MultiFrequencyAdaptiveSolution`: Settings for a multi-frequency adaptive solution."""
+        """:class:`.MultiFrequencyAdaptiveSolution`: Settings for a multi-frequency adaptive solution."""
         return parser.to_multi_frequency_adaptive_solution(
             self.__stub.GetMultiFrequencyAdaptiveSolution(self.msg)
         )
@@ -129,7 +129,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @property
     def broadband_adaptive_solution(self):
-        """:class:`BroadbandAdaptiveSolution`: Settings for a broadband adaptive solution."""
+        """:class:`.BroadbandAdaptiveSolution`: Settings for a broadband adaptive solution."""
         return parser.to_broadband_adaptive_solution(
             self.__stub.GetBroadbandFrequencyAdaptiveSolution(self.msg)
         )
@@ -251,7 +251,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def order_basis(self):
-        """:class:`BasisFunctionOrder`: Basis function order."""
+        """:class:`.BasisFunctionOrder`: Basis function order."""
         return BasisFunctionOrder(self.__stub.GetBasisFunctionOrder(self.msg).basis_function_order)
 
     @order_basis.setter
@@ -264,7 +264,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @property
     def solver_type(self):
-        """:class:`SolverType`: HFSS solver type."""
+        """:class:`.SolverType`: HFSS solver type."""
         return SolverType(self.__stub.GetSolverTypeOrder(self.msg).solver_type)
 
     @solver_type.setter

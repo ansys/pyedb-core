@@ -1,6 +1,6 @@
 """Layout object instance 3D geometry."""
 
-from ansys.edb.core.geometry import Triangle3DData
+from ansys.edb.core.geometry.triangle3d_data import Triangle3DData
 from ansys.edb.core.inner import utils
 from ansys.edb.core.inner.parser import to_point3d_data
 from ansys.edb.core.layout_instance.layout_obj_instance_geometry import LayoutObjInstanceGeometry
@@ -16,7 +16,7 @@ class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
 
     @property
     def tesselation_data(self):
-        """:obj:`list` of :class:`ansys.edb.core.geometry.Triangle3DData`: All triangle 3D data instances.
+        """:obj:`list` of :class:`.Triangle3DData`: All triangle 3D data instances.
 
         This list contains triangle 3D data instances that correspond to the
         underlying tessellation data of the geometry.

@@ -2,7 +2,7 @@
 
 from ansys.edb.core.inner import ObjBase, parser
 from ansys.edb.core.inner.messages import bool_property_message
-import ansys.edb.core.layout as layout
+from ansys.edb.core.layout import layout
 from ansys.edb.core.session import LayoutInstanceContextServiceStub, StubAccessor, StubType
 
 
@@ -13,7 +13,7 @@ class LayoutInstanceContext(ObjBase):
 
     @property
     def layout(self):
-        """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout of the context.
+        """:class:`.Layout`: Layout of the context.
 
         This property is read-only.
         """
@@ -31,7 +31,7 @@ class LayoutInstanceContext(ObjBase):
 
         Returns
         -------
-        :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        :class:`.PolygonData`
             Bounding box of the context.
         """
         return self.__stub.GetBBox(bool_property_message(self, local))

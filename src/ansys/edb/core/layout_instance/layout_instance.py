@@ -1,7 +1,7 @@
 """Layout instance."""
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
-from ansys.edb.core.geometry import PointData
+from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import ObjBase, utils
 from ansys.edb.core.inner.messages import (
     layer_ref_message,
@@ -10,7 +10,7 @@ from ansys.edb.core.inner.messages import (
     polygon_data_message,
     strings_message,
 )
-from ansys.edb.core.layout_instance.layout_obj_instance import LayoutObjInstance
+from ansys.edb.core.layout_instance import layout_obj_instance
 from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
 
 
@@ -28,18 +28,18 @@ class LayoutInstance(ObjBase):
 
         Parameters
         ----------
-        layer_filter : list[:class:`Layer <ansys.edb.core.layer.Layer>` or str or None], default: None
+        layer_filter : list[:class:`.Layer` or str or None], default: None
             Layers to query. The default is ``None``, in which case all layers are queried.
-        net_filter : list[:class:`Net <ansys.edb.core.net.Net>` or str or None], default: None
+        net_filter : list[:class:`.Net` or str or None], default: None
             Nets to query. The default is ``None``, in which case all nets are queried.
-        spatial_filter : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>` or
-         :class:`PointData <ansys.edb.core.geometry.PointData>` or ``None``, default: None
+        spatial_filter : :class:`.PolygonData` or
+         :class:`.PointData` or ``None``, default: None
             Area of the design to query. The default is ``None``, in which case the entire
             spatial domain of the design is queried.
 
         Returns
         -------
-        list[LayoutObjInstance] or tuple[list[LayoutObjInstance], list[LayoutObjInstance]]
+        list[:class:`.LayoutObjInstance`] or tuple[list[:class:`.LayoutObjInstance`], list[:class:`.LayoutObjInstance`]]
             If a polygonal spatial filter is specified, a tuple of lists of hits is returned in this
             format: ``[<hits_completely_enclosed_in_polygon_region>, <hits_partially_enclosed_in_polygon_region>]``.
             Otherwise, a list containing all hits is returned.
@@ -71,11 +71,13 @@ class LayoutInstance(ObjBase):
 
         if hits.HasField("full_partial_hits"):
             full_partial_hits = hits.full_partial_hits
-            return utils.map_list(full_partial_hits.full.items, LayoutObjInstance), utils.map_list(
-                full_partial_hits.partial.items, LayoutObjInstance
+            return utils.map_list(
+                full_partial_hits.full.items, layout_obj_instance.LayoutObjInstance
+            ), utils.map_list(
+                full_partial_hits.partial.items, layout_obj_instance.LayoutObjInstance
             )
         else:
-            return utils.map_list(hits.hits.items, LayoutObjInstance)
+            return utils.map_list(hits.hits.items, layout_obj_instance.LayoutObjInstance)
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.
@@ -85,16 +87,16 @@ class LayoutInstance(ObjBase):
         layout_obj : :term:`Connectable <Connectable>`
             Layout object with the instances to search.
         context : list[str]
-            List of strings specifying the :class:`context <LayoutInstanceContext>` that the /
+            List of strings specifying the :class:`context <.LayoutInstanceContext>` that the /
             layout object instance is retrieved from.
 
-            .. seealso:: :func:`LayoutObjInstance.context`
+            .. seealso:: :func:`context <ansys.edb.core.layout_instance.layout_obj_instance.LayoutObjInstance.context>`
 
         Returns
         -------
-        LayoutObjInstance
+        :class:`.LayoutObjInstance`
         """
-        return LayoutObjInstance(
+        return layout_obj_instance.LayoutObjInstance(
             self.__stub.GetLayoutObjInstanceInContext(
                 layout_instance_pb2.GetLayoutObjInstanceInContextMessage(
                     layout_inst=self.msg,
@@ -109,17 +111,17 @@ class LayoutInstance(ObjBase):
 
         Parameters
         ----------
-        origin_layout_obj_inst : LayoutObjInstance
+        origin_layout_obj_inst : :class:`.LayoutObjInstance`
             Layout object instance that is to act as the origin to get connected objects from.
         touching_only : bool
             Whether to get only layout object instances touching the orgigin layout object instance
-            on the placement layer of the origin layout object. If ``False``` all layout object
+            on the placement layer of the origin layout object. If ``False`` all layout object
             instances across all layers that are electrically connected to the origin layout object
             instance are returned.
 
         Returns
         -------
-        list[LayoutObjInstance]
+        list[:class:`.LayoutObjInstance`]
            List of layout object instances connected to the origin layout object instance.
         """
         hits = self.__stub.GetConnectedObjects(
@@ -129,4 +131,4 @@ class LayoutInstance(ObjBase):
                 touching_only=touching_only,
             )
         )
-        return utils.map_list(hits.items, LayoutObjInstance)
+        return utils.map_list(hits.items, layout_obj_instance.LayoutObjInstance)

@@ -21,7 +21,7 @@ class DifferentialPair(NetClass):
 
         Parameters
         ----------
-        layout : :class:`Layout<ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the differential pair in.
         name : str
             Name of the new differential pair.
@@ -47,7 +47,7 @@ class DifferentialPair(NetClass):
 
         Parameters
         ----------
-        layout : :class:`Layout<ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the differential pair.
         name : str
             Name of the differential pair.
@@ -55,14 +55,15 @@ class DifferentialPair(NetClass):
         Returns
         -------
         DifferentialPair
-            Differential pair that was found. Check the :obj:`is_null <ansys.edb.core.net.DifferentialPair.is_null>`
+            Differential pair that was found. Check the :obj:`is_null
+            <.DifferentialPair.is_null>`
             property of the returned differential pair to see if it exists.
         """
         return cls(cls.__stub.FindByName(messages.string_property_message(layout, name)))
 
     @property
     def differential_pair(self):
-        r""":obj:`tuple`\(:class:`Net`, :class:`Net`\): Nets (positive, negative) in the differential pair."""
+        r""":obj:`tuple`\(:class:`.Net`, :class:`.Net`\): Nets (positive, negative) in the differential pair."""
         msg = self.__stub.GetDifferentialPair(self.msg)
         return Net(msg.positive_net.id), Net(msg.negative_net.id)
 
@@ -74,7 +75,7 @@ class DifferentialPair(NetClass):
 
     @property
     def positive_net(self):
-        """:class:`Net`: Positive net in the differential pair."""
+        """:class:`.Net`: Positive net in the differential pair."""
         return self.differential_pair[0]
 
     @positive_net.setter
@@ -85,7 +86,7 @@ class DifferentialPair(NetClass):
 
     @property
     def negative_net(self):
-        """:class:`Net`: Negative net in the differential pair."""
+        """:class:`.Net`: Negative net in the differential pair."""
         return self.differential_pair[1]
 
     @negative_net.setter
@@ -106,7 +107,7 @@ class DifferentialPair(NetClass):
         """Add a net.
 
         This method is invalid for a differential pair. Use
-        :obj:`ansys.edb.core.net.DifferentialPair.differential_pair` = (pos_net, neg_net) instead.
+        :obj:`ansys.edb.core.net.differential_pair.DifferentialPair` = (pos_net, neg_net) instead.
         """
         raise TypeError("Net cannot be added to a differential pair.")
 
@@ -121,6 +122,6 @@ class DifferentialPair(NetClass):
     def nets(self):
         """This property is invalid for a differential pair.
 
-        Use :obj:`ansys.edb.core.net.DifferentialPair.differential_pair` instead.
+        Use :obj:`ansys.edb.core.net.differential_pair.DifferentialPair` instead.
         """
         return self.differential_pair

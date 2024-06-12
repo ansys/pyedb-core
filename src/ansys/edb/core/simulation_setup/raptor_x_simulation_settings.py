@@ -42,12 +42,12 @@ class RaptorXSimulationSettings(SimulationSettings):
 
     @property
     def general(self):
-        """:class:`RaptorXGeneralSettings`: General settings for RaptorX simulations."""
+        """:class:`.RaptorXGeneralSettings`: General settings for RaptorX simulations."""
         return RaptorXGeneralSettings(self._sim_setup)
 
     @property
     def advanced(self):
-        """:class:`RaptorXAdvancedSettings`: Advanced settings for RaptorX simulations."""
+        """:class:`.RaptorXAdvancedSettings`: Advanced settings for RaptorX simulations."""
         return RaptorXAdvancedSettings(self._sim_setup)
 
 

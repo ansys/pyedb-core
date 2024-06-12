@@ -197,7 +197,7 @@ class Transform3D(ObjBase):
 
         Parameters
         ----------
-        transform : :class:`Transform <ansys.edb.core.utility.Transform>`
+        transform : :class:`.Transform`
             Transform data.
         z_off : :obj:`float`
             Z offset.

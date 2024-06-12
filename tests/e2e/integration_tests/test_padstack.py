@@ -1,5 +1,6 @@
-from ansys.edb.core.definition import PadGeometryType, PadstackDef
-from ansys.edb.core.layout import Cell
+from ansys.edb.core.definition.padstack_def import PadstackDef
+from ansys.edb.core.definition.padstack_def_data import PadGeometryType
+from ansys.edb.core.layout.cell import Cell
 
 
 def test_get_hole_parameters(circuit_cell_with_padstack_def: Cell):

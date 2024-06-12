@@ -1,23 +1,19 @@
 import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.definition import (
-    ComponentDef,
-    DieOrientation,
-    DieProperty,
-    DieType,
-    ICComponentProperty,
-    IOComponentProperty,
-    PackageDef,
-    PortProperty,
-    RLCComponentProperty,
-    SolderBallProperty,
-    SolderballShape,
-)
-from ansys.edb.core.hierarchy import ComponentGroup, ComponentType, PinPairModel
-from ansys.edb.core.layout import Cell, CellType
+from ansys.edb.core.definition.component_def import ComponentDef
+from ansys.edb.core.definition.die_property import DieOrientation, DieProperty, DieType
+from ansys.edb.core.definition.ic_component_property import ICComponentProperty
+from ansys.edb.core.definition.io_component_property import IOComponentProperty
+from ansys.edb.core.definition.package_def import PackageDef
+from ansys.edb.core.definition.port_property import PortProperty
+from ansys.edb.core.definition.rlc_component_property import RLCComponentProperty
+from ansys.edb.core.definition.solder_ball_property import SolderBallProperty, SolderballShape
+from ansys.edb.core.hierarchy.component_group import ComponentGroup, ComponentType
+from ansys.edb.core.hierarchy.pin_pair_model import PinPairModel
+from ansys.edb.core.layout.cell import Cell, CellType
 from ansys.edb.core.session import session
-from ansys.edb.core.utility import Rlc
+from ansys.edb.core.utility.rlc import Rlc
 
 
 def do_test():

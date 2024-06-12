@@ -9,11 +9,11 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
-   Cell
-   Layout
-   McadModel
-   PowerModule
-   VoltageRegulator
+   cell.Cell
+   layout.Layout
+   mcad_model.McadModel
+   voltage_regulator.PowerModule
+   voltage_regulator.VoltageRegulator
 
 Enums
 -----
@@ -21,5 +21,5 @@ Enums
 .. autosummary::
    :toctree: _autosummary
 
-   CellType
-   DesignMode
+   cell.CellType
+   cell.DesignMode

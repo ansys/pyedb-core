@@ -2,7 +2,7 @@
 
 import ansys.api.edb.v1.via_layer_pb2 as via_layer_pb2
 
-from ansys.edb.core.layer import StackupLayer
+from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.session import get_via_layer_stub
 
 

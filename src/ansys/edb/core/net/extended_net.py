@@ -33,7 +33,7 @@ class ExtendedNet(net_class.NetClass):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the extended net in.
         name : str
             Name of the extended net.
@@ -53,7 +53,7 @@ class ExtendedNet(net_class.NetClass):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the extended net.
         name : str
             Name of the extended net.
@@ -61,7 +61,7 @@ class ExtendedNet(net_class.NetClass):
         Returns
         -------
         ExtendedNet
-            Extended net that was found. Check the :obj:`is_null <ansys.edb.core.net.ExtendedNet.is_null>`
+            Extended net that was found. Check the :obj:`is_null <.ExtendedNet.is_null>`
             property of the extended net to see if it exists.
         """
         return ExtendedNet(

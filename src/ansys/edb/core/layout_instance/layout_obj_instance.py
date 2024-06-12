@@ -1,10 +1,9 @@
 """Layout object instance."""
 
-from ansys.edb.core.inner import ObjBase, parser, utils
-from ansys.edb.core.inner.factory import create_conn_obj
+from ansys.edb.core.inner import ObjBase, factory, parser, utils
 from ansys.edb.core.inner.messages import bool_property_message, layer_ref_property_message
-from ansys.edb.core.layer import Layer
-from ansys.edb.core.layout_instance.layout_instance_context import LayoutInstanceContext
+from ansys.edb.core.layer.layer import Layer
+from ansys.edb.core.layout_instance import layout_instance_context
 from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import (
     LayoutObjInstance2DGeometry,
 )
@@ -33,7 +32,7 @@ class LayoutObjInstance(ObjBase):
 
     @property
     def layers(self):
-        """:obj:`list` of :class:`ansys.edb.core.layer.Layer`: All layer instances.
+        """:obj:`list` of :class:`.Layer`: All layer instances.
 
         This list contains the layer` instances that the layout object instance has geometry on.
         """
@@ -44,7 +43,7 @@ class LayoutObjInstance(ObjBase):
 
         Parameters
         ----------
-        layer : :class:`Layer <ansys.edb.core.layer.Layer>` or str
+        layer : :class:`.Layer` or str
            Layer.
 
         Returns
@@ -58,8 +57,8 @@ class LayoutObjInstance(ObjBase):
     def context(self):
         r""":obj:`list`\[:obj:`str`\]: All strings representing the context of the layout object instance.
 
-        This list of strings is a list of :class:`cell instance <ansys.edb.core.hierarchy.CellInstance>` names
-        representing the hierarchy level this layout obj instance's :class:`context <LayoutInstanceContext>`
+        This list of strings is a list of :class:`.CellInstance`
+        names representing the hierarchy level this layout obj instance's :class:`context <.LayoutInstanceContext>`
         resides on. The first entry represents the top-level context and the last entry represents
         the context that the layout object instance exists in.
 
@@ -73,7 +72,9 @@ class LayoutObjInstance(ObjBase):
 
         This property is read-only.
         """
-        return LayoutInstanceContext(self.__stub.GetLayoutInstanceContext(self.msg))
+        return layout_instance_context.LayoutInstanceContext(
+            self.__stub.GetLayoutInstanceContext(self.msg)
+        )
 
     @property
     def layout_obj(self):
@@ -82,7 +83,7 @@ class LayoutObjInstance(ObjBase):
 
         This property is read-only.
         """
-        return create_conn_obj(self.__stub.GetLayoutObj(self.msg))
+        return factory.create_conn_obj(self.__stub.GetLayoutObj(self.msg))
 
     @parser.to_polygon_data
     def get_bbox(self, local=False):
@@ -91,12 +92,12 @@ class LayoutObjInstance(ObjBase):
         Parameters
         ----------
         local : bool
-            Whether to return the bounding box in the local :class:`context <LayoutInstanceContext>`.
+            Whether to return the bounding box in the local :class:`context <.LayoutInstanceContext>`.
             If ``False``, the bounding box is returned in the global context.
 
         Returns
         -------
-        :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        :class:`.PolygonData`
             Bounding box of the layout object instance.
         """
         return self.__stub.GetBBox(bool_property_message(self, local))

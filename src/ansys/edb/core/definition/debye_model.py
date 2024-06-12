@@ -86,7 +86,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def is_relative_permitivity_enabled_at_optical_frequency(self):
-        """bool: Flag indicating if the relative permitivity at optical frequency is enabled."""
+        """:obj:`bool`: Flag indicating if the relative permitivity at optical frequency is enabled."""
         return self.__stub.IsRelativePermitivityEnabledAtOpticalFrequency(self.msg).value
 
     @is_relative_permitivity_enabled_at_optical_frequency.setter
@@ -97,7 +97,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def use_dc_conductivity(self):
-        """bool: Flag indicating if the DC conductivity nominal value is used."""
+        """:obj:`bool`: Flag indicating if the DC conductivity nominal value is used."""
         return self.__stub.UseDCConductivity(self.msg).value
 
     @use_dc_conductivity.setter

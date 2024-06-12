@@ -16,7 +16,7 @@ from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.session import SimulationSetupServiceStub, StubAccessor, StubType
-from ansys.edb.core.simulation_setup import MatrixConvergenceDataEntry
+from ansys.edb.core.simulation_setup.adaptive_solutions import MatrixConvergenceDataEntry
 
 
 class SimulationSetupType(Enum):
@@ -403,7 +403,7 @@ class SimulationSetup(ObjBase):
 
     @property
     def sweep_data(self):
-        """:obj:`list` of :class:`SweepData`: Frequency sweeps of the simulation setup."""
+        """:obj:`list` of :class:`.SweepData`: Frequency sweeps of the simulation setup."""
         sweep_data = []
         for sweep_data_msg in self.__stub.GetSweepData(self.msg).sweep_data:
             sweep_data.append(_msg_to_sweep_data(sweep_data_msg))
@@ -422,7 +422,7 @@ class SimulationSetup(ObjBase):
 
     @property
     def type(self):
-        """:class:`SimulationSetupType`: Type of the simulation setup."""
+        """:class:`.SimulationSetupType`: Type of the simulation setup."""
         return SimulationSetupType(self.__stub.GetType(self.msg).type)
 
     def cast(self):
@@ -432,12 +432,12 @@ class SimulationSetup(ObjBase):
         -------
         SimulationSetup
         """
-        from ansys.edb.core.simulation_setup import (
-            HfssSimulationSetup,
-            RaptorXSimulationSetup,
+        from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
+        from ansys.edb.core.simulation_setup.raptor_x_simulation_setup import RaptorXSimulationSetup
+        from ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup import (
             SIWaveDCIRSimulationSetup,
-            SIWaveSimulationSetup,
         )
+        from ansys.edb.core.simulation_setup.siwave_simulation_setup import SIWaveSimulationSetup
 
         if self.is_null:
             return

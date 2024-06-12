@@ -4,7 +4,7 @@ Primitives
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.primitive
+.. currentmodule:: ansys.edb.core.primitive.primitive
 
 .. autosummary::
    :toctree: _autosummary

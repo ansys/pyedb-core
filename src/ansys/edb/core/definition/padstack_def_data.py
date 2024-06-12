@@ -11,7 +11,8 @@ import google.protobuf.empty_pb2 as empty_pb2
 
 from ansys.edb.core.inner import ObjBase, messages, parser
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value, conversions
+from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility.value import Value
 
 
 class _PadstackDefDataQueryBuilder:
@@ -304,26 +305,26 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple[:class:`PadGeometryType`, list of :class:`Value <ansys.edb.core.utility.Value>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`,
-        :class:`Value <ansys.edb.core.utility.Value>`]
+        tuple[:class:`PadGeometryType`, list of :class:`.Value`, \
+        :class:`.Value`, :class:`.Value`,
+        :class:`.Value`]
 
         or
 
-        tuple[:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`]
+        tuple[:class:`.PolygonData`, \
+        :class:`.Value`, \
+        :class:`.Value`, :class:`.Value`]
 
-        The tuple is in this format for other than polygons: ``(pad_type, sizes, offset_x, offset_y, rotation)``.
+            The tuple is in this format for other than polygons: ``(pad_type, sizes, offset_x, offset_y, rotation)``.
 
-        For polygons, the tuple is in this format: ``(fp, offset_x, offset_y, rotation)``.
+            For polygons, the tuple is in this format: ``(fp, offset_x, offset_y, rotation)``.
 
-        - ``pad_type``: Pad type
-        - ``sizes``: Pad parameters
-        - ``offset_x``: X offset
-        - ``offset_y``: Y offset
-        - ``rotation``: Rotation
-        - ``fp``: Polygon geometry
+            - ``pad_type``: Pad type
+            - ``sizes``: Pad parameters
+            - ``offset_x``: X offset
+            - ``offset_y``: Y offset
+            - ``rotation``: Rotation
+            - ``fp``: Polygon geometry
         """
         message = self.__stub.GetPadParameters(
             _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
@@ -358,17 +359,17 @@ class PadstackDefData(ObjBase):
             Layer name.
         pad_type : PadType
             Pad type.
-        offset_x : :class:`Value <ansys.edb.core.utility.Value>`
+        offset_x : :class:`.Value`
             X offset.
-        offset_y : :class:`Value <ansys.edb.core.utility.Value>`
+        offset_y : :class:`.Value`
             Y offset.
-        rotation : :class:`Value <ansys.edb.core.utility.Value>`
+        rotation : :class:`.Value`
             Rotation.
         type_geom : PadGeometryType, default: None
             Pad geometry type. The default is ``None`` if setting polygonal pad parameters.
-        sizes : List[:class:`Value <ansys.edb.core.utility.Value>`], default: None
+        sizes : List[:class:`.Value`], default: None
             List of pad sizes. The default is ``None`` if setting polygonal pad parameters.
-        fp : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`, default: None
+        fp : :class:`.PolygonData`, default: None
             Polygon geometry. The default is ``None`` if not setting polygonal pad parameters.
         """
         self.__stub.SetPadParameters(
@@ -383,16 +384,15 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple[:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`, :class:`Value <ansys.edb.core.utility.Value>`]
+        tuple[:class:`.PolygonData`, \
+        :class:`.Value`, \
+        :class:`.Value`, :class:`.Value`]
+            The tuple is in this format: ``(fp, offset_x, offset_y, rotation)``.
 
-        The tuple is in this format: ``(fp, offset_x, offset_y, rotation)``.
-
-        - ``fp``: Polygon geometry
-        - ``offset_x``: X offset
-        - ``offset_y``: Y offset
-        - ``rotation`` : Rotation
+            - ``fp``: Polygon geometry
+            - ``offset_x``: X offset
+            - ``offset_y``: Y offset
+            - ``rotation`` : Rotation
         """
         return self.get_pad_parameters(None, PadType.HOLE)
 
@@ -402,15 +402,15 @@ class PadstackDefData(ObjBase):
 
         Parameters
         ----------
-        offset_x : :class:`Value <ansys.edb.core.utility.Value>`
+        offset_x : :class:`.Value`
             X offset.
-        offset_y : :class:`Value <ansys.edb.core.utility.Value>`
+        offset_y : :class:`.Value`
             Y offset.
-        rotation : :class:`Value <ansys.edb.core.utility.Value>`
+        rotation : :class:`.Value`
             Rotation.
         type_geom : PadGeometryType
             Pad geometry type.
-        sizes : List[:class:`Value <ansys.edb.core.utility.Value>`]
+        sizes : List[:class:`.Value`]
             List of pad sizes.
         """
         return self.set_pad_parameters(
@@ -430,7 +430,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def plating_percentage(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Hole plating percentage."""
+        """:class:`.Value`: Hole plating percentage."""
         return Value(self.__stub.GetPlatingPercentage(self.msg))
 
     @plating_percentage.setter
@@ -469,8 +469,8 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_param(self):
-        """:obj:`tuple` of [:class:`Value <ansys.edb.core.utility.Value>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`]: Solder ball parameters ``(d1, d2)`` \
+        """:obj:`tuple` of [:class:`.Value`, \
+        :class:`.Value`]: Solder ball parameters ``(d1, d2)`` \
         in their original values in the database.
 
         - ``d1`` is the diameter for a cylinder solder ball or the top diameter for a spheroid
@@ -515,12 +515,11 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple[:class:`geometry.PointData`, :class:`ConnectionPtDirection`]
+        tuple[:class:`.PointData`, :class:`ConnectionPtDirection`]
+            The tuple is in a ``(position, direction)`` format:
 
-        The tuple is in a ``(position, direction)`` format:
-
-        - ``position``: Position of the connection point.
-        - ``direction``: Direction of the connection point.
+            - ``position``: Position of the connection point.
+            - ``direction``: Direction of the connection point.
         """
         msg = self.__stub.GetConnectionPt(
             _PadstackDefDataQueryBuilder.padstack_def_data_get_connection_pt_message(self, layer)

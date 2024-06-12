@@ -33,7 +33,7 @@ class ConnObj(layout_obj.LayoutObj):
         """Verify that the object type received from the server matches the object type requested by the client."""
         client_obj = cls(edb_obj_msg)
         if cls.layout_obj_type == LayoutObjType.PRIMITIVE:
-            import ansys.edb.core.primitive as primitive
+            import ansys.edb.core.primitive.primitive as primitive
 
             def get_client_prim_type_from_class():
                 if cls == primitive.Circle:
@@ -54,9 +54,9 @@ class ConnObj(layout_obj.LayoutObj):
             if get_client_prim_type_from_class() == primitive.Primitive(edb_obj_msg).primitive_type:
                 return client_obj
         elif cls.layout_obj_type == LayoutObjType.TERMINAL:
-            import ansys.edb.core.terminal as terminal
+            from ansys.edb.core.terminal import terminals
 
-            server_term_type = terminal.Terminal(edb_obj_msg).type
+            server_term_type = terminals.Terminal(edb_obj_msg).type
             if client_obj.type == server_term_type:
                 return client_obj
         else:
@@ -69,7 +69,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the :term:`Connectable` object.
         uid : int
             Database ID.
@@ -99,16 +99,16 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def component(self):
-        """:class:`ComponentGroup <ansys.edb.core.hierarchy.ComponentGroup>`: \
+        """:class:`.ComponentGroup`: \
         Component of the :term:`Connectable` object."""
-        from ansys.edb.core.hierarchy import ComponentGroup
+        from ansys.edb.core.hierarchy.component_group import ComponentGroup
 
         return ComponentGroup(self.__stub.GetComponent(self.msg))
 
     @property
     def group(self):
-        """:class:`Group <ansys.edb.core.hierarchy.Group>`: Group of the :term:`Connectable` object."""
-        from ansys.edb.core.hierarchy import Group
+        """:class:`.Group` object."""
+        from ansys.edb.core.hierarchy.group import Group
 
         return Group(self.__stub.GetGroup(self.msg)).cast()
 
@@ -118,11 +118,11 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def net(self):
-        """:class:`Net <ansys.edb.core.net.Net>`: Net of the :term:`Connectable` object.
+        """:class:`.Net`: Net of the :term:`Connectable` object.
 
-        This property can be set with a :class:`Net <ansys.edb.core.net.Net>` instance, a string, or ``None``.
+        This property can be set with a :class:`.Net` instance, a string, or ``None``.
         """
-        from ansys.edb.core.net import Net
+        from ansys.edb.core.net.net import Net
 
         return Net(self.__stub.GetNet(self.msg))
 
@@ -135,7 +135,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Returns
         -------
-        :class:`McadModel <ansys.edb.core.layout.McadModel>`
+        :class:`.McadModel`
             Stride model created.
         """
         return mm.McadModel.create_stride(connectable=self)
@@ -145,7 +145,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Returns
         -------
-        :class:`McadModel <ansys.edb.core.layout.McadModel>`
+        :class:`.McadModel`
             HFSS model created.
         """
         return mm.McadModel.create_hfss(connectable=self)
@@ -155,7 +155,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Returns
         -------
-        :class:`McadModel <ansys.edb.core.layout.McadModel>`
+        :class:`.McadModel`
             3D composite model created.
         """
         return mm.McadModel.create_3d_comp(connectable=self)

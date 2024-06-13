@@ -52,72 +52,6 @@ class _PadstackDefDataQueryBuilder:
                 )
             )
 
-    @staticmethod
-    def padstack_def_data_padstack_hole_range_message(hole_range):
-        return pb.PadstackDefDataPadstackHoleRangeMessage(hole_range=hole_range.value)
-
-    @staticmethod
-    def padstack_def_data_set_hole_range_message(target, hole_range):
-        return pb.PadstackDefDataSetHoleRangeMessage(target=target.msg, hole_range=hole_range.value)
-
-    @staticmethod
-    def padstack_def_data_set_plating_percentage(target, plating_percentage):
-        return pb.PadstackDefDataSetPlatingPercentage(
-            target=target.msg, plating_percentage=messages.value_message(plating_percentage)
-        )
-
-    @staticmethod
-    def padstack_def_data_solderball_shape_message(solderball_shape):
-        return pb.PadstackDefDataSolderballShapeMessage(solderball_shape=solderball_shape)
-
-    @staticmethod
-    def padstack_def_data_set_solderball_shape_message(target, solderball_shape):
-        return pb.PadstackDefDataSetSolderballShapeMessage(
-            target=target.msg, solderball_shape=solderball_shape.value
-        )
-
-    @staticmethod
-    def padstack_def_data_solderball_placement_message(target, solderball_placement):
-        return pb.PadstackDefDataSolderballPlacementMessage(
-            target=target.msg, solderball_placement=solderball_placement
-        )
-
-    @staticmethod
-    def padstack_def_data_set_solderball_placement_message(target, solderball_placement):
-        return pb.PadstackDefDataSetSolderballPlacementMessage(
-            target=target.msg, solderball_placement=solderball_placement.value
-        )
-
-    @staticmethod
-    def padstack_def_data_get_solder_ball_param_message(d1, d2):
-        return pb.PadstackDefDataGetSolderBallParamMessage(
-            d1=messages.value_message(d1), d2=messages.value_message(d2)
-        )
-
-    @staticmethod
-    def padstack_def_data_set_solder_ball_param_message(target, d1, d2):
-        return pb.PadstackDefDataSetSolderBallParamMessage(
-            target=target.msg, d1=messages.value_message(d1), d2=messages.value_message(d2)
-        )
-
-    @staticmethod
-    def padstack_def_data_set_solder_ball_material_message(target, material):
-        return pb.PadstackDefDataSetSolderBallMaterialMessage(target=target.msg, material=material)
-
-    @staticmethod
-    def padstack_def_data_get_connection_pt_message(target, layer):
-        return pb.PadstackDefDataGetConnectionPtMessage(target=target.msg, layer=layer)
-
-    @staticmethod
-    def padstack_def_data_set_connection_pt_message(target, layer, position, direction):
-        return pb.PadstackDefDataSetConnectionPtMessage(
-            target=target.msg,
-            layer=layer,
-            x=messages.value_message(position.x),
-            y=messages.value_message(position.y),
-            direction=direction.value,
-        )
-
 
 class PadType(Enum):
     """Provides an enum representing pad types."""
@@ -284,12 +218,7 @@ class PadstackDefData(ObjBase):
             - ``fp``: Polygon geometry
         """
         message = self.__stub.GetPadParameters(
-            pb.PadstackDefDataGetPadParametersMessage(
-                target=self.msg,
-                layer_name=layer if isinstance(layer, str) else None,
-                layer_id=layer if isinstance(layer, int) else None,
-                pad_type=pad_type.value,
-            )
+            PadstackDefData._padstack_def_data_get_pad_parameters_message(self, layer, pad_type)
         )
         if message.HasField("generic"):
             return (
@@ -332,11 +261,34 @@ class PadstackDefData(ObjBase):
         fp : :class:`.PolygonData`, default: None
             Polygon geometry. The default is ``None`` if not setting polygonal pad parameters.
         """
-        self.__stub.SetPadParameters(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_pad_parameters_message(
-                self, layer, pad_type, offset_x, offset_y, rotation, type_geom, sizes, fp
+        p1 = PadstackDefData._padstack_def_data_get_pad_parameters_message(self, layer, pad_type)
+        message = None
+        if fp is None:
+            p2 = pb.PadstackDefDataGetPadParametersParametersMessage(
+                geometry_type=type_geom.value,
+                sizes=[messages.value_message(val) for val in sizes],
+                offset_x=messages.value_message(offset_x),
+                offset_y=messages.value_message(offset_y),
+                rotation=messages.value_message(rotation),
             )
-        )
+            message = pb.PadstackDefDataPadParametersSetMessage(
+                generic=pb.PadstackDefDataSetPadParametersMessage(
+                    params1=p1,
+                    params2=p2,
+                )
+            )
+        else:
+            message = pb.PadstackDefDataPadParametersSetMessage(
+                polygon=pb.PadstackDefDataSetPolygonalPadParametersMessage(
+                    params1=p1,
+                    fp=messages.polygon_data_message(fp),
+                    offset_x=messages.value_message(offset_x),
+                    offset_y=messages.value_message(offset_y),
+                    rotation=messages.value_message(rotation),
+                )
+            )
+
+        self.__stub.SetPadParameters(message)
 
     def get_hole_parameters(self):
         """
@@ -508,4 +460,13 @@ class PadstackDefData(ObjBase):
                 y=messages.value_message(pos.y),
                 direction=direction.value,
             )
+        )
+
+    @staticmethod
+    def _padstack_def_data_get_pad_parameters_message(target, layer, pad_type):
+        return pb.PadstackDefDataGetPadParametersMessage(
+            target=target.msg,
+            layer_name=layer if isinstance(layer, str) else None,
+            layer_id=layer if isinstance(layer, int) else None,
+            pad_type=pad_type.value,
         )

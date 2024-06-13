@@ -30,7 +30,7 @@ class PadstackDef(ObjBase):
         PadstackDef
             Padstack definition created.
         """
-        return PadstackDef(cls.__stub.Create(pb.PadstackDefStringMessage(target=db.msg, name=name)))
+        return PadstackDef(cls.__stub.Create(PadstackDef._padstack_def_string_message(db, name)))
 
     @classmethod
     def find_by_name(cls, db, name):
@@ -49,7 +49,7 @@ class PadstackDef(ObjBase):
             Padstack definition found.
         """
         return PadstackDef(
-            cls.__stub.FindByName(pb.PadstackDefStringMessage(target=db.msg, name=name))
+            cls.__stub.FindByName(PadstackDef._padstack_def_string_message(db, name))
         )
 
     @property
@@ -78,3 +78,19 @@ class PadstackDef(ObjBase):
     def delete(self):
         """Delete the padstack definition."""
         self.__stub.Delete(self.msg)
+
+    @staticmethod
+    def _padstack_def_string_message(target, name):
+        """Create a string message for the padstack definition.
+
+        Parameters
+        ----------
+        target : :class:`.Database` or PadstackDef
+        name : str
+           Name of the string message.
+
+        Returns
+        -------
+        PadstackDefStringMessage
+        """
+        return pb.PadstackDefStringMessage(target=target.msg, name=name)

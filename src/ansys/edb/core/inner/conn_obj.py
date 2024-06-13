@@ -7,21 +7,6 @@ from ansys.edb.core.layout import mcad_model as mm
 from ansys.edb.core.session import ConnectableServiceStub, StubAccessor, StubType
 
 
-class _QueryBuilder:
-    @staticmethod
-    def find_id_layout_obj_message(layout, type, id):
-        return connectable_pb2.FindByIdLayoutObjMessage(
-            layout=layout.msg, type=type.value, id_msg=messages.edb_internal_id_message(id)
-        )
-
-    @staticmethod
-    def set_net_message(target, net):
-        return connectable_pb2.SetNetMessage(
-            target=target.msg,
-            net=messages.net_ref_message(net),
-        )
-
-
 class ConnObj(layout_obj.LayoutObj):
     """Provides the base class representing the connection object."""
 
@@ -80,8 +65,10 @@ class ConnObj(layout_obj.LayoutObj):
             Connectable object with the given database ID.
         """
         found_edb_obj_msg = cls.__stub.FindByIdAndType(
-            _QueryBuilder.find_id_layout_obj_message(
-                layout=layout, type=cls.layout_obj_type, id=uid
+            connectable_pb2.FindByIdLayoutObjMessage(
+                layout=layout.msg,
+                type=cls.layout_obj_type.value,
+                id_msg=messages.edb_internal_id_message(uid),
             )
         )
         return cls._validate_edb_obj_type(found_edb_obj_msg)
@@ -128,7 +115,12 @@ class ConnObj(layout_obj.LayoutObj):
 
     @net.setter
     def net(self, net):
-        self.__stub.SetNet(_QueryBuilder.set_net_message(self, net))
+        self.__stub.SetNet(
+            connectable_pb2.SetNetMessage(
+                target=self.msg,
+                net=messages.net_ref_message(net),
+            )
+        )
 
     def create_stride(self):
         """Create a Stride model from an MCAD file.

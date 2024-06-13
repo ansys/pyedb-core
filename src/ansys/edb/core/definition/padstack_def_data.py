@@ -14,45 +14,6 @@ from ansys.edb.core.utility import conversions
 from ansys.edb.core.utility.value import Value
 
 
-class _PadstackDefDataQueryBuilder:
-    """Provides for creating gRPC messages for padstack data definition."""
-
-    @staticmethod
-    def padstack_def_data_set_pad_parameters_message(
-        target, layer, pad_type, offset_x, offset_y, rotation, type_geom, sizes, fp
-    ):
-        p1 = pb.PadstackDefDataGetPadParametersMessage(
-            target=target.msg,
-            layer_name=layer if isinstance(layer, str) else None,
-            layer_id=layer if isinstance(layer, int) else None,
-            pad_type=pad_type.value,
-        )
-        if fp is None:
-            p2 = pb.PadstackDefDataGetPadParametersParametersMessage(
-                geometry_type=type_geom.value,
-                sizes=[messages.value_message(val) for val in sizes],
-                offset_x=messages.value_message(offset_x),
-                offset_y=messages.value_message(offset_y),
-                rotation=messages.value_message(rotation),
-            )
-            return pb.PadstackDefDataPadParametersSetMessage(
-                generic=pb.PadstackDefDataSetPadParametersMessage(
-                    params1=p1,
-                    params2=p2,
-                )
-            )
-        else:
-            return pb.PadstackDefDataPadParametersSetMessage(
-                polygon=pb.PadstackDefDataSetPolygonalPadParametersMessage(
-                    params1=p1,
-                    fp=messages.polygon_data_message(fp),
-                    offset_x=messages.value_message(offset_x),
-                    offset_y=messages.value_message(offset_y),
-                    rotation=messages.value_message(rotation),
-                )
-            )
-
-
 class PadType(Enum):
     """Provides an enum representing pad types."""
 

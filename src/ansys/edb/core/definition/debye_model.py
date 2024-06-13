@@ -35,14 +35,7 @@ class DebyeModel(DielectricMaterialModel):
     def frequency_range(self, freq):
         low = freq[0]
         high = freq[1]
-        self.__stub.SetFrequencyRange(
-            pb.SetFrequencyRangeMessage(
-                target=self.msg,
-                range=pb.FrequencyRangeMessage(
-                    low=messages.double_message(low), high=messages.double_message(high)
-                ),
-            )
-        )
+        self.__stub.SetFrequencyRange(DebyeModel._set_frequency_range_message(self, low, high))
 
     @property
     def relative_permitivity_at_high_low_frequency(self):
@@ -57,12 +50,7 @@ class DebyeModel(DielectricMaterialModel):
         low = freq[0]
         high = freq[1]
         self.__stub.SetRelativePermitivityAtHighLowFrequency(
-            pb.SetFrequencyRangeMessage(
-                target=self.msg,
-                range=pb.FrequencyRangeMessage(
-                    low=messages.double_message(low), high=messages.double_message(high)
-                ),
-            )
+            DebyeModel._set_frequency_range_message(self, low, high)
         )
 
     @property
@@ -76,12 +64,7 @@ class DebyeModel(DielectricMaterialModel):
         low = freq[0]
         high = freq[1]
         self.__stub.SetLossTangentAtHighLowFrequency(
-            pb.SetFrequencyRangeMessage(
-                target=self.msg,
-                range=pb.FrequencyRangeMessage(
-                    low=messages.double_message(low), high=messages.double_message(high)
-                ),
-            )
+            DebyeModel._set_frequency_range_message(self, low, high)
         )
 
     @property
@@ -123,3 +106,16 @@ class DebyeModel(DielectricMaterialModel):
     @dc_conductivity.setter
     def dc_conductivity(self, conductivity):
         self.__stub.SetDCConductivity(messages.double_property_message(self, conductivity))
+
+    @staticmethod
+    def _frequency_range_message(low, high):
+        return pb.FrequencyRangeMessage(
+            low=messages.double_message(low), high=messages.double_message(high)
+        )
+
+    @staticmethod
+    def _set_frequency_range_message(target, low, high):
+        return pb.SetFrequencyRangeMessage(
+            target=target.msg,
+            range=DebyeModel._frequency_range_message(low, high),
+        )

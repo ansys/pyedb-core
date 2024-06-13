@@ -1008,107 +1008,6 @@ class Path(Primitive):
         return True
 
 
-class _BondwireQueryBuilder:
-    @staticmethod
-    def create(
-        layout,
-        net,
-        bondwire_type,
-        definition_name,
-        placement_layer,
-        width,
-        material,
-        start_context,
-        start_layer_name,
-        start_x,
-        start_y,
-        end_context,
-        end_layer_name,
-        end_x,
-        end_y,
-    ):
-        return bondwire_pb2.BondwireCreateMessage(
-            layout=layout.msg,
-            net=messages.net_ref_message(net),
-            bondwire_type=bondwire_type.value,
-            definition_name=definition_name,
-            placement_layer=placement_layer,
-            width=messages.value_message(width),
-            material=material,
-            start_context=messages.edb_obj_message(start_context),
-            start_layer_name=start_layer_name,
-            start_x=messages.value_message(start_x),
-            start_y=messages.value_message(start_y),
-            end_context=messages.edb_obj_message(end_context),
-            end_layer_name=end_layer_name,
-            end_x=messages.value_message(end_x),
-            end_y=messages.value_message(end_y),
-        )
-
-    @staticmethod
-    def bondwire_bool_message(b, evaluated):
-        return bondwire_pb2.BondwireBoolMessage(target=b.msg, evaluated=evaluated)
-
-    @staticmethod
-    def set_material_message(b, material):
-        return bondwire_pb2.SetMaterialMessage(target=b.msg, material=material)
-
-    @staticmethod
-    def set_bondwire_type_message(b, bondwire_type):
-        return bondwire_pb2.SetBondwireTypeMessage(target=b.msg, type=bondwire_type.value)
-
-    @staticmethod
-    def get_cross_section_type_message(bondwire_cross_section_type):
-        return bondwire_pb2.GetCrossSectionTypeMessage(type=bondwire_cross_section_type.value)
-
-    @staticmethod
-    def set_cross_section_type_message(b, bondwire_cross_section_type):
-        return bondwire_pb2.SetCrossSectionTypeMessage(
-            target=b.msg, type=bondwire_cross_section_type.value
-        )
-
-    @staticmethod
-    def set_cross_section_height_message(b, height):
-        return bondwire_pb2.SetCrossSectionHeightMessage(
-            target=b.msg, height=messages.value_message(height)
-        )
-
-    @staticmethod
-    def set_definition_name_message(b, definition_name):
-        return bondwire_pb2.SetDefinitionNameMessage(target=b.msg, definition_name=definition_name)
-
-    @staticmethod
-    def get_elevation_message(b, cell_instance):
-        return bondwire_pb2.GetElevationMessage(
-            bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance)
-        )
-
-    @staticmethod
-    def set_elevation_message(b, cell_instance, lyrname):
-        return bondwire_pb2.SetElevationMessage(
-            target=_BondwireQueryBuilder.get_elevation_message(b, cell_instance), lyrname=lyrname
-        )
-
-    @staticmethod
-    def bondwire_value_message(b, value):
-        return bondwire_pb2.BondwireValueMessage(target=b.msg, value=messages.value_message(value))
-
-    @staticmethod
-    def bondwire_traj_message(x1, y1, y2, x2):
-        return bondwire_pb2.BondwireTrajMessage(
-            x1=messages.value_message(x1),
-            y1=messages.value_message(y1),
-            x2=messages.value_message(x2),
-            y2=messages.value_message(y2),
-        )
-
-    @staticmethod
-    def set_bondwire_traj_message(b, x1, y1, y2, x2):
-        return bondwire_pb2.SetBondwireTrajMessage(
-            target=b.msg, traj=_BondwireQueryBuilder.bondwire_traj_message(x1, y1, x2, y2)
-        )
-
-
 class Bondwire(Primitive):
     """Represents a bondwire object."""
 
@@ -1175,22 +1074,22 @@ class Bondwire(Primitive):
         """
         return Bondwire(
             cls.__stub.Create(
-                _BondwireQueryBuilder.create(
-                    layout,
-                    net,
-                    bondwire_type,
-                    definition_name,
-                    placement_layer,
-                    width,
-                    material,
-                    start_context,
-                    start_layer_name,
-                    start_x,
-                    start_y,
-                    end_context,
-                    end_layer_name,
-                    end_x,
-                    end_y,
+                bondwire_pb2.BondwireCreateMessage(
+                    layout=layout.msg,
+                    net=messages.net_ref_message(net),
+                    bondwire_type=bondwire_type.value,
+                    definition_name=definition_name,
+                    placement_layer=placement_layer,
+                    width=messages.value_message(width),
+                    material=material,
+                    start_context=messages.edb_obj_message(start_context),
+                    start_layer_name=start_layer_name,
+                    start_x=messages.value_message(start_x),
+                    start_y=messages.value_message(start_y),
+                    end_context=messages.edb_obj_message(end_context),
+                    end_layer_name=end_layer_name,
+                    end_x=messages.value_message(end_x),
+                    end_y=messages.value_message(end_y),
                 )
             )
         )
@@ -1208,7 +1107,7 @@ class Bondwire(Primitive):
         str
             Material name.
         """
-        return self.__stub.GetMaterial(_BondwireQueryBuilder.bondwire_bool_message(self, evaluated))
+        return self.__stub.GetMaterial(Bondwire._bondwire_bool_message(self, evaluated))
 
     def set_material(self, material):
         """Set the material of the bondwire.
@@ -1218,7 +1117,7 @@ class Bondwire(Primitive):
         material : str
             Material name.
         """
-        self.__stub.SetMaterial(_BondwireQueryBuilder.set_material_message(self, material))
+        self.__stub.SetMaterial(bondwire_pb2.SetMaterialMessage(target=self.msg, material=material))
 
     @property
     def type(self):
@@ -1228,7 +1127,9 @@ class Bondwire(Primitive):
 
     @type.setter
     def type(self, bondwire_type):
-        self.__stub.SetType(_BondwireQueryBuilder.set_bondwire_type_message(self, bondwire_type))
+        self.__stub.SetType(
+            bondwire_pb2.SetBondwireTypeMessage(target=self.msg, type=bondwire_type.value)
+        )
 
     @property
     def cross_section_type(self):
@@ -1238,7 +1139,7 @@ class Bondwire(Primitive):
     @cross_section_type.setter
     def cross_section_type(self, bondwire_type):
         self.__stub.SetCrossSectionType(
-            _BondwireQueryBuilder.set_cross_section_type_message(self, bondwire_type)
+            bondwire_pb2.SetCrossSectionTypeMessage(target=self.msg, type=bondwire_type.value)
         )
 
     @property
@@ -1249,7 +1150,9 @@ class Bondwire(Primitive):
     @cross_section_height.setter
     def cross_section_height(self, height):
         self.__stub.SetCrossSectionHeight(
-            _BondwireQueryBuilder.set_cross_section_height_message(self, height)
+            bondwire_pb2.SetCrossSectionHeightMessage(
+                target=self.msg, height=messages.value_message(height)
+            )
         )
 
     def get_definition_name(self, evaluated=True):
@@ -1265,9 +1168,7 @@ class Bondwire(Primitive):
         str
             Bondwire definition name.
         """
-        return self.__stub.GetDefinitionName(
-            _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
-        ).value
+        return self.__stub.GetDefinitionName(Bondwire._bondwire_bool_message(self, evaluated)).value
 
     def set_definition_name(self, definition_name):
         """Set the definition name of a bondwire.
@@ -1278,7 +1179,7 @@ class Bondwire(Primitive):
             Bondwire definition name to set.
         """
         self.__stub.SetDefinitionName(
-            _BondwireQueryBuilder.set_definition_name_message(self, definition_name)
+            bondwire_pb2.SetDefinitionNameMessage(target=self.msg, definition_name=definition_name)
         )
 
     def get_traj(self):
@@ -1327,7 +1228,15 @@ class Bondwire(Primitive):
         y2 : :class:`.Value`
             Y value of the end point.
         """
-        self.__stub.SetTraj(_BondwireQueryBuilder.set_bondwire_traj_message(self, x1, y1, x2, y2))
+        self.__stub.SetTraj(
+            target=self.msg,
+            traj=bondwire_pb2.BondwireTrajMessage(
+                x1=messages.value_message(x1),
+                y1=messages.value_message(y1),
+                x2=messages.value_message(x2),
+                y2=messages.value_message(y2),
+            ),
+        )
 
     @property
     def width(self):
@@ -1337,7 +1246,9 @@ class Bondwire(Primitive):
 
     @width.setter
     def width(self, width):
-        self.__stub.SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
+        self.__stub.SetWidthValue(
+            bondwire_pb2.BondwireValueMessage(target=self.msg, value=messages.value_message(width))
+        )
 
     def get_start_elevation(self, start_context):
         """Get the start elevation layer of the bondwire.
@@ -1353,9 +1264,7 @@ class Bondwire(Primitive):
             Start elevation level of the bondwire.
         """
         return Layer(
-            self.__stub.GetStartElevation(
-                _BondwireQueryBuilder.get_elevation_message(self, start_context)
-            )
+            self.__stub.GetStartElevation(Bondwire._get_elevation_message(self, start_context))
         ).cast()
 
     def set_start_elevation(self, start_context, layer):
@@ -1368,9 +1277,7 @@ class Bondwire(Primitive):
         layer : str or :class:`.Layer`
             Start layer of the bondwire.
         """
-        self.__stub.SetStartElevation(
-            _BondwireQueryBuilder.set_elevation_message(self, start_context, layer)
-        )
+        self.__stub.SetStartElevation(Bondwire._set_elevation_message(self, start_context, layer))
 
     def get_end_elevation(self, end_context):
         """Get the end elevation layer of the bondwire.
@@ -1386,9 +1293,7 @@ class Bondwire(Primitive):
             End elevation layer of the bondwire.
         """
         return Layer(
-            self.__stub.GetEndElevation(
-                _BondwireQueryBuilder.get_elevation_message(self, end_context)
-            )
+            self.__stub.GetEndElevation(Bondwire._get_elevation_message(self, end_context))
         ).cast()
 
     def set_end_elevation(self, end_context, layer):
@@ -1401,8 +1306,22 @@ class Bondwire(Primitive):
         layer : str or :class:`.Layer`
             End layer of the bondwire.
         """
-        self.__stub.SetEndElevation(
-            _BondwireQueryBuilder.set_elevation_message(self, end_context, layer)
+        self.__stub.SetEndElevation(Bondwire._set_elevation_message(self, end_context, layer))
+
+    @staticmethod
+    def _bondwire_bool_message(b, evaluated):
+        return bondwire_pb2.BondwireBoolMessage(target=b.msg, evaluated=evaluated)
+
+    @staticmethod
+    def _get_elevation_message(b, cell_instance):
+        return bondwire_pb2.GetElevationMessage(
+            bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance)
+        )
+
+    @staticmethod
+    def _set_elevation_message(b, cell_instance, lyrname):
+        return bondwire_pb2.SetElevationMessage(
+            target=Bondwire._get_elevation_message(b, cell_instance), lyrname=lyrname
         )
 
 

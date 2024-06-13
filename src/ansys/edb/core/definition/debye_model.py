@@ -8,21 +8,6 @@ from ansys.edb.core.definition.dielectric_material_model import DielectricMateri
 from ansys.edb.core.inner import messages
 
 
-class _DebyeModelQueryBuilder:
-    @staticmethod
-    def frequency_range_message(low, high):
-        return pb.FrequencyRangeMessage(
-            low=messages.double_message(low), high=messages.double_message(high)
-        )
-
-    @staticmethod
-    def set_frequency_range_message(target, low, high):
-        return pb.SetFrequencyRangeMessage(
-            target=target.msg,
-            range=_DebyeModelQueryBuilder.frequency_range_message(low, high),
-        )
-
-
 class DebyeModel(DielectricMaterialModel):
     """Representa a Debye dielectric material model object."""
 
@@ -51,7 +36,12 @@ class DebyeModel(DielectricMaterialModel):
         low = freq[0]
         high = freq[1]
         self.__stub.SetFrequencyRange(
-            _DebyeModelQueryBuilder.set_frequency_range_message(self, low, high)
+            pb.SetFrequencyRangeMessage(
+                target=self.msg,
+                range=pb.FrequencyRangeMessage(
+                    low=messages.double_message(low), high=messages.double_message(high)
+                ),
+            )
         )
 
     @property
@@ -67,7 +57,12 @@ class DebyeModel(DielectricMaterialModel):
         low = freq[0]
         high = freq[1]
         self.__stub.SetRelativePermitivityAtHighLowFrequency(
-            _DebyeModelQueryBuilder.set_frequency_range_message(self, low, high)
+            pb.SetFrequencyRangeMessage(
+                target=self.msg,
+                range=pb.FrequencyRangeMessage(
+                    low=messages.double_message(low), high=messages.double_message(high)
+                ),
+            )
         )
 
     @property
@@ -81,7 +76,12 @@ class DebyeModel(DielectricMaterialModel):
         low = freq[0]
         high = freq[1]
         self.__stub.SetLossTangentAtHighLowFrequency(
-            _DebyeModelQueryBuilder.set_frequency_range_message(self, low, high)
+            pb.SetFrequencyRangeMessage(
+                target=self.msg,
+                range=pb.FrequencyRangeMessage(
+                    low=messages.double_message(low), high=messages.double_message(high)
+                ),
+            )
         )
 
     @property

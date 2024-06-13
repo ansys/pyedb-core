@@ -41,6 +41,21 @@ class BondwireDef(ObjBase):
         """Delete the bondwire definition."""
         self.__stub.Delete(self.msg)
 
+    @staticmethod
+    def _bondwire_def_str_message(obj, string):
+        """Create a bondwire definition string message.
+
+        Parameters
+        ----------
+        obj : Union[Database, 'ApdBondwireDef', 'Jedec4BondwireDef', 'Jedec5BondwireDef']
+        string : str
+
+        Returns
+        -------
+        pb.BondwireDefStrMessage
+        """
+        return pb.BondwireDefStrMessage(object=obj.msg, name=string)
+
 
 class ApdBondwireDef(BondwireDef):
     """Represents an APD bondwire definition."""
@@ -65,7 +80,7 @@ class ApdBondwireDef(BondwireDef):
         ApdBondwireDef
             APD bondwire definition created.
         """
-        bw_msg = cls.__stub.Create(pb.BondwireDefStrMessage(object=database.msg, name=name))
+        bw_msg = cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name))
         return ApdBondwireDef(bw_msg)
 
     @classmethod
@@ -79,7 +94,7 @@ class ApdBondwireDef(BondwireDef):
         name : str
             Name of the APD bondwire definition.
         """
-        cls.__stub.LoadDefinitionsFromFile(pb.BondwireDefStrMessage(object=database.msg, name=name))
+        cls.__stub.LoadDefinitionsFromFile(BondwireDef._bondwire_def_str_message(database, name))
 
     @classmethod
     def find_by_name(cls, database, name):
@@ -98,7 +113,7 @@ class ApdBondwireDef(BondwireDef):
             APD bondwire definition found.
         """
         return ApdBondwireDef(
-            cls.__stub.FindByName(pb.BondwireDefStrMessage(object=database.msg, name=name))
+            cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
         )
 
     def get_parameters(self):
@@ -119,7 +134,7 @@ class ApdBondwireDef(BondwireDef):
         name : str
             String block of the bondwire parameters.
         """
-        self.__stub.SetParameters(pb.BondwireDefStrMessage(object=self.msg, name=name))
+        self.__stub.SetParameters(BondwireDef._bondwire_def_str_message(self, name))
 
     @property
     def bondwire_type(self):
@@ -154,7 +169,7 @@ class Jedec4BondwireDef(BondwireDef):
             JEDEC4 bondwire definition created.
         """
         return Jedec4BondwireDef(
-            cls.__stub.Create(pb.BondwireDefStrMessage(object=database.msg, name=name))
+            cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name))
         )
 
     @classmethod
@@ -174,7 +189,7 @@ class Jedec4BondwireDef(BondwireDef):
             JEDEC4 bondwire definition found.
         """
         return Jedec4BondwireDef(
-            cls.__stub.FindByName(pb.BondwireDefStrMessage(object=database.msg, name=name))
+            cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
         )
 
     def get_parameters(self):
@@ -234,7 +249,7 @@ class Jedec5BondwireDef(BondwireDef):
             JEDEC5 bondwire definition created.
         """
         return Jedec5BondwireDef(
-            cls.__stub.Create(pb.BondwireDefStrMessage(object=database.msg, name=name))
+            cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name))
         )
 
     @classmethod
@@ -254,7 +269,7 @@ class Jedec5BondwireDef(BondwireDef):
             JEDEC5 bondwire definition found.
         """
         return Jedec5BondwireDef(
-            cls.__stub.FindByName(pb.BondwireDefStrMessage(object=database.msg, name=name))
+            cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
         )
 
     def get_parameters(self):

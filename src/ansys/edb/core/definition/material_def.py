@@ -32,86 +32,6 @@ class ThermalModifier(ObjBase):
     """Represents a thermal modifier model."""
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(database, name, **kwargs):
-        return pb.MaterialDefCreationMessage(
-            database=messages.edb_obj_message(database),
-            name=name,
-            properties=messages.material_properties_message(**kwargs),
-        )
-
-    @staticmethod
-    def tensor_pos_message(col, row):
-        return pb.TensorPositionMessage(
-            col=col,
-            row=row,
-        )
-
-    @staticmethod
-    def set_property(material_def, material_property, value, component, col, row):
-        msg_params = {
-            "materialDef": messages.edb_obj_message(material_def),
-            "propertyId": material_property.value,
-            "value": messages.value_message(value),
-        }
-        if component is not None:
-            msg_params["component"] = messages.edb_internal_id_message(component)
-        elif row is not None and col is not None:
-            msg_params["tensor"] = _QueryBuilder.tensor_pos_message(col, row)
-        return pb.MaterialDefSetPropertyMessage(**msg_params)
-
-    @staticmethod
-    def get_property(material_def, material_property, component, col, row):
-        msg_params = {
-            "materialDef": messages.edb_obj_message(material_def),
-            "propertyId": material_property.value,
-        }
-        if component is not None:
-            msg_params["component"] = messages.edb_internal_id_message(component)
-        elif row is not None and col is not None:
-            msg_params["tensor"] = _QueryBuilder.tensor_pos_message(col, row)
-        return pb.MaterialDefGetPropertyMessage(**msg_params)
-
-    @staticmethod
-    def material_def_get_property_message(material_def, material_property_id):
-        return pb.MaterialDefPropertyMessage(
-            materialDef=messages.edb_obj_message(material_def),
-            propertyId=material_property_id.value,
-        )
-
-    @staticmethod
-    def material_def_set_thermal_modifier_message(
-        material_def, material_property_id, thermal_modifier
-    ):
-        return pb.SetMaterialDefPropertyMessage(
-            materialDef=messages.edb_obj_message(material_def),
-            propertyId=material_property_id.value,
-            thermal_modifier=messages.edb_obj_message(thermal_modifier),
-        )
-
-    @staticmethod
-    def material_def_get_anisotropic_thermal_modifier_message(
-        material_def, material_property_id, component
-    ):
-        return pb.MaterialDefPropertyComponentMessage(
-            materialDef=messages.edb_obj_message(material_def),
-            propertyId=material_property_id.value,
-            component=component,
-        )
-
-    @staticmethod
-    def material_def_set_anisotropic_thermal_modifier_message(
-        material_def, material_property_id, component, thermal_modifier
-    ):
-        return pb.SetMaterialDefPropertyComponentMessage(
-            materialDef=messages.edb_obj_message(material_def),
-            propertyId=material_property_id.value,
-            component=component,
-            thermal_modifier=messages.edb_obj_message(thermal_modifier),
-        )
-
-
 class MaterialDef(ObjBase):
     """Represents a material definition."""
 
@@ -149,7 +69,15 @@ class MaterialDef(ObjBase):
         MaterialDef
             Material definition object created.
         """
-        return MaterialDef(cls.__stub.Create(_QueryBuilder.create(database, name, **kwargs)))
+        return MaterialDef(
+            cls.__stub.Create(
+                pb.MaterialDefCreationMessage(
+                    database=messages.edb_obj_message(database),
+                    name=name,
+                    properties=messages.material_properties_message(**kwargs),
+                )
+            )
+        )
 
     @classmethod
     def find_by_name(cls, database, name):
@@ -214,9 +142,16 @@ class MaterialDef(ObjBase):
         col : int, default: None
             Tensor column.
         """
-        self.__stub.SetProperty(
-            _QueryBuilder.set_property(self, material_property, value, component_id, col, row)
-        )
+        msg_params = {
+            "materialDef": messages.edb_obj_message(self),
+            "propertyId": material_property.value,
+            "value": messages.value_message(value),
+        }
+        if component_id is not None:
+            msg_params["component"] = messages.edb_internal_id_message(component_id)
+        elif row is not None and col is not None:
+            msg_params["tensor"] = MaterialDef._tensor_pos_message(col, row)
+        self.__stub.SetProperty(pb.MaterialDefSetPropertyMessage(**msg_params))
 
     def get_property(self, material_property, component_id=None, row=None, col=None):
         """Set a property value of the material.
@@ -239,7 +174,7 @@ class MaterialDef(ObjBase):
         """
         return Value(
             self.__stub.GetProperty(
-                _QueryBuilder.get_property(self, material_property, component_id, col, row)
+                MaterialDef._get_property_message(self, material_property, component_id, col, row)
             )
         )
 
@@ -263,7 +198,7 @@ class MaterialDef(ObjBase):
             Property ID.
         """
         self.__stub.RemoveProperty(
-            _QueryBuilder.get_property(
+            MaterialDef._get_property_message(
                 messages.edb_obj_message(self), material_property, None, None, None
             )
         )
@@ -287,9 +222,7 @@ class MaterialDef(ObjBase):
             - ``col``: Number of rows of the material property.
             - ``row``: Number of columns of the material property.
         """
-        msg = self.__stub.GetDimensions(
-            _QueryBuilder.material_def_get_property_message(self, material_property_id)
-        )
+        msg = self.__stub.GetDimensions(MaterialDef._property_message(self, material_property_id))
         return [msg.tensor.col, msg.tensor.row]
 
     def get_thermal_modifier(self, material_property_id):
@@ -308,7 +241,7 @@ class MaterialDef(ObjBase):
         """
         return ThermalModifier(
             self.__stub.GetThermalModifier(
-                _QueryBuilder.material_def_get_property_message(self, material_property_id)
+                MaterialDef._property_message(self, material_property_id)
             )
         )
 
@@ -324,8 +257,10 @@ class MaterialDef(ObjBase):
             Thermal modifier to set to the material definition.
         """
         self.__stub.SetThermalModifier(
-            _QueryBuilder.material_def_set_thermal_modifier_message(
-                self, material_property_id, thermal_modifier
+            pb.SetMaterialDefPropertyMessage(
+                materialDef=messages.edb_obj_message(self),
+                propertyId=material_property_id.value,
+                thermal_modifier=messages.edb_obj_message(thermal_modifier),
             )
         )
 
@@ -347,8 +282,10 @@ class MaterialDef(ObjBase):
         """
         return ThermalModifier(
             self.__stub.GetAnisotropicThermalModifier(
-                _QueryBuilder.material_def_get_anisotropic_thermal_modifier_message(
-                    self, material_property_id, component_id
+                pb.MaterialDefPropertyComponentMessage(
+                    materialDef=messages.edb_obj_message(self),
+                    propertyId=material_property_id.value,
+                    component=component_id,
                 )
             )
         )
@@ -369,7 +306,36 @@ class MaterialDef(ObjBase):
             Anisotropic thermal modifier to set to the material definition.
         """
         self.__stub.SetAnisotropicThermalModifier(
-            _QueryBuilder.material_def_set_anisotropic_thermal_modifier_message(
-                self, material_property_id, component_id, thermal_modifier
+            pb.SetMaterialDefPropertyComponentMessage(
+                materialDef=messages.edb_obj_message(self),
+                propertyId=material_property_id.value,
+                component=component_id,
+                thermal_modifier=messages.edb_obj_message(thermal_modifier),
             )
+        )
+
+    @staticmethod
+    def _tensor_pos_message(col, row):
+        return pb.TensorPositionMessage(
+            col=col,
+            row=row,
+        )
+
+    @staticmethod
+    def _get_property_message(material_def, material_property, component, col, row):
+        msg_params = {
+            "materialDef": messages.edb_obj_message(material_def),
+            "propertyId": material_property.value,
+        }
+        if component is not None:
+            msg_params["component"] = messages.edb_internal_id_message(component)
+        elif row is not None and col is not None:
+            msg_params["tensor"] = MaterialDef._tensor_pos_message(col, row)
+        return pb.MaterialDefGetPropertyMessage(**msg_params)
+
+    @staticmethod
+    def _property_message(material_def, material_property_id):
+        return pb.MaterialDefPropertyMessage(
+            materialDef=messages.edb_obj_message(material_def),
+            propertyId=material_property_id.value,
         )

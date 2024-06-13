@@ -7,12 +7,6 @@ from ansys.edb.core.inner import layout_obj, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(layout, name):
-        return nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name)
-
-
 class NetClass(layout_obj.LayoutObj):
     """Represents a net class."""
 
@@ -36,7 +30,9 @@ class NetClass(layout_obj.LayoutObj):
         NetClass
             Net class created.
         """
-        return NetClass(cls.__stub.Create(_QueryBuilder.create(layout, name)))
+        return NetClass(
+            cls.__stub.Create(nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name))
+        )
 
     @classmethod
     def find_by_name(cls, layout, name):

@@ -8,33 +8,6 @@ import ansys.edb.core.inner.messages as messages
 from ansys.edb.core.session import LayoutObjServiceStub, StubAccessor, StubType
 
 
-class _QueryBuilder:
-    @staticmethod
-    def layout_obj_target_msg(layout_obj, layout_type):
-        return layout_obj_pb2.LayoutObjTargetMessage(target=layout_obj.msg, type=layout_type.value)
-
-    @staticmethod
-    def get_product_property_type_msg(obj, prod_id, attr_it, layout_type):
-        return layout_obj_pb2.GetProductPropertyTypeMessage(
-            target=messages.get_product_property_message(obj, prod_id, attr_it),
-            type=layout_type.value,
-        )
-
-    @staticmethod
-    def set_product_property_type_msg(obj, prod_id, att_id, value, layout_type):
-        return layout_obj_pb2.SetProductPropertyTypeMessage(
-            target=messages.set_product_property_message(obj, prod_id, att_id, value),
-            type=layout_type.value,
-        )
-
-    @staticmethod
-    def get_product_property_ids_type_msg(obj, prod_id, layout_type):
-        return layout_obj_pb2.GetProductPropertyIdsTypeMessage(
-            target=messages.get_product_property_ids_message(obj, prod_id),
-            type=layout_type.value,
-        )
-
-
 class LayoutObj(ObjBase):
     """Represents a layout object."""
 
@@ -58,12 +31,12 @@ class LayoutObj(ObjBase):
         from ansys.edb.core.layout import layout
 
         return layout.Layout(
-            self.__stub.GetLayout(_QueryBuilder.layout_obj_target_msg(self, self.layout_obj_type))
+            self.__stub.GetLayout(LayoutObj._layout_obj_target_msg(self, self.layout_obj_type))
         )
 
     def delete(self):
         """Delete the layout object."""
-        self.__stub.Delete(_QueryBuilder.layout_obj_target_msg(self, self.layout_obj_type))
+        self.__stub.Delete(LayoutObj._layout_obj_target_msg(self, self.layout_obj_type))
 
     def get_product_property(self, prod_id, attr_id):
         """Get the product property of the layout object for a given product ID and attribute ID.
@@ -81,8 +54,9 @@ class LayoutObj(ObjBase):
             String stored in the product property.
         """
         return self.__stub.GetProductProperty(
-            _QueryBuilder.get_product_property_type_msg(
-                self, prod_id, attr_id, self.layout_obj_type
+            layout_obj_pb2.GetProductPropertyTypeMessage(
+                target=messages.get_product_property_message(self, prod_id, attr_id),
+                type=self.layout_obj_type.value,
             )
         ).value
 
@@ -99,8 +73,9 @@ class LayoutObj(ObjBase):
             String stored in the property.
         """
         self.__stub.SetProductProperty(
-            _QueryBuilder.set_product_property_type_msg(
-                self, prod_id, attr_id, prop_value, self.layout_obj_type
+            layout_obj_pb2.SetProductPropertyTypeMessage(
+                target=messages.set_product_property_message(self, prod_id, attr_id, prop_value),
+                type=self.layout_obj_type.value,
             )
         )
 
@@ -118,6 +93,13 @@ class LayoutObj(ObjBase):
             All user-defined attribute IDs for properties stored in the object
         """
         attr_ids = self.__stub.GetProductPropertyIds(
-            _QueryBuilder.get_product_property_ids_type_msg(self, prod_id, self.layout_obj_type)
+            layout_obj_pb2.GetProductPropertyIdsTypeMessage(
+                target=messages.get_product_property_ids_message(self, prod_id),
+                type=self.layout_obj_type.value,
+            )
         ).ids
         return [attr_id for attr_id in attr_ids]
+
+    @staticmethod
+    def _layout_obj_target_msg(layout_obj, layout_type):
+        return layout_obj_pb2.LayoutObjTargetMessage(target=layout_obj.msg, type=layout_type.value)

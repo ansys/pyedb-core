@@ -32,30 +32,6 @@ from ansys.edb.core.utility.layer_map import LayerMap
 from ansys.edb.core.utility.value import Value
 
 
-class _PrimitiveQueryBuilder:
-    @staticmethod
-    def get_primitive_type(p):
-        return p.msg
-
-    @staticmethod
-    def add_void(p, hole):
-        return primitive_pb2.PrimitiveVoidCreationMessage(target=p.msg, hole=hole.msg)
-
-    @staticmethod
-    def set_hfss_prop(p, material_name, solve_inside):
-        return primitive_pb2.PrimitiveHfssPropMessage(
-            target=p.msg, material_name=material_name, solve_inside=solve_inside
-        )
-
-    @staticmethod
-    def set_is_negative(p, is_negative):
-        return primitive_pb2.SetIsNegativeMessage(target=p.msg, is_negative=is_negative)
-
-    @staticmethod
-    def set_layer(p, layer):
-        return primitive_pb2.SetLayerMessage(target=p.msg, layer=messages.layer_ref_message(layer))
-
-
 class PrimitiveType(Enum):
     """Provides an enum representing primitive types."""
 
@@ -159,9 +135,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return PrimitiveType(
-            self.__stub.GetPrimitiveType(_PrimitiveQueryBuilder.get_primitive_type(self)).type
-        )
+        return PrimitiveType(self.__stub.GetPrimitiveType(self.msg).type)
 
     def add_void(self, hole):
         """Add a void to the primitive.
@@ -171,7 +145,9 @@ class Primitive(conn_obj.ConnObj):
         hole : Primitive
             Void to add.
         """
-        self.__stub.AddVoid(_PrimitiveQueryBuilder.add_void(self, hole))
+        self.__stub.AddVoid(
+            primitive_pb2.PrimitiveVoidCreationMessage(target=self.msg, hole=hole.msg)
+        )
 
     def set_hfss_prop(self, material, solve_inside):
         """Set HFSS properties.
@@ -183,7 +159,11 @@ class Primitive(conn_obj.ConnObj):
         solve_inside : bool
             Whether to solve inside.
         """
-        self.__stub.SetHfssProp(_PrimitiveQueryBuilder.set_hfss_prop(self, material, solve_inside))
+        self.__stub.SetHfssProp(
+            primitive_pb2.PrimitiveHfssPropMessage(
+                target=self.msg, material_name=material, solve_inside=solve_inside
+            )
+        )
 
     @property
     def layer(self):
@@ -193,7 +173,9 @@ class Primitive(conn_obj.ConnObj):
 
     @layer.setter
     def layer(self, layer):
-        self.__stub.SetLayer(_PrimitiveQueryBuilder.set_layer(self, layer))
+        self.__stub.SetLayer(
+            primitive_pb2.SetLayerMessage(target=self.msg, layer=messages.layer_ref_message(layer))
+        )
 
     @property
     def is_negative(self):
@@ -202,7 +184,9 @@ class Primitive(conn_obj.ConnObj):
 
     @is_negative.setter
     def is_negative(self, is_negative):
-        self.__stub.SetIsNegative(_PrimitiveQueryBuilder.set_is_negative(self, is_negative))
+        self.__stub.SetIsNegative(
+            primitive_pb2.SetIsNegativeMessage(target=self.msg, is_negative=is_negative)
+        )
 
     @property
     def is_void(self):

@@ -718,17 +718,6 @@ class Text(Primitive):
         )
 
 
-class _PolygonQueryBuilder:
-    @staticmethod
-    def create(layout, layer, net, points):
-        return polygon_pb2.PolygonCreationMessage(
-            layout=layout.msg,
-            layer=messages.layer_ref_message(layer),
-            net=messages.net_ref_message(net),
-            points=messages.polygon_data_message(points),
-        )
-
-
 class Polygon(Primitive):
     """Represents a polygon object."""
 
@@ -755,7 +744,14 @@ class Polygon(Primitive):
             Polygon created.
         """
         return Polygon(
-            cls.__stub.Create(_PolygonQueryBuilder.create(layout, layer, net, polygon_data))
+            cls.__stub.Create(
+                polygon_pb2.PolygonCreationMessage(
+                    layout=layout.msg,
+                    layer=messages.layer_ref_message(layer),
+                    net=messages.net_ref_message(net),
+                    points=messages.polygon_data_message(polygon_data),
+                )
+            )
         )
 
     @property

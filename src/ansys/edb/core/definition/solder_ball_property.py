@@ -1,15 +1,12 @@
 """Solder ball property."""
 
+import ansys.api.edb.v1.padstack_def_data_pb2 as padstack_def_data_pb2
 from ansys.api.edb.v1.padstack_def_data_pb2 import SolderballShape
-import ansys.api.edb.v1.solder_ball_property_pb2 as pb
+import ansys.api.edb.v1.solder_ball_property_pb2 as solder_ball_property_pb2
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.definition.padstack_def_data import (
-    SolderballPlacement,
-    SolderballShape,
-    _PadstackDefDataQueryBuilder,
-)
+from ansys.edb.core.definition.padstack_def_data import SolderballPlacement, SolderballShape
 from ansys.edb.core.inner import ObjBase
 from ansys.edb.core.inner.messages import (
     edb_obj_message,
@@ -24,14 +21,14 @@ from ansys.edb.core.utility.value import Value
 class _QueryBuilder:
     @staticmethod
     def diameter_message(diameter1, diameter2):
-        return pb.DiameterMessage(
+        return solder_ball_property_pb2.DiameterMessage(
             diameter1=value_message(diameter1),
             diameter2=value_message(diameter2),
         )
 
     @staticmethod
     def set_diameter_message(target, diameter1, diameter2):
-        return pb.SetDiameterMessage(
+        return solder_ball_property_pb2.SetDiameterMessage(
             target=edb_obj_message(target),
             value=_QueryBuilder.diameter_message(
                 diameter1,
@@ -41,14 +38,14 @@ class _QueryBuilder:
 
     @staticmethod
     def set_shape_message(target, shape):
-        return _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_shape_message(
-            target, shape
+        return padstack_def_data_pb2.PadstackDefDataSetSolderballShapeMessage(
+            target=target.msg, solderball_shape=shape.value
         )
 
     @staticmethod
     def set_placement_message(target, placement):
-        return _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_placement_message(
-            target, placement
+        return padstack_def_data_pb2.PadstackDefDataSetSolderballPlacementMessage(
+            target=target.msg, solderball_placement=placement.value
         )
 
 

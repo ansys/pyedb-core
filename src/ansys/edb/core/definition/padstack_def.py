@@ -9,43 +9,6 @@ from ansys.edb.core.inner import ObjBase
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _PadstackDefQueryBuilder:
-    """Provides for creating gRPC messages for the padstack definition."""
-
-    @staticmethod
-    def padstack_def_string_message(target, name):
-        """Create a string message for the padstack definition.
-
-        Parameters
-        ----------
-        target : :class:`.Database` or PadstackDef
-        name : str
-           Name of the string message.
-
-        Returns
-        -------
-        PadstackDefStringMessage
-        """
-        return pb.PadstackDefStringMessage(target=target.msg, name=name)
-
-    @staticmethod
-    def padstack_def_set_data_message(target, data):
-        """Create a data message for the padstack definition.
-
-        Parameters
-        ----------
-        target: PadstackDef
-            Padstack definition target.
-        data : :class:`.PadstackDefData`
-            Data message to create on the padstack definition.
-
-        Returns
-        -------
-        PadstackDefSetDataMessage
-        """
-        return pb.PadstackDefSetDataMessage(target=target.msg, data=data.msg)
-
-
 class PadstackDef(ObjBase):
     """Represents a padstack definition."""
 
@@ -67,9 +30,7 @@ class PadstackDef(ObjBase):
         PadstackDef
             Padstack definition created.
         """
-        return PadstackDef(
-            cls.__stub.Create(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
-        )
+        return PadstackDef(cls.__stub.Create(pb.PadstackDefStringMessage(target=db.msg, name=name)))
 
     @classmethod
     def find_by_name(cls, db, name):
@@ -88,7 +49,7 @@ class PadstackDef(ObjBase):
             Padstack definition found.
         """
         return PadstackDef(
-            cls.__stub.FindByName(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
+            cls.__stub.FindByName(pb.PadstackDefStringMessage(target=db.msg, name=name))
         )
 
     @property
@@ -112,7 +73,7 @@ class PadstackDef(ObjBase):
 
     @data.setter
     def data(self, data):
-        self.__stub.SetData(_PadstackDefQueryBuilder.padstack_def_set_data_message(self, data))
+        self.__stub.SetData(pb.PadstackDefSetDataMessage(target=self.msg, data=data.msg))
 
     def delete(self):
         """Delete the padstack definition."""

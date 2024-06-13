@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import TYPE_CHECKING
 
 import ansys.api.edb.v1.padstack_def_data_pb2 as pb
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
@@ -18,65 +17,23 @@ from ansys.edb.core.utility.value import Value
 class _PadstackDefDataQueryBuilder:
     """Provides for creating gRPC messages for padstack data definition."""
 
-    if TYPE_CHECKING:
-        from padstack_def_data import PadstackDefData
-
     @staticmethod
-    def padstack_def_data_set_material_message(target, material):
-        return pb.PadstackDefDataSetMaterialMessage(target=target.msg, name=material)
-
-    @staticmethod
-    def padstack_def_data_get_layer_names_message(names):
-        return pb.PadstackDefDataGetLayerNamesMessage(names=names)
-
-    @staticmethod
-    def padstack_def_data_get_layer_ids_message(ids):
-        return pb.PadstackDefDataGetLayerIdsMessage(ids=ids)
-
-    @staticmethod
-    def padstack_def_data_add_layers_message(target, names):
-        return pb.PadstackDefDataAddLayersMessage(
-            target=target.msg,
-            layer_names=_PadstackDefDataQueryBuilder.padstack_def_data_get_layer_names_message(
-                names
-            ),
-        )
-
-    @staticmethod
-    def padstack_def_data_get_pad_parameters_message(target, layer, pad_type):
-        return pb.PadstackDefDataGetPadParametersMessage(
+    def padstack_def_data_set_pad_parameters_message(
+        target, layer, pad_type, offset_x, offset_y, rotation, type_geom, sizes, fp
+    ):
+        p1 = pb.PadstackDefDataGetPadParametersMessage(
             target=target.msg,
             layer_name=layer if isinstance(layer, str) else None,
             layer_id=layer if isinstance(layer, int) else None,
             pad_type=pad_type.value,
         )
-
-    @staticmethod
-    def padstack_def_data_get_pad_parameters_parameters_message(
-        geometry_type, sizes, offset_x, offset_y, rotation
-    ):
-        return pb.PadstackDefDataGetPadParametersParametersMessage(
-            geometry_type=geometry_type.value,
-            sizes=[messages.value_message(val) for val in sizes],
-            offset_x=messages.value_message(offset_x),
-            offset_y=messages.value_message(offset_y),
-            rotation=messages.value_message(rotation),
-        )
-
-    @staticmethod
-    def padstack_def_data_set_pad_parameters_message(
-        target, layer, pad_type, offset_x, offset_y, rotation, type_geom, sizes, fp
-    ):
-        p1 = _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
-            target=target, layer=layer, pad_type=pad_type
-        )
         if fp is None:
-            p2 = _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_parameters_message(
-                geometry_type=type_geom,
-                sizes=sizes,
-                offset_x=offset_x,
-                offset_y=offset_y,
-                rotation=rotation,
+            p2 = pb.PadstackDefDataGetPadParametersParametersMessage(
+                geometry_type=type_geom.value,
+                sizes=[messages.value_message(val) for val in sizes],
+                offset_x=messages.value_message(offset_x),
+                offset_y=messages.value_message(offset_y),
+                rotation=messages.value_message(rotation),
             )
             return pb.PadstackDefDataPadParametersSetMessage(
                 generic=pb.PadstackDefDataSetPadParametersMessage(
@@ -257,9 +214,7 @@ class PadstackDefData(ObjBase):
 
     @material.setter
     def material(self, name):
-        self.__stub.SetMaterial(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_material_message(self, name)
-        )
+        self.__stub.SetMaterial(pb.PadstackDefDataSetMaterialMessage(target=self.msg, name=name))
 
     @property
     def layer_names(self):
@@ -289,7 +244,9 @@ class PadstackDefData(ObjBase):
             List of layer names.
         """
         return self.__stub.AddLayers(
-            _PadstackDefDataQueryBuilder.padstack_def_data_add_layers_message(self, names)
+            pb.PadstackDefDataAddLayersMessage(
+                target=self.msg, layer_names=pb.PadstackDefDataGetLayerNamesMessage(names=names)
+            )
         )
 
     def get_pad_parameters(self, layer, pad_type):
@@ -327,8 +284,11 @@ class PadstackDefData(ObjBase):
             - ``fp``: Polygon geometry
         """
         message = self.__stub.GetPadParameters(
-            _PadstackDefDataQueryBuilder.padstack_def_data_get_pad_parameters_message(
-                self, layer, pad_type
+            pb.PadstackDefDataGetPadParametersMessage(
+                target=self.msg,
+                layer_name=layer if isinstance(layer, str) else None,
+                layer_id=layer if isinstance(layer, int) else None,
+                pad_type=pad_type.value,
             )
         )
         if message.HasField("generic"):
@@ -425,7 +385,7 @@ class PadstackDefData(ObjBase):
     @hole_range.setter
     def hole_range(self, hole_range):
         self.__stub.SetHoleRange(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_hole_range_message(self, hole_range)
+            pb.PadstackDefDataSetHoleRangeMessage(target=self.msg, hole_range=hole_range.value)
         )
 
     @property
@@ -436,8 +396,8 @@ class PadstackDefData(ObjBase):
     @plating_percentage.setter
     def plating_percentage(self, plating_percentage):
         self.__stub.SetPlatingPercentage(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_plating_percentage(
-                self, plating_percentage
+            pb.PadstackDefDataSetPlatingPercentage(
+                target=self.msg, plating_percentage=messages.value_message(plating_percentage)
             )
         )
 
@@ -449,8 +409,8 @@ class PadstackDefData(ObjBase):
     @solder_ball_shape.setter
     def solder_ball_shape(self, solderball_shape):
         self.__stub.SetSolderBallShape(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_shape_message(
-                self, solderball_shape
+            pb.PadstackDefDataSetSolderballShapeMessage(
+                target=self.msg, solderball_shape=solderball_shape.value
             )
         )
 
@@ -462,8 +422,8 @@ class PadstackDefData(ObjBase):
     @solder_ball_placement.setter
     def solder_ball_placement(self, solderball_placement):
         self.__stub.SetSolderBallPlacement(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_placement_message(
-                self, solderball_placement
+            pb.PadstackDefDataSetSolderballPlacementMessage(
+                target=self.msg, solderball_placement=solderball_placement.value
             )
         )
 
@@ -486,8 +446,10 @@ class PadstackDefData(ObjBase):
     @solder_ball_param.setter
     def solder_ball_param(self, params):
         self.__stub.SetSolderBallParam(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_solder_ball_param_message(
-                self, params[0], params[1]
+            pb.PadstackDefDataSetSolderBallParamMessage(
+                target=self.msg,
+                d1=messages.value_message(params[0]),
+                d2=messages.value_message(params[1]),
             )
         )
 
@@ -499,9 +461,7 @@ class PadstackDefData(ObjBase):
     @solder_ball_material.setter
     def solder_ball_material(self, material):
         self.__stub.SetSolderBallMaterial(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_solder_ball_material_message(
-                self, material
-            )
+            pb.PadstackDefDataSetSolderBallMaterialMessage(target=self.msg, material=material)
         )
 
     def get_connection_pt(self, layer):
@@ -522,7 +482,7 @@ class PadstackDefData(ObjBase):
             - ``direction``: Direction of the connection point.
         """
         msg = self.__stub.GetConnectionPt(
-            _PadstackDefDataQueryBuilder.padstack_def_data_get_connection_pt_message(self, layer)
+            pb.PadstackDefDataGetConnectionPtMessage(target=self.msg, layer=layer)
         )
         return parser.to_point_data(msg), ConnectionPtDirection(msg.direction)
 
@@ -539,8 +499,13 @@ class PadstackDefData(ObjBase):
         direction : :class:`ConnectionPtDirection`
             Direction.
         """
+        pos = conversions.to_point(position)
         self.__stub.SetConnectionPt(
-            _PadstackDefDataQueryBuilder.padstack_def_data_set_connection_pt_message(
-                self, layer, conversions.to_point(position), direction
+            pb.PadstackDefDataSetConnectionPtMessage(
+                target=self.msg,
+                layer=layer,
+                x=messages.value_message(pos.x),
+                y=messages.value_message(pos.y),
+                direction=direction.value,
             )
         )

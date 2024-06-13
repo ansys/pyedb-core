@@ -777,21 +777,6 @@ class Polygon(Primitive):
         return True
 
 
-class _PathQueryBuilder:
-    @staticmethod
-    def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
-        return path_pb2.PathCreationMessage(
-            layout=layout.msg,
-            layer=messages.layer_ref_message(layer),
-            net=messages.net_ref_message(net),
-            width=messages.value_message(width),
-            end_cap1=end_cap1.value,
-            end_cap2=end_cap2.value,
-            corner=corner.value,
-            points=messages.polygon_data_message(points),
-        )
-
-
 class Path(Primitive):
     """Represents a path object."""
 
@@ -827,8 +812,15 @@ class Path(Primitive):
         """
         return Path(
             cls.__stub.Create(
-                _PathQueryBuilder.create(
-                    layout, layer, net, width, end_cap1, end_cap2, corner_style, points
+                path_pb2.PathCreationMessage(
+                    layout=layout.msg,
+                    layer=messages.layer_ref_message(layer),
+                    net=messages.net_ref_message(net),
+                    width=messages.value_message(width),
+                    end_cap1=end_cap1.value,
+                    end_cap2=end_cap2.value,
+                    corner=corner_style.value,
+                    points=messages.polygon_data_message(points),
                 )
             )
         )

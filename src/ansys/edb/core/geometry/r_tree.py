@@ -7,36 +7,6 @@ from ansys.edb.core.inner import ObjBase, messages, parser
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _QueryBuilder:
-    @staticmethod
-    def r_tree_obj_message(rtree, polygon, prop_id):
-        """Create an RTree object message."""
-        return pb.RTreeObjMessage(
-            target=messages.edb_obj_message(rtree),
-            polygon=messages.polygon_data_message(polygon),
-            prop=prop_id,
-        )
-
-    @staticmethod
-    def r_tree_search_message(rtree, box, bb_search):
-        """Create an RTree search message."""
-        return pb.RTreeSearchMessage(
-            target=messages.edb_obj_message(rtree),
-            box=messages.box_message(box[0], box[1]),
-            bb_search=bb_search,
-        )
-
-    @staticmethod
-    def r_tree_geometry_request_message(rtree, polygon, prop_id, increment_visit):
-        """Create an RTree geometry request message."""
-        return pb.RTreeGeometryRequestMessage(
-            target=messages.edb_obj_message(rtree),
-            polygon=messages.polygon_data_message(polygon),
-            prop=prop_id,
-            increment_visit=increment_visit,
-        )
-
-
 class RTree(ObjBase):
     """Provides the base RTree class."""
 
@@ -113,9 +83,7 @@ class RTree(ObjBase):
             R-tree data object with an index.
         """
         unique_id = 1 if self._unique_id is None else self._unique_id + 1
-        self.__stub.InsertIntObject(
-            _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, unique_id)
-        )
+        self.__stub.InsertIntObject(RTree._r_tree_obj_message(self, rtree_obj.polygon, unique_id))
         self._unique_id = unique_id
         rtree_obj._unique_id = int(unique_id)
         self._id_to_obj[unique_id] = rtree_obj
@@ -131,7 +99,7 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             self.__stub.DeleteIntObject(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
+                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
             del self._id_to_obj[rtree_obj._unique_id]
             del self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)]
@@ -165,7 +133,13 @@ class RTree(ObjBase):
         :obj:`list` of :class:`.RTreeObj`
            List of intersecting RTree objects.
         """
-        msg = self.__stub.Search(_QueryBuilder.r_tree_search_message(self, box, bb_search))
+        msg = self.__stub.Search(
+            pb.RTreeSearchMessage(
+                target=messages.edb_obj_message(self),
+                box=messages.box_message(box[0], box[1]),
+                bb_search=bb_search,
+            )
+        )
         return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     def nearest_neighbor(self, rtree_obj):
@@ -186,7 +160,7 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.NearestNeighbor(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
+                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
             return self._id_to_obj[int(msg.id)], parser.to_box(msg.coordinates)
 
@@ -210,7 +184,7 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.TouchingGeometry(
-                _QueryBuilder.r_tree_geometry_request_message(
+                RTree._r_tree_geometry_request_message(
                     self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
                 )
             )
@@ -235,7 +209,7 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.ConnectedGeometry(
-                _QueryBuilder.r_tree_geometry_request_message(
+                RTree._r_tree_geometry_request_message(
                     self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
                 )
             )
@@ -275,7 +249,7 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             return self.__stub.IsVisited(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
+                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             ).value
 
     def visit(self, rtree_obj):
@@ -288,10 +262,29 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             self.__stub.Visit(
-                _QueryBuilder.r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
+                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             )
 
     @property
     def get_visit(self):
         """:obj:`int`: Visit count for the R-tree."""
         return self.__stub.GetVisit(messages.edb_obj_message(self)).value
+
+    @staticmethod
+    def _r_tree_obj_message(rtree, polygon, prop_id):
+        """Create an RTree object message."""
+        return pb.RTreeObjMessage(
+            target=messages.edb_obj_message(rtree),
+            polygon=messages.polygon_data_message(polygon),
+            prop=prop_id,
+        )
+
+    @staticmethod
+    def _r_tree_geometry_request_message(rtree, polygon, prop_id, increment_visit):
+        """Create an RTree geometry request message."""
+        return pb.RTreeGeometryRequestMessage(
+            target=messages.edb_obj_message(rtree),
+            polygon=messages.polygon_data_message(polygon),
+            prop=prop_id,
+            increment_visit=increment_visit,
+        )

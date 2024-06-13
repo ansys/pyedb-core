@@ -1325,151 +1325,6 @@ class Bondwire(Primitive):
         )
 
 
-class _PadstackInstanceQueryBuilder:
-    @staticmethod
-    def create_message(
-        layout,
-        net,
-        name,
-        padstack_def,
-        rotation,
-        top_layer,
-        bottom_layer,
-        solder_ball_layer,
-        layer_map,
-    ):
-        return padstack_instance_pb2.PadstackInstCreateMessage(
-            layout=layout.msg,
-            net=net.msg,
-            name=name,
-            padstack_def=padstack_def.msg,
-            rotation=messages.value_message(rotation),
-            top_layer=top_layer.msg,
-            bottom_layer=bottom_layer.msg,
-            solder_ball_layer=messages.edb_obj_message(solder_ball_layer),
-            layer_map=messages.edb_obj_message(layer_map),
-        )
-
-    @staticmethod
-    def set_name_message(padstack_inst, name):
-        return messages.edb_obj_name_message(padstack_inst, name)
-
-    @staticmethod
-    def position_and_rotation_message(x, y, rotation):
-        return padstack_instance_pb2.PadstackInstPositionAndRotationMessage(
-            position=messages.point_message((x, y)),
-            rotation=messages.value_message(rotation),
-        )
-
-    @staticmethod
-    def set_position_and_rotation_message(padstack_inst, x, y, rotation):
-        return padstack_instance_pb2.PadstackInstSetPositionAndRotationMessage(
-            target=padstack_inst.msg,
-            params=_PadstackInstanceQueryBuilder.position_and_rotation_message(x, y, rotation),
-        )
-
-    @staticmethod
-    def layer_range_message(top_layer, bottom_layer):
-        return padstack_instance_pb2.PadstackInstLayerRangeMessage(
-            top_layer=top_layer.msg,
-            bottom_layer=bottom_layer.msg,
-        )
-
-    @staticmethod
-    def set_layer_range_message(padstack_inst, top_layer, bottom_layer):
-        return padstack_instance_pb2.PadstackInstSetLayerRangeMessage(
-            target=padstack_inst.msg,
-            range=_PadstackInstanceQueryBuilder.layer_range_message(top_layer, bottom_layer),
-        )
-
-    @staticmethod
-    def set_solderball_layer_message(padstack_inst, solderball_layer):
-        return padstack_instance_pb2.PadstackInstSetSolderBallLayerMessage(
-            target=padstack_inst.msg,
-            layer=solderball_layer.msg,
-        )
-
-    @staticmethod
-    def back_drill_message(padstack_inst, from_bottom):
-        return padstack_instance_pb2.PadstackInstBackDrillByLayerMessage(
-            target=padstack_inst.msg,
-            from_bottom=messages.bool_message(from_bottom),
-        )
-
-    @staticmethod
-    def back_drill_by_layer_message(drill_to_layer, diameter, offset):
-        return padstack_instance_pb2.PadstackInstBackDrillByLayerMessage(
-            drill_to_layer=drill_to_layer.msg,
-            diameter=messages.value_message(diameter),
-            offset=messages.value_message(offset),
-        )
-
-    @staticmethod
-    def back_drill_by_depth_message(drill_depth, diameter):
-        return padstack_instance_pb2.PadstackInstBackDrillByDepthMessage(
-            drill_depth=messages.value_message(drill_depth),
-            diameter=messages.value_message(diameter),
-        )
-
-    @staticmethod
-    def set_back_drill_by_layer_message(
-        padstack_inst, drill_to_layer, offset, diameter, from_bottom
-    ):
-        return padstack_instance_pb2.PadstackInstSetBackDrillByLayerMessage(
-            target=padstack_inst.msg,
-            drill_to_layer=drill_to_layer.msg,
-            offset=messages.value_message(offset),
-            diameter=messages.value_message(diameter),
-            from_bottom=from_bottom,
-        )
-
-    @staticmethod
-    def set_back_drill_by_depth_message(padstack_inst, drill_depth, diameter, from_bottom):
-        return padstack_instance_pb2.PadstackInstSetBackDrillByDepthMessage(
-            target=padstack_inst.msg,
-            drill_depth=messages.value_message(drill_depth),
-            diameter=messages.value_message(diameter),
-            from_bottom=from_bottom,
-        )
-
-    @staticmethod
-    def hole_overrides_message(is_hole_override, hole_override):
-        return padstack_instance_pb2.PadstackInstHoleOverridesMessage(
-            is_hole_override=is_hole_override,
-            hole_override=messages.value_message(hole_override),
-        )
-
-    @staticmethod
-    def set_hole_overrides_message(padstack_inst, is_hole_override, hole_override):
-        return padstack_instance_pb2.PadstackInstSetHoleOverridesMessage(
-            target=padstack_inst.msg,
-            hole_override_msg=_PadstackInstanceQueryBuilder.hole_overrides_message(
-                is_hole_override, hole_override
-            ),
-        )
-
-    @staticmethod
-    def set_is_layout_pin_message(padstack_inst, is_layout_pin):
-        return padstack_instance_pb2.PadstackInstSetIsLayoutPinMessage(
-            target=padstack_inst.msg,
-            is_layout_pin=is_layout_pin,
-        )
-
-    @staticmethod
-    def is_in_pin_group_message(padstack_inst, pin_group):
-        return padstack_instance_pb2.PadstackInstIsInPinGroupMessage(
-            target=padstack_inst.msg,
-            pin_group=pin_group.msg,
-        )
-
-    @staticmethod
-    def get_back_drill_message(padstack_inst, from_bottom):
-        return padstack_instance_pb2.PadstackInstGetBackDrillMessage(
-            target=padstack_inst.msg,
-            from_bottom=from_bottom,
-        )
-
-
 class PadstackInstance(Primitive):
     """Representis a padstack instance object."""
 
@@ -1528,16 +1383,16 @@ class PadstackInstance(Primitive):
         """
         padstack_instance = PadstackInstance(
             cls.__stub.Create(
-                _PadstackInstanceQueryBuilder.create_message(
-                    layout,
-                    net,
-                    name,
-                    padstack_def,
-                    rotation,
-                    top_layer,
-                    bottom_layer,
-                    solder_ball_layer,
-                    layer_map,
+                padstack_instance_pb2.PadstackInstCreateMessage(
+                    layout=layout.msg,
+                    net=net.msg,
+                    name=name,
+                    padstack_def=padstack_def.msg,
+                    rotation=messages.value_message(rotation),
+                    top_layer=top_layer.msg,
+                    bottom_layer=bottom_layer.msg,
+                    solder_ball_layer=messages.edb_obj_message(solder_ball_layer),
+                    layer_map=messages.edb_obj_message(layer_map),
                 )
             )
         )
@@ -1557,7 +1412,7 @@ class PadstackInstance(Primitive):
 
     @name.setter
     def name(self, name):
-        self.__stub.SetName(_PadstackInstanceQueryBuilder.set_name_message(self, name))
+        self.__stub.SetName(messages.edb_obj_name_message(self, name))
 
     def get_position_and_rotation(self):
         """Get the position and rotation of the padstack instance.
@@ -1600,7 +1455,13 @@ class PadstackInstance(Primitive):
             Rotation in radians.
         """
         self.__stub.SetPositionAndRotation(
-            _PadstackInstanceQueryBuilder.set_position_and_rotation_message(self, x, y, rotation)
+            padstack_instance_pb2.PadstackInstSetPositionAndRotationMessage(
+                target=self.msg,
+                params=padstack_instance_pb2.PadstackInstPositionAndRotationMessage(
+                    position=messages.point_message((x, y)),
+                    rotation=messages.value_message(rotation),
+                ),
+            )
         )
 
     def get_layer_range(self):
@@ -1631,7 +1492,13 @@ class PadstackInstance(Primitive):
             Bottom layer of the padstack instance.
         """
         self.__stub.SetLayerRange(
-            _PadstackInstanceQueryBuilder.set_layer_range_message(self, top_layer, bottom_layer)
+            padstack_instance_pb2.PadstackInstSetLayerRangeMessage(
+                target=self.msg,
+                range=padstack_instance_pb2.PadstackInstLayerRangeMessage(
+                    top_layer=top_layer.msg,
+                    bottom_layer=bottom_layer.msg,
+                ),
+            )
         )
 
     @property
@@ -1642,7 +1509,10 @@ class PadstackInstance(Primitive):
     @solderball_layer.setter
     def solderball_layer(self, solderball_layer):
         self.__stub.SetSolderBallLayer(
-            _PadstackInstanceQueryBuilder.set_solderball_layer_message(self, solderball_layer)
+            padstack_instance_pb2.PadstackInstSetSolderBallLayerMessage(
+                target=self.msg,
+                layer=solderball_layer.msg,
+            )(self, solderball_layer)
         )
 
     @property
@@ -1689,8 +1559,12 @@ class PadstackInstance(Primitive):
             Hole override diameter of the padstack instance.
         """
         self.__stub.SetHoleOverrides(
-            _PadstackInstanceQueryBuilder.set_hole_overrides_message(
-                self, is_hole_override, hole_override
+            padstack_instance_pb2.PadstackInstSetHoleOverridesMessage(
+                target=self.msg,
+                hole_override_msg=padstack_instance_pb2.PadstackInstHoleOverridesMessage(
+                    is_hole_override=is_hole_override,
+                    hole_override=messages.value_message(hole_override),
+                ),
             )
         )
 
@@ -1702,7 +1576,10 @@ class PadstackInstance(Primitive):
     @is_layout_pin.setter
     def is_layout_pin(self, is_layout_pin):
         self.__stub.SetIsLayoutPin(
-            _PadstackInstanceQueryBuilder.set_is_layout_pin_message(self, is_layout_pin)
+            padstack_instance_pb2.PadstackInstSetIsLayoutPinMessage(
+                target=self.msg,
+                is_layout_pin=is_layout_pin,
+            )
         )
 
     def get_back_drill_type(self, from_bottom):
@@ -1720,7 +1597,7 @@ class PadstackInstance(Primitive):
         """
         return BackDrillType(
             self.__stub.GetBackDrillType(
-                _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
+                PadstackInstance._get_back_drill_message(self, from_bottom)
             ).type
         )
 
@@ -1752,7 +1629,7 @@ class PadstackInstance(Primitive):
             **diameter** : Drilling diameter.
         """
         params = self.__stub.GetBackDrillByLayer(
-            _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
+            PadstackInstance._get_back_drill_message(self, from_bottom)
         )
 
         return (
@@ -1778,8 +1655,12 @@ class PadstackInstance(Primitive):
             Whether to set the back drill type from the bottom.
         """
         self.__stub.SetBackDrillByLayer(
-            _PadstackInstanceQueryBuilder.set_back_drill_by_layer_message(
-                self, drill_to_layer, offset, diameter, from_bottom
+            padstack_instance_pb2.PadstackInstSetBackDrillByLayerMessage(
+                target=self.msg,
+                drill_to_layer=drill_to_layer.msg,
+                offset=messages.value_message(offset),
+                diameter=messages.value_message(diameter),
+                from_bottom=from_bottom,
             )
         )
 
@@ -1806,7 +1687,7 @@ class PadstackInstance(Primitive):
             **diameter** : Drilling diameter.
         """
         params = self.__stub.GetBackDrillByDepth(
-            _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
+            PadstackInstance._get_back_drill_message(self, from_bottom)
         )
         return Value(params.drill_depth), Value(params.diameter)
 
@@ -1823,8 +1704,11 @@ class PadstackInstance(Primitive):
             Whether to set the back drill type from the bottom.
         """
         self.__stub.SetBackDrillByDepth(
-            _PadstackInstanceQueryBuilder.set_back_drill_by_depth_message(
-                self, drill_depth, diameter, from_bottom
+            padstack_instance_pb2.PadstackInstSetBackDrillByDepthMessage(
+                target=self.msg,
+                drill_depth=messages.value_message(drill_depth),
+                diameter=messages.value_message(diameter),
+                from_bottom=from_bottom,
             )
         )
 
@@ -1849,7 +1733,10 @@ class PadstackInstance(Primitive):
             Whether the padstack instance is in a pin group.
         """
         return self.__stub.IsInPinGroup(
-            _PadstackInstanceQueryBuilder.is_in_pin_group_message(self, pin_group)
+            padstack_instance_pb2.PadstackInstIsInPinGroupMessage(
+                target=self.msg,
+                pin_group=pin_group.msg,
+            )
         ).value
 
     @property
@@ -1863,6 +1750,13 @@ class PadstackInstance(Primitive):
 
         pins = self.__stub.GetPinGroups(self.msg).items
         return [pin_group.PinGroup(p) for p in pins]
+
+    @staticmethod
+    def _get_back_drill_message(padstack_inst, from_bottom):
+        return padstack_instance_pb2.PadstackInstGetBackDrillMessage(
+            target=padstack_inst.msg,
+            from_bottom=from_bottom,
+        )
 
 
 class BoardBendDef(Primitive):

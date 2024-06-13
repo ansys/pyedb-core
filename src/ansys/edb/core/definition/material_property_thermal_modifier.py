@@ -1,7 +1,7 @@
 """Material property thermal modifier."""
 
 from ansys.api.edb.v1 import material_property_thermal_modifier_pb2_grpc
-import ansys.api.edb.v1.material_def_pb2 as pb
+import ansys.api.edb.v1.material_property_thermal_modifier_pb2 as pb
 
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
@@ -10,25 +10,6 @@ from ansys.edb.core.utility.material_property_thermal_modifier_params import (
     BasicQuadraticParams,
 )
 from ansys.edb.core.utility.value import Value
-
-
-class _QueryBuilder:
-    @staticmethod
-    def create(basic_quadratic_params, advanced_quadratic_params):
-        return pb.MaterialPropertyThermalModifierParamsMessage(
-            temp_ref=messages.value_message(basic_quadratic_params.temp_ref_val),
-            c1=messages.value_message(basic_quadratic_params.c1_val),
-            c2=messages.value_message(basic_quadratic_params.c2_val),
-            temp_lower_limit=messages.value_message(advanced_quadratic_params.temp_lower_limit_val),
-            temp_upper_limit=messages.value_message(advanced_quadratic_params.temp_upper_limit_val),
-            auto_calc_constant_thermal_modifier=advanced_quadratic_params.auto_calc_constant_thermal_modifier_vals,
-            lower_const_therm_mod=messages.value_message(
-                advanced_quadratic_params.lower_constant_thermal_modifier_val
-            ),
-            upper_const_therm_mod=messages.value_message(
-                advanced_quadratic_params.upper_constant_thermal_modifier_val
-            ),
-        )
 
 
 class MaterialPropertyThermalModifier(ObjBase):
@@ -60,7 +41,26 @@ class MaterialPropertyThermalModifier(ObjBase):
             advanced_quadratic_params = AdvancedQuadraticParams()
         return MaterialPropertyThermalModifier(
             cls.__stub.Create(
-                _QueryBuilder.create(basic_quadratic_params, advanced_quadratic_params)
+                pb.MaterialPropertyThermalModifierParamsMessage(
+                    temp_ref=messages.value_message(basic_quadratic_params.temp_ref_val),
+                    c1=messages.value_message(basic_quadratic_params.c1_val),
+                    c2=messages.value_message(basic_quadratic_params.c2_val),
+                    temp_lower_limit=messages.value_message(
+                        advanced_quadratic_params.temp_lower_limit_val
+                    ),
+                    temp_upper_limit=messages.value_message(
+                        advanced_quadratic_params.temp_upper_limit_val
+                    ),
+                    auto_calc_constant_thermal_modifier=(
+                        advanced_quadratic_params.auto_calc_constant_thermal_modifier_vals
+                    ),
+                    lower_const_therm_mod=messages.value_message(
+                        advanced_quadratic_params.lower_constant_thermal_modifier_val
+                    ),
+                    upper_const_therm_mod=messages.value_message(
+                        advanced_quadratic_params.upper_constant_thermal_modifier_val
+                    ),
+                )
             )
         )
 

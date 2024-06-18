@@ -10,6 +10,8 @@ def server_exe_dir():
     if "ANSYSEM_EDB_EXE_DIR" in configs:
         return configs["ANSYSEM_EDB_EXE_DIR"]
     # TODO: add 'VERSION=23.2/24.1/etc' and look for system installation
+    if "ANSYSEM_ROOT241" in configs:
+        return configs["ANSYSEM_ROOT241"]
 
 
 def temp_dir():

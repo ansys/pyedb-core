@@ -7,20 +7,6 @@ from ansys.edb.core.net import net_class
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _ExtendedNetQueryBuilder:
-    @staticmethod
-    def extnet_create_msg(layout, name):
-        return enet_pb2.ExtendedNetCreationMessage(layout=layout.msg, name=name)
-
-    @staticmethod
-    def extenet_find_by_name_msg(layout, name):
-        return enet_pb2.ExtendedNetLookupMessage(layout=layout.msg, name=name)
-
-    @staticmethod
-    def extnet_modify_net_msg(ext_net, net):
-        return enet_pb2.ExtendedNetModifyMessage(ext_net=ext_net.msg, net=net.msg)
-
-
 class ExtendedNet(net_class.NetClass):
     """Represents an extended net."""
 
@@ -44,7 +30,7 @@ class ExtendedNet(net_class.NetClass):
             Extended net created.
         """
         return ExtendedNet(
-            cls.__stub.Create(_ExtendedNetQueryBuilder.extnet_create_msg(layout, name))
+            cls.__stub.Create(enet_pb2.ExtendedNetCreationMessage(layout=layout.msg, name=name))
         )
 
     @classmethod
@@ -65,7 +51,7 @@ class ExtendedNet(net_class.NetClass):
             property of the extended net to see if it exists.
         """
         return ExtendedNet(
-            cls.__stub.FindByName(_ExtendedNetQueryBuilder.extenet_find_by_name_msg(layout, name))
+            cls.__stub.FindByName(enet_pb2.ExtendedNetLookupMessage(layout=layout.msg, name=name))
         )
 
     def add_net(self, net):
@@ -76,7 +62,7 @@ class ExtendedNet(net_class.NetClass):
         net : Net
             Net to add.
         """
-        self.__stub.AddNet(_ExtendedNetQueryBuilder.extnet_modify_net_msg(self, net))
+        self.__stub.AddNet(ExtendedNet._extnet_modify_net_msg(self, net))
 
     def remove_net(self, net):
         """Remove a net from the extended net.
@@ -86,8 +72,12 @@ class ExtendedNet(net_class.NetClass):
         net : Net
             Net to remove.
         """
-        self.__stub.RemoveNet(_ExtendedNetQueryBuilder.extnet_modify_net_msg(self, net))
+        self.__stub.RemoveNet(ExtendedNet._extnet_modify_net_msg(self, net))
 
     def remove_all_nets(self):
         """Remove all nets from the extended net."""
         self.__stub.RemoveAllNets(self.msg)
+
+    @staticmethod
+    def _extnet_modify_net_msg(ext_net, net):
+        return enet_pb2.ExtendedNetModifyMessage(ext_net=ext_net.msg, net=net.msg)

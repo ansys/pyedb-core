@@ -7,25 +7,6 @@ from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.value import Value
 
 
-class _TransformQueryBuilder:
-    @staticmethod
-    def transform_message(scale, angle, mirror, offset_x, offset_y):
-        return pb.TransformMessage(
-            scale=messages.value_message(scale),
-            angle=messages.value_message(angle),
-            mirror=mirror,
-            offset_x=messages.value_message(offset_x),
-            offset_y=messages.value_message(offset_y),
-        )
-
-    @staticmethod
-    def transform_operator_message(target, target_2):
-        return pb.TransformOperatorMessage(
-            target_1=messages.edb_obj_message(target.msg),
-            target_2=messages.edb_obj_message(target_2.msg),
-        )
-
-
 class Transform(ObjBase):
     """Represents a transformation."""
 
@@ -54,7 +35,13 @@ class Transform(ObjBase):
         """
         return Transform(
             cls.__stub.Create(
-                _TransformQueryBuilder.transform_message(scale, angle, mirror, offset_x, offset_y)
+                pb.TransformMessage(
+                    scale=messages.value_message(scale),
+                    angle=messages.value_message(angle),
+                    mirror=mirror,
+                    offset_x=messages.value_message(offset_x),
+                    offset_y=messages.value_message(offset_y),
+                )
             )
         )
 
@@ -135,7 +122,10 @@ class Transform(ObjBase):
         """
         return Transform(
             self.__stub.TransformPlus(
-                _TransformQueryBuilder.transform_operator_message(self, other_transform)
+                pb.TransformOperatorMessage(
+                    target_1=messages.edb_obj_message(self.msg),
+                    target_2=messages.edb_obj_message(other_transform.msg),
+                )
             )
         )
 

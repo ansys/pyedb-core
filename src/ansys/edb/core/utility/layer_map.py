@@ -8,36 +8,6 @@ from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _QueryBuilder:
-    @staticmethod
-    def layer_map_unique_direction_message(direction):
-        """Create a ``LayerMapUniqueDirection`` message.
-
-        Parameters
-        ----------
-        direction: LayerMapUniqueDirection
-        """
-        return pb.LayerMapUniqueDirectionMessage(
-            direction=direction.value,
-        )
-
-    @staticmethod
-    def layer_map_two_int_properties_message(target, from_id, to_id):
-        """Create a ``LayerMapTwoIntProperties`` message.
-
-        Parameters
-        ----------
-        target: LayerMapUniqueDirection
-        from_id: int
-        to_id: int
-        """
-        return pb.LayerMapTwoIntPropertiesMessage(
-            target=target,
-            from_id=messages.edb_internal_id_message(from_id),
-            to_id=messages.edb_internal_id_message(to_id),
-        )
-
-
 class LayerMap(ObjBase):
     """Represents a two-way layer map where the key and value is the layer ID."""
 
@@ -70,7 +40,7 @@ class LayerMap(ObjBase):
         return LayerMap(
             StubAccessor(StubType.layer_map)
             .__get__()
-            .Create(_QueryBuilder.layer_map_unique_direction_message(direction))
+            .Create(pb.LayerMapUniqueDirectionMessage(direction=direction.value))
         )
 
     def clear(self):
@@ -90,10 +60,10 @@ class LayerMap(ObjBase):
             Layer ID (value) "to" which to map with the ``from_id`` parameter.
         """
         self.__stub.SetMapping(
-            _QueryBuilder.layer_map_two_int_properties_message(
+            pb.LayerMapTwoIntPropertiesMessage(
                 target=self.msg,
-                from_id=from_id,
-                to_id=to_id,
+                from_id=messages.edb_internal_id_message(from_id),
+                to_id=messages.edb_internal_id_message(to_id),
             )
         )
 

@@ -32,30 +32,6 @@ from ansys.edb.core.utility.layer_map import LayerMap
 from ansys.edb.core.utility.value import Value
 
 
-class _PrimitiveQueryBuilder:
-    @staticmethod
-    def get_primitive_type(p):
-        return p.msg
-
-    @staticmethod
-    def add_void(p, hole):
-        return primitive_pb2.PrimitiveVoidCreationMessage(target=p.msg, hole=hole.msg)
-
-    @staticmethod
-    def set_hfss_prop(p, material_name, solve_inside):
-        return primitive_pb2.PrimitiveHfssPropMessage(
-            target=p.msg, material_name=material_name, solve_inside=solve_inside
-        )
-
-    @staticmethod
-    def set_is_negative(p, is_negative):
-        return primitive_pb2.SetIsNegativeMessage(target=p.msg, is_negative=is_negative)
-
-    @staticmethod
-    def set_layer(p, layer):
-        return primitive_pb2.SetLayerMessage(target=p.msg, layer=messages.layer_ref_message(layer))
-
-
 class PrimitiveType(Enum):
     """Provides an enum representing primitive types."""
 
@@ -159,9 +135,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return PrimitiveType(
-            self.__stub.GetPrimitiveType(_PrimitiveQueryBuilder.get_primitive_type(self)).type
-        )
+        return PrimitiveType(self.__stub.GetPrimitiveType(self.msg).type)
 
     def add_void(self, hole):
         """Add a void to the primitive.
@@ -171,7 +145,9 @@ class Primitive(conn_obj.ConnObj):
         hole : Primitive
             Void to add.
         """
-        self.__stub.AddVoid(_PrimitiveQueryBuilder.add_void(self, hole))
+        self.__stub.AddVoid(
+            primitive_pb2.PrimitiveVoidCreationMessage(target=self.msg, hole=hole.msg)
+        )
 
     def set_hfss_prop(self, material, solve_inside):
         """Set HFSS properties.
@@ -183,7 +159,11 @@ class Primitive(conn_obj.ConnObj):
         solve_inside : bool
             Whether to solve inside.
         """
-        self.__stub.SetHfssProp(_PrimitiveQueryBuilder.set_hfss_prop(self, material, solve_inside))
+        self.__stub.SetHfssProp(
+            primitive_pb2.PrimitiveHfssPropMessage(
+                target=self.msg, material_name=material, solve_inside=solve_inside
+            )
+        )
 
     @property
     def layer(self):
@@ -193,7 +173,9 @@ class Primitive(conn_obj.ConnObj):
 
     @layer.setter
     def layer(self, layer):
-        self.__stub.SetLayer(_PrimitiveQueryBuilder.set_layer(self, layer))
+        self.__stub.SetLayer(
+            primitive_pb2.SetLayerMessage(target=self.msg, layer=messages.layer_ref_message(layer))
+        )
 
     @property
     def is_negative(self):
@@ -202,7 +184,9 @@ class Primitive(conn_obj.ConnObj):
 
     @is_negative.setter
     def is_negative(self, is_negative):
-        self.__stub.SetIsNegative(_PrimitiveQueryBuilder.set_is_negative(self, is_negative))
+        self.__stub.SetIsNegative(
+            primitive_pb2.SetIsNegativeMessage(target=self.msg, is_negative=is_negative)
+        )
 
     @property
     def is_void(self):
@@ -734,17 +718,6 @@ class Text(Primitive):
         )
 
 
-class _PolygonQueryBuilder:
-    @staticmethod
-    def create(layout, layer, net, points):
-        return polygon_pb2.PolygonCreationMessage(
-            layout=layout.msg,
-            layer=messages.layer_ref_message(layer),
-            net=messages.net_ref_message(net),
-            points=messages.polygon_data_message(points),
-        )
-
-
 class Polygon(Primitive):
     """Represents a polygon object."""
 
@@ -771,7 +744,14 @@ class Polygon(Primitive):
             Polygon created.
         """
         return Polygon(
-            cls.__stub.Create(_PolygonQueryBuilder.create(layout, layer, net, polygon_data))
+            cls.__stub.Create(
+                polygon_pb2.PolygonCreationMessage(
+                    layout=layout.msg,
+                    layer=messages.layer_ref_message(layer),
+                    net=messages.net_ref_message(net),
+                    points=messages.polygon_data_message(polygon_data),
+                )
+            )
         )
 
     @property
@@ -795,21 +775,6 @@ class Polygon(Primitive):
         This property is read-only.
         """
         return True
-
-
-class _PathQueryBuilder:
-    @staticmethod
-    def create(layout, layer, net, width, end_cap1, end_cap2, corner, points):
-        return path_pb2.PathCreationMessage(
-            layout=layout.msg,
-            layer=messages.layer_ref_message(layer),
-            net=messages.net_ref_message(net),
-            width=messages.value_message(width),
-            end_cap1=end_cap1.value,
-            end_cap2=end_cap2.value,
-            corner=corner.value,
-            points=messages.polygon_data_message(points),
-        )
 
 
 class Path(Primitive):
@@ -847,8 +812,15 @@ class Path(Primitive):
         """
         return Path(
             cls.__stub.Create(
-                _PathQueryBuilder.create(
-                    layout, layer, net, width, end_cap1, end_cap2, corner_style, points
+                path_pb2.PathCreationMessage(
+                    layout=layout.msg,
+                    layer=messages.layer_ref_message(layer),
+                    net=messages.net_ref_message(net),
+                    width=messages.value_message(width),
+                    end_cap1=end_cap1.value,
+                    end_cap2=end_cap2.value,
+                    corner=corner_style.value,
+                    points=messages.polygon_data_message(points),
                 )
             )
         )
@@ -1036,107 +1008,6 @@ class Path(Primitive):
         return True
 
 
-class _BondwireQueryBuilder:
-    @staticmethod
-    def create(
-        layout,
-        net,
-        bondwire_type,
-        definition_name,
-        placement_layer,
-        width,
-        material,
-        start_context,
-        start_layer_name,
-        start_x,
-        start_y,
-        end_context,
-        end_layer_name,
-        end_x,
-        end_y,
-    ):
-        return bondwire_pb2.BondwireCreateMessage(
-            layout=layout.msg,
-            net=messages.net_ref_message(net),
-            bondwire_type=bondwire_type.value,
-            definition_name=definition_name,
-            placement_layer=placement_layer,
-            width=messages.value_message(width),
-            material=material,
-            start_context=messages.edb_obj_message(start_context),
-            start_layer_name=start_layer_name,
-            start_x=messages.value_message(start_x),
-            start_y=messages.value_message(start_y),
-            end_context=messages.edb_obj_message(end_context),
-            end_layer_name=end_layer_name,
-            end_x=messages.value_message(end_x),
-            end_y=messages.value_message(end_y),
-        )
-
-    @staticmethod
-    def bondwire_bool_message(b, evaluated):
-        return bondwire_pb2.BondwireBoolMessage(target=b.msg, evaluated=evaluated)
-
-    @staticmethod
-    def set_material_message(b, material):
-        return bondwire_pb2.SetMaterialMessage(target=b.msg, material=material)
-
-    @staticmethod
-    def set_bondwire_type_message(b, bondwire_type):
-        return bondwire_pb2.SetBondwireTypeMessage(target=b.msg, type=bondwire_type.value)
-
-    @staticmethod
-    def get_cross_section_type_message(bondwire_cross_section_type):
-        return bondwire_pb2.GetCrossSectionTypeMessage(type=bondwire_cross_section_type.value)
-
-    @staticmethod
-    def set_cross_section_type_message(b, bondwire_cross_section_type):
-        return bondwire_pb2.SetCrossSectionTypeMessage(
-            target=b.msg, type=bondwire_cross_section_type.value
-        )
-
-    @staticmethod
-    def set_cross_section_height_message(b, height):
-        return bondwire_pb2.SetCrossSectionHeightMessage(
-            target=b.msg, height=messages.value_message(height)
-        )
-
-    @staticmethod
-    def set_definition_name_message(b, definition_name):
-        return bondwire_pb2.SetDefinitionNameMessage(target=b.msg, definition_name=definition_name)
-
-    @staticmethod
-    def get_elevation_message(b, cell_instance):
-        return bondwire_pb2.GetElevationMessage(
-            bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance)
-        )
-
-    @staticmethod
-    def set_elevation_message(b, cell_instance, lyrname):
-        return bondwire_pb2.SetElevationMessage(
-            target=_BondwireQueryBuilder.get_elevation_message(b, cell_instance), lyrname=lyrname
-        )
-
-    @staticmethod
-    def bondwire_value_message(b, value):
-        return bondwire_pb2.BondwireValueMessage(target=b.msg, value=messages.value_message(value))
-
-    @staticmethod
-    def bondwire_traj_message(x1, y1, y2, x2):
-        return bondwire_pb2.BondwireTrajMessage(
-            x1=messages.value_message(x1),
-            y1=messages.value_message(y1),
-            x2=messages.value_message(x2),
-            y2=messages.value_message(y2),
-        )
-
-    @staticmethod
-    def set_bondwire_traj_message(b, x1, y1, y2, x2):
-        return bondwire_pb2.SetBondwireTrajMessage(
-            target=b.msg, traj=_BondwireQueryBuilder.bondwire_traj_message(x1, y1, x2, y2)
-        )
-
-
 class Bondwire(Primitive):
     """Represents a bondwire object."""
 
@@ -1203,22 +1074,22 @@ class Bondwire(Primitive):
         """
         return Bondwire(
             cls.__stub.Create(
-                _BondwireQueryBuilder.create(
-                    layout,
-                    net,
-                    bondwire_type,
-                    definition_name,
-                    placement_layer,
-                    width,
-                    material,
-                    start_context,
-                    start_layer_name,
-                    start_x,
-                    start_y,
-                    end_context,
-                    end_layer_name,
-                    end_x,
-                    end_y,
+                bondwire_pb2.BondwireCreateMessage(
+                    layout=layout.msg,
+                    net=messages.net_ref_message(net),
+                    bondwire_type=bondwire_type.value,
+                    definition_name=definition_name,
+                    placement_layer=placement_layer,
+                    width=messages.value_message(width),
+                    material=material,
+                    start_context=messages.edb_obj_message(start_context),
+                    start_layer_name=start_layer_name,
+                    start_x=messages.value_message(start_x),
+                    start_y=messages.value_message(start_y),
+                    end_context=messages.edb_obj_message(end_context),
+                    end_layer_name=end_layer_name,
+                    end_x=messages.value_message(end_x),
+                    end_y=messages.value_message(end_y),
                 )
             )
         )
@@ -1236,7 +1107,7 @@ class Bondwire(Primitive):
         str
             Material name.
         """
-        return self.__stub.GetMaterial(_BondwireQueryBuilder.bondwire_bool_message(self, evaluated))
+        return self.__stub.GetMaterial(Bondwire._bondwire_bool_message(self, evaluated))
 
     def set_material(self, material):
         """Set the material of the bondwire.
@@ -1246,7 +1117,7 @@ class Bondwire(Primitive):
         material : str
             Material name.
         """
-        self.__stub.SetMaterial(_BondwireQueryBuilder.set_material_message(self, material))
+        self.__stub.SetMaterial(bondwire_pb2.SetMaterialMessage(target=self.msg, material=material))
 
     @property
     def type(self):
@@ -1256,7 +1127,9 @@ class Bondwire(Primitive):
 
     @type.setter
     def type(self, bondwire_type):
-        self.__stub.SetType(_BondwireQueryBuilder.set_bondwire_type_message(self, bondwire_type))
+        self.__stub.SetType(
+            bondwire_pb2.SetBondwireTypeMessage(target=self.msg, type=bondwire_type.value)
+        )
 
     @property
     def cross_section_type(self):
@@ -1266,7 +1139,7 @@ class Bondwire(Primitive):
     @cross_section_type.setter
     def cross_section_type(self, bondwire_type):
         self.__stub.SetCrossSectionType(
-            _BondwireQueryBuilder.set_cross_section_type_message(self, bondwire_type)
+            bondwire_pb2.SetCrossSectionTypeMessage(target=self.msg, type=bondwire_type.value)
         )
 
     @property
@@ -1277,7 +1150,9 @@ class Bondwire(Primitive):
     @cross_section_height.setter
     def cross_section_height(self, height):
         self.__stub.SetCrossSectionHeight(
-            _BondwireQueryBuilder.set_cross_section_height_message(self, height)
+            bondwire_pb2.SetCrossSectionHeightMessage(
+                target=self.msg, height=messages.value_message(height)
+            )
         )
 
     def get_definition_name(self, evaluated=True):
@@ -1293,9 +1168,7 @@ class Bondwire(Primitive):
         str
             Bondwire definition name.
         """
-        return self.__stub.GetDefinitionName(
-            _BondwireQueryBuilder.bondwire_bool_message(self, evaluated)
-        ).value
+        return self.__stub.GetDefinitionName(Bondwire._bondwire_bool_message(self, evaluated)).value
 
     def set_definition_name(self, definition_name):
         """Set the definition name of a bondwire.
@@ -1306,7 +1179,7 @@ class Bondwire(Primitive):
             Bondwire definition name to set.
         """
         self.__stub.SetDefinitionName(
-            _BondwireQueryBuilder.set_definition_name_message(self, definition_name)
+            bondwire_pb2.SetDefinitionNameMessage(target=self.msg, definition_name=definition_name)
         )
 
     def get_traj(self):
@@ -1355,7 +1228,15 @@ class Bondwire(Primitive):
         y2 : :class:`.Value`
             Y value of the end point.
         """
-        self.__stub.SetTraj(_BondwireQueryBuilder.set_bondwire_traj_message(self, x1, y1, x2, y2))
+        self.__stub.SetTraj(
+            target=self.msg,
+            traj=bondwire_pb2.BondwireTrajMessage(
+                x1=messages.value_message(x1),
+                y1=messages.value_message(y1),
+                x2=messages.value_message(x2),
+                y2=messages.value_message(y2),
+            ),
+        )
 
     @property
     def width(self):
@@ -1365,7 +1246,9 @@ class Bondwire(Primitive):
 
     @width.setter
     def width(self, width):
-        self.__stub.SetWidthValue(_BondwireQueryBuilder.bondwire_value_message(self, width))
+        self.__stub.SetWidthValue(
+            bondwire_pb2.BondwireValueMessage(target=self.msg, value=messages.value_message(width))
+        )
 
     def get_start_elevation(self, start_context):
         """Get the start elevation layer of the bondwire.
@@ -1381,9 +1264,7 @@ class Bondwire(Primitive):
             Start elevation level of the bondwire.
         """
         return Layer(
-            self.__stub.GetStartElevation(
-                _BondwireQueryBuilder.get_elevation_message(self, start_context)
-            )
+            self.__stub.GetStartElevation(Bondwire._get_elevation_message(self, start_context))
         ).cast()
 
     def set_start_elevation(self, start_context, layer):
@@ -1396,9 +1277,7 @@ class Bondwire(Primitive):
         layer : str or :class:`.Layer`
             Start layer of the bondwire.
         """
-        self.__stub.SetStartElevation(
-            _BondwireQueryBuilder.set_elevation_message(self, start_context, layer)
-        )
+        self.__stub.SetStartElevation(Bondwire._set_elevation_message(self, start_context, layer))
 
     def get_end_elevation(self, end_context):
         """Get the end elevation layer of the bondwire.
@@ -1414,9 +1293,7 @@ class Bondwire(Primitive):
             End elevation layer of the bondwire.
         """
         return Layer(
-            self.__stub.GetEndElevation(
-                _BondwireQueryBuilder.get_elevation_message(self, end_context)
-            )
+            self.__stub.GetEndElevation(Bondwire._get_elevation_message(self, end_context))
         ).cast()
 
     def set_end_elevation(self, end_context, layer):
@@ -1429,153 +1306,22 @@ class Bondwire(Primitive):
         layer : str or :class:`.Layer`
             End layer of the bondwire.
         """
-        self.__stub.SetEndElevation(
-            _BondwireQueryBuilder.set_elevation_message(self, end_context, layer)
-        )
+        self.__stub.SetEndElevation(Bondwire._set_elevation_message(self, end_context, layer))
 
-
-class _PadstackInstanceQueryBuilder:
     @staticmethod
-    def create_message(
-        layout,
-        net,
-        name,
-        padstack_def,
-        rotation,
-        top_layer,
-        bottom_layer,
-        solder_ball_layer,
-        layer_map,
-    ):
-        return padstack_instance_pb2.PadstackInstCreateMessage(
-            layout=layout.msg,
-            net=net.msg,
-            name=name,
-            padstack_def=padstack_def.msg,
-            rotation=messages.value_message(rotation),
-            top_layer=top_layer.msg,
-            bottom_layer=bottom_layer.msg,
-            solder_ball_layer=messages.edb_obj_message(solder_ball_layer),
-            layer_map=messages.edb_obj_message(layer_map),
+    def _bondwire_bool_message(b, evaluated):
+        return bondwire_pb2.BondwireBoolMessage(target=b.msg, evaluated=evaluated)
+
+    @staticmethod
+    def _get_elevation_message(b, cell_instance):
+        return bondwire_pb2.GetElevationMessage(
+            bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance)
         )
 
     @staticmethod
-    def set_name_message(padstack_inst, name):
-        return messages.edb_obj_name_message(padstack_inst, name)
-
-    @staticmethod
-    def position_and_rotation_message(x, y, rotation):
-        return padstack_instance_pb2.PadstackInstPositionAndRotationMessage(
-            position=messages.point_message((x, y)),
-            rotation=messages.value_message(rotation),
-        )
-
-    @staticmethod
-    def set_position_and_rotation_message(padstack_inst, x, y, rotation):
-        return padstack_instance_pb2.PadstackInstSetPositionAndRotationMessage(
-            target=padstack_inst.msg,
-            params=_PadstackInstanceQueryBuilder.position_and_rotation_message(x, y, rotation),
-        )
-
-    @staticmethod
-    def layer_range_message(top_layer, bottom_layer):
-        return padstack_instance_pb2.PadstackInstLayerRangeMessage(
-            top_layer=top_layer.msg,
-            bottom_layer=bottom_layer.msg,
-        )
-
-    @staticmethod
-    def set_layer_range_message(padstack_inst, top_layer, bottom_layer):
-        return padstack_instance_pb2.PadstackInstSetLayerRangeMessage(
-            target=padstack_inst.msg,
-            range=_PadstackInstanceQueryBuilder.layer_range_message(top_layer, bottom_layer),
-        )
-
-    @staticmethod
-    def set_solderball_layer_message(padstack_inst, solderball_layer):
-        return padstack_instance_pb2.PadstackInstSetSolderBallLayerMessage(
-            target=padstack_inst.msg,
-            layer=solderball_layer.msg,
-        )
-
-    @staticmethod
-    def back_drill_message(padstack_inst, from_bottom):
-        return padstack_instance_pb2.PadstackInstBackDrillByLayerMessage(
-            target=padstack_inst.msg,
-            from_bottom=messages.bool_message(from_bottom),
-        )
-
-    @staticmethod
-    def back_drill_by_layer_message(drill_to_layer, diameter, offset):
-        return padstack_instance_pb2.PadstackInstBackDrillByLayerMessage(
-            drill_to_layer=drill_to_layer.msg,
-            diameter=messages.value_message(diameter),
-            offset=messages.value_message(offset),
-        )
-
-    @staticmethod
-    def back_drill_by_depth_message(drill_depth, diameter):
-        return padstack_instance_pb2.PadstackInstBackDrillByDepthMessage(
-            drill_depth=messages.value_message(drill_depth),
-            diameter=messages.value_message(diameter),
-        )
-
-    @staticmethod
-    def set_back_drill_by_layer_message(
-        padstack_inst, drill_to_layer, offset, diameter, from_bottom
-    ):
-        return padstack_instance_pb2.PadstackInstSetBackDrillByLayerMessage(
-            target=padstack_inst.msg,
-            drill_to_layer=drill_to_layer.msg,
-            offset=messages.value_message(offset),
-            diameter=messages.value_message(diameter),
-            from_bottom=from_bottom,
-        )
-
-    @staticmethod
-    def set_back_drill_by_depth_message(padstack_inst, drill_depth, diameter, from_bottom):
-        return padstack_instance_pb2.PadstackInstSetBackDrillByDepthMessage(
-            target=padstack_inst.msg,
-            drill_depth=messages.value_message(drill_depth),
-            diameter=messages.value_message(diameter),
-            from_bottom=from_bottom,
-        )
-
-    @staticmethod
-    def hole_overrides_message(is_hole_override, hole_override):
-        return padstack_instance_pb2.PadstackInstHoleOverridesMessage(
-            is_hole_override=is_hole_override,
-            hole_override=messages.value_message(hole_override),
-        )
-
-    @staticmethod
-    def set_hole_overrides_message(padstack_inst, is_hole_override, hole_override):
-        return padstack_instance_pb2.PadstackInstSetHoleOverridesMessage(
-            target=padstack_inst.msg,
-            hole_override_msg=_PadstackInstanceQueryBuilder.hole_overrides_message(
-                is_hole_override, hole_override
-            ),
-        )
-
-    @staticmethod
-    def set_is_layout_pin_message(padstack_inst, is_layout_pin):
-        return padstack_instance_pb2.PadstackInstSetIsLayoutPinMessage(
-            target=padstack_inst.msg,
-            is_layout_pin=is_layout_pin,
-        )
-
-    @staticmethod
-    def is_in_pin_group_message(padstack_inst, pin_group):
-        return padstack_instance_pb2.PadstackInstIsInPinGroupMessage(
-            target=padstack_inst.msg,
-            pin_group=pin_group.msg,
-        )
-
-    @staticmethod
-    def get_back_drill_message(padstack_inst, from_bottom):
-        return padstack_instance_pb2.PadstackInstGetBackDrillMessage(
-            target=padstack_inst.msg,
-            from_bottom=from_bottom,
+    def _set_elevation_message(b, cell_instance, lyrname):
+        return bondwire_pb2.SetElevationMessage(
+            target=Bondwire._get_elevation_message(b, cell_instance), lyrname=lyrname
         )
 
 
@@ -1637,16 +1383,16 @@ class PadstackInstance(Primitive):
         """
         padstack_instance = PadstackInstance(
             cls.__stub.Create(
-                _PadstackInstanceQueryBuilder.create_message(
-                    layout,
-                    net,
-                    name,
-                    padstack_def,
-                    rotation,
-                    top_layer,
-                    bottom_layer,
-                    solder_ball_layer,
-                    layer_map,
+                padstack_instance_pb2.PadstackInstCreateMessage(
+                    layout=layout.msg,
+                    net=net.msg,
+                    name=name,
+                    padstack_def=padstack_def.msg,
+                    rotation=messages.value_message(rotation),
+                    top_layer=top_layer.msg,
+                    bottom_layer=bottom_layer.msg,
+                    solder_ball_layer=messages.edb_obj_message(solder_ball_layer),
+                    layer_map=messages.edb_obj_message(layer_map),
                 )
             )
         )
@@ -1666,7 +1412,7 @@ class PadstackInstance(Primitive):
 
     @name.setter
     def name(self, name):
-        self.__stub.SetName(_PadstackInstanceQueryBuilder.set_name_message(self, name))
+        self.__stub.SetName(messages.edb_obj_name_message(self, name))
 
     def get_position_and_rotation(self):
         """Get the position and rotation of the padstack instance.
@@ -1709,7 +1455,13 @@ class PadstackInstance(Primitive):
             Rotation in radians.
         """
         self.__stub.SetPositionAndRotation(
-            _PadstackInstanceQueryBuilder.set_position_and_rotation_message(self, x, y, rotation)
+            padstack_instance_pb2.PadstackInstSetPositionAndRotationMessage(
+                target=self.msg,
+                params=padstack_instance_pb2.PadstackInstPositionAndRotationMessage(
+                    position=messages.point_message((x, y)),
+                    rotation=messages.value_message(rotation),
+                ),
+            )
         )
 
     def get_layer_range(self):
@@ -1740,7 +1492,13 @@ class PadstackInstance(Primitive):
             Bottom layer of the padstack instance.
         """
         self.__stub.SetLayerRange(
-            _PadstackInstanceQueryBuilder.set_layer_range_message(self, top_layer, bottom_layer)
+            padstack_instance_pb2.PadstackInstSetLayerRangeMessage(
+                target=self.msg,
+                range=padstack_instance_pb2.PadstackInstLayerRangeMessage(
+                    top_layer=top_layer.msg,
+                    bottom_layer=bottom_layer.msg,
+                ),
+            )
         )
 
     @property
@@ -1751,7 +1509,10 @@ class PadstackInstance(Primitive):
     @solderball_layer.setter
     def solderball_layer(self, solderball_layer):
         self.__stub.SetSolderBallLayer(
-            _PadstackInstanceQueryBuilder.set_solderball_layer_message(self, solderball_layer)
+            padstack_instance_pb2.PadstackInstSetSolderBallLayerMessage(
+                target=self.msg,
+                layer=solderball_layer.msg,
+            )(self, solderball_layer)
         )
 
     @property
@@ -1798,8 +1559,12 @@ class PadstackInstance(Primitive):
             Hole override diameter of the padstack instance.
         """
         self.__stub.SetHoleOverrides(
-            _PadstackInstanceQueryBuilder.set_hole_overrides_message(
-                self, is_hole_override, hole_override
+            padstack_instance_pb2.PadstackInstSetHoleOverridesMessage(
+                target=self.msg,
+                hole_override_msg=padstack_instance_pb2.PadstackInstHoleOverridesMessage(
+                    is_hole_override=is_hole_override,
+                    hole_override=messages.value_message(hole_override),
+                ),
             )
         )
 
@@ -1811,7 +1576,10 @@ class PadstackInstance(Primitive):
     @is_layout_pin.setter
     def is_layout_pin(self, is_layout_pin):
         self.__stub.SetIsLayoutPin(
-            _PadstackInstanceQueryBuilder.set_is_layout_pin_message(self, is_layout_pin)
+            padstack_instance_pb2.PadstackInstSetIsLayoutPinMessage(
+                target=self.msg,
+                is_layout_pin=is_layout_pin,
+            )
         )
 
     def get_back_drill_type(self, from_bottom):
@@ -1829,7 +1597,7 @@ class PadstackInstance(Primitive):
         """
         return BackDrillType(
             self.__stub.GetBackDrillType(
-                _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
+                PadstackInstance._get_back_drill_message(self, from_bottom)
             ).type
         )
 
@@ -1861,7 +1629,7 @@ class PadstackInstance(Primitive):
             **diameter** : Drilling diameter.
         """
         params = self.__stub.GetBackDrillByLayer(
-            _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
+            PadstackInstance._get_back_drill_message(self, from_bottom)
         )
 
         return (
@@ -1887,8 +1655,12 @@ class PadstackInstance(Primitive):
             Whether to set the back drill type from the bottom.
         """
         self.__stub.SetBackDrillByLayer(
-            _PadstackInstanceQueryBuilder.set_back_drill_by_layer_message(
-                self, drill_to_layer, offset, diameter, from_bottom
+            padstack_instance_pb2.PadstackInstSetBackDrillByLayerMessage(
+                target=self.msg,
+                drill_to_layer=drill_to_layer.msg,
+                offset=messages.value_message(offset),
+                diameter=messages.value_message(diameter),
+                from_bottom=from_bottom,
             )
         )
 
@@ -1915,7 +1687,7 @@ class PadstackInstance(Primitive):
             **diameter** : Drilling diameter.
         """
         params = self.__stub.GetBackDrillByDepth(
-            _PadstackInstanceQueryBuilder.get_back_drill_message(self, from_bottom)
+            PadstackInstance._get_back_drill_message(self, from_bottom)
         )
         return Value(params.drill_depth), Value(params.diameter)
 
@@ -1932,8 +1704,11 @@ class PadstackInstance(Primitive):
             Whether to set the back drill type from the bottom.
         """
         self.__stub.SetBackDrillByDepth(
-            _PadstackInstanceQueryBuilder.set_back_drill_by_depth_message(
-                self, drill_depth, diameter, from_bottom
+            padstack_instance_pb2.PadstackInstSetBackDrillByDepthMessage(
+                target=self.msg,
+                drill_depth=messages.value_message(drill_depth),
+                diameter=messages.value_message(diameter),
+                from_bottom=from_bottom,
             )
         )
 
@@ -1958,7 +1733,10 @@ class PadstackInstance(Primitive):
             Whether the padstack instance is in a pin group.
         """
         return self.__stub.IsInPinGroup(
-            _PadstackInstanceQueryBuilder.is_in_pin_group_message(self, pin_group)
+            padstack_instance_pb2.PadstackInstIsInPinGroupMessage(
+                target=self.msg,
+                pin_group=pin_group.msg,
+            )
         ).value
 
     @property
@@ -1972,6 +1750,13 @@ class PadstackInstance(Primitive):
 
         pins = self.__stub.GetPinGroups(self.msg).items
         return [pin_group.PinGroup(p) for p in pins]
+
+    @staticmethod
+    def _get_back_drill_message(padstack_inst, from_bottom):
+        return padstack_instance_pb2.PadstackInstGetBackDrillMessage(
+            target=padstack_inst.msg,
+            from_bottom=from_bottom,
+        )
 
 
 class BoardBendDef(Primitive):

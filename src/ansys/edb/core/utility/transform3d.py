@@ -8,25 +8,6 @@ from ansys.edb.core.inner.parser import to_3_point3d_data, to_point3d_data
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _Transform3DQueryBuilder:
-    @staticmethod
-    def is_identity_message(target, eps, rotation):
-        return pb.IsIdentityMessage(
-            target=messages.edb_obj_message(target),
-            eps=eps,
-            rotation=rotation,
-        )
-
-    @staticmethod
-    def is_equal_message(target, value, eps, rotation):
-        return pb.IsEqualMessage(
-            target=messages.edb_obj_message(target),
-            value=messages.edb_obj_message(value),
-            eps=eps,
-            rotation=rotation,
-        )
-
-
 class Transform3D(ObjBase):
     """Represents a 3D transformation.
 
@@ -231,7 +212,11 @@ class Transform3D(ObjBase):
         :obj:`bool`
         """
         return self.__stub.IsIdentity(
-            _Transform3DQueryBuilder.is_identity_message(self, eps, rotation)
+            pb.IsIdentityMessage(
+                target=messages.edb_obj_message(self),
+                eps=eps,
+                rotation=rotation,
+            )
         ).value
 
     def is_equal(self, other_transform, rotation, eps):
@@ -250,7 +235,12 @@ class Transform3D(ObjBase):
 
         """
         return self.__stub.IsEqual(
-            _Transform3DQueryBuilder.is_equal_message(self, other_transform, eps, rotation)
+            pb.IsEqualMessage(
+                target=messages.edb_obj_message(self),
+                value=messages.edb_obj_message(other_transform),
+                eps=eps,
+                rotation=rotation,
+            )
         ).value
 
     def __add__(self, other_transform):

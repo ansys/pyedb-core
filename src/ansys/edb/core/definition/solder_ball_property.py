@@ -1,15 +1,12 @@
 """Solder ball property."""
 
+import ansys.api.edb.v1.padstack_def_data_pb2 as padstack_def_data_pb2
 from ansys.api.edb.v1.padstack_def_data_pb2 import SolderballShape
-import ansys.api.edb.v1.solder_ball_property_pb2 as pb
+import ansys.api.edb.v1.solder_ball_property_pb2 as solder_ball_property_pb2
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.definition.padstack_def_data import (
-    SolderballPlacement,
-    SolderballShape,
-    _PadstackDefDataQueryBuilder,
-)
+from ansys.edb.core.definition.padstack_def_data import SolderballPlacement, SolderballShape
 from ansys.edb.core.inner import ObjBase
 from ansys.edb.core.inner.messages import (
     edb_obj_message,
@@ -19,37 +16,6 @@ from ansys.edb.core.inner.messages import (
 )
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.value import Value
-
-
-class _QueryBuilder:
-    @staticmethod
-    def diameter_message(diameter1, diameter2):
-        return pb.DiameterMessage(
-            diameter1=value_message(diameter1),
-            diameter2=value_message(diameter2),
-        )
-
-    @staticmethod
-    def set_diameter_message(target, diameter1, diameter2):
-        return pb.SetDiameterMessage(
-            target=edb_obj_message(target),
-            value=_QueryBuilder.diameter_message(
-                diameter1,
-                diameter2,
-            ),
-        )
-
-    @staticmethod
-    def set_shape_message(target, shape):
-        return _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_shape_message(
-            target, shape
-        )
-
-    @staticmethod
-    def set_placement_message(target, placement):
-        return _PadstackDefDataQueryBuilder.padstack_def_data_set_solderball_placement_message(
-            target, placement
-        )
 
 
 class SolderBallProperty(ObjBase):
@@ -110,7 +76,15 @@ class SolderBallProperty(ObjBase):
         diameter2 : :term:`ValueLike`
             Diameter 2 of the solder ball property.
         """
-        self.__stub.SetDiameter(_QueryBuilder.set_diameter_message(self, diameter1, diameter2))
+        self.__stub.SetDiameter(
+            solder_ball_property_pb2.SetDiameterMessage(
+                target=edb_obj_message(self),
+                value=solder_ball_property_pb2.DiameterMessage(
+                    diameter1=value_message(diameter1),
+                    diameter2=value_message(diameter2),
+                ),
+            )
+        )
 
     @property
     def uses_solderball(self):
@@ -127,7 +101,11 @@ class SolderBallProperty(ObjBase):
 
     @shape.setter
     def shape(self, shape):
-        self.__stub.SetShape(_QueryBuilder.set_shape_message(self, shape))
+        self.__stub.SetShape(
+            padstack_def_data_pb2.PadstackDefDataSetSolderballShapeMessage(
+                target=self.msg, solderball_shape=shape.value
+            )
+        )
 
     @property
     def placement(self):
@@ -136,7 +114,11 @@ class SolderBallProperty(ObjBase):
 
     @placement.setter
     def placement(self, placement):
-        self.__stub.SetPlacement(_QueryBuilder.set_placement_message(self, placement))
+        self.__stub.SetPlacement(
+            padstack_def_data_pb2.PadstackDefDataSetSolderballPlacementMessage(
+                target=self.msg, solderball_placement=placement.value
+            )
+        )
 
     def clone(self):
         """

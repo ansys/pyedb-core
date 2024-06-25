@@ -122,18 +122,6 @@ def parse_args(msg):
     return res
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(db, cell_type, name):
-        return cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=name)
-
-    @staticmethod
-    def set_hfss_extents(cell, extents):
-        return cell_pb2.CellSetHfssExtentsMessage(
-            cell=cell.msg, info=messages.hfss_extent_info_message(extents)
-        )
-
-
 class Cell(ObjBase, variable_server.VariableServer):
     """Represents a cell object."""
 
@@ -168,7 +156,11 @@ class Cell(ObjBase, variable_server.VariableServer):
         Cell
             Cell created.
         """
-        return Cell(cls.__stub.Create(_QueryBuilder.create(db, cell_type, cell_name)))
+        return Cell(
+            cls.__stub.Create(
+                cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=cell_name)
+            )
+        )
 
     @property
     def layout(self):
@@ -319,7 +311,11 @@ class Cell(ObjBase, variable_server.VariableServer):
         ----------
         extents : :class:`.HfssExtentInfo`
         """
-        self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, extents))
+        self.__stub.SetHfssExtentInfo(
+            cell_pb2.CellSetHfssExtentsMessage(
+                cell=self.msg, info=messages.hfss_extent_info_message(extents)
+            )
+        )
 
     @property
     def temperature_settings(self):

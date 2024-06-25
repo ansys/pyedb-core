@@ -98,24 +98,6 @@ class PowerModule:
         return self._needs_sync
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(layout, name, active, voltage, lrc, lrp):
-        return vr_pb2.VoltageRegulatorMessage(
-            layout=layout.msg, name=name, active=active, voltage=voltage, lrc=lrc, lrp=lrp
-        )
-
-    @staticmethod
-    def create_power_module(msg):
-        return PowerModule(
-            comp_group_name=msg.comp_group_name,
-            pos_output_terminal=msg.pos_output_terminal,
-            neg_output_terminal=msg.neg_output_terminal,
-            relative_strength=msg.relative_strength,
-            active=msg.active,
-        )
-
-
 class VoltageRegulator(conn_obj.ConnObj):
     """Represents a voltage regulator."""
 
@@ -149,13 +131,13 @@ class VoltageRegulator(conn_obj.ConnObj):
         """
         return VoltageRegulator(
             cls.__stub.Create(
-                _QueryBuilder.create(
-                    layout,
-                    name,
-                    active,
-                    messages.value_message(voltage),
-                    messages.value_message(lrc),
-                    messages.value_message(lrp),
+                vr_pb2.VoltageRegulatorMessage(
+                    layout=layout.msg,
+                    name=name,
+                    active=active,
+                    voltage=messages.value_message(voltage),
+                    lrc=messages.value_message(lrc),
+                    lrp=messages.value_message(lrp),
                 )
             )
         )
@@ -274,7 +256,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         -------
         PowerModule
         """
-        return _QueryBuilder.create_power_module(
+        return VoltageRegulator._create_power_module(
             msg=self.__stub.GetPowerModule(messages.string_property_message(self, comp_group_name))
         )
 
@@ -288,7 +270,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         """
         all_pms = self.__stub.GetAllPowerModules(self.msg)
 
-        return [_QueryBuilder.create_power_module(msg=msg) for msg in all_pms.data]
+        return [VoltageRegulator._create_power_module(msg=msg) for msg in all_pms.data]
 
     def add_power_module(self, power_module):
         """Add a power module to the voltage regulator.
@@ -338,3 +320,13 @@ class VoltageRegulator(conn_obj.ConnObj):
     def remove_all_power_modules(self):
         """Remove all power modules in the voltage regulator."""
         self.__stub.RemoveAllPowerModules(self.msg)
+
+    @staticmethod
+    def _create_power_module(msg):
+        return PowerModule(
+            comp_group_name=msg.comp_group_name,
+            pos_output_terminal=msg.pos_output_terminal,
+            neg_output_terminal=msg.neg_output_terminal,
+            relative_strength=msg.relative_strength,
+            active=msg.active,
+        )

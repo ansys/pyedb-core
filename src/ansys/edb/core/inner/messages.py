@@ -578,7 +578,7 @@ def hfss_extent_info_message(hfss_info):
 
 def design_mode_property_message(target, mode):
     """Convert to a ``DesignModePropertyMessage`` object."""
-    return DesignModePropertyMessage(target=target, mode=mode.value)
+    return DesignModePropertyMessage(target=target.msg, mode=mode.value)
 
 
 def cell_find_message(database, cell_type, cell_name=None, cell_id=None):

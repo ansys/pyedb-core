@@ -27,7 +27,7 @@ classifiers = [
 # FIXME: add ansys-api-edb version
 dependencies = [
     "ansys-api-edb==1.0.4",
-    "protobuf>=3.19.3,<4",
+    "protobuf>=3.19.3,<5",
     "grpcio>=1.44.0"
 ]
 

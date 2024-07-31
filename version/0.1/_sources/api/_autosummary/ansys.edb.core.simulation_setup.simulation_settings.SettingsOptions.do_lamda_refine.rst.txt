@@ -1,0 +1,6 @@
+do\_lamda\_refine
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: SettingsOptions.do_lamda_refine

@@ -1,0 +1,6 @@
+lamda\_target
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSettingsOptions.lamda_target

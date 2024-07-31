@@ -1,0 +1,6 @@
+use\_default\_lamda\_value
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSettingsOptions.use_default_lamda_value

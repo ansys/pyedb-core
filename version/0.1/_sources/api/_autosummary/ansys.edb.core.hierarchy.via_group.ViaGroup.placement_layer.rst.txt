@@ -1,0 +1,6 @@
+placement\_layer
+================
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. autoproperty:: ViaGroup.placement_layer

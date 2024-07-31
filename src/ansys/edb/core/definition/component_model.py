@@ -24,6 +24,44 @@ class ComponentModel(ObjBase):
     def reference_file(self, value):
         self.__stub.SetReferenceFile(messages.string_property_message(self, value))
 
+    @classmethod
+    def find_by_name(cls, comp_def, value):
+        """Find a component model by name in a given component def.
+
+        Parameters
+        ----------
+        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+            Component def to search for the component model.
+        value : str
+            Name of the component model.
+
+        Returns
+        -------
+        ComponentModel
+            Component model that is found, ``None`` otherwise.
+        """
+        return ComponentModel(
+            cls.__stub.FindByName(messages.string_property_message(comp_def, value))
+        )
+
+    @classmethod
+    def find_by_id(cls, comp_def, value):
+        """Find a component model by ID in a given component def.
+
+        Parameters
+        ----------
+        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+            Component def to search for the component model.
+        value : int
+            ID of the component model.
+
+        Returns
+        -------
+        ComponentModel
+            Component model that is found, ``None`` otherwise.
+        """
+        return ComponentModel(cls.__stub.FindById(messages.int_proprty_message(comp_def, value)))
+
 
 class NPortComponentModel(ComponentModel):
     """Represents an NPort component model."""
@@ -47,7 +85,7 @@ class NPortComponentModel(ComponentModel):
         Notes
         -----
         The component model does not belong to a specific database until it is added to a
-        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` instance.
+        :class:`.ComponentDef` instance.
         """
         return NPortComponentModel(cls.__stub.Create(proto_wrappers.StringValue(value=name)))
 
@@ -74,7 +112,7 @@ class DynamicLinkComponentModel(ComponentModel):
         Notes
         -----
         The component model does not belong to a specific database until it is added to a
-        :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>` class.
+        :class:`.ComponentDef` class.
         """
         return DynamicLinkComponentModel(cls.__stub.Create(proto_wrappers.StringValue(value=name)))
 

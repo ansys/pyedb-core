@@ -3,9 +3,9 @@ import ansys.api.edb.v1.voltage_regulator_pb2 as vr_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import conn_obj, messages
-from ansys.edb.core.primitive import PadstackInstance
+from ansys.edb.core.primitive.primitive import PadstackInstance
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Value
+from ansys.edb.core.utility.value import Value
 
 
 class PowerModule:
@@ -19,7 +19,7 @@ class PowerModule:
         Name of the positive output terminal.
     neg_output_terminal : str
         Name of the negative output terminal
-    relative_strength : :class:`Value <ansys.edb.core.utility.Value>`
+    relative_strength : :class:`.Value`
         Relative strength as a percentage value.
     active : bool
         Whether the power module is active.
@@ -70,7 +70,7 @@ class PowerModule:
 
     @property
     def relative_strength(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Relative strength for the power module as a percentage.
+        """:class:`.Value`: Relative strength for the power module as a percentage.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -98,24 +98,6 @@ class PowerModule:
         return self._needs_sync
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(layout, name, active, voltage, lrc, lrp):
-        return vr_pb2.VoltageRegulatorMessage(
-            layout=layout.msg, name=name, active=active, voltage=voltage, lrc=lrc, lrp=lrp
-        )
-
-    @staticmethod
-    def create_power_module(msg):
-        return PowerModule(
-            comp_group_name=msg.comp_group_name,
-            pos_output_terminal=msg.pos_output_terminal,
-            neg_output_terminal=msg.neg_output_terminal,
-            relative_strength=msg.relative_strength,
-            active=msg.active,
-        )
-
-
 class VoltageRegulator(conn_obj.ConnObj):
     """Represents a voltage regulator."""
 
@@ -129,7 +111,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the voltage regulator in.
         name : str
             Name of the voltage regulator.
@@ -149,13 +131,13 @@ class VoltageRegulator(conn_obj.ConnObj):
         """
         return VoltageRegulator(
             cls.__stub.Create(
-                _QueryBuilder.create(
-                    layout,
-                    name,
-                    active,
-                    messages.value_message(voltage),
-                    messages.value_message(lrc),
-                    messages.value_message(lrp),
+                vr_pb2.VoltageRegulatorMessage(
+                    layout=layout.msg,
+                    name=name,
+                    active=active,
+                    voltage=messages.value_message(voltage),
+                    lrc=messages.value_message(lrc),
+                    lrp=messages.value_message(lrp),
                 )
             )
         )
@@ -180,7 +162,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def voltage(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Voltage of the voltage regulator.
+        """:class:`.Value`: Voltage of the voltage regulator.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -194,7 +176,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def lrc(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation current of the voltage regulator.
+        """:class:`.Value`: Load regulation current of the voltage regulator.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -208,7 +190,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def lrp(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Load regulation percent of the voltage regulator.
+        """:class:`.Value`: Load regulation percent of the voltage regulator.
 
         This property can be set with :term:`ValueLike`.
         """
@@ -222,8 +204,8 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def pos_remote_sense_pin(self):
-        """:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`: Positive remote sense pin of the \
-        voltage regulator.
+        """:class:`.PadstackInstance`: \
+        Positive remote sense pin of the voltage regulator.
 
         .. seealso:: :obj:`neg_remote_sense_pin`
         """
@@ -235,8 +217,8 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @property
     def neg_remote_sense_pin(self):
-        """:class:`PadstackInstance <ansys.edb.core.primitive.PadstackInstance>`: Negative remote sense pin of the \
-        voltage regulator.
+        """:class:`.PadstackInstance`: \
+        Negative remote sense pin of the voltage regulator.
 
         .. seealso:: :obj:`pos_remote_sense_pin`
         """
@@ -274,7 +256,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         -------
         PowerModule
         """
-        return _QueryBuilder.create_power_module(
+        return VoltageRegulator._create_power_module(
             msg=self.__stub.GetPowerModule(messages.string_property_message(self, comp_group_name))
         )
 
@@ -288,7 +270,7 @@ class VoltageRegulator(conn_obj.ConnObj):
         """
         all_pms = self.__stub.GetAllPowerModules(self.msg)
 
-        return [_QueryBuilder.create_power_module(msg=msg) for msg in all_pms.data]
+        return [VoltageRegulator._create_power_module(msg=msg) for msg in all_pms.data]
 
     def add_power_module(self, power_module):
         """Add a power module to the voltage regulator.
@@ -338,3 +320,13 @@ class VoltageRegulator(conn_obj.ConnObj):
     def remove_all_power_modules(self):
         """Remove all power modules in the voltage regulator."""
         self.__stub.RemoveAllPowerModules(self.msg)
+
+    @staticmethod
+    def _create_power_module(msg):
+        return PowerModule(
+            comp_group_name=msg.comp_group_name,
+            pos_output_terminal=msg.pos_output_terminal,
+            neg_output_terminal=msg.neg_output_terminal,
+            relative_strength=msg.relative_strength,
+            active=msg.active,
+        )

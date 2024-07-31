@@ -62,7 +62,7 @@ class MatrixConvergenceData:
     Attributes
     ----------
     mag_min_threshold : float
-    entry_list : list[:class:`MatrixConvergenceDataEntry`]
+    entry_list : list[:class:`.MatrixConvergenceDataEntry`]
     """
 
     def __init__(self, mag_min_threshold=0.01, entry_list=None):
@@ -111,7 +111,7 @@ class MatrixConvergenceData:
 
     @property
     def entry_list(self):
-        """:obj:`list` of :class:`MatrixConvergenceDataEntry`: Matrix entries."""
+        """:obj:`list` of :class:`.MatrixConvergenceDataEntry`: Matrix entries."""
         return self._entry_list
 
     @entry_list.setter
@@ -282,7 +282,7 @@ class SingleFrequencyAdaptiveSolution:
 
     @property
     def mx_conv_data(self):
-        """:class:`MatrixConvergenceData`: Matrix convergence data."""
+        """:class:`.MatrixConvergenceData`: Matrix convergence data."""
         return self._mx_conv_data
 
     @mx_conv_data.setter
@@ -350,7 +350,7 @@ class MultiFrequencyAdaptiveSolution:
     ----------
     max_passes : int
         Maximum number of adaptive passes.
-    adaptive_frequencies : list[:class:`AdaptiveFrequency`]
+    adaptive_frequencies : list[:class:`.AdaptiveFrequency`]
     """
 
     def __init__(self, max_passes=10, adaptive_frequencies=None):
@@ -365,7 +365,7 @@ class MultiFrequencyAdaptiveSolution:
 
     @property
     def adaptive_frequencies(self):
-        """:obj:`list` of :class:`AdaptiveFrequency`: Frequencies that adaptive solutions are calculated for."""
+        """:obj:`list` of :class:`.AdaptiveFrequency`: Frequencies that adaptive solutions are calculated for."""
         return self._adaptive_frequencies
 
     @adaptive_frequencies.setter

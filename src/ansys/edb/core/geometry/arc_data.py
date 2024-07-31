@@ -4,7 +4,8 @@ import math
 
 from ansys.api.edb.v1 import arc_data_pb2_grpc
 
-from ansys.edb.core import geometry, session
+from ansys.edb.core import session
+from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.utility import conversions
 
@@ -56,17 +57,17 @@ class ArcData:
         if self.height == 0:
             return f"{self.start} {self.end}"
         else:
-            arc = geometry.PointData(self.height)
+            arc = PointData(self.height)
             return f"{self.start} {arc} {self.end}"
 
     @property
     def start(self):
-        """:class:`geometry.PointData`: Start point of the arc."""
+        """:class:`.PointData`: Start point of the arc."""
         return self._start
 
     @property
     def end(self):
-        """:class:`geometry.PointData`: End point of the arc."""
+        """:class:`.PointData`: End point of the arc."""
         return self._end
 
     @property
@@ -112,13 +113,13 @@ class ArcData:
     @property
     @parser.to_point_data
     def center(self):
-        """:class:`geometry.PointData`: Center point of the arc."""
+        """:class:`.PointData`: Center point of the arc."""
         return self.__stub.GetCenter(messages.arc_message(self))
 
     @property
     @parser.to_point_data
     def midpoint(self):
-        """:class:`geometry.PointData`: Midpoint of the arc."""
+        """:class:`.PointData`: Midpoint of the arc."""
         return self.__stub.GetMidpoint(messages.arc_message(self))
 
     @property
@@ -129,7 +130,7 @@ class ArcData:
     @property
     @parser.to_polygon_data
     def bbox(self):
-        """:class:`geometry.PolygonData`: Rectangular bounding box of the arc."""
+        """:class:`.PolygonData`: Rectangular bounding box of the arc."""
         return self.__stub.GetBoundingBox(messages.arc_message(self))
 
     def is_big(self):
@@ -222,8 +223,8 @@ class ArcData:
 
     @property
     def points(self):
-        """:obj:`list` of :class:`geometry.PointData`: Geometric points representing the arc."""
-        return [self._start, geometry.PointData(self.height), self._end]
+        """:obj:`list` of :class:`.PointData`: Geometric points representing the arc."""
+        return [self._start, PointData(self.height), self._end]
 
     def tangent_at(self, point):
         """Get the tangent vector of the arc at a given point.
@@ -235,7 +236,7 @@ class ArcData:
 
         Returns
         -------
-        geometry.PointData
+        .PointData
         """
         if self.is_segment():
             return self.end - self.start
@@ -244,9 +245,9 @@ class ArcData:
         vec = point - self.center
 
         if self.is_ccw():
-            return geometry.PointData(-vec.y, vec.x)
+            return PointData(-vec.y, vec.x)
         else:
-            return geometry.PointData(vec.y, -vec.x)
+            return PointData(vec.y, -vec.x)
 
     @parser.to_box
     def closest_points(self, other):
@@ -259,6 +260,6 @@ class ArcData:
 
         Returns
         -------
-        tuple[geometry.PointData, geometry.PointData]
+        tuple[.PointData, .PointData]
         """
         return self.__stub.ClosestPoints(messages.arc_data_two_points(self, other))

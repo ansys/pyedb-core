@@ -8,21 +8,6 @@ from ansys.edb.core.definition.dielectric_material_model import DielectricMateri
 from ansys.edb.core.inner import messages
 
 
-class _DebyeModelQueryBuilder:
-    @staticmethod
-    def frequency_range_message(low, high):
-        return pb.FrequencyRangeMessage(
-            low=messages.double_message(low), high=messages.double_message(high)
-        )
-
-    @staticmethod
-    def set_frequency_range_message(target, low, high):
-        return pb.SetFrequencyRangeMessage(
-            target=target.msg,
-            range=_DebyeModelQueryBuilder.frequency_range_message(low, high),
-        )
-
-
 class DebyeModel(DielectricMaterialModel):
     """Representa a Debye dielectric material model object."""
 
@@ -50,9 +35,7 @@ class DebyeModel(DielectricMaterialModel):
     def frequency_range(self, freq):
         low = freq[0]
         high = freq[1]
-        self.__stub.SetFrequencyRange(
-            _DebyeModelQueryBuilder.set_frequency_range_message(self, low, high)
-        )
+        self.__stub.SetFrequencyRange(DebyeModel._set_frequency_range_message(self, low, high))
 
     @property
     def relative_permitivity_at_high_low_frequency(self):
@@ -67,7 +50,7 @@ class DebyeModel(DielectricMaterialModel):
         low = freq[0]
         high = freq[1]
         self.__stub.SetRelativePermitivityAtHighLowFrequency(
-            _DebyeModelQueryBuilder.set_frequency_range_message(self, low, high)
+            DebyeModel._set_frequency_range_message(self, low, high)
         )
 
     @property
@@ -81,12 +64,12 @@ class DebyeModel(DielectricMaterialModel):
         low = freq[0]
         high = freq[1]
         self.__stub.SetLossTangentAtHighLowFrequency(
-            _DebyeModelQueryBuilder.set_frequency_range_message(self, low, high)
+            DebyeModel._set_frequency_range_message(self, low, high)
         )
 
     @property
     def is_relative_permitivity_enabled_at_optical_frequency(self):
-        """bool: Flag indicating if the relative permitivity at optical frequency is enabled."""
+        """:obj:`bool`: Flag indicating if the relative permitivity at optical frequency is enabled."""
         return self.__stub.IsRelativePermitivityEnabledAtOpticalFrequency(self.msg).value
 
     @is_relative_permitivity_enabled_at_optical_frequency.setter
@@ -97,7 +80,7 @@ class DebyeModel(DielectricMaterialModel):
 
     @property
     def use_dc_conductivity(self):
-        """bool: Flag indicating if the DC conductivity nominal value is used."""
+        """:obj:`bool`: Flag indicating if the DC conductivity nominal value is used."""
         return self.__stub.UseDCConductivity(self.msg).value
 
     @use_dc_conductivity.setter
@@ -123,3 +106,16 @@ class DebyeModel(DielectricMaterialModel):
     @dc_conductivity.setter
     def dc_conductivity(self, conductivity):
         self.__stub.SetDCConductivity(messages.double_property_message(self, conductivity))
+
+    @staticmethod
+    def _frequency_range_message(low, high):
+        return pb.FrequencyRangeMessage(
+            low=messages.double_message(low), high=messages.double_message(high)
+        )
+
+    @staticmethod
+    def _set_frequency_range_message(target, low, high):
+        return pb.SetFrequencyRangeMessage(
+            target=target.msg,
+            range=DebyeModel._frequency_range_message(low, high),
+        )

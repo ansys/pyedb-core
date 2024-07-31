@@ -28,7 +28,7 @@ class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
 
         Returns
         -------
-        :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        :class:`.PolygonData`
         """
         return self.__stub.GetPolygonData(
             GetPolygonDataMessage(layout_obj_inst_geom=self.msg, apply_neg=apply_negatives)

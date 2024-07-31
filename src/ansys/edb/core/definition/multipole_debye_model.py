@@ -8,28 +8,6 @@ from ansys.edb.core.definition.dielectric_material_model import DielectricMateri
 from ansys.edb.core.inner import messages
 
 
-class _MultipoleDebyeModelQueryBuilder:
-    @staticmethod
-    def multmultipole_debye_model_params(frequencies, permitivities, loss_tangents):
-        frequencies_msg = [messages.double_message(i) for i in frequencies]
-        permitivities_msg = [messages.double_message(i) for i in permitivities]
-        loss_tangents_msg = [messages.double_message(i) for i in loss_tangents]
-        return pb.MultipoleDebyeModelGetParams(
-            frequencies=frequencies_msg,
-            relative_permitivities=permitivities_msg,
-            loss_tangents=loss_tangents_msg,
-        )
-
-    @staticmethod
-    def set_multipole_debye_model_params(target, frequencies, permitivities, loss_tangents):
-        return pb.MultipoleDebyeModelSetParams(
-            target=target.msg,
-            vectors=_MultipoleDebyeModelQueryBuilder.multmultipole_debye_model_params(
-                frequencies, permitivities, loss_tangents
-            ),
-        )
-
-
 class MultipoleDebyeModel(DielectricMaterialModel):
     """Represents a dielectric material model."""
 
@@ -78,8 +56,16 @@ class MultipoleDebyeModel(DielectricMaterialModel):
         loss_tangents : list[float]
             List of loss tangents at each frequency.
         """
+        frequencies_msg = [messages.double_message(i) for i in frequencies]
+        permitivities_msg = [messages.double_message(i) for i in permitivities]
+        loss_tangents_msg = [messages.double_message(i) for i in loss_tangents]
         self.__stub.SetParameters(
-            _MultipoleDebyeModelQueryBuilder.set_multipole_debye_model_params(
-                self, frequencies, permitivities, loss_tangents
+            pb.MultipoleDebyeModelSetParams(
+                target=self.msg,
+                vectors=pb.MultipoleDebyeModelGetParams(
+                    frequencies=frequencies_msg,
+                    relative_permitivities=permitivities_msg,
+                    loss_tangents=loss_tangents_msg,
+                ),
             )
         )

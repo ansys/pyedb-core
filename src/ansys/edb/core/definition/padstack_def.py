@@ -9,43 +9,6 @@ from ansys.edb.core.inner import ObjBase
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _PadstackDefQueryBuilder:
-    """Provides for creating gRPC messages for the padstack definition."""
-
-    @staticmethod
-    def padstack_def_string_message(target, name):
-        """Create a string message for the padstack definition.
-
-        Parameters
-        ----------
-        target: :class:`Database <ansys.edb.core.database.Database>` or PadstackDef
-        name : str
-           Name of the string message.
-
-        Returns
-        -------
-        PadstackDefStringMessage
-        """
-        return pb.PadstackDefStringMessage(target=target.msg, name=name)
-
-    @staticmethod
-    def padstack_def_set_data_message(target, data):
-        """Create a data message for the padstack definition.
-
-        Parameters
-        ----------
-        target: PadstackDef
-            Padstack definition target.
-        data : :class:`PadstackDefData <ansys.edb.core.definition.padstack_def_data.PadstackDefData>`
-            Data message to create on the padstack definition.
-
-        Returns
-        -------
-        PadstackDefSetDataMessage
-        """
-        return pb.PadstackDefSetDataMessage(target=target.msg, data=data.msg)
-
-
 class PadstackDef(ObjBase):
     """Represents a padstack definition."""
 
@@ -57,7 +20,7 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.core.database.Database>`
+        db : :class:`.Database`
             Database to create the padstack definition in.
         name : str
             Data to set on the padstack definition.
@@ -67,9 +30,7 @@ class PadstackDef(ObjBase):
         PadstackDef
             Padstack definition created.
         """
-        return PadstackDef(
-            cls.__stub.Create(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
-        )
+        return PadstackDef(cls.__stub.Create(PadstackDef._padstack_def_string_message(db, name)))
 
     @classmethod
     def find_by_name(cls, db, name):
@@ -77,7 +38,7 @@ class PadstackDef(ObjBase):
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.core.database.Database>`.
+        db : :class:`.Database`.
             Database to search for the padstack definition.
         name : str
             Name of the padstack definition.
@@ -88,12 +49,12 @@ class PadstackDef(ObjBase):
             Padstack definition found.
         """
         return PadstackDef(
-            cls.__stub.FindByName(_PadstackDefQueryBuilder.padstack_def_string_message(db, name))
+            cls.__stub.FindByName(PadstackDef._padstack_def_string_message(db, name))
         )
 
     @property
     def definition_type(self):
-        """:class:`DefinitionObjType`: Definition type."""
+        """:class:`.DefinitionObjType`: Definition type."""
         return DefinitionObjType.PADSTACK_DEF
 
     @property
@@ -106,14 +67,30 @@ class PadstackDef(ObjBase):
 
     @property
     def data(self):
-        """:class:`PadstackDefData <ansys.edb.core.definition.padstack_def_data.PadstackDefData>`: \
+        """:class:`.PadstackDefData`: \
         Data for the padstack definition."""
         return PadstackDefData(self.__stub.GetData(self.msg))
 
     @data.setter
     def data(self, data):
-        self.__stub.SetData(_PadstackDefQueryBuilder.padstack_def_set_data_message(self, data))
+        self.__stub.SetData(pb.PadstackDefSetDataMessage(target=self.msg, data=data.msg))
 
     def delete(self):
         """Delete the padstack definition."""
         self.__stub.Delete(self.msg)
+
+    @staticmethod
+    def _padstack_def_string_message(target, name):
+        """Create a string message for the padstack definition.
+
+        Parameters
+        ----------
+        target : :class:`.Database` or PadstackDef
+        name : str
+           Name of the string message.
+
+        Returns
+        -------
+        PadstackDefStringMessage
+        """
+        return pb.PadstackDefStringMessage(target=target.msg, name=name)

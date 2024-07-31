@@ -9,10 +9,10 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
-   Layer
-   StackupLayer
-   ViaLayer
-   LayerCollection
+   layer.Layer
+   stackup_layer.StackupLayer
+   via_layer.ViaLayer
+   layer_collection.LayerCollection
 
 Enums
 -----
@@ -20,12 +20,12 @@ Enums
 .. autosummary::
    :toctree: _autosummary
 
-   LayerType
-   TopBottomAssociation
-   DrawOverride
-   LayerVisibility
-   DCThicknessType
-   RoughnessRegion
-   LayerCollectionMode
-   LayerTypeSet
-   DielectricMergingMethod
+   layer_collection.LayerType
+   layer.TopBottomAssociation
+   layer.DrawOverride
+   layer.LayerVisibility
+   stackup_layer.DCThicknessType
+   stackup_layer.RoughnessRegion
+   layer_collection.LayerCollectionMode
+   layer_collection.LayerTypeSet
+   layer_collection.DielectricMergingMethod

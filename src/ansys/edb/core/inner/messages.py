@@ -51,6 +51,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     StringsMessage,
     StringsPropertyMessage,
     TemperatureSettingsMessage,
+    UInt64PropertyMessage,
     ValueMessage,
     ValuePairMessage,
     ValuePairPropertyMessage,
@@ -145,9 +146,11 @@ from ansys.api.edb.v1.voltage_regulator_pb2 import PowerModuleMessage
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.wrappers_pb2 import BoolValue, DoubleValue, FloatValue, Int64Value, StringValue
 
-from ansys.edb.core import utility
-from ansys.edb.core.simulation_setup import LengthMeshOperation, SkinDepthMeshOperation
-from ansys.edb.core.utility import conversions
+from ansys.edb.core.simulation_setup.mesh_operation import (
+    LengthMeshOperation,
+    SkinDepthMeshOperation,
+)
+from ansys.edb.core.utility import conversions, value
 
 
 def str_message(s: str):
@@ -369,6 +372,11 @@ def int_property_message(target, value):
     return IntPropertyMessage(target=target.msg, value=value)
 
 
+def uint64_property_message(target, value):
+    """Convert to a ``UInt64PropertyMessage`` object."""
+    return UInt64PropertyMessage(target=target.msg, value=value)
+
+
 def bool_property_message(target, value):
     """Convert to a ``BoolPropertyMessage`` object."""
     return BoolPropertyMessage(target=target.msg, value=value)
@@ -570,7 +578,7 @@ def hfss_extent_info_message(hfss_info):
 
 def design_mode_property_message(target, mode):
     """Convert to a ``DesignModePropertyMessage`` object."""
-    return DesignModePropertyMessage(target=target, mode=mode.value)
+    return DesignModePropertyMessage(target=target.msg, mode=mode.value)
 
 
 def cell_find_message(database, cell_type, cell_name=None, cell_id=None):
@@ -804,13 +812,13 @@ def term_find_by_name_message(layout, name):
 
 def term_get_product_solver_message(term, product_id):
     """Convert to a ``TermGetProductSolversMessage`` object."""
-    return TermGetProductSolversMessage(term=term.msg, product_id=product_id)
+    return TermGetProductSolversMessage(term=term.msg, product_id=product_id.value)
 
 
 def term_set_solver_option_message(term, product_id, name, option):
     """Convert to a ``TermSetSolverOptionMessage`` object."""
     return TermSetSolverOptionMessage(
-        term=term.msg, product_id=product_id, name=name, option=option
+        term=term.msg, product_id=product_id.value, name=name, option=option
     )
 
 
@@ -958,6 +966,7 @@ def mesh_operation_message(mesh_op):
         refine_inside=mesh_op.refine_inside,
         mesh_region=mesh_op.mesh_region,
         net_layer_info=[_mesh_op_net_layer_message(*nl) for nl in mesh_op.net_layer_info],
+        solve_inside=mesh_op.solve_inside,
     )
     if isinstance(mesh_op, LengthMeshOperation):
         mesh_op_msg.length_mesh_op.CopyFrom(_length_mesh_operation_message(mesh_op))
@@ -975,13 +984,13 @@ def value_message(val):
 
     Parameters
     ----------
-    val : str, int, float, complex, utility.Value, ValueMessage
+    val : str, int, float, complex, ansys.edb.core.utility.value.Value, ValueMessage
 
     Returns
     -------
     ValueMessage
     """
-    if isinstance(val, utility.Value):
+    if isinstance(val, value.Value):
         return val.msg
     if isinstance(val, ValueMessage):
         return val

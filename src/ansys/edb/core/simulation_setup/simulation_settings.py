@@ -183,7 +183,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @property
     def via_model_type(self):
-        """:class:`ViaStyle`: Via model type."""
+        """:class:`.ViaStyle`: Via model type."""
         return ViaStyle(self.__stub.GetViaModelType(self.msg).via_model_type)
 
     @via_model_type.setter
@@ -199,7 +199,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @num_via_sides.setter
     def num_via_sides(self, num_via_sides):
-        self.__stub.SetNumViaSides(messages.int_property_message(self, num_via_sides))
+        self.__stub.SetNumViaSides(messages.uint64_property_message(self, num_via_sides))
 
     @property
     def num_via_density(self):

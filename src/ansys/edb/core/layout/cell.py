@@ -9,11 +9,12 @@ import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import ObjBase, messages, variable_server
 from ansys.edb.core.layout import layout
-from ansys.edb.core.primitive import Primitive
+from ansys.edb.core.primitive.primitive import Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.simulation_setup import SimulationSetup
-from ansys.edb.core.utility import TemperatureSettings, Value
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
 from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
+from ansys.edb.core.utility.temperature_settings import TemperatureSettings
+from ansys.edb.core.utility.value import Value
 
 
 class CellType(Enum):
@@ -121,18 +122,6 @@ def parse_args(msg):
     return res
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(db, cell_type, name):
-        return cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=name)
-
-    @staticmethod
-    def set_hfss_extents(cell, extents):
-        return cell_pb2.CellSetHfssExtentsMessage(
-            cell=cell.msg, info=messages.hfss_extent_info_message(extents)
-        )
-
-
 class Cell(ObjBase, variable_server.VariableServer):
     """Represents a cell object."""
 
@@ -155,7 +144,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.core.database.Database>`
+        db : :class:`.Database`
             Database to create the cell in.
         cell_type : CellType
             Type of the cell to create.
@@ -167,11 +156,15 @@ class Cell(ObjBase, variable_server.VariableServer):
         Cell
             Cell created.
         """
-        return Cell(cls.__stub.Create(_QueryBuilder.create(db, cell_type, cell_name)))
+        return Cell(
+            cls.__stub.Create(
+                cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=cell_name)
+            )
+        )
 
     @property
     def layout(self):
-        """:class:`Layout <ansys.edb.core.layout.Layout>`: Layout of the cell.
+        """:class:`.Layout`: Layout of the cell.
 
         This property is read-only.
         """
@@ -179,7 +172,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def flattened_layout(self):
-        """:class:`Layout <ansys.edb.core.layout.Layout>`: Flattened layout of the cell.
+        """:class:`.Layout`: Flattened layout of the cell.
 
         This property is read-only.
         """
@@ -191,7 +184,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        database : :class:`Database <ansys.edb.core.database.Database>`
+        database : :class:`.Database`
             Database to search for the cell.
         cell_type : CellType
             Type of the cell.
@@ -216,7 +209,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def database(self):
-        """:class:`Database <ansys.edb.core.database.Database>`: Owning database of the cell.
+        """:class:`.Database`: Owning database of the cell.
 
         This property is read-only.
         """
@@ -306,7 +299,8 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def hfss_extent_info(self):
-        """:class:`HfssExtentInfo <ansys.edb.core.utility.HfssExtentInfo>`: HFSS extents for the cell."""
+        """:class:`.HfssExtentInfo`: \
+        HFSS extents for the cell."""
         msg = self.__stub.GetHfssExtentInfo(self.msg)
         return HfssExtentInfo(**parse_args(msg))
 
@@ -315,13 +309,18 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        extents : :class: HfssExtentInfo <ansys.edb.core.utility.HfssExtentInfo>
+        extents : :class:`.HfssExtentInfo`
         """
-        self.__stub.SetHfssExtentInfo(_QueryBuilder.set_hfss_extents(self, extents))
+        self.__stub.SetHfssExtentInfo(
+            cell_pb2.CellSetHfssExtentsMessage(
+                cell=self.msg, info=messages.hfss_extent_info_message(extents)
+            )
+        )
 
     @property
     def temperature_settings(self):
-        """:class:`TemperatureSettings <ansys.edb.core.utility.TemperatureSettings>`: Temperature settings."""
+        """:class:`.TemperatureSettings`: \
+        Temperature settings."""
         msg = self.__stub.GetTemperatureSettings(self.msg)
         return TemperatureSettings(
             msg.include_temp_dependence, msg.enable_thermal_feedback, Value(msg.temperature)
@@ -338,11 +337,11 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        included_nets : list[:class:`Net <ansys.edb.core.net.Net>`]
+        included_nets : list[:class:`.Net`]
             Nets to keep after cutout.
-        clipped_nets : list[:class:`Net <ansys.edb.core.net.Net>`]
+        clipped_nets : list[:class:`.Net`]
             Nets to kept and clip at the boundary after cutout.
-        clipping_polygon : :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        clipping_polygon : :class:`.PolygonData`
             Clipping polygon.
         clean_clipping : bool, optional
             Whether to perform clean clipping. The default is ``True``.
@@ -365,7 +364,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
 
         Returns
@@ -383,7 +382,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
         attr_id : int
             User-defined ID that identifies the string value stored in the property.
@@ -402,7 +401,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        prod_id : :class:`ProductIdType <ansys.edb.core.database.ProductIdType>`
+        prod_id : :class:`.ProductIdType`
             ID representing a product that supports the EDB.
         attr_id : int
             User-defined ID that identifies the string value stored in the property.
@@ -425,8 +424,9 @@ class Cell(ObjBase, variable_server.VariableServer):
 
     @property
     def simulation_setups(self):
-        """:obj:`list` of [:class:`SimulationSetup <ansys.edb.core.simulation_setup.SimulationSetup>`]: List of \
-        all simulation setups of the cell.
+        """:obj:`list` of \
+        [:class:`.SimulationSetup`]: \
+        List of all simulation setups of the cell.
 
         .. seealso:: :obj:`add_simulation_setup`, :obj:`delete_simulation_setup`
         """
@@ -453,7 +453,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         Returns
         -------
-        list[:class:`PolygonData <ansys.edb.core.geometry.PolygonData>`]
+        list[:class:`.PolygonData`]
             List of boxes, one around each via discovered.
         """
         self.__stub.GenerateViaSmartBox(messages.string_property_message(self, net_name))

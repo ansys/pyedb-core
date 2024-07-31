@@ -6,17 +6,17 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.definition import (
+from ansys.edb.core.definition.bondwire_def import (
     ApdBondwireDef,
     BondwireDefType,
-    ComponentDef,
-    DatasetDef,
     Jedec4BondwireDef,
     Jedec5BondwireDef,
-    MaterialDef,
-    PackageDef,
-    PadstackDef,
 )
+from ansys.edb.core.definition.component_def import ComponentDef
+from ansys.edb.core.definition.dataset_def import DatasetDef
+from ansys.edb.core.definition.material_def import MaterialDef
+from ansys.edb.core.definition.package_def import PackageDef
+from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase, variable_server
 from ansys.edb.core.inner.messages import (
@@ -29,7 +29,7 @@ from ansys.edb.core.inner.messages import (
     str_message,
 )
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.layout import Cell
+from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.session import DatabaseServiceStub, StubAccessor, StubType
 
 
@@ -130,17 +130,17 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def top_circuit_cells(self):
-        """:obj:`list` of :class:`Cell <ansys.edb.core.layout.Cell>`: Top circuit cells in the database."""
+        """:obj:`list` of :class:`.Cell`: Top circuit cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetTopCircuits(self.msg))
 
     @property
     def circuit_cells(self):
-        """:obj:`list` of :class:`Cell <ansys.edb.core.layout.Cell>`: All circuit cells in the database."""
+        """:obj:`list` of :class:`.Cell`: All circuit cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetCircuits(self.msg))
 
     @property
     def footprint_cells(self):
-        """:obj:`list` of :class:`Cell <ansys.edb.core.layout.Cell>`: All footprint cells in the database."""
+        """:obj:`list` of :class:`.Cell`: All footprint cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetFootprints(self.msg))
 
     @property
@@ -319,12 +319,12 @@ class Database(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        cells_to_copy : list[:class:`Cell <ansys.edb.core.layout.Cell>`]
+        cells_to_copy : list[:class:`.Cell`]
             Cells to copy.
 
         Returns
         -------
-        list[:class:`Cell <ansys.edb.core.layout.Cell>`]
+        list[:class:`.Cell`]
             New cells created in this database.
         """
         return Database._map_cell_edb_obj_collection(
@@ -354,52 +354,44 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def apd_bondwire_defs(self):
-        """:obj:`list` of :class:`ApdBondwireDef <ansys.edb.core.definition.ApdBondwireDef>`: All APD \
-        bondwire definitions in the database."""
+        """:obj:`list` of :class:`.ApdBondwireDef`: All APD bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(ApdBondwireDef, BondwireDefType.APD_BONDWIRE_DEF)
 
     @property
     def jedec4_bondwire_defs(self):
-        """:obj:`list` of :class:`Jedec4BondwireDef <ansys.edb.core.definition.Jedec4BondwireDef>`: All JEDEC4 \
-        bondwire definitions in the database."""
+        """:obj:`list` of :class:`.Jedec4BondwireDef`: All JEDEC4 bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(
             Jedec4BondwireDef, BondwireDefType.JEDEC4_BONDWIRE_DEF
         )
 
     @property
     def jedec5_bondwire_defs(self):
-        """:obj:`list` of:class:`Jedec5BondwireDef <ansys.edb.core.definition.Jedec5BondwireDef>`: All JEDEC5 \
-        bondwire definitions in the database."""
+        """:obj:`list` of:class:`.Jedec5BondwireDef`: All JEDEC5 bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(
             Jedec5BondwireDef, BondwireDefType.JEDEC5_BONDWIRE_DEF
         )
 
     @property
     def padstack_defs(self):
-        """:obj:`list` of :class:`PadstackDef <ansys.edb.core.definition.PadstackDef>`: All padstack definitions \
-        in the database."""
+        """:obj:`list` of :class:`.PadstackDef`: All padstack definitions in the database."""
         return self._get_definition_objs(PadstackDef, DefinitionObjType.PADSTACK_DEF)
 
     @property
     def package_defs(self):
-        """:obj:`list` of :class:`PackageDef <ansys.edb.core.definition.PackageDef>`: All package definitions \
-        in the database."""
+        """:obj:`list` of :class:`.PackageDef`: All package definitions in the database."""
         return self._get_definition_objs(PackageDef, DefinitionObjType.PACKAGE_DEF)
 
     @property
     def component_defs(self):
-        """:obj:`list` of :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: All component \
-        definitions in the database."""
+        """:obj:`list` of :class:`.ComponentDef`: All component definitions in the database."""
         return self._get_definition_objs(ComponentDef, DefinitionObjType.COMPONENT_DEF)
 
     @property
     def material_defs(self):
-        """:obj:`list` of :class:`MaterialDef <ansys.edb.core.definition.MaterialDef>`: All material \
-        definitions in the database."""
+        """:obj:`list` of :class:`.MaterialDef`: All material definitions in the database."""
         return self._get_definition_objs(MaterialDef, DefinitionObjType.MATERIAL_DEF)
 
     @property
     def dataset_defs(self):
-        """:obj:`list` of :class:`DatasetDef <ansys.edb.core.definition.DatasetDef>`: All dataset \
-        definitions in the database."""
+        """:obj:`list` of :class:`.DatasetDef`: All dataset definitions in the database."""
         return self._get_definition_objs(DatasetDef, DefinitionObjType.DATASET_DEF)

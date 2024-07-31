@@ -2,9 +2,10 @@
 
 from ansys.edb.core.definition import component_def
 from ansys.edb.core.inner import conn_obj, messages
-from ansys.edb.core.layer import Layer
+from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Transform, Value
+from ansys.edb.core.utility.transform import Transform
+from ansys.edb.core.utility.value import Value
 
 
 class HierarchyObj(conn_obj.ConnObj):
@@ -14,9 +15,10 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def transform(self):
-        """:class:`Transform <ansys.edb.core.utility.Transform>`: Transformation information of the hierarchy object."""
+        """:class:`.Transform`: \
+        Transformation information of the hierarchy object."""
         transform_msg = self.__stub.GetTransform(self.msg)
-        return Transform(
+        return Transform.create(
             transform_msg.scale,
             transform_msg.angle,
             transform_msg.mirror,
@@ -40,7 +42,7 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def component_def(self):
-        """:class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`: Component definition for the \
+        """:class:`.ComponentDef`: Component definition for the \
         hierarchy object if it exists, ``None`` otherwise.
 
         This property is read-only.
@@ -49,7 +51,7 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def placement_layer(self):
-        """:class:`Layer <ansys.edb.core.layer.Layer>`: Placement layer for the hierarchy object."""
+        """:class:`.Layer`: Placement layer for the hierarchy object."""
         return Layer(self.__stub.GetPlacementLayer(self.msg)).cast()
 
     @placement_layer.setter
@@ -58,8 +60,8 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @property
     def location(self):
-        """:obj:`tuple` (:class:`Value <ansys.edb.core.utility.Value>`, \
-        :class:`Value <ansys.edb.core.utility.Value>`): \
+        """:obj:`tuple` (:class:`.Value`, \
+        :class:`.Value`): \
         Location [x, y] of the hierarchy object on the :obj:`placement_layer` object."""
         pnt_msg = self.__stub.GetLocation(self.msg)
         return [Value(pnt_msg.x), Value(pnt_msg.y)]
@@ -79,11 +81,11 @@ class HierarchyObj(conn_obj.ConnObj):
 
         Notes
         -----
-        For a :class:`ComponentModel <ansys.edb.core.definition.ComponentModel>` instance, this flag indicates if the
-        model is embedded with the field solver, when applicable.
+        For a :class:`.ComponentModel`
+        instance, this flag indicates if the model is embedded with the field solver, when applicable.
 
-        For a :class:`CellInstance <ansys.edb.core.hierarchy.CellInstance>` instance, it indicates if the design's
-        geometry is flattened/meshed with the parent, when applicable.
+        For a :class:`.CellInstance` instance,
+        it indicates if the design's geometry is flattened/meshed with the parent, when applicable.
         """
         return self.__stub.GetSolveIndependentPreference(self.msg).value
 

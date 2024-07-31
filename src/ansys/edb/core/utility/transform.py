@@ -7,25 +7,6 @@ from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.value import Value
 
 
-class _TransformQueryBuilder:
-    @staticmethod
-    def transform_message(scale, angle, mirror, offset_x, offset_y):
-        return pb.TransformMessage(
-            scale=messages.value_message(scale),
-            angle=messages.value_message(angle),
-            mirror=mirror,
-            offset_x=messages.value_message(offset_x),
-            offset_y=messages.value_message(offset_y),
-        )
-
-    @staticmethod
-    def transform_operator_message(target, target_2):
-        return pb.TransformOperatorMessage(
-            target_1=messages.edb_obj_message(target.msg),
-            target_2=messages.edb_obj_message(target_2.msg),
-        )
-
-
 class Transform(ObjBase):
     """Represents a transformation."""
 
@@ -54,13 +35,19 @@ class Transform(ObjBase):
         """
         return Transform(
             cls.__stub.Create(
-                _TransformQueryBuilder.transform_message(scale, angle, mirror, offset_x, offset_y)
+                pb.TransformMessage(
+                    scale=messages.value_message(scale),
+                    angle=messages.value_message(angle),
+                    mirror=mirror,
+                    offset_x=messages.value_message(offset_x),
+                    offset_y=messages.value_message(offset_y),
+                )
             )
         )
 
     @property
     def scale(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Scale property.
+        """:class:`.Value`: Scale property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -72,7 +59,7 @@ class Transform(ObjBase):
 
     @property
     def rotation(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Rotation property.
+        """:class:`.Value`: Rotation property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -84,7 +71,7 @@ class Transform(ObjBase):
 
     @property
     def offset_x(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: X offset property.
+        """:class:`.Value`: X offset property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -96,7 +83,7 @@ class Transform(ObjBase):
 
     @property
     def offset_y(self):
-        """:class:`Value <ansys.edb.core.utility.Value>`: Y offset property.
+        """:class:`.Value`: Y offset property.
 
         This property can be set to :term:`ValueLike`.
         """
@@ -135,7 +122,10 @@ class Transform(ObjBase):
         """
         return Transform(
             self.__stub.TransformPlus(
-                _TransformQueryBuilder.transform_operator_message(self, other_transform)
+                pb.TransformOperatorMessage(
+                    target_1=messages.edb_obj_message(self.msg),
+                    target_2=messages.edb_obj_message(other_transform.msg),
+                )
             )
         )
 
@@ -144,12 +134,12 @@ class Transform(ObjBase):
 
         Parameters
         ----------
-        point: :class:`PointData <ansys.edb.core.geometry.PointData>`
+        point : :class:`.PointData`
             Point values [x, y] to transform.
 
         Returns
         -------
-        :class:`PointData <ansys.edb.core.geometry.PointData>`
+        :class:`.PointData`
             Transformed point.
         """
         pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))
@@ -161,12 +151,12 @@ class Transform(ObjBase):
 
         Parameters
         ----------
-        polygon: :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        polygon : :class:`.PolygonData`
             Polygon to transform.
 
         Returns
         -------
-        :class:`PolygonData <ansys.edb.core.geometry.PolygonData>`
+        :class:`.PolygonData`
             Transformed polygon.
         """
         return self.__stub.TransformPolygon(messages.polygon_data_property_message(self, polygon))

@@ -5,7 +5,6 @@ from ansys.edb.core.definition import component_model, component_pin
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.layout import cell
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -20,11 +19,11 @@ class ComponentDef(ObjBase):
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.core.database.Database>`
+        db : :class:`.Database`
             Database to create the component definition in.
         comp_def_name : str
             Name of the component definition to create.
-        fp : :class:`Cell <ansys.edb.core.layout.Cell>`
+        fp : :class:`.Cell`
             Footprint cell of the component definition, optional
 
         Returns
@@ -42,7 +41,7 @@ class ComponentDef(ObjBase):
 
         Parameters
         ----------
-        db : :class:`Database <ansys.edb.core.database.Database>`
+        db : :class:`.Database`
             Database to search for the component definition.
         comp_def_name : str
             Name of the component definition.
@@ -72,7 +71,9 @@ class ComponentDef(ObjBase):
 
     @property
     def footprint(self):
-        """:class:`Cell <ansys.edb.core.layout.Cell>`: Footprint of the component definition."""
+        """:class:`.Cell`: Footprint of the component definition."""
+        from ansys.edb.core.layout import cell
+
         return cell.Cell(self.__stub.GetFootprintCell(self.msg))
 
     @footprint.setter
@@ -81,8 +82,7 @@ class ComponentDef(ObjBase):
 
     @property
     def component_models(self):
-        """:obj:`list` of :class:`ComponentModel <ansys.edb.core.definition.component_model.ComponentModel>`: \
-        All component models associated with the component definition.
+        """:obj:`list` of :class:`.ComponentModel`: All component models associated with the component definition.
 
         This property is read-only.
         """
@@ -91,10 +91,37 @@ class ComponentDef(ObjBase):
 
     @property
     def component_pins(self):
-        """:obj:`list` of :class:`ComponentPin <ansys.edb.core.definition.ComponentPin>`: \
-        All component pins of the component definition.
+        """:obj:`list` of :class:`.ComponentPin`: All component pins of the component definition.
 
         This property is read-only.
         """
         objs = self.__stub.GetComponentPins(self.msg).items
         return map_list(objs, component_pin.ComponentPin)
+
+    def add_component_model(self, value):
+        """Add a component model to this component def.
+
+        Parameters
+        ----------
+        value : :class:`Component Model <ansys.edb.core.definition.ComponentModel>`
+            Component Model to be added.
+
+        Notes
+        -----
+        Once a component model is added to one component def, it cannot be added to any other, even when removed.
+        """
+        self.__stub.AddComponentModel(messages.pointer_property_message(self, value))
+
+    def remove_component_model(self, value):
+        """Remove a component model from this component def.
+
+        Parameters
+        ----------
+        value : :class:`Component Model <ansys.edb.core.definition.ComponentModel>`
+            Component Model to be removed.
+
+        Notes
+        -----
+        Once a component model is added to one component def, it cannot be added to any other, even when removed.
+        """
+        self.__stub.RemoveComponentModel(messages.pointer_property_message(self, value))

@@ -7,12 +7,6 @@ from ansys.edb.core.inner import layout_obj, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 
-class _QueryBuilder:
-    @staticmethod
-    def create(layout, name):
-        return nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name)
-
-
 class NetClass(layout_obj.LayoutObj):
     """Represents a net class."""
 
@@ -26,7 +20,7 @@ class NetClass(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the net class in.
         name : str
             Name of the net.
@@ -36,7 +30,9 @@ class NetClass(layout_obj.LayoutObj):
         NetClass
             Net class created.
         """
-        return NetClass(cls.__stub.Create(_QueryBuilder.create(layout, name)))
+        return NetClass(
+            cls.__stub.Create(nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name))
+        )
 
     @classmethod
     def find_by_name(cls, layout, name):
@@ -45,7 +41,7 @@ class NetClass(layout_obj.LayoutObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the net class.
         name : str
             Name of the net class.
@@ -53,7 +49,7 @@ class NetClass(layout_obj.LayoutObj):
         Returns
         -------
         NetClass
-            Net class found. Check the :obj:`is_null <ansys.edb.core.net.NetClass.is_null>` property
+            Net class found. Check the :obj:`is_null <s.NetClass.is_null>` property
             of the returned net class to see if it exists.
         """
         return NetClass(cls.__stub.FindByName(messages.edb_obj_name_message(layout, name)))
@@ -87,7 +83,7 @@ class NetClass(layout_obj.LayoutObj):
 
     @property
     def nets(self):
-        """:obj:`list` of :class:`Net <ansys.edb.core.net.Net>`: List of nets in the net class.
+        """:obj:`list` of :class:`.Net`: List of nets in the net class.
 
         This property is read-only.
         """

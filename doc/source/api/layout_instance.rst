@@ -9,8 +9,8 @@ Classes
 .. autosummary::
    :toctree: _autosummary
 
-   LayoutInstance
-   LayoutInstanceContext
-   LayoutObjInstance
-   LayoutObjInstance2DGeometry
-   LayoutObjInstance3DGeometry
+   layout_instance.LayoutInstance
+   layout_instance_context.LayoutInstanceContext
+   layout_obj_instance.LayoutObjInstance
+   layout_obj_instance.LayoutObjInstance2DGeometry
+   layout_obj_instance.LayoutObjInstance3DGeometry

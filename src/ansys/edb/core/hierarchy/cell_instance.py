@@ -2,12 +2,13 @@
 
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 
-from ansys.edb.core import layout
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import hierarchy_obj
 from ansys.edb.core.inner import messages
+from ansys.edb.core.layout import layout
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility import Transform3D, Value
+from ansys.edb.core.utility.transform3d import Transform3D
+from ansys.edb.core.utility.value import Value
 
 
 class CellInstance(hierarchy_obj.HierarchyObj):
@@ -22,11 +23,11 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the cell instance in.
         name : str
             Name of the cell instance.
-        ref : :class:`Layout <ansys.edb.core.layout.Layout>`
+        ref : :class:`.Layout`
             Layout that the cell instance refers to.
 
         Returns
@@ -44,11 +45,11 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to create the cell instance in.
         name : str
             Name of the cell instance.
-        ref : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+        ref : :class:`.ComponentDef`
             Component that the cell instance refers to.
 
         Returns
@@ -68,7 +69,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Parameters
         ----------
-        layout : :class:`Layout <ansys.edb.core.layout.Layout>`
+        layout : :class:`.Layout`
             Layout to search for the cell instance.
         name : str
             Name of the cell instance.
@@ -84,7 +85,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def reference_layout(self):
-        """:class:`Layout <ansys.edb.core.layout.Layout>`: Reference layout of the cell instance.
+        """:class:`.Layout`: Reference layout of the cell instance.
 
         This property is read-only.
         """
@@ -92,12 +93,12 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def term_instances(self):
-        """:obj:`list` of :class:`TerminalInstances <ansys.edb.core.terminal.TerminalInstances>`: Terminal \
+        """:obj:`list` of :class:`.TerminalInstance`: Terminal \
         instances associated with the cell instance.
 
         This property is read-only.
         """
-        from ansys.edb.core.terminal import TerminalInstance
+        from ansys.edb.core.terminal.terminals import TerminalInstance
 
         terms = self.__stub.GetTermInsts(self.msg).items
         return [TerminalInstance(ti) for ti in terms]
@@ -117,7 +118,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
     @property
     def transform3d(self):
-        """:class:`Transform3D <ansys.edb.core.utility.Transform3D>`: \
+        """:class:`.Transform3D`: \
         3D transformation information of the cell instance.
 
         For the transformation to be applied, the :obj:`placement_3d` property
@@ -143,7 +144,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         Returns
         -------
-        :class:`Value <ansys.edb.core.utility.Value>`
+        :class:`.Value`
             Override value for the cell instance parameter.
         """
         return Value(
@@ -157,7 +158,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         ----------
         param_name : str
             Name of the cell instance parameter.
-        param_value : :class:`Value <ansys.edb.core.utility.Value>`
+        param_value : :class:`.Value`
             Value to override with.
         """
         self.__stub.SetParameterOverride(

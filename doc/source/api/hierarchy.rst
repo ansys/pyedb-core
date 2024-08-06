@@ -25,6 +25,7 @@ Object types
    spice_model.SPICEModel
    structure3d.Structure3D
    via_group.ViaGroup
+   layout_component.LayoutComponent
 
 
 Enums

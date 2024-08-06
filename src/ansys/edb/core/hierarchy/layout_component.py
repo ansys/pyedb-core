@@ -6,8 +6,10 @@ from ansys.edb.core.inner.layout_obj import ObjBase
 from ansys.edb.core.session import LayoutComponentServiceStub, StubAccessor, StubType
 
 
-def _import_export_layout_component_msg(cell, output_aedb_comp_path):
-    return ImportExportLayoutComponentMessage(cell=cell.msg, aedbcomp_path=output_aedb_comp_path)
+def _import_export_layout_component_msg(layout, output_aedb_comp_path):
+    return ImportExportLayoutComponentMessage(
+        layout=layout.msg, aedbcomp_path=output_aedb_comp_path
+    )
 
 
 class LayoutComponent(ObjBase):

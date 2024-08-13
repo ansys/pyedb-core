@@ -55,6 +55,7 @@ from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyS
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
+from ansys.api.edb.v1.layout_component_pb2_grpc import LayoutComponentServiceStub
 from ansys.api.edb.v1.layout_instance_context_pb2_grpc import LayoutInstanceContextServiceStub
 from ansys.api.edb.v1.layout_instance_pb2_grpc import LayoutInstanceServiceStub
 from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2_grpc import (
@@ -427,6 +428,7 @@ class StubType(Enum):
     siwave_dcir_sim_settings = SIWaveDCIRSimulationSettingsServiceStub
     raptor_x_general_sim_settings = RaptorXGeneralSettingsServiceStub
     raptor_x_adv_sim_settings = RaptorXAdvancedSettingsServiceStub
+    layout_component = LayoutComponentServiceStub
 
 
 def attach_session(ip_address=None, port_num=50051):

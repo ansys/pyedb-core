@@ -61,6 +61,7 @@ Enums
       hfss_simulation_settings.BasisFunctionOrder
       hfss_simulation_settings.SolverType
       simulation_settings.ViaStyle
+      simulation_settings.ModelType
       siwave_simulation_settings.SParamInterpolation
       siwave_simulation_settings.SParamExtrapolation
       siwave_simulation_settings.SParamDCBehavior

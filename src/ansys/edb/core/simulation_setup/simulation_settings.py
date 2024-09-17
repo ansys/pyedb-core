@@ -25,6 +25,13 @@ class ViaStyle(Enum):
     NUM_VIA_STYLE = pb.NUM_VIA_STYLE
 
 
+class ModelType(Enum):
+    """Enum representing defeature model types."""
+
+    GENERAL_MODEL = pb.GENERAL_MODEL
+    IC_MODEL = pb.IC_MODEL
+
+
 class SimulationSettingsBase:
     """Internal base class for simulation settings."""
 
@@ -218,6 +225,19 @@ class AdvancedSettings(SimulationSettingsBase):
     @via_material.setter
     def via_material(self, via_material):
         self.__stub.SetViaMaterial(messages.string_property_message(self, via_material))
+
+    @property
+    def model_type(self):
+        """:class:`.ModelType`: model type."""
+        return ModelType(self.__stub.GetModelType(self.msg).defeature_model_type)
+
+    @model_type.setter
+    def model_type(self, model_type):
+        self.__stub.SetModelType(
+            pb.DefeatureModelTypePropertyMessage(
+                target=self.msg, defeature_model_type=model_type.value
+            )
+        )
 
 
 class AdvancedMeshingSettings(SimulationSettingsBase):

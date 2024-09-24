@@ -279,6 +279,38 @@ class Layout(ObjBase, variable_server.VariableServer):
         """
         return layout_instance.LayoutInstance(self.__stub.GetLayoutInstance(self.msg))
 
+    def reconstruct_arcs_on_layer(self, layer, tolerance):
+        """Reconstruct arcs of polygons on a layer.
+
+        Parameters
+        ----------
+        layer : str or :class:`.Layer`
+            Layer to reconstruct arcs.
+        tolerance : :class:`.Value`
+            Tolerance.
+        """
+        self.__stub.ReconstructArcsOnLayer(
+            layout_pb2.ReconstructArcsOnLayerMessage(
+                layout=self.msg,
+                layer=messages.layer_ref_message(layer),
+                tolerance=messages.value_message(tolerance),
+            )
+        )
+
+    def unite_primitives_on_layer(self, layer):
+        """Unite primitives on a layer.
+
+        Parameters
+        ----------
+        layer : str or :class:`.Layer`
+            Layer to unite primitives.
+        """
+        self.__stub.UnitePrimitivesOnLayer(
+            layout_pb2.UnitePrimitivesOnLayerMessage(
+                layout=self.msg, layer=messages.layer_ref_message(layer)
+            )
+        )
+
     def create_stride(self, filename):
         """Create a Stride model from an MCAD file.
 

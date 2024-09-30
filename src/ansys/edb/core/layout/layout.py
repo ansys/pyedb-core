@@ -19,6 +19,34 @@ from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.terminal.terminals import Terminal
 
 
+def _geometry_simplifications_settings_msg(layout, layer, tol):
+    """Create a GeometrySimplificationSettingsMessage."""
+    return layout_pb2.GeometrySimplificationSettingsMessage(
+        layout_layer=messages.layer_ref_property_message(layout, layer),
+        tolerance=messages.value_message(tol),
+    )
+
+
+def _geometry_simplifications_settings_with_option_msg(layout, layer, tol, option):
+    """Create a GeometrySimplificationSettingsWithOptionMessage."""
+    return layout_pb2.GeometrySimplificationSettingsWithOptionMessage(
+        geom_simplification_settings=_geometry_simplifications_settings_msg(layout, layer, tol),
+        option=option,
+    )
+
+
+def _via_simplifications_settings_with_option_msg(
+    layout, layer, tol, option, simplification_method
+):
+    """Create a ViaSimplificationSettingsMessage."""
+    return layout_pb2.ViaSimplificationSettingsMessage(
+        geom_simplification_settings_with_option=_geometry_simplifications_settings_with_option_msg(
+            layout, layer, tol, option
+        ),
+        simplification_method=simplification_method,
+    )
+
+
 class Layout(ObjBase, variable_server.VariableServer):
     """Represents a layout."""
 
@@ -279,37 +307,27 @@ class Layout(ObjBase, variable_server.VariableServer):
         """
         return layout_instance.LayoutInstance(self.__stub.GetLayoutInstance(self.msg))
 
-    def reconstruct_arcs_on_layer(self, layer, tolerance):
+    def reconstruct_arcs(self, layer, tolerance):
         """Reconstruct arcs of polygons on a layer.
 
         Parameters
         ----------
         layer : str or :class:`.Layer`
-            Layer to reconstruct arcs.
+            Layer to reconstruct arcs on.
         tolerance : :class:`.Value`
             Tolerance.
         """
-        self.__stub.ReconstructArcsOnLayer(
-            layout_pb2.ReconstructArcsOnLayerMessage(
-                layout=self.msg,
-                layer=messages.layer_ref_message(layer),
-                tolerance=messages.value_message(tolerance),
-            )
-        )
+        self.__stub.ReconstructArcs(_geometry_simplifications_settings_msg(self, layer, tolerance))
 
-    def unite_primitives_on_layer(self, layer):
+    def unite_primitives(self, layer):
         """Unite primitives on a layer.
 
         Parameters
         ----------
         layer : str or :class:`.Layer`
-            Layer to unite primitives.
+            Layer to unite primitives on.
         """
-        self.__stub.UnitePrimitivesOnLayer(
-            layout_pb2.UnitePrimitivesOnLayerMessage(
-                layout=self.msg, layer=messages.layer_ref_message(layer)
-            )
-        )
+        self.__stub.UnitePrimitives(messages.layer_ref_property_message(self, layer))
 
     def create_stride(self, filename):
         """Create a Stride model from an MCAD file.
@@ -357,3 +375,92 @@ class Layout(ObjBase, variable_server.VariableServer):
            3D composite model created.
         """
         return McadModel.create_3d_comp(layout=self, filename=filename)
+
+    def group_vias(
+        self,
+        layer,
+        max_grouping_distance="100um",
+        persistent_vias=False,
+        group_by_proximity=True,
+        check_containment=True,
+    ):
+        """Create via groups from the primitives on the specified layer.
+
+        Parameters
+        ----------
+        layer : str or :class:`.Layer`
+            Layer containing the primitives to be grouped.
+        max_grouping_distance : :term:`ValueLike`
+            Maximum distance between vias in a via group .
+        persistent_vias : bool
+            Whether to preserve primitives during via group creation. If ``False``
+            primitives are deleted during via group creation.
+        group_by_proximity : bool
+            If ``True``, vias are grouped by proximity (relative position to each other).
+            If ``False``, vias are grouped by range (any vias within the specified maximum
+            grouping distance of each other are grouped)
+        check_containment : boo
+            If ``True``, the connectivity of via groups is checked and enforced to prevent
+            short circuits in geometry connecting to the via group. If false, vias are
+            grouped regardless of the connectivity of touching geometry.
+        """
+        self.__stub.GroupVias(
+            layout_pb2.ViaGroupingSettingsMessage(
+                via_simplification_settings=_via_simplifications_settings_with_option_msg(
+                    self, layer, max_grouping_distance, check_containment, group_by_proximity
+                ),
+                persistent=persistent_vias,
+            )
+        )
+
+    def snap_vias(
+        self,
+        layer,
+        via_snapping_tol=3,
+        prim_snapping_tol="0.05um",
+        snap_by_area_factor=True,
+        remove_dangling_vias=True,
+    ):
+        """Snap vias on the specified layer to touching geometry.
+
+        Parameters
+        ----------
+        layer : str or :class:`.Layer`
+            Layer containing the vias to be snapped.
+        via_snapping_tol : :term:`ValueLike`
+            Tolerance for snapping vias. If snap_by_area_factor is ``True``, this
+            value should not have a unit.
+        prim_snapping_tol : :term:`ValueLike`
+            Tolerance for snapping primitives.
+        snap_by_area_factor : bool
+            If ``True``, the via snapping tolerance is a factor of the surface area of the via.
+            If ``False``, the via snapping tolerance is treated as an absolute distance.
+        remove_dangling_vias : bool
+            If ``True``, vias not connected to any geometry are removed.
+        """
+        self.__stub.SnapVias(
+            layout_pb2.ViaSnappingSettingsMessage(
+                via_simplification_settings=_via_simplifications_settings_with_option_msg(
+                    self, layer, via_snapping_tol, remove_dangling_vias, snap_by_area_factor
+                ),
+                prim_snapping_tol=messages.value_message(prim_snapping_tol),
+            )
+        )
+
+    def snap_primitives(self, layer, tol="0.05um", check_connectivity=True):
+        """Snap primitives on the specified layer to touching geometry.
+
+        Parameters
+        ----------
+        layer : str or :class:`.Layer`
+            Layer containing the primitives to be snapped.
+        tol : :term:`ValueLike`
+            Tolerance for snapping primitives.
+        check_connectivity : bool
+            If ``True``, the connectivity of primitives is checked and enforced to prevent
+            short circuits in geometry connecting to the primitives. If false, primitives are
+            grouped regardless of the connectivity of touching geometry.
+        """
+        self.__stub.SnapPrimitives(
+            _geometry_simplifications_settings_with_option_msg(self, layer, tol, check_connectivity)
+        )

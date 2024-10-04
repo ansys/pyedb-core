@@ -1,0 +1,6 @@
+solderball\_layer
+=================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: PadstackInstance.solderball_layer

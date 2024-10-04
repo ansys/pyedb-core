@@ -1,0 +1,6 @@
+apd\_bondwire\_defs
+===================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.apd_bondwire_defs

@@ -1,0 +1,6 @@
+equals
+======
+
+.. currentmodule:: ansys.edb.core.utility.value
+
+.. automethod:: Value.equals

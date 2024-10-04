@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Rectangle.is_null

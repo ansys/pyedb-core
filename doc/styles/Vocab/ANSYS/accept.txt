@@ -10,3 +10,4 @@ isort
 Juptyer
 Makefile
 pytest
+subdesigns

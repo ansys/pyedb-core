@@ -1,4 +1,4 @@
-# Authors
+# Contributors
 
 ## Project Lead
 

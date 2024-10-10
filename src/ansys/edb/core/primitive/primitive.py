@@ -1325,7 +1325,7 @@ class Bondwire(Primitive):
         )
 
 
-class PadstackInstance(Primitive):
+class PadstackInstance(conn_obj.ConnObj):
     """Representis a padstack instance object."""
 
     __stub: padstack_instance_pb2_grpc.PadstackInstanceServiceStub = StubAccessor(

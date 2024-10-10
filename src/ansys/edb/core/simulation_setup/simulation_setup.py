@@ -326,7 +326,6 @@ def _msg_to_interpolating_sweep_data(msg):
     interp_sweep_data.use_full_basis = msg.interp_use_full_basis
     interp_sweep_data.fast_sweep = msg.fast_sweep
     interp_sweep_data.adaptive_sampling = msg.adaptive_sampling
-    interp_sweep_data.enforce_dc_and_causality = msg.enforce_dc_and_causality
     interp_sweep_data.matrix_conv_entry_list = map_list(
         msg.matrix_conv_entry_list, _msg_to_matrix_convergence_entry
     )

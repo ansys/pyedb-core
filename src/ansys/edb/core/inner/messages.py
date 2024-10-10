@@ -299,7 +299,7 @@ def polygon_data_with_circle_message(pd, center, radius):
 
 def polygon_data_with_point_message(pd, point):
     """Convert to a ``PolygonDataWithPointMessage`` object."""
-    return PolygonDataWithPointMessage(polygon=polygon_data_message(pd), point=point_message(point))
+    return PolygonDataWithPointMessage(target=polygon_data_message(pd), point=point_message(point))
 
 
 def polygon_data_with_points_message(pd, point=None, polygon=None):

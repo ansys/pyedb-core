@@ -4,13 +4,14 @@ from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.conn_obj import ConnObj
 from ansys.edb.core.primitive.primitive import PadstackInstance
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import PinGroupServiceStub, StubAccessor, StubType
+from ansys.edb.core.terminal.terminals import PinGroupTerminal
 
 
 class PinGroup(ConnObj):
     """Represents a pin group object."""
 
-    __stub = StubAccessor(StubType.pin_group)
+    __stub: PinGroupServiceStub = StubAccessor(StubType.pin_group)
     layout_obj_type = LayoutObjType.PIN_GROUP
 
     @classmethod
@@ -110,3 +111,11 @@ class PinGroup(ConnObj):
             List of padstick instances.
         """
         self.__stub.RemovePins(messages.pin_group_pins_modify_message(self, pins))
+
+    @property
+    def pin_group_terminal(self):
+        """:class:`.PinGroupTerminal`: Terminal this pin group is part of.
+
+        This property is read-only.
+        """
+        return PinGroupTerminal(self.__stub.GetPinGroupTerminal(self.msg))

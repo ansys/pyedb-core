@@ -639,7 +639,7 @@ class PointTerminal(Terminal):
 
     @layer.setter
     def layer(self, value):
-        self.params = (messages.edb_obj_message(value), self.point)
+        self.params = (value, self.point)
 
     @property
     def point(self):
@@ -648,7 +648,7 @@ class PointTerminal(Terminal):
 
     @point.setter
     def point(self, value):
-        self.params = (self.layer, messages.point_message(value))
+        self.params = (self.layer, value)
 
 
 class PadstackInstanceTerminal(Terminal):
@@ -695,7 +695,7 @@ class PadstackInstanceTerminal(Terminal):
 
         res = self.__stub.GetParameters(self.msg)
         padstack_instance = primitive.PadstackInstance(res.padstack_instance)
-        layer = Layer(res.layer).cast()
+        layer = Layer(res.layer.id).cast()
         return padstack_instance, layer
 
     @params.setter

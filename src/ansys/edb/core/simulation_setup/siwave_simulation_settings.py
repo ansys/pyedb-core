@@ -48,6 +48,13 @@ class SParamDCBehavior(Enum):
     OPEN_DC = pb.OPEN_DC
 
 
+class ACDCMergeMode(Enum):
+    """Provides an enum representing AC/DC merge mode types."""
+
+    DEFAULT = pb.DEFAULT
+    FAST = pb.FAST
+
+
 class SIWaveSimulationSettings(SimulationSettings):
     """Represents SIWave simulation settings."""
 
@@ -258,6 +265,19 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @mesh_frequency.setter
     def mesh_frequency(self, mesh_frequency):
         self.__stub.SetMeshFrequency(messages.string_property_message(self, mesh_frequency))
+
+    @property
+    def ac_dc_merge_mode(self):
+        """:obj:`int`: AC/DC merge mode."""
+        return ACDCMergeMode(self.__stub.GetAcDcMergeMode(self.msg).ac_dc_merge_mode)
+
+    @ac_dc_merge_mode.setter
+    def ac_dc_merge_mode(self, ac_dc_merge_mode):
+        self.__stub.SetAcDcMergeMode(
+            pb.ACDCMergeModePropertyMessage(
+                target=self.msg, ac_dc_merge_mode=ac_dc_merge_mode.value
+            )
+        )
 
     @property
     def return_current_distribution(self):

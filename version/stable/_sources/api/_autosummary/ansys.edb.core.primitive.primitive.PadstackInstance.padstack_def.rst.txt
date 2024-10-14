@@ -1,0 +1,6 @@
+padstack\_def
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: PadstackInstance.padstack_def

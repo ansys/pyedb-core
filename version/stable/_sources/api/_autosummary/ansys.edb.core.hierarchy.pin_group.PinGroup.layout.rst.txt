@@ -1,0 +1,6 @@
+layout
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. autoproperty:: PinGroup.layout

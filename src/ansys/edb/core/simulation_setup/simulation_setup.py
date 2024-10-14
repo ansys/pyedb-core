@@ -86,8 +86,6 @@ class InterpolatingSweepData:
       Use fast sweep.
     adaptive_sampling : bool
       Use adaptive sampling.
-    enforce_dc_and_causality : bool
-      Enforce dc point and causality.
     matrix_conv_entry_list : list[MatrixConvergenceDataEntry]
       Matrix convergence data for frequency sweep.
     min_subranges : int
@@ -109,7 +107,6 @@ class InterpolatingSweepData:
         self.use_full_basis = True
         self.fast_sweep = False
         self.adaptive_sampling = False
-        self.enforce_dc_and_causality = False
         self.matrix_conv_entry_list = []
         self.min_subranges = 1
         self.min_solutions = 0
@@ -261,7 +258,6 @@ def _interpolating_sweep_data_msg(interp_sweep_data):
         interp_use_full_basis=interp_sweep_data.use_full_basis,
         fast_sweep=interp_sweep_data.fast_sweep,
         adaptive_sampling=interp_sweep_data.adaptive_sampling,
-        enforce_dc_and_causality=interp_sweep_data.enforce_dc_and_causality,
         matrix_conv_entry_list=messages.mx_convergence_entry_msg_list(
             interp_sweep_data.matrix_conv_entry_list
         ),

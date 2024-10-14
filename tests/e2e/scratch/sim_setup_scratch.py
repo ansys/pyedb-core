@@ -237,17 +237,16 @@ def do_dcr_test(settings: HFSSDCRSettings):
 
 
 def do_options_test(settings: HFSSSettingsOptions):
-    og_do_lamda_refine = settings.do_lamda_refine
-    settings.do_lamda_refine = not og_do_lamda_refine
-    new_do_lamda_refine = settings.do_lamda_refine
+    og_do_lamda_refine = settings.do_lambda_refine
+    settings.do_lambda_refine = not og_do_lamda_refine
+    new_do_lamda_refine = settings.do_lambda_refine
 
-    og_lamda_target = settings.lamda_target
-    settings.lamda_target = og_lamda_target + 0.75
-    new_lamda_target = settings.lamda_target
-
-    og_use_default_lamda_value = settings.use_default_lamda_value
-    settings.use_default_lamda_value = not og_use_default_lamda_value
-    new_use_default_lamda_value = settings.use_default_lamda_value
+    og_lamda_target = settings.lambda_target
+    settings.lambda_target = og_lamda_target + 0.75
+    new_lamda_target = settings.lambda_target
+    og_use_default_lamda_value = settings.use_default_lambda_value
+    settings.use_default_lambda_value = not og_use_default_lamda_value
+    new_use_default_lamda_value = settings.use_default_lambda_value
 
     og_max_refinement_per_pass = settings.max_refinement_per_pass
     settings.max_refinement_per_pass = og_max_refinement_per_pass + 1
@@ -308,7 +307,9 @@ def do_hfss_sim_settings_test(settings: HFSSSimulationSettings):
 
 
 def do_test():
-    db = Database.create("test.aedb")
+    test_db_path = "test.aedb"
+    Database.delete(test_db_path)
+    db = Database.create(test_db_path)
     test_cell = Cell.create(db, CellType.CIRCUIT_CELL, "test_cell")
 
     hfss_sim_setup = HfssSimulationSetup.create(test_cell, "test_sim_setup")

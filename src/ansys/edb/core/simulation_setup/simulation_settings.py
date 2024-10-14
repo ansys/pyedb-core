@@ -69,22 +69,22 @@ class SettingsOptions(SimulationSettingsBase):
     __stub: SettingsOptionsServiceStub = StubAccessor(StubType.sim_settings_options)
 
     @property
-    def do_lamda_refine(self):
+    def do_lambda_refine(self):
         """:obj:`bool`: Flag indicating if lambda refinement is used during meshing."""
         return self.__stub.GetDoLamdaRefineFlag(self.msg).value
 
-    @do_lamda_refine.setter
-    def do_lamda_refine(self, do_lamda_refine):
-        self.__stub.SetDoLamdaRefineFlag(messages.bool_property_message(self, do_lamda_refine))
+    @do_lambda_refine.setter
+    def do_lambda_refine(self, do_lambda_refine):
+        self.__stub.SetDoLamdaRefineFlag(messages.bool_property_message(self, do_lambda_refine))
 
     @property
-    def lamda_target(self):
+    def lambda_target(self):
         """:obj:`float`: Target lambda value for lambda refinement."""
         return self.__stub.GetLamdaTarget(self.msg).value
 
-    @lamda_target.setter
-    def lamda_target(self, lamda_target):
-        self.__stub.SetLamdaTarget(messages.double_property_message(self, lamda_target))
+    @lambda_target.setter
+    def lambda_target(self, lambda_target):
+        self.__stub.SetLamdaTarget(messages.double_property_message(self, lambda_target))
 
     @property
     def mesh_size_factor(self):
@@ -96,12 +96,12 @@ class SettingsOptions(SimulationSettingsBase):
         self.__stub.SetMeshSizefactor(messages.double_property_message(self, mesh_size_factor))
 
     @property
-    def use_default_lamda_value(self):
+    def use_default_lambda_value(self):
         """:obj:`bool`: Flag indicating if the default lambda target value is used."""
         return self.__stub.GetLamdaTarget(self.msg).value
 
-    @use_default_lamda_value.setter
-    def use_default_lamda_value(self, use_default_value):
+    @use_default_lambda_value.setter
+    def use_default_lambda_value(self, use_default_value):
         self.__stub.SetDoLamdaRefineFlag(messages.bool_property_message(self, use_default_value))
 
 

@@ -227,6 +227,15 @@ class AdvancedSettings(SimulationSettingsBase):
         self.__stub.SetViaMaterial(messages.string_property_message(self, via_material))
 
     @property
+    def mesh_for_via_plating(self):
+        """:obj:`bool`: Flag indicating if meshing for via plating is enabled."""
+        return self.__stub.GetMeshForViaPlating(self.msg).value
+
+    @mesh_for_via_plating.setter
+    def mesh_for_via_plating(self, mesh_for_via_plating):
+        self.__stub.SetMeshForViaPlating(messages.bool_property_message(self, mesh_for_via_plating))
+
+    @property
     def model_type(self):
         """:class:`.ModelType`: model type."""
         return ModelType(self.__stub.GetModelType(self.msg).defeature_model_type)

@@ -337,7 +337,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         num_x_partitions,
         num_y_partitions,
     ):
-        """Designate a mesh region in a design and create partitions for simulation.
+        r"""Designate a mesh region in a design and create partitions for simulation.
 
         Parameters
         ----------
@@ -348,11 +348,10 @@ class Layout(ObjBase, variable_server.VariableServer):
         neg_z_exp: :class:`.Value`
             Vertical padding below the new mesh region.
         use_active_nets: bool
-            True will create a new mesh region defined by the active nets in the design.
+            True will create a new mesh region defined by the active nets in the design. \\
             False will create a new mesh region defined by the dielectric extents in the design.
         incl_ref: bool
-            True will include bot positive nets and reference nets in the definition of the new mesh region,
-            if <UseActiveNets> is True.
+            True will include bot positive nets and reference nets in the definition of the new mesh region. \\
             False will not include bot positive nets and reference nets.
         ext: :class:`.ExtentType`
             Geometry extent type.

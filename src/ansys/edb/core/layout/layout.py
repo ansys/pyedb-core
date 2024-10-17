@@ -325,3 +325,52 @@ class Layout(ObjBase, variable_server.VariableServer):
            3D composite model created.
         """
         return McadModel.create_3d_comp(layout=self, filename=filename)
+
+    def create_mesh_region(
+        self,
+        xy_exp,
+        pos_z_exp,
+        neg_z_exp,
+        use_active_nets,
+        incl_ref,
+        ext,
+        num_x_partitions,
+        num_y_partitions,
+    ):
+        """Designate a mesh region in a design and create partitions for simulation.
+
+        Parameters
+        ----------
+        xy_exp: :class:`.Value`
+            Horizontal padding on both sides of the new mesh.
+        pos_z_exp: :class:`.Value`
+            Vertical padding above the new mesh region.
+        neg_z_exp: :class:`.Value`
+            Vertical padding below the new mesh region.
+        use_active_nets: bool
+            True will create a new mesh region defined by the active nets in the design.
+            False will create a new mesh region defined by the dielectric extents in the design.
+        incl_ref: bool
+            True will include bot positive nets and reference nets in the definition of the new mesh region,
+            if <UseActiveNets> is True.
+            False will not include bot positive nets and reference nets.
+        ext: :class:`.ExtentType`
+            Geometry extent type.
+        num_x_partitions: int
+            Number of partitions to create in the new mesh region on x axis.
+        num_y_partitions: int
+            Number of partitions to create in the new mesh region on y axis.
+        """
+        self.__stub.CreateMeshRegion(
+            layout_pb2.CreateMeshRegionMessage(
+                layout=self.msg,
+                xy_exp=messages.value_message(xy_exp),
+                pos_z_exp=messages.value_message(pos_z_exp),
+                neg_z_exp=messages.value_message(neg_z_exp),
+                use_active_nets=use_active_nets,
+                incl_ref=incl_ref,
+                ext=ext,
+                num_x_partitions=num_x_partitions,
+                num_y_partitions=num_y_partitions,
+            )
+        )

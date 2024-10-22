@@ -260,9 +260,9 @@ def polygon_data_pair_with_tolerance_message(pd1, pd2, tol):
     )
 
 
-def _polygon_data_transform_message_point_value(point, value):
+def _polygon_data_transform_message_point_value(val, point):
     """Convert to a ``PolygonDataTransformMessage`` object."""
-    return PolygonDataTransformMessage.PointValueMessage(point=point_message(point), value=value)
+    return PolygonDataTransformMessage.PointValueMessage(point=point_message(point), value=val)
 
 
 def polygon_data_transform_message(op, pd, *args):
@@ -481,7 +481,7 @@ def transform_message(transform):
     else:
         return TransformMessage(
             scale=value_message(transform.scale),
-            angle=value_message(transform.angle),
+            angle=value_message(transform.rotation),
             mirror=transform.mirror,
             offset_x=value_message(transform.offset_x),
             offset_y=value_message(transform.offset_y),

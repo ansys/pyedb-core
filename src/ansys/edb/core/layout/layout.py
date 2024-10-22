@@ -273,7 +273,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return [Primitive(msg) for msg in self.__stub.GetZonePrimitives(self.msg)]
+        return [Primitive(msg).cast() for msg in self.__stub.GetZonePrimitives(self.msg).items]
 
     @property
     def fixed_zone_primitive(self):

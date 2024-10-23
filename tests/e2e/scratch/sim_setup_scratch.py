@@ -141,6 +141,10 @@ def do_advanced_test(settings: HFSSAdvancedSettings):
     settings.via_material = "new_via_material"
     new_via_material = settings.via_material
 
+    og_mesh_via_plating = settings.mesh_for_via_plating
+    settings.mesh_for_via_plating = not og_mesh_via_plating
+    new_mesh_via_plating = settings.mesh_for_via_plating
+
     og_ic_mode_auto_resolution = settings.ic_mode_auto_resolution
     settings.ic_mode_auto_resolution = not og_ic_mode_auto_resolution
     new_ic_mode_auto_resolution = settings.ic_mode_auto_resolution

@@ -302,7 +302,7 @@ class PolygonData:
         PolygonData
         """
         return self.__stub.Transform(
-            messages.polygon_data_transform_message("scale", factor, center)
+            messages.polygon_data_transform_message("scale", self, factor, center)
         )
 
     @parser.to_polygon_data

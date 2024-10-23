@@ -33,9 +33,10 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: PyAnsys documentation style checks
-          uses: ansys/actions/doc-style@v5
+          uses: ansys/actions/doc-style@v8
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
+            vale-version: "2.29.6"
 
   smoke-tests:
     name: Build and Smoke tests

@@ -1220,22 +1220,24 @@ class Bondwire(Primitive):
         Parameters
         ----------
         x1 : :class:`.Value`
-            X value of the the start point.
+            X value of the start point.
         y1 : :class:`.Value`
-            Y value of the the start point.
+            Y value of the start point.
         x2 : :class:`.Value`
-            X value of the the end point.
+            X value of the end point.
         y2 : :class:`.Value`
             Y value of the end point.
         """
         self.__stub.SetTraj(
-            target=self.msg,
-            traj=bondwire_pb2.BondwireTrajMessage(
-                x1=messages.value_message(x1),
-                y1=messages.value_message(y1),
-                x2=messages.value_message(x2),
-                y2=messages.value_message(y2),
-            ),
+            bondwire_pb2.SetBondwireTrajMessage(
+                target=self.msg,
+                traj=bondwire_pb2.BondwireTrajMessage(
+                    x1=messages.value_message(x1),
+                    y1=messages.value_message(y1),
+                    x2=messages.value_message(x2),
+                    y2=messages.value_message(y2),
+                ),
+            )
         )
 
     @property
@@ -1512,7 +1514,7 @@ class PadstackInstance(conn_obj.ConnObj):
             padstack_instance_pb2.PadstackInstSetSolderBallLayerMessage(
                 target=self.msg,
                 layer=solderball_layer.msg,
-            )(self, solderball_layer)
+            )
         )
 
     @property

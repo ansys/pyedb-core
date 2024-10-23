@@ -29,7 +29,7 @@ class ComponentGroup(Group):
     __stub: ComponentGroupServiceStub = StubAccessor(StubType.component_group)
 
     @classmethod
-    def create_with_component(cls, layout, name, comp_name):
+    def create(cls, layout, name, comp_name):
         """Create a component group with a component.
 
         Parameters

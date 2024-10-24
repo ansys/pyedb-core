@@ -109,7 +109,7 @@ class PolygonData:
             h, incr = 0, 1
             p1, p2 = self.points[i], self.points[(i + incr) % n]
             if p2.is_arc:
-                h, incr = p2.arc_height, 2
+                h, incr = p2.arc_height.double, 2
                 p2 = self.points[(i + incr) % n]
             segments.append(ArcData(p1, p2, height=h))
             i += incr

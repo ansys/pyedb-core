@@ -227,7 +227,7 @@ class PolygonData:
 
     @parser.to_polygon_data_list
     def remove_self_intersections(self, tol=1e-9):
-        """Create a polygon with all self-intersections removed.
+        """Remove self-intersections from this polygon.
 
         Parameters
         ----------
@@ -236,7 +236,8 @@ class PolygonData:
 
         Returns
         -------
-        PolygonData
+        list[.PolygonData]
+            A list of non self-intersecting polygons.
         """
         return self.__stub.RemoveSelfIntersections(
             messages.polygon_data_with_tol_message(self, tol)

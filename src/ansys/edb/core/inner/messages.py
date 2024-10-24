@@ -932,11 +932,6 @@ def net_ref_message(net):
         return NetRefMessage(id=edb_obj_message(net.msg if net is not None else 0))
 
 
-def adaptive_frequency_message(frequency: str, max_delta_s: float, max_passes: int):
-    """Convert to an ``AdaptiveFrequencyDataMessage`` object."""
-    return AdaptiveFrequencyDataMessage(adaptive_frequency=frequency, max_delta=str(max_delta_s))
-
-
 def _length_mesh_operation_message(mesh_op):
     return LengthMeshOperationMessage(
         max_length=mesh_op.max_length,

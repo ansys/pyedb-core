@@ -1,0 +1,6 @@
+mag\_min\_threshold
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: MatrixConvergenceData.mag_min_threshold

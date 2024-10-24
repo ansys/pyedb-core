@@ -109,7 +109,7 @@ class PolygonData:
             h, incr = 0, 1
             p1, p2 = self.points[i], self.points[(i + incr) % n]
             if p2.is_arc:
-                h, incr = p2.arc_height, 2
+                h, incr = p2.arc_height.double, 2
                 p2 = self.points[(i + incr) % n]
             segments.append(ArcData(p1, p2, height=h))
             i += incr
@@ -225,9 +225,9 @@ class PolygonData:
             messages.polygon_data_with_tol_message(self, tol)
         ).value
 
-    @parser.to_polygon_data
+    @parser.to_polygon_data_list
     def remove_self_intersections(self, tol=1e-9):
-        """Create a polygon with all self-intersections removed.
+        """Remove self-intersections from this polygon.
 
         Parameters
         ----------
@@ -236,7 +236,8 @@ class PolygonData:
 
         Returns
         -------
-        PolygonData
+        list[.PolygonData]
+            A list of non self-intersecting polygons.
         """
         return self.__stub.RemoveSelfIntersections(
             messages.polygon_data_with_tol_message(self, tol)
@@ -302,7 +303,7 @@ class PolygonData:
         PolygonData
         """
         return self.__stub.Transform(
-            messages.polygon_data_transform_message("scale", factor, center)
+            messages.polygon_data_transform_message("scale", self, factor, center)
         )
 
     @parser.to_polygon_data

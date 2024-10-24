@@ -202,7 +202,7 @@ def point_property_message(target, point):
 def point_data_rotate_message(point, center, angle):
     """Convert to a ``PointRotateMessage`` object."""
     return PointDataRotateMessage(
-        point=point_message(point), rotation_center=point_message(center), angle=angle
+        point=point_message(point), rotate_center=point_message(center), rotate_angle=angle
     )
 
 
@@ -260,9 +260,9 @@ def polygon_data_pair_with_tolerance_message(pd1, pd2, tol):
     )
 
 
-def _polygon_data_transform_message_point_value(point, value):
+def _polygon_data_transform_message_point_value(val, point):
     """Convert to a ``PolygonDataTransformMessage`` object."""
-    return PolygonDataTransformMessage.PointValueMessage(point=point_message(point), value=value)
+    return PolygonDataTransformMessage.PointValueMessage(point=point_message(point), value=val)
 
 
 def polygon_data_transform_message(op, pd, *args):
@@ -310,7 +310,7 @@ def polygon_data_with_points_message(pd, point=None, polygon=None):
     elif polygon is not None:
         payload["polygon"] = polygon_data_message(polygon)
 
-    return PolygonDataWithPointsMessage(polygon=polygon_data_message(pd), **payload)
+    return PolygonDataWithPointsMessage(target=polygon_data_message(pd), **payload)
 
 
 def polygon_data_expand_message(pd, offset, tol, round_corner, max_corner_expansion):
@@ -481,7 +481,7 @@ def transform_message(transform):
     else:
         return TransformMessage(
             scale=value_message(transform.scale),
-            angle=value_message(transform.angle),
+            angle=value_message(transform.rotation),
             mirror=transform.mirror,
             offset_x=value_message(transform.offset_x),
             offset_y=value_message(transform.offset_y),
@@ -502,9 +502,9 @@ def point3d_message(point3d):
         return Point3DMessage(x=value_message(x), y=value_message(y), z=value_message(z))
 
 
-def point_3d_property_message(target, value):
+def point_3d_property_message(target, val):
     """Convert to a ``Point3DPropertyMessage`` object."""
-    return Point3DPropertyMessage(target=edb_obj_message(target), origin=point3d_message(value))
+    return Point3DPropertyMessage(target=edb_obj_message(target), value=point3d_message(val))
 
 
 def layout_get_items_message(layout, item_type):
@@ -543,14 +543,14 @@ def temperature_settings_message(settings):
     )
 
 
-def hfss_extent_message(val):
+def hfss_extent_message(hfss_val):
     """Convert to an ``ExtentMessage`` object."""
-    if type(val) == float or type(val) == int:
-        value = val
+    if type(hfss_val) == float or type(hfss_val) == int:
+        val = hfss_val
         absolute = False
     else:
-        value, absolute = val
-    return HfssExtentMessage(value=value, absolute=absolute)
+        val, absolute = hfss_val
+    return HfssExtentMessage(value=val, absolute=absolute)
 
 
 def hfss_extent_info_message(hfss_info):
@@ -722,7 +722,7 @@ def primitive_edge_params_message(primitive, point):
 def pad_edge_params_message(padstack_instance, layer, arc):
     """Convert to a ``PadEdgeParamsMessage`` object."""
     return PadEdgeParamsMessage(
-        padstack_instance=padstack_instance.msg,
+        padstack=padstack_instance.msg,
         layer=layer_ref_message(layer),
         arc=arc_message(arc),
     )
@@ -932,13 +932,6 @@ def net_ref_message(net):
         return NetRefMessage(id=edb_obj_message(net.msg if net is not None else 0))
 
 
-def adaptive_frequency_message(frequency: str, max_delta_s: float, max_passes: int):
-    """Convert to an ``AdaptiveFrequencyDataMessage`` object."""
-    return AdaptiveFrequencyDataMessage(
-        adaptive_frequency=frequency, max_delta=str(max_delta_s), max_passes=max_passes
-    )
-
-
 def _length_mesh_operation_message(mesh_op):
     return LengthMeshOperationMessage(
         max_length=mesh_op.max_length,
@@ -1097,15 +1090,17 @@ def differential_pair_creation_message(layout, name, pos_net, neg_net):
     return DifferentialPairCreationMessage(
         layout=edb_obj_message(layout),
         name=name,
-        pos_net=net_ref_message(pos_net),
-        neg_net=net_ref_message(neg_net),
+        positive_net=net_ref_message(pos_net),
+        negative_net=net_ref_message(neg_net),
     )
 
 
 def differential_pair_net_refs_message(dp, pos_net, neg_net):
     """Convert to a ``DifferentialPairNetRefsMessage`` object."""
     return DifferentialPairNetRefsMessage(
-        dp=edb_obj_message(dp), pos_net=net_ref_message(pos_net), neg_net=net_ref_message(neg_net)
+        dp=edb_obj_message(dp),
+        positive_net=net_ref_message(pos_net),
+        negative_net=net_ref_message(neg_net),
     )
 
 

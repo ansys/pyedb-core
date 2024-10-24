@@ -618,7 +618,8 @@ class Circle(Primitive):
             )
         )
 
-    def get_polygon_data(self):
+    @property
+    def polygon_data(self):
         """:class:`.PolygonData`: \
         Polygon data object of the circle."""
         return Circle.render(*self.get_parameters(), self.is_void)

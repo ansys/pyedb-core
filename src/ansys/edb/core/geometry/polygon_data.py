@@ -4,7 +4,7 @@ from enum import Enum
 import itertools
 import math
 
-from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2_grpc
+from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2, polygon_data_pb2_grpc
 
 from ansys.edb.core import session
 from ansys.edb.core.geometry.arc_data import ArcData
@@ -25,6 +25,16 @@ class ExtentType(Enum):
 
     CONFORMING = edb_defs_pb2.CONFORMING
     BOUNDING_BOX = edb_defs_pb2.BOUNDING_BOX
+
+
+class IntersectionType(Enum):
+    """Provides an enum representing intersection types for geometries."""
+
+    NO_INTERSECTION = polygon_data_pb2.NO_INTERSECTION
+    THIS_INSIDE_OTHER = polygon_data_pb2.THIS_INSIDE_OTHER
+    OTHER_INSIDE_THIS = polygon_data_pb2.OTHER_INSIDE_THIS
+    COMMON_INTERSECTION = polygon_data_pb2.COMMON_INTERSECTION
+    UNDEFINED_INTERSECTION = polygon_data_pb2.UNDEFINED_INTERSECTION
 
 
 class PolygonData:
@@ -434,11 +444,12 @@ class PolygonData:
 
         Returns
         -------
-        bool
-            ``True`` when successful, ``False`` when failed.
+        IntersectionType
         """
-        return self.__stub.GetIntersectionType(
-            messages.polygon_data_pair_with_tolerance_message(self, other, tol)
+        return IntersectionType(
+            self.__stub.GetIntersectionType(
+                messages.polygon_data_pair_with_tolerance_message(self, other, tol)
+            )
         )
 
     def circle_intersect(self, center, radius):

@@ -444,7 +444,7 @@ class PolygonData:
 
         Returns
         -------
-        IntersectionType
+        :class:`IntersectionType`
         """
         return IntersectionType(
             self.__stub.GetIntersectionType(

@@ -449,7 +449,7 @@ class PolygonData:
         return IntersectionType(
             self.__stub.GetIntersectionType(
                 messages.polygon_data_pair_with_tolerance_message(self, other, tol)
-            )
+            ).intersection_type
         )
 
     def circle_intersect(self, center, radius):

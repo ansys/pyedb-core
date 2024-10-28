@@ -24,3 +24,4 @@ Enums
 
    polygon_data.ExtentType
    polygon_data.PolygonSenseType
+   polygon_data.IntersectionType

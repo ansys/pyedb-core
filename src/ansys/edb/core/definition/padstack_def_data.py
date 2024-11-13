@@ -269,7 +269,9 @@ class PadstackDefData(ObjBase):
         """
         return self.get_pad_parameters(None, PadType.HOLE)
 
-    def set_hole_parameters(self, offset_x, offset_y, rotation, type_geom, sizes):
+    def set_hole_parameters(
+        self, offset_x, offset_y, rotation, type_geom=None, sizes=None, fp=None
+    ):
         """
         Set hole parameters.
 
@@ -281,13 +283,15 @@ class PadstackDefData(ObjBase):
             Y offset.
         rotation : :class:`.Value`
             Rotation.
-        type_geom : PadGeometryType
-            Pad geometry type.
-        sizes : List[:class:`.Value`]
-            List of pad sizes.
+        type_geom : PadGeometryType, default: None
+            Pad geometry type. The default is ``None`` if setting polygonal pad parameters.
+        sizes : List[:class:`.Value`], default: None
+            List of pad sizes. The default is ``None`` if setting polygonal pad parameters.
+        fp : :class:`.PolygonData`, default: None
+            Polygon geometry. The default is ``None`` if not setting polygonal pad parameters.
         """
         return self.set_pad_parameters(
-            -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes
+            -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes, fp
         )
 
     @property

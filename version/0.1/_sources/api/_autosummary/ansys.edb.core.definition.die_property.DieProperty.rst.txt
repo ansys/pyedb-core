@@ -1,0 +1,40 @@
+﻿DieProperty
+===========
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoclass:: DieProperty
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      DieProperty.clone
+      
+      
+      DieProperty.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DieProperty.die_orientation
+      DieProperty.die_type
+      DieProperty.height
+      DieProperty.id
+      DieProperty.is_null
+      DieProperty.msg
+   
+   

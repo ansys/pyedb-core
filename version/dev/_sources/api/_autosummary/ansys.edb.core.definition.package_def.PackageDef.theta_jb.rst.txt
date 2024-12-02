@@ -1,0 +1,6 @@
+theta\_jb
+=========
+
+.. currentmodule:: ansys.edb.core.definition.package_def
+
+.. autoproperty:: PackageDef.theta_jb

@@ -1,0 +1,6 @@
+edb\_uid
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. autoproperty:: Group.edb_uid

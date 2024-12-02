@@ -4,7 +4,7 @@
 
 * [Bradley Nedrud](https://github.com/bwnedrud)
 
-## Contributors
+## Individual Contributors
 
 * [Drew Miller](https://github.com/drewm102)
 * [Hiroki Takezawa](https://github.com/hiro727)

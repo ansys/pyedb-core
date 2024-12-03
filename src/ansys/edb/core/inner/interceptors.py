@@ -1,6 +1,7 @@
 """Client-side gRPC interceptors."""
 
 import abc
+import hashlib
 import logging
 
 from grpc import StatusCode, UnaryUnaryClientInterceptor
@@ -15,14 +16,26 @@ class Interceptor(UnaryUnaryClientInterceptor, metaclass=abc.ABCMeta):
         """Initialize a base interceptor with a logger."""
         super().__init__()
         self._logger = logger
+        self._cache = {}
 
     @abc.abstractmethod
     def _post_process(self, response):
         pass
 
+    def _generate_cache_key(self, client_call_details, request):
+        """Generate a unique cache key based on the request."""
+        key = f"{client_call_details.method}-{str(request)}"
+        return hashlib.md5(key.encode()).hexdigest()
+
     def intercept_unary_unary(self, continuation, client_call_details, request):
         """Intercept a gRPC call."""
+        cache_key = self._generate_cache_key(client_call_details, request)
+        cached_response = self._cache.get(cache_key)
+        if cached_response is not None:
+            return cached_response
+
         response = continuation(client_call_details, request)
+        self._cache[cache_key] = response
 
         self._post_process(response)
 

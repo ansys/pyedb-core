@@ -2,6 +2,8 @@
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 
+from ansys.edb.core.utility.cache import get_cache
+
 
 class ObjBase:
     """Provides the base object that all gRPC-related models extend from."""
@@ -14,6 +16,9 @@ class ObjBase:
         msg : EDBObjMessage
         """
         self._id = 0 if msg is None else msg.id
+        cache = get_cache()
+        if cache is not None:
+            cache.add_from_cache_msg(msg.cache)
 
     @property
     def is_null(self):

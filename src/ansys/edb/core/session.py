@@ -1,7 +1,10 @@
 """Session manager for gRPC."""
+
 from contextlib import contextmanager
 from enum import Enum
+import errno
 from shutil import which
+import socket
 from struct import pack, unpack
 import subprocess
 from sys import modules
@@ -142,6 +145,8 @@ from ansys.edb.core.inner import LOGGER
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
 from ansys.edb.core.inner.interceptors import ExceptionInterceptor, LoggingInterceptor
 
+DEFAULT_ADDRESS = "localhost"
+
 # The session module singleton
 MOD = modules[__name__]
 MOD.current_session = None
@@ -172,8 +177,8 @@ class _Session:
         if MOD.current_session is not None:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
-        self.ip_address = ip_address or "localhost"
-        self.port_num = port_num
+        self.ip_address = ip_address or DEFAULT_ADDRESS
+        self.port_num = port_num or _find_available_port()
         self.ansys_em_root = ansys_em_root
         self.channel = None
         self.local_server_proc = None
@@ -457,8 +462,8 @@ def launch_session(ansys_em_root, port_num=None):
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
     port_num : int, default: None
-        Port number to listen on. The default is ``None``, in which
-        case localhost is used.
+        Port number to listen on. The default is ``None``, in which case a port in [50051, 60000]
+        is selected.
 
     Examples
     --------
@@ -480,15 +485,16 @@ def launch_session(ansys_em_root, port_num=None):
 
 
 @contextmanager
-def session(ansys_em_root, port_num, ip_address=None):
+def session(ansys_em_root: str, port_num: int = None, ip_address: str = None):
     r"""Launch a local session to an EDB API server in a context manager.
 
     Parameters
     ----------
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
-    port_num : int
-        Port number to listen on.
+    port_num : int, default: None
+        Port number to listen on. The default is ``None``, in which case a port in [50051, 60000]
+        is selected.
     ip_address : str, default: None
         IP address where the server executable file is running. The default is ``None``, in which
         case localhost is used.
@@ -573,3 +579,22 @@ def _ensure_session(ansys_em_root, port_num, ip_address):
     else:
         MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
         MOD.current_session.connect()
+
+
+def _find_available_port(interface: str = None, start_port: int = 50051, end_port: int = 60000):
+    """Find an available port in the given range.
+
+    Parameters
+    ----------
+    interface : str, default: :data:`DEFAULT_ADDRESS`
+        Interface to check for available ports.
+    start_port : int, default: ``50051``
+        First port number to check.
+    end_port : int, default: ``60000``
+        Last port number to check.
+    """
+    for port in range(start_port, end_port):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            if sock.connect_ex((interface or DEFAULT_ADDRESS, port)) == errno.ECONNREFUSED:
+                return port
+    raise RuntimeError("No available ports found")

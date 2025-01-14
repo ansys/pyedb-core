@@ -2,7 +2,7 @@
 from ansys.api.edb.v1.layout_obj_pb2 import LayoutObjTargetMessage
 
 from ansys.edb.core.inner.factory import create_lyt_obj
-from ansys.edb.core.utility.cache import get_cache
+from ansys.edb.core.utility.io_manager import get_cache
 
 
 def map_list(iterable_to_operate_on, operator=None):

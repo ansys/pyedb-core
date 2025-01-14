@@ -1,8 +1,9 @@
 """Base model."""
 
+from ansys.api.edb.v1.caching_pb2 import FutureMessage
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 
-from ansys.edb.core.utility.cache import get_cache
+from ansys.edb.core.utility.io_manager import get_buffer, get_cache
 
 
 class ObjBase:
@@ -15,10 +16,7 @@ class ObjBase:
         ----------
         msg : EDBObjMessage
         """
-        self._id = 0 if msg is None else msg.id
-        cache = get_cache()
-        if cache is not None:
-            cache.add_from_cache_msg(msg.cache)
+        self.msg = msg
 
     @property
     def is_null(self):
@@ -28,14 +26,15 @@ class ObjBase:
         """
         return self.id == 0
 
-    @property
-    def id(self):
+    def id(self, evaluate_future=True):
         """:obj:`int`: Unique ID of the EDB object.
 
         A ``0`` indicates an invalid object.
 
         This property is read-only.
         """
+        if self._is_future and evaluate_future and (buffer := get_buffer()) is not None:
+            buffer.flush()
         return self._id
 
     @property
@@ -44,12 +43,22 @@ class ObjBase:
 
         This property can only be set to ``None``.
         """
-        return EDBObjMessage(id=self.id)
+        return EDBObjMessage(id=self.id())
 
     @msg.setter
-    def msg(self, val):
-        if val is None:
+    def msg(self, msg):
+        if msg is None:
             self._id = 0
+            return
+        self._id = msg.id
+        if isinstance(msg, FutureMessage):
+            self._is_future = True
+            if (buffer := get_buffer()) is not None:
+                buffer.add_future_ref(self)
+        else:
+            self._is_future = False
+            if (cache := get_cache()) is not None:
+                cache.add_from_cache_msg(msg.cache)
 
 
 class TypeField(object):

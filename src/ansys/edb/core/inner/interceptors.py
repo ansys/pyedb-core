@@ -12,7 +12,7 @@ from grpc import (
 )
 
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode, InvalidArgumentException
-from ansys.edb.core.utility.cache import get_cache
+from ansys.edb.core.utility.io_manager import get_io_manager
 
 
 class Interceptor(UnaryUnaryClientInterceptor, UnaryStreamClientInterceptor, metaclass=abc.ABCMeta):
@@ -116,7 +116,7 @@ class CachingInterceptor(Interceptor):
 
     @classmethod
     def _get_client_call_details_with_caching_options(cls, client_call_details):
-        if get_cache() is None:
+        if get_io_manager() is None:
             return client_call_details
         metadata = []
         if client_call_details.metadata is not None:
@@ -132,11 +132,14 @@ class CachingInterceptor(Interceptor):
     def _continue_unary_unary(self, continuation, client_call_details, request):
         if self._should_log_traffic():
             self._current_rpc_method = client_call_details.method
-        cache = get_cache()
-        if cache is not None:
+        if (io_manager := get_io_manager()) is not None and not io_manager.buffer.is_flushing:
             method_tokens = client_call_details.method.strip("/").split("/")
             cache_key_details = method_tokens[0], method_tokens[1], request
-            cached_response = cache.get(*cache_key_details)
+            buffer_result = io_manager.buffer.add_request(*cache_key_details)
+            if buffer_result is not None:
+                return buffer_result
+            io_manager.buffer.flush()
+            cached_response = io_manager.cache.get(*cache_key_details)
             if cached_response is not None:
                 return cached_response
             else:
@@ -151,10 +154,10 @@ class CachingInterceptor(Interceptor):
         return self._current_cache_key_details is not None
 
     def _post_process(self, response):
-        cache = get_cache()
-        if cache is not None and self._cache_missed():
-            cache.add(*self._current_cache_key_details, response.result())
-        if self._should_log_traffic() and (cache is None or self._cache_missed()):
+        io_manager = get_io_manager()
+        if io_manager is not None and self._cache_missed() and not io_manager.buffer.is_flushing:
+            io_manager.cache.add(*self._current_cache_key_details, response.result())
+        if self._should_log_traffic() and (io_manager is None or self._cache_missed()):
             self._rpc_counter[self._current_rpc_method] += 1
         self._reset_cache_entry_data()
 

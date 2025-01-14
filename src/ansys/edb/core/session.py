@@ -19,6 +19,7 @@ from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
 )
 from ansys.api.edb.v1.bondwire_pb2_grpc import BondwireServiceStub
 from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
+from ansys.api.edb.v1.caching_pb2_grpc import CachingServiceStub
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
 from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
@@ -442,6 +443,7 @@ class StubType(Enum):
     raptor_x_general_sim_settings = RaptorXGeneralSettingsServiceStub
     raptor_x_adv_sim_settings = RaptorXAdvancedSettingsServiceStub
     layout_component = LayoutComponentServiceStub
+    caching = CachingServiceStub
 
 
 def attach_session(ip_address=None, port_num=50051, dump_traffic_log=False):

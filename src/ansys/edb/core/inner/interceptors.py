@@ -12,7 +12,7 @@ from grpc import (
 )
 
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode, InvalidArgumentException
-from ansys.edb.core.utility.io_manager import get_io_manager
+from ansys.edb.core.utility.io_manager import ServerNotification, get_io_manager
 
 
 class Interceptor(UnaryUnaryClientInterceptor, UnaryStreamClientInterceptor, metaclass=abc.ABCMeta):
@@ -116,12 +116,25 @@ class CachingInterceptor(Interceptor):
 
     @classmethod
     def _get_client_call_details_with_caching_options(cls, client_call_details):
-        if get_io_manager() is None:
+        if not get_io_manager().notifications_for_server:
             return client_call_details
         metadata = []
         if client_call_details.metadata is not None:
             metadata = list(client_call_details.metadata)
-        metadata.append(("enable-caching", "1"))
+        for notification in get_io_manager().notifications_for_server:
+            if (
+                notification == ServerNotification.BEGIN_CACHING
+                or notification == ServerNotification.END_CACHING
+            ):
+                metadata.append(
+                    (
+                        "enable-caching",
+                        "1" if notification == ServerNotification.BEGIN_CACHING else "0",
+                    )
+                )
+            elif notification == ServerNotification.INVALIDATE_CACHE:
+                metadata.append(("invalidate-cache", "1"))
+        get_io_manager().clear_notifications_for_server()
         return cls._ClientCallDetails(
             client_call_details.method,
             client_call_details.timeout,
@@ -132,18 +145,22 @@ class CachingInterceptor(Interceptor):
     def _continue_unary_unary(self, continuation, client_call_details, request):
         if self._should_log_traffic():
             self._current_rpc_method = client_call_details.method
-        if (io_manager := get_io_manager()) is not None and not io_manager.buffer.is_flushing:
+        if (io_manager := get_io_manager()) is not None and not io_manager.is_blocking:
             method_tokens = client_call_details.method.strip("/").split("/")
             cache_key_details = method_tokens[0], method_tokens[1], request
-            buffer_result = io_manager.buffer.add_request(*cache_key_details)
-            if buffer_result is not None:
-                return buffer_result
-            io_manager.buffer.flush()
-            cached_response = io_manager.cache.get(*cache_key_details)
-            if cached_response is not None:
-                return cached_response
-            else:
-                self._current_cache_key_details = cache_key_details
+            if (buffer := io_manager.buffer) is not None:
+                if (buffer_result := buffer.add_request(*cache_key_details)) is not None:
+                    return buffer_result
+                buffer.flush()
+            if (cache := io_manager.cache) is not None:
+                if not io_manager.can_cache(cache_key_details[0], cache_key_details[1]):
+                    cache.invalidate()
+                else:
+                    cache.refresh_for_request()
+                    if (cached_response := cache.get(*cache_key_details)) is not None:
+                        return cached_response
+                    else:
+                        self._current_cache_key_details = cache_key_details
         return super()._continue_unary_unary(
             continuation,
             self._get_client_call_details_with_caching_options(client_call_details),
@@ -155,11 +172,13 @@ class CachingInterceptor(Interceptor):
 
     def _post_process(self, response):
         io_manager = get_io_manager()
-        if io_manager is not None and self._cache_missed() and not io_manager.buffer.is_flushing:
+        if io_manager is not None and self._cache_missed() and not io_manager.is_blocking:
             io_manager.cache.add(*self._current_cache_key_details, response.result())
         if self._should_log_traffic() and (io_manager is None or self._cache_missed()):
             self._rpc_counter[self._current_rpc_method] += 1
         self._reset_cache_entry_data()
+        if io_manager.cache is not None and not io_manager.is_blocking:
+            io_manager.cache._active_edb_objs_to_refresh.clear()
 
     def intercept_unary_stream(self, continuation, client_call_details, request):
         """Intercept a gRPC streaming call."""

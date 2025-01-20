@@ -1,6 +1,5 @@
 """Base model."""
 
-from ansys.api.edb.v1.caching_pb2 import FutureMessage
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 
 from ansys.edb.core.utility.io_manager import get_buffer, get_cache
@@ -43,7 +42,15 @@ class ObjBase:
 
         This property can only be set to ``None``.
         """
-        return EDBObjMessage(id=self.id())
+        msg = EDBObjMessage(id=self.id(False))
+        if self._is_future:
+            msg.is_future = True
+            if (buffer := get_buffer()) is not None:
+                buffer.add_active_future_request(msg)
+        else:
+            if (cache := get_cache()) is not None:
+                cache.add_active_edb_obj(msg)
+        return msg
 
     @msg.setter
     def msg(self, msg):
@@ -51,14 +58,13 @@ class ObjBase:
             self._id = 0
             return
         self._id = msg.id
-        if isinstance(msg, FutureMessage):
-            self._is_future = True
+        self._is_future = msg.is_future
+        if self._is_future:
             if (buffer := get_buffer()) is not None:
                 buffer.add_future_ref(self)
         else:
-            self._is_future = False
             if (cache := get_cache()) is not None:
-                cache.add_from_cache_msg(msg.cache)
+                cache.add_from_cache_msg(msg)
 
 
 class TypeField(object):

@@ -1,0 +1,6 @@
+placement\_layer
+================
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.placement_layer

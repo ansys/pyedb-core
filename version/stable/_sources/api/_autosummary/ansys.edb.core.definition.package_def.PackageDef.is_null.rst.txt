@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.package_def
+
+.. autoproperty:: PackageDef.is_null

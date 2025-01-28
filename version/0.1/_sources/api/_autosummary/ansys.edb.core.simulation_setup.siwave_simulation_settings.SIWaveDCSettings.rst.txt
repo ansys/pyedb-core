@@ -1,0 +1,34 @@
+﻿SIWaveDCSettings
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SIWaveDCSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveDCSettings.compute_inductance
+      SIWaveDCSettings.contact_radius
+      SIWaveDCSettings.dc_slider_pos
+      SIWaveDCSettings.msg
+      SIWaveDCSettings.plot_jv
+      SIWaveDCSettings.use_dc_custom_settings
+   
+   

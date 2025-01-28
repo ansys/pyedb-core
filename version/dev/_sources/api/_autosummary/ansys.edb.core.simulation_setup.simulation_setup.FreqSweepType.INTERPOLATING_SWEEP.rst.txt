@@ -1,0 +1,6 @@
+INTERPOLATING\_SWEEP
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: FreqSweepType.INTERPOLATING_SWEEP

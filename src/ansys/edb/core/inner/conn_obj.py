@@ -48,6 +48,17 @@ class ConnObj(layout_obj.LayoutObj):
             return client_obj
         return cls(None)
 
+    @property
+    def obj_type(self):
+        """:class:`LayoutObjType <ansys.edb.core.edb_defs.LayoutObjType>`: Layout object type.
+
+        This property is read-only.
+        """
+        if self.layout_obj_type != LayoutObjType.INVALID_LAYOUT_OBJ:
+            return super().obj_type
+        else:
+            return LayoutObjType(self.__stub.GetObjType(self.msg).type)
+
     @classmethod
     def find_by_id(cls, layout, uid):
         """Find a :term:`Connectable` object by database ID in a given layout.

@@ -83,14 +83,9 @@ from ansys.api.edb.v1.hfss_simulation_setup_pb2 import (
 )
 from ansys.api.edb.v1.hierarchy_obj_pb2 import ObjectNameInLayoutMessage
 from ansys.api.edb.v1.inst_array_pb2 import InstArrayCreationMessage
-from ansys.api.edb.v1.layout_pb2 import (
-    LayoutConvertP2VMessage,
-    LayoutExpandedExtentMessage,
-    LayoutGetItemsMessage,
-)
+from ansys.api.edb.v1.layout_pb2 import LayoutConvertP2VMessage, LayoutExpandedExtentMessage
 from ansys.api.edb.v1.material_def_pb2 import MaterialDefPropertiesMessage
 from ansys.api.edb.v1.mcad_model_pb2 import *  # noqa
-from ansys.api.edb.v1.net_pb2 import NetGetLayoutObjMessage
 from ansys.api.edb.v1.package_def_pb2 import HeatSinkMessage, SetHeatSinkMessage
 from ansys.api.edb.v1.padstack_inst_term_pb2 import (
     PadstackInstTermCreationsMessage,
@@ -505,11 +500,6 @@ def point3d_message(point3d):
 def point_3d_property_message(target, val):
     """Convert to a ``Point3DPropertyMessage`` object."""
     return Point3DPropertyMessage(target=edb_obj_message(target), value=point3d_message(val))
-
-
-def layout_get_items_message(layout, item_type):
-    """Convert to a ``LayoutGetItemsMessage`` object."""
-    return LayoutGetItemsMessage(layout=layout.msg, obj_type=item_type.value)
 
 
 def layout_expanded_extent_message(
@@ -1078,11 +1068,6 @@ def layer_ref_property_message(edb_obj, layer_ref):
 def double_property_message(edb_obj, double):
     """Convert to a ``DoublePropertyMessage`` object."""
     return DoublePropertyMessage(target=edb_obj.msg, value=double)
-
-
-def net_get_layout_obj_message(obj, layout_obj_type):
-    """Convert to a ``NetGetLayoutObjMessage`` object."""
-    return NetGetLayoutObjMessage(net=edb_obj_message(obj), obj_type=layout_obj_type.value)
 
 
 def differential_pair_creation_message(layout, name, pos_net, neg_net):

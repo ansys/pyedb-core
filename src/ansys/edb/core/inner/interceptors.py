@@ -1,14 +1,21 @@
 """Client-side gRPC interceptors."""
 
 import abc
+from collections import namedtuple
 import logging
 
-from grpc import StatusCode, UnaryUnaryClientInterceptor
+from grpc import (
+    ClientCallDetails,
+    StatusCode,
+    UnaryStreamClientInterceptor,
+    UnaryUnaryClientInterceptor,
+)
 
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode, InvalidArgumentException
+from ansys.edb.core.utility.cache import get_cache
 
 
-class Interceptor(UnaryUnaryClientInterceptor, metaclass=abc.ABCMeta):
+class Interceptor(UnaryUnaryClientInterceptor, UnaryStreamClientInterceptor, metaclass=abc.ABCMeta):
     """Provides the base interceptor class."""
 
     def __init__(self, logger):
@@ -20,13 +27,20 @@ class Interceptor(UnaryUnaryClientInterceptor, metaclass=abc.ABCMeta):
     def _post_process(self, response):
         pass
 
+    def _continue_unary_unary(self, continuation, client_call_details, request):
+        return continuation(client_call_details, request)
+
     def intercept_unary_unary(self, continuation, client_call_details, request):
         """Intercept a gRPC call."""
-        response = continuation(client_call_details, request)
+        response = self._continue_unary_unary(continuation, client_call_details, request)
 
         self._post_process(response)
 
         return response
+
+    def intercept_unary_stream(self, continuation, client_call_details, request):
+        """Intercept a gRPC streaming call."""
+        return continuation(client_call_details, request)
 
 
 class LoggingInterceptor(Interceptor):
@@ -76,3 +90,78 @@ class ExceptionInterceptor(Interceptor):
 
         if exception is not None:
             raise exception
+
+
+class CachingInterceptor(Interceptor):
+    """Returns cached values if a given request has already been made and caching is enabled."""
+
+    def __init__(self, logger, rpc_counter):
+        """Initialize a caching interceptor with a logger and rpc counter."""
+        super().__init__(logger)
+        self._rpc_counter = rpc_counter
+        self._reset_cache_entry_data()
+
+    def _reset_cache_entry_data(self):
+        self._current_rpc_method = ""
+        self._current_cache_key_details = None
+
+    def _should_log_traffic(self):
+        return self._rpc_counter is not None
+
+    class _ClientCallDetails(
+        namedtuple("_ClientCallDetails", ("method", "timeout", "metadata", "credentials")),
+        ClientCallDetails,
+    ):
+        pass
+
+    @classmethod
+    def _get_client_call_details_with_caching_options(cls, client_call_details):
+        if get_cache() is None:
+            return client_call_details
+        metadata = []
+        if client_call_details.metadata is not None:
+            metadata = list(client_call_details.metadata)
+        metadata.append(("enable-caching", "1"))
+        return cls._ClientCallDetails(
+            client_call_details.method,
+            client_call_details.timeout,
+            metadata,
+            client_call_details.credentials,
+        )
+
+    def _continue_unary_unary(self, continuation, client_call_details, request):
+        if self._should_log_traffic():
+            self._current_rpc_method = client_call_details.method
+        cache = get_cache()
+        if cache is not None:
+            method_tokens = client_call_details.method.strip("/").split("/")
+            cache_key_details = method_tokens[0], method_tokens[1], request
+            cached_response = cache.get(*cache_key_details)
+            if cached_response is not None:
+                return cached_response
+            else:
+                self._current_cache_key_details = cache_key_details
+        return super()._continue_unary_unary(
+            continuation,
+            self._get_client_call_details_with_caching_options(client_call_details),
+            request,
+        )
+
+    def _cache_missed(self):
+        return self._current_cache_key_details is not None
+
+    def _post_process(self, response):
+        cache = get_cache()
+        if cache is not None and self._cache_missed():
+            cache.add(*self._current_cache_key_details, response.result())
+        if self._should_log_traffic() and (cache is None or self._cache_missed()):
+            self._rpc_counter[self._current_rpc_method] += 1
+        self._reset_cache_entry_data()
+
+    def intercept_unary_stream(self, continuation, client_call_details, request):
+        """Intercept a gRPC streaming call."""
+        return super().intercept_unary_stream(
+            continuation,
+            self._get_client_call_details_with_caching_options(client_call_details),
+            request,
+        )

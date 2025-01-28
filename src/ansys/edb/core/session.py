@@ -1,8 +1,10 @@
 """Session manager for gRPC."""
-
+from collections import defaultdict
 from contextlib import contextmanager
 from enum import Enum
 import errno
+import json
+import os
 from shutil import which
 import socket
 from struct import pack, unpack
@@ -143,7 +145,11 @@ import grpc
 
 from ansys.edb.core.inner import LOGGER
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
-from ansys.edb.core.inner.interceptors import ExceptionInterceptor, LoggingInterceptor
+from ansys.edb.core.inner.interceptors import (
+    CachingInterceptor,
+    ExceptionInterceptor,
+    LoggingInterceptor,
+)
 
 DEFAULT_ADDRESS = "localhost"
 
@@ -173,7 +179,7 @@ class StubAccessor(object):
 
 # Helper class for storing data used by the session
 class _Session:
-    def __init__(self, ip_address, port_num, ansys_em_root):
+    def __init__(self, ip_address, port_num, ansys_em_root, dump_traffic_log):
         if MOD.current_session is not None:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
@@ -184,8 +190,10 @@ class _Session:
         self.local_server_proc = None
         self.stubs = None
         self.session = None
+        self.rpc_counter = defaultdict(int) if dump_traffic_log else None
         self.interceptors = [
             # on reversed order of interception
+            CachingInterceptor(LOGGER, self.rpc_counter),
             ExceptionInterceptor(LOGGER),
             LoggingInterceptor(LOGGER),
         ]
@@ -249,6 +257,10 @@ class _Session:
         self._initialize_stubs()
 
     def disconnect(self):
+        if self.rpc_counter is not None:
+            print(
+                "pyedb-core session traffic:" + os.linesep + json.dumps(self.rpc_counter, indent=4)
+            )
         if self.stubs is not None:
             self.stubs = None
 
@@ -436,7 +448,7 @@ class StubType(Enum):
     layout_component = LayoutComponentServiceStub
 
 
-def attach_session(ip_address=None, port_num=50051):
+def attach_session(ip_address=None, port_num=50051, dump_traffic_log=False):
     """Attach a session to a port running the EDB API server.
 
     Parameters
@@ -446,13 +458,15 @@ def attach_session(ip_address=None, port_num=50051):
         in which case localhost is used.
     port_num : int, default: 50051
         Port number that the server is listening on.
+    dump_traffic_log : bool, default: False
+        Flag indicating if the network traffic log should be dumped when the session is disconnected.
     """
-    MOD.current_session = _Session(ip_address, port_num, None)
+    MOD.current_session = _Session(ip_address, port_num, None, dump_traffic_log)
     MOD.current_session.connect()
     return MOD.current_session
 
 
-def launch_session(ansys_em_root, port_num=None):
+def launch_session(ansys_em_root, port_num=None, dump_traffic_log=False):
     r"""Launch a local session to an EDB API server.
 
     The session must be manually disconnected after use by calling session.disconnect()
@@ -464,6 +478,8 @@ def launch_session(ansys_em_root, port_num=None):
     port_num : int, default: None
         Port number to listen on. The default is ``None``, in which case a port in [50051, 60000]
         is selected.
+    dump_traffic_log : bool, default: False
+        Flag indicating if the network traffic log should be dumped when the session is disconnected.
 
     Examples
     --------
@@ -476,7 +492,7 @@ def launch_session(ansys_em_root, port_num=None):
     ip_address = None  # remote launch is not supported yet
 
     try:
-        _ensure_session(ansys_em_root, port_num, ip_address)
+        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log)
         return MOD.current_session
     except Exception as e:  # noqa
         if MOD.current_session is not None:
@@ -485,7 +501,7 @@ def launch_session(ansys_em_root, port_num=None):
 
 
 @contextmanager
-def session(ansys_em_root: str, port_num: int = None, ip_address: str = None):
+def session(ansys_em_root, port_num=None, ip_address=None, dump_traffic_log=False):
     r"""Launch a local session to an EDB API server in a context manager.
 
     Parameters
@@ -502,6 +518,8 @@ def session(ansys_em_root: str, port_num: int = None, ip_address: str = None):
         .. note::
            This parameter is currently not supported. In future releases, this parameter is to
            support remotely running the API on another machine.
+    dump_traffic_log : bool, default: False
+        Flag indicating if the network traffic log should be dumped when the session is disconnected
 
     Examples
     --------
@@ -511,7 +529,7 @@ def session(ansys_em_root: str, port_num: int = None, ip_address: str = None):
     >>>    # program goes here
     """
     try:
-        _ensure_session(ansys_em_root, port_num, ip_address)
+        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log)
         yield
     except EDBSessionException:
         raise
@@ -561,7 +579,7 @@ def get_variable_server_stub():
     return StubAccessor(StubType.variable_server).__get__()
 
 
-def _ensure_session(ansys_em_root, port_num, ip_address):
+def _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log):
     """Check for a running local session and create one if it doesn't exist.
 
     Parameters
@@ -572,12 +590,14 @@ def _ensure_session(ansys_em_root, port_num, ip_address):
         Port number to listen on.
     ip_address : str, default: None
         IP address where the server executable file is running.
+    dump_traffic_log : bool, default: False
+        Flag indicating if the network traffic log should be dumped when the session is disconnected.
     """
     if MOD.current_session is not None:
         if MOD.current_session.port_num != port_num:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
     else:
-        MOD.current_session = _Session(ip_address, port_num, ansys_em_root)
+        MOD.current_session = _Session(ip_address, port_num, ansys_em_root, dump_traffic_log)
         MOD.current_session.connect()
 
 

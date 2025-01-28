@@ -4,19 +4,12 @@ from ansys.api.edb.v1 import layout_pb2
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy import cell_instance, group, pin_group
 from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
 from ansys.edb.core.layer.layer_collection import LayerCollection
-from ansys.edb.core.layout import voltage_regulator
 from ansys.edb.core.layout.mcad_model import McadModel
 from ansys.edb.core.layout_instance import layout_instance
-from ansys.edb.core.net.differential_pair import DifferentialPair
-from ansys.edb.core.net.extended_net import ExtendedNet
-from ansys.edb.core.net.net import Net
-from ansys.edb.core.net.net_class import NetClass
-from ansys.edb.core.primitive.primitive import BoardBendDef, PadstackInstance, Primitive
+from ansys.edb.core.primitive.primitive import BoardBendDef, Primitive
 from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminals import Terminal
 
 
 def _geometry_simplifications_settings_msg(layout, layer, tol):
@@ -86,13 +79,11 @@ class Layout(ObjBase, variable_server.VariableServer):
             )
         )
 
-    def _get_items(self, obj_type, lyt_obj_type_enum, do_cast=False):
+    def _get_items(self, lyt_obj_type_enum):
         """Get a list of layout objects."""
-        items = utils.map_list(
-            self.__stub.GetItems(messages.layout_get_items_message(self, lyt_obj_type_enum)).items,
-            obj_type,
+        return utils.query_lyt_object_collection(
+            self, lyt_obj_type_enum, self.__stub.GetItems, self.__stub.StreamItems
         )
-        return items if not do_cast else [item.cast() for item in items]
 
     @property
     def primitives(self):
@@ -101,7 +92,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(Primitive, LayoutObjType.PRIMITIVE, True)
+        return self._get_items(LayoutObjType.PRIMITIVE)
 
     @property
     def padstack_instances(self):
@@ -110,7 +101,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(PadstackInstance, LayoutObjType.PADSTACK_INSTANCE)
+        return self._get_items(LayoutObjType.PADSTACK_INSTANCE)
 
     @property
     def terminals(self):
@@ -119,7 +110,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(Terminal, LayoutObjType.TERMINAL, True)
+        return self._get_items(LayoutObjType.TERMINAL)
 
     @property
     def cell_instances(self):
@@ -128,7 +119,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(cell_instance.CellInstance, LayoutObjType.CELL_INSTANCE)
+        return self._get_items(LayoutObjType.CELL_INSTANCE)
 
     @property
     def nets(self):
@@ -137,7 +128,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(Net, LayoutObjType.NET)
+        return self._get_items(LayoutObjType.NET)
 
     @property
     def groups(self):
@@ -146,7 +137,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(group.Group, LayoutObjType.GROUP, True)
+        return self._get_items(LayoutObjType.GROUP)
 
     @property
     def net_classes(self):
@@ -155,7 +146,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(NetClass, LayoutObjType.NET_CLASS)
+        return self._get_items(LayoutObjType.NET_CLASS)
 
     @property
     def differential_pairs(self):
@@ -164,7 +155,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(DifferentialPair, LayoutObjType.DIFFERENTIAL_PAIR)
+        return self._get_items(LayoutObjType.DIFFERENTIAL_PAIR)
 
     @property
     def pin_groups(self):
@@ -173,7 +164,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(pin_group.PinGroup, LayoutObjType.PIN_GROUP)
+        return self._get_items(LayoutObjType.PIN_GROUP)
 
     @property
     def voltage_regulators(self):
@@ -182,7 +173,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(voltage_regulator.VoltageRegulator, LayoutObjType.VOLTAGE_REGULATOR)
+        return self._get_items(LayoutObjType.VOLTAGE_REGULATOR)
 
     @property
     def extended_nets(self):
@@ -191,7 +182,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         This property is read-only.
         """
-        return self._get_items(ExtendedNet, LayoutObjType.EXTENDED_NET)
+        return self._get_items(LayoutObjType.EXTENDED_NET)
 
     @parser.to_polygon_data
     def expanded_extent(

@@ -25,7 +25,7 @@ from ansys.api.edb.v1 import (
 
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import conn_obj, messages, parser
+from ansys.edb.core.inner import conn_obj, messages, parser, utils
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
 from ansys.edb.core.utility.layer_map import LayerMap
@@ -208,7 +208,9 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return [Primitive(msg).cast() for msg in self.__stub.Voids(self.msg).items]
+        return utils.query_lyt_object_collection(
+            self, LayoutObjType.PRIMITIVE, self.__stub.Voids, self.__stub.StreamVoids, False
+        )
 
     @property
     def owner(self):

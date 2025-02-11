@@ -126,5 +126,6 @@ def do_test():
 
 
 def test_component_property():
+    print("test_component_property", settings.server_exe_dir())
     with session(settings.server_exe_dir(), 50051):
         do_test()

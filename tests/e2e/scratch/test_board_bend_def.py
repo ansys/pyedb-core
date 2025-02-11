@@ -60,5 +60,6 @@ def do_test():
 
 
 def test_board_bend_def():
+    print("test_board_bend_def", settings.server_exe_dir())
     with session(settings.server_exe_dir(), 50051):
         do_test()

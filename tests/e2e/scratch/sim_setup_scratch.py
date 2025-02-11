@@ -326,5 +326,6 @@ def do_test():
 
 
 def test_sim_setup():
+    print("test_sim_setup", settings.server_exe_dir())
     with session(settings.server_exe_dir(), 50051):
         do_test()

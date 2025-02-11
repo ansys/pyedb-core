@@ -13,6 +13,7 @@ env:
   PACKAGE_NAME: 'ansys-edb-core'
   DOCUMENTATION_CNAME: 'edb.core.docs.pyansys.com'
   MAIN_PYTHON_VERSION: '3.10'
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -79,6 +80,28 @@ jobs:
       - name: Test with tox
         # Only the tox environment specified in the tox.ini gh-actions is run
         run: tox -e test -- --ignore=tests/e2e
+
+  tests-e2e:
+    name: End to end tests and coverage
+    runs-on: [ self-hosted, Windows, pyedb-core ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade .[tests]
+          python -m pip install --upgrade tox-gh-actions
+
+      - name: Test with tox
+        # Only the tox environment specified in the tox.ini gh-actions is run
+        run: |
+          ~/start.bat
+          tox -e test -- tests/e2e
+          ~/stop.bat
 
   doc-build:
     name: "Doc build"

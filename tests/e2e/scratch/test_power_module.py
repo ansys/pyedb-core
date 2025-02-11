@@ -7,6 +7,7 @@ from ansys.edb.core.session import launch_session
 
 
 def test_power_module():
+    print("test_power_module", settings.server_exe_dir())
     session = launch_session(settings.server_exe_dir(), 50051)
 
     db = Database.create(settings.temp_dir())

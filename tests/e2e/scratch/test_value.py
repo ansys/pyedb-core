@@ -11,6 +11,7 @@ from ansys.edb.core.utility.value import Value
 
 
 def test_value():
+    print("test_value", settings.server_exe_dir())
     session = launch_session(settings.server_exe_dir(), 50051)
 
     db = Database.create(settings.temp_dir())

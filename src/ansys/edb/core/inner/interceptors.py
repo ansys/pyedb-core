@@ -160,19 +160,14 @@ class IOInterceptor(Interceptor):
             hijacked_response = cache.hijack_request(*args)
         return hijacked_response
 
-    def _hijack(self, service_name, rpc_name, request):
-        hijacked_result = self._attempt_hijack(service_name, rpc_name, request)
-        if hijacked_result is not None:
-            self._hijacked = True
-        return hijacked_result
-
-    def _continue_unary_unary(self, continuation, client_call_details, request):
+    def _hijack(self, client_call_details, request):
         io_manager = get_io_manager()
         if io_manager.is_enabled and not io_manager.is_blocking:
             with io_manager.manage_io():
                 method_tokens = client_call_details.method.strip("/").split("/")
                 cache_key_details = method_tokens[0], method_tokens[1], request
-                if (hijacked_result := self._hijack(*cache_key_details)) is not None:
+                if (hijacked_result := self._attempt_hijack(*cache_key_details)) is not None:
+                    self._hijacked = True
                     return hijacked_result
                 if io_manager.cache is not None and can_cache(
                     cache_key_details[0], cache_key_details[1]
@@ -180,6 +175,10 @@ class IOInterceptor(Interceptor):
                     self._current_cache_key_details = cache_key_details
         if self._should_log_traffic():
             self._current_rpc_method = client_call_details.method
+
+    def _continue_unary_unary(self, continuation, client_call_details, request):
+        if (hijacked_result := self._hijack(client_call_details, request)) is not None:
+            return hijacked_result
         return super()._continue_unary_unary(
             continuation,
             self._get_client_call_details_with_caching_options(client_call_details),
@@ -196,6 +195,8 @@ class IOInterceptor(Interceptor):
 
     def intercept_unary_stream(self, continuation, client_call_details, request):
         """Intercept a gRPC streaming call."""
+        if (hijacked_result := self._hijack(client_call_details, request)) is not None:
+            return hijacked_result
         return super().intercept_unary_stream(
             continuation,
             self._get_client_call_details_with_caching_options(client_call_details),
@@ -204,6 +205,8 @@ class IOInterceptor(Interceptor):
 
     def intercept_stream_stream(self, continuation, client_call_details, request_iterator):
         """Intercept a gRPC streaming call."""
+        if (hijacked_result := self._hijack(client_call_details, request_iterator)) is not None:
+            return hijacked_result
         return super().intercept_stream_stream(
             continuation,
             self._get_client_call_details_with_caching_options(client_call_details),

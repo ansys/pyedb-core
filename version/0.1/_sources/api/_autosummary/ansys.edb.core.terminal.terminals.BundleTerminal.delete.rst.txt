@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. automethod:: BundleTerminal.delete

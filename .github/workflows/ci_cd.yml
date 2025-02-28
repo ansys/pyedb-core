@@ -23,6 +23,8 @@ jobs:
   dump_contexts_to_log:
     runs-on: ubuntu-latest
     steps:
+      - name: GitHub base_ref
+        run: echo Base Ref "${{ github.base_ref }}"
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

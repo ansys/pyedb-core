@@ -44,11 +44,11 @@ repos:
   - id: trailing-whitespace
     exclude: (?x)^(.*\.def)
 
-# - repo: https://github.com/ansys/pre-commit-hooks
-#   rev: v0.2.2
-#   hooks:
-#     - id: add-license-headers
-#       args: ["--loc", "./"]
+- repo: https://github.com/ansys/pre-commit-hooks
+  rev: v0.4.3
+  hooks:
+    - id: add-license-headers
+      files: '(src|scripts|tests)/.*\.(py)'
 
 # FIXME: See if this local hooks could be replaced with using
 # https://github.com/kynan/nbstripout

@@ -18,18 +18,12 @@ class HierarchyObj(conn_obj.ConnObj):
         """:class:`.Transform`: \
         Transformation information of the hierarchy object."""
         transform_msg = self.__stub.GetTransform(self.msg)
-        return Transform.create(
-            transform_msg.scale,
-            transform_msg.angle,
-            transform_msg.mirror,
-            transform_msg.offset_x,
-            transform_msg.offset_y,
-        )
+        return Transform(transform_msg)
 
     @transform.setter
     def transform(self, value):
         """Set transform."""
-        self.__stub.SetTransform(messages.transform_property_message(self, value))
+        self.__stub.SetTransform(messages.pointer_property_message(self, value))
 
     @property
     def name(self):

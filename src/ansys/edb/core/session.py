@@ -57,6 +57,7 @@ from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
 from ansys.api.edb.v1.inst_array_pb2_grpc import InstArrayServiceStub
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
+from ansys.api.edb.v1.io_manager_pb2_grpc import IOManagerServiceStub
 from ansys.api.edb.v1.layer_collection_pb2_grpc import LayerCollectionServiceStub
 from ansys.api.edb.v1.layer_map_pb2_grpc import LayerMapServiceStub
 from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
@@ -146,8 +147,8 @@ import grpc
 from ansys.edb.core.inner import LOGGER
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
 from ansys.edb.core.inner.interceptors import (
-    CachingInterceptor,
     ExceptionInterceptor,
+    IOInterceptor,
     LoggingInterceptor,
 )
 
@@ -193,7 +194,7 @@ class _Session:
         self.rpc_counter = defaultdict(int) if dump_traffic_log else None
         self.interceptors = [
             # on reversed order of interception
-            CachingInterceptor(LOGGER, self.rpc_counter),
+            IOInterceptor(LOGGER, self.rpc_counter),
             ExceptionInterceptor(LOGGER),
             LoggingInterceptor(LOGGER),
         ]
@@ -446,6 +447,7 @@ class StubType(Enum):
     raptor_x_general_sim_settings = RaptorXGeneralSettingsServiceStub
     raptor_x_adv_sim_settings = RaptorXAdvancedSettingsServiceStub
     layout_component = LayoutComponentServiceStub
+    io_manager = IOManagerServiceStub
 
 
 def attach_session(ip_address=None, port_num=50051, dump_traffic_log=False):

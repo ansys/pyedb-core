@@ -2,7 +2,7 @@
 from ansys.api.edb.v1.layout_obj_pb2 import LayoutObjTargetMessage
 
 from ansys.edb.core.inner.factory import create_lyt_obj
-from ansys.edb.core.utility.cache import get_cache
+from ansys.edb.core.utility.io_manager import get_cache
 
 
 def map_list(iterable_to_operate_on, operator=None):
@@ -18,12 +18,19 @@ def map_list(iterable_to_operate_on, operator=None):
     )
 
 
-def query_lyt_object_collection(owner, obj_type, unary_rpc, unary_streaming_rpc):
+def query_lyt_object_collection(
+    owner, obj_type, unary_rpc, unary_streaming_rpc, request_requires_type=True
+):
     """For the provided request, retrieve a collection of objects using the unary_rpc or unary_streaming_rpc methods \
     depending on whether caching is enabled."""
+    request = (
+        LayoutObjTargetMessage(target=owner.msg, type=obj_type.value)
+        if request_requires_type
+        else owner.msg
+    )
+
     items = []
     cache = get_cache()
-    request = LayoutObjTargetMessage(target=owner.msg, type=obj_type.value)
 
     def add_msgs_to_items(edb_obj_collection_msg):
         nonlocal items

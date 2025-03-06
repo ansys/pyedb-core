@@ -15,7 +15,7 @@ from ansys.edb.core.session import StubAccessor, StubType
 def _geometry_simplifications_settings_msg(layout, layer, tol):
     """Create a GeometrySimplificationSettingsMessage."""
     return layout_pb2.GeometrySimplificationSettingsMessage(
-        layout_layer=messages.layer_ref_property_message(layout, layer),
+        layout_layers=messages.layer_refs_property_message(layout, layer),
         tolerance=messages.value_message(tol),
     )
 
@@ -303,7 +303,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        layer : str or :class:`.Layer`
+        layer : str, :obj:`list` of str or :class:`.Layer`, :obj:`list` of :class:`.Layer`
             Layer to reconstruct arcs on.
         tolerance : :class:`.Value`
             Tolerance.
@@ -315,10 +315,10 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        layer : str or :class:`.Layer`
+        layer : str, :obj:`list` of str or :class:`.Layer`, :obj:`list` of :class:`.Layer`
             Layer to unite primitives on.
         """
-        self.__stub.UnitePrimitives(messages.layer_ref_property_message(self, layer))
+        self.__stub.UnitePrimitives(messages.layer_refs_property_message(self, layer))
 
     def create_stride(self, filename):
         """Create a Stride model from an MCAD file.
@@ -379,7 +379,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        layer : str or :class:`.Layer`
+        layer : str, :obj:`list` of str or :class:`.Layer`, :obj:`list` of :class:`.Layer`
             Layer containing the primitives to be grouped.
         max_grouping_distance : :term:`ValueLike`
             Maximum distance between vias in a via group .
@@ -416,7 +416,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        layer : str or :class:`.Layer`
+        layer : str, :obj:`list` of str or :class:`.Layer`, :obj:`list` of :class:`.Layer`
             Layer containing the vias to be snapped.
         via_snapping_tol : :term:`ValueLike`
             Tolerance for snapping vias. If snap_by_area_factor is ``True``, this
@@ -443,7 +443,7 @@ class Layout(ObjBase, variable_server.VariableServer):
 
         Parameters
         ----------
-        layer : str or :class:`.Layer`
+        layer : str, :obj:`list` of str or :class:`.Layer`, :obj:`list` of :class:`.Layer`
             Layer containing the primitives to be snapped.
         tol : :term:`ValueLike`
             Tolerance for snapping primitives.

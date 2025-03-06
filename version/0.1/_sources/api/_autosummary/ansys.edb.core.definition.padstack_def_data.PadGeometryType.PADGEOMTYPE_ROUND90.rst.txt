@@ -1,0 +1,6 @@
+PADGEOMTYPE\_ROUND90
+====================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadGeometryType.PADGEOMTYPE_ROUND90

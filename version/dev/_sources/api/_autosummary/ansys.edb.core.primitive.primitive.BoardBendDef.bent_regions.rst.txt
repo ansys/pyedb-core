@@ -1,0 +1,6 @@
+bent\_regions
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: BoardBendDef.bent_regions

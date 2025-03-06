@@ -1,0 +1,6 @@
+auto\_removal\_sliver\_poly
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.raptor_x_simulation_settings
+
+.. autoproperty:: RaptorXAdvancedSettings.auto_removal_sliver_poly

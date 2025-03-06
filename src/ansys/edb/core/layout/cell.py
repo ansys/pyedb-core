@@ -136,7 +136,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         msg : EDBObjMessage
         """
         ObjBase.__init__(self, msg)
-        variable_server.VariableServer.__init__(self, msg)
+        variable_server.VariableServer.__init__(self, self)
 
     @classmethod
     def create(cls, db, cell_type, cell_name):

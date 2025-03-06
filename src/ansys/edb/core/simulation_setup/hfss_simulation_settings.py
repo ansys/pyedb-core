@@ -226,7 +226,7 @@ class HFSSSettingsOptions(SettingsOptions):
     @max_refinement_per_pass.setter
     def max_refinement_per_pass(self, max_refinement_per_pass):
         self.__stub.SetMaxRefinementPerPass(
-            messages.int_property_message(self, max_refinement_per_pass)
+            messages.uint64_property_message(self, max_refinement_per_pass)
         )
 
     @property
@@ -236,7 +236,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @min_passes.setter
     def min_passes(self, min_refinement_passes):
-        self.__stub.SetMinPasses(messages.int_property_message(self, min_refinement_passes))
+        self.__stub.SetMinPasses(messages.uint64_property_message(self, min_refinement_passes))
 
     @property
     def min_converged_passes(self):
@@ -246,7 +246,7 @@ class HFSSSettingsOptions(SettingsOptions):
     @min_converged_passes.setter
     def min_converged_passes(self, min_refinement_passes):
         self.__stub.SetMinConvergedPasses(
-            messages.int_property_message(self, min_refinement_passes)
+            messages.uint64_property_message(self, min_refinement_passes)
         )
 
     @property
@@ -336,7 +336,7 @@ class HFSSSolverSettings(SolverSettings):
     @min_triangles_for_wave_port.setter
     def min_triangles_for_wave_port(self, min_triangles_for_wave_port):
         self.__stub.SetMinTrianglesForWavePort(
-            messages.int_property_message(self, min_triangles_for_wave_port)
+            messages.uint64_property_message(self, min_triangles_for_wave_port)
         )
 
     @property
@@ -347,7 +347,7 @@ class HFSSSolverSettings(SolverSettings):
     @max_triangles_for_wave_port.setter
     def max_triangles_for_wave_port(self, max_triangles_for_wave_port):
         self.__stub.SetMaxTrianglesForWavePort(
-            messages.int_property_message(self, max_triangles_for_wave_port)
+            messages.uint64_property_message(self, max_triangles_for_wave_port)
         )
 
     @property
@@ -420,7 +420,7 @@ class HFSSDCRSettings(SimulationSettingsBase):
 
     @max_passes.setter
     def max_passes(self, max_passes):
-        self.__stub.SetMaxPasses(messages.int_property_message(self, max_passes))
+        self.__stub.SetMaxPasses(messages.uint64_property_message(self, max_passes))
 
     @property
     def min_passes(self):
@@ -429,7 +429,7 @@ class HFSSDCRSettings(SimulationSettingsBase):
 
     @min_passes.setter
     def min_passes(self, min_passes):
-        self.__stub.SetMinPasses(messages.int_property_message(self, min_passes))
+        self.__stub.SetMinPasses(messages.uint64_property_message(self, min_passes))
 
     @property
     def min_converged_passes(self):
@@ -438,7 +438,9 @@ class HFSSDCRSettings(SimulationSettingsBase):
 
     @min_converged_passes.setter
     def min_converged_passes(self, min_converged_passes):
-        self.__stub.SetMinConvergedPasses(messages.int_property_message(self, min_converged_passes))
+        self.__stub.SetMinConvergedPasses(
+            messages.uint64_property_message(self, min_converged_passes)
+        )
 
     @property
     def percent_error(self):

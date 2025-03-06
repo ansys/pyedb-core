@@ -110,7 +110,7 @@ class ComponentDef(ObjBase):
         -----
         Once a component model is added to one component def, it cannot be added to any other, even when removed.
         """
-        self.__stub.AddComponentModel(messages.pointer_property_message(self, value))
+        self.__stub.AddComponentModel(messages.edb_obj_pair_message(self, value))
 
     def remove_component_model(self, value):
         """Remove a component model from this component def.

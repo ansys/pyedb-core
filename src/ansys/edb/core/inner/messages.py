@@ -113,7 +113,12 @@ from ansys.api.edb.v1.point_term_pb2 import (
 )
 from ansys.api.edb.v1.polygon_data_pb2 import *  # noqa
 from ansys.api.edb.v1.port_post_processing_prop_pb2 import PortPostProcessingPropMessage
-from ansys.api.edb.v1.refs_pb2 import LayerRefMessage, LayerRefPropertyMessage, NetRefMessage
+from ansys.api.edb.v1.refs_pb2 import (
+    LayerRefMessage,
+    LayerRefPropertyMessage,
+    LayerRefsPropertyMessage,
+    NetRefMessage,
+)
 from ansys.api.edb.v1.rlc_pb2 import RlcMessage
 from ansys.api.edb.v1.simulation_setup_pb2 import MatrixConvergenceEntryMessage
 from ansys.api.edb.v1.sparameter_model_pb2 import SParameterModelMessage
@@ -914,6 +919,16 @@ def layer_ref_message(layer):
         return LayerRefMessage(id=edb_obj_message(layer.msg))
 
 
+def layer_refs_message(layer):
+    """Convert to a ``LayerRefsMessage`` object."""
+    if layer is None:
+        return None
+    elif isinstance(layer, list):
+        return [layer_ref_message(l) for l in layer]
+    else:
+        return [layer_ref_message(layer)]
+
+
 def net_ref_message(net):
     """Convert to a ``NetRefMessage`` object."""
     if type(net) == str:
@@ -1063,6 +1078,11 @@ def edb_obj_pair_message(edb_obj_0, edb_obj_1):
 def layer_ref_property_message(edb_obj, layer_ref):
     """Convert to a ``LayerRefPropertyMessage`` object."""
     return LayerRefPropertyMessage(edb_obj=edb_obj.msg, layer_ref=layer_ref_message(layer_ref))
+
+
+def layer_refs_property_message(edb_obj, layer_refs):
+    """Convert to a ``LayerRefsPropertyMessage`` object."""
+    return LayerRefsPropertyMessage(edb_obj=edb_obj.msg, layer_refs=layer_refs_message(layer_refs))
 
 
 def double_property_message(edb_obj, double):

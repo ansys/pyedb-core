@@ -281,7 +281,7 @@ class AdvancedMeshingSettings(SimulationSettingsBase):
 
     @max_num_arc_points.setter
     def max_num_arc_points(self, max_num_arc_points):
-        self.__stub.SetMaxNumArcPoints(messages.int_property_message(self, max_num_arc_points))
+        self.__stub.SetMaxNumArcPoints(messages.uint64_property_message(self, max_num_arc_points))
 
     @property
     def use_arc_chord_error_approx(self):

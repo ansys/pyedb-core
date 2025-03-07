@@ -23,7 +23,7 @@ class DebyeModel(DielectricMaterialModel):
         -------
         DebyeModelService
         """
-        return DebyeModel(DielectricMaterialModel(cls.__stub.Create(empty_pb2.Empty())))
+        return DebyeModel(cls.__stub.Create(empty_pb2.Empty()))
 
     @property
     def frequency_range(self):

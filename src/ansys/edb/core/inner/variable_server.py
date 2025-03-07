@@ -1,6 +1,5 @@
 """Variable server class."""
 
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 import ansys.api.edb.v1.variable_server_pb2 as variable_server_msgs
 
 from ansys.edb.core.inner.messages import value_message
@@ -19,11 +18,15 @@ class VariableServer:
 
         Parameters
         ----------
-        variable_owner : EdbObjMessage
-            ID of either a database, cell, or component definition.
+        variable_owner : :class:`.Database`, :class:`.Cell`, :class:`.Layout`
+            The :class:`.ObjBase` that owns the variables.
         """
         assert variable_owner.id > 0, "Invalid variable owner ID,"
-        self.variable_owner = EDBObjMessage(id=variable_owner.id)
+        self.variable_owner = variable_owner
+
+    @property
+    def _variable_owner_msg(self):
+        return self.variable_owner.msg
 
     def add_variable(self, name, value, is_param=False):
         """Add a variable.
@@ -60,7 +63,7 @@ class VariableServer:
         33.125
         """
         temp = variable_server_msgs.AddVariableMessage(
-            variable_owner=self.variable_owner,
+            variable_owner=self._variable_owner_msg,
             name=name,
             value=value_message(value),
             isparam=is_param,
@@ -87,7 +90,7 @@ class VariableServer:
             list_of_vms.append(value_message(value))
 
         temp = variable_server_msgs.AddMenuVariableMessage(
-            variable_owner=self.variable_owner,
+            variable_owner=self._variable_owner_msg,
             name=name,
             values=list_of_vms,
             isparam=is_param,
@@ -104,7 +107,7 @@ class VariableServer:
             Variable name.
         """
         temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self.variable_owner, name=name
+            variable_owner=self._variable_owner_msg, name=name
         )
         get_variable_server_stub().DeleteVariable(temp)
 
@@ -119,7 +122,7 @@ class VariableServer:
             New value.
         """
         temp = variable_server_msgs.SetVariableMessage(
-            variable_owner=self.variable_owner, name=name, value=value_message(new_value)
+            variable_owner=self._variable_owner_msg, name=name, value=value_message(new_value)
         )
         get_variable_server_stub().SetVariableValue(temp)
 
@@ -137,7 +140,7 @@ class VariableServer:
             Variable value.
         """
         temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self.variable_owner, name=name
+            variable_owner=self._variable_owner_msg, name=name
         )
         return Value(get_variable_server_stub().GetVariableValue(temp))
 
@@ -155,7 +158,7 @@ class VariableServer:
             ``True`` if the variable is a parameter, ``False`` otherwise.
         """
         temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self.variable_owner, name=name
+            variable_owner=self._variable_owner_msg, name=name
         )
         return get_variable_server_stub().IsParameter(temp).value
 
@@ -167,7 +170,7 @@ class VariableServer:
         list[str]
             Names of all variables.
         """
-        return get_variable_server_stub().GetAllVariableNames(self.variable_owner).names
+        return get_variable_server_stub().GetAllVariableNames(self._variable_owner_msg).names
 
     def get_variable_desc(self, name):
         """Get the description of a variable.
@@ -183,7 +186,7 @@ class VariableServer:
             Description of the variable.
         """
         temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self.variable_owner, name=name
+            variable_owner=self._variable_owner_msg, name=name
         )
         return get_variable_server_stub().GetVariableDesc(temp).value
 
@@ -198,7 +201,7 @@ class VariableServer:
              New variable description.
         """
         temp = variable_server_msgs.SetDescriptionMessage(
-            variable_owner=self.variable_owner, name=name, desc=desc
+            variable_owner=self._variable_owner_msg, name=name, desc=desc
         )
         get_variable_server_stub().SetVariableDesc(temp)
 

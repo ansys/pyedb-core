@@ -173,7 +173,9 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @cells_per_wavelength.setter
     def cells_per_wavelength(self, cells_per_wavelength):
-        self.__stub.SetCellsPerWavelength(messages.int_property_message(self, cells_per_wavelength))
+        self.__stub.SetCellsPerWavelength(
+            messages.uint64_property_message(self, cells_per_wavelength)
+        )
 
     @property
     def use_plane_projection_factor(self):

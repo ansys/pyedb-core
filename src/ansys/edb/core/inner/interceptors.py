@@ -143,6 +143,8 @@ class IOInterceptor(Interceptor):
                 cls._add_caching_option_to_metadata(metadata, "invalidate-cache", True)
             elif notification == ServerNotification.FLUSH_BUFFER:
                 cls._add_caching_option_to_metadata(metadata, "flush-buffer", True)
+            elif notification == ServerNotification.RESET_FUTURE_TRACKING:
+                cls._add_caching_option_to_metadata(metadata, "reset-future-tracking", True)
         return cls._ClientCallDetails(
             client_call_details.method,
             client_call_details.timeout,
@@ -173,6 +175,7 @@ class IOInterceptor(Interceptor):
                     cache_key_details[0], cache_key_details[1]
                 ):
                     self._current_cache_key_details = cache_key_details
+                io_manager.add_notification_for_server(ServerNotification.RESET_FUTURE_TRACKING)
         if self._should_log_traffic():
             self._current_rpc_method = client_call_details.method
 

@@ -1,6 +1,7 @@
 """Cache."""
 
 import abc
+from collections import defaultdict
 from contextlib import contextmanager
 from enum import Enum, auto
 from sys import modules
@@ -122,7 +123,6 @@ class _Cache(_IOOptimizer):
             return
         if not rpc_info.can_cache:
             return
-        self.refresh_for_request()
         return self._response_cache.get(self._generate_cache_key(service_name, rpc_name, request))
 
     def invalidate(self):
@@ -179,7 +179,7 @@ class _Buffer(_IOOptimizer):
 
     def _reset(self):
         self._buffer = []
-        self._futures = {}
+        self._futures = defaultdict(list)
         self._invalidate_cache = False
 
     def _hijack_request(self, service_name, rpc_name, request):
@@ -210,21 +210,21 @@ class _Buffer(_IOOptimizer):
         if not self._buffer:
             return
         with self.block():
+            if (cache := get_cache()) is not None and self._invalidate_cache:
+                cache.invalidate()
             get_io_manager().add_notification_for_server(ServerNotification.FLUSH_BUFFER)
             for response in _get_io_manager_stub().FlushBufferStream(
                 self._buffer_request_iterator(self._buffer)
             ):
-                if (cache := get_cache()) is not None and self._invalidate_cache:
-                    cache.invalidate()
                 for updated_edb_obj in response.resolved_futures:
-                    if (future_edb_obj := self._futures.get(updated_edb_obj.future_id)) is not None:
-                        future_edb_obj.msg = updated_edb_obj.edb_obj
-                        get_io_manager().active_request_edb_obj_msg_mgr.resolve_future(
-                            updated_edb_obj.future_id, updated_edb_obj.edb_obj.id
-                        )
+                    if (
+                        future_edb_objs := self._futures.get(updated_edb_obj.future_id)
+                    ) is not None:
+                        for future_edb_obj in future_edb_objs:
+                            future_edb_obj.msg = updated_edb_obj.edb_obj
 
     def add_future_ref(self, future):
-        self._futures[future.id] = future
+        self._futures[future.id].append(future)
 
     def _reset_after_block(self):
         self._reset()
@@ -235,6 +235,7 @@ class ServerNotification(Enum):
 
     INVALIDATE_CACHE = auto()
     FLUSH_BUFFER = auto()
+    RESET_FUTURE_TRACKING = auto()
 
 
 class IOMangementType(Enum):

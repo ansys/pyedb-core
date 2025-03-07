@@ -117,5 +117,8 @@ class Net(layout_obj.LayoutObj):
 
         This property is read-only.
         """
-        en = self._layout_objs(LayoutObjType.NET_CLASS)[0]
+        en = self._layout_objs(LayoutObjType.EXTENDED_NET)
+        if not en:
+            return None
+        en = en[0]
         return None if en.is_null else en

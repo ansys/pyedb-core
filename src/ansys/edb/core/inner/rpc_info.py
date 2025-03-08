@@ -54,7 +54,7 @@ rpc_information = {
         "ClosestPoints": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.BoardBendDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetBoundaryPrim": _RpcInfo(cache=True),
         "GetBendMiddle": _RpcInfo(cache=True),
         "SetBendMiddle": _RpcInfo(buffer=True),
@@ -65,7 +65,7 @@ rpc_information = {
         "GetBentRegions": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.BondwireService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetMaterial": _RpcInfo(cache=True),
         "SetMaterial": _RpcInfo(buffer=True),
         "GetType": _RpcInfo(cache=True),
@@ -90,31 +90,31 @@ rpc_information = {
         "GetName": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.ApdBondwireDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetParameters": _RpcInfo(cache=True),
         "SetParameters": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.Jedec4BondwireDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetParameters": _RpcInfo(cache=True),
         "SetParameters": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.Jedec5BondwireDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetParameters": _RpcInfo(cache=True),
         "SetParameters": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.BundleTerminalService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "Ungroup": _RpcInfo(buffer=True),
         "GetTerminals": _RpcInfo(read_no_cache=True),
         "StreamTerminals": _RpcInfo(read_no_cache=True),
     },
     "ansys.api.edb.v1.CellService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetLayout": _RpcInfo(cache=True),
         "Find": _RpcInfo(cache=True),
         "Delete": _RpcInfo(buffer=True),
@@ -159,13 +159,13 @@ rpc_information = {
         "SetParameterOverride": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.CircleService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "Render": _RpcInfo(cache=True),
         "GetParameters": _RpcInfo(cache=True),
         "SetParameters": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.ComponentDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "SetName": _RpcInfo(buffer=True),
         "GetName": _RpcInfo(cache=True),
@@ -179,7 +179,7 @@ rpc_information = {
         "RemoveComponentModel": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.ComponentGroupService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetNumberOfPins": _RpcInfo(cache=True),
         "GetComponentProperty": _RpcInfo(cache=True),
         "SetComponentProperty": _RpcInfo(buffer=True),
@@ -197,7 +197,7 @@ rpc_information = {
         "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True)
     },
     "ansys.api.edb.v1.DynamicLinkComponentModelService": {
-        "Create": _RpcInfo(returns_future=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
         "SetDesignName": _RpcInfo(buffer=True),
         "GetDesignName": _RpcInfo(cache=True),
     },
@@ -250,7 +250,7 @@ rpc_information = {
         "GetFootprints": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.DatasetDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetName": _RpcInfo(cache=True),
         "SetName": _RpcInfo(buffer=True),
@@ -286,7 +286,7 @@ rpc_information = {
         "SetOrientation": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.DifferentialPairService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetDifferentialPair": _RpcInfo(cache=True),
         "SetDifferentialPair": _RpcInfo(buffer=True),
@@ -308,24 +308,24 @@ rpc_information = {
     },
     "ansys.api.edb.v1.EdgeService": {
         "GetEdgeType": _RpcInfo(cache=True),
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetParameters": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.EdgeTerminalService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetEdges": _RpcInfo(read_no_cache=True),
         "StreamEdges": _RpcInfo(read_no_cache=True),
         "SetEdges": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.ExtendedNetService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "RemoveNet": _RpcInfo(buffer=True),
         "AddNet": _RpcInfo(buffer=True),
         "RemoveAllNets": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.GroupService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "AddMember": _RpcInfo(buffer=True),
         "RemoveMember": _RpcInfo(buffer=True),
@@ -435,7 +435,7 @@ rpc_information = {
         "GetPortProperty": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.InstArrayService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetXAxis": _RpcInfo(cache=True),
         "SetXAxis": _RpcInfo(buffer=True),
@@ -485,7 +485,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.LayerCollectionService": {
         "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
-        "Clone": _RpcInfo(returns_future=True, buffer=True),
+        "Clone": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
         "GetMode": _RpcInfo(cache=True, write_no_cache_invalidation=True),
         "SetMode": _RpcInfo(buffer=True),
         "AddLayers": _RpcInfo(buffer=True),
@@ -577,7 +577,7 @@ rpc_information = {
         "GetColor": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.MaterialDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "SetProperty": _RpcInfo(buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "Delete": _RpcInfo(buffer=True),
@@ -634,7 +634,7 @@ rpc_information = {
         "SetParameters": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.NetService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetName": _RpcInfo(cache=True),
         "SetName": _RpcInfo(buffer=True),
@@ -644,7 +644,7 @@ rpc_information = {
         "StreamLayoutObjects": _RpcInfo(read_no_cache=True),
     },
     "ansys.api.edb.v1.NetClassService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetName": _RpcInfo(cache=True),
         "SetName": _RpcInfo(buffer=True),
@@ -661,7 +661,7 @@ rpc_information = {
         "SetNetlist": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.PackageDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "Delete": _RpcInfo(buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "FindByEDBUId": _RpcInfo(cache=True),
@@ -688,7 +688,7 @@ rpc_information = {
         "GetProductPropertyIds": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.PadstackDefService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "Delete": _RpcInfo(buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetName": _RpcInfo(cache=True),
@@ -720,7 +720,7 @@ rpc_information = {
         "SetConnectionPt": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.PadstackInstanceService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetPadstackDef": _RpcInfo(cache=True),
         "GetName": _RpcInfo(cache=True),
         "SetName": _RpcInfo(buffer=True),
@@ -752,7 +752,7 @@ rpc_information = {
         "SetParameters": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.PathService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "Render": _RpcInfo(cache=True),
         "GetPolygonData": _RpcInfo(cache=True),
         "GetCenterLine": _RpcInfo(cache=True),
@@ -769,7 +769,7 @@ rpc_information = {
         "SetMiterRatio": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.PinGroupService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "FindByName": _RpcInfo(cache=True),
         "GetName": _RpcInfo(cache=True),
         "AddPins": _RpcInfo(buffer=True),
@@ -777,7 +777,7 @@ rpc_information = {
         "GetPinGroupTerminal": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.PinGroupTerminalService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetPinGroup": _RpcInfo(cache=True),
         "SetPinGroup": _RpcInfo(buffer=True),
         "GetLayer": _RpcInfo(cache=True),
@@ -926,7 +926,7 @@ rpc_information = {
         "SetNetSettingsOptions": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.RectangleService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetParameters": _RpcInfo(cache=True),
         "SetParameters": _RpcInfo(buffer=True),
         "Render": _RpcInfo(cache=True),
@@ -1183,7 +1183,7 @@ rpc_information = {
         "RemoveTerminalPinPair": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.StackupLayerService": {
-        "Create": _RpcInfo(returns_future=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
         "GetNegative": _RpcInfo(cache=True),
         "SetNegative": _RpcInfo(buffer=True),
         "GetThickness": _RpcInfo(cache=True),
@@ -1226,18 +1226,18 @@ rpc_information = {
         "SetProductSolverOptions": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.TerminalInstanceService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetOwningCellInstance": _RpcInfo(cache=True),
         "GetDefinitionTerminal": _RpcInfo(cache=True),
         "GetDefinitionTerminalName": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.TerminalInstanceTerminalService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetTerminalInstance": _RpcInfo(cache=True),
         "SetTerminalInstance": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.TextService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetTextData": _RpcInfo(cache=True),
         "SetTextData": _RpcInfo(buffer=True),
     },
@@ -1330,7 +1330,7 @@ rpc_information = {
         "SetRefLayer": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.VoltageRegulatorService": {
-        "Create": _RpcInfo(returns_future=True, write_no_cache_invalidation=True, buffer=True),
+        "Create": _RpcInfo(returns_future=True, buffer=True),
         "GetName": _RpcInfo(cache=True),
         "SetName": _RpcInfo(buffer=True),
         "IsActive": _RpcInfo(cache=True),

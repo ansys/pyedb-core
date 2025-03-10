@@ -3,9 +3,9 @@
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.conn_obj import ConnObj
-from ansys.edb.core.primitive.primitive import PadstackInstance
+from ansys.edb.core.primitive.padstack_instance import PadstackInstance
 from ansys.edb.core.session import PinGroupServiceStub, StubAccessor, StubType
-from ansys.edb.core.terminal.terminals import PinGroupTerminal
+from ansys.edb.core.terminal.pin_group_terminal import PinGroupTerminal
 
 
 class PinGroup(ConnObj):

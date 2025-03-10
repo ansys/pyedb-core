@@ -14,20 +14,15 @@ from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.layer.via_layer import ViaLayer
 from ansys.edb.core.layout.cell import Cell, CellType
 from ansys.edb.core.net.net import Net
-from ansys.edb.core.primitive.primitive import (
-    Path,
-    PathCornerType,
-    PathEndCapType,
-    Polygon,
-    Rectangle,
-    RectangleRepresentationType,
-)
+from ansys.edb.core.primitive.path import Path, PathCornerType, PathEndCapType
+from ansys.edb.core.primitive.polygon import Polygon
+from ansys.edb.core.primitive.rectangle import Rectangle, RectangleRepresentationType
 from ansys.edb.core.session import session
 from ansys.edb.core.simulation_setup.adaptive_solutions import SingleFrequencyAdaptiveSolution
 from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
 from ansys.edb.core.simulation_setup.mesh_operation import SkinDepthMeshOperation
 from ansys.edb.core.simulation_setup.simulation_setup import SweepData
-from ansys.edb.core.terminal.terminals import PointTerminal
+from ansys.edb.core.terminal.point_terminal import PointTerminal
 
 # Wrapper class over Database
 # This will ensure clean entry and exit from database

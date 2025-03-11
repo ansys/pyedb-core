@@ -29,7 +29,6 @@ Classes
    definition.package_def.PackageDef
    definition.padstack_def.PadstackDef
    definition.padstack_def_data.PadstackDefData
-   definition.material_def.ThermalModifier
    definition.solder_ball_property.SolderBallProperty
    definition.component_property.ComponentProperty
    definition.ic_component_property.ICComponentProperty

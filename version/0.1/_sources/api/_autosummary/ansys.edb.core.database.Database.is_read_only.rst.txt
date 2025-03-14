@@ -1,0 +1,6 @@
+is\_read\_only
+==============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.is_read_only

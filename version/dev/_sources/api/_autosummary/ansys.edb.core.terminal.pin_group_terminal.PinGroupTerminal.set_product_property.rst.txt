@@ -1,0 +1,6 @@
+set\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.terminal.pin_group_terminal
+
+.. automethod:: PinGroupTerminal.set_product_property

@@ -1,0 +1,6 @@
+is\_void
+========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Circle.is_void

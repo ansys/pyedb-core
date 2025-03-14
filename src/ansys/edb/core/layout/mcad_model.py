@@ -54,7 +54,7 @@ class McadModel(ObjBase):
 
         This method makes a call directly on a :term:`Connectable`.
         """
-        return cls.__stub.IsMcad(messages.edb_obj_message(connectable))
+        return cls.__stub.IsMcad(messages.edb_obj_message(connectable)).value
 
     @classmethod
     def is_mcad_stride(cls, connectable):
@@ -62,7 +62,7 @@ class McadModel(ObjBase):
 
         This method makes a call directly on a :term:`Connectable`.
         """
-        return cls.__stub.IsMcadStride(messages.edb_obj_message(connectable))
+        return cls.__stub.IsMcadStride(messages.edb_obj_message(connectable)).value
 
     @classmethod
     def is_mcad_hfss(cls, connectable):
@@ -70,7 +70,7 @@ class McadModel(ObjBase):
 
         This method makes a call directly on a :term:`Connectable`.
         """
-        return cls.__stub.IsMcadHfss(messages.edb_obj_message(connectable))
+        return cls.__stub.IsMcadHfss(messages.edb_obj_message(connectable)).value
 
     @classmethod
     def is_mcad_3d_comp(cls, connectable):
@@ -78,7 +78,7 @@ class McadModel(ObjBase):
 
         This method makes a call directly on a :term:`Connectable`.
         """
-        return cls.__stub.IsMcad3dComp(messages.edb_obj_message(connectable))
+        return cls.__stub.IsMcad3dComp(messages.edb_obj_message(connectable)).value
 
     @property
     def cell_instance(self):
@@ -108,6 +108,7 @@ class McadModel(ObjBase):
         return self.__stub.GetDesignName(messages.edb_obj_message(self)).value
 
     @property
+    @parser.to_point3d_data
     def origin(self):
         """:class:`.Point3DData`: \
         Origin 3D point of the MCAD model."""

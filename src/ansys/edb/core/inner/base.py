@@ -23,6 +23,8 @@ class ObjBase:
 
         This property is read-only.
         """
+        if (buffer := get_buffer()) is not None:
+            buffer.flush()
         return self.id == 0
 
     @property
@@ -46,7 +48,7 @@ class ObjBase:
         if io_mgr.is_enabled:
             if self._is_future:
                 msg.is_future = True
-            get_io_manager().active_request_edb_obj_msg_mgr.add_active_request_edb_obj_msg(msg)
+            io_mgr.active_request_edb_obj_msg_mgr.add_active_request_edb_obj_msg(msg)
         return msg
 
     @msg.setter

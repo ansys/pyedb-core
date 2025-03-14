@@ -58,7 +58,7 @@ class Net(layout_obj.LayoutObj):
     @property
     def name(self):
         """:class:`str`: Name of the net."""
-        return self.__stub.GetName(self.msg).value
+        return self.no_net_name if self.is_no_net else self.__stub.GetName(self.msg).value
 
     @name.setter
     def name(self, value):
@@ -119,3 +119,8 @@ class Net(layout_obj.LayoutObj):
         """
         en = self._layout_objs(LayoutObjType.NET_CLASS)[0]
         return None if en.is_null else en
+
+    @property
+    def is_no_net(self):
+        """:obj:`bool` Flag indicating if this the "no net" (empty) net."""
+        return self.is_null

@@ -118,7 +118,7 @@ class PadstackDefData(ObjBase):
         This property is read-only.
         """
         layer_names_msg = self.__stub.GetLayerNames(self.msg).names
-        return layer_names_msg
+        return list(layer_names_msg)
 
     @property
     def layer_ids(self):
@@ -127,7 +127,7 @@ class PadstackDefData(ObjBase):
         This property is read-only.
         """
         layer_ids_msg = self.__stub.GetLayerIds(self.msg)
-        return layer_ids_msg.ids
+        return list(layer_ids_msg.ids)
 
     def add_layers(self, names):
         """

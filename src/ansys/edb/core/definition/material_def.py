@@ -5,6 +5,9 @@ from enum import Enum
 import ansys.api.edb.v1.material_def_pb2 as pb
 
 from ansys.edb.core.definition.dielectric_material_model import DielectricMaterialModel
+from ansys.edb.core.definition.material_property_thermal_modifier import (
+    MaterialPropertyThermalModifier,
+)
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import MaterialDefServiceStub, StubAccessor, StubType
@@ -26,10 +29,6 @@ class MaterialProperty(Enum):
     POISSONS_RATIO = pb.POISSONS_RATIO
     THERMAL_EXPANSION_COEFFICIENT = pb.THERMAL_EXPANSION_COEFFICIENT
     INVALID_PROPERTY = pb.INVALID_PROPERTY
-
-
-class ThermalModifier(ObjBase):
-    """Represents a thermal modifier model."""
 
 
 class MaterialDef(ObjBase):
@@ -236,10 +235,10 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        ThermalModifier
+        MaterialPropertyThermalModifier
             Thermal modifier of the material definition.
         """
-        return ThermalModifier(
+        return MaterialPropertyThermalModifier(
             self.__stub.GetThermalModifier(
                 MaterialDef._property_message(self, material_property_id)
             )
@@ -253,7 +252,7 @@ class MaterialDef(ObjBase):
         material_property_id : \
         :class:`MaterialProperty`
             Property ID.
-        thermal_modifier : ThermalModifier
+        thermal_modifier : MaterialPropertyThermalModifier
             Thermal modifier to set to the material definition.
         """
         self.__stub.SetThermalModifier(
@@ -277,10 +276,10 @@ class MaterialDef(ObjBase):
 
         Returns
         -------
-        :class:`.ThermalModifier`
+        :class:`.MaterialPropertyThermalModifier`
             Anisotropic thermal modifier of the material definition.
         """
-        return ThermalModifier(
+        return MaterialPropertyThermalModifier(
             self.__stub.GetAnisotropicThermalModifier(
                 pb.MaterialDefPropertyComponentMessage(
                     materialDef=messages.edb_obj_message(self),
@@ -302,7 +301,7 @@ class MaterialDef(ObjBase):
             Property ID.
         component_id : int
             Component ID.
-        thermal_modifier : :class:`.ThermalModifier`
+        thermal_modifier : :class:`.MaterialPropertyThermalModifier`
             Anisotropic thermal modifier to set to the material definition.
         """
         self.__stub.SetAnisotropicThermalModifier(

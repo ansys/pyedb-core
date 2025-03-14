@@ -98,7 +98,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
 
         This property is read-only.
         """
-        from ansys.edb.core.terminal.terminals import TerminalInstance
+        from ansys.edb.core.terminal.terminal_instance import TerminalInstance
 
         terms = self.__stub.GetTermInsts(self.msg).items
         return [TerminalInstance(ti) for ti in terms]

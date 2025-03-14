@@ -5,7 +5,7 @@ from ansys.edb.core.layer.layer import LayerType
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.layout.cell import Cell, CellType
 from ansys.edb.core.net.net import Net
-from ansys.edb.core.primitive.primitive import Circle
+from ansys.edb.core.primitive.circle import Circle
 from ansys.edb.core.session import launch_session
 from ansys.edb.core.utility.value import Value
 

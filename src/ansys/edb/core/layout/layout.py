@@ -8,7 +8,8 @@ from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_serv
 from ansys.edb.core.layer.layer_collection import LayerCollection
 from ansys.edb.core.layout.mcad_model import McadModel
 from ansys.edb.core.layout_instance import layout_instance
-from ansys.edb.core.primitive.primitive import BoardBendDef, Primitive
+from ansys.edb.core.primitive.board_bend_def import BoardBendDef
+from ansys.edb.core.primitive.primitive import Primitive
 from ansys.edb.core.session import StubAccessor, StubType
 
 

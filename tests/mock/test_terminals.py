@@ -6,7 +6,9 @@ from utils.test_utils import create_edb_obj_msgs, equals
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import messages
 from ansys.edb.core.layer import layer as layer_api
-from ansys.edb.core.terminal import terminals as terminal
+import ansys.edb.core.terminal.bundle_terminal as bundle_terminal_mod
+import ansys.edb.core.terminal.point_terminal as point_terminal_mod
+import ansys.edb.core.terminal.terminal as terminal_mod
 from ansys.edb.core.utility.port_post_processing_prop import PortPostProcessingProp
 from ansys.edb.core.utility.rlc import Rlc
 
@@ -24,12 +26,12 @@ def patch(mocker):
 
 @pytest.fixture
 def bundle_terminal(edb_obj_msg):
-    return terminal.BundleTerminal(edb_obj_msg)
+    return bundle_terminal_mod.BundleTerminal(edb_obj_msg)
 
 
 @pytest.fixture
 def point_terminal(edb_obj_msg):
-    return terminal.PointTerminal(edb_obj_msg)
+    return point_terminal_mod.PointTerminal(edb_obj_msg)
 
 
 @pytest.fixture
@@ -42,15 +44,15 @@ def lyr_type_mock(mocked_stub):
 
 
 def test_bundle_terminal_create(mocked_stub, point_terminal, bundle_terminal, edb_obj_msg):
-    mock = mocked_stub(terminal, terminal.BundleTerminal).Create
+    mock = mocked_stub(bundle_terminal_mod, bundle_terminal_mod.BundleTerminal).Create
     mock.return_value = edb_obj_msg
 
-    bt = terminal.BundleTerminal.create([point_terminal, bundle_terminal])
+    bt = bundle_terminal_mod.BundleTerminal.create([point_terminal, bundle_terminal])
 
     mock.assert_called_once_with(
         messages.edb_obj_collection_message([point_terminal, bundle_terminal])
     )
-    assert isinstance(bt, terminal.BundleTerminal)
+    assert isinstance(bt, bundle_terminal_mod.BundleTerminal)
     assert not bt.is_null
     assert bt.id == edb_obj_msg.id
 
@@ -58,14 +60,16 @@ def test_bundle_terminal_create(mocked_stub, point_terminal, bundle_terminal, ed
 @pytest.mark.parametrize(
     "term_type, term_cls",
     [
-        (term_pb2.TerminalType.POINT_TERM, terminal.PointTerminal),
-        (term_pb2.TerminalType.BUNDLE_TERM, terminal.BundleTerminal),
+        (term_pb2.TerminalType.POINT_TERM, point_terminal_mod.PointTerminal),
+        (term_pb2.TerminalType.BUNDLE_TERM, bundle_terminal_mod.BundleTerminal),
     ],
 )
 def test_bundle_terminal_get_terminals(mocked_stub, bundle_terminal, term_type, term_cls):
-    get_terminals = mocked_stub(terminal, terminal.BundleTerminal).GetTerminals
+    get_terminals = mocked_stub(
+        bundle_terminal_mod, bundle_terminal_mod.BundleTerminal
+    ).GetTerminals
     get_terminals.return_value = expected = create_edb_obj_msgs(2)
-    get_params = mocked_stub(terminal, terminal.Terminal).GetParams
+    get_params = mocked_stub(terminal_mod, terminal_mod.Terminal).GetParams
     get_params.return_value = term_pb2.TermParamsMessage(term_type=term_type)
 
     terms = bundle_terminal.terminals
@@ -80,7 +84,7 @@ def test_bundle_terminal_get_terminals(mocked_stub, bundle_terminal, term_type, 
 
 def test_bundle_terminal_ungroup(mocked_stub, bundle_terminal):
     expected = bundle_terminal.msg
-    mock = mocked_stub(terminal, terminal.BundleTerminal).Ungroup
+    mock = mocked_stub(bundle_terminal_mod, bundle_terminal_mod.BundleTerminal).Ungroup
     mock.return_value = None
 
     bundle_terminal.ungroup()
@@ -89,22 +93,22 @@ def test_bundle_terminal_ungroup(mocked_stub, bundle_terminal):
 
 
 def test_point_terminal_create(mocked_stub, layout, net, layer, edb_obj_msg):
-    mock = mocked_stub(terminal, terminal.PointTerminal).Create
+    mock = mocked_stub(point_terminal_mod, point_terminal_mod.PointTerminal).Create
     mock.return_value = edb_obj_msg
 
-    pt = terminal.PointTerminal.create(layout, net, layer, "test-point-term", (1, 2))
+    pt = point_terminal_mod.PointTerminal.create(layout, net, layer, "test-point-term", (1, 2))
 
     mock.assert_called_once_with(
         messages.point_term_creation_message(layout, net, layer, "test-point-term", (1, 2))
     )
-    assert isinstance(pt, terminal.PointTerminal)
+    assert isinstance(pt, point_terminal_mod.PointTerminal)
     assert not pt.is_null
     assert pt.id == edb_obj_msg.id
 
 
 def test_point_terminal_get_params(mocked_stub, point_terminal, layer, lyr_type_mock):
     point = (1e-9, 2e-9)
-    mock = mocked_stub(terminal, terminal.PointTerminal).GetParameters
+    mock = mocked_stub(point_terminal_mod, point_terminal_mod.PointTerminal).GetParameters
     mock.return_value = messages.point_term_params_message(layer, point)
 
     res = point_terminal.params
@@ -128,7 +132,7 @@ def test_point_terminal_get_params(mocked_stub, point_terminal, layer, lyr_type_
     indirect=["layer_ref"],
 )
 def test_point_terminal_set_params(mocked_stub, point_terminal, layer_ref, point, success):
-    mock = mocked_stub(terminal, terminal.PointTerminal).SetParameters
+    mock = mocked_stub(point_terminal_mod, point_terminal_mod.PointTerminal).SetParameters
     mock.return_value = messages.bool_message(success)
 
     point_terminal.params = (layer_ref, point)
@@ -139,12 +143,12 @@ def test_point_terminal_set_params(mocked_stub, point_terminal, layer_ref, point
 
 
 def test_terminal_get_params(mocked_stub, point_terminal, bundle_terminal, layer, lyr_type_mock):
-    mock = mocked_stub(terminal, terminal.Terminal)
+    mock = mocked_stub(terminal_mod, terminal_mod.Terminal)
     mock.GetParams.return_value = term_pb2.TermParamsMessage(
         term_type=term_pb2.TerminalType.POINT_TERM,
-        boundary_type=terminal.BoundaryType.RLC.value,
-        term_to_ground=terminal.SourceTermToGroundType.POSITIVE.value,
-        hfss_pi_type=terminal.HfssPIType.COAXIAL_SHORTENED.value,
+        boundary_type=terminal_mod.BoundaryType.RLC.value,
+        term_to_ground=terminal_mod.SourceTermToGroundType.POSITIVE.value,
+        hfss_pi_type=terminal_mod.HfssPIType.COAXIAL_SHORTENED.value,
         ref_layer=layer.msg,
         bundle_term=bundle_terminal.msg,
         is_interface=True,
@@ -163,9 +167,9 @@ def test_terminal_get_params(mocked_stub, point_terminal, bundle_terminal, layer
         ),
     )
 
-    assert point_terminal.boundary_type == terminal.BoundaryType.RLC
-    assert point_terminal.term_to_ground == terminal.SourceTermToGroundType.POSITIVE
-    assert point_terminal.hfss_pi_type == terminal.HfssPIType.COAXIAL_SHORTENED
+    assert point_terminal.boundary_type == terminal_mod.BoundaryType.RLC
+    assert point_terminal.term_to_ground == terminal_mod.SourceTermToGroundType.POSITIVE
+    assert point_terminal.hfss_pi_type == terminal_mod.HfssPIType.COAXIAL_SHORTENED
     assert point_terminal.reference_terminal is None
     assert equals(point_terminal.reference_layer, layer)
     assert equals(point_terminal.bundle_terminal, bundle_terminal)
@@ -194,12 +198,12 @@ def test_terminal_get_params(mocked_stub, point_terminal, bundle_terminal, layer
 
 
 def test_terminal_set_params(mocked_stub, point_terminal, bundle_terminal, layer):
-    mock = mocked_stub(terminal, terminal.Terminal).SetParams
+    mock = mocked_stub(terminal_mod, terminal_mod.Terminal).SetParams
     mock.return_value = None
 
-    point_terminal.boundary_type = terminal.BoundaryType.RLC
-    point_terminal.term_to_ground = terminal.SourceTermToGroundType.NO_GROUND
-    point_terminal.hfss_pi_type = terminal.HfssPIType.COAXIAL_OPEN
+    point_terminal.boundary_type = terminal_mod.BoundaryType.RLC
+    point_terminal.term_to_ground = terminal_mod.SourceTermToGroundType.NO_GROUND
+    point_terminal.hfss_pi_type = terminal_mod.HfssPIType.COAXIAL_OPEN
     point_terminal.is_circuit_port = True
     point_terminal.is_auto_port = False
     point_terminal.use_reference_from_hierarchy = True

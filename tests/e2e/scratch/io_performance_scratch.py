@@ -7,7 +7,7 @@ from ansys.edb.core.layer.layer import LayerType
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.layout.cell import Cell, CellType
 from ansys.edb.core.net.net import Net
-from ansys.edb.core.primitive.primitive import Rectangle, RectangleRepresentationType
+from ansys.edb.core.primitive.rectangle import Rectangle, RectangleRepresentationType
 from ansys.edb.core.session import session
 from ansys.edb.core.utility.io_manager import IOMangementType, enable_io_manager
 

@@ -4,20 +4,20 @@ Primitives
 Classes
 -------
 
-.. currentmodule:: ansys.edb.core.primitive.primitive
+.. currentmodule:: ansys.edb.core.primitive
 
 .. autosummary::
    :toctree: _autosummary
 
-   BoardBendDef
-   Bondwire
-   Circle
-   PadstackInstance
-   Path
-   Primitive
-   Polygon
-   Rectangle
-   Text
+   board_bend_def.BoardBendDef
+   bondwire.Bondwire
+   circle.Circle
+   padstack_instance.PadstackInstance
+   path.Path
+   primitive.Primitive
+   polygon.Polygon
+   rectangle.Rectangle
+   text.Text
 
 Enums
 -----
@@ -25,10 +25,10 @@ Enums
 .. autosummary::
    :toctree: _autosummary
 
-   BondwireCrossSectionType
-   BondwireType
-   BackDrillType
-   PathCornerType
-   PathEndCapType
-   PrimitiveType
-   RectangleRepresentationType
+   bondwire.BondwireCrossSectionType
+   bondwire.BondwireType
+   padstack_instance.BackDrillType
+   path.PathCornerType
+   path.PathEndCapType
+   primitive.PrimitiveType
+   rectangle.RectangleRepresentationType

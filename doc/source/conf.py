@@ -87,6 +87,7 @@ intersphinx_mapping = {
 # numpydoc configuration
 numpydoc_show_class_members = False
 numpydoc_xref_param_type = True
+numpydoc_xref_ignore = {"of"}
 
 # Consider enabling numpydoc validation. See:
 # https://numpydoc.readthedocs.io/en/latest/validation.html#
@@ -98,7 +99,7 @@ numpydoc_validation_checks = {
     "GL09",  # Deprecation warning should precede extended summary
     "GL10",  # reST directives {directives} must be followed by two colons
     "SS01",  # No summary found
-    "SS02",  # Summary does not start with a capital letter
+    # "SS02",  # Summary does not start with a capital letter
     # "SS03", # Summary does not end with a period
     "SS04",  # Summary contains heading whitespaces
     # "SS05", # Summary must start with infinitive verb, not third person
@@ -121,3 +122,6 @@ master_doc = "index"
 
 # Ignore the following links during link checking
 linkcheck_ignore = ["https://www.ansys.com/products/electronics"]
+
+# Ignore type hints in documentation (they are only used for code completion)
+autodoc_typehints = "none"

@@ -1,0 +1,26 @@
+﻿PathEndCapType
+==============
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. autoclass:: PathEndCapType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PathEndCapType.ROUND
+      PathEndCapType.FLAT
+      PathEndCapType.EXTENDED
+      PathEndCapType.CLIPPED
+      PathEndCapType.INVALID
+   
+   

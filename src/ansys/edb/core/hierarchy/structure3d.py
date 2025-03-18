@@ -2,8 +2,8 @@
 
 from enum import Enum
 
-import ansys.api.edb.v1.structure3d_pb2 as structure3d_pb2
-from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
+import ansys.api.edb.v1.structure_3d_pb2 as structure3d_pb2
+from ansys.api.edb.v1.structure_3d_pb2_grpc import Structure3DServiceStub
 
 from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.inner import messages

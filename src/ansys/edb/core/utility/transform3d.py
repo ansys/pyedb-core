@@ -1,6 +1,6 @@
 """3D transformformations."""
-import ansys.api.edb.v1.transform3d_pb2 as pb
-from ansys.api.edb.v1.transform3d_pb2_grpc import Transform3DServiceStub
+import ansys.api.edb.v1.transform_3d_pb2 as pb
+from ansys.api.edb.v1.transform_3d_pb2_grpc import Transform3DServiceStub
 from google.protobuf import empty_pb2
 
 from ansys.edb.core.inner import ObjBase, messages

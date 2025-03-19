@@ -83,8 +83,8 @@ from ansys.api.edb.v1.material_property_thermal_modifier_pb2_grpc import (
 from ansys.api.edb.v1.mcad_model_pb2_grpc import McadModelServiceStub
 from ansys.api.edb.v1.model_pb2_grpc import ModelServiceStub
 from ansys.api.edb.v1.multipole_debye_model_pb2_grpc import MultipoleDebyeModelServiceStub
+from ansys.api.edb.v1.net_class_pb2_grpc import NetClassServiceStub
 from ansys.api.edb.v1.net_pb2_grpc import NetServiceStub
-from ansys.api.edb.v1.netclass_pb2_grpc import NetClassServiceStub
 from ansys.api.edb.v1.netlist_model_pb2_grpc import NetlistModelServiceStub
 from ansys.api.edb.v1.package_def_pb2_grpc import PackageDefServiceStub
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
@@ -108,6 +108,16 @@ from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import (
 )
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
+from ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2_grpc import (
+    SIWaveDCIRSimulationSettingsServiceStub,
+)
+from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import (
+    SIWaveAdvancedSettingsServiceStub,
+    SIWaveDCAdvancedSettingsServiceStub,
+    SIWaveDCSettingsServiceStub,
+    SIWaveGeneralSettingsServiceStub,
+    SIWaveSParameterSettingsServiceStub,
+)
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
     AdvancedMeshingSettingsServiceStub,
     AdvancedSettingsServiceStub,
@@ -116,26 +126,16 @@ from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
     SolverSettingsServiceStub,
 )
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
-from ansys.api.edb.v1.siwave_dcir_simulation_settings_pb2_grpc import (
-    SIWaveDCIRSimulationSettingsServiceStub,
-)
-from ansys.api.edb.v1.siwave_simulation_settings_pb2_grpc import (
-    SIWaveAdvancedSettingsServiceStub,
-    SIWaveDCAdvancedSettingsServiceStub,
-    SIWaveDCSettingsServiceStub,
-    SIWaveGeneralSettingsServiceStub,
-    SIWaveSParameterSettingsServiceStub,
-)
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 from ansys.api.edb.v1.sparameter_model_pb2_grpc import SParameterModelServiceStub
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
-from ansys.api.edb.v1.structure3d_pb2_grpc import Structure3DServiceStub
+from ansys.api.edb.v1.structure_3d_pb2_grpc import Structure3DServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
-from ansys.api.edb.v1.transform3d_pb2_grpc import Transform3DServiceStub
+from ansys.api.edb.v1.transform_3d_pb2_grpc import Transform3DServiceStub
 from ansys.api.edb.v1.transform_pb2_grpc import TransformServiceStub
 from ansys.api.edb.v1.value_pb2_grpc import ValueServiceStub
 from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub

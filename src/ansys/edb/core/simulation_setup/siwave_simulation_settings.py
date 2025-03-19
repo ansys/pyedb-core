@@ -2,7 +2,7 @@
 
 from enum import Enum
 
-import ansys.api.edb.v1.siwave_simulation_settings_pb2 as pb
+import ansys.api.edb.v1.si_wave_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import (

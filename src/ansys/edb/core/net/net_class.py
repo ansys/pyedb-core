@@ -1,6 +1,6 @@
 """Net class."""
 
-import ansys.api.edb.v1.netclass_pb2 as nc_pb2
+import ansys.api.edb.v1.net_class_pb2 as nc_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import layout_obj, messages

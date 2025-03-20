@@ -44,6 +44,12 @@ from ansys.api.edb.v1.djordjecvic_sarkar_model_pb2_grpc import DjordjecvicSarkar
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
+from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import (
+    HFSSPIGeneralSettingsServiceStub,
+    HFSSPINetProcessingSettingsServiceStub,
+    HFSSPIPowerGroundNetsServiceStub,
+    HFSSPISignalNetsSettingsServiceStub,
+)
 from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
     DCRSettingsServiceStub,
     HFSSAdvancedMeshingSettingsServiceStub,
@@ -432,6 +438,10 @@ class StubType(Enum):
     hfss_solver_sim_settings = HFSSSolverSettingsServiceStub
     hfss_dcr_sim_settings = DCRSettingsServiceStub
     hfss_sim_setup = HfssSimulationSetupServiceStub
+    hfss_pi_general_sim_settings = HFSSPIGeneralSettingsServiceStub
+    hfss_pi_net_processing_sim_settings = HFSSPINetProcessingSettingsServiceStub
+    hfss_pi_power_ground_sim_settings = HFSSPIPowerGroundNetsServiceStub
+    hfss_pi_signal_nets_sim_settings = HFSSPISignalNetsSettingsServiceStub
     sim_setup = SimulationSetupServiceStub
     sim_settings = SimulationSettingsServiceStub
     sim_settings_options = SettingsOptionsServiceStub

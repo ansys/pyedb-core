@@ -168,7 +168,7 @@ Boilerplate Code Generation
 The pyedb-core API requires some boilerplate code for performance optimization (in particular,
 the file `src/ansys/edb/core/inner/rpc_info.py`). This boilerplate code is dependent upon the proto files
 used to create the `ansys-api-edb <ansys-api-edb_>`_ package. When changes are made to the proto files
-in the`ansys-api-edb <ansys-api-edb_>`_ repository,the boilerplate code in the pyedb-core repository
+in the `ansys-api-edb <ansys-api-edb_>`_ repository,the boilerplate code in the pyedb-core repository
 must be synced with these changes. To do so, please run the `parse_protos.sh` script using the following command
 (note that on windows, a git bash terminal should be used to run the shell script):
 
@@ -179,9 +179,9 @@ must be synced with these changes. To do so, please run the `parse_protos.sh` sc
 
 The `parse_protos.sh` script has the following requirements:
 
-.. A local copy of the `ansys-api-edb <ansys-api-edb_>`_ repository
-.. The environment variable `ANSYS_API_EDB_REPO_PATH` set to the top level directory of your local `ansys-api-edb <ansys-api-edb_>`_ repository
-.. A python 3.10 installation accessible through the system library path environment variable (`Path` on windows or `LD_LIBRARY_PATH` on linux`)
+-  A local copy of the `ansys-api-edb <ansys-api-edb_>`_ repository
+- The environment variable `ANSYS_API_EDB_REPO_PATH` set to the top level directory of your local `ansys-api-edb <ansys-api-edb_>`_ repository
+- A python 3.10 installation accessible through the system library path environment variable (`Path` on windows or `LD_LIBRARY_PATH` on linux)
 
 .. LINKS AND REFERENCES
 .. _dev_guide_contributing: https://dev.docs.pyansys.com/how-to/contributing.html

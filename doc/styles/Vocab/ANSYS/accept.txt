@@ -14,4 +14,3 @@ subdesigns
 ansys
 edb
 proto
-linux

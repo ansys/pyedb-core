@@ -181,7 +181,7 @@ The `parse_protos.sh` script has the following requirements:
 
 -  A local copy of the `ansys-api-edb <ansys-api-edb_>`_ repository
 - The environment variable `ANSYS_API_EDB_REPO_PATH` set to the top level directory of your local `ansys-api-edb <ansys-api-edb_>`_ repository
-- A python 3.10 installation accessible through the system library path environment variable (`Path` on windows or `LD_LIBRARY_PATH` on linux)
+- A python 3.10 installation accessible through the system library path environment variable (`Path` on Windows or `LD_LIBRARY_PATH` on Linux)
 
 .. LINKS AND REFERENCES
 .. _dev_guide_contributing: https://dev.docs.pyansys.com/how-to/contributing.html

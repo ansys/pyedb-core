@@ -11,3 +11,6 @@ Juptyer
 Makefile
 pytest
 subdesigns
+ansys
+edb
+proto

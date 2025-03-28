@@ -100,6 +100,9 @@ from ansys.api.edb.v1.point_term_pb2_grpc import PointTerminalServiceStub
 from ansys.api.edb.v1.polygon_data_pb2_grpc import PolygonDataServiceStub
 from ansys.api.edb.v1.polygon_pb2_grpc import PolygonServiceStub
 from ansys.api.edb.v1.port_property_pb2_grpc import PortPropertyServiceStub
+from ansys.api.edb.v1.primitive_instance_collection_pb2_grpc import (
+    PrimitiveInstanceCollectionServiceStub,
+)
 from ansys.api.edb.v1.primitive_pb2_grpc import PrimitiveServiceStub
 from ansys.api.edb.v1.r_tree_pb2_grpc import RTreeServiceStub
 from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import (
@@ -448,6 +451,7 @@ class StubType(Enum):
     raptor_x_adv_sim_settings = RaptorXAdvancedSettingsServiceStub
     layout_component = LayoutComponentServiceStub
     io_manager = IOManagerServiceStub
+    primitive_instance_collection = PrimitiveInstanceCollectionServiceStub
 
 
 def attach_session(ip_address=None, port_num=50051, dump_traffic_log=False):

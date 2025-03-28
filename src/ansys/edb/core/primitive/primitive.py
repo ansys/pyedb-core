@@ -22,6 +22,7 @@ class PrimitiveType(Enum):
     TEXT = primitive_pb2.TEXT
     PATH_3D = primitive_pb2.PATH_3D
     BOARD_BEND = primitive_pb2.BOARD_BEND
+    PRIM_INST_COLLECTION = primitive_pb2.PRIM_INST_COLLECTION
     INVALID_TYPE = primitive_pb2.INVALID_TYPE
 
 

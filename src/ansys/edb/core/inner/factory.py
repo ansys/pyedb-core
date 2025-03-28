@@ -56,6 +56,7 @@ def _initialize_primitive_type_creator_params_dict():
     from ansys.edb.core.primitive.path import Path
     from ansys.edb.core.primitive.polygon import Polygon
     from ansys.edb.core.primitive.primitive import PrimitiveType
+    from ansys.edb.core.primitive.primitive_instance_collection import PrimitiveInstanceCollection
     from ansys.edb.core.primitive.rectangle import Rectangle
     from ansys.edb.core.primitive.text import Text
 
@@ -67,6 +68,7 @@ def _initialize_primitive_type_creator_params_dict():
         PrimitiveType.POLYGON: _CreatorParams(Polygon),
         PrimitiveType.RECTANGLE: _CreatorParams(Rectangle),
         PrimitiveType.TEXT: _CreatorParams(Text),
+        PrimitiveType.PRIM_INST_COLLECTION: _CreatorParams(PrimitiveInstanceCollection),
     }
     return _primitive_type_creator_params_dict
 

@@ -43,3 +43,13 @@ def query_lyt_object_collection(
         for streamed_items in unary_streaming_rpc(request):
             add_msgs_to_items(streamed_items)
     return items
+
+
+def stream_items_from_server(parser, stream, chunk_items_att_name):
+    """Stream all items from the provided unary server stream and convert them to \
+    the corresponding pyedb-core data type using the provided parser."""
+    return [
+        parser(chunk_entry)
+        for chunk in stream
+        for chunk_entry in getattr(chunk, chunk_items_att_name)
+    ]

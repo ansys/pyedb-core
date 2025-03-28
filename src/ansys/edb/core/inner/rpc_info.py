@@ -528,6 +528,7 @@ rpc_information = {
         "GetBoardBendDefs": _RpcInfo(read_no_cache=True),
         "StreamBoardBendDefs": _RpcInfo(read_no_cache=True),
         "GetLayoutInstance": _RpcInfo(cache=True),
+        "CompressPrimitives": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.LayoutComponentService": {
         "ExportLayoutComponent": _RpcInfo(write_no_cache_invalidation=True),
@@ -858,6 +859,13 @@ rpc_information = {
         "RemoveHfssProp": _RpcInfo(buffer=True),
         "IsZonePrimitive": _RpcInfo(cache=True),
         "MakeZonePrimitive": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.PrimitiveInstanceCollectionService": {
+        "GetGeometry": _RpcInfo(cache=True),
+        "SetGeometry": _RpcInfo(buffer=True),
+        "GetPositions": _RpcInfo(read_no_cache=True),
+        "GetInstantiatedGeometry": _RpcInfo(read_no_cache=True),
+        "Decompose": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.RaptorXGeneralSettingsService": {
         "GetUseGoldEMSolver": _RpcInfo(cache=True),

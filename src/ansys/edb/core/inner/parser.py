@@ -17,7 +17,7 @@ from ansys.edb.core.simulation_setup.mesh_operation import (
 
 def to_point_data(fn):
     """Decorate a function that returns a message to return it as a ``PointData`` object."""
-    return _wraps(fn, _to_point_data)
+    return _wraps(fn, msg_to_point_data)
 
 
 def to_point_data_list(fn):
@@ -42,7 +42,7 @@ def to_3_point3d_data(fn):
 
 def to_polygon_data(fn):
     """Decorate a function that returns a message to return it as a ``PolygonData`` object."""
-    return _wraps(fn, _to_polygon_data)
+    return _wraps(fn, msg_to_polygon_data)
 
 
 def to_polygon_data_list(fn):
@@ -107,7 +107,7 @@ def _wraps(fn, wrapper_fn):
         return wrapper_fn(fn)
 
 
-def _to_point_data(message):
+def msg_to_point_data(message):
     """Convert a ``PointMessage`` object to a ``PointData`` object.
 
     Parameters
@@ -135,7 +135,7 @@ def _to_point_data_pair(message):
     -------
     tuple[:class:`.PointData`, :class:`.PointData`]
     """
-    return _to_point_data(message.point_0), _to_point_data(message.point_1)
+    return msg_to_point_data(message.point_0), msg_to_point_data(message.point_1)
 
 
 def _to_point_data_list(message):
@@ -149,7 +149,7 @@ def _to_point_data_list(message):
     -------
     list[:class:`.PointData`]
     """
-    return [_to_point_data(m) for m in message]
+    return [msg_to_point_data(m) for m in message]
 
 
 def _to_3_point3d_data(message):
@@ -183,7 +183,7 @@ def _to_point3d_data(message):
     return Point3DData(Value(message.x), Value(message.y), Value(message.z))
 
 
-def _to_polygon_data(message):
+def msg_to_polygon_data(message):
     """Convert an arbitrary message to a ``PolygonData`` object if possible.
 
     Parameters
@@ -218,11 +218,11 @@ def _to_polygon_data_list(message):
     list[:class:`.PolygonData`]
     """
     if hasattr(message, "polygons"):
-        return [_to_polygon_data(m) for m in message.polygons]
+        return [msg_to_polygon_data(m) for m in message.polygons]
     elif hasattr(message, "points"):
-        return [_to_polygon_data(m) for m in message.points]
+        return [msg_to_polygon_data(m) for m in message.points]
     else:
-        return [_to_polygon_data(m) for m in message]
+        return [msg_to_polygon_data(m) for m in message]
 
 
 def _to_box(message):
@@ -237,7 +237,7 @@ def _to_box(message):
     tuple[:class:`.PointData`, :class:`.PointData`]
     """
     if hasattr(message, "lower_left") and hasattr(message, "upper_right"):
-        return _to_point_data(message.lower_left), _to_point_data(message.upper_right)
+        return msg_to_point_data(message.lower_left), msg_to_point_data(message.upper_right)
 
 
 def _to_circle(message):
@@ -254,7 +254,7 @@ def _to_circle(message):
     from ansys.edb.core.utility.value import Value
 
     if hasattr(message, "center") and hasattr(message, "radius"):
-        return _to_point_data(message.center), Value(message.radius)
+        return msg_to_point_data(message.center), Value(message.radius)
 
 
 def _to_rlc(message):

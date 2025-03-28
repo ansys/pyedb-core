@@ -1,0 +1,6 @@
+reconstruct\_arcs
+=================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.reconstruct_arcs

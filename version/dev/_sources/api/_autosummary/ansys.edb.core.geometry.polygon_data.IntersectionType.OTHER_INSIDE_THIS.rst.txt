@@ -1,0 +1,6 @@
+OTHER\_INSIDE\_THIS
+===================
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoattribute:: IntersectionType.OTHER_INSIDE_THIS

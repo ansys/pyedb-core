@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. autoproperty:: BondwireDef.is_null

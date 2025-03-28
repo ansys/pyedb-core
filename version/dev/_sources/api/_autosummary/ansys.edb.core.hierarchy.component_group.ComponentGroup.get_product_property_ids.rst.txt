@@ -1,0 +1,6 @@
+get\_product\_property\_ids
+===========================
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. automethod:: ComponentGroup.get_product_property_ids

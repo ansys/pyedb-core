@@ -24,6 +24,8 @@ Glossary
 
 		Each zone contains a subset of layers available to the entire circuit board and is spatially defined by polygons on the Outline layer.
 
+		All zones (except the "fixed" zone) can have bends applied to them by defining :class:`BoardBendDefs <ansys.edb.core.primitive.board_bend_def.BoardBendDef>` on zone primitives.
+
 	ValueLike
 
 		Any of the following data types that represents a numeric value
@@ -51,6 +53,15 @@ Glossary
 	Triangle3DLike
 
 		(:term:`Point3DLike`, :term:`Point3DLike`, :term:`Point3DLike`)
+
+
+	LayerLike
+
+		Any of the following data types that represent a layer.
+
+		- :obj:`str`
+		- :class:`Layer <ansys.edb.core.layer.layer.Layer>`
+
 
 	RoughnessModel
 

@@ -306,6 +306,7 @@ rpc_information = {
         "GetDCConductivity": _RpcInfo(cache=True),
         "SetDCConductivity": _RpcInfo(buffer=True),
     },
+    "ansys.api.edb.v1.EDBErrorManagerService": {"GetErrors": _RpcInfo(read_no_cache=True)},
     "ansys.api.edb.v1.EdgeService": {
         "GetEdgeType": _RpcInfo(cache=True),
         "Create": _RpcInfo(buffer=True, returns_future=True),

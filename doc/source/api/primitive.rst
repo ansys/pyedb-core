@@ -18,6 +18,7 @@ Classes
    polygon.Polygon
    rectangle.Rectangle
    text.Text
+   primitive_instance_collection.PrimitiveInstanceCollection
 
 Enums
 -----

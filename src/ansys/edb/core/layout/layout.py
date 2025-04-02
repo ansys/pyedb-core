@@ -533,3 +533,17 @@ class Layout(ObjBase, variable_server.VariableServer):
                 num_y_partitions=num_y_partitions,
             )
         )
+
+    def compress_primitives(self):
+        """Compress :class:`primitives <.Primitive>` into \
+        :class:`primitive instance collections <.PrimitiveInstanceCollection>`.
+
+        Primitives whose only geometric difference is location will be compressed. \
+        For example, a 4x4 grid of rectangles with the same width and height will be \
+        compressed into one primitive instance collection.
+
+        .. note::
+           Only :class:`.Circle`, :class:`.Rectangle`, and :class:`.Polygon` primitives \
+           are supported in primitive instance collections.
+        """
+        self.__stub.CompressPrimitives(self.msg)

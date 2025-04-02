@@ -62,6 +62,13 @@ Glossary
 		- :obj:`str`
 		- :class:`Layer <ansys.edb.core.layer.layer.Layer>`
 
+	NetLike
+
+		Any of the following data types that represent a net.
+
+		- :obj:`str`
+		- :class:`Layer <ansys.edb.core.net.net.Net>`
+
 
 	RoughnessModel
 

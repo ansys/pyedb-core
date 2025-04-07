@@ -49,6 +49,20 @@ Classes
    siwave_simulation_settings.SIWaveDCAdvancedSettings
    siwave_simulation_settings.SIWaveSParameterSettings
    siwave_simulation_setup.SIWaveSimulationSetup
+   hfss_pi_simulation_settings.HFSSPISimulationSettings
+   hfss_pi_simulation_settings.HFSSPIGeneralSettings
+   hfss_pi_simulation_settings.HFSSPINetProcessingSettings
+   hfss_pi_simulation_settings.HFSSPIPowerGroundNetsSettings
+   hfss_pi_simulation_settings.HFSSPISignalNetsSettings
+   hfss_pi_simulation_setup.HFSSPISimulationSetup
+   q3d_simulation_settings.Q3DSimulationSettings
+   q3d_simulation_settings.Q3DGeneralSettings
+   q3d_simulation_settings.Q3DDCRLSettings
+   q3d_simulation_settings.Q3DACRLSettings
+   q3d_simulation_settings.Q3DCGSettings
+   q3d_simulation_settings.Q3DAdvancedSettings
+   q3d_simulation_settings.Q3DAdvancedMeshingSettings
+   q3d_simulation_setup.Q3DSimulationSetup
 
 Enums
 -----
@@ -65,3 +79,11 @@ Enums
       siwave_simulation_settings.SParamInterpolation
       siwave_simulation_settings.SParamExtrapolation
       siwave_simulation_settings.SParamDCBehavior
+      hfss_pi_simulation_settings.HFSSPISimulationPreference
+      hfss_pi_simulation_settings.HFSSPIModelType
+      hfss_pi_simulation_settings.SurfaceRoughnessModel
+      hfss_pi_simulation_settings.ImprovedLossModel
+      hfss_pi_simulation_settings.ConductorModeling
+      hfss_pi_simulation_settings.ErrorTolerance
+      q3d_simulation_settings.Q3DSolutionOrder
+      q3d_simulation_settings.Q3DSettingsType

@@ -25,7 +25,9 @@ class SimulationSetupType(Enum):
     HFSS = edb_defs_pb2.HFSS_SIM
     SI_WAVE = edb_defs_pb2.SI_WAVE_SIM
     SI_WAVE_DCIR = edb_defs_pb2.SI_WAVE_DCIR_SIM
+    HFSS_PI = edb_defs_pb2.HFSS_PI_SIM
     RAPTOR_X = edb_defs_pb2.RAPTOR_X_SIM
+    Q3D_SIM = edb_defs_pb2.Q3D_SIM
 
 
 class FreqSweepType(Enum):

@@ -20,3 +20,6 @@ Classes
    transform.Transform
    transform3d.Transform3D
    value.Value
+   edb_error_manager.EDBErrorSeverity
+   edb_error_manager.EDBError
+   edb_error_manager.get_error_messages

@@ -65,7 +65,7 @@ class PrimitiveInstanceCollection(LayoutObj):
             Layer that the primitive instance collection geometry will exist on.
         geometry : .PolygonData
             The geometry that will be instantiated.
-        positions : list of :term:`PointLike`
+        positions : list of :term:`Point2DLike`
             The points to instantiate the geometry at.
 
         Returns

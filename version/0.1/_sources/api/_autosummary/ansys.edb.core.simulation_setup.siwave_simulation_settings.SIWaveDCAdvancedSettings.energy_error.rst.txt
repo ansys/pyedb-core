@@ -1,0 +1,6 @@
+energy\_error
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCAdvancedSettings.energy_error

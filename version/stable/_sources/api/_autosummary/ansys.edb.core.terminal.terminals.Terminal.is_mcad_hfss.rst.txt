@@ -1,0 +1,6 @@
+is\_mcad\_hfss
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: Terminal.is_mcad_hfss

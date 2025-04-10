@@ -19,7 +19,7 @@ from ansys.api.edb.v1.primitive_instance_collection_pb2_grpc import (
 from ansys.edb.core.inner.layout_obj import LayoutObj
 import ansys.edb.core.inner.messages as messages
 from ansys.edb.core.inner.parser import msg_to_point_data, msg_to_polygon_data, to_polygon_data
-from ansys.edb.core.inner.utils import stream_items_from_server
+from ansys.edb.core.inner.utils import client_stream_iterator, stream_items_from_server
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -33,15 +33,16 @@ class PrimitiveInstanceCollection(LayoutObj):
 
     @staticmethod
     def _point_request_iterator(points, starting_chunk):
-        chunk = starting_chunk
-        max_size = 8000
-        for point in points:
-            point_msg = messages.point_message(point)
-            if chunk.ByteSize() + point_msg.ByteSize() > max_size:
-                yield chunk
-                chunk = PrimitiveInstanceCollectionDataMessage()
-            chunk.points.points.append(point_msg)
-        yield chunk
+        chunk_entry_creator = lambda point: messages.point_message(point)
+        chunk_entries_getter = lambda chunk: chunk.points.points
+        return client_stream_iterator(
+            points,
+            PrimitiveInstanceCollectionDataMessage,
+            chunk_entry_creator,
+            chunk_entries_getter,
+            8000,
+            starting_chunk,
+        )
 
     @classmethod
     def create(

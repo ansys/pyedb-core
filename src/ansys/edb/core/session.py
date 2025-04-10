@@ -126,6 +126,7 @@ from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import (
 )
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
+from ansys.api.edb.v1.s_parameter_model_pb2_grpc import SParameterModelServiceStub
 from ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2_grpc import (
     SIWaveDCIRSimulationSettingsServiceStub,
 )
@@ -145,7 +146,6 @@ from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
 )
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
-from ansys.api.edb.v1.sparameter_model_pb2_grpc import SParameterModelServiceStub
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure_3d_pb2_grpc import Structure3DServiceStub

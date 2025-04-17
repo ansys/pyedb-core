@@ -1,0 +1,26 @@
+﻿BondwireType
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoclass:: BondwireType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BondwireType.APD
+      BondwireType.JEDEC4
+      BondwireType.JEDEC5
+      BondwireType.NUM_OF_TYPE
+      BondwireType.INVALID
+   
+   

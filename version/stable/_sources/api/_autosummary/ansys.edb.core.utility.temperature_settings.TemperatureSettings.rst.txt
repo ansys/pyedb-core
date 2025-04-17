@@ -1,0 +1,22 @@
+﻿TemperatureSettings
+===================
+
+.. currentmodule:: ansys.edb.core.utility.temperature_settings
+
+.. autoclass:: TemperatureSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

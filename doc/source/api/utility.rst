@@ -20,3 +20,15 @@ Classes
    transform.Transform
    transform3d.Transform3D
    value.Value
+
+
+Enums
+-----
+
+.. autosummary::
+   :toctree: _autosummary
+
+   heat_sink.HeatSinkFinOrientation
+   hfss_extent_info.HFSSExtentInfoType
+   hfss_extent_info.OpenRegionType
+   layer_map.LayerMapUniqueDirection

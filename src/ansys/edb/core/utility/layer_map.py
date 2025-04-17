@@ -1,6 +1,8 @@
 """Layer map."""
+from __future__ import annotations
 
 from enum import Enum
+from typing import List
 
 from ansys.api.edb.v1 import layer_map_pb2 as pb
 
@@ -8,33 +10,34 @@ from ansys.edb.core.inner import ObjBase, messages
 from ansys.edb.core.session import StubAccessor, StubType
 
 
+class LayerMapUniqueDirection(Enum):
+    """Provides an enum representing a unique direction."""
+
+    FORWARD_UNIQUE = pb.FORWARD_UNIQUE
+    """FORWARD_UNIQUE Mapping many to one (1,1), (2,1), (3,1)"""
+    BACKWARD_UNIQUE = pb.BACKWARD_UNIQUE
+    """BACKWARD_UNIQUE Mapping one to many (1,1), (1,2), (1,3)"""
+    TWOWAY_UNIQUE = pb.TWOWAY_UNIQUE
+    """TWOWAY_UNIQUE Mapping one to one (1,1), (2,3), (3,2)"""
+
+
 class LayerMap(ObjBase):
     """Represents a two-way layer map where the key and value is the layer ID."""
 
     __stub = StubAccessor(StubType.layer_map)
 
-    class LayerMapUniqueDirection(Enum):
-        """Provides an enum representing a unique direction."""
-
-        FORWARD_UNIQUE = pb.FORWARD_UNIQUE
-        """FORWARD_UNIQUE Mapping many to one (1,1), (2,1), (3,1)"""
-        BACKWARD_UNIQUE = pb.BACKWARD_UNIQUE
-        """BACKWARD_UNIQUE Mapping one to many (1,1), (1,2), (1,3)"""
-        TWOWAY_UNIQUE = pb.TWOWAY_UNIQUE
-        """TWOWAY_UNIQUE Mapping one to one (1,1), (2,3), (3,2)"""
-
     @staticmethod
-    def create(direction):
+    def create(direction: LayerMapUniqueDirection) -> LayerMap:
         """Create a layer map object.
 
         Parameters
         ----------
-        direction: LayerMapUniqueDirection
+        direction : .LayerMapUniqueDirection
                 Variable representing the map's direction.
 
         Returns
         -------
-        LayerMap
+        .LayerMap
             LayerMap object created.
         """
         return LayerMap(
@@ -49,14 +52,14 @@ class LayerMap(ObjBase):
             self.msg,
         )
 
-    def set_mapping(self, from_id, to_id):
+    def set_mapping(self, from_id: int, to_id: int):
         """Create an entry in the layer map object.
 
         Parameters
         ----------
-        from_id: int
+        from_id : int
             Layer ID (key) "from" which to map with the ``to_id`` parameter.
-        to_id: int
+        to_id : int
             Layer ID (value) "to" which to map with the ``from_id`` parameter.
         """
         self.__stub.SetMapping(
@@ -67,8 +70,17 @@ class LayerMap(ObjBase):
             )
         )
 
-    def get_mapping_forward(self, layer_id):
-        """Get the list of IDs mapped forward with the given ID (key)."""
+    def get_mapping_forward(self, layer_id: int) -> List[int]:
+        """Get the list of IDs mapped forward with the given ID (key).
+
+        Parameters
+        ----------
+        layer_id : int
+
+        Returns
+        -------
+        list of int
+        """
         msg = self.__stub.GetMappingForward(
             messages.int_property_message(
                 target=self,
@@ -77,8 +89,17 @@ class LayerMap(ObjBase):
         )
         return [int(to_id) for to_id in msg.ids]
 
-    def get_mapping_backward(self, layer_id):
-        """Get a list of IDs mapped backward with the given ID (value)."""
+    def get_mapping_backward(self, layer_id: int) -> List[int]:
+        """Get a list of IDs mapped backward with the given ID (value).
+
+        Parameters
+        ----------
+        layer_id : int
+
+        Returns
+        -------
+        list of int
+        """
         msg = self.__stub.GetMappingBackward(
             messages.int_property_message(
                 target=self,

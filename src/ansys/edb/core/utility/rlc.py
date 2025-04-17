@@ -1,4 +1,10 @@
 """RLC."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import ValueLike
 
 from ansys.edb.core.utility.value import Value
 
@@ -8,53 +14,53 @@ class Rlc:
 
     Attributes
     ----------
-    r : str, int, float, complex, Value, default: 0
+    r : :term:`ValueLike`, default: 0
         Resistance value. This parameter is only used if
         ``r_enabled=True``.
-    r_enabled : bool, default: False
+    r_enabled : bool, default: ``False``
         Whether resistance is enabled.
-    l : str, int, float, complex, Value, default: 0
+    l : :term:`ValueLike`, default: 0
         Inductance value. This parameter is only used if
         ``c-l_enabled=True``.
-    l_enabled : bool, default: False
+    l_enabled : bool, default: ``False``
         Whether inductance is enabled.
-    c : str, int, float, complex, Value, default: 0
+    c : :term:`ValueLike`, default: 0
         Capacitance value. This parameter is only used if
         ``c_enabled=True``.
-    c_enabled : bool, default: False
+    c_enabled : bool, default: ``False``
         Whether capacitance is enabled.
-    is_parallel : bool, default: True
+    is_parallel : bool, default: ``True``
         Whether the r, l, and c elements are in parallel. If ``False``, these
         elements are in series.
     """
 
     def __init__(
         self,
-        r=Value(0),
-        r_enabled=False,
-        l=Value(0),
-        l_enabled=False,
-        c=Value(0),
-        c_enabled=False,
-        is_parallel=True,
+        r: ValueLike = Value(0),
+        r_enabled: bool = False,
+        l: ValueLike = Value(0),
+        l_enabled: bool = False,
+        c: ValueLike = Value(0),
+        c_enabled: bool = False,
+        is_parallel: bool = True,
     ):
         """Initialize an RLC object using given values.
 
         Parameters
         ----------
-        r : str, int, float, complex, Value, default: 0
+        r : :term:`ValueLike`, default: 0
             Resistance value. This parameter is only used if ``r_enabled=True``.
-        r_enabled : bool, default: False
+        r_enabled : bool, default: ``False``
             Whether resistance is enabled.
-        l : str, int, float, complex, Value, default: 0
+        l : :term:`ValueLike`, default: 0
             Inductance value. This parameter is only used if ``c-l_enabled=True``.
-        l_enabled : bool, default: False
+        l_enabled : bool, default: ``False``
             Whether inductance is enabled.
-        c : str, int, float, complex, Value, default: 0
+        c : :term:`ValueLike`, default: 0
             Capacitance value. This parameter is only used if ``c_enabled=True``.
-        c_enabled : bool, default: False
+        c_enabled : bool, default: ``False``
             Whether capacitance is enabled.
-        is_parallel : bool, default: True
+        is_parallel : bool, default: ``True``
             Whether the r, l, and c elements are in parallel. If ``False``, these
             elements are in series.
         """
@@ -97,9 +103,9 @@ class PinPairRlc:
 
     Attributes
     ----------
-    pin_pair : PinPair
+    pin_pair : .PinPair
         Pin pair property.
-    rlc : Rlc
+    rlc : .Rlc
         RLC value.
     """
 
@@ -108,9 +114,9 @@ class PinPairRlc:
 
         Parameters
         ----------
-        pin_pair: PinPair
+        pin_pair: .PinPair
             Pin pair property.
-        rlc: Rlc
+        rlc: .Rlc
             RLC property.
         """
         self.pin_pair = pin_pair

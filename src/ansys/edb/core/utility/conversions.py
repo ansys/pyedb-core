@@ -1,20 +1,27 @@
 """This module performs conversions from arbitrary user input to explicit types."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import ValueLike, PointLike, Point3DLike
+
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
 from ansys.edb.core.geometry import point3d_data, point_data
 from ansys.edb.core.utility import value
 
 
-def to_value(val):
-    """Take a value implicitly convertible to a ``Value``type and return as a ``Value`` type.
+def to_value(val: ValueLike) -> value.Value:
+    """Take a value implicitly convertible to a :class:`.Value` type and return as a :class:`.Value` type.
 
     Parameters
     ----------
-    val : ansys.edb.core.typing.ValueLike
+    val : :term:`ValueLike`
 
     Returns
     -------
-    :class:`.Value`
+    .Value
     """
     if isinstance(val, value.Value):
         return val
@@ -26,16 +33,16 @@ def to_value(val):
         )
 
 
-def to_point(val):
-    """Take a value implicitly convertible to a ``PointData`` type and return as a ``PointData`` type.
+def to_point(val: PointLike) -> point_data.PointData:
+    """Take a value implicitly convertible to a :class:`.PointData` type and return as a :class:`.PointData` type.
 
     Parameters
     ----------
-    val : ansys.edb.core.typing.PointLike
+    val : :term:`Point2DLike`
 
     Returns
     -------
-    :class:`.PointData`
+    .PointData
     """
     if isinstance(val, point_data.PointData):
         return val
@@ -50,17 +57,16 @@ def to_point(val):
     )
 
 
-def to_point3d(val):
-    """Convert a value to a ``Point3DData`` object.
+def to_point3d(val: Point3DLike) -> point3d_data.Point3DData:
+    """Take a value implicitly convertible to a :class:`.Point3DData` type and return as a :class:`.Point3DData` type.
 
     Parameters
     ----------
-    val : Point3DData, tuple[:term:`ValueLike`,:term:`ValueLike`,:term:`ValueLike`]
-        Value to convert.
+    val : :term:`Point3DLike`
 
     Returns
     -------
-    :class:`.Point3DData`
+    .Point3DData
     """
     if isinstance(val, point3d_data.Point3DData):
         return val

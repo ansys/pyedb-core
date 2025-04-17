@@ -120,8 +120,8 @@ from ansys.api.edb.v1.refs_pb2 import (
     NetRefMessage,
 )
 from ansys.api.edb.v1.rlc_pb2 import RlcMessage
+from ansys.api.edb.v1.s_parameter_model_pb2 import SParameterModelMessage
 from ansys.api.edb.v1.simulation_setup_pb2 import MatrixConvergenceEntryMessage
-from ansys.api.edb.v1.sparameter_model_pb2 import SParameterModelMessage
 from ansys.api.edb.v1.spice_model_pb2 import SpiceModelMessage, SpiceModelNewTerminalPinMessage
 from ansys.api.edb.v1.structure_3d_pb2 import ClosureMessage, SetClosureMessage
 from ansys.api.edb.v1.term_inst_pb2 import TermInstCreationMessage

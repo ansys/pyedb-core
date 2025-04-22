@@ -1,5 +1,4 @@
 """Cache."""
-
 import abc
 from collections import defaultdict
 from contextlib import contextmanager

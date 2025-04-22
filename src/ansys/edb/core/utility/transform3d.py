@@ -1,4 +1,13 @@
 """3D transformformations."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, List
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import Point3DLike
+    from ansys.edb.core.geometry.point3d_data import Point3DData
+    from ansys.edb.core.utility.transform import Transform
+
 import ansys.api.edb.v1.transform_3d_pb2 as pb
 from ansys.api.edb.v1.transform_3d_pb2_grpc import Transform3DServiceStub
 from google.protobuf import empty_pb2
@@ -16,7 +25,7 @@ class Transform3D(ObjBase):
     anchor : :term:`Point3DLike`
     rot_axis_from : :term:`Point3DLike`
     rot_axis_to : :term:`Point3DLike`
-    rot_angle : str, int, float, complex, Value
+    rot_angle : :term:`ValueLike`
         Rotation angle, specified counter-clockwise in radians, from the ``rot_axis_from`` parameter
         towards the ``rot_axis_to`` parameter.
     offset : :term:`Point3DLike`
@@ -27,27 +36,27 @@ class Transform3D(ObjBase):
     __stub: Transform3DServiceStub = StubAccessor(StubType.transform3d)
 
     @classmethod
-    def create_identity(cls):
+    def create_identity(cls) -> Transform3D:
         """Create an identity transformation 3D matrix.
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(cls.__stub.CreateIdentity(empty_pb2.Empty()))
 
     @classmethod
-    def create_copy(cls, transform3d):
+    def create_copy(cls, transform3d: Transform3D) -> Transform3D:
         """Create a 3D transformation by copying another 3D transformation.
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(cls.__stub.CreateCopy(messages.edb_obj_message(transform3d)))
 
     @classmethod
-    def create_from_matrix(cls, matrix):
+    def create_from_matrix(cls, matrix: List[List[float]]) -> Transform3D:
         """Create a 3D transformation from general matrix data.
 
         Parameters
@@ -57,14 +66,14 @@ class Transform3D(ObjBase):
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         trans = Transform3D(cls.__stub.CreateIdentity(empty_pb2.Empty()))
         trans.matrix = matrix
         return trans
 
     @classmethod
-    def create_from_offset(cls, offset):
+    def create_from_offset(cls, offset: Point3DLike) -> Transform3D:
         """Create a 3D transformation with an offset.
 
         Parameters
@@ -73,12 +82,12 @@ class Transform3D(ObjBase):
             Vector offset.
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(cls.__stub.CreateOffset(messages.cpos_3d_message(offset)))
 
     @classmethod
-    def create_from_center_scale(cls, center, scale):
+    def create_from_center_scale(cls, center: Point3DLike, scale: float) -> Transform3D:
         """Create a 3D transformation for scaling about a point.
 
         Parameters
@@ -90,14 +99,14 @@ class Transform3D(ObjBase):
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(
             cls.__stub.CreateCenterScale(messages.cpos_3d_double_message(center, scale))
         )
 
     @classmethod
-    def create_from_angle(cls, zyx_decomposition):
+    def create_from_angle(cls, zyx_decomposition: Point3DLike) -> Transform3D:
         """Create a 3D transformation from ZYX decomposition.
 
         Parameters
@@ -107,14 +116,14 @@ class Transform3D(ObjBase):
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(
             cls.__stub.CreateRotationFromAngle(messages.cpos_3d_message(zyx_decomposition))
         )
 
     @classmethod
-    def create_from_axis(cls, x, y, z):
+    def create_from_axis(cls, x: Point3DLike, y: Point3DLike, z: Point3DLike) -> Transform3D:
         """Create a 3D transformation with a rotation matrix from three axes.
 
         Parameters
@@ -128,14 +137,14 @@ class Transform3D(ObjBase):
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(
             cls.__stub.CreateRotationFromAxis(messages.cpos_3d_triple_message(x, y, z))
         )
 
     @classmethod
-    def create_from_axis_and_angle(cls, axis, angle):
+    def create_from_axis_and_angle(cls, axis: Point3DLike, angle: float) -> Transform3D:
         """Create a 3D transformation with the given axis and angle.
 
         Parameters
@@ -147,14 +156,16 @@ class Transform3D(ObjBase):
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(
             cls.__stub.CreateRotationFromAxisAndAngle(messages.cpos_3d_double_message(axis, angle))
         )
 
     @classmethod
-    def create_from_one_axis_to_another(cls, from_axis, to_axis):
+    def create_from_one_axis_to_another(
+        cls, from_axis: Point3DLike, to_axis: Point3DLike
+    ) -> Transform3D:
         """Create a 3D transformformation with rotation from an axis to an axis.
 
         Parameters
@@ -166,26 +177,26 @@ class Transform3D(ObjBase):
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(
             cls.__stub.CreateRotationFromToAxis(messages.cpos_3d_pair_message(from_axis, to_axis))
         )
 
     @classmethod
-    def create_from_transform_2d(cls, transform, z_off):
+    def create_from_transform_2d(cls, transform: Transform, z_off: float) -> Transform3D:
         """Create a 3D transformation with transform data.
 
         Parameters
         ----------
-        transform : :class:`.Transform`
+        transform : .Transform
             Transform data.
         z_off : :obj:`float`
             Z offset.
 
         Returns
         -------
-        Transform3D
+        .Transform3D
         """
         return Transform3D(
             cls.__stub.CreateTransform2D(messages.double_property_message(transform, z_off))
@@ -199,17 +210,17 @@ class Transform3D(ObjBase):
         """Invert the 3D transformation."""
         self.__stub.Invert(messages.edb_obj_message(self))
 
-    def is_identity(self, eps, rotation):
+    def is_identity(self, eps: float, rotation: bool) -> bool:
         """Get identity of the 3D transformation.
 
         Parameters
         ----------
-        rotation : :obj:`bool`
-        eps : :obj:`float`
+        rotation : bool
+        eps : float
 
         Returns
         -------
-        :obj:`bool`
+        bool
         """
         return self.__stub.IsIdentity(
             pb.IsIdentityMessage(
@@ -219,20 +230,19 @@ class Transform3D(ObjBase):
             )
         ).value
 
-    def is_equal(self, other_transform, rotation, eps):
+    def is_equal(self, other_transform: Transform3D, rotation: bool, eps: float) -> bool:
         """Equality check for two #D transformations.
 
         Parameters
         ----------
         other_transform
-        rotation : :obj:`bool`
-        eps : :obj:`float`
+        rotation : bool
+        eps : float
 
         Returns
         -------
-        :obj:`bool`
+        bool
             Result of equality check.
-
         """
         return self.__stub.IsEqual(
             pb.IsEqualMessage(
@@ -243,17 +253,17 @@ class Transform3D(ObjBase):
             )
         ).value
 
-    def __add__(self, other_transform):
+    def __add__(self, other_transform: Transform3D) -> Transform3D:
         """Add operator and concatenate two 3D transformations.
 
         Parameters
         ----------
-        other_transform : Transform3D
+        other_transform : .Transform3D
             Second 3D transformation.
 
         Returns
         -------
-        Transform
+        .Transform3D
             3D transformation object created.
         """
         return Transform3D(
@@ -262,12 +272,12 @@ class Transform3D(ObjBase):
 
     @property
     @to_3_point3d_data
-    def axis(self):
+    def axis(self) -> Point3DData:
         """:obj:`list` of :term:`Point3DLike`: Axis."""
         return self.__stub.GetAxis(messages.edb_obj_message(self))
 
     @to_point3d_data
-    def transform_point(self, point):
+    def transform_point(self, point: Point3DLike) -> Point3DData:
         """Get the transform point of the 3D transformation.
 
         Parameters
@@ -276,38 +286,47 @@ class Transform3D(ObjBase):
 
         Returns
         -------
-        :term:`Point3DLike`
+        .Point3DData
             Transform point.
         """
         return self.__stub.TransformPoint(messages.cpos_3d_property_message(self, point))
 
     @property
     @to_point3d_data
-    def z_y_x_rotation(self):
-        """:term:`Point3DLike`: ZYX rotation."""
+    def z_y_x_rotation(self) -> Point3DData:
+        """:class:`.Point3DData`: ZYX rotation.
+
+        This property is read-only.
+        """
         return self.__stub.GetZYXRotation(messages.edb_obj_message(self))
 
     @property
     @to_point3d_data
-    def scaling(self):
-        """:term:`Point3DLike`: Scaling."""
+    def scaling(self) -> Point3DData:
+        """:class:`.Point3DData`: Scaling.
+
+        This property is read-only.
+        """
         return self.__stub.GetScaling(messages.edb_obj_message(self))
 
     @property
     @to_point3d_data
-    def shift(self):
-        """:term:`Point3DLike`: Shift."""
+    def shift(self) -> Point3DData:
+        """:class:`.Point3DData`: Shift.
+
+        This property is read-only.
+        """
         return self.__stub.GetShift(messages.edb_obj_message(self))
 
     @property
-    def matrix(self):
-        """:obj:`list` of :obj:`list` of :obj:`floats` : Transformation matrix as a 2D 4x4 array."""
+    def matrix(self) -> List[List[float]]:
+        """:obj:`list` of :obj:`list` of :obj:`float` : Transformation matrix as a 2D 4x4 array."""
         msg = self.__stub.GetMatrix(messages.edb_obj_message(self))
         matrix = [[float(_) for _ in msg.doubles[(i - 1) * 4 : i * 4]] for i in range(1, 5)]
         return matrix
 
     @matrix.setter
-    def matrix(self, value):
+    def matrix(self, value: List[List[float]]):
         if (
             len(value) == 4
             and len(value[0]) == 4

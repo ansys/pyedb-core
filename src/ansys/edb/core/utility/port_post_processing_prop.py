@@ -1,4 +1,10 @@
 """Port postprocessing properties."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import ValueLike
 
 from ansys.edb.core.utility.value import Value
 
@@ -8,27 +14,27 @@ class PortPostProcessingProp:
 
     def __init__(
         self,
-        voltage_magnitude=0,
-        voltage_phase=0,
-        deembed_length=0,
-        renormalization_impedance=50,
-        do_deembed=False,
-        do_deembed_gap_l=False,
-        do_renormalize=False,
+        voltage_magnitude: ValueLike = 0,
+        voltage_phase: ValueLike = 0,
+        deembed_length: ValueLike = 0,
+        renormalization_impedance: ValueLike = 50,
+        do_deembed: bool = False,
+        do_deembed_gap_l: bool = False,
+        do_renormalize: bool = False,
     ):
         """Initialize port postprocessing properties.
 
         Parameters
         ----------
-        voltage_magnitude : str or int or float or complex or Value, optional
-            Excitation voltage magnitude. The default is ``0``.
-        voltage_phase : str or int or float or complex or Value, optional
-            Excitation voltage phase.  The default is ``0``.
-        deembed_length : str or int or float or complex or Value, optional
-            Dembeed distance.  The default is ``0``. This parameter is only
+        voltage_magnitude : :term:`ValueLike`, optional
+            Excitation voltage magnitude. The default is 0.
+        voltage_phase : :term:`ValueLike`, optional
+            Excitation voltage phase.  The default is 0.
+        deembed_length : :term:`ValueLike`, optional
+            Dembeed distance.  The default is 0. This parameter is only
             applied if ``do_deembed=True``.
-        renormalization_impedance : str or int or float or complex or Value, optional
-            Renormalization impedance. The default is ``0``. This parameter is only
+        renormalization_impedance : :term:`ValueLike`, optional
+            Renormalization impedance. The default is 0. This parameter is only
             applied if ``do_renormalize=True``.
         do_deembed : bool, optional
             Whether to enable the port to be deembedded. The default is ``False``.
@@ -68,41 +74,47 @@ class PortPostProcessingProp:
         """
 
     @property
-    def voltage_magnitude(self):
-        """Excitation voltage magnitude."""
+    def voltage_magnitude(self) -> Value:
+        """:class:`.Value`: Excitation voltage magnitude.
+
+        This property can be set to :term:`ValueLike`.
+        """
         return self._voltage_magnitude
 
     @voltage_magnitude.setter
-    def voltage_magnitude(self, value):
+    def voltage_magnitude(self, value: ValueLike):
         self._voltage_magnitude = Value(value)
 
     @property
     def voltage_phase(self):
-        """Excitation voltage phase."""
+        """:class:`.Value`: Excitation voltage phase.
+
+        This property can be set to :term:`ValueLike`.
+        """
         return self._voltage_phase
 
     @voltage_phase.setter
-    def voltage_phase(self, value):
+    def voltage_phase(self, value: ValueLike):
         self._voltage_phase = Value(value)
 
     @property
     def deembed_length(self):
-        """
-        Deembed length.
+        """:class:`.Value`: Deembed length.
 
+        This property can be set to :term:`ValueLike`.
         This property is only applied if ``do_deembed=True``.
         """
         return self._deembed_length
 
     @deembed_length.setter
-    def deembed_length(self, value):
+    def deembed_length(self, value: ValueLike):
         self._deembed_length = Value(value)
 
     @property
     def renormalization_impedance(self):
-        """
-        Renormalization impedance.
+        """:class:`.Value`: Renormalization impedance.
 
+        This property can be set to :term:`ValueLike`.
         This property is only applied if ``do_renormalize=True``.
         """
         return self._renormalization_impedance

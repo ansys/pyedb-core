@@ -159,8 +159,6 @@ class SweepData:
       Auto/Manual SMatrix only solve.
     min_freq_s_mat_only_solve : str
       Minimum frequency SMatrix only solve.
-    frequencies : list[str]
-      Frequency points in the frequency sweep.
     steady_state_start : float
       Frequency of Steady State Start.
     mesh_freq_choice : int
@@ -225,7 +223,6 @@ class SweepData:
         self.parallel_hfss_regions_sim_cfg = []
         self.auto_s_mat_only_solve = True
         self.min_freq_s_mat_only_solve = "1MHz"
-        self.frequencies = []
         self.steady_state_start = -1.0
         self.mesh_freq_choice = -1
         self.mesh_freq_points = []
@@ -290,7 +287,6 @@ def _sweep_data_msg(sweep_data):
         ),
         auto_s_mat_only_solve=sweep_data.auto_s_mat_only_solve,
         min_freq_s_mat_only_solve=sweep_data.min_freq_s_mat_only_solve,
-        frequencies=sweep_data.frequencies,
         steady_state_start=sweep_data.steady_state_start,
         mesh_freq_choice=sweep_data.mesh_freq_choice,
         mesh_freq_points=sweep_data.mesh_freq_points,
@@ -355,7 +351,6 @@ def _msg_to_sweep_data(msg):
     )
     sweep_data.auto_s_mat_only_solve = msg.auto_s_mat_only_solve
     sweep_data.min_freq_s_mat_only_solve = msg.min_freq_s_mat_only_solve
-    sweep_data.frequencies = msg.frequencies
     sweep_data.steady_state_start = msg.steady_state_start
     sweep_data.mesh_freq_choice = msg.mesh_freq_choice
     sweep_data.mesh_freq_points = msg.mesh_freq_points

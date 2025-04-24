@@ -177,6 +177,11 @@ rpc_information = {
         "StreamComponentPins": _RpcInfo(read_no_cache=True),
         "AddComponentModel": _RpcInfo(buffer=True),
         "RemoveComponentModel": _RpcInfo(buffer=True),
+        "ReorderPins": _RpcInfo(buffer=True),
+        "RemovePin": _RpcInfo(buffer=True),
+        "GetProductProperty": _RpcInfo(cache=True),
+        "SetProductProperty": _RpcInfo(buffer=True),
+        "GetProductPropertyIds": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.ComponentGroupService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),

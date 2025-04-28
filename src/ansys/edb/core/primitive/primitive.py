@@ -1,4 +1,5 @@
 """Primitive classes."""
+from __future__ import annotations
 
 from enum import Enum
 
@@ -54,7 +55,7 @@ class Primitive(conn_obj.ConnObj):
 
         Parameters
         ----------
-        hole : Primitive
+        hole : :class:`.Primitive`
             Void to add.
         """
         self.__stub.AddVoid(

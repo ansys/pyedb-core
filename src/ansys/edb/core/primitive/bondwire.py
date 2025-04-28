@@ -1,6 +1,13 @@
 """Bondwire."""
+from __future__ import annotations
 
 from enum import Enum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.hierarchy.cell_instance import CellInstance
+    from ansys.edb.core.net.net import Net
+    from ansys.edb.core.layout.layout import Layout
 
 from ansys.api.edb.v1 import bondwire_pb2, bondwire_pb2_grpc
 
@@ -37,55 +44,55 @@ class Bondwire(Primitive):
     @classmethod
     def create(
         cls,
-        layout,
-        bondwire_type,
-        definition_name,
-        placement_layer,
-        width,
-        material,
-        start_context,
-        start_layer_name,
-        start_x,
-        start_y,
-        end_context,
-        end_layer_name,
-        end_x,
-        end_y,
-        net,
-    ):
+        layout: Layout,
+        bondwire_type: BondwireType,
+        definition_name: str,
+        placement_layer: str,
+        width: Value,
+        material: str,
+        start_context: CellInstance,
+        start_layer_name: str,
+        start_x: Value,
+        start_y: Value,
+        end_context: CellInstance,
+        end_layer_name: str,
+        end_x: Value,
+        end_y: Value,
+        net: str | Net | None,
+    ) -> Bondwire:
         """Create a bondwire.
 
         Parameters
         ----------
-        layout : :class:`.Layout`
+        layout : .Layout
             Layout to create the bondwire in.
-        bondwire_type : :class:`BondwireType`
+        bondwire_type : .BondwireType
             Type of the bondwire. Options are ``kAPDBondWire`` and ``kJDECBondWire``.
         definition_name : str
             Bondwire definition name.
         placement_layer : str
             Layer name to create the bondwire on.
-        width : :class:`.Value`
+        width : .Value
             Bondwire width.
         material : str
             Bondwire material name.
-        start_context : :class:`.CellInstance`
-            Start context. ``None`` means top-level,.
+        start_context : .CellInstance
+            Start context :obj:`None` means top-level,.
         start_layer_name : str
             Name of the start layer.
-        start_x : :class:`.Value`
+        start_x : .Value
             X value of the start point.
-        start_y : :class:`.Value`
+        start_y : .Value
             Y value of the start point.
-        end_context : :class:`.CellInstance`
-            End context: End content. ``None`` means top-level.
+        end_context : .CellInstance
+            End content :obj:`None` means top-level.
         end_layer_name : str
             Name of the end layer.
-        end_x : :class:`.Value`
+        end_x : .Value
             X value of the end point.
-        end_y : :class:`.Value`
+        end_y : .Value
             Y value of the end point.
-        net : str or :class:`.Net` or None
+        net : str or .Net or None
             Net of the bondwire.
 
         Returns
@@ -115,7 +122,7 @@ class Bondwire(Primitive):
             )
         )
 
-    def get_material(self, evaluated=True):
+    def get_material(self, evaluated: bool = True) -> str:
         """Get the material of the bondwire.
 
         Parameters
@@ -130,7 +137,7 @@ class Bondwire(Primitive):
         """
         return self.__stub.GetMaterial(Bondwire._bondwire_bool_message(self, evaluated))
 
-    def set_material(self, material):
+    def set_material(self, material: str):
         """Set the material of the bondwire.
 
         Parameters
@@ -141,42 +148,42 @@ class Bondwire(Primitive):
         self.__stub.SetMaterial(bondwire_pb2.SetMaterialMessage(target=self.msg, material=material))
 
     @property
-    def type(self):
+    def type(self) -> BondwireType:
         """:class:`BondwireType`: Type of the bondwire."""
         btype_msg = self.__stub.GetType(self.msg)
         return BondwireType(btype_msg.type)
 
     @type.setter
-    def type(self, bondwire_type):
+    def type(self, bondwire_type: BondwireType):
         self.__stub.SetType(
             bondwire_pb2.SetBondwireTypeMessage(target=self.msg, type=bondwire_type.value)
         )
 
     @property
-    def cross_section_type(self):
-        """:class:`BondwireCrossSectionType`:Cross-section type of the bondwire."""
+    def cross_section_type(self) -> BondwireCrossSectionType:
+        """:class:`BondwireCrossSectionType`: Cross-section type of the bondwire."""
         return BondwireCrossSectionType(self.__stub.GetCrossSectionType(self.msg).type)
 
     @cross_section_type.setter
-    def cross_section_type(self, bondwire_type):
+    def cross_section_type(self, bondwire_type: BondwireCrossSectionType):
         self.__stub.SetCrossSectionType(
             bondwire_pb2.SetCrossSectionTypeMessage(target=self.msg, type=bondwire_type.value)
         )
 
     @property
-    def cross_section_height(self):
+    def cross_section_height(self) -> Value:
         """:class:`.Value`: Cross-section height of the bondwire."""
         return Value(self.__stub.GetCrossSectionHeight(self.msg))
 
     @cross_section_height.setter
-    def cross_section_height(self, height):
+    def cross_section_height(self, height: Value):
         self.__stub.SetCrossSectionHeight(
             bondwire_pb2.SetCrossSectionHeightMessage(
                 target=self.msg, height=messages.value_message(height)
             )
         )
 
-    def get_definition_name(self, evaluated=True):
+    def get_definition_name(self, evaluated: bool = True) -> str:
         """Get the definition name of the bondwire object.
 
         Parameters
@@ -191,7 +198,7 @@ class Bondwire(Primitive):
         """
         return self.__stub.GetDefinitionName(Bondwire._bondwire_bool_message(self, evaluated)).value
 
-    def set_definition_name(self, definition_name):
+    def set_definition_name(self, definition_name: str):
         """Set the definition name of a bondwire.
 
         Parameters
@@ -203,7 +210,7 @@ class Bondwire(Primitive):
             bondwire_pb2.SetDefinitionNameMessage(target=self.msg, definition_name=definition_name)
         )
 
-    def get_traj(self):
+    def get_traj(self) -> tuple[Value, Value, Value, Value]:
         """Get trajectory parameters of the bondwire.
 
         Returns
@@ -235,7 +242,7 @@ class Bondwire(Primitive):
             Value(traj_msg.y2),
         )
 
-    def set_traj(self, x1, y1, x2, y2):
+    def set_traj(self, x1: Value, y1: Value, x2: Value, y2: Value):
         """Set the parameters of the trajectory of the bondwire.
 
         Parameters
@@ -262,18 +269,18 @@ class Bondwire(Primitive):
         )
 
     @property
-    def width(self):
+    def width(self) -> Value:
         """:class:`.Value`: Width of the bondwire."""
         val = self.__stub.GetWidthValue(self.msg)
         return Value(val)
 
     @width.setter
-    def width(self, width):
+    def width(self, width: Value):
         self.__stub.SetWidthValue(
             bondwire_pb2.BondwireValueMessage(target=self.msg, value=messages.value_message(width))
         )
 
-    def get_start_elevation(self, start_context):
+    def get_start_elevation(self, start_context: CellInstance) -> Layer:
         """Get the start elevation layer of the bondwire.
 
         Parameters
@@ -290,7 +297,7 @@ class Bondwire(Primitive):
             self.__stub.GetStartElevation(Bondwire._get_elevation_message(self, start_context))
         ).cast()
 
-    def set_start_elevation(self, start_context, layer):
+    def set_start_elevation(self, start_context: CellInstance, layer: str | Layer):
         """Set the start elevation of the bondwire.
 
         Parameters
@@ -302,7 +309,7 @@ class Bondwire(Primitive):
         """
         self.__stub.SetStartElevation(Bondwire._set_elevation_message(self, start_context, layer))
 
-    def get_end_elevation(self, end_context):
+    def get_end_elevation(self, end_context: CellInstance) -> Layer:
         """Get the end elevation layer of the bondwire.
 
         Parameters
@@ -319,7 +326,7 @@ class Bondwire(Primitive):
             self.__stub.GetEndElevation(Bondwire._get_elevation_message(self, end_context))
         ).cast()
 
-    def set_end_elevation(self, end_context, layer):
+    def set_end_elevation(self, end_context: CellInstance, layer: str | Layer):
         """Set the end elevation of the bondwire.
 
         Parameters

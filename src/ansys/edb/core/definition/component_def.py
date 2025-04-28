@@ -1,5 +1,10 @@
 """Component definition."""
-from typing import List
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, List
+
+if TYPE_CHECKING:
+    from src.ansys.edb.core.database import ProductIdType
 
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
@@ -15,7 +20,6 @@ from ansys.edb.core.inner.messages import (
 )
 from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.session import StubAccessor, StubType
-from src.ansys.edb.core.database import ProductIdType
 
 
 class ComponentDef(ObjBase):

@@ -1,4 +1,6 @@
 """Component definition."""
+from typing import List
+
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
 from ansys.edb.core.definition import component_model, component_pin
@@ -13,6 +15,7 @@ from ansys.edb.core.inner.messages import (
 )
 from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.session import StubAccessor, StubType
+from src.ansys.edb.core.database import ProductIdType
 
 
 class ComponentDef(ObjBase):
@@ -133,7 +136,7 @@ class ComponentDef(ObjBase):
         """
         self.__stub.RemoveComponentModel(messages.pointer_property_message(self, value))
 
-    def reorder_pins(self, reordered_pins):
+    def reorder_pins(self, reordered_pins: List[component_pin.ComponentPin]):
         """Reorders the existing pins in the components definition to be in the same order \
         as in the provided list.
 
@@ -145,7 +148,7 @@ class ComponentDef(ObjBase):
         """
         self.__stub.ReorderPins(edb_obj_collection_property_message(self, reordered_pins))
 
-    def remove_pin(self, pin_to_remove):
+    def remove_pin(self, pin_to_remove: component_pin.ComponentPin):
         """Remove the provided component pin from the component definition. \
         the pin will be deleted and set to :meth:`null <.is_null>`.
 
@@ -157,7 +160,7 @@ class ComponentDef(ObjBase):
         self.__stub.RemovePin(edb_obj_pair_message(self, pin_to_remove))
         pin_to_remove.msg = None
 
-    def get_product_property(self, prod_id, attr_it):
+    def get_product_property(self, prod_id: ProductIdType, attr_it: int) -> str:
         """Get the product property for a given product ID and attribute ID.
 
         Parameters
@@ -176,7 +179,7 @@ class ComponentDef(ObjBase):
             get_product_property_message(self, prod_id, attr_it)
         ).value
 
-    def set_product_property(self, prod_id, attr_it, prop_value):
+    def set_product_property(self, prod_id: ProductIdType, attr_it: int, prop_value: str):
         """Set the product property for the given product ID and attribute ID.
 
         Parameters
@@ -192,7 +195,7 @@ class ComponentDef(ObjBase):
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
-    def get_product_property_ids(self, prod_id):
+    def get_product_property_ids(self, prod_id: ProductIdType) -> List[int]:
         """Get the list of property IDs for a given property ID.
 
         Parameters

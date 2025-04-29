@@ -60,7 +60,7 @@ class ConnObj(layout_obj.LayoutObj):
 
     @property
     def obj_type(self):
-        """:class:`LayoutObjType <ansys.edb.core.edb_defs.LayoutObjType>`: Layout object type.
+        """:class:`.LayoutObjType`: Layout object type.
 
         This property is read-only.
         """
@@ -128,7 +128,7 @@ class ConnObj(layout_obj.LayoutObj):
     def net(self):
         """:class:`.Net`: Net of the :term:`Connectable` object.
 
-        This property can be set with a :class:`.Net` instance, a string, or ``None``.
+        This property can be set with a :class:`.Net` instance, a string, or :obj:`None`.
         """
         from ansys.edb.core.net.net import Net
 

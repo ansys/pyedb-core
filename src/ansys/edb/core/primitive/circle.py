@@ -1,4 +1,13 @@
 """Circle."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.net.net import Net
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.layer.layer import Layer
+    from ansys.edb.core.geometry.polygon_data import PolygonData
 
 from ansys.api.edb.v1 import circle_pb2, circle_pb2_grpc
 
@@ -9,27 +18,35 @@ from ansys.edb.core.utility.value import Value
 
 
 class Circle(Primitive):
-    """Represents a circle object."""
+    """Represents a circle object.
+
+    Attributes
+    ----------
+    layout_obj_type: .LayoutObjType
+        Layout object type of the Circle class.
+    """
 
     __stub: circle_pb2_grpc.CircleServiceStub = StubAccessor(StubType.circle)
 
     @classmethod
-    def create(cls, layout, layer, net, center_x, center_y, radius):
+    def create(
+        cls, layout: Layout, layer: Layer, net: Net, center_x: Value, center_y: Value, radius: Value
+    ) -> Circle:
         """Create a circle.
 
         Parameters
         ----------
-        layout : :class:`.Layout`
+        layout : .Layout
             Layout to create this circle in.
-        layer : str or :class:`.Layer`
+        layer : str or .Layer
             Layer to place the circle on.
-        net : str or :class:`.Net` or None
+        net : str or .Net or None
             Net of the circle.
-        center_x : :class:`.Value`
+        center_x : .Value
             X value of the center point.
-        center_y : :class:`.Value`
+        center_y : .Value
             Y value of the center point.
-        radius : :class:`.Value`
+        radius : .Value
             Radius value of the circle.
 
         Returns
@@ -52,23 +69,23 @@ class Circle(Primitive):
 
     @classmethod
     @parser.to_polygon_data
-    def render(cls, center_x, center_y, radius, is_hole):
+    def render(cls, center_x: Value, center_y: Value, radius: Value, is_hole: bool) -> PolygonData:
         """Render a circle.
 
         Parameters
         ----------
-        center_x : :class:`.Value`
+        center_x : .Value
             X value of the center point.
-        center_y : :class:`.Value`
+        center_y : .Value
             Y value of the center point.
-        radius : :class:`.Value`
+        radius : .Value
             Radius value of the circle.
-        is_hole: bool
+        is_hole : bool
             Whether the circle object is a hole.
 
         Returns
         -------
-        :class:`.PolygonData`
+        .PolygonData
             Circle created.
         """
         return cls.__stub.Render(
@@ -80,16 +97,12 @@ class Circle(Primitive):
             )
         )
 
-    def get_parameters(self):
+    def get_parameters(self) -> tuple[Value, Value, Value]:
         """Get parameters of the circle.
 
         Returns
         -------
-        tuple[
-            :class:`.Value`,
-            :class:`.Value`,
-            :class:`.Value`
-        ]
+        tuple[.Value, .Value, .Value]
 
             Returns a tuple in this format:
 
@@ -108,16 +121,16 @@ class Circle(Primitive):
             Value(circle_param_msg.radius),
         )
 
-    def set_parameters(self, center_x, center_y, radius):
+    def set_parameters(self, center_x: Value, center_y, radius: Value):
         """Set parameters of the circle.
 
-         Parameters
-         ----------
-        center_x : :class:`.Value`
+        Parameters
+        ----------
+        center_x : .Value
             X value of the center point.
-        center_y : :class:`.Value`
+        center_y : .Value
             Y value of the center point.
-        radius : :class:`.Value`
+        radius : .Value
             Radius value of the circle.
         """
         self.__stub.SetParameters(
@@ -132,11 +145,11 @@ class Circle(Primitive):
         )
 
     @property
-    def polygon_data(self):
+    def polygon_data(self) -> PolygonData:
         """:class:`.PolygonData`: \
         Polygon data object of the circle."""
         return Circle.render(*self.get_parameters(), self.is_void)
 
-    def can_be_zone_primitive(self):
+    def can_be_zone_primitive(self) -> bool:
         """:obj:`bool`: Flag indicating if a circle can be a zone."""
         return True

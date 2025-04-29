@@ -1,4 +1,16 @@
 """Value."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import ValueLike, Union
+    from ansys.edb.core.database import Database
+    from ansys.edb.core.layout.cell import Cell
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.definition.component_def import ComponentDef
+
+
 import math
 
 from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
@@ -75,7 +87,7 @@ class Value:
 
     __stub: value_pb2_grpc.ValueServiceStub = session.StubAccessor(session.StubType.value)
 
-    def __init__(self, val, _owner=None):
+    def __init__(self, val: ValueLike, _owner: Union[Database, Layout, Cell, ComponentDef] = None):
         """Initialize a value object."""
         self.msg = ValueMessage()
         if isinstance(val, ValueMessage):
@@ -110,12 +122,12 @@ class Value:
         else:
             return str(complex(self.msg.constant.real, self.msg.constant.imag))
 
-    def __eq__(self, other):
+    def __eq__(self, other: Value):
         """Compare this value to another value to determine if they are equivalent.
 
         Parameters
         ----------
-        other : Value
+        other : .Value
             Value to compare.
 
         Returns
@@ -125,88 +137,88 @@ class Value:
         """
         return self.equals(other)
 
-    def __add__(self, other):
+    def __add__(self, other: ValueLike):
         """Add this value and another value.
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
             Other value to add.
 
 
         Returns
         -------
-        Value
+        .Value
             Constant value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value + other.value)
 
-    def __sub__(self, other):
+    def __sub__(self, other: ValueLike):
         """Subtract this value from another value.
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
            Other value to subtract.
 
         Returns
         -------
-        Value
+        .Value
             Constant Value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value - other.value)
 
-    def __mul__(self, other):
+    def __mul__(self, other: ValueLike):
         """Multiply this value and another value.
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
             Other value to multiply.
 
         Returns
         -------
-        Value
+        .Value
             Constant Value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value * other.value)
 
-    def __truediv__(self, other):
+    def __truediv__(self, other: ValueLike):
         """Perform floating-point division of this value and another value.
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
              Other value for the floating-point division.
 
         Returns
         -------
-        Value
+        .Value
             Constant value wrapping either a real or complex number.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value / other.value)
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, other: ValueLike):
         """Divide this value by another value and return its floor (integer part).
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
             Other value for the division.
 
         Returns
         -------
-        Value
+        .Value
             Constant value wrapping an integer.
         """
         other = conversions.to_value(other)
         return self.__class__(self.value // other.value)
 
-    def __pow__(self, power, modulo=None):
+    def __pow__(self, power: Union[int, float], modulo=None):
         """Raise a value to the power of another value.
 
         Parameters
@@ -216,7 +228,7 @@ class Value:
 
         Returns
         -------
-        Value
+        .Value
             Constant value wrapping either a real or complex number.
         """
         return self.__class__(self.value**power)
@@ -226,17 +238,17 @@ class Value:
 
         Returns
         -------
-        Value
+        .Value
             Constant value wrapping either a real or complex number.
         """
         return self.__class__(-self.value)
 
-    def __gt__(self, other):
+    def __gt__(self, other: ValueLike):
         """Compare this value to another to see if this value is greater.
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
             Other value to compare to.
 
         Returns
@@ -246,12 +258,12 @@ class Value:
         """
         return self.value > other.value
 
-    def __lt__(self, other):
+    def __lt__(self, other: ValueLike):
         """Compare this value to another to see if this value is less.
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
             Other value to compare to.
 
         Returns
@@ -261,12 +273,12 @@ class Value:
         """
         return self.value < other.value
 
-    def equals(self, other, tolerance=1e-9):
+    def equals(self, other: ValueLike, tolerance: float = 1e-9):
         """Check if this value and other value are equivalent when evaluated.
 
         Parameters
         ----------
-        other : str, int, float, complex, Value
+        other : :term:`ValueLike`
             Other value to compare to.
         tolerance : float, default: 1e-9
             Tolerance.
@@ -333,5 +345,5 @@ class Value:
 
     @property
     def sqrt(self):
-        """Square root of this value as a constant value."""
+        """:obj:`float`: Square root of this value as a constant value."""
         return self**0.5

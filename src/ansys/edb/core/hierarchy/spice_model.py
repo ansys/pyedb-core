@@ -1,6 +1,6 @@
 """SPICE Model."""
 from ansys.edb.core.hierarchy.model import Model
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.session import SpiceModelServiceStub, StubAccessor, StubType
 
 
@@ -78,3 +78,10 @@ class SPICEModel(Model):
             Terminal name.
         """
         self.__stub.RemoveTerminalPinPair(messages.string_property_message(self, terminal))
+
+    @property
+    @parser.to_string_dict
+    def terminal_pin_pairs(self):
+        """:obj:`dict` of {:obj:`str` : :obj:`str`}: A dictionary showing the mapping of terminals in the layout to \
+        pins in the spice model by name."""
+        return self.__stub.GetTerminalPinPairs(self.msg)

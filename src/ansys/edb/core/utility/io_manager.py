@@ -1,5 +1,4 @@
 """Cache."""
-
 import abc
 from collections import defaultdict
 from contextlib import contextmanager
@@ -13,6 +12,7 @@ from google.protobuf.any_pb2 import Any
 from google.protobuf.empty_pb2 import Empty
 
 from ansys.edb.core.inner.rpc_info_utils import get_rpc_info
+from ansys.edb.core.inner.utils import client_stream_iterator
 
 # The cache module singleton
 MOD = modules[__name__]
@@ -196,15 +196,11 @@ class _Buffer(_IOOptimizer):
 
     @staticmethod
     def _buffer_request_iterator(buffer):
-        max_size = 32000
-        msg = BufferMessage()
-        for buffer_entry in buffer:
-            buffer_entry_msg = buffer_entry.msg()
-            if msg.ByteSize() + buffer_entry_msg.ByteSize() > max_size:
-                yield msg
-                msg = BufferMessage()
-            msg.buffer.append(buffer_entry_msg)
-        yield msg
+        chunk_entry_creator = lambda buffer_entry: buffer_entry.msg()
+        chunk_entries_getter = lambda chunk: chunk.buffer
+        return client_stream_iterator(
+            buffer, BufferMessage, chunk_entry_creator, chunk_entries_getter
+        )
 
     def flush(self):
         if not self._buffer:

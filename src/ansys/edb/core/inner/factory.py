@@ -1,7 +1,6 @@
 """This module allows for the creating of objects while avoid circular imports."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner.conn_obj import ConnObj
 
 _type_creator_params_dict = None
 _primitive_type_creator_params_dict = None
@@ -20,6 +19,7 @@ def _initialize_type_creator_params_dict():
     from ansys.edb.core.hierarchy.cell_instance import CellInstance
     from ansys.edb.core.hierarchy.group import Group
     from ansys.edb.core.hierarchy.pin_group import PinGroup
+    from ansys.edb.core.inner.conn_obj import ConnObj
     from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
     from ansys.edb.core.net.differential_pair import DifferentialPair
     from ansys.edb.core.net.extended_net import ExtendedNet
@@ -43,6 +43,7 @@ def _initialize_type_creator_params_dict():
         LayoutObjType.EXTENDED_NET: _CreatorParams(ExtendedNet),
         LayoutObjType.DIFFERENTIAL_PAIR: _CreatorParams(DifferentialPair),
         LayoutObjType.NET: _CreatorParams(Net),
+        LayoutObjType.INVALID_LAYOUT_OBJ: _CreatorParams(ConnObj),
     }
     return _type_creator_params_dict
 
@@ -157,4 +158,4 @@ def create_conn_obj(msg):
     -------
     ansys.edb.core.inner.ConnObj
     """
-    return create_lyt_obj(msg, ConnObj(msg).obj_type)
+    return create_lyt_obj(msg, create_lyt_obj(msg, LayoutObjType.INVALID_LAYOUT_OBJ).obj_type)

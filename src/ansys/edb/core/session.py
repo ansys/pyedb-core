@@ -41,6 +41,7 @@ from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
 from ansys.api.edb.v1.dielectric_material_model_pb2_grpc import DielectricMaterialModelServiceStub
 from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
 from ansys.api.edb.v1.djordjecvic_sarkar_model_pb2_grpc import DjordjecvicSarkarModelServiceStub
+from ansys.api.edb.v1.edb_error_manager_pb2_grpc import EDBErrorManagerServiceStub
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
@@ -125,6 +126,7 @@ from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import (
 )
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
+from ansys.api.edb.v1.s_parameter_model_pb2_grpc import SParameterModelServiceStub
 from ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2_grpc import (
     SIWaveDCIRSimulationSettingsServiceStub,
 )
@@ -144,7 +146,6 @@ from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
 )
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
-from ansys.api.edb.v1.sparameter_model_pb2_grpc import SParameterModelServiceStub
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure_3d_pb2_grpc import Structure3DServiceStub
@@ -163,11 +164,7 @@ import grpc
 
 from ansys.edb.core.inner import LOGGER
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
-from ansys.edb.core.inner.interceptors import (
-    ExceptionInterceptor,
-    IOInterceptor,
-    LoggingInterceptor,
-)
+from ansys.edb.core.inner.interceptors import ExceptionInterceptor, IOInterceptor
 
 DEFAULT_ADDRESS = "localhost"
 
@@ -213,7 +210,6 @@ class _Session:
             # on reversed order of interception
             IOInterceptor(LOGGER, self.rpc_counter),
             ExceptionInterceptor(LOGGER),
-            LoggingInterceptor(LOGGER),
         ]
 
     def __enter__(self):
@@ -470,6 +466,7 @@ class StubType(Enum):
     layout_component = LayoutComponentServiceStub
     io_manager = IOManagerServiceStub
     primitive_instance_collection = PrimitiveInstanceCollectionServiceStub
+    edb_error_manager = EDBErrorManagerServiceStub
     q3d_advanced_sim_settings = Q3DAdvancedSettingsServiceStub
     q3d_advanced_meshing_sim_settings = Q3DAdvancedMeshingSettingsServiceStub
     q3d_cg_sim_settings = Q3DCGSettingsServiceStub

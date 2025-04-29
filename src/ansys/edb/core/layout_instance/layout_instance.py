@@ -2,6 +2,7 @@
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
 from ansys.edb.core.geometry.point_data import PointData
+from ansys.edb.core.geometry.polygon_data import PolygonData
 from ansys.edb.core.inner import ObjBase, utils
 from ansys.edb.core.inner.messages import (
     layer_ref_message,
@@ -12,6 +13,7 @@ from ansys.edb.core.inner.messages import (
 )
 from ansys.edb.core.layout_instance import layout_obj_instance
 from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
+from ansys.edb.core.utility.io_manager import get_cache
 
 
 class LayoutInstance(ObjBase):
@@ -65,19 +67,30 @@ class LayoutInstance(ObjBase):
             )
             msg_params[spatial_filter_field] = spatial_filter_msg
 
-        hits = self.__stub.QueryLayoutObjInstances(
-            layout_instance_pb2.LayoutObjInstancesQueryMessage(**msg_params)
-        )
-
-        if hits.HasField("full_partial_hits"):
-            full_partial_hits = hits.full_partial_hits
-            return utils.map_list(
-                full_partial_hits.full.items, layout_obj_instance.LayoutObjInstance
-            ), utils.map_list(
-                full_partial_hits.partial.items, layout_obj_instance.LayoutObjInstance
-            )
+        request = layout_instance_pb2.LayoutObjInstancesQueryMessage(**msg_params)
+        all_hits = []
+        if (cache := get_cache()) is not None:
+            for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(request):
+                all_hits.append(hits_chunk)
         else:
-            return utils.map_list(hits.hits.items, layout_obj_instance.LayoutObjInstance)
+            all_hits.append(self.__stub.QueryLayoutObjInstances(request))
+
+        if isinstance(spatial_filter, PolygonData):
+            full_hits = []
+            partial_hits = []
+            for hits in all_hits:
+                full_partial_hits = hits.full_partial_hits
+                for full_hit in full_partial_hits.full.items:
+                    full_hits.append(layout_obj_instance.LayoutObjInstance(full_hit))
+                for partial_hit in full_partial_hits.partial.items:
+                    partial_hits.append(layout_obj_instance.LayoutObjInstance(partial_hit))
+                return full_hits, partial_hits
+        else:
+            return [
+                layout_obj_instance.LayoutObjInstance(hit)
+                for hits in all_hits
+                for hit in hits.hits.items
+            ]
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.

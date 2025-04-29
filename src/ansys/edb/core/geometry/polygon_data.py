@@ -9,6 +9,7 @@ from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2, pol
 from ansys.edb.core import session
 from ansys.edb.core.geometry.arc_data import ArcData
 from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.utility import conversions
 
 
@@ -39,6 +40,17 @@ class IntersectionType(Enum):
 
 class PolygonData:
     """Represents a polygon data object."""
+
+    @staticmethod
+    def _polygon_data_request_iterator(polys):
+        chunk_entry_creator = lambda poly: messages.polygon_data_message(poly)
+        chunk_entries_getter = lambda chunk: chunk.polygons
+        return client_stream_iterator(
+            polys,
+            polygon_data_pb2.PolygonDataListMessage,
+            chunk_entry_creator,
+            chunk_entries_getter,
+        )
 
     __stub: polygon_data_pb2_grpc.PolygonDataServiceStub = session.StubAccessor(
         session.StubType.polygon_data
@@ -355,7 +367,7 @@ class PolygonData:
         -------
         tuple[.PointData, .PointData]
         """
-        return cls.__stub.GetBBox(messages.polygon_data_list_message(polygons))
+        return cls.__stub.GetStreamedBBox(PolygonData._polygon_data_request_iterator(polygons))
 
     @parser.to_circle
     def bounding_circle(self):

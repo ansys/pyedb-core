@@ -299,6 +299,8 @@ rpc_information = {
         "SetRelativePermitivityAtFrequency": _RpcInfo(buffer=True),
         "GetLossTangentAtFrequency": _RpcInfo(cache=True),
         "SetLossTangentAtFrequency": _RpcInfo(buffer=True),
+        "GetHighFrequencyCorner": _RpcInfo(cache=True),
+        "SetHighFrequencyCorner": _RpcInfo(buffer=True),
         "UseDCRelativePermitivity": _RpcInfo(cache=True),
         "SetUseDCRelativePermitivity": _RpcInfo(buffer=True),
         "GetDCRelativePermitivity": _RpcInfo(cache=True),
@@ -306,6 +308,7 @@ rpc_information = {
         "GetDCConductivity": _RpcInfo(cache=True),
         "SetDCConductivity": _RpcInfo(buffer=True),
     },
+    "ansys.api.edb.v1.EDBErrorManagerService": {"GetErrors": _RpcInfo(read_no_cache=True)},
     "ansys.api.edb.v1.EdgeService": {
         "GetEdgeType": _RpcInfo(cache=True),
         "Create": _RpcInfo(buffer=True, returns_future=True),
@@ -583,6 +586,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.LayoutInstanceService": {
         "QueryLayoutObjInstances": _RpcInfo(cache=True),
+        "StreamLayoutObjInstancesQuery": _RpcInfo(read_no_cache=True),
         "GetLayoutObjInstanceInContext": _RpcInfo(cache=True),
         "GetConnectedObjects": _RpcInfo(read_no_cache=True),
         "StreamConnectedObjects": _RpcInfo(read_no_cache=True),
@@ -606,6 +610,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.LayoutObjInstanceService": {
         "GetLayers": _RpcInfo(cache=True),
+        "StreamLayers": _RpcInfo(read_no_cache=True),
         "GetGeometries": _RpcInfo(cache=True),
         "GetContext": _RpcInfo(cache=True),
         "GetLayoutInstanceContext": _RpcInfo(cache=True),
@@ -862,6 +867,7 @@ rpc_information = {
         "GetArea": _RpcInfo(cache=True),
         "Transform": _RpcInfo(cache=True),
         "GetBBox": _RpcInfo(cache=True),
+        "GetStreamedBBox": _RpcInfo(read_no_cache=True),
         "GetConvexHull": _RpcInfo(cache=True),
         "RemoveArcs": _RpcInfo(cache=True),
         "Defeature": _RpcInfo(cache=True),
@@ -1271,12 +1277,6 @@ rpc_information = {
         "UsesSolderball": _RpcInfo(cache=True),
         "Clone": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
     },
-    "ansys.api.edb.v1.SParameterModelService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetProperties": _RpcInfo(cache=True),
-        "SetComponentModelName": _RpcInfo(buffer=True),
-        "SetReferenceNet": _RpcInfo(buffer=True),
-    },
     "ansys.api.edb.v1.SpiceModelService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
         "GetProperties": _RpcInfo(cache=True),
@@ -1285,6 +1285,7 @@ rpc_information = {
         "SetSubCkt": _RpcInfo(buffer=True),
         "AddTerminalPinPair": _RpcInfo(buffer=True),
         "RemoveTerminalPinPair": _RpcInfo(buffer=True),
+        "GetTerminalPinPairs": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.StackupLayerService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
@@ -1307,6 +1308,8 @@ rpc_information = {
         "SetEtchFactorEnabled": _RpcInfo(buffer=True),
         "SetEtchFactor": _RpcInfo(buffer=True),
         "GetEtchFactor": _RpcInfo(cache=True),
+        "SetEtchNetClass": _RpcInfo(buffer=True),
+        "GetEtchNetClass": _RpcInfo(cache=True),
         "GetUseSolverProperties": _RpcInfo(cache=True),
         "SetUseSolverProperties": _RpcInfo(buffer=True),
         "GetHFSSSolverProperties": _RpcInfo(cache=True),
@@ -1321,6 +1324,12 @@ rpc_information = {
         "SetThickness": _RpcInfo(buffer=True),
         "GetMeshClosureProp": _RpcInfo(cache=True),
         "SetMeshClosureProp": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SParameterModelService": {
+        "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "GetProperties": _RpcInfo(cache=True),
+        "SetComponentModelName": _RpcInfo(buffer=True),
+        "SetReferenceNet": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.TerminalService": {
         "FindByName": _RpcInfo(buffer=True, returns_future=True),

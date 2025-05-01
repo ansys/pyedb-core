@@ -1,4 +1,13 @@
 """Arc data."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.geometry.arc_data import ArcData
+    from ansys.edb.core.typing import PointLike
+
+
 from enum import Enum
 import math
 
@@ -47,7 +56,7 @@ class ArcData:
         if "direction" in kwargs:
             self._height_options["direction"] = RotationDirection(kwargs["direction"])
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Generate a readable string for the arc.
 
         Returns
@@ -61,31 +70,31 @@ class ArcData:
             return f"{self.start} {arc} {self.end}"
 
     @property
-    def start(self):
+    def start(self) -> PointData:
         """:class:`.PointData`: Start point of the arc."""
         return self._start
 
     @property
-    def end(self):
+    def end(self) -> PointData:
         """:class:`.PointData`: End point of the arc."""
         return self._end
 
     @property
-    def height(self):
+    def height(self) -> float:
         """:obj:`float`: Height of the arc."""
         if self._height is None:
             self._height = self.__stub.GetHeight(messages.arc_message(self)).value
 
         return self._height
 
-    def is_point(self, tolerance=0.0):
+    def is_point(self, tolerance: float = 0.0) -> bool:
         """Determine if the arc is a point.
 
         An arc is a point when its start and end points are the same.
 
         Parameters
         ----------
-        tolerance : float, optional
+        tolerance : float, default: 0.0
            Tolearance.
 
         Returns
@@ -95,12 +104,12 @@ class ArcData:
         """
         return self.is_segment(tolerance) and self.start.equals(self.end, tolerance)
 
-    def is_segment(self, tolerance=0.0):
+    def is_segment(self, tolerance: float = 0.0) -> bool:
         """Determine if the arc is a straight line segment.
 
         Parameters
         ----------
-        tolerance : float, optional
+        tolerance : float, default: 0.0
             Tolearance.
 
         Returns
@@ -112,28 +121,28 @@ class ArcData:
 
     @property
     @parser.to_point_data
-    def center(self):
+    def center(self) -> PointData:
         """:class:`.PointData`: Center point of the arc."""
         return self.__stub.GetCenter(messages.arc_message(self))
 
     @property
     @parser.to_point_data
-    def midpoint(self):
+    def midpoint(self) -> PointData:
         """:class:`.PointData`: Midpoint of the arc."""
         return self.__stub.GetMidpoint(messages.arc_message(self))
 
     @property
-    def radius(self):
+    def radius(self) -> float:
         """:obj:`float`: Radius of the arc."""
         return self.__stub.GetRadius(messages.arc_message(self)).value
 
     @property
     @parser.to_polygon_data
-    def bbox(self):
+    def bbox(self) -> PolygonData:
         """:class:`.PolygonData`: Rectangular bounding box of the arc."""
         return self.__stub.GetBoundingBox(messages.arc_message(self))
 
-    def is_big(self):
+    def is_big(self) -> bool:
         """Determine if the arc is big.
 
         Returns
@@ -144,7 +153,7 @@ class ArcData:
         dist = self.start.distance(self.end)
         return 2 * math.fabs(self.height) > dist
 
-    def is_left(self):
+    def is_left(self) -> bool:
         """Determine if the arc rotates clockwise.
 
         This method is the same as the ``is_cw`` method.
@@ -156,7 +165,7 @@ class ArcData:
         """
         return self.is_cw()
 
-    def is_cw(self):
+    def is_cw(self) -> bool:
         """Determine if the arc rotates clockwise.
 
         This method is the same as the ``is_left`` method.
@@ -168,7 +177,7 @@ class ArcData:
         """
         return self.height > 0.0
 
-    def is_ccw(self):
+    def is_ccw(self) -> bool:
         """Determine if the arc rotates counter-clockwise.
 
         Returns
@@ -179,7 +188,7 @@ class ArcData:
         return self.height < 0.0
 
     @property
-    def direction(self):
+    def direction(self) -> str:
         """:obj:`Literal["cw", "ccw", "colinear"]`: Rotational direction of the arc."""
         if self.is_cw():
             return "cw"
@@ -188,7 +197,7 @@ class ArcData:
         else:
             return "colinear"
 
-    def angle(self, arc=None):
+    def angle(self, arc: ArcData = None) -> float:
         """Get the angle between this arc and another arc if provided or the angle of this arc.
 
         Parameters
@@ -214,7 +223,7 @@ class ArcData:
         return vec1.angle(vec2)
 
     @property
-    def length(self):
+    def length(self) -> str:
         """:obj:`str`: Circumference length of the arc."""
         if self.is_segment():
             return self.start.distance(self.end)
@@ -222,16 +231,16 @@ class ArcData:
             return math.fabs(self.angle() * self.radius)
 
     @property
-    def points(self):
+    def points(self) -> list[PointData]:
         """:obj:`list` of :class:`.PointData`: Geometric points representing the arc."""
         return [self._start, PointData(self.height), self._end]
 
-    def tangent_at(self, point):
+    def tangent_at(self, point: PointLike) -> PointData:
         """Get the tangent vector of the arc at a given point.
 
         Parameters
         ----------
-        point : ansys.edb.core.typing.PointLike
+        point : .PointLike
             Point.
 
         Returns
@@ -250,12 +259,12 @@ class ArcData:
             return PointData(vec.y, -vec.x)
 
     @parser.to_box
-    def closest_points(self, other):
+    def closest_points(self, other: ArcData) -> tuple[PointData, PointData]:
         """Get the closest points from this arc to another arc, and vice versa.
 
         Parameters
         ----------
-        other : ArcData
+        other : .ArcDataother
             Other arc.
 
         Returns

@@ -32,19 +32,15 @@ class ArcData:
 
     __stub: arc_data_pb2_grpc.ArcDataServiceStub = session.StubAccessor(session.StubType.arc_data)
 
-    def __init__(self, start, end, **kwargs):
+    def __init__(self, start: PointLike, end: PointLike, **kwargs):
         """Create an arc.
 
         Parameters
         ----------
-        start : ansys.edb.core.typing.PointLike
-        end : ansys.edb.core.typing.PointLike
+        start : .PointLike
+        end : .PointLike
         height: float, int, optional
-        thru : ansys.edb.core.typing.PointLike, optional
         direction : Literal["cw", "ccw", "colinear"], optional
-        radius : float, optional
-        center : ansys.edb.core.typing.PointLike, optional
-        is_big : bool, optional
         """
         self._start = conversions.to_point(start)
         self._end = conversions.to_point(end)

@@ -4,7 +4,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.geometry.arc_data import ArcData
     from ansys.edb.core.typing import PointLike
 
 
@@ -37,8 +36,8 @@ class ArcData:
 
         Parameters
         ----------
-        start : .PointLike
-        end : .PointLike
+        start : :term:`Point2DLike`
+        end : :term:`Point2DLike`
         height: float, int, optional
         direction : Literal["cw", "ccw", "colinear"], optional
         """
@@ -152,7 +151,7 @@ class ArcData:
     def is_left(self) -> bool:
         """Determine if the arc rotates clockwise.
 
-        This method is the same as the ``is_cw`` method.
+        This method is the same as the :obj:`is_cw` method.
 
         Returns
         -------
@@ -185,7 +184,7 @@ class ArcData:
 
     @property
     def direction(self) -> str:
-        """:obj:`Literal["cw", "ccw", "colinear"]`: Rotational direction of the arc."""
+        """:obj:`str` : Rotational direction of the arc which can be "cw" or "ccw" or "colinear"."""
         if self.is_cw():
             return "cw"
         elif self.is_ccw():
@@ -236,7 +235,7 @@ class ArcData:
 
         Parameters
         ----------
-        point : .PointLike
+        point : :term:`Point2DLike`
             Point.
 
         Returns
@@ -260,7 +259,7 @@ class ArcData:
 
         Parameters
         ----------
-        other : .ArcDataother
+        other : .ArcData
             Other arc.
 
         Returns

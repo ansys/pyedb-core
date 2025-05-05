@@ -26,8 +26,8 @@ from ansys.edb.core.session import session
 from ansys.edb.core.simulation_setup.adaptive_solutions import SingleFrequencyAdaptiveSolution
 from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
 from ansys.edb.core.simulation_setup.mesh_operation import SkinDepthMeshOperation
-from ansys.edb.core.simulation_setup.simulation_setup import SweepData
-from ansys.edb.core.terminal.terminals import PointTerminal
+from ansys.edb.core.simulation_setup.simulation_setup import Distribution, FrequencyData, SweepData
+from ansys.edb.core.terminal.point_terminal import PointTerminal
 
 # Wrapper class over Database
 # This will ensure clean entry and exit from database
@@ -416,7 +416,9 @@ class SpiralInductor(BaseExample):
                 name="SPIRAL_M9", net_layer_info=[("SPIRAL", "M9", False)], num_layers="3"
             )
         ]
-        sweep_data = SweepData("Sweep 1", "LIN", "0GHz", "30GHz", "0.01GHz")
+        sweep_data = SweepData(
+            "Sweep 1", FrequencyData(Distribution.LIN, "0GHz", "30GHz", "0.01GHz")
+        )
         sweep_data.interpolation_data.fast_sweep = True
         setup.sweep_data = [sweep_data]
 

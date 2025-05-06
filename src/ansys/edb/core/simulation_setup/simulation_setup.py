@@ -1,6 +1,7 @@
 """Simulation Setup."""
 
 from enum import Enum
+from typing import List, Union
 
 from ansys.api.edb.v1 import edb_defs_pb2
 from ansys.api.edb.v1.simulation_setup_pb2 import (
@@ -34,6 +35,16 @@ class FreqSweepType(Enum):
     INTERPOLATING_SWEEP = edb_defs_pb2.INTERPOLATING_SWEEP
     DISCRETE_SWEEP = edb_defs_pb2.DISCRETE_SWEEP
     BROADBAND_SWEEP = edb_defs_pb2.BROADBAND_SWEEP
+
+
+class Distribution(Enum):
+    """Enum representing frequency distribution types."""
+
+    LIN = "LIN"
+    LINC = "LINC"
+    ESTP = "ESTP"
+    DEC = "DEC"
+    OCT = "OCT"
 
 
 class HFSSRegionComputeResource:
@@ -112,6 +123,57 @@ class InterpolatingSweepData:
         self.min_solutions = 0
 
 
+class FrequencyData:
+    r"""Class representing a frequency setting.
+
+    Attributes
+    ----------
+    distribution : .Distribution
+      Sweep distribution type (see table below).
+    start_f : str
+      Start frequency is number with optional frequency units.
+    end_f : str
+      End frequency is number with optional frequency units.
+    step : str
+      Step is either frequency with optional frequency units or an integer
+
+    Notes
+    -----
+    Here are the choices for the distribution parameter:
+
+    .. list-table:: Values for distribution parameter
+       :widths: 20 45 25
+       :header-rows: 1
+
+       * - Distribution
+         - Description
+         - Example
+       * - LIN
+         - linear (start, stop, step)
+         - LIN 2GHz 4GHz 100MHz or LIN 1dBm 10dBm 1dB
+       * - LINC
+         - linear (start, stop, count)
+         - LINC 2GHz 4GHz 11
+       * - ESTP
+         - Exponential step (start, stop, count)
+         - ESTP 2MHz 10MHz 3
+       * - DEC
+         - decade (start, stop, number of decades)
+         - DEC 10KHz 10GHz 6
+       * - OCT
+         - octave (start, stop, number of octaves)
+         - OCT 10MHz 160MHz 5
+
+    """
+
+    def __init__(self, distribution: Distribution, start_f: str, end_f: str, step: str):
+        """Initialize a frequency setting."""
+        self.distribution = distribution
+        self.start_f = start_f
+        self.end_f = end_f
+        self.step = step
+
+
 class SweepData:
     r"""Class representing a sweep data setting.
 
@@ -119,14 +181,6 @@ class SweepData:
     ----------
     name : str
       Name of this sweep.
-    distribution : str
-      Sweep distribution type (see table below).
-    start_f : str
-      Start frequency is number with optional frequency units.
-    end_f : str
-      End frequency is number with optional frequency units.
-    step : str
-      Step is either frequency with optional frequency units or an integer when a count is needed.
     enabled : bool
       True if this is enabled.
     type : FreqSweepType
@@ -171,43 +225,14 @@ class SweepData:
       Stop meshing frequency.
     interpolation_data : InterpolatingSweepData
       Data for interpolating frequency sweeps.
-
-    Notes
-    -----
-    Here are the choices for the distribution parameter:
-
-    .. list-table:: Values for distribution parameter
-       :widths: 20 45 25
-       :header-rows: 1
-
-       * - Distribution
-         - Description
-         - Example
-       * - LIN
-         - linear (start, stop, step)
-         - LIN 2GHz 4GHz 100MHz or LIN 1dBm 10dBm 1dB
-       * - LINC
-         - linear (start, stop, count)
-         - LINC 2GHz 4GHz 11
-       * - ESTP
-         - Exponential step (start, stop, count)
-         - ESTP 2MHz 10MHz 3
-       * - DEC
-         - decade (start, stop, number of decades)
-         - DEC 10KHz 10GHz 6
-       * - OCT
-         - octave (start, stop, number of octaves)
-         - OCT 10MHz 160MHz 5
+    frequency_data : .FrequencyData or list of .FrequencyData
+      List of frequency data.
 
     """
 
-    def __init__(self, name, distribution, start_f, end_f, step):
+    def __init__(self, name: str, frequency_data: Union[FrequencyData, List[FrequencyData]]):
         """Initialize a sweep data setting."""
         self.name = name
-        self.distribution = distribution
-        self.start_f = start_f
-        self.end_f = end_f
-        self.step = step
         self.enabled = True
         self.type = FreqSweepType.INTERPOLATING_SWEEP
         self.use_q3d_for_dc = False
@@ -230,11 +255,24 @@ class SweepData:
         self.mesh_freq_range_start = "-1.0"
         self.mesh_freq_range_stop = "-1.0"
         self.interpolation_data = InterpolatingSweepData()
+        self.frequency_data = frequency_data
 
     @property
     def frequency_string(self):
-        """:obj:`str`: String representing the frequency sweep data."""
-        return self.distribution + " " + self.start_f + " " + self.end_f + " " + self.step
+        """:obj:`str`: String representing the frequency sweep data.
+
+        This property is read-only.
+        """
+        frequencies = []
+        if isinstance(self.frequency_data, FrequencyData):
+            frequencies.append(self.frequency_data)
+        elif isinstance(self.frequency_data, list):
+            frequencies = self.frequency_data
+
+        freq_str = ""
+        for freq in frequencies:
+            freq_str += f"{freq.distribution.value} {freq.start_f} {freq.end_f} {freq.step}\t\n"
+        return freq_str
 
 
 def _hfss_region_compute_resource_message(res):

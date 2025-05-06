@@ -36,6 +36,7 @@ Classes
    simulation_setup.FreqSweepType
    simulation_setup.HFSSRegionComputeResource
    simulation_setup.InterpolatingSweepData
+   simulation_setup.FrequencyData
    raptor_x_simulation_settings.RaptorXSimulationSettings
    raptor_x_simulation_settings.RaptorXGeneralSettings
    raptor_x_simulation_settings.RaptorXAdvancedSettings
@@ -57,6 +58,7 @@ Enums
    :toctree: _autosummary
 
       simulation_setup.SimulationSetupType
+      simulation_setup.Distribution
       hfss_simulation_settings.AdaptType
       hfss_simulation_settings.BasisFunctionOrder
       hfss_simulation_settings.SolverType

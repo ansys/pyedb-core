@@ -106,7 +106,11 @@ class ComponentModel(ObjBase):
         -------
         .ComponentModel
         """
-        comp_model_type = self.component_model_type
+        comp_model_type = (
+            ComponentModelType.UNKNOWN_COMPONENT_MODEL_TYPE
+            if self.is_null
+            else self.component_model_type
+        )
         if comp_model_type == ComponentModelType.N_PORT:
             return NPortComponentModel(self.msg)
         elif comp_model_type == ComponentModelType.DYNAMIC_LINK:

@@ -370,7 +370,13 @@ def _msg_to_sweep_data(msg):
     """Create a ``SweepData`` from a ``SweepDataMessage``."""
     freq_str_params = msg.frequency_string.split()
     sweep_data = SweepData(
-        msg.name, freq_str_params[0], freq_str_params[1], freq_str_params[2], freq_str_params[3]
+        msg.name,
+        FrequencyData(
+            Distribution[freq_str_params[0]],
+            freq_str_params[1],
+            freq_str_params[2],
+            freq_str_params[3],
+        ),
     )
     sweep_data.enabled = msg.enabled
     sweep_data.type = FreqSweepType(msg.type)

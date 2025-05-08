@@ -6,6 +6,7 @@ from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
 from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.utils import query_lyt_object_collection
 from ansys.edb.core.session import StubAccessor, StubType
 
 
@@ -113,7 +114,10 @@ class Group(HierarchyObj):
 
         This property is read-only.
         """
-        from ansys.edb.core.inner import factory
-
-        objs = self.__stub.GetMembers(self.msg).items
-        return [factory.create_conn_obj(co) for co in objs]
+        return query_lyt_object_collection(
+            self,
+            LayoutObjType.INVALID_LAYOUT_OBJ,
+            self.__stub.GetMembers,
+            self.__stub.StreamMembers,
+            False,
+        )

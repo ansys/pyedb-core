@@ -507,4 +507,4 @@ def _to_mesh_op(message):
 
 def _to_string_dict(message):
     """Convert a message to a dictionary of strings."""
-    return {key: value for (key, value) in message.string_map}
+    return {key: value for (key, value) in message.string_map.items()}

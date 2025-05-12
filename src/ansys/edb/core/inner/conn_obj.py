@@ -54,7 +54,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         Returns
         -------
-        ConnObj
+        .ConnObj
         """
         return create_lyt_obj(self.msg, self.obj_type)
 

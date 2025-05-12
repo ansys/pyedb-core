@@ -3,6 +3,7 @@ from ansys.api.edb.v1 import connectable_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import layout_obj, messages
+from ansys.edb.core.inner.factory import create_lyt_obj
 from ansys.edb.core.layout import mcad_model as mm
 from ansys.edb.core.session import ConnectableServiceStub, StubAccessor, StubType
 
@@ -47,6 +48,15 @@ class ConnObj(layout_obj.LayoutObj):
         else:
             return client_obj
         return cls(None)
+
+    def cast(self):
+        """Cast the ConnObj object to the correct concrete type.
+
+        Returns
+        -------
+        .ConnObj
+        """
+        return create_lyt_obj(self.msg, self.obj_type)
 
     @property
     def obj_type(self):

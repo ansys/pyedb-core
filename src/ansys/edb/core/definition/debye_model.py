@@ -1,4 +1,6 @@
 """Dielectric material definition."""
+from __future__ import annotations
+
 from typing import Tuple
 
 from ansys.api.edb.v1 import debye_model_pb2_grpc
@@ -18,7 +20,7 @@ class DebyeModel(DielectricMaterialModel):
     )
 
     @classmethod
-    def create(cls) -> "DebyeModel":
+    def create(cls) -> DebyeModel:
         """Create a Debye dielectric material model.
 
         Returns

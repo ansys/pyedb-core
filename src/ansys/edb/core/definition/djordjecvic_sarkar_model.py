@@ -1,4 +1,6 @@
 """Dielectric material definition."""
+from __future__ import annotations
+
 from ansys.api.edb.v1 import djordjecvic_sarkar_model_pb2_grpc
 from google.protobuf import empty_pb2
 
@@ -15,7 +17,7 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
     )
 
     @classmethod
-    def create(cls) -> "DjordjecvicSarkarModel":
+    def create(cls) -> DjordjecvicSarkarModel:
         """Create a Djordjecvic Sarkar dielectric material model.
 
         Returns

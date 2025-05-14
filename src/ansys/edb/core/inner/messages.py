@@ -34,6 +34,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     DoublesPropertyMessage,
     EDBInternalIdMessage,
     EDBObjCollectionMessage,
+    EDBObjCollectionPropertyMessage,
     EDBObjMessage,
     EDBObjNameMessage,
     EDBObjPairMessage,
@@ -120,8 +121,8 @@ from ansys.api.edb.v1.refs_pb2 import (
     NetRefMessage,
 )
 from ansys.api.edb.v1.rlc_pb2 import RlcMessage
+from ansys.api.edb.v1.s_parameter_model_pb2 import SParameterModelMessage
 from ansys.api.edb.v1.simulation_setup_pb2 import MatrixConvergenceEntryMessage
-from ansys.api.edb.v1.sparameter_model_pb2 import SParameterModelMessage
 from ansys.api.edb.v1.spice_model_pb2 import SpiceModelMessage, SpiceModelNewTerminalPinMessage
 from ansys.api.edb.v1.structure_3d_pb2 import ClosureMessage, SetClosureMessage
 from ansys.api.edb.v1.term_inst_pb2 import TermInstCreationMessage
@@ -1380,6 +1381,13 @@ def broadband_solution_msg(broadband_adapt_sol):
         max_passes=broadband_adapt_sol.max_num_passes,
         low_frequency=broadband_adapt_sol.low_frequency,
         high_frequency=broadband_adapt_sol.high_frequency,
+    )
+
+
+def edb_obj_collection_property_message(target, edb_objs):
+    """Convert to a ``EDBObjCollectionPropertyMessage`` object."""
+    return EDBObjCollectionPropertyMessage(
+        target=target.msg, edb_objs=edb_obj_collection_message(edb_objs)
     )
 
 

@@ -162,13 +162,14 @@ class Rectangle(Primitive):
         return True
 
     @property
+    @parser.to_polygon_data
     def polygon_data(self):
         """:class:`.PolygonData`: \
         Polygon data object of the rectangle.
 
         This property is read-only.
         """
-        return Rectangle.render(*self.get_parameters())
+        return self.__stub.GetPolygonData(self.msg)
 
     @classmethod
     @parser.to_polygon_data

@@ -1,7 +1,7 @@
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
 from utils.fixtures import *  # noqa
-from utils.test_utils import create_edb_obj_msgs, equals
+from utils.test_utils import create_edb_obj_collection_msg, equals
 
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import messages
@@ -68,7 +68,7 @@ def test_bundle_terminal_get_terminals(mocked_stub, bundle_terminal, term_type, 
     get_terminals = mocked_stub(
         bundle_terminal_mod, bundle_terminal_mod.BundleTerminal
     ).GetTerminals
-    get_terminals.return_value = expected = create_edb_obj_msgs(2)
+    get_terminals.return_value = expected = create_edb_obj_collection_msg(2)
     get_params = mocked_stub(terminal_mod, terminal_mod.Terminal).GetParams
     get_params.return_value = term_pb2.TermParamsMessage(term_type=term_type)
 
@@ -79,7 +79,7 @@ def test_bundle_terminal_get_terminals(mocked_stub, bundle_terminal, term_type, 
     assert len(terms) == 2
     for t in terms:
         assert isinstance(t, term_cls)
-    assert sorted([t.id for t in terms]) == sorted([msg.id for msg in expected])
+    assert sorted([t.id for t in terms]) == sorted([msg.id for msg in expected.items])
 
 
 def test_bundle_terminal_ungroup(mocked_stub, bundle_terminal):

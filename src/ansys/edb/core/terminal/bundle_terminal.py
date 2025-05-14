@@ -28,7 +28,7 @@ class BundleTerminal(Terminal):
     @property
     def terminals(self):
         """:obj:`list` of Terminal: All terminals grouped in the terminal."""
-        return [Terminal(msg).cast() for msg in self.__stub.GetTerminals(self.msg)]
+        return [Terminal(msg).cast() for msg in self.__stub.GetTerminals(self.msg).items]
 
     def ungroup(self):
         """Delete the grouping."""

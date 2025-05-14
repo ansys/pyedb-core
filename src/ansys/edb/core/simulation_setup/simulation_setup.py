@@ -1,6 +1,7 @@
 """Simulation Setup."""
 
 from enum import Enum
+from typing import List, Union
 
 from ansys.api.edb.v1 import edb_defs_pb2
 from ansys.api.edb.v1.simulation_setup_pb2 import (
@@ -36,6 +37,16 @@ class FreqSweepType(Enum):
     INTERPOLATING_SWEEP = edb_defs_pb2.INTERPOLATING_SWEEP
     DISCRETE_SWEEP = edb_defs_pb2.DISCRETE_SWEEP
     BROADBAND_SWEEP = edb_defs_pb2.BROADBAND_SWEEP
+
+
+class Distribution(Enum):
+    """Enum representing frequency distribution types."""
+
+    LIN = "LIN"
+    LINC = "LINC"
+    ESTP = "ESTP"
+    DEC = "DEC"
+    OCT = "OCT"
 
 
 class HFSSRegionComputeResource:
@@ -114,65 +125,19 @@ class InterpolatingSweepData:
         self.min_solutions = 0
 
 
-class SweepData:
-    r"""Class representing a sweep data setting.
+class FrequencyData:
+    r"""Class representing a frequency setting.
 
     Attributes
     ----------
-    name : str
-      Name of this sweep.
-    distribution : str
+    distribution : .Distribution
       Sweep distribution type (see table below).
     start_f : str
       Start frequency is number with optional frequency units.
     end_f : str
       End frequency is number with optional frequency units.
     step : str
-      Step is either frequency with optional frequency units or an integer when a count is needed.
-    enabled : bool
-      True if this is enabled.
-    type : FreqSweepType
-      Type of sweep.
-    use_q3d_for_dc : bool
-      Use Q3D solver for dc calculations.
-    save_fields : bool
-      Save fields during simulations.
-    save_rad_fields_only : bool
-      Save only radiation fields during simulations.
-    compute_dc_point : bool
-      Calculate DC point during simulations.
-    siwave_with_3dddm : bool
-      SIwave with 3D DDM.
-    use_hfss_solver_regions : bool
-      SIwave with HFSS solver regions.
-    use_hfss_solver_region_sch_gen : bool
-      SIwave with HFSS solver regions schematic.
-    use_hfss_solver_region_parallel_solve : bool
-      SIwave with HFSS solver parallel region simulation.
-    use_adp_solution_for_all_sweep_freq : bool
-      Enable Using Adaptive Solution for all frequency points.
-    num_parallel_hfss_regions : int
-      SIwave with HFSS regions: number of regions to solve in parallel.
-    parallel_hfss_regions_sim_cfg : list[HFSSRegionComputeResource]
-      List of CHFSSRegionComputeResource assignments for parallel region sims.
-    auto_s_mat_only_solve : bool
-      Auto/Manual SMatrix only solve.
-    min_freq_s_mat_only_solve : str
-      Minimum frequency SMatrix only solve.
-    frequencies : list[str]
-      Frequency points in the frequency sweep.
-    steady_state_start : float
-      Frequency of Steady State Start.
-    mesh_freq_choice : int
-      Meshing frequencies of the observation mesh.
-    mesh_freq_points : list[str]
-      Frequency points in meshing frequencies.
-    mesh_freq_range_start : str
-      Start meshing frequency.
-    mesh_freq_range_stop : str
-      Stop meshing frequency.
-    interpolation_data : InterpolatingSweepData
-      Data for interpolating frequency sweeps.
+      Step is either frequency with optional frequency units or an integer
 
     Notes
     -----
@@ -203,13 +168,71 @@ class SweepData:
 
     """
 
-    def __init__(self, name, distribution, start_f, end_f, step):
-        """Initialize a sweep data setting."""
-        self.name = name
+    def __init__(self, distribution: Distribution, start_f: str, end_f: str, step: str):
+        """Initialize a frequency setting."""
         self.distribution = distribution
         self.start_f = start_f
         self.end_f = end_f
         self.step = step
+
+
+class SweepData:
+    r"""Class representing a sweep data setting.
+
+    Attributes
+    ----------
+    name : str
+      Name of this sweep.
+    enabled : bool
+      True if this is enabled.
+    type : FreqSweepType
+      Type of sweep.
+    use_q3d_for_dc : bool
+      Use Q3D solver for dc calculations.
+    save_fields : bool
+      Save fields during simulations.
+    save_rad_fields_only : bool
+      Save only radiation fields during simulations.
+    compute_dc_point : bool
+      Calculate DC point during simulations.
+    siwave_with_3dddm : bool
+      SIwave with 3D DDM.
+    use_hfss_solver_regions : bool
+      SIwave with HFSS solver regions.
+    use_hfss_solver_region_sch_gen : bool
+      SIwave with HFSS solver regions schematic.
+    use_hfss_solver_region_parallel_solve : bool
+      SIwave with HFSS solver parallel region simulation.
+    use_adp_solution_for_all_sweep_freq : bool
+      Enable Using Adaptive Solution for all frequency points.
+    num_parallel_hfss_regions : int
+      SIwave with HFSS regions: number of regions to solve in parallel.
+    parallel_hfss_regions_sim_cfg : list[HFSSRegionComputeResource]
+      List of CHFSSRegionComputeResource assignments for parallel region sims.
+    auto_s_mat_only_solve : bool
+      Auto/Manual SMatrix only solve.
+    min_freq_s_mat_only_solve : str
+      Minimum frequency SMatrix only solve.
+    steady_state_start : float
+      Frequency of Steady State Start.
+    mesh_freq_choice : int
+      Meshing frequencies of the observation mesh.
+    mesh_freq_points : list[str]
+      Frequency points in meshing frequencies.
+    mesh_freq_range_start : str
+      Start meshing frequency.
+    mesh_freq_range_stop : str
+      Stop meshing frequency.
+    interpolation_data : InterpolatingSweepData
+      Data for interpolating frequency sweeps.
+    frequency_data : .FrequencyData or list of .FrequencyData
+      List of frequency data.
+
+    """
+
+    def __init__(self, name: str, frequency_data: Union[FrequencyData, List[FrequencyData]]):
+        """Initialize a sweep data setting."""
+        self.name = name
         self.enabled = True
         self.type = FreqSweepType.INTERPOLATING_SWEEP
         self.use_q3d_for_dc = False
@@ -225,18 +248,30 @@ class SweepData:
         self.parallel_hfss_regions_sim_cfg = []
         self.auto_s_mat_only_solve = True
         self.min_freq_s_mat_only_solve = "1MHz"
-        self.frequencies = []
         self.steady_state_start = -1.0
         self.mesh_freq_choice = -1
         self.mesh_freq_points = []
         self.mesh_freq_range_start = "-1.0"
         self.mesh_freq_range_stop = "-1.0"
         self.interpolation_data = InterpolatingSweepData()
+        self.frequency_data = frequency_data
 
     @property
     def frequency_string(self):
-        """:obj:`str`: String representing the frequency sweep data."""
-        return self.distribution + " " + self.start_f + " " + self.end_f + " " + self.step
+        """:obj:`str`: String representing the frequency sweep data.
+
+        This property is read-only.
+        """
+        frequencies = []
+        if isinstance(self.frequency_data, FrequencyData):
+            frequencies.append(self.frequency_data)
+        elif isinstance(self.frequency_data, list):
+            frequencies = self.frequency_data
+
+        freq_str = ""
+        for freq in frequencies:
+            freq_str += f"{freq.distribution.value} {freq.start_f} {freq.end_f} {freq.step}\t\n"
+        return freq_str
 
 
 def _hfss_region_compute_resource_message(res):
@@ -290,7 +325,6 @@ def _sweep_data_msg(sweep_data):
         ),
         auto_s_mat_only_solve=sweep_data.auto_s_mat_only_solve,
         min_freq_s_mat_only_solve=sweep_data.min_freq_s_mat_only_solve,
-        frequencies=sweep_data.frequencies,
         steady_state_start=sweep_data.steady_state_start,
         mesh_freq_choice=sweep_data.mesh_freq_choice,
         mesh_freq_points=sweep_data.mesh_freq_points,
@@ -336,7 +370,13 @@ def _msg_to_sweep_data(msg):
     """Create a ``SweepData`` from a ``SweepDataMessage``."""
     freq_str_params = msg.frequency_string.split()
     sweep_data = SweepData(
-        msg.name, freq_str_params[0], freq_str_params[1], freq_str_params[2], freq_str_params[3]
+        msg.name,
+        FrequencyData(
+            Distribution[freq_str_params[0]],
+            freq_str_params[1],
+            freq_str_params[2],
+            freq_str_params[3],
+        ),
     )
     sweep_data.enabled = msg.enabled
     sweep_data.type = FreqSweepType(msg.type)
@@ -355,7 +395,6 @@ def _msg_to_sweep_data(msg):
     )
     sweep_data.auto_s_mat_only_solve = msg.auto_s_mat_only_solve
     sweep_data.min_freq_s_mat_only_solve = msg.min_freq_s_mat_only_solve
-    sweep_data.frequencies = msg.frequencies
     sweep_data.steady_state_start = msg.steady_state_start
     sweep_data.mesh_freq_choice = msg.mesh_freq_choice
     sweep_data.mesh_freq_points = msg.mesh_freq_points

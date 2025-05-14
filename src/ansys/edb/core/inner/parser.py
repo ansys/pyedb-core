@@ -95,6 +95,11 @@ def to_mesh_op(fn):
     return _wraps(fn, _to_mesh_op)
 
 
+def to_string_dict(fn):
+    """Decorate a function that returns a message to return it as a ``dict[str, str]``."""
+    return _wraps(fn, _to_string_dict)
+
+
 def _wraps(fn, wrapper_fn):
     if callable(fn):
 
@@ -498,3 +503,8 @@ def _to_mesh_op(message):
     for nli in message.net_layer_info:
         mesh_op.net_layer_info.append((nli.net, nli.layer, nli.is_sheet))
     return mesh_op
+
+
+def _to_string_dict(message):
+    """Convert a message to a dictionary of strings."""
+    return {key: value for (key, value) in message.string_map.items()}

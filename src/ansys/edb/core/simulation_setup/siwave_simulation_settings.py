@@ -114,7 +114,7 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
     @si_slider_pos.setter
     def si_slider_pos(self, si_slider_pos):
-        self.__stub.SetSISliderPos(messages.int_property_message(self, si_slider_pos))
+        self.__stub.SetSISliderPos(messages.uint64_property_message(self, si_slider_pos))
 
     @property
     def pi_slider_pos(self):
@@ -123,7 +123,7 @@ class SIWaveGeneralSettings(SimulationSettingsBase):
 
     @pi_slider_pos.setter
     def pi_slider_pos(self, pi_slider_pos):
-        self.__stub.SetPISliderPos(messages.int_property_message(self, pi_slider_pos))
+        self.__stub.SetPISliderPos(messages.uint64_property_message(self, pi_slider_pos))
 
 
 class SIWaveAdvancedSettings(SimulationSettingsBase):
@@ -388,7 +388,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @dc_slider_pos.setter
     def dc_slider_pos(self, dc_slider_pos):
-        self.__stub.SetDCSliderPos(messages.int_property_message(self, dc_slider_pos))
+        self.__stub.SetDCSliderPos(messages.uint64_property_message(self, dc_slider_pos))
 
 
 class SIWaveDCAdvancedSettings(SimulationSettingsBase):
@@ -449,7 +449,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @max_num_passes.setter
     def max_num_passes(self, max_num_passes):
-        self.__stub.SetMaxNumPasses(messages.int_property_message(self, max_num_passes))
+        self.__stub.SetMaxNumPasses(messages.uint64_property_message(self, max_num_passes))
 
     @property
     def min_num_passes(self):
@@ -458,7 +458,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @min_num_passes.setter
     def min_num_passes(self, min_num_passes):
-        self.__stub.SetMinNumPasses(messages.int_property_message(self, min_num_passes))
+        self.__stub.SetMinNumPasses(messages.uint64_property_message(self, min_num_passes))
 
     @property
     def percent_local_refinement(self):
@@ -468,7 +468,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
     @percent_local_refinement.setter
     def percent_local_refinement(self, percent_local_refinement):
         self.__stub.SetPercentLocalRefinement(
-            messages.int_property_message(self, percent_local_refinement)
+            messages.uint64_property_message(self, percent_local_refinement)
         )
 
     @property
@@ -523,7 +523,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @num_bw_sides.setter
     def num_bw_sides(self, num_bw_sides):
-        self.__stub.SetNumBwSides(messages.int_property_message(self, num_bw_sides))
+        self.__stub.SetNumBwSides(messages.uint64_property_message(self, num_bw_sides))
 
     @property
     def num_via_sides(self):
@@ -532,7 +532,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @num_via_sides.setter
     def num_via_sides(self, num_via_sides):
-        self.__stub.SetNumViaSides(messages.int_property_message(self, num_via_sides))
+        self.__stub.SetNumViaSides(messages.uint64_property_message(self, num_via_sides))
 
 
 class SIWaveSParameterSettings(SimulationSettingsBase):

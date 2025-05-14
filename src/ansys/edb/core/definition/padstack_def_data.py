@@ -189,13 +189,15 @@ class PadstackDefData(ObjBase):
                 Value(message.generic.offset_y),
                 Value(message.generic.rotation),
             )
-        else:
+        elif message.HasField("polygon"):
             return (
                 parser.to_polygon_data(message.polygon.fp),
                 Value(message.polygon.offset_x),
                 Value(message.polygon.offset_y),
                 Value(message.polygon.rotation),
             )
+        else:
+            return ()
 
     def set_pad_parameters(
         self, layer, pad_type, offset_x, offset_y, rotation, type_geom=None, sizes=None, fp=None

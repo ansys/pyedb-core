@@ -12,5 +12,6 @@ Functions
 .. autosummary::
    :toctree: _autosummary
 
+   attach_session
    launch_session
    session

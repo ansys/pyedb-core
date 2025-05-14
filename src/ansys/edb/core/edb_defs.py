@@ -7,7 +7,7 @@ import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 
 
 class LayoutObjType(Enum):
-    """Provides an enum representing layout object types."""
+    """Enum representing layout object types."""
 
     INVALID_LAYOUT_OBJ = layout_obj_pb2.INVALID_LAYOUT_OBJ
     PRIMITIVE = layout_obj_pb2.PRIMITIVE
@@ -28,7 +28,7 @@ class LayoutObjType(Enum):
 
 
 class DefinitionObjType(Enum):
-    """Provides an enum representing definition object types."""
+    """Enum representing definition object types."""
 
     INVALID_DEFINITION_TYPE = definition_obj_pb2.INVALID_DEFINITION_TYPE
     PADSTACK_DEF = definition_obj_pb2.PADSTACK_DEF

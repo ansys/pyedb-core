@@ -41,7 +41,7 @@ class ObjBase:
     def msg(self):
         """:obj:`EDBObjMessage`: Protobuf message that represents the object's ID.
 
-        This property can only be set to ``None``.
+        This property can only be set to :obj:`None`.
         """
         msg = EDBObjMessage(id=self.id)
         io_mgr = get_io_manager()

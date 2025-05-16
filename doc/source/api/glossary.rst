@@ -97,3 +97,11 @@ Glossary
 		| 	Airbox negative vertical extent size. First parameter is the value and second parameter indicates if the value is a multiple.
 		| **airbox_truncate_at_ground**: :obj:`bool`
 		| 	Whether airbox will be truncated at the ground layers.
+
+	Anisotropic Material Property Component IDs
+
+		Anisotropic material properties use component ID values to specify tensor diagonal entries. Component ID values map to tensor diagonal entries as follows:
+
+		- ``0`` -> ``T[1,1]``
+		- ``1`` -> ``T[2,2]``
+		- ``2`` -> ``T[3,3]``

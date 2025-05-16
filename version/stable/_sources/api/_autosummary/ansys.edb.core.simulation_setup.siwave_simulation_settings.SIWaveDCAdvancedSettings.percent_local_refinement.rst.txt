@@ -1,0 +1,6 @@
+percent\_local\_refinement
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCAdvancedSettings.percent_local_refinement

@@ -1,0 +1,6 @@
+create\_stride
+==============
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. automethod:: McadModel.create_stride

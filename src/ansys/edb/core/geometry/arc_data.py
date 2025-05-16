@@ -66,17 +66,29 @@ class ArcData:
 
     @property
     def start(self) -> PointData:
-        """:class:`.PointData`: Start point of the arc."""
+        """
+        :class:`.PointData`: Start point of the arc.
+
+        This property is read-only.
+        """
         return self._start
 
     @property
     def end(self) -> PointData:
-        """:class:`.PointData`: End point of the arc."""
+        """
+        :class:`.PointData`: End point of the arc.
+
+        This property is read-only.
+        """
         return self._end
 
     @property
     def height(self) -> float:
-        """:obj:`float`: Height of the arc."""
+        """
+        :obj:`float`: Height of the arc.
+
+        This property is read-only.
+        """
         if self._height is None:
             self._height = self.__stub.GetHeight(messages.arc_message(self)).value
 
@@ -117,24 +129,40 @@ class ArcData:
     @property
     @parser.to_point_data
     def center(self) -> PointData:
-        """:class:`.PointData`: Center point of the arc."""
+        """
+        :class:`.PointData`: Center point of the arc.
+
+        This property is read-only.
+        """
         return self.__stub.GetCenter(messages.arc_message(self))
 
     @property
     @parser.to_point_data
     def midpoint(self) -> PointData:
-        """:class:`.PointData`: Midpoint of the arc."""
+        """
+        :class:`.PointData`: Midpoint of the arc.
+
+        This property is read-only.
+        """
         return self.__stub.GetMidpoint(messages.arc_message(self))
 
     @property
     def radius(self) -> float:
-        """:obj:`float`: Radius of the arc."""
+        """
+        :obj:`float`: Radius of the arc.
+
+        This property is read-only.
+        """
         return self.__stub.GetRadius(messages.arc_message(self)).value
 
     @property
     @parser.to_polygon_data
     def bbox(self) -> PolygonData:
-        """:class:`.PolygonData`: Rectangular bounding box of the arc."""
+        """
+        :class:`.PolygonData`: Rectangular bounding box of the arc.
+
+        This property is read-only.
+        """
         return self.__stub.GetBoundingBox(messages.arc_message(self))
 
     def is_big(self) -> bool:
@@ -184,7 +212,11 @@ class ArcData:
 
     @property
     def direction(self) -> str:
-        """:obj:`str` : Rotational direction of the arc which can be "cw" or "ccw" or "colinear"."""
+        """
+        :obj:`str` : Rotational direction of the arc which can be "cw" or "ccw" or "colinear".
+
+        This property is read-only.
+        """
         if self.is_cw():
             return "cw"
         elif self.is_ccw():
@@ -219,7 +251,11 @@ class ArcData:
 
     @property
     def length(self) -> str:
-        """:obj:`str`: Circumference length of the arc."""
+        """
+        :obj:`str`: Circumference length of the arc.
+
+        This property is read-only.
+        """
         if self.is_segment():
             return self.start.distance(self.end)
         else:
@@ -227,7 +263,11 @@ class ArcData:
 
     @property
     def points(self) -> list[PointData]:
-        """:obj:`list` of :class:`.PointData`: Geometric points representing the arc."""
+        """
+        :obj:`list` of :class:`.PointData`: Geometric points representing the arc.
+
+        This property is read-only.
+        """
         return [self._start, PointData(self.height), self._end]
 
     def tangent_at(self, point: PointLike) -> PointData:
@@ -264,6 +304,6 @@ class ArcData:
 
         Returns
         -------
-        tuple[.PointData, .PointData]
+        tuple of (.PointData, .PointData)
         """
         return self.__stub.ClosestPoints(messages.arc_data_two_points(self, other))

@@ -120,17 +120,29 @@ class PolygonData:
 
     @property
     def points(self) -> list[PointData]:
-        """:obj:`list` of :class:`.PointData`: List of coordinates for the points."""
+        """
+        :obj:`list` of :class:`.PointData`: List of coordinates for the points.
+
+        This property is read-only.
+        """
         return self._points
 
     @property
     def holes(self) -> list[PolygonData]:
-        """:obj:`list` of :class:`.PolygonData`: List of holes."""
+        """
+        :obj:`list` of :class:`.PolygonData`: List of holes.
+
+        This property is read-only.
+        """
         return self._holes
 
     @property
     def arc_data(self) -> list[ArcData]:
-        """:obj:`list of :class:`.ArcData`: List of segments that represent the arc data of a polygon."""
+        """
+        :obj:`list` of :class:`.ArcData`: List of segments that represent the arc data of a polygon.
+
+        This property is read-only.
+        """
         i, n = 0, len(self)
         i_max = n if self.is_closed else n - 1
         segments = []
@@ -150,12 +162,20 @@ class PolygonData:
 
     @property
     def is_closed(self) -> bool:
-        """:obj:`bool`: Flag indicating if a polygon is closed between the first and last points."""
+        """
+        :obj:`bool`: Flag indicating if a polygon is closed between the first and last points.
+
+        This property is read-only.
+        """
         return self._is_closed
 
     @property
     def sense(self) -> PolygonSenseType:
-        """:class:`PolygonSenseType`: Polygon sense type."""
+        """
+        :class:`PolygonSenseType`: Polygon sense type.
+
+        This property is read-only.
+        """
         return self._sense
 
     def is_hole(self) -> bool:
@@ -355,9 +375,9 @@ class PolygonData:
     def bbox(self) -> tuple[PointData, PointData]:
         """Compute the bounding box.
 
-        Returns
-        -------
-        tuple[.PointData, .PointData]
+         Returns
+         -------
+        tuple of (.PointData, .PointData)
         """
         return self.__stub.GetBBox(messages.polygon_data_list_message([self]))
 
@@ -373,7 +393,7 @@ class PolygonData:
 
         Returns
         -------
-        tuple[.PointData, .PointData]
+        tuple of (.PointData, .PointData)
         """
         return cls.__stub.GetStreamedBBox(PolygonData._polygon_data_request_iterator(polygons))
 
@@ -383,7 +403,7 @@ class PolygonData:
 
         Returns
         -------
-        tuple[.PointData, .Value]
+        tuple of (.PointData, .Value)
         """
         return self.__stub.GetBoundingCircle(messages.polygon_data_message(self))
 
@@ -521,7 +541,7 @@ class PolygonData:
 
         Returns
         -------
-        tuple[.PointData, .PointData]
+        tuple of (.PointData, .PointData)
         """
         return self.__stub.GetClosestPoints(
             messages.polygon_data_with_points_message(self, polygon=polygon)

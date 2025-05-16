@@ -87,8 +87,12 @@ class RTree(ObjBase):
     @property
     @parser.to_box
     def extent(self) -> tuple[PointData, PointData]:
-        """:obj:`tuple` of [:class:`.PointData`, :class:`.PointData`]: Bounding box \
-        for the contents of the RTree."""
+        """
+        :obj:`tuple` of (:class:`.PointData`, :class:`.PointData`): Bounding box \
+        for the contents of the RTree.
+
+        This property is read-only.
+        """
         return self.__stub.GetExtent(self.msg)
 
     def insert(self, rtree_obj: RTreeObj):
@@ -137,7 +141,7 @@ class RTree(ObjBase):
 
         Parameters
         ----------
-        box : tuple[.PointData, .PointData]
+        box : tuple of (.PointData, .PointData)
             Testing region, described as a "lower-left, upper-right" box.
         bb_search : bool
             Whether the RTree object intersects when the bounding-box of its
@@ -169,10 +173,10 @@ class RTree(ObjBase):
 
         Returns
         -------
-        tuple[.RTreeObj, tuple[.PointData, .PointData]]
+        tuple of (.RTreeObj, tuple of (.PointData, .PointData))
 
             - :class:`.RTreeObj`: Nearest-neighbor in the RTree to the provided object, or null if nothing is found.
-            - :obj:`tuple` of [:class:`.PointData`, :class:`.PointData`] : \
+            - tuple of (:class:`.PointData`, :class:`.PointData`) : \
                 Line segment spanning the closest points between the object and the nearest neighbor.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -234,8 +238,12 @@ class RTree(ObjBase):
 
     @property
     def connected_geometry_sets(self) -> list[list[RTreeObj]]:
-        """:obj:`list` of :obj:`list` of :class:`.RTreeObj`: Connected geometry sets of an RTree \
-         in this form: ``(ids, sizes)``."""
+        """
+        :obj:`list` of :obj:`list` of :class:`.RTreeObj`: Connected geometry sets of an RTree \
+        in this form: ``(ids, sizes)``.
+
+        This property is read-only.
+        """
         msg = self.__stub.GetConnectedGeometrySets(messages.edb_obj_message(self))
         set_start = 0
         rtree_obj_sets = []
@@ -284,7 +292,11 @@ class RTree(ObjBase):
 
     @property
     def get_visit(self) -> int:
-        """:obj:`int`: Visit count for the R-tree."""
+        """
+        :obj:`int`: Visit count for the R-tree.
+
+        This property is read-only.
+        """
         return self.__stub.GetVisit(messages.edb_obj_message(self)).value
 
     @staticmethod

@@ -141,7 +141,11 @@ class PointData:
 
     @property
     def _matrix_values(self) -> list[Value]:
-        """:obj:`list` of :class:`.Value`: Coordinates of the point as a list of values."""
+        """
+        :obj:`list` of :class:`.Value`: Coordinates of the point as a list of values.
+
+        This property is read-only.
+        """
         return [self.arc_height] if self.is_arc else [self.x, self.y]
 
     def _map_reduce(self, other, op):
@@ -150,27 +154,47 @@ class PointData:
 
     @property
     def is_arc(self) -> bool:
-        """:obj:`bool`: Flag indicating if the point represents an arc."""
+        """
+        :obj:`bool`: Flag indicating if the point represents an arc.
+
+        This property is read-only.
+        """
         return self._arc_h is not None
 
     @property
     def arc_height(self) -> Value:
-        """:class:`.Value`: Height of the arc."""
+        """
+        :class:`.Value`: Height of the arc.
+
+        This property is read-only.
+        """
         return self._arc_h
 
     @property
     def x(self) -> Value:
-        """:class:`.Value`: X coordinate."""
+        """
+        :class:`.Value`: X coordinate.
+
+        This property is read-only.
+        """
         return self._x
 
     @property
     def y(self) -> Value:
-        """:class:`.Value`: Y coordinate."""
+        """
+        :class:`.Value`: Y coordinate.
+
+        This property is read-only.
+        """
         return self._y
 
     @property
     def is_parametric(self) -> bool:
-        """:obj:`bool`: Flag indicating if the point contains parametric values (variable expressions)."""
+        """
+        :obj:`bool`: Flag indicating if the point contains parametric values (variable expressions).
+
+        This property is read-only.
+        """
         return any(val.is_parametric for val in self._matrix_values)
 
     def magnitude(self) -> float:

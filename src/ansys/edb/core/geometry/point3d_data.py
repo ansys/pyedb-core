@@ -97,12 +97,20 @@ class Point3DData:
 
     @property
     def magnitude(self) -> float:
-        """:obj:`float`: Magnitude or length of the point."""
+        """
+        :obj:`float`: Magnitude or length of the point.
+
+        This property is read-only.
+        """
         return self.magnitude_sqr.sqrt.double
 
     @property
     def magnitude_sqr(self) -> float:
-        """:obj:`float`: Magnitude-square of the point."""
+        """
+        :obj:`float`: Magnitude-square of the point.
+
+        This property is read-only.
+        """
         return self.x * self.x + self.y * self.y + self.z * self.z
 
     def equals(self, other, tolerance: float = 1e-9) -> bool:

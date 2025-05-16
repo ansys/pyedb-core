@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.layer.layer import Layer
+    from ansys.edb.core.typing import LayerLike
 
 
 from ansys.api.edb.v1 import text_pb2, text_pb2_grpc
@@ -23,7 +23,7 @@ class Text(Primitive):
 
     @classmethod
     def create(
-        cls, layout: Layout, layer: Layer, center_x: Value, center_y: Value, text: str
+        cls, layout: Layout, layer: LayerLike, center_x: Value, center_y: Value, text: str
     ) -> Text:
         """Create a text object.
 
@@ -31,7 +31,7 @@ class Text(Primitive):
         ----------
         layout : .Layout
             Layout to create the text object in.
-        layer : str or Layer
+        layer : :term:`LayerLike`
             Layer to place the text object on.
         center_x : .Value
             X value of the center point.
@@ -62,7 +62,7 @@ class Text(Primitive):
 
         Returns
         -------
-        tuple[.Value, .Value, str]
+        tuple of (.Value, .Value, str)
             Returns a tuple in this format:
 
             **(center_x, center_y, text)**

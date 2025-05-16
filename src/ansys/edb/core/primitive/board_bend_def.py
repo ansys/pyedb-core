@@ -44,7 +44,7 @@ class BoardBendDef(Primitive):
             Layout to create the board bend definition in.
         zone_prim : .Primitive
             Zone primitive to create the board bend definition on.
-        bend_middle : (:term:`Point2DLike`, :term:`Point2DLike`)
+        bend_middle : tuple of (:term:`Point2DLike`, :term:`Point2DLike`)
             Tuple containing the starting and ending points of the line that represents
             the middle of the bend.
         bend_radius : :term:`ValueLike`
@@ -89,20 +89,20 @@ class BoardBendDef(Primitive):
 
     @property
     def radius(self) -> Value:
-        """:term:`ValueLike`: Radius of the bend."""
+        """:class:`.Value`: Radius of the bend."""
         return Value(self.__stub.GetRadius(self.msg))
 
     @radius.setter
-    def radius(self, val: Value):
+    def radius(self, val: ValueLike):
         self.__stub.SetRadius(messages.value_property_message(self, val))
 
     @property
     def angle(self) -> Value:
-        """:term:`ValueLike`: Angle of the bend."""
+        """:class:`.Value`: Angle of the bend."""
         return Value(self.__stub.GetAngle(self.msg))
 
     @angle.setter
-    def angle(self, val: Value):
+    def angle(self, val: ValueLike):
         self.__stub.SetAngle(messages.value_property_message(self, val))
 
     @property

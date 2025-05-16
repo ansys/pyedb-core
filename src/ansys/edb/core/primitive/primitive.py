@@ -152,15 +152,15 @@ class Primitive(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[str, bool]
+        tuple of (str, bool)
 
-        Returns a tuple in this format:
+            Returns a tuple in this format:
 
-        **(material, solve_inside)**
+            **(material, solve_inside)**
 
-        **material** :  Name of the material property.
+            **material** :  Name of the material property.
 
-        **solve_inside** : Whether to solve inside.
+            **solve_inside** : Whether to solve inside.
         """
         prop_msg = self.__stub.GetHfssProp(self.msg)
         return prop_msg.material_name, prop_msg.solve_inside

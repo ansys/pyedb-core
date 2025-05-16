@@ -4,10 +4,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.net.net import Net
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.layer.layer import Layer
     from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.typing import NetLike, LayerLike
 
 from enum import Enum
 
@@ -36,8 +35,8 @@ class Rectangle(Primitive):
     def create(
         cls,
         layout: Layout,
-        layer: Layer,
-        net: Net,
+        layer: LayerLike,
+        net: NetLike | None,
         rep_type: RectangleRepresentationType,
         param1: Value,
         param2: Value,
@@ -52,9 +51,9 @@ class Rectangle(Primitive):
         ----------
         layout : .Layout
             Layout to create the rectangle in.
-        layer : str or .Layer
+        layer : :term:`LayerLike`
             Layer the rectangle is to created on.
-        net : str or .Net or None
+        net : :term:`NetLike` or None
             Net the rectangle is to have.
         rep_type : .RectangleRepresentationType
             Type that defines the meaning of the given parameters.
@@ -100,7 +99,7 @@ class Rectangle(Primitive):
 
         Returns
         -------
-        tuple[.RectangleRepresentationType, .Value, .Value, .Value, .Value, .Value, .Value]
+        tuple of (.RectangleRepresentationType, .Value, .Value, .Value, .Value, .Value, .Value)
 
             Returns a tuple in this format:
 

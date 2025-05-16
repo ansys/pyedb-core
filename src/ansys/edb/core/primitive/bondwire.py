@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.hierarchy.cell_instance import CellInstance
-    from ansys.edb.core.net.net import Net
     from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.typing import NetLike, ValueLike, LayerLike
 
 from ansys.api.edb.v1 import bondwire_pb2, bondwire_pb2_grpc
 
@@ -64,7 +64,7 @@ class Bondwire(Primitive):
         end_layer_name: str,
         end_x: Value,
         end_y: Value,
-        net: str | Net | None,
+        net: NetLike | None,
     ) -> Bondwire:
         """Create a bondwire.
 
@@ -98,7 +98,7 @@ class Bondwire(Primitive):
             X value of the end point.
         end_y : .Value
             Y value of the end point.
-        net : str or .Net or None
+        net : :term:`NetLike` or None
             Net of the bondwire.
 
         Returns
@@ -182,7 +182,7 @@ class Bondwire(Primitive):
         return Value(self.__stub.GetCrossSectionHeight(self.msg))
 
     @cross_section_height.setter
-    def cross_section_height(self, height: Value):
+    def cross_section_height(self, height: ValueLike):
         self.__stub.SetCrossSectionHeight(
             bondwire_pb2.SetCrossSectionHeightMessage(
                 target=self.msg, height=messages.value_message(height)
@@ -221,7 +221,7 @@ class Bondwire(Primitive):
 
         Returns
         -------
-        tuple[.Value, .Value, .Value, .Value]
+        tuple of ([.Value, .Value, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -276,7 +276,7 @@ class Bondwire(Primitive):
         return Value(val)
 
     @width.setter
-    def width(self, width: Value):
+    def width(self, width: ValueLike):
         self.__stub.SetWidthValue(
             bondwire_pb2.BondwireValueMessage(target=self.msg, value=messages.value_message(width))
         )
@@ -298,14 +298,14 @@ class Bondwire(Primitive):
             self.__stub.GetStartElevation(Bondwire._get_elevation_message(self, start_context))
         ).cast()
 
-    def set_start_elevation(self, start_context: CellInstance, layer: str | Layer):
+    def set_start_elevation(self, start_context: CellInstance, layer: LayerLike):
         """Set the start elevation of the bondwire.
 
         Parameters
         ----------
         start_context : .CellInstance
-            Start cell context of the bondwire. ``None`` means top-level.
-        layer : str or .Layer
+            Start cell context of the bondwire. :obj:`None` means top-level.
+        layer : :term:`LayerLike`
             Start layer of the bondwire.
         """
         self.__stub.SetStartElevation(Bondwire._set_elevation_message(self, start_context, layer))
@@ -327,14 +327,14 @@ class Bondwire(Primitive):
             self.__stub.GetEndElevation(Bondwire._get_elevation_message(self, end_context))
         ).cast()
 
-    def set_end_elevation(self, end_context: CellInstance, layer: str | Layer):
+    def set_end_elevation(self, end_context: CellInstance, layer: LayerLike):
         """Set the end elevation of the bondwire.
 
         Parameters
         ----------
         end_context : .CellInstance
-            End cell context of the bondwire. ``None`` means top-level.
-        layer : str or .Layer
+            End cell context of the bondwire. :obj:`None` means top-level.
+        layer : :term:`LayerLike`
             End layer of the bondwire.
         """
         self.__stub.SetEndElevation(Bondwire._set_elevation_message(self, end_context, layer))

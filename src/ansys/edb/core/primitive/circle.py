@@ -4,10 +4,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.net.net import Net
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.layer.layer import Layer
     from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.typing import NetLike, LayerLike
 
 from ansys.api.edb.v1 import circle_pb2, circle_pb2_grpc
 
@@ -30,7 +29,13 @@ class Circle(Primitive):
 
     @classmethod
     def create(
-        cls, layout: Layout, layer: Layer, net: Net, center_x: Value, center_y: Value, radius: Value
+        cls,
+        layout: Layout,
+        layer: LayerLike,
+        net: NetLike | None,
+        center_x: Value,
+        center_y: Value,
+        radius: Value,
     ) -> Circle:
         """Create a circle.
 
@@ -38,9 +43,9 @@ class Circle(Primitive):
         ----------
         layout : .Layout
             Layout to create this circle in.
-        layer : str or .Layer
+        layer : :term:`LayerLike`
             Layer to place the circle on.
-        net : str or .Net or None
+        net : :term:`NetLike` or None
             Net of the circle.
         center_x : .Value
             X value of the center point.
@@ -102,7 +107,7 @@ class Circle(Primitive):
 
         Returns
         -------
-        tuple[.Value, .Value, .Value]
+        tuple of (.Value, .Value, .Value)
 
             Returns a tuple in this format:
 

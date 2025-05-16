@@ -4,10 +4,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.net.net import Net
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.layer.layer import Layer
     from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.typing import NetLike, ValueLike, LayerLike
 
 from enum import Enum
 
@@ -52,8 +51,8 @@ class Path(Primitive):
     def create(
         cls,
         layout: Layout,
-        layer: Layer,
-        net: Net,
+        layer: LayerLike,
+        net: NetLike | None,
         width: Value,
         end_cap1: PathEndCapType,
         end_cap2: PathEndCapType,
@@ -66,9 +65,9 @@ class Path(Primitive):
         ----------
         layout : .Layout
             Layout to create the path in.
-        layer : str or .Layer
+        layer : :term:`LayerLike`
             Layer to place the path on.
-        net : str or .Net or None
+        net : :term:`NetLike` or None
             Net of the path.
         width : .Value
             Path width.
@@ -164,7 +163,7 @@ class Path(Primitive):
 
         Returns
         -------
-        tuple[.PathEndCapType, .PathEndCapType]
+        tuple of (.PathEndCapType, .PathEndCapType)
 
             Returns a tuple in this format:
 
@@ -201,7 +200,7 @@ class Path(Primitive):
 
         Returns
         -------
-        tuple[.PolygonData, bool]
+        tuple of (.PolygonData, bool)
 
             Returns a tuple in this format:
 
@@ -255,7 +254,7 @@ class Path(Primitive):
         return Value(self.__stub.GetWidth(self.msg).width)
 
     @width.setter
-    def width(self, width: Value):
+    def width(self, width: ValueLike):
         self.__stub.SetWidth(
             path_pb2.SetWidthMessage(
                 target=self.msg,
@@ -269,7 +268,7 @@ class Path(Primitive):
         return Value(self.__stub.GetMiterRatio(self.msg).miter_ratio)
 
     @miter_ratio.setter
-    def miter_ratio(self, miter_ratio: Value):
+    def miter_ratio(self, miter_ratio: ValueLike):
         self.__stub.SetMiterRatio(
             path_pb2.SetMiterRatioMessage(
                 target=self.msg,

@@ -130,7 +130,7 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[.Value, .Value, .Value]
+        tuple of (.Value, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -176,11 +176,13 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[.Layer, .Layer]
-            The tuple is in this format: ``(top_layer, bottom_layer)``.
+        tuple of (.Layer, .Layer)
+            The tuple is in this format:
 
-            - ``top_layer``: Top layer of the padstack instance
-            - ``bottom_layer``: Bottom layer of the padstack instance
+            **(top_layer, bottom_layer)**
+
+            **top_layer**: Top layer of the padstack instance
+            **bottom_layer**: Bottom layer of the padstack instance
         """
         params = self.__stub.GetLayerRange(self.msg)
         return (
@@ -195,7 +197,7 @@ class PadstackInstance(conn_obj.ConnObj):
         ----------
         top_layer : .Layer
             Top layer of the padstack instance.
-        bottom_layer : :.Layer
+        bottom_layer : .Layer
             Bottom layer of the padstack instance.
         """
         self.__stub.SetLayerRange(
@@ -237,7 +239,7 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[bool, .Value]
+        tuple of (bool, .Value)
 
             Returns a tuple in this format:
 
@@ -316,7 +318,7 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[.Layer, .Value, .Value]
+        tuple of (.Layer, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -377,7 +379,7 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[.Value, .Value]
+        tuple of (.Value, .Value)
             Returns a tuple in this format:
 
             **(drill_depth, diameter)**

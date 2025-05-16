@@ -221,7 +221,7 @@ class Bondwire(Primitive):
 
         Returns
         -------
-        tuple of ([.Value, .Value, .Value, .Value)
+        tuple of (.Value, .Value, .Value, .Value)
 
             Returns a tuple in this format:
 

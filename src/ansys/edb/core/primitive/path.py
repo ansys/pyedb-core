@@ -1,4 +1,12 @@
 """Path."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.typing import NetLike, ValueLike, LayerLike
 
 from enum import Enum
 
@@ -34,26 +42,36 @@ class Path(Primitive):
     __stub: path_pb2_grpc.PathServiceStub = StubAccessor(StubType.path)
 
     @classmethod
-    def create(cls, layout, layer, net, width, end_cap1, end_cap2, corner_style, points):
+    def create(
+        cls,
+        layout: Layout,
+        layer: LayerLike,
+        net: NetLike | None,
+        width: ValueLike,
+        end_cap1: PathEndCapType,
+        end_cap2: PathEndCapType,
+        corner_style: PathCornerType,
+        points: PolygonData,
+    ) -> Path:
         """Create a path.
 
         Parameters
         ----------
-        layout : :class:`.Layout`
+        layout : .Layout
             Layout to create the path in.
-        layer : str or :class:`.Layer`
+        layer : :term:`LayerLike`
             Layer to place the path on.
-        net : str or :class:`.Net` or None
+        net : :term:`NetLike` or None
             Net of the path.
-        width : :class:`.Value`
+        width : :term:`ValueLike`
             Path width.
-        end_cap1: :class:`.PathEndCapType`
+        end_cap1 : .PathEndCapType
             End cap style for the start of the path.
-        end_cap2: :class:`.PathEndCapType`
+        end_cap2 : .PathEndCapType
             End cap style for the end of the path.
-        corner_style : :class:`.PathCornerType`
+        corner_style : .PathCornerType
             Corner style.
-        points : :class:`.PolygonData`
+        points : .PolygonData
             Centerline polygon data to set.
 
         Returns
@@ -78,25 +96,32 @@ class Path(Primitive):
 
     @classmethod
     @parser.to_polygon_data
-    def render(cls, width, end_cap1, end_cap2, corner_style, path):
+    def render(
+        cls,
+        width: ValueLike,
+        end_cap1: PathEndCapType,
+        end_cap2: PathEndCapType,
+        corner_style: PathCornerType,
+        path: PolygonData,
+    ) -> PolygonData:
         """Render a path.
 
         Parameters
         ----------
-        width : :class:`.Value`
+        width : :term:`ValueLike`
             Path width.
-        end_cap1 : :class:`.PathEndCapType`
+        end_cap1 : .PathEndCapType
             End cap style for the start of the path.
-        end_cap2 : :class:`.PathEndCapType`
+        end_cap2 : .PathEndCapType
             End cap style for the end of the path.
-        corner_style : :class:`PathCornerType`
+        corner_style : .PathCornerType
             Corner style.
-        path : :class:`.PolygonData`
+        path : .PolygonData
             Polygon data to set.
 
         Returns
         -------
-        :class:`.PolygonData`
+        .PolygonData
             Path rendered.
         """
         return cls.__stub.Render(
@@ -111,31 +136,31 @@ class Path(Primitive):
 
     @property
     @parser.to_polygon_data
-    def polygon_data(self):
-        """:class:`.PolygonData`: Polygon data of this Path."""
+    def polygon_data(self) -> PolygonData:
+        """:class:`.PolygonData`: Polygon data of this Path.
+
+        This property is read-only.
+        """
         return self.__stub.GetPolygonData(self.msg)
 
     @property
     @parser.to_polygon_data
-    def center_line(self):
+    def center_line(self) -> PolygonData:
         """:class:`.PolygonData`: Center line for the path."""
         return self.__stub.GetCenterLine(self.msg)
 
     @center_line.setter
-    def center_line(self, center_line):
+    def center_line(self, center_line: PolygonData):
         path_pb2.SetCenterLineMessage(
             target=self.msg, center_line=messages.polygon_data_message(center_line)
         )
 
-    def get_end_cap_style(self):
+    def get_end_cap_style(self) -> tuple[PathEndCapType, PathEndCapType]:
         """Get end cap styles for the path.
 
         Returns
         -------
-        tuple[
-            :class:`.PathEndCapType`,
-            :class:`.PathEndCapType`
-        ]
+        tuple of (.PathEndCapType, .PathEndCapType)
 
             Returns a tuple in this format:
 
@@ -148,14 +173,14 @@ class Path(Primitive):
         end_cap_msg = self.__stub.GetEndCapStyle(self.msg)
         return PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2)
 
-    def set_end_cap_style(self, end_cap1, end_cap2):
+    def set_end_cap_style(self, end_cap1: PathEndCapType, end_cap2: PathEndCapType):
         """Set end cap styles for the path.
 
         Parameters
         ----------
-        end_cap1: :class:`.PathEndCapType`
+        end_cap1 : .PathEndCapType
             End cap style for the start of the path.
-        end_cap2: :class:`.PathEndCapType`
+        end_cap2 : .PathEndCapType
             End cap style for the end of the path.
         """
         self.__stub.SetEndCapStyle(
@@ -167,12 +192,12 @@ class Path(Primitive):
             )
         )
 
-    def get_clip_info(self):
+    def get_clip_info(self) -> tuple[PolygonData, bool]:
         """Get the data used to clip the path.
 
         Returns
         -------
-        tuple[:class:`.PolygonData`, bool]
+        tuple of (.PolygonData, bool)
 
             Returns a tuple in this format:
 
@@ -188,14 +213,14 @@ class Path(Primitive):
             clip_info_msg.keep_inside,
         )
 
-    def set_clip_info(self, clipping_poly, keep_inside=True):
+    def set_clip_info(self, clipping_poly: PolygonData, keep_inside=True):
         """Set the data used to clip the path.
 
         Parameters
         ----------
-        clipping_poly : :class:`.PolygonData`
+        clipping_poly : .PolygonData
             Polygon data to use to clip the path.
-        keep_inside: bool, default: True
+        keep_inside : bool, default: True
             Whether the part of the path inside the polygon should be preserved.
         """
         self.__stub.SetClipInfo(
@@ -207,12 +232,12 @@ class Path(Primitive):
         )
 
     @property
-    def corner_style(self):
+    def corner_style(self) -> PathCornerType:
         """:class:`PathCornerType`: Corner style of the path."""
         return PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
 
     @corner_style.setter
-    def corner_style(self, corner_type):
+    def corner_style(self, corner_type: PathCornerType):
         self.__stub.SetCornerStyle(
             path_pb2.SetCornerStyleMessage(
                 target=self.msg,
@@ -221,12 +246,12 @@ class Path(Primitive):
         )
 
     @property
-    def width(self):
+    def width(self) -> Value:
         """:class:`.Value`: Path width."""
         return Value(self.__stub.GetWidth(self.msg).width)
 
     @width.setter
-    def width(self, width):
+    def width(self, width: ValueLike):
         self.__stub.SetWidth(
             path_pb2.SetWidthMessage(
                 target=self.msg,
@@ -235,12 +260,12 @@ class Path(Primitive):
         )
 
     @property
-    def miter_ratio(self):
+    def miter_ratio(self) -> Value:
         """:class:`.Value`: Miter ratio."""
         return Value(self.__stub.GetMiterRatio(self.msg).miter_ratio)
 
     @miter_ratio.setter
-    def miter_ratio(self, miter_ratio):
+    def miter_ratio(self, miter_ratio: ValueLike):
         self.__stub.SetMiterRatio(
             path_pb2.SetMiterRatioMessage(
                 target=self.msg,
@@ -251,7 +276,7 @@ class Path(Primitive):
         )
 
     @property
-    def can_be_zone_primitive(self):
+    def can_be_zone_primitive(self) -> bool:
         """:obj:`bool`: Flag indicating if the path can be a zone.
 
         This property is read-only.

@@ -16,7 +16,7 @@ class LayoutObj(ObjBase):
 
     @property
     def obj_type(self):
-        """:class:`LayoutObjType <ansys.edb.core.edb_defs.LayoutObjType>`: Layout object type.
+        """:class:`.LayoutObjType`: Layout object type.
 
         This property is read-only.
         """

@@ -1,4 +1,12 @@
 """Polygon data."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import PointLike
+    from ansys.edb.core.utility.value import Value
+    from ansys.edb.core.geometry.point_data import PointData
 
 from enum import Enum
 import itertools
@@ -58,24 +66,24 @@ class PolygonData:
 
     def __init__(
         self,
-        points=None,
-        arcs=None,
-        lower_left=None,
-        upper_right=None,
-        holes=None,
-        sense=PolygonSenseType.SENSE_CCW,
-        closed=True,
+        points: PointLike = None,
+        arcs: ArcData = None,
+        lower_left: PointLike = None,
+        upper_right: PointLike = None,
+        holes: list[PolygonData] = None,
+        sense: PolygonSenseType = PolygonSenseType.SENSE_CCW,
+        closed: bool = True,
     ):
         """Create a polygon.
 
         Parameters
         ----------
-        points : list[ansys.edb.core.typing.PointLike], default: None
-        arcs : list[ArcData], default: None
-        lower_left : ansys.edb.core.typing.PointLike, default: None
-        upper_right : ansys.edb.core.typing.PointLike, default: None
-        holes : List[ansys.edb.core.geometry.polygon_data.PolygonData], default: None
-        sense : ansys.edb.core.geometry.polygon_data.PolygonSenseType, default: SENSE_CCW
+        points : list[:term:`Point2DLike`], default: None
+        arcs : list[.ArcData], default: None
+        lower_left : :term:`Point2DLike`, default: None
+        upper_right : :term:`Point2DLike`, default: None
+        holes : list[.PolygonData], default: None
+        sense : .PolygonSenseType, default: SENSE_CCW
         closed : bool, default: True
         """
         self._holes, self._sense, self._is_closed = (
@@ -101,7 +109,7 @@ class PolygonData:
         else:
             raise TypeError("PolygonData must be initialized from a list of points/arcs or a box.")
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Get the number of coordinates.
 
         Returns
@@ -111,18 +119,30 @@ class PolygonData:
         return len(self.points)
 
     @property
-    def points(self):
-        """:obj:`list` of :class:`.PointData`: List of coordinates for the points."""
+    def points(self) -> list[PointData]:
+        """
+        :obj:`list` of :class:`.PointData`: List of coordinates for the points.
+
+        This property is read-only.
+        """
         return self._points
 
     @property
-    def holes(self):
-        """:obj:`list` of :class:`.PolygonData`: List of holes."""
+    def holes(self) -> list[PolygonData]:
+        """
+        :obj:`list` of :class:`.PolygonData`: List of holes.
+
+        This property is read-only.
+        """
         return self._holes
 
     @property
-    def arc_data(self):
-        """:obj:`list`: List of segments that represent the arc data of a polygon."""
+    def arc_data(self) -> list[ArcData]:
+        """
+        :obj:`list` of :class:`.ArcData`: List of segments that represent the arc data of a polygon.
+
+        This property is read-only.
+        """
         i, n = 0, len(self)
         i_max = n if self.is_closed else n - 1
         segments = []
@@ -137,20 +157,28 @@ class PolygonData:
             i += incr
         return segments
 
-    def _is_ccw(self):
+    def _is_ccw(self) -> bool:
         return self._sense == PolygonSenseType.SENSE_CCW
 
     @property
-    def is_closed(self):
-        """:obj:`bool`: Flag indicating if a polygon is closed between the first and last points."""
+    def is_closed(self) -> bool:
+        """
+        :obj:`bool`: Flag indicating if a polygon is closed between the first and last points.
+
+        This property is read-only.
+        """
         return self._is_closed
 
     @property
-    def sense(self):
-        """:class:`PolygonSenseType`: Polygon sense type."""
+    def sense(self) -> PolygonSenseType:
+        """
+        :class:`PolygonSenseType`: Polygon sense type.
+
+        This property is read-only.
+        """
         return self._sense
 
-    def is_hole(self):
+    def is_hole(self) -> bool:
         """Determine whether the polygon is a hole.
 
         Returns
@@ -160,7 +188,7 @@ class PolygonData:
         """
         return self.is_closed and not self._is_ccw()
 
-    def is_parametric(self):
+    def is_parametric(self) -> bool:
         """Determine whether a polygon contains any parametrized points.
 
         Returns
@@ -170,7 +198,7 @@ class PolygonData:
         """
         return any(pt.is_parametric for pt in self.points)
 
-    def has_arcs(self):
+    def has_arcs(self) -> bool:
         """Determine whether the polygon contains any arcs.
 
         Returns
@@ -180,7 +208,7 @@ class PolygonData:
         """
         return any(pt.is_arc for pt in self.points)
 
-    def has_holes(self):
+    def has_holes(self) -> bool:
         """Determine whether the polygon contains any holes.
 
         Returns
@@ -190,7 +218,7 @@ class PolygonData:
         """
         return len(self.holes) > 0
 
-    def is_circle(self):
+    def is_circle(self) -> bool:
         """Determine whether the outer contour of the polygon is a circle.
 
         Returns
@@ -200,7 +228,7 @@ class PolygonData:
         """
         return self.__stub.IsCircle(messages.polygon_data_message(self)).value
 
-    def is_box(self):
+    def is_box(self) -> bool:
         """Determine whether the outer contour of the polygon is a box.
 
         Returns
@@ -210,7 +238,7 @@ class PolygonData:
         """
         return self.__stub.IsBox(messages.polygon_data_message(self)).value
 
-    def is_convex(self):
+    def is_convex(self) -> bool:
         """Determine whether the polygon is a convex hull.
 
         Returns
@@ -220,7 +248,7 @@ class PolygonData:
         """
         return self.__stub.IsConvex(messages.polygon_data_message(self)).value
 
-    def area(self):
+    def area(self) -> float:
         """Compute the area of the polygon.
 
         Returns
@@ -230,7 +258,7 @@ class PolygonData:
         """
         return self.__stub.GetArea(messages.polygon_data_message(self)).value
 
-    def has_self_intersections(self, tol=1e-9):
+    def has_self_intersections(self, tol: float = 1e-9) -> bool:
         """Determine whether the polygon contains any self-intersections.
 
         Parameters
@@ -248,7 +276,7 @@ class PolygonData:
         ).value
 
     @parser.to_polygon_data_list
-    def remove_self_intersections(self, tol=1e-9):
+    def remove_self_intersections(self, tol: float = 1e-9) -> list[PolygonData]:
         """Remove self-intersections from this polygon.
 
         Parameters
@@ -266,7 +294,7 @@ class PolygonData:
         )
 
     @parser.to_point_data_list
-    def normalized(self):
+    def normalized(self) -> list[PointData]:
         """Get the normalized points of the polygon.
 
         Returns
@@ -276,60 +304,60 @@ class PolygonData:
         return self.__stub.GetNormalizedPoints(messages.polygon_data_message(self))
 
     @parser.to_polygon_data
-    def move(self, vector):
+    def move(self, vector: PointLike) -> PolygonData:
         """Move the polygon by a vector.
 
         Parameters
         ----------
-        vector : ansys.edb.core.typing.PointLikeT
+        vector : :term:`Point2DLike`
             Vector in the form: ``(x, y)``.
 
         Returns
         -------
-        PolygonData
+        .PolygonData
         """
         return self.__stub.Transform(messages.polygon_data_transform_message("move", self, vector))
 
     @parser.to_polygon_data
-    def rotate(self, angle, center):
+    def rotate(self, angle: float, center: PointLike) -> PolygonData:
         """Rotate the polygon at a center by an angle.
 
         Parameters
         ----------
         angle : float
             Angle in radians.
-        center : ansys.edb.core.typing.PoinyLikeT
+        center : :term:`Point2DLike`
             Center.
 
         Returns
         -------
-        PolygonData
+        .PolygonData
         """
         return self.__stub.Transform(
             messages.polygon_data_transform_message("rotate", self, angle, center)
         )
 
     @parser.to_polygon_data
-    def scale(self, factor, center):
+    def scale(self, factor: float, center: PointLike) -> PolygonData:
         """Scale the polygon by a linear factor from a center.
 
         Parameters
         ----------
         factor : float
             Linear factor.
-        center : ansys.edb.core.typing.PointLikeT
+        center : :term:`Point2DLike`
             Center.
 
         Returns
         -------
-        PolygonData
+        .PolygonData
         """
         return self.__stub.Transform(
             messages.polygon_data_transform_message("scale", self, factor, center)
         )
 
     @parser.to_polygon_data
-    def mirror_x(self, x):
+    def mirror_x(self, x: float) -> PolygonData:
         """Mirror a polygon by x line.
 
         Parameters
@@ -339,64 +367,66 @@ class PolygonData:
 
         Returns
         -------
-        PolygonData
+        .PolygonData
         """
         return self.__stub.Transform(messages.polygon_data_transform_message("mirror_x", x))
 
     @parser.to_box
-    def bbox(self):
+    def bbox(self) -> tuple[PointData, PointData]:
         """Compute the bounding box.
 
-        Returns
-        -------
-        tuple[.PointData, .PointData]
+         Returns
+         -------
+        tuple of (.PointData, .PointData)
         """
         return self.__stub.GetBBox(messages.polygon_data_list_message([self]))
 
     @classmethod
     @parser.to_box
-    def bbox_of_polygons(cls, polygons):
+    def bbox_of_polygons(cls, polygons: list[PolygonData]) -> tuple[PointData, PointData]:
         """Compute the bounding box of a list of polygons.
 
         Parameters
         ----------
-        polygons: list[PolygonData]
+        polygons : list[.PolygonData]
             List of polygons.
 
         Returns
         -------
-        tuple[.PointData, .PointData]
+        tuple of (.PointData, .PointData)
         """
         return cls.__stub.GetStreamedBBox(PolygonData._polygon_data_request_iterator(polygons))
 
     @parser.to_circle
-    def bounding_circle(self):
+    def bounding_circle(self) -> tuple[PointData, Value]:
         """Compute the bounding circle of the polygon.
 
         Returns
         -------
-        tuple[.PointData, .Value]
+        tuple of (.PointData, .Value)
         """
         return self.__stub.GetBoundingCircle(messages.polygon_data_message(self))
 
     @classmethod
     @parser.to_polygon_data
-    def convex_hull(cls, polygons):
+    def convex_hull(cls, polygons: list[PolygonData]) -> PolygonData:
         """Compute the convex hull of the union of a list of polygons.
 
         Parameters
         ----------
-        others : list[PolygonData]
+        others : list[.PolygonData]
             List of polygons.
 
         Returns
         -------
-        PolygonData
+        .PolygonData
         """
         return cls.__stub.GetConvexHull(messages.polygon_data_list_message(polygons))
 
     @parser.to_polygon_data
-    def without_arcs(self, max_chord_error=0, max_arc_angle=math.pi / 6, max_points=8):
+    def without_arcs(
+        self, max_chord_error: float = 0, max_arc_angle: float = math.pi / 6, max_points: int = 8
+    ) -> PolygonData:
         """Get polygon data with all arcs removed.
 
         Parameters
@@ -407,7 +437,7 @@ class PolygonData:
 
         Returns
         -------
-        PolygonData
+        .PolygonData
         """
         return self.__stub.RemoveArcs(
             messages.polygon_data_remove_arc_message(
@@ -416,7 +446,7 @@ class PolygonData:
         )
 
     @parser.to_polygon_data
-    def defeature(self, tol=1e-9):
+    def defeature(self, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon.
 
         Parameters
@@ -426,16 +456,16 @@ class PolygonData:
 
         Returns
         -------
-        PolygonData
+        .PolygonData
         """
         return self.__stub.Defeature(messages.polygon_data_with_tol_message(self, tol))
 
-    def is_inside(self, point):
+    def is_inside(self, point: PointLike) -> bool:
         """Determine whether the point is inside the polygon.
 
         Parameters
         ----------
-        point : ansys.edb.core.typing.PointLikeT
+        point : :term:`Point2DLike`
 
         Returns
         -------
@@ -444,19 +474,19 @@ class PolygonData:
         """
         return self.__stub.IsInside(messages.polygon_data_with_point_message(self, point)).value
 
-    def intersection_type(self, other, tol=1e-9):
+    def intersection_type(self, other: PolygonData, tol: float = 1e-9) -> IntersectionType:
         """Get the intersection type with another polygon.
 
         Parameters
         ----------
-        other : PolygonData
+        other : .PolygonData
             Other polygon.
         tol : float, default: 1e-9
             Tolerance.
 
         Returns
         -------
-        :class:`IntersectionType`
+        .IntersectionType
         """
         return IntersectionType(
             self.__stub.GetIntersectionType(
@@ -464,12 +494,12 @@ class PolygonData:
             ).intersection_type
         )
 
-    def circle_intersect(self, center, radius):
+    def circle_intersect(self, center: PointLike, radius: float) -> bool:
         """Determine whether the circle intersects with a polygon.
 
         Parameters
         ----------
-        center : ansys.edb.core.typing.PointLikeT
+        center : :term:`Point2DLike`
             Center.
         radius : float
             Radius.
@@ -484,12 +514,12 @@ class PolygonData:
         ).value
 
     @parser.to_point_data
-    def closest_point(self, point):
+    def closest_point(self, point: PointLike) -> PointData:
         """Compute a point on the polygon that is closest to another point.
 
         Parameters
         ----------
-        point : ansys.edb.core.typing.PointLikeT
+        point : :term:`Point2DLike`
            Other point.
 
         Returns
@@ -502,16 +532,16 @@ class PolygonData:
         ).points[0]
 
     @parser.to_point_data_list
-    def closest_points(self, polygon):
+    def closest_points(self, polygon: PolygonData) -> tuple[PointData, PointData]:
         """Compute points on this and another polygon that are closest to the other polygon.
 
         Parameters
         ----------
-        polygon : PolygonData
+        polygon : .PolygonData
 
         Returns
         -------
-        tuple[.PointData, .PointData]
+        tuple of (.PointData, .PointData)
         """
         return self.__stub.GetClosestPoints(
             messages.polygon_data_with_points_message(self, polygon=polygon)
@@ -519,76 +549,82 @@ class PolygonData:
 
     @classmethod
     @parser.to_polygon_data_list
-    def unite(cls, polygons):
+    def unite(cls, polygons: list[PolygonData]) -> list[PolygonData]:
         """Compute the union of a list of polygons.
 
         Parameters
         ----------
-        polygons: list[PolygonData]
+        polygons : list[.PolygonData]
             List of polygons.
 
         Returns
         -------
-        list[PolygonData]
+        list[.PolygonData]
         """
         return cls.__stub.GetUnion(messages.polygon_data_list_message(polygons))
 
     @classmethod
     @parser.to_polygon_data_list
-    def intersect(cls, polygons1, polygons2):
+    def intersect(
+        cls, polygons1: list[PolygonData] | PolygonData, polygons2: list[PolygonData] | PolygonData
+    ) -> list[PolygonData]:
         """Compute the intersection of one or more lists of polygons.
 
         Parameters
         ----------
-        polygons1: `list` of :class:`.PolygonData` or :class:`.PolygonData`
+        polygons1 : list[.PolygonData] or .PolygonData
             First list of polygons.
-        polygons2: `list` of :class:`.PolygonData` or :class:`.PolygonData`
+        polygons2 : list[.PolygonData] or .PolygonData
             Second optional list of polygons.
 
         Returns
         -------
-        list[PolygonData]
+        list[.PolygonData]
         """
         return cls.__stub.GetIntersection(messages.polygon_data_pair_message(polygons1, polygons2))
 
     @classmethod
     @parser.to_polygon_data_list
-    def subtract(cls, polygons1, polygons2):
+    def subtract(
+        cls, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
         """Subtract a set of polygons from another set of polygons.
 
         Parameters
         ----------
-        polygons1 : list[PolygonData], PolygonData
+        polygons1 : list[.PolygonData], PolygonData
             List of base polygons.
-        polygons2 : list[PolygonData], PolygonData
+        polygons2 : list[.PolygonData], PolygonData
             List of polygons to subtract.
 
         Returns
         -------
-        list[PolygonData]
+        list[.PolygonData]
         """
         return cls.__stub.Subtract(messages.polygon_data_pair_message(polygons1, polygons2))
 
     @classmethod
     @parser.to_polygon_data_list
-    def xor(cls, polygons1, polygons2):
+    def xor(cls, polygons1: list[PolygonData], polygons2: list[PolygonData]) -> list[PolygonData]:
         """Compute an exclusive OR between a set of polygons and another set of polygons.
 
         Parameters
         ----------
-        polygons1 : list[PolygonData], PolygonData
+        polygons1 : list[.PolygonData], PolygonData
             First list of polygons.
-        polygons2 : list[PolygonData], PolygonData
+        polygons2 : list[.PolygonData], PolygonData
             Second list of polygons.
 
         Returns
         -------
-        list[PolygonData]
+        list[.PolygonData]
         """
         return cls.__stub.Xor(messages.polygon_data_pair_message(polygons1, polygons2))
 
     @parser.to_polygon_data_list
-    def expand(self, offset, round_corner, max_corner_ext, tol=1e-9):
+    def expand(
+        self, offset: float, round_corner: bool, max_corner_ext: float, tol: float = 1e-9
+    ) -> list[PolygonData]:
         """Expand the polygon by an offset.
 
         Parameters
@@ -613,18 +649,18 @@ class PolygonData:
 
     @classmethod
     @parser.to_polygon_data_list
-    def alpha_shape(cls, points, alpha):
+    def alpha_shape(cls, points: list[PointLike], alpha: float) -> list[PolygonData]:
         """Compute the outline of a 2D point cloud using alpha shapes.
 
         Parameters
         ----------
-        points : list[ansys.edb.core.typing.PointLikeT]
+        points : list[:term:`Point2DLike`]
             List of points.
         alpha : float
 
         Returns
         -------
-        list[PolygonData]
+        list[.PolygonData]
         """
         return cls.__stub.Get2DAlphaShape(
             messages.polygon_data_get_alpha_shape_message(points, alpha)

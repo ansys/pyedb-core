@@ -210,12 +210,12 @@ class Bondwire(Primitive):
             bondwire_pb2.SetDefinitionNameMessage(target=self.msg, definition_name=definition_name)
         )
 
-    def get_traj(self) -> tuple[ValueLike, ValueLike, ValueLike, ValueLike]:
+    def get_traj(self) -> tuple[Value, Value, Value, Value]:
         """Get trajectory parameters of the bondwire.
 
         Returns
         -------
-        tuple of (:term:`ValueLike`, :term:`ValueLike`, :term:`ValueLike`, :term:`ValueLike`)
+        tuple of (.Value, .Value, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -237,18 +237,18 @@ class Bondwire(Primitive):
             Value(traj_msg.y2),
         )
 
-    def set_traj(self, x1: Value, y1: Value, x2: Value, y2: Value):
+    def set_traj(self, x1: ValueLike, y1: ValueLike, x2: ValueLike, y2: ValueLike):
         """Set the parameters of the trajectory of the bondwire.
 
         Parameters
         ----------
-        x1 : .Value
+        x1 : :term:`ValueLike`
             X value of the start point.
-        y1 : .Value
+        y1 : :term:`ValueLike`
             Y value of the start point.
-        x2 : .Value
+        x2 : :term:`ValueLike`
             X value of the end point.
-        y2 : .Value
+        y2 : :term:`ValueLike`
             Y value of the end point.
         """
         self.__stub.SetTraj(

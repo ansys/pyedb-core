@@ -98,12 +98,12 @@ class Circle(Primitive):
             )
         )
 
-    def get_parameters(self) -> tuple[ValueLike, ValueLike, ValueLike]:
+    def get_parameters(self) -> tuple[Value, Value, Value]:
         """Get parameters of the circle.
 
         Returns
         -------
-        tuple of (:term:`ValueLike`, :term:`ValueLike`, :term:`ValueLike`)
+        tuple of (.Value, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -122,16 +122,16 @@ class Circle(Primitive):
             Value(circle_param_msg.radius),
         )
 
-    def set_parameters(self, center_x: Value, center_y, radius: Value):
+    def set_parameters(self, center_x: ValueLike, center_y: ValueLike, radius: ValueLike):
         """Set parameters of the circle.
 
         Parameters
         ----------
-        center_x : .Value
+        center_x : :term:`ValueLike`
             X value of the center point.
-        center_y : .Value
+        center_y : :term:`ValueLike`
             Y value of the center point.
-        radius : .Value
+        radius : :term:`ValueLike`
             Radius value of the circle.
         """
         self.__stub.SetParameters(

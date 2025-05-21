@@ -48,16 +48,16 @@ class Bondwire(Primitive):
         bondwire_type: BondwireType,
         definition_name: str,
         placement_layer: str,
-        width: Value,
+        width: ValueLike,
         material: str,
         start_context: CellInstance,
         start_layer_name: str,
-        start_x: Value,
-        start_y: Value,
+        start_x: ValueLike,
+        start_y: ValueLike,
         end_context: CellInstance,
         end_layer_name: str,
-        end_x: Value,
-        end_y: Value,
+        end_x: ValueLike,
+        end_y: ValueLike,
         net: NetLike | None,
     ) -> Bondwire:
         """Create a bondwire.
@@ -72,7 +72,7 @@ class Bondwire(Primitive):
             Bondwire definition name.
         placement_layer : str
             Layer name to create the bondwire on.
-        width : .Value
+        width : :term:`ValueLike`
             Bondwire width.
         material : str
             Bondwire material name.
@@ -80,17 +80,17 @@ class Bondwire(Primitive):
             Start context :obj:`None` means top-level,.
         start_layer_name : str
             Name of the start layer.
-        start_x : .Value
+        start_x : :term:`ValueLike`
             X value of the start point.
-        start_y : .Value
+        start_y : :term:`ValueLike`
             Y value of the start point.
         end_context : .CellInstance
             End content :obj:`None` means top-level.
         end_layer_name : str
             Name of the end layer.
-        end_x : .Value
+        end_x : :term:`ValueLike`
             X value of the end point.
-        end_y : .Value
+        end_y : :term:`ValueLike`
             Y value of the end point.
         net : :term:`NetLike` or None
             Net of the bondwire.

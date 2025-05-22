@@ -1,0 +1,6 @@
+ASSEMBLY\_LAYER
+===============
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoattribute:: LayerType.ASSEMBLY_LAYER

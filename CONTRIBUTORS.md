@@ -16,6 +16,7 @@
 * [Karan Bhagat](https://github.com/kbhagat-ansys)
 * [Kathy Pippert](https://github.com/PipKat)
 * [Maxime Rey](https://github.com/MaxJPRey)
+* [Minsi Sung](https://github.com/ansminsisung)
 * [Roberto Pastor Muela](https://github.com/RobPasMue)
 * [SitaRamesh](https://github.com/SitaRamesh)
 * [SriniSundararajan](https://github.com/SriniSundararajan)

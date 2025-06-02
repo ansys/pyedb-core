@@ -1,7 +1,7 @@
 """Database."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import TYPE_CHECKING, List, Tuple
 
 if TYPE_CHECKING:
     from ansys.edb.core.inner.messages import EDBObjMessage
@@ -263,7 +263,7 @@ class Database(ObjBase, variable_server.VariableServer):
         return [attr_id for attr_id in attr_ids]
 
     def import_material_from_control_file(
-        self, control_file: str, schema_dir: Union[str, None] = None, append: bool = True
+        self, control_file: str, schema_dir: str | None = None, append: bool = True
     ):
         """Import materials from a control file.
 
@@ -271,7 +271,7 @@ class Database(ObjBase, variable_server.VariableServer):
         ----------
         control_file : str
             Full path to the control file.
-        schema_dir : Union[str, None], default: None
+        schema_dir : str or None, default: None
             Path to the schema directory.
         append : bool, default: True
             Whether to keep existing materials in the database. If ``False``, the

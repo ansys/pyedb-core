@@ -12,7 +12,7 @@ import socket
 from struct import pack, unpack
 import subprocess
 from sys import modules
-from typing import List, Union
+from typing import List
 
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
 from ansys.api.edb.v1.board_bend_def_pb2_grpc import BoardBendDefServiceStub
@@ -233,7 +233,7 @@ class _Session:
         return "{}:{}".format(self.ip_address, self.port_num)
 
     @property
-    def server_executable(self) -> Union[str, None]:
+    def server_executable(self) -> str | None:
         if self.is_launch():
             return which(cmd="EDB_RPC_Server", path=self.ansys_em_root)
         else:
@@ -479,13 +479,13 @@ class StubType(Enum):
 
 
 def attach_session(
-    ip_address: Union[str, None] = None, port_num: int = 50051, dump_traffic_log: bool = False
+    ip_address: str | None = None, port_num: int = 50051, dump_traffic_log: bool = False
 ):
     """Attach a session to a port running the EDB API server.
 
     Parameters
     ----------
-    ip_address : Union[str, None], default: None
+    ip_address : str or None, default: None
         IP address of the machine that is running the server. The default is ``None``,
         in which case localhost is used.
     port_num : int, default: 50051
@@ -498,9 +498,7 @@ def attach_session(
     return MOD.current_session
 
 
-def launch_session(
-    ansys_em_root: str, port_num: Union[int, None] = None, dump_traffic_log: bool = False
-):
+def launch_session(ansys_em_root: str, port_num: int | None = None, dump_traffic_log: bool = False):
     r"""Launch a local session to an EDB API server.
 
     The session must be manually disconnected after use by calling session.disconnect()
@@ -509,7 +507,7 @@ def launch_session(
     ----------
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
-    port_num : Union[int, None], default: None
+    port_num : int or None, default: None
         Port number to listen on. The default is ``None``, in which case a port in [50051, 60000]
         is selected.
     dump_traffic_log : bool, default: False
@@ -537,8 +535,8 @@ def launch_session(
 @contextmanager
 def session(
     ansys_em_root: str,
-    port_num: Union[int, None] = None,
-    ip_address: Union[str, None] = None,
+    port_num: int | None = None,
+    ip_address: str | None = None,
     dump_traffic_log: bool = False,
 ):
     r"""Launch a local session to an EDB API server in a context manager.
@@ -547,10 +545,10 @@ def session(
     ----------
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
-    port_num : Union[int, None], default: None
+    port_num : int or None, default: None
         Port number to listen on. The default is ``None``, in which case a port in [50051, 60000]
         is selected.
-    ip_address : Union[str, None], default: None
+    ip_address : str or None, default: None
         IP address where the server executable file is running. The default is ``None``, in which
         case localhost is used.
 
@@ -619,7 +617,7 @@ def get_variable_server_stub() -> VariableServerServiceStub:
 
 
 def _ensure_session(
-    ansys_em_root: str, port_num: int, ip_address: Union[str, None], dump_traffic_log: bool
+    ansys_em_root: str, port_num: int, ip_address: str | None, dump_traffic_log: bool
 ):
     """Check for a running local session and create one if it doesn't exist.
 
@@ -629,7 +627,7 @@ def _ensure_session(
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
     port_num : int
         Port number to listen on.
-    ip_address : Union[str, None]
+    ip_address : str or None
         IP address where the server executable file is running.
     dump_traffic_log : bool
         Flag indicating if the network traffic log should be dumped when the session is disconnected.

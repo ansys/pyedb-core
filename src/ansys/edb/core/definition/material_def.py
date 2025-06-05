@@ -1,4 +1,11 @@
 """Material definition."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Dict, List, Tuple
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import ValueLike
+    from ansys.edb.core.database import Database
 
 from enum import Enum
 
@@ -15,7 +22,7 @@ from ansys.edb.core.utility.value import Value
 
 
 class MaterialProperty(Enum):
-    """Provides an enum representing material property types."""
+    """Enum representing material property types."""
 
     PERMITTIVITY = pb.PERMITTIVITY
     PERMEABILITY = pb.PERMEABILITY
@@ -32,41 +39,40 @@ class MaterialProperty(Enum):
 
 
 class MaterialDef(ObjBase):
-    """Represents a material definition."""
+    """Represents a material and all its properties."""
 
     __stub: MaterialDefServiceStub = StubAccessor(StubType.material)
 
     @classmethod
-    def create(cls, database, name, **kwargs):
+    def create(cls, database: Database, name: str, **kwargs: Dict[str, ValueLike]) -> MaterialDef:
         """Create a material definition in a given database.
 
         Parameters
         ----------
-        database : :class:`.Database`
+        database : .Database
             Database to create the material definition in.
         name : str
             Name of the material definition.
-        kwargs : dict{ str : :class:`.Value` }
-            Dictionary to convert to a ``MaterialDefPropertiesMessage`` object.
-            The dictionary key is the material property name. The dictionary value is the
+        kwargs : dict of { str : :term:`ValueLike` }
+            Dictionary of material property values.
+            The dictionary key is the material property name. The dictionary value is the \
             material property value. The expected keys for the kwargs are:
 
-            - ``permittivity``
-            - ``permeability``
-            - ``conductivity``
-            - ``dielectric_loss_tangent``
-            - ``magnetic_loss_tangent``
-            - ``thermal_conductivity``
-            - ``mass_density``
-            - ``specific_heat``
-            - ``youngs_modulus``
-            - ``poissons_ratio``
-            - ``thermal_expansion_coefficient``
+            - ``"permittivity"``
+            - ``"permeability"``
+            - ``"conductivity"``
+            - ``"dielectric_loss_tangent"``
+            - ``"magnetic_loss_tangent"``
+            - ``"thermal_conductivity"``
+            - ``"mass_density"``
+            - ``"specific_heat"``
+            - ``"youngs_modulus"``
+            - ``"poissons_ratio"``
+            - ``"thermal_expansion_coefficient"``
 
         Returns
         -------
-        MaterialDef
-            Material definition object created.
+        .MaterialDef
         """
         return MaterialDef(
             cls.__stub.Create(
@@ -79,26 +85,30 @@ class MaterialDef(ObjBase):
         )
 
     @classmethod
-    def find_by_name(cls, database, name):
+    def find_by_name(cls, database: Database, name: str) -> MaterialDef:
         """Find a material definition by name in a given database.
 
         Parameters
         ----------
-        database : :class:`.Database`
+        database : .Database
             Database to search for the material definition.
         name : str
             Name of the material definition.
 
         Returns
         -------
-        MaterialDef
-            Naterial definition found.
+        .MaterialDef
+            Material definition object found.
+            If a material definition isn't found, the returned material definition is :meth:`null <.is_null>`.
         """
         return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))
 
     @property
-    def definition_type(self):
-        """:class:`.DefinitionObjType`: Type of the material definition."""
+    def definition_type(self) -> DefinitionObjType:
+        """:class:`.DefinitionObjType`: Definition object type.
+
+        This property is read-only.
+        """
         return DefinitionObjType.MATERIAL_DEF
 
     @property
@@ -125,21 +135,43 @@ class MaterialDef(ObjBase):
         """Delete the material definition."""
         self.__stub.Delete(messages.edb_obj_message(self))
 
-    def set_property(self, material_property, value, component_id=None, col=None, row=None):
-        """Set a material property for a given component.
+    def set_property(
+        self,
+        material_property: MaterialProperty,
+        value: ValueLike,
+        component_id: int = None,
+        col: int = None,
+        row: int = None,
+    ):
+        """Set a material property value.
+
+            Material properties can be defined in 3 ways:
+                1. Simple: A constant value.
+                    - To define a simple material property, the ``material_property`` \
+                    and ``value`` parameters should be provided.
+                2. Anisotropic: A 3x3 tensor consisting of only diagonal entries.
+                    - To define a component of an anisotropic material property, the ``material_property``, \
+                    ``value``, and ``component_id`` parameters should be provided.
+                    - ``component_id`` specifies the \
+                    :term:`anisotropic component ID <Anisotropic Material Property Component IDs>` \
+                    of the component to set the value of.
+                3. Tensor: A 3x3 tensor consisting of diagonal and off-diagonal entries.
+                    - To define an entry in a tensor material property, the ``material_property``, \
+                    ``value``, ``col`` and ``row`` parameters should be provided. The entry at ``T[row,col]`` \
+                    will be set to the provided ``value``.
 
         Parameters
         ----------
-        material_property : :class:`MaterialProperty`
+        material_property : .MaterialProperty
             ID of the material property.
-        value : :class:`.Value`
+        value : :term:`ValueLike`
             New value.
         component_id : int, default: None
-            ID of the component.
+            ID of the anisotropic component (only used for anisotropic material properties).
         row : int, default: None
-            Tensor row.
+            Tensor row (only used for tensor material properties).
         col : int, default: None
-            Tensor column.
+            Tensor column (only used for tensor material properties).
         """
         msg_params = {
             "materialDef": messages.edb_obj_message(self),
@@ -153,23 +185,37 @@ class MaterialDef(ObjBase):
         self.__stub.SetProperty(pb.MaterialDefSetPropertyMessage(**msg_params))
 
     def get_property(self, material_property, component_id=None, row=None, col=None):
-        """Set a property value of the material.
+        """Get a material property value.
+
+            Material properties can be defined in 3 ways:
+                1. Simple: A constant value.
+                    - To retrieve a simple material property, the ``material_property`` \
+                    parameter should be provided.
+                2. Anisotropic: A 3x3 tensor consisting of only diagonal entries.
+                    - To retrieve a component of an anisotropic material property, the ``material_property`` \
+                    and ``component_id`` parameters should be provided.
+                    - ``component_id`` specifies the \
+                    :term:`anisotropic component ID <Anisotropic Material Property Component IDs>` \
+                    of the component to get the value of.
+                3. Tensor: A 3x3 tensor consisting of diagonal and off-diagonal entries.
+                    - To retrieve an entry in a tensor material property, the ``material_property``, \
+                    ``col`` and ``row`` parameters should be provided. The entry at ``T[row,col]`` \
+                    will be returned.
 
         Parameters
         ----------
-        material_property : :class:`MaterialProperty`, default: None
-            Material property ID.
+        material_property : .MaterialProperty
+            ID of the material property.
         component_id : int, default: None
-            Component ID.
+            ID of the anisotropic component (only used for anisotropic material properties).
         row : int, default: None
-            Tensor row.
+            Tensor row (only used for tensor material properties).
         col : int, default: None
-            Tensor column.
+            Tensor column (only used for tensor material properties).
 
         Returns
         -------
-        :class:`.Value`
-            Value of the material property.
+        .Value
         """
         return Value(
             self.__stub.GetProperty(
@@ -177,24 +223,22 @@ class MaterialDef(ObjBase):
             )
         )
 
-    def get_all_properties(self):
-        """Get all properties of the material.
+    @property
+    def all_properties(self) -> List[MaterialProperty]:
+        """:obj:`list` of :class:`.MaterialProperty`: All properties defined in the material definition.
 
-        Returns
-        -------
-        `list` of :class:`MaterialProperty`
-            All properties for the material definition.
+        This property is read-only.
         """
         msg = self.__stub.GetAllProperties(messages.edb_obj_message(self))
         return [MaterialProperty(i) for i in msg.properties]
 
-    def remove_property(self, material_property):
-        """Remove the value from a material property.
+    def remove_property(self, material_property: MaterialProperty):
+        """Remove a property from the material definition.
 
         Parameters
         ----------
-        material_property : :class:`MaterialProperty`
-            Property ID.
+        material_property : .MaterialProperty
+            Material property to be removed.
         """
         self.__stub.RemoveProperty(
             MaterialDef._get_property_message(
@@ -202,41 +246,43 @@ class MaterialDef(ObjBase):
             )
         )
 
-    def get_dimensions(self, material_property_id):
-        """Get dimensions of a given material definition.
+    def get_dimensions(self, material_property_id: MaterialProperty) -> Tuple[int, int]:
+        """Get the dimensions of the tensor of a material property.
 
-        Types are Simple 1x1, Anisotropic 3x1, and Tensor 3x3.
+            The mappings between the types of material properties and dimensions are as follows:
+                - ``Simple`` -> ``1x1``
+                - ``Anisotropic`` -> ``3x1``
+                - ``Tensor`` -> ``3x3``.
 
         Parameters
         ----------
-        material_property_id : \
-        :class:`MaterialProperty`
-            Property ID.
+        material_property_id : .MaterialProperty
+            Material property to get the dimensions of.
 
         Returns
         -------
-        tuple[int, int]
-            The tuple is in a ``(col, row)`` format:
+        tuple of (int, int)
+            The tuple is of the format ``(col, row)``:
 
             - ``col``: Number of rows of the material property.
             - ``row``: Number of columns of the material property.
         """
         msg = self.__stub.GetDimensions(MaterialDef._property_message(self, material_property_id))
-        return [msg.tensor.col, msg.tensor.row]
+        return msg.tensor.col, msg.tensor.row
 
-    def get_thermal_modifier(self, material_property_id):
-        """Get the thermal modifier of a given material definition.
+    def get_thermal_modifier(
+        self, material_property_id: MaterialProperty
+    ) -> MaterialPropertyThermalModifier:
+        """Get the thermal modifier of a material property.
 
         Parameters
         ----------
-        material_property_id : \
-        :class:`MaterialProperty`
-            Property ID.
+        material_property_id : .MaterialProperty
+            Material property to get the thermal modifier of.
 
         Returns
         -------
-        MaterialPropertyThermalModifier
-            Thermal modifier of the material definition.
+        .MaterialPropertyThermalModifier
         """
         return MaterialPropertyThermalModifier(
             self.__stub.GetThermalModifier(
@@ -244,16 +290,19 @@ class MaterialDef(ObjBase):
             )
         )
 
-    def set_thermal_modifier(self, material_property_id, thermal_modifier):
-        """Set the thermal modifier of the material definition.
+    def set_thermal_modifier(
+        self,
+        material_property_id: MaterialProperty,
+        thermal_modifier: MaterialPropertyThermalModifier,
+    ):
+        """Set the thermal modifier of the material property.
 
         Parameters
         ----------
-        material_property_id : \
-        :class:`MaterialProperty`
-            Property ID.
-        thermal_modifier : MaterialPropertyThermalModifier
-            Thermal modifier to set to the material definition.
+        material_property_id : .MaterialProperty
+            Material property to set the thermal modifier on.
+        thermal_modifier : .MaterialPropertyThermalModifier
+            Thermal modifier to assign to the material property.
         """
         self.__stub.SetThermalModifier(
             pb.SetMaterialDefPropertyMessage(
@@ -264,20 +313,19 @@ class MaterialDef(ObjBase):
         )
 
     def get_anisotropic_thermal_modifier(self, material_property_id, component_id):
-        """Get the anisotropic thermal modifier of a given material definition.
+        """Get the thermal modifier of an anisotropic material property.
 
         Parameters
         ----------
-        material_property_id : \
-        :class:`MaterialProperty`
-            Property ID.
+        material_property_id : .MaterialProperty
+            Material property to get the thermal modifier of.
         component_id : int
-            Component ID.
+            :term:`Anisotropic component ID <Anisotropic Material Property Component IDs>` of the \
+            material property to get the thermal modifier of.
 
         Returns
         -------
-        :class:`.MaterialPropertyThermalModifier`
-            Anisotropic thermal modifier of the material definition.
+        .MaterialPropertyThermalModifier
         """
         return MaterialPropertyThermalModifier(
             self.__stub.GetAnisotropicThermalModifier(
@@ -292,17 +340,16 @@ class MaterialDef(ObjBase):
     def set_anisotropic_thermal_modifier(
         self, material_property_id, component_id, thermal_modifier
     ):
-        """Set the anisotropic thermal modifier of a given material definition.
+        """Set the thermal modifier of an anisotropic material property.
 
         Parameters
         ----------
-        material_property_id : \
-        :class:`MaterialProperty`
-            Property ID.
+        material_property_id : .MaterialProperty
+            Type of material property to set the thermal modifier on.
         component_id : int
-            Component ID.
-        thermal_modifier : :class:`.MaterialPropertyThermalModifier`
-            Anisotropic thermal modifier to set to the material definition.
+            :term:`Anisotropic component ID <Anisotropic Material Property Component IDs>` of the \
+            material property to set the thermal modifier on.
+        thermal_modifier : .MaterialPropertyThermalModifier
         """
         self.__stub.SetAnisotropicThermalModifier(
             pb.SetMaterialDefPropertyComponentMessage(

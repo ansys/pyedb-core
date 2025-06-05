@@ -1,4 +1,12 @@
 """Text."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.typing import LayerLike, ValueLike
+
 
 from ansys.api.edb.v1 import text_pb2, text_pb2_grpc
 
@@ -14,20 +22,22 @@ class Text(Primitive):
     __stub: text_pb2_grpc.TextServiceStub = StubAccessor(StubType.text)
 
     @classmethod
-    def create(cls, layout, layer, center_x, center_y, text):
+    def create(
+        cls, layout: Layout, layer: LayerLike, center_x: ValueLike, center_y: ValueLike, text: str
+    ) -> Text:
         """Create a text object.
 
         Parameters
         ----------
-        layout : :class:`.Layout`
+        layout : .Layout
             Layout to create the text object in.
-        layer : str or Layer
+        layer : :term:`LayerLike`
             Layer to place the text object on.
-        center_x : :class:`.Value`
+        center_x : :term:`ValueLike`
             X value of the center point.
-        center_y : :class:`.Value`
+        center_y : :term:`ValueLike`
             Y value of the center point.
-        text: str
+        text : str
             Text string.
 
         Returns
@@ -47,16 +57,12 @@ class Text(Primitive):
             )
         )
 
-    def get_text_data(self):
+    def get_text_data(self) -> tuple[Value, Value, str]:
         """Get the data for the text object.
 
         Returns
         -------
-        tuple[
-            :class:`.Value`,
-            :class:`.Value`,
-            str
-        ]
+        tuple of (.Value, .Value, str)
             Returns a tuple in this format:
 
             **(center_x, center_y, text)**
@@ -74,14 +80,14 @@ class Text(Primitive):
             text_data_msg.text,
         )
 
-    def set_text_data(self, center_x, center_y, text):
+    def set_text_data(self, center_x: ValueLike, center_y: ValueLike, text: str):
         """Set the data for the text object.
 
         Parameters
         ----------
-        center_x : :class:`.Value`
+        center_x : :term:`ValueLike`
             X value of the center point.
-        center_y : :class:`.Value`
+        center_y : :term:`ValueLike`
             Y value of the center point.
         text : str
             String value for the text object.

@@ -26,6 +26,13 @@ class RoughnessRegion(Enum):
     SIDE = stackup_layer_pb2.LayerRoughnessRegionMessage.RoughnessRegion.SIDE
 
 
+class EtchNetClass(Enum):
+    """Enum representing etch net classes of stackup layers."""
+
+    NO_ETCH_POWER_GROUND = stackup_layer_pb2.EtchNetClass.NO_ETCH_POWER_GROUND
+    ETCH_ALL_NETS = stackup_layer_pb2.EtchNetClass.ETCH_ALL_NETS
+
+
 def _set_layer_material_name_message(layer, mat_name):
     """Convert to a ``SetLayerMaterialNameMessage`` object."""
     return stackup_layer_pb2.SetLayerMaterialMessage(layer=layer.msg, material=mat_name)
@@ -267,6 +274,19 @@ class StackupLayer(Layer):
     @etch_factor.setter
     def etch_factor(self, etch_factor):
         get_stackup_layer_stub().SetEtchFactor(_stackup_layer_value_message(self, etch_factor))
+
+    @property
+    def etch_net_class(self) -> EtchNetClass:
+        """:class:`.EtchNetClass`: Etch net class of the layer."""
+        return EtchNetClass(get_stackup_layer_stub().GetEtchNetClass(self.msg).etch_net_class)
+
+    @etch_net_class.setter
+    def etch_net_class(self, etch_net_class: EtchNetClass):
+        get_stackup_layer_stub().SetEtchNetClass(
+            stackup_layer_pb2.StackupLayerEtchNetClassMessage(
+                layer=self.msg, etch_net_class=etch_net_class.value
+            )
+        )
 
     @property
     def use_solver_properties(self):

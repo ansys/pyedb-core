@@ -586,15 +586,15 @@ class PolygonData:
     @classmethod
     @parser.to_polygon_data_list
     def subtract(
-        cls, polygons1: list[PolygonData], polygons2: list[PolygonData]
+        cls, polygons1: list[PolygonData] | PolygonData, polygons2: list[PolygonData] | PolygonData
     ) -> list[PolygonData]:
         """Subtract a set of polygons from another set of polygons.
 
         Parameters
         ----------
-        polygons1 : list of .PolygonData, PolygonData
+        polygons1 : list of .PolygonData or PolygonData
             List of base polygons.
-        polygons2 : list of .PolygonData, PolygonData
+        polygons2 : list of .PolygonData or PolygonData
             List of polygons to subtract.
 
         Returns
@@ -605,14 +605,16 @@ class PolygonData:
 
     @classmethod
     @parser.to_polygon_data_list
-    def xor(cls, polygons1: list[PolygonData], polygons2: list[PolygonData]) -> list[PolygonData]:
+    def xor(
+        cls, polygons1: list[PolygonData] | PolygonData, polygons2: list[PolygonData] | PolygonData
+    ) -> list[PolygonData]:
         """Compute an exclusive OR between a set of polygons and another set of polygons.
 
         Parameters
         ----------
-        polygons1 : list of .PolygonData, PolygonData
+        polygons1 : list of .PolygonData or PolygonData
             First list of polygons.
-        polygons2 : list of .PolygonData, PolygonData
+        polygons2 : list of .PolygonData or PolygonData
             Second list of polygons.
 
         Returns

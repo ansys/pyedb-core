@@ -151,7 +151,7 @@ class RTree(ObjBase):
 
         Returns
         -------
-        list[.RTreeObj]
+        list of .RTreeObj
            List of intersecting RTree objects.
         """
         msg = self.__stub.Search(
@@ -200,7 +200,7 @@ class RTree(ObjBase):
 
         Returns
         -------
-        list[.RTreeObj]
+        list of .RTreeObj
             All touching RTree objects.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -225,7 +225,7 @@ class RTree(ObjBase):
 
         Returns
         -------
-        list[.RTreeObj]
+        list of .RTreeObj
             List of connected geometries.
         """
         if self._handle_rtree_obj(rtree_obj):

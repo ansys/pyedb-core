@@ -233,7 +233,8 @@ class PointData:
 
         Returns
         -------
-        .PointData or :obj:`None` if either point is an arc.
+        .PointData or :obj:`None`
+            Closet PointData or :obj:`None` if either point is an arc.
         """
         if not self.is_arc:
             return self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
@@ -270,13 +271,14 @@ class PointData:
 
         Returns
         -------
-        .Value or :obj:`None` if either point is an arc.
+        .Value or :obj:`None`
+            Cross product value or :obj:`None` if either point is an arc.
         """
         other = conversions.to_point(other)
         if not self.is_arc and not other.is_arc:
             return self.x * other.y - self.y * other.x
 
-    def move(self, vector: PointLike) -> PointData:
+    def move(self, vector: PointLike) -> PointData | None:
         """Move the point by a vector.
 
         Parameters
@@ -286,7 +288,8 @@ class PointData:
 
         Returns
         -------
-        .PointData or :obj:`None` if either point is an arc.
+        .PointData or :obj:`None`
+           PointData after moving or :obj:`None` if either point is an arc.
         """
         vector = conversions.to_point(vector)
         if not self.is_arc and not vector.is_arc:
@@ -305,7 +308,8 @@ class PointData:
 
         Returns
         -------
-        .PointData or :obj:`None` if either point is an arc.
+        .PointData or :obj:`None`
+            PointData after rotating or :obj:`None` if either point is an arc.
         """
         if not self.is_arc:
             return self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))

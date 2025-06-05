@@ -78,11 +78,11 @@ class PolygonData:
 
         Parameters
         ----------
-        points : list[:term:`Point2DLike`], default: None
-        arcs : list[.ArcData], default: None
+        points : list of :term:`Point2DLike`, default: None
+        arcs : list of .ArcData, default: None
         lower_left : :term:`Point2DLike`, default: None
         upper_right : :term:`Point2DLike`, default: None
-        holes : list[.PolygonData], default: None
+        holes : list of .PolygonData, default: None
         sense : .PolygonSenseType, default: SENSE_CCW
         closed : bool, default: True
         """
@@ -286,7 +286,7 @@ class PolygonData:
 
         Returns
         -------
-        list[.PolygonData]
+        list of .PolygonData
             A list of non self-intersecting polygons.
         """
         return self.__stub.RemoveSelfIntersections(
@@ -299,7 +299,7 @@ class PolygonData:
 
         Returns
         -------
-        list[.PointData]
+        list of .PointData
         """
         return self.__stub.GetNormalizedPoints(messages.polygon_data_message(self))
 
@@ -388,7 +388,7 @@ class PolygonData:
 
         Parameters
         ----------
-        polygons : list[.PolygonData]
+        polygons : list of .PolygonData
             List of polygons.
 
         Returns
@@ -414,7 +414,7 @@ class PolygonData:
 
         Parameters
         ----------
-        others : list[.PolygonData]
+        others : list of .PolygonData
             List of polygons.
 
         Returns
@@ -554,12 +554,12 @@ class PolygonData:
 
         Parameters
         ----------
-        polygons : list[.PolygonData]
+        polygons : list of .PolygonData
             List of polygons.
 
         Returns
         -------
-        list[.PolygonData]
+        list of .PolygonData
         """
         return cls.__stub.GetUnion(messages.polygon_data_list_message(polygons))
 
@@ -572,14 +572,14 @@ class PolygonData:
 
         Parameters
         ----------
-        polygons1 : list[.PolygonData] or .PolygonData
+        polygons1 : list of .PolygonData or .PolygonData
             First list of polygons.
-        polygons2 : list[.PolygonData] or .PolygonData
+        polygons2 : list of .PolygonData or .PolygonData
             Second optional list of polygons.
 
         Returns
         -------
-        list[.PolygonData]
+        list of .PolygonData
         """
         return cls.__stub.GetIntersection(messages.polygon_data_pair_message(polygons1, polygons2))
 
@@ -592,14 +592,14 @@ class PolygonData:
 
         Parameters
         ----------
-        polygons1 : list[.PolygonData], PolygonData
+        polygons1 : list of .PolygonData, PolygonData
             List of base polygons.
-        polygons2 : list[.PolygonData], PolygonData
+        polygons2 : list of .PolygonData, PolygonData
             List of polygons to subtract.
 
         Returns
         -------
-        list[.PolygonData]
+        list of .PolygonData
         """
         return cls.__stub.Subtract(messages.polygon_data_pair_message(polygons1, polygons2))
 
@@ -610,14 +610,14 @@ class PolygonData:
 
         Parameters
         ----------
-        polygons1 : list[.PolygonData], PolygonData
+        polygons1 : list of .PolygonData, PolygonData
             First list of polygons.
-        polygons2 : list[.PolygonData], PolygonData
+        polygons2 : list of .PolygonData, PolygonData
             Second list of polygons.
 
         Returns
         -------
-        list[.PolygonData]
+        list of .PolygonData
         """
         return cls.__stub.Xor(messages.polygon_data_pair_message(polygons1, polygons2))
 
@@ -641,7 +641,7 @@ class PolygonData:
 
         Returns
         -------
-        list[PolygonData]
+        list of .PolygonData
         """
         return self.__stub.Expand(
             messages.polygon_data_expand_message(self, offset, tol, round_corner, max_corner_ext)
@@ -654,13 +654,13 @@ class PolygonData:
 
         Parameters
         ----------
-        points : list[:term:`Point2DLike`]
+        points : list of :term:`Point2DLike`
             List of points.
         alpha : float
 
         Returns
         -------
-        list[.PolygonData]
+        list of .PolygonData
         """
         return cls.__stub.Get2DAlphaShape(
             messages.polygon_data_get_alpha_shape_message(points, alpha)

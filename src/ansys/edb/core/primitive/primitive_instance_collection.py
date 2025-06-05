@@ -108,7 +108,10 @@ class PrimitiveInstanceCollection(LayoutObj):
     @property
     def instantiated_geometry(self) -> List[PolygonData]:
         """:obj:`list` of :class:`.PolygonData`: The geometry instantiated at each location in \
-        the primitive instance collection."""
+        the primitive instance collection.
+
+        This property is read-only.
+        """
         return stream_items_from_server(
             msg_to_polygon_data, self.__stub.GetInstantiatedGeometry(self.msg), "polygons"
         )

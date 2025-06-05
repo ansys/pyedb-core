@@ -1,4 +1,12 @@
 """Rectangle."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.typing import NetLike, LayerLike, ValueLike
 
 from enum import Enum
 
@@ -25,31 +33,41 @@ class Rectangle(Primitive):
 
     @classmethod
     def create(
-        cls, layout, layer, net, rep_type, param1, param2, param3, param4, corner_rad, rotation
-    ):
+        cls,
+        layout: Layout,
+        layer: LayerLike,
+        net: NetLike | None,
+        rep_type: RectangleRepresentationType,
+        param1: ValueLike,
+        param2: ValueLike,
+        param3: ValueLike,
+        param4: ValueLike,
+        corner_rad: ValueLike,
+        rotation: ValueLike,
+    ) -> Rectangle:
         """Create a rectangle.
 
         Parameters
         ----------
-        layout : :class:`.Layout`
+        layout : .Layout
             Layout to create the rectangle in.
-        layer : str or :class:`.Layer`
+        layer : :term:`LayerLike`
             Layer the rectangle is to created on.
-        net : str or :class:`.Net` or None
+        net : :term:`NetLike` or None
             Net the rectangle is to have.
-        rep_type : :class:`RectangleRepresentationType`
+        rep_type : .RectangleRepresentationType
             Type that defines the meaning of the given parameters.
-        param1 : :class:`.Value`
+        param1 : :term:`ValueLike`
             X value of the lower-left point or center point.
-        param2 : :class:`.Value`
+        param2 : :term:`ValueLike`
             Y value of the lower-left point or center point.
-        param3 : :class:`.Value`
+        param3 : :term:`ValueLike`
             X value of the upper-right point or width.
-        param4 : :class:`.Value`
+        param4 : :term:`ValueLike`
             Y value of the upper-right point or height.
-        corner_rad : :class:`.Value`
+        corner_rad : :term:`ValueLike`
             Corner radius.
-        rotation : :class:`.Value`
+        rotation : :term:`ValueLike`
             Rotation.
 
         Returns
@@ -74,20 +92,14 @@ class Rectangle(Primitive):
             )
         )
 
-    def get_parameters(self):
+    def get_parameters(
+        self,
+    ) -> tuple[RectangleRepresentationType, Value, Value, Value, Value, Value, Value]:
         """Get coordinate parameters.
 
         Returns
         -------
-        tuple[
-            :class:`RectangleRepresentationType`,
-            :class:`.Value`,
-            :class:`.Value`,
-            :class:`.Value`,
-            :class:`.Value`,
-            :class:`.Value`,
-            :class:`.Value`
-        ]
+        tuple of (.RectangleRepresentationType, .Value, .Value, .Value, .Value, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -118,24 +130,33 @@ class Rectangle(Primitive):
             Value(rect_param_msg.rotation),
         )
 
-    def set_parameters(self, rep_type, param1, param2, param3, param4, corner_rad, rotation):
+    def set_parameters(
+        self,
+        rep_type: RectangleRepresentationType,
+        param1: ValueLike,
+        param2: ValueLike,
+        param3: ValueLike,
+        param4: ValueLike,
+        corner_rad: ValueLike,
+        rotation: ValueLike,
+    ):
         """Set coordinate parameters.
 
         Parameters
         ----------
-        rep_type : :class:`RectangleRepresentationType`
+        rep_type : .RectangleRepresentationType
             Type that defines the meaning of the given parameters.
-        param1 : :class:`.Value`
+        param1 : :term:`ValueLike`
             X value of the lower-left point or center point.
-        param2 : :class:`.Value`
+        param2 : :term:`ValueLike`
             Y value of the lower-left point or center point.
-        param3 : :class:`.Value`
+        param3 : :term:`ValueLike`
             X value of the upper-right point or width.
-        param4 : :class:`.Value`
+        param4 : :term:`ValueLike`
             Y value of the upper-right point or height.
-        corner_rad : :class:`.Value`
+        corner_rad : :term:`ValueLike`
             Corner radius.
-        rotation : :class:`.Value`
+        rotation : :term:`ValueLike`
             Rotation.
         """
         self.__stub.SetParameters(
@@ -154,7 +175,7 @@ class Rectangle(Primitive):
         )
 
     @property
-    def can_be_zone_primitive(self):
+    def can_be_zone_primitive(self) -> bool:
         """:obj:`bool`: Flag indicating if the rectangle can be a zone.
 
         This property is read-only.
@@ -163,7 +184,7 @@ class Rectangle(Primitive):
 
     @property
     @parser.to_polygon_data
-    def polygon_data(self):
+    def polygon_data(self) -> PolygonData:
         """:class:`.PolygonData`: \
         Polygon data object of the rectangle.
 
@@ -175,32 +196,32 @@ class Rectangle(Primitive):
     @parser.to_polygon_data
     def render(
         cls,
-        rep_type,
-        x_lower_left_or_center_x,
-        y_lower_left_or_center_y,
-        x_upper_right_or_width,
-        y_upper_right_or_height,
-        corner_radius,
-        rotation,
-        is_hole=False,
-    ):
+        rep_type: RectangleRepresentationType,
+        x_lower_left_or_center_x: ValueLike,
+        y_lower_left_or_center_y: ValueLike,
+        x_upper_right_or_width: ValueLike,
+        y_upper_right_or_height: ValueLike,
+        corner_radius: ValueLike,
+        rotation: ValueLike,
+        is_hole: bool = False,
+    ) -> PolygonData:
         """Get the polygon data of a rectangle.
 
         Parameters
         ----------
-        rep_type : :class:`RectangleRepresentationType`
+        rep_type : .RectangleRepresentationType
             Type that defines the meaning of the given parameters.
-        x_lower_left_or_center_x : :class:`.Value`
+        x_lower_left_or_center_x : :term:`ValueLike`
             X value of the lower-left point or center point.
-        y_lower_left_or_center_y : :class:`.Value`
+        y_lower_left_or_center_y : :term:`ValueLike`
             Y value of the lower-left point or center point.
-        x_upper_right_or_width : :class:`.Value`
+        x_upper_right_or_width : :term:`ValueLike`
             X value of the upper-right point or width.
-        y_upper_right_or_height : :class:`.Value`
+        y_upper_right_or_height : :term:`ValueLike`
             Y value of the upper-right point or height.
-        corner_radius : :class:`.Value`
+        corner_radius : :term:`ValueLike`
             Corner radius.
-        rotation : :class:`.Value`
+        rotation : :term:`ValueLike`
             Rotation.
         is_hole : bool, default: False
             Whether the rectangle is hole.

@@ -1,0 +1,49 @@
+﻿SIWaveAdvancedSettings
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SIWaveAdvancedSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveAdvancedSettings.ac_dc_merge_mode
+      SIWaveAdvancedSettings.cross_talk_threshold
+      SIWaveAdvancedSettings.ignore_non_functional_pads
+      SIWaveAdvancedSettings.include_co_plane_coupling
+      SIWaveAdvancedSettings.include_fringe_plane_coupling
+      SIWaveAdvancedSettings.include_inf_gnd
+      SIWaveAdvancedSettings.include_inter_plane_coupling
+      SIWaveAdvancedSettings.include_split_plane_coupling
+      SIWaveAdvancedSettings.include_trace_plane_coupling
+      SIWaveAdvancedSettings.include_vi_sources
+      SIWaveAdvancedSettings.inf_gnd_location
+      SIWaveAdvancedSettings.max_coupled_lines
+      SIWaveAdvancedSettings.mesh_automatic
+      SIWaveAdvancedSettings.mesh_frequency
+      SIWaveAdvancedSettings.min_pad_area_to_mesh
+      SIWaveAdvancedSettings.min_plane_area_to_mesh
+      SIWaveAdvancedSettings.min_void_area
+      SIWaveAdvancedSettings.msg
+      SIWaveAdvancedSettings.perform_erc
+      SIWaveAdvancedSettings.return_current_distribution
+      SIWaveAdvancedSettings.snap_length_threshold
+   
+   

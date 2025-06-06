@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.hierarchy.sparameter_model
+
+.. autoproperty:: SParameterModel.msg

@@ -22,14 +22,16 @@ Classes
 
 Enums
 -----
+.. currentmodule:: ansys.edb.core
 
 .. autosummary::
    :toctree: _autosummary
 
-   bondwire.BondwireCrossSectionType
-   bondwire.BondwireType
-   padstack_instance.BackDrillType
-   path.PathCornerType
-   path.PathEndCapType
-   primitive.PrimitiveType
-   rectangle.RectangleRepresentationType
+   primitive.bondwire.BondwireCrossSectionType
+   primitive.bondwire.BondwireType
+   primitive.padstack_instance.BackDrillType
+   primitive.path.PathCornerType
+   primitive.path.PathEndCapType
+   primitive.primitive.PrimitiveType
+   primitive.rectangle.RectangleRepresentationType
+   edb_defs.LayoutObjType

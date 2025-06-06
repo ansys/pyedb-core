@@ -1,4 +1,12 @@
 """Primitive classes."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.net.net import Net
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.typing import ValueLike
 
 from enum import Enum
 
@@ -6,9 +14,11 @@ from ansys.api.edb.v1 import padstack_instance_pb2, padstack_instance_pb2_grpc
 
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import LayoutObjType
+from ansys.edb.core.hierarchy import pin_group
 from ansys.edb.core.inner import conn_obj, messages
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.terminal import padstack_instance_terminal
 from ansys.edb.core.utility.layer_map import LayerMap
 from ansys.edb.core.utility.value import Value
 
@@ -22,53 +32,54 @@ class BackDrillType(Enum):
 
 
 class PadstackInstance(conn_obj.ConnObj):
-    """Representis a padstack instance object."""
+    """Represents a padstack instance object."""
 
     __stub: padstack_instance_pb2_grpc.PadstackInstanceServiceStub = StubAccessor(
         StubType.padstack_instance
     )
     layout_obj_type = LayoutObjType.PADSTACK_INSTANCE
+    """:class:`.LayoutObjType`: Layout object type of the PadstackInstance class."""
 
     @classmethod
     def create(
         cls,
-        layout,
-        net,
-        name,
-        padstack_def,
-        position_x,
-        position_y,
-        rotation,
-        top_layer,
-        bottom_layer,
-        solder_ball_layer,
-        layer_map,
-    ):
+        layout: Layout,
+        net: Net,
+        name: str,
+        padstack_def: PadstackDef,
+        position_x: ValueLike,
+        position_y: ValueLike,
+        rotation: ValueLike,
+        top_layer: Layer,
+        bottom_layer: Layer,
+        solder_ball_layer: Layer | None = None,
+        layer_map: LayerMap | None = None,
+    ) -> PadstackInstance:
         """Create a padstack instance.
 
         Parameters
         ----------
-        layout : :class:`.Layout`
+        layout : .Layout
             Layout to create the padstack instance in.
-        net : :class:`.Net`
+        net : .Net
             Net of the padstack instance.
         name : str
             Name of the padstack instance.
-        padstack_def : :class:`.PadstackDef`
+        padstack_def : .PadstackDef
             Padstack definition of the padstack instance.
-        position_x : :class:`.Value`
+        position_x : :term:`ValueLike`
             Position x of the padstack instance.
-        position_y : :class:`.Value`
+        position_y : :term:`ValueLike`
             Position y of the padstack instance.
-        rotation : :class:`.Value`
+        rotation : :term:`ValueLike`
             Rotation of the padstack instance.
-        top_layer : :class:`.Layer`
+        top_layer : .Layer
             Top layer of the padstack instance.
-        bottom_layer : :class:`.Layer`
+        bottom_layer : .Layer
             Bottom layer of the padstack instance.
-        solder_ball_layer : :class:`.Layer`
+        solder_ball_layer : .Layer
             Solder ball layer of the padstack instance or ``None`` for none.
-        layer_map : :class:`.LayerMap`
+        layer_map : .LayerMap
             Layer map of the padstack instance. ``None`` or empty results in
             auto-mapping.
 
@@ -96,30 +107,29 @@ class PadstackInstance(conn_obj.ConnObj):
         return padstack_instance
 
     @property
-    def padstack_def(self):
+    def padstack_def(self) -> PadstackDef:
         """:class:`.PadstackDef`: \
-        Definition of the padstack instance."""
+        Definition of the padstack instance.
+
+        This property is read-only.
+        """
         return PadstackDef(self.__stub.GetPadstackDef(self.msg))
 
     @property
-    def name(self):
+    def name(self) -> str:
         """:obj:`str`: Name of the padstack instance."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
-    def name(self, name):
+    def name(self, name: str):
         self.__stub.SetName(messages.edb_obj_name_message(self, name))
 
-    def get_position_and_rotation(self):
+    def get_position_and_rotation(self) -> tuple[Value, Value, Value]:
         """Get the position and rotation of the padstack instance.
 
         Returns
         -------
-        tuple[
-            :class:`.Value`,
-            :class:`.Value`,
-            :class:`.Value`
-        ]
+        tuple of (.Value, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -138,16 +148,16 @@ class PadstackInstance(conn_obj.ConnObj):
             Value(params.rotation),
         )
 
-    def set_position_and_rotation(self, x, y, rotation):
+    def set_position_and_rotation(self, x: ValueLike, y: ValueLike, rotation: ValueLike):
         """Set the position and rotation of the padstack instance.
 
         Parameters
         ----------
-        x : :class:`.Value`
+        x : :term:`ValueLike`
             x : X coordinate.
-        y : :class:`.Value`
+        y : :term:`ValueLike`
             y : Y coordinate.
-        rotation : :class:`.Value`
+        rotation : :term:`ValueLike`
             Rotation in radians.
         """
         self.__stub.SetPositionAndRotation(
@@ -160,16 +170,18 @@ class PadstackInstance(conn_obj.ConnObj):
             )
         )
 
-    def get_layer_range(self):
+    def get_layer_range(self) -> tuple[Layer, Layer]:
         """Get the top and bottom layers of the padstack instance.
 
         Returns
         -------
-        tuple[:class:`.Layer`, :class:`.Layer`]
-            The tuple is in this format: ``(top_layer, bottom_layer)``.
+        tuple of (.Layer, .Layer)
+            The tuple is in this format:
 
-            - ``top_layer``: Top layer of the padstack instance
-            - ``bottom_layer``: Bottom layer of the padstack instance
+            **(top_layer, bottom_layer)**
+
+            **top_layer**: Top layer of the padstack instance
+            **bottom_layer**: Bottom layer of the padstack instance
         """
         params = self.__stub.GetLayerRange(self.msg)
         return (
@@ -177,14 +189,14 @@ class PadstackInstance(conn_obj.ConnObj):
             Layer(params.bottom_layer).cast(),
         )
 
-    def set_layer_range(self, top_layer, bottom_layer):
+    def set_layer_range(self, top_layer: Layer, bottom_layer: Layer):
         """Set the top and bottom layers of the padstack instance.
 
         Parameters
         ----------
-        top_layer : :class:`.Layer`
+        top_layer : .Layer
             Top layer of the padstack instance.
-        bottom_layer : :class:`.Layer`
+        bottom_layer : .Layer
             Bottom layer of the padstack instance.
         """
         self.__stub.SetLayerRange(
@@ -198,12 +210,13 @@ class PadstackInstance(conn_obj.ConnObj):
         )
 
     @property
-    def solderball_layer(self):
+    def solderball_layer(self) -> Layer:
         """:class:`.Layer`: Solderball layer of the padstack instance."""
-        return Layer(self.__stub.GetSolderBallLayer(self.msg)).cast()
+        sb_layer = Layer(self.__stub.GetSolderBallLayer(self.msg))
+        return sb_layer if sb_layer.is_null() else sb_layer.cast()
 
     @solderball_layer.setter
-    def solderball_layer(self, solderball_layer):
+    def solderball_layer(self, solderball_layer: Layer):
         self.__stub.SetSolderBallLayer(
             padstack_instance_pb2.PadstackInstSetSolderBallLayerMessage(
                 target=self.msg,
@@ -212,23 +225,20 @@ class PadstackInstance(conn_obj.ConnObj):
         )
 
     @property
-    def layer_map(self):
+    def layer_map(self) -> LayerMap:
         """:class:`.LayerMap`: Layer map of the padstack instance."""
         return LayerMap(self.__stub.GetLayerMap(self.msg))
 
     @layer_map.setter
-    def layer_map(self, layer_map):
+    def layer_map(self, layer_map: LayerMap):
         self.__stub.SetLayerMap(messages.pointer_property_message(self, layer_map))
 
-    def get_hole_overrides(self):
+    def get_hole_overrides(self) -> tuple[bool, Value]:
         """Get the hole overrides of the padstack instance.
 
         Returns
         -------
-        tuple[
-            bool,
-            :class:`.Value`
-        ]
+        tuple of (bool, .Value)
 
             Returns a tuple in this format:
 
@@ -244,14 +254,14 @@ class PadstackInstance(conn_obj.ConnObj):
             Value(params.hole_override),
         )
 
-    def set_hole_overrides(self, is_hole_override, hole_override):
+    def set_hole_overrides(self, is_hole_override: bool, hole_override: ValueLike):
         """Set the hole overrides of the padstack instance.
 
         Parameters
         ----------
         is_hole_override : bool
             Whether the padstack instance is a hole override.
-        hole_override : :class:`.Value`
+        hole_override : :term:`ValueLike`
             Hole override diameter of the padstack instance.
         """
         self.__stub.SetHoleOverrides(
@@ -278,7 +288,7 @@ class PadstackInstance(conn_obj.ConnObj):
             )
         )
 
-    def get_back_drill_type(self, from_bottom):
+    def get_back_drill_type(self, from_bottom: bool) -> BackDrillType:
         """Get the back drill type of the padstack instance.
 
         Parameters
@@ -288,7 +298,7 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        :class:`BackDrillType`
+        .BackDrillType
             Back drill type of the padastack instance.
         """
         return BackDrillType(
@@ -297,7 +307,7 @@ class PadstackInstance(conn_obj.ConnObj):
             ).type
         )
 
-    def get_back_drill_by_layer(self, from_bottom):
+    def get_back_drill_by_layer(self, from_bottom: bool) -> tuple[Layer, Value, Value]:
         """Get the back drill type by the layer.
 
         Parameters
@@ -307,11 +317,7 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[
-            bool,
-            :class:`.Value`,
-            :class:`.Value`
-        ]
+        tuple of (.Layer, .Value, .Value)
 
             Returns a tuple in this format:
 
@@ -334,18 +340,20 @@ class PadstackInstance(conn_obj.ConnObj):
             Value(params.diameter),
         )
 
-    def set_back_drill_by_layer(self, drill_to_layer, offset, diameter, from_bottom):
+    def set_back_drill_by_layer(
+        self, drill_to_layer: Layer, offset: ValueLike, diameter: ValueLike, from_bottom: bool
+    ):
         """Set the back drill by the layer.
 
         Parameters
         ----------
-        drill_to_layer : :class:`.Layer`
+        drill_to_layer : .Layer
             Layer to drill to. If drilling from the top, the drill stops at the upper
             elevation of the layer. If drilling from the bottom, the drill stops at
             the lower elevation of the layer.
-        offset : :class:`.Value`
+        offset : :term:`ValueLike`
             Layer offset (or depth if the layer is empty).
-        diameter : :class:`.Value`
+        diameter : :term:`ValueLike`
             Drilling diameter.
         from_bottom : bool
             Whether to set the back drill type from the bottom.
@@ -360,7 +368,7 @@ class PadstackInstance(conn_obj.ConnObj):
             )
         )
 
-    def get_back_drill_by_depth(self, from_bottom):
+    def get_back_drill_by_depth(self, from_bottom: bool) -> tuple[Value, Value]:
         """Get the back drill type by depth.
 
         Parameters
@@ -370,10 +378,7 @@ class PadstackInstance(conn_obj.ConnObj):
 
         Returns
         -------
-        tuple[
-            bool,
-            :class:`.Value`
-        ]
+        tuple of (.Value, .Value)
             Returns a tuple in this format:
 
             **(drill_depth, diameter)**
@@ -387,14 +392,16 @@ class PadstackInstance(conn_obj.ConnObj):
         )
         return Value(params.drill_depth), Value(params.diameter)
 
-    def set_back_drill_by_depth(self, drill_depth, diameter, from_bottom):
+    def set_back_drill_by_depth(
+        self, drill_depth: ValueLike, diameter: ValueLike, from_bottom: bool
+    ):
         """Set the back drill type by depth.
 
         Parameters
         ----------
-        drill_depth : :class:`.Value`
+        drill_depth : :term:`ValueLike`
             Drilling depth, which may not align with the layer.
-        diameter : :class:`.Value`
+        diameter : :term:`ValueLike`
             Drilling diameter.
         from_bottom : bool
             Whether to set the back drill type from the bottom.
@@ -408,21 +415,19 @@ class PadstackInstance(conn_obj.ConnObj):
             )
         )
 
-    def get_padstack_instance_terminal(self):
+    def get_padstack_instance_terminal(self) -> padstack_instance_terminal.PadstackInstanceTerminal:
         """:class:`.PadstackInstanceTerminal`: \
         Terminal of the padstack instance."""
-        from ansys.edb.core.terminal import padstack_instance_terminal
-
         return padstack_instance_terminal.PadstackInstanceTerminal(
             self.__stub.GetPadstackInstanceTerminal(self.msg)
         )
 
-    def is_in_pin_group(self, pin_group):
+    def is_in_pin_group(self, pin_group: pin_group.PinGroup) -> bool:
         """Determine if the padstack instance is in a given pin group.
 
         Parameters
         ----------
-        pin_group : :class:`.PinGroup`
+        pin_group : .PinGroup
             Pin group to check if the padstack instance is in it.
 
         Returns
@@ -438,19 +443,17 @@ class PadstackInstance(conn_obj.ConnObj):
         ).value
 
     @property
-    def pin_groups(self):
+    def pin_groups(self) -> list[pin_group.PinGroup]:
         """:obj:`list` of :class:`.PinGroup`: \
         Pin groups of the padstack instance.
 
         This property is read-only.
         """
-        from ansys.edb.core.hierarchy import pin_group
-
         pins = self.__stub.GetPinGroups(self.msg).items
         return [pin_group.PinGroup(p) for p in pins]
 
     @staticmethod
-    def _get_back_drill_message(padstack_inst, from_bottom):
+    def _get_back_drill_message(padstack_inst: PadstackInstance, from_bottom: bool):
         return padstack_instance_pb2.PadstackInstGetBackDrillMessage(
             target=padstack_inst.msg,
             from_bottom=from_bottom,

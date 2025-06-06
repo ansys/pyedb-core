@@ -101,7 +101,7 @@ class ComponentDef(ObjBase):
         This property is read-only.
         """
         objs = self.__stub.GetComponentModels(self.msg).items
-        return map_list(objs, component_model.ComponentModel)
+        return map_list(objs, lambda msg: component_model.ComponentModel(msg).cast())
 
     @property
     def component_pins(self):

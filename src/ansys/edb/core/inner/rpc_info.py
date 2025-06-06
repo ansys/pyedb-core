@@ -197,6 +197,9 @@ rpc_information = {
         "GetReferenceFile": _RpcInfo(cache=True),
         "FindByName": _RpcInfo(cache=True),
         "FindById": _RpcInfo(cache=True),
+        "GetName": _RpcInfo(cache=True),
+        "GetType": _RpcInfo(cache=True),
+        "GetId": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.NPortComponentModelService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True)
@@ -1045,6 +1048,7 @@ rpc_information = {
         "GetParameters": _RpcInfo(cache=True),
         "SetParameters": _RpcInfo(buffer=True),
         "Render": _RpcInfo(cache=True),
+        "GetPolygonData": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.RLCComponentPropertyService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),

@@ -46,7 +46,7 @@ class Edge(ObjBase):
 
     @property
     def _type(self):
-        return EdgeType(self.__stub.GetType(self.msg))
+        return EdgeType(self.__stub.GetEdgeType(self.msg).t)
 
     @property
     def _params(self):
@@ -163,7 +163,7 @@ class EdgeTerminal(Terminal):
     @property
     def edges(self):
         """:obj:`list` of :class:`.Edge`: All edges on the terminal."""
-        return [Edge(msg).cast() for msg in self.__stub.GetEdges(self.msg)]
+        return [Edge(msg).cast() for msg in self.__stub.GetEdges(self.msg).items]
 
     @edges.setter
     def edges(self, edges):

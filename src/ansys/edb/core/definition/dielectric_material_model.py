@@ -8,7 +8,7 @@ from ansys.edb.core.inner import ObjBase
 
 
 class DielectricMaterialModelType(Enum):
-    """Provides an eum representing dielectric material model types."""
+    """Enum representing dielectric material model types."""
 
     DEBYE = 0
     MULTIPOLE_DEBYE = 1
@@ -23,6 +23,9 @@ class DielectricMaterialModel(ObjBase):
     )
 
     @property
-    def type(self):
-        """:class:`DielectricMaterialModelType`: Type of the dielectric material model."""
+    def type(self) -> DielectricMaterialModelType:
+        """:class:`.DielectricMaterialModelType`: Type of the dielectric material model.
+
+        This property is read-only.
+        """
         return DielectricMaterialModelType(self.__stub.GetType(self.msg).value)

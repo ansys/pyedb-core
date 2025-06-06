@@ -1,4 +1,11 @@
 """RTree class."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.point_data import PointData
 
 from ansys.api.edb.v1 import r_tree_pb2_grpc
 import ansys.api.edb.v1.r_tree_pb2 as pb
@@ -7,29 +14,39 @@ from ansys.edb.core.inner import ObjBase, messages, parser
 from ansys.edb.core.session import StubAccessor, StubType
 
 
+class RTreeObj:
+    """
+    Represents an RTree object.
+
+    Attributes
+    ----------
+    polygon : .PolygonData
+        Polygon representation for the object in the spatial index.
+    obj : :class:`.ObjBase`
+        Object to store in the index.
+    """
+
+    def __init__(
+        self,
+        polygon: PolygonData,
+        obj: ObjBase,
+    ):
+        """Construct an RTree object using given values.
+
+        Parameters
+        ----------
+        polygon : .PolygonData
+            Polygon representation for the object in the spatial index.
+        obj : :class:`.ObjBase`
+            Object to store in the index.
+        """
+        self._unique_id = None
+        self.polygon = polygon
+        self.obj = obj
+
+
 class RTree(ObjBase):
     """Provides the base RTree class."""
-
-    class RTreeObj:
-        """Represents an RTree object."""
-
-        def __init__(
-            self,
-            polygon,
-            obj,
-        ):
-            """Construct an RTree object using given values.
-
-            Parameters
-            ----------
-            polygon : :class:`.PolygonData`
-                Polygon representation for the object in the spatial index.
-            obj: ObjBase
-                Object to store in the index.
-            """
-            self._unique_id = None
-            self.polygon = polygon
-            self.obj = obj
 
     __stub: r_tree_pb2_grpc.RTreeServiceStub = StubAccessor(StubType.r_tree)
 
@@ -41,7 +58,7 @@ class RTree(ObjBase):
         self._unique_id = None
 
     @classmethod
-    def create(cls, tolerance=1e-9):
+    def create(cls, tolerance: float = 1e-9) -> RTree:
         """Create an RTree.
 
         Parameters
@@ -69,17 +86,21 @@ class RTree(ObjBase):
 
     @property
     @parser.to_box
-    def extent(self):
-        """:obj:`tuple` of [:class:.PointData, :class:.PointData]: Bounding box \
-        for the contents of the RTree."""
+    def extent(self) -> tuple[PointData, PointData]:
+        """
+        :obj:`tuple` of (:class:`.PointData`, :class:`.PointData`): Bounding box \
+        for the contents of the RTree.
+
+        This property is read-only.
+        """
         return self.__stub.GetExtent(self.msg)
 
-    def insert(self, rtree_obj):
+    def insert(self, rtree_obj: RTreeObj):
         """Insert an RTree object from a given RTree object.
 
         Parameters
         ----------
-        rtree_obj : :class:`.RTreeObj`
+        rtree_obj : .RTreeObj
             R-tree data object with an index.
         """
         unique_id = 1 if self._unique_id is None else self._unique_id + 1
@@ -89,12 +110,12 @@ class RTree(ObjBase):
         self._id_to_obj[unique_id] = rtree_obj
         self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)] = unique_id
 
-    def delete(self, rtree_obj):
+    def delete(self, rtree_obj: RTreeObj):
         """Delete the RTree from a given RTree object.
 
         Parameters
         ----------
-        rtree_obj : :class:`.RTreeObj`
+        rtree_obj : .RTreeObj
             R-tree data object with index in this form: ``(polygon, id pair)``.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -104,7 +125,7 @@ class RTree(ObjBase):
             del self._id_to_obj[rtree_obj._unique_id]
             del self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)]
 
-    def empty(self):
+    def empty(self) -> bool:
         """Determine if the RTree is emppty (contains no geometry).
 
         Returns
@@ -115,22 +136,22 @@ class RTree(ObjBase):
         msg_empty = self.__stub.Empty(self.msg).value
         return msg_empty
 
-    def search(self, box, bb_search):
+    def search(self, box: tuple[PointData, PointData], bb_search: bool) -> list[RTreeObj]:
         """Search all objects intersecting a given box.
 
         Parameters
         ----------
-        box : tuple[:class:`.PointData`, :class:`.PointData`]
+        box : tuple of (.PointData, .PointData)
             Testing region, described as a "lower-left, upper-right" box.
         bb_search : bool
             Whether the RTree object intersects when the bounding-box of its
-            :class:`.PolygonData` instance
+            .PolygonData instance
             intersects the testing  object. If ``False``, an explicit intersection
             is required for a hit.
 
         Returns
         -------
-        :obj:`list` of :class:`.RTreeObj`
+        list of .RTreeObj
            List of intersecting RTree objects.
         """
         msg = self.__stub.Search(
@@ -142,21 +163,21 @@ class RTree(ObjBase):
         )
         return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
-    def nearest_neighbor(self, rtree_obj):
+    def nearest_neighbor(self, rtree_obj: RTreeObj) -> tuple[RTreeObj, tuple[PointData, PointData]]:
         """Find the nearest neighbor of a given RTree object.
 
         Parameters
         ----------
-        rtree_obj : :class:`.RTreeObj`
+        rtree_obj : .RTreeObj
             R-tree object with index in this form: ``(polygon, id pair)``.
 
         Returns
         -------
-        :obj:`tuple` of :class:`.RTreeObj`, tuple[.PointData, .PointData]
+        tuple of (.RTreeObj, tuple of (.PointData, .PointData))
 
-        - ``RTreeObj``: Nearest-neighbor in the RTree to the provided object, or null if nothing is found.
-        - ``tuple[PointData, PointData]``: Line segment spanning the closest points between the object
-          and the nearest neighbor.
+            - :class:`.RTreeObj`: Nearest-neighbor in the RTree to the provided object, or null if nothing is found.
+            - tuple of (:class:`.PointData`, :class:`.PointData`) : \
+                Line segment spanning the closest points between the object and the nearest neighbor.
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.NearestNeighbor(
@@ -164,14 +185,14 @@ class RTree(ObjBase):
             )
             return self._id_to_obj[int(msg.id)], parser.to_box(msg.coordinates)
 
-    def touching_geometry(self, rtree_obj, increment_visit):
+    def touching_geometry(self, rtree_obj: RTreeObj, increment_visit: bool) -> list[RTreeObj]:
         """Find all geometries touching an RTree object.
 
         The provided RTree object is not returned in the touching list.
 
         Parameters
         ----------
-        rtree_obj : :class:`.RTreeObj`
+        rtree_obj : .RTreeObj
             R-tree data object with index in this form: ``(polygon, id pair)``.
         increment_visit: bool
             Whether to increment the visit counter for items returned in the list
@@ -179,7 +200,7 @@ class RTree(ObjBase):
 
         Returns
         -------
-        :obj:`list` of :class:`.RTreeObj`
+        list of .RTreeObj
             All touching RTree objects.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -190,21 +211,21 @@ class RTree(ObjBase):
             )
             return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
-    def connected_geometry(self, rtree_obj, increment_visit):
+    def connected_geometry(self, rtree_obj: RTreeObj, increment_visit: bool) -> list[RTreeObj]:
         """Find the connected geometries.
 
         If a connections exists, the provided RTree object is returned in the connected list.
 
         Parameters
         ----------
-        rtree_obj : :class:`.RTreeObj`
+        rtree_obj : .RTreeObj
             R-tree data object with index in this form: ``(polygon, id pair)``.
         increment_visit: bool
             Whether to increment the visit counter for items returned in the connected list.
 
         Returns
         -------
-        :obj:`list` of :class:`.RTreeObj`
+        list of .RTreeObj
             List of connected geometries.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -216,9 +237,13 @@ class RTree(ObjBase):
             return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
     @property
-    def connected_geometry_sets(self):
-        """:obj:`list` of :obj:`list` of :class:`.RTreeObj`: Connected geometry sets of an RTree \
-         in this form: ``(ids, sizes)``."""
+    def connected_geometry_sets(self) -> list[list[RTreeObj]]:
+        """
+        :obj:`list` of :obj:`list` of :class:`.RTreeObj`: Connected geometry sets of an RTree \
+        in this form: ``(ids, sizes)``.
+
+        This property is read-only.
+        """
         msg = self.__stub.GetConnectedGeometrySets(messages.edb_obj_message(self))
         set_start = 0
         rtree_obj_sets = []
@@ -234,12 +259,12 @@ class RTree(ObjBase):
         """Increment the visit count, effectively marking all items in the tree as unvisited."""
         self.__stub.IncrementVisit(messages.edb_obj_message(self))
 
-    def is_visited(self, rtree_obj):
+    def is_visited(self, rtree_obj: RTreeObj) -> bool:
         """Determine whether an RTree object has been visited.
 
         Parameters
         ----------
-        rtree_obj : :class:`.RTreeObj`
+        rtree_obj : .RTreeObj
             R-tree data object with index in this form: ``(polygon, id pair)``.
 
         Returns
@@ -252,12 +277,12 @@ class RTree(ObjBase):
                 RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
             ).value
 
-    def visit(self, rtree_obj):
+    def visit(self, rtree_obj: RTreeObj):
         """Increment the count of a given RTree object.
 
         Parameters
         ----------
-        rtree_obj : :class:`.RTreeObj`
+        rtree_obj : .RTreeObj
             R-tree data object with index in this form: ``(polygon, id pair)``.
         """
         if self._handle_rtree_obj(rtree_obj):
@@ -266,8 +291,12 @@ class RTree(ObjBase):
             )
 
     @property
-    def get_visit(self):
-        """:obj:`int`: Visit count for the R-tree."""
+    def get_visit(self) -> int:
+        """
+        :obj:`int`: Visit count for the R-tree.
+
+        This property is read-only.
+        """
         return self.__stub.GetVisit(messages.edb_obj_message(self)).value
 
     @staticmethod

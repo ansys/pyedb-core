@@ -1,4 +1,6 @@
 """Session manager for gRPC."""
+from __future__ import annotations
+
 from collections import defaultdict
 from contextlib import contextmanager
 from enum import Enum
@@ -10,6 +12,7 @@ import socket
 from struct import pack, unpack
 import subprocess
 from sys import modules
+from typing import List
 
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
 from ansys.api.edb.v1.board_bend_def_pb2_grpc import BoardBendDefServiceStub
@@ -176,12 +179,12 @@ MOD.current_session = None
 class StubAccessor(object):
     """Provides a descriptor for assignig a specific stub to a model."""
 
-    def __init__(self, stub_type):
+    def __init__(self, stub_type: StubType):
         """Initialize a descriptor stub with a name and stub service.
 
         Parameters
         ----------
-        stub_type : StubType
+        stub_type : .StubType
         """
         self.__stub_name = stub_type.name
 
@@ -194,7 +197,7 @@ class StubAccessor(object):
 
 # Helper class for storing data used by the session
 class _Session:
-    def __init__(self, ip_address, port_num, ansys_em_root, dump_traffic_log):
+    def __init__(self, ip_address: str, port_num: int, ansys_em_root: str, dump_traffic_log: bool):
         if MOD.current_session is not None:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
@@ -226,17 +229,17 @@ class _Session:
         self.stubs = {stub.name: stub.value(self.channel) for stub in StubType}
 
     @property
-    def server_url(self):
+    def server_url(self) -> str:
         return "{}:{}".format(self.ip_address, self.port_num)
 
     @property
-    def server_executable(self):
+    def server_executable(self) -> str | None:
         if self.is_launch():
             return which(cmd="EDB_RPC_Server", path=self.ansys_em_root)
         else:
             return None
 
-    def server_arguments(self):
+    def server_arguments(self) -> List[str]:
         args = []
 
         if self.port_num is not None:
@@ -245,17 +248,17 @@ class _Session:
 
         return args
 
-    def stub(self, name):
+    def stub(self, name: str):
         if self.is_active():
             return self.stubs.get(name)
 
-    def is_active(self):
+    def is_active(self) -> bool:
         return self.channel is not None and self.stubs is not None
 
-    def is_local(self):
+    def is_local(self) -> bool:
         return self.ip_address == "localhost"
 
-    def is_launch(self):
+    def is_launch(self) -> bool:
         return self.ansys_em_root is not None
 
     def connect(self):
@@ -475,12 +478,14 @@ class StubType(Enum):
     q3d_sim_settings = Q3DSettingsServiceStub
 
 
-def attach_session(ip_address=None, port_num=50051, dump_traffic_log=False):
+def attach_session(
+    ip_address: str | None = None, port_num: int = 50051, dump_traffic_log: bool = False
+):
     """Attach a session to a port running the EDB API server.
 
     Parameters
     ----------
-    ip_address : str, default: None
+    ip_address : str or None, default: None
         IP address of the machine that is running the server. The default is ``None``,
         in which case localhost is used.
     port_num : int, default: 50051
@@ -493,7 +498,7 @@ def attach_session(ip_address=None, port_num=50051, dump_traffic_log=False):
     return MOD.current_session
 
 
-def launch_session(ansys_em_root, port_num=None, dump_traffic_log=False):
+def launch_session(ansys_em_root: str, port_num: int | None = None, dump_traffic_log: bool = False):
     r"""Launch a local session to an EDB API server.
 
     The session must be manually disconnected after use by calling session.disconnect()
@@ -502,7 +507,7 @@ def launch_session(ansys_em_root, port_num=None, dump_traffic_log=False):
     ----------
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
-    port_num : int, default: None
+    port_num : int or None, default: None
         Port number to listen on. The default is ``None``, in which case a port in [50051, 60000]
         is selected.
     dump_traffic_log : bool, default: False
@@ -528,17 +533,22 @@ def launch_session(ansys_em_root, port_num=None, dump_traffic_log=False):
 
 
 @contextmanager
-def session(ansys_em_root, port_num=None, ip_address=None, dump_traffic_log=False):
+def session(
+    ansys_em_root: str,
+    port_num: int | None = None,
+    ip_address: str | None = None,
+    dump_traffic_log: bool = False,
+):
     r"""Launch a local session to an EDB API server in a context manager.
 
     Parameters
     ----------
     ansys_em_root : str
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
-    port_num : int, default: None
+    port_num : int or None, default: None
         Port number to listen on. The default is ``None``, in which case a port in [50051, 60000]
         is selected.
-    ip_address : str, default: None
+    ip_address : str or None, default: None
         IP address where the server executable file is running. The default is ``None``, in which
         case localhost is used.
 
@@ -566,47 +576,49 @@ def session(ansys_em_root, port_num=None, ip_address=None, dump_traffic_log=Fals
         MOD.current_session.disconnect()
 
 
-def get_layer_collection_stub():
+def get_layer_collection_stub() -> LayerCollectionServiceStub:
     """Get the layer collection stub.
 
     Returns
     -------
-    LayerCollectionServiceStub
+    .LayerCollectionServiceStub
     """
     return StubAccessor(StubType.layer_collection).__get__()
 
 
-def get_stackup_layer_stub():
+def get_stackup_layer_stub() -> StackupLayerServiceStub:
     """Get the stackup layer stub.
 
     Returns
     -------
-    StackupLayerServiceStub
+    .StackupLayerServiceStub
     """
     return StubAccessor(StubType.stackup_layer).__get__()
 
 
-def get_via_layer_stub():
+def get_via_layer_stub() -> ViaLayerServiceStub:
     """Get the via layer stub.
 
     Returns
     -------
-    ViaLayerServiceStub
+    .ViaLayerServiceStub
     """
     return StubAccessor(StubType.via_layer).__get__()
 
 
-def get_variable_server_stub():
+def get_variable_server_stub() -> VariableServerServiceStub:
     """Get the variable server stub.
 
     Returns
     -------
-    VariableServerServiceStub
+    .VariableServerServiceStub
     """
     return StubAccessor(StubType.variable_server).__get__()
 
 
-def _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log):
+def _ensure_session(
+    ansys_em_root: str, port_num: int, ip_address: str | None, dump_traffic_log: bool
+):
     """Check for a running local session and create one if it doesn't exist.
 
     Parameters
@@ -615,9 +627,9 @@ def _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log):
         Directory where the ``EDB_RPC_Server.exe`` file is installed.
     port_num : int
         Port number to listen on.
-    ip_address : str, default: None
+    ip_address : str or None
         IP address where the server executable file is running.
-    dump_traffic_log : bool, default: False
+    dump_traffic_log : bool
         Flag indicating if the network traffic log should be dumped when the session is disconnected.
     """
     if MOD.current_session is not None:
@@ -628,7 +640,9 @@ def _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log):
         MOD.current_session.connect()
 
 
-def _find_available_port(interface: str = None, start_port: int = 50051, end_port: int = 60000):
+def _find_available_port(
+    interface: str = None, start_port: int = 50051, end_port: int = 60000
+) -> int:
     """Find an available port in the given range.
 
     Parameters
@@ -639,6 +653,11 @@ def _find_available_port(interface: str = None, start_port: int = 50051, end_por
         First port number to check.
     end_port : int, default: ``60000``
         Last port number to check.
+
+    Returns
+    -------
+    int
+        First available port in the range.
     """
     for port in range(start_port, end_port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:

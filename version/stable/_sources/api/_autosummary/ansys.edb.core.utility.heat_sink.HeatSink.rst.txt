@@ -1,0 +1,22 @@
+﻿HeatSink
+========
+
+.. currentmodule:: ansys.edb.core.utility.heat_sink
+
+.. autoclass:: HeatSink
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

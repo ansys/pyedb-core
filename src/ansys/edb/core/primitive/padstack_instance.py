@@ -7,6 +7,8 @@ if TYPE_CHECKING:
     from ansys.edb.core.net.net import Net
     from ansys.edb.core.layout.layout import Layout
     from ansys.edb.core.typing import ValueLike
+    from ansys.edb.core.hierarchy.pin_group import PinGroup
+
 
 from enum import Enum
 
@@ -14,7 +16,6 @@ from ansys.api.edb.v1 import padstack_instance_pb2, padstack_instance_pb2_grpc
 
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.hierarchy import pin_group
 from ansys.edb.core.inner import conn_obj, messages
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.session import StubAccessor, StubType
@@ -422,7 +423,7 @@ class PadstackInstance(conn_obj.ConnObj):
             self.__stub.GetPadstackInstanceTerminal(self.msg)
         )
 
-    def is_in_pin_group(self, pin_group: pin_group.PinGroup) -> bool:
+    def is_in_pin_group(self, pin_group: PinGroup) -> bool:
         """Determine if the padstack instance is in a given pin group.
 
         Parameters
@@ -443,12 +444,14 @@ class PadstackInstance(conn_obj.ConnObj):
         ).value
 
     @property
-    def pin_groups(self) -> list[pin_group.PinGroup]:
+    def pin_groups(self) -> list[PinGroup]:
         """:obj:`list` of :class:`.PinGroup`: \
         Pin groups of the padstack instance.
 
         This property is read-only.
         """
+        from ansys.edb.core.hierarchy import pin_group
+
         pins = self.__stub.GetPinGroups(self.msg).items
         return [pin_group.PinGroup(p) for p in pins]
 

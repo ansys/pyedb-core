@@ -57,7 +57,7 @@ class DatasetDef(ObjBase):
         Returns
         -------
         .DatasetDef
-            Dataset definition object found.
+            Dataset definition object found. \
             If a dataset definition isn't found, the returned dataset definition is :meth:`null <.is_null>`.
         """
         return DatasetDef(cls.__stub.FindByName(edb_obj_name_message(database, name)))

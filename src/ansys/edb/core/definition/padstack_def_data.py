@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, List, Tuple
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike
+    from ansys.edb.core.typing import ValueLike, PointLike
     from ansys.edb.core.geometry.point_data import PointData
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
@@ -168,8 +168,8 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple of .PadGeometryType, list of .Value, .Value, .Value, .Value or \
-        tuple of .PolygonData, .Value, .Value, .Value
+        tuple of (.PadGeometryType, list of .Value, .Value, .Value, .Value) or \
+        tuple of (.PolygonData, .Value, .Value, .Value)
 
             - The tuple is in this format for non-polygonal pad geometry: \
             (``pad_type``, :term:`Pad Geometry Parameters`, ``offset_x``, ``offset_y``, ``rotation``).
@@ -206,7 +206,7 @@ class PadstackDefData(ObjBase):
         rotation: ValueLike,
         type_geom: PadGeometryType = None,
         sizes: List[ValueLike] = None,
-        fp: PolygonData = None,
+        poly: PolygonData = None,
     ):
         """
         Set pad parameters by layer and pad type.
@@ -227,12 +227,12 @@ class PadstackDefData(ObjBase):
             Pad geometry type. The default is :obj:`None` if setting polygonal pad parameters.
         sizes : list of :term:`ValueLike`, default: None
             List of :term:`Pad Geometry Parameters`. The default is :obj:`None` if setting polygonal pad parameters.
-        fp : .PolygonData, default: None
+        poly : .PolygonData, default: None
             Polygon geometry. The default is :obj:`None` if not setting polygonal pad parameters.
         """
         p1 = PadstackDefData._padstack_def_data_get_pad_parameters_message(self, layer, pad_type)
         message = None
-        if fp is None:
+        if poly is None:
             p2 = pb.PadstackDefDataGetPadParametersParametersMessage(
                 geometry_type=type_geom.value,
                 sizes=[messages.value_message(val) for val in sizes],
@@ -250,7 +250,7 @@ class PadstackDefData(ObjBase):
             message = pb.PadstackDefDataPadParametersSetMessage(
                 polygon=pb.PadstackDefDataSetPolygonalPadParametersMessage(
                     params1=p1,
-                    fp=messages.polygon_data_message(fp),
+                    fp=messages.polygon_data_message(poly),
                     offset_x=messages.value_message(offset_x),
                     offset_y=messages.value_message(offset_y),
                     rotation=messages.value_message(rotation),
@@ -271,8 +271,8 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple of .PadGeometryType, list of .Value, .Value, .Value, .Value or \
-        tuple of .PolygonData, .Value, .Value, .Value
+        tuple of (.PadGeometryType, list of .Value, .Value, .Value, .Value) or \
+        tuple of (.PolygonData, .Value, .Value, .Value)
 
             - The tuple is in this format for non-polygonal hole geometry: \
             (``pad_type``, :term:`Pad Geometry Parameters`, ``offset_x``, ``offset_y``, ``rotation``).
@@ -288,7 +288,7 @@ class PadstackDefData(ObjBase):
         rotation: ValueLike,
         type_geom: PadGeometryType = None,
         sizes: List[ValueLike] = None,
-        fp: PolygonData = None,
+        poly: PolygonData = None,
     ):
         """
         Set hole parameters.
@@ -309,11 +309,11 @@ class PadstackDefData(ObjBase):
             Pad geometry type. The default is :obj:`None` if setting polygonal pad parameters.
         sizes : list of :term:`ValueLike`, default: None
             List of :term:`Pad Geometry Parameters`. The default is :obj:`None` if setting polygonal pad parameters.
-        fp : .PolygonData, default: None
+        poly : .PolygonData, default: None
             Polygon geometry. The default is :obj:`None` if not setting polygonal pad parameters.
         """
         return self.set_pad_parameters(
-            -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes, fp
+            -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes, poly
         )
 
     @property
@@ -355,7 +355,7 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_placement(self) -> SolderballPlacement:
-        """:class:`.SolderballPlacement`: Solder ball placement or orientation."""
+        """:class:`.SolderballPlacement`: Solder ball placement."""
         return SolderballPlacement(self.__stub.GetSolderBallPlacement(self.msg))
 
     @solder_ball_placement.setter
@@ -368,10 +368,10 @@ class PadstackDefData(ObjBase):
 
     @property
     def solder_ball_param(self) -> Tuple[Value, Value]:
-        """:obj:`tuple` of :class:`.Value`, :class:`.Value`: Solder ball parameters ``(d1, d2)``.
+        """:obj:`tuple` of (:class:`.Value`, :class:`.Value`): Solder ball parameters ``(d1, d2)``.
 
-        - ``d1`` is the diameter for a cylinder solder ball or the top diameter for a spheroid solder ball.
-        - ``d2`` is the middle diameter for a spheroid solder ball. It is not used for a cylinder solder ball.
+        - ``d1`` is the diameter for a cylindrical solder ball or the top diameter for a spheroidal solder ball.
+        - ``d2`` is the middle diameter for a spheroidal solder ball. It is not used for a cylindrical solder ball.
         """
         params = self.__stub.GetSolderBallParam(self.msg)
         return (
@@ -411,7 +411,7 @@ class PadstackDefData(ObjBase):
 
         Returns
         -------
-        tuple of .PointData, .ConnectionPtDirection
+        tuple of (.PointData, .ConnectionPtDirection)
             The tuple is of the format ``(position, direction)``:
 
             - ``position``: Position of the connection point.
@@ -422,7 +422,7 @@ class PadstackDefData(ObjBase):
         )
         return parser.to_point_data(msg), ConnectionPtDirection(msg.direction)
 
-    def set_connection_pt(self, layer: str, position: PointData, direction: ConnectionPtDirection):
+    def set_connection_pt(self, layer: str, position: PointLike, direction: ConnectionPtDirection):
         """
         Set connection point position and direction of the padstack definition by layer.
 
@@ -430,7 +430,7 @@ class PadstackDefData(ObjBase):
         ----------
         layer : str
             Layer name.
-        position : .PointLike
+        position : :term:`Point2DLike`
         direction : .ConnectionPtDirection
         """
         pos = conversions.to_point(position)

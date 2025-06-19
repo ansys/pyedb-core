@@ -51,6 +51,7 @@ Enums
    definition.padstack_def_data.PadstackHoleRange
    definition.padstack_def_data.SolderballShape
    definition.padstack_def_data.SolderballPlacement
+   definition.padstack_def_data.ConnectionPtDirection
    definition.die_property.DieType
    definition.die_property.DieOrientation
    definition.dielectric_material_model.DielectricMaterialModelType

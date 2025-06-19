@@ -32,9 +32,9 @@ class MultipoleDebyeModel(DielectricMaterialModel):
     @property
     def parameters(self) -> Tuple[List[float], List[float], List[float]]:
         """:obj:`tuple` of (:obj:`list` of :obj:`float`, :obj:`list` of :obj:`float`, :obj:`list` of :obj:`float`): \
-        Get parameters used to define the model.
+        Parameters used to define the model.
 
-        The tuple is of the form ``(frequencies, relative_permittivities, dielectric_loss_tangents)`` \
+        The tuple is of the form (``frequencies``, ``relative_permittivities``, ``dielectric_loss_tangents``) \
         where each relative permittivity and dielectric loss tangent value map to the frequency at the \
         same index as itself.
         """

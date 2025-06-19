@@ -29,7 +29,7 @@ class PadstackDef(ObjBase):
         db : .Database
             Database to create the padstack definition in.
         name : str
-            Data to set on the padstack definition.
+            Name of the padstack definition.
 
         Returns
         -------
@@ -52,7 +52,7 @@ class PadstackDef(ObjBase):
         -------
         PadstackDef
             Padstack definition object found. \
-            If a Padstack definition isn't found, the returned Padstack definition is :meth:`null <.is_null>`.
+            If a Padstack definition isn't found, the returned padstack definition is :meth:`null <.is_null>`.
         """
         return PadstackDef(
             cls.__stub.FindByName(PadstackDef._padstack_def_string_message(db, name))
@@ -77,7 +77,7 @@ class PadstackDef(ObjBase):
     @property
     def data(self) -> PadstackDefData:
         """:class:`.PadstackDefData`: \
-        All the layout data of padstack definition."""
+        Object containing all the padstack specific data of a padstack definition."""
         return PadstackDefData(self.__stub.GetData(self.msg))
 
     @data.setter

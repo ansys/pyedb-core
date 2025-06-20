@@ -26,8 +26,7 @@ class PortProperty(ObjBase):
 
         Returns
         -------
-        PortProperty
-            Port property created.
+        .PortProperty
         """
         return PortProperty(cls.__stub.Create(empty_pb2.Empty()))
 
@@ -37,8 +36,7 @@ class PortProperty(ObjBase):
 
         Returns
         -------
-        PortProperty
-            Port property cloned.
+        .PortProperty
         """
         return PortProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
@@ -67,7 +65,7 @@ class PortProperty(ObjBase):
 
         Returns
         -------
-        tuple[:class:`.Value`, :class:`.Value`]
+        tuple of (.Value, .Value)
         """
         value_pair_message = self.__stub.GetReferenceSize(messages.edb_obj_message(self))
         return Value(value_pair_message.val1), Value(value_pair_message.val2)

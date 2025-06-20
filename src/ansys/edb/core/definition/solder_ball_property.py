@@ -35,7 +35,7 @@ class SolderBallProperty(ObjBase):
 
         Returns
         -------
-        SolderBallProperty
+        .SolderBallProperty
             Solder ball property created.
         """
         return SolderBallProperty(cls.__stub.Create(empty_pb2.Empty()))

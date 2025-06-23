@@ -6,16 +6,18 @@ from ansys.edb.core.database import Database
 from ansys.edb.core.layer.layer import LayerType
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.layout.cell import Cell, CellType
+from ansys.edb.core.layout.layout import Layout
 from ansys.edb.core.net.net import Net
 from ansys.edb.core.primitive.rectangle import Rectangle, RectangleRepresentationType
 from ansys.edb.core.session import session
 from ansys.edb.core.utility.io_manager import IOMangementType, enable_io_manager
+import tests.e2e.settings as settings
 
 db_name = "io_performance_test.aedb"
 lyr_name = "signal_1"
 net_name = "net_1"
 db = None
-lyt = None
+lyt: Layout = None
 
 
 def query_prims():
@@ -31,7 +33,7 @@ def query_prims():
 
 
 def create_prims():
-    num_prims = 10000
+    num_prims = 1000
     for i in range(num_prims):
         rect = Rectangle.create(
             lyt,
@@ -103,18 +105,52 @@ def teardown():
     Database.delete(db_name)
 
 
+def caching_flushing_blocking_test():
+    blocking_start = time()
+    with enable_io_manager(
+        IOMangementType.READ_AND_WRITE | IOMangementType.NO_CACHE_INVALIDATION_NO_BUFFER_FLUSHING
+    ):
+        for prim in lyt.primitives:
+            rect: Rectangle = prim
+            geom = rect.polygon_data
+            ll = geom.points[3]
+            ur = geom.points[1]
+            scaled_geom = geom.scale(2, (((ur.x - ll.x) / 2) + ll.x, ((ur.y - ll.y) / 2) + ll.y))
+            scaled_ll = scaled_geom.points[3]
+            scaled_ur = scaled_geom.points[1]
+            rect.set_parameters(
+                RectangleRepresentationType.LOWER_LEFT_UPPER_RIGHT,
+                scaled_ll.x,
+                scaled_ll.y,
+                scaled_ur.x,
+                scaled_ur.y,
+                0,
+                0,
+            )
+    blocking_end = time()
+    print(f"total blocking time: {blocking_end - blocking_start} seconds")
+
+
+def read_write_test():
+    rw_start = time()
+    num_created_prims = write_test()
+    num_queried_prims = read_test()
+    prim_io_op_counts = read_and_write_test()
+    rw_end = time()
+    total_created_prims = num_created_prims + prim_io_op_counts[0]
+    total_queried_prims = num_queried_prims + prim_io_op_counts[1]
+    print(
+        f"total rw time: {rw_end - rw_start} seconds (created {total_queried_prims} primitives, "
+        f"queried {total_created_prims} primitives)"
+    )
+
+
 if __name__ == "__main__":
-    with session(settings.server_exe_dir(), 50051):
+    with session(settings.server_exe_dir()):
         setup()
         start = time()
-        num_created_prims = write_test()
-        num_queried_prims = read_test()
-        prim_io_op_counts = read_and_write_test()
+        read_write_test()
+        caching_flushing_blocking_test()
         end = time()
-        total_created_prims = num_created_prims + prim_io_op_counts[0]
-        total_queried_prims = num_queried_prims + prim_io_op_counts[1]
-        print(
-            f"total time: {end - start} seconds (created {total_queried_prims} primitives, "
-            f"queried {total_created_prims} primitives)"
-        )
+        print(f"total time: {end - start} seconds")
         teardown()

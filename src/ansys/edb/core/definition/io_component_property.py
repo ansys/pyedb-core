@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.definition import component_property, solder_ball_property
+from ansys.edb.core.definition import component_property, port_property, solder_ball_property
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import StubAccessor, StubType
 
@@ -53,7 +53,9 @@ class IOComponentProperty(component_property.ComponentProperty):
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
-        return PortProperty(self.__stub.GetPortProperty(messages.edb_obj_message(self)))
+        return port_property.PortProperty(
+            self.__stub.GetPortProperty(messages.edb_obj_message(self))
+        )
 
     @port_property.setter
     def port_property(self, value: PortProperty):

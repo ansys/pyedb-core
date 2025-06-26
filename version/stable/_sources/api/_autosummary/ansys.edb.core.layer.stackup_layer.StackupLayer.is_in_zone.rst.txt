@@ -1,0 +1,6 @@
+is\_in\_zone
+============
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. automethod:: StackupLayer.is_in_zone

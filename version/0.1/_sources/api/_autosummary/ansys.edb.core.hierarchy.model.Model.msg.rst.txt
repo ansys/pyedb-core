@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.hierarchy.model
+
+.. autoproperty:: Model.msg

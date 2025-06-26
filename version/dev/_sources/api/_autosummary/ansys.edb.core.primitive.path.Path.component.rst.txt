@@ -1,0 +1,6 @@
+component
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. autoproperty:: Path.component

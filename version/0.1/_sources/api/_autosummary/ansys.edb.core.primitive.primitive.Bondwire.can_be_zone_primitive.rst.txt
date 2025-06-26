@@ -1,0 +1,6 @@
+can\_be\_zone\_primitive
+========================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Bondwire.can_be_zone_primitive

@@ -1,0 +1,6 @@
+set\_variable\_value
+====================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.set_variable_value

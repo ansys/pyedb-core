@@ -55,3 +55,4 @@ Enums
    definition.die_property.DieType
    definition.die_property.DieOrientation
    definition.dielectric_material_model.DielectricMaterialModelType
+   definition.component_model.ComponentModelType

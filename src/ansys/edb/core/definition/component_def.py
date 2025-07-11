@@ -1,10 +1,13 @@
 """Component definition."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from src.ansys.edb.core.database import ProductIdType
+    from ansys.edb.core.database import ProductIdType, Database
+    from ansys.edb.core.layout.cell import Cell
+    from ansys.edb.core.definition.component_model import ComponentModel
+    from ansys.edb.core.definition.component_pin import ComponentPin
 
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
@@ -28,74 +31,74 @@ class ComponentDef(ObjBase):
     __stub: ComponentDefServiceStub = StubAccessor(StubType.component_def)
 
     @classmethod
-    def create(cls, db, comp_def_name, fp):
+    def create(cls, db: Database, comp_def_name: str, fp: Cell) -> ComponentDef:
         """Create a component definition in a given database.
 
         Parameters
         ----------
-        db : :class:`.Database`
+        db : .Database
             Database to create the component definition in.
         comp_def_name : str
             Name of the component definition to create.
-        fp : :class:`.Cell`
+        fp : .Cell or None
             Footprint cell of the component definition, optional
 
         Returns
         -------
-        ComponentDef
-            Component definition created.
+        .ComponentDef
         """
         return ComponentDef(
             cls.__stub.Create(messages.component_def_creation_message(db, comp_def_name, fp))
         )
 
     @classmethod
-    def find(cls, db, comp_def_name):
+    def find(cls, db: Database, comp_def_name: str) -> ComponentDef:
         """Find a component definition in a given database.
 
         Parameters
         ----------
-        db : :class:`.Database`
+        db : .Database
             Database to search for the component definition.
         comp_def_name : str
             Name of the component definition.
 
         Returns
         -------
-        ComponentDef
-            Component definition found, ``None`` otherwise.
+        .ComponentDef
+            Component definition found. \
+            If a component definition isn't found, the returned component definition is :meth:`null <.is_null>`.
         """
         return ComponentDef(
             cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
         )
 
     @property
-    def definition_type(self):
-        """:class:`DefinitionObjType`: Definition type."""
+    def definition_type(self) -> DefinitionObjType:
+        """:class:`.DefinitionObjType`: Definition type."""
         return DefinitionObjType.COMPONENT_DEF
 
     @property
-    def name(self):
+    def name(self) -> str:
         """:obj:`str`: Name of the component definition."""
         return self.__stub.GetName(self.msg).value
 
     @name.setter
-    def name(self, value):
+    def name(self, value: str):
         self.__stub.SetName(messages.string_property_message(self, value))
 
     @property
-    def footprint(self):
+    def footprint(self) -> Cell:
         """:class:`.Cell`: Footprint of the component definition."""
         from ansys.edb.core.layout import cell
 
         return cell.Cell(self.__stub.GetFootprintCell(self.msg))
 
     @footprint.setter
-    def footprint(self, value):
+    def footprint(self, value: Cell):
         self.__stub.SetFootprintCell(messages.edb_obj_pair_message(self, value))
 
     @property
-    def component_models(self):
+    def component_models(self) -> list[ComponentModel]:
         """:obj:`list` of :class:`.ComponentModel`: All component models associated with the component definition.
 
         This property is read-only.
@@ -104,7 +107,7 @@ class ComponentDef(ObjBase):
         return map_list(objs, lambda msg: component_model.ComponentModel(msg).cast())
 
     @property
-    def component_pins(self):
+    def component_pins(self) -> list[ComponentPin]:
         """:obj:`list` of :class:`.ComponentPin`: All component pins of the component definition.
 
         This property is read-only.
@@ -112,12 +115,12 @@ class ComponentDef(ObjBase):
         objs = self.__stub.GetComponentPins(self.msg).items
         return map_list(objs, component_pin.ComponentPin)
 
-    def add_component_model(self, value):
+    def add_component_model(self, value: ComponentModel):
         """Add a component model to this component def.
 
         Parameters
         ----------
-        value : :class:`Component Model <ansys.edb.core.definition.ComponentModel>`
+        value : .ComponentModel
             Component Model to be added.
 
         Notes
@@ -126,12 +129,12 @@ class ComponentDef(ObjBase):
         """
         self.__stub.AddComponentModel(messages.edb_obj_pair_message(self, value))
 
-    def remove_component_model(self, value):
+    def remove_component_model(self, value: ComponentModel):
         """Remove a component model from this component def.
 
         Parameters
         ----------
-        value : :class:`Component Model <ansys.edb.core.definition.ComponentModel>`
+        value : .ComponentModel
             Component Model to be removed.
 
         Notes
@@ -140,7 +143,7 @@ class ComponentDef(ObjBase):
         """
         self.__stub.RemoveComponentModel(messages.pointer_property_message(self, value))
 
-    def reorder_pins(self, reordered_pins: List[component_pin.ComponentPin]):
+    def reorder_pins(self, reordered_pins: list[ComponentPin]):
         """Reorders the existing pins in the components definition to be in the same order \
         as in the provided list.
 
@@ -152,7 +155,7 @@ class ComponentDef(ObjBase):
         """
         self.__stub.ReorderPins(edb_obj_collection_property_message(self, reordered_pins))
 
-    def remove_pin(self, pin_to_remove: component_pin.ComponentPin):
+    def remove_pin(self, pin_to_remove: ComponentPin):
         """Remove the provided component pin from the component definition. \
         the pin will be deleted and set to :meth:`null <.is_null>`.
 
@@ -199,17 +202,17 @@ class ComponentDef(ObjBase):
             set_product_property_message(self, prod_id, attr_it, prop_value)
         )
 
-    def get_product_property_ids(self, prod_id: ProductIdType) -> List[int]:
+    def get_product_property_ids(self, prod_id: ProductIdType) -> list[int]:
         """Get the list of property IDs for a given property ID.
 
         Parameters
         ----------
-        prod_id : ProductIdType
+        prod_id : .ProductIdType
             Product ID.
 
         Returns
         -------
-        list[int]
+        list of int
             Attribute IDs for the given product ID.
         """
         attr_ids = self.__stub.GetProductPropertyIds(

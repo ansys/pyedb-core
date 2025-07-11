@@ -1,4 +1,7 @@
 """Material property thermal modifier."""
+from __future__ import annotations
+
+from typing import Tuple
 
 from ansys.api.edb.v1 import material_property_thermal_modifier_pb2_grpc
 import ansys.api.edb.v1.material_property_thermal_modifier_pb2 as pb
@@ -13,27 +16,30 @@ from ansys.edb.core.utility.value import Value
 
 
 class MaterialPropertyThermalModifier(ObjBase):
-    """Representing material property thermal modifiers."""
+    """Represents a thermal modifier that can be applied to material properties."""
 
     __stub: material_property_thermal_modifier_pb2_grpc.MaterialPropertyThermalModifierServiceStub = StubAccessor(
         StubType.material_property_thermal_modifier
     )
 
     @classmethod
-    def create(cls, basic_quadratic_params=None, advanced_quadratic_params=None):
+    def create(
+        cls,
+        basic_quadratic_params: BasicQuadraticParams = None,
+        advanced_quadratic_params: AdvancedQuadraticParams = None,
+    ) -> MaterialPropertyThermalModifier:
         """Create a material property thermal modifier.
 
         Parameters
         ----------
-        basic_quadratic_params : :class:`.BasicQuadraticParams`, default: None
-            Basic parameters needed for the thermal modifier.
-        advanced_quadratic_params : :class:`.AdvancedQuadraticParams`, default: None
-            Advanced parameeteres needed for the thermal modifier.
+        basic_quadratic_params : .BasicQuadraticParams, default: None
+            Basic parameters of the thermal modifier.
+        advanced_quadratic_params : .AdvancedQuadraticParams, default: None
+            Advanced parameters of the thermal modifier.
 
         Returns
         -------
-        MaterialPropertyThermalModifier
-            Material property thermal modifier created.
+        .MaterialPropertyThermalModifier
         """
         if basic_quadratic_params is None:
             basic_quadratic_params = BasicQuadraticParams()
@@ -65,13 +71,13 @@ class MaterialPropertyThermalModifier(ObjBase):
         )
 
     @property
-    def quadratic_model_params(self):
-        """:class:`.BasicQuadraticParams`, :class:`.AdvancedQuadraticParams`: \
+    def quadratic_model_params(self) -> Tuple[BasicQuadraticParams, AdvancedQuadraticParams]:
+        """:obj:`tuple` of (:class:`.BasicQuadraticParams`, :class:`.AdvancedQuadraticParams`): \
         Quadratic model parameters of the thermal modifier.
 
-        The quadratic model is in this form: \
-        PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]
-        where PropValRef = The original property value without the thermal modifier applied
+        The quadratic model is of the form \
+        ``PropVal(Temp) = PropValRef[1 + C1(Temp - TempRef) + C2(Temp - TempRef)^2]``
+        where ``PropValRef`` is the original material property value without the thermal modifier applied.
 
         This property is read-only.
         """
@@ -89,8 +95,8 @@ class MaterialPropertyThermalModifier(ObjBase):
         )
 
     @property
-    def expression(self):
-        """:class:`.Value`: Expression value representing the thermal modifier.
+    def expression(self) -> Value:
+        """:class:`.Value`: String representation of the thermal modifier.
 
         This property is read-only.
         """

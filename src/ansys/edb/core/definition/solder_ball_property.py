@@ -1,7 +1,12 @@
 """Solder ball property."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Tuple
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import ValueLike
 
 import ansys.api.edb.v1.padstack_def_data_pb2 as padstack_def_data_pb2
-from ansys.api.edb.v1.padstack_def_data_pb2 import SolderballShape
 import ansys.api.edb.v1.solder_ball_property_pb2 as solder_ball_property_pb2
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
@@ -24,44 +29,44 @@ class SolderBallProperty(ObjBase):
     __stub: SolderBallPropertyServiceStub = StubAccessor(StubType.solder_ball_property)
 
     @classmethod
-    def create(cls):
+    def create(cls) -> SolderBallProperty:
         """
         Create a solder ball property.
 
         Returns
         -------
-        SolderBallProperty
+        .SolderBallProperty
             Solder ball property created.
         """
         return SolderBallProperty(cls.__stub.Create(empty_pb2.Empty()))
 
     @property
-    def material_name(self):
+    def material_name(self) -> str:
         """:obj:`str`: Name of the solder ball material."""
         return self.__stub.GetMaterialName(edb_obj_message(self)).value
 
     @material_name.setter
-    def material_name(self, name):
+    def material_name(self, name: str):
         self.__stub.SetMaterialName(string_property_message(self, name))
 
     @property
-    def height(self):
+    def height(self) -> Value:
         """:term:`ValueLike`: Height of the solder ball."""
         return Value(self.__stub.GetHeight(edb_obj_message(self)))
 
     @height.setter
-    def height(self, height):
+    def height(self, height: ValueLike):
         self.__stub.SetHeight(value_property_message(self, value_message(height)))
 
-    def get_diameter(self):
+    def get_diameter(self) -> Tuple[Value, Value]:
         """Get the diameter parameters of the solder ball property.
 
         Returns
         -------
-        diameter1 : :term:`ValueLike`
-            Diameter 1 of the solder ball property.
-        diameter2 : :term:`ValueLike`
-            Diameter 2 of the solder ball property.
+        diameter1 : .Value
+            The diameter for a cylindrical solder ball or the top diameter for a spheroidal solder ball.
+        diameter2 : .Value
+            The middle diameter for a spheroidal solder ball. It is not used for a cylindrical solder ball.
         """
         diameter_paramaters = self.__stub.GetDiameter(edb_obj_message(self))
         return Value(diameter_paramaters.diameter1), Value(diameter_paramaters.diameter2)
@@ -72,9 +77,9 @@ class SolderBallProperty(ObjBase):
         Parameters
         ----------
         diameter1 : :term:`ValueLike`
-            Diameter 1 of the solder ball property.
+            The diameter for a cylindrical solder ball or the top diameter for a spheroidal solder ball.
         diameter2 : :term:`ValueLike`
-            Diameter 2 of the solder ball property.
+            The middle diameter for a spheroidal solder ball. It is not used for a cylindrical solder ball.
         """
         self.__stub.SetDiameter(
             solder_ball_property_pb2.SetDiameterMessage(
@@ -87,7 +92,7 @@ class SolderBallProperty(ObjBase):
         )
 
     @property
-    def uses_solderball(self):
+    def uses_solderball(self) -> bool:
         """:obj:`bool`: Flag indicating if the solder ball is used.
 
         This property is read-only.
@@ -95,12 +100,12 @@ class SolderBallProperty(ObjBase):
         return self.__stub.UsesSolderball(self.msg).value
 
     @property
-    def shape(self):
-        """:class:`SolderballShape`: Solder ball shape."""
+    def shape(self) -> SolderballShape:
+        """:class:`.SolderballShape`: Solder ball shape."""
         return SolderballShape(self.__stub.GetShape(self.msg).solderball_shape)
 
     @shape.setter
-    def shape(self, shape):
+    def shape(self, shape: SolderballShape):
         self.__stub.SetShape(
             padstack_def_data_pb2.PadstackDefDataSetSolderballShapeMessage(
                 target=self.msg, solderball_shape=shape.value
@@ -108,25 +113,24 @@ class SolderBallProperty(ObjBase):
         )
 
     @property
-    def placement(self):
-        """:class:`SolderballPlacement`: Solder ball placement."""
+    def placement(self) -> SolderballPlacement:
+        """:class:`.SolderballPlacement`: Solder ball placement."""
         return SolderballPlacement(self.__stub.GetPlacement(self.msg).solderball_placement)
 
     @placement.setter
-    def placement(self, placement):
+    def placement(self, placement: SolderballPlacement):
         self.__stub.SetPlacement(
             padstack_def_data_pb2.PadstackDefDataSetSolderballPlacementMessage(
                 target=self.msg, solderball_placement=placement.value
             )
         )
 
-    def clone(self):
+    def clone(self) -> SolderBallProperty:
         """
         Clone a solder ball property.
 
         Returns
         -------
-        SolderBallProperty
-            Solder ball property cloned.
+        .SolderBallProperty
         """
         return SolderBallProperty(self.__stub.Clone(edb_obj_message(self)))

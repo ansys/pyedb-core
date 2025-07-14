@@ -205,7 +205,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         expansion_unitless: bool,
         use_round_corner: bool,
         num_increments: int,
-    ) -> List[PolygonData]:
+    ) -> PolygonData:
         """Get the expanded extent of the geometry on the specified nets.
 
         Parameters

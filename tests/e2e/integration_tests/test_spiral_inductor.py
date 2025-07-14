@@ -419,5 +419,5 @@ class SpiralInductor(BaseExample):
 
 
 def test_spiral_inductor():
-    with session(settings.server_exe_dir(), 50051):
+    with session(settings.server_exe_dir()):
         SpiralInductor().run(r"spiral_inductor.aedb")

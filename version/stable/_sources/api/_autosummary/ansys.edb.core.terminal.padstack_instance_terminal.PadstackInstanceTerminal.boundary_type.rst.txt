@@ -1,0 +1,6 @@
+boundary\_type
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. autoproperty:: PadstackInstanceTerminal.boundary_type

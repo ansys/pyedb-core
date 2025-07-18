@@ -1,0 +1,24 @@
+﻿SurfaceRoughnessModel
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: SurfaceRoughnessModel
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SurfaceRoughnessModel.NONE
+      SurfaceRoughnessModel.EXPONENTIAL
+      SurfaceRoughnessModel.HAMMERSTAD
+   
+   

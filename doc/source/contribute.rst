@@ -162,7 +162,7 @@ If you would like to create either source or wheel files, run these commands:
         flit build
         python -m twine check dist/*
 
-Boilerplate Code Generation
+Boilerplate code generation
 ---------------------------
 
 The pyedb-core API requires some boilerplate code for performance optimization (in particular,

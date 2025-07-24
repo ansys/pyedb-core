@@ -1,0 +1,6 @@
+bundle\_terminal
+================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: Terminal.bundle_terminal

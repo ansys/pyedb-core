@@ -1,0 +1,32 @@
+﻿HFSSPIPowerGroundNetsSettings
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPIPowerGroundNetsSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPIPowerGroundNetsSettings.auto_detect_ignore_small_holes_min_diameter
+      HFSSPIPowerGroundNetsSettings.ignore_small_holes_min_diameter
+      HFSSPIPowerGroundNetsSettings.improved_loss_model
+      HFSSPIPowerGroundNetsSettings.msg
+   
+   

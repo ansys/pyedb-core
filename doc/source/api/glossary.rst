@@ -120,3 +120,11 @@ Glossary
 		- ``Square45`` -> [``inner size``, ``channel width``, ``isolation gap``]
 		- ``Square90`` -> [``inner size``, ``channel width``, ``isolation gap``]
 		- ``N-Sided Polygon`` -> [``side length``, ``number of sides``]
+
+	LayoutInstanceQueryResult
+
+		If a polygonal spatial filter is specified, a tuple of lists of hits is returned in this
+		format: ``[<hits_completely_enclosed_in_polygon_region>, <hits_partially_enclosed_in_polygon_region>]``.
+		Otherwise, a list containing all hits is returned.
+
+		:obj:`list` of :class:`.LayoutObjInstance` or :obj:`tuple` of (:obj:`list` of :class:`.LayoutObjInstance`, :obj:`list` of :class:`.LayoutObjInstance`)

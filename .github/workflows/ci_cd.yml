@@ -92,6 +92,10 @@ jobs:
     name: Package library
     runs-on: ubuntu-latest
     needs: [tests, doc-build]
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
     steps:
       - name: Build library source and wheel artifacts
         uses: ansys/actions/build-library@8d3e4946f36c2a7d447b92e34b1022a5c9dc77a7 # v10.0.12

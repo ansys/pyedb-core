@@ -48,7 +48,7 @@ notebook = [
 tests = [
     "pytest==8.4.1",
     "pytest-cov==6.2.1",
-    "pytest-mock==3.11.1",
+    "pytest-mock==3.14.1",
     "tox",
 ]
 # FIXME: update to newer versions

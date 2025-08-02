@@ -19,10 +19,11 @@ class ConnObj(layout_obj.LayoutObj):
         """Verify that the object type received from the server matches the object type requested by the client."""
         client_obj = cls(edb_obj_msg)
         if cls.layout_obj_type == LayoutObjType.PRIMITIVE:
+            from ansys.edb.core.primitive import circle
             import ansys.edb.core.primitive.primitive as primitive
 
             def get_client_prim_type_from_class():
-                if cls == primitive.Circle:
+                if cls == circle.Circle:
                     return primitive.PrimitiveType.CIRCLE
                 if cls == primitive.Rectangle:
                     return primitive.PrimitiveType.RECTANGLE

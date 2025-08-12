@@ -287,7 +287,7 @@ class Jedec5BondwireDef(BondwireDef):
 
         Returns
         -------
-        tuple of .Value, .Value, .Value
+        tuple of (.Value, .Value, .Value)
             The tuple is in this format: ``(top_to_die_distance, die_pad_angle, lead_pad_angle)``
 
             - ``top_to_die_distance``: Bondwire top-to-die distance.

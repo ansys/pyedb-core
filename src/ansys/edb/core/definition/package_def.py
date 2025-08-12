@@ -65,7 +65,7 @@ class PackageDef(ObjBase):
 
         Returns
         -------
-        PackageDef
+        .PackageDef
             Package definition object found. \
             If a Package definition isn't found, the returned Package definition is :meth:`null <.is_null>`.
         """
@@ -84,7 +84,7 @@ class PackageDef(ObjBase):
 
         Returns
         -------
-        PackageDef
+        .PackageDef
             Package definition object found. \
             If a Package definition isn't found, the returned Package definition is :meth:`null <.is_null>`.
         """

@@ -105,3 +105,18 @@ Glossary
 		- ``0`` -> ``T[1,1]``
 		- ``1`` -> ``T[2,2]``
 		- ``2`` -> ``T[3,3]``
+
+	Pad Geometry Parameters
+
+		Non-polygonal hole and pad geometry parameters of padstacks are represented as a list of values. These represent different pad geometry types as follows:
+
+		- ``Circle`` -> [``diameter``]
+		- ``Rectangle`` -> [``width``, ``height``]
+		- ``Square`` -> [``side length``]
+		- ``Oval`` -> [``x-size``, ``y-size``, ``corner radius``]
+		- ``Bullet`` -> [``x-size``, ``y-size``, ``corner radius``]
+		- ``Round45`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``Round90`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``Square45`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``Square90`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``N-Sided Polygon`` -> [``side length``, ``number of sides``]

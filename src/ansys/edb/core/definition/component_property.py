@@ -1,4 +1,12 @@
 """Component property."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import ValueLike
+    from ansys.edb.core.definition.package_def import PackageDef
+    from ansys.edb.core.hierarchy.model import Model
 
 from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 import ansys.api.edb.v1.model_pb2 as model_pb2
@@ -10,46 +18,45 @@ from ansys.edb.core.utility.value import Value
 
 
 class ComponentProperty(ObjBase):
-    """Represents a component property."""
+    """Represents the properties of a :obj:`.ComponentGroup`."""
 
     __stub: ComponentPropertyServiceStub = StubAccessor(StubType.component_property)
 
-    def clone(self):
+    def clone(self) -> ComponentProperty:
         """Clone the component property.
 
         Returns
         -------
-        ComponentProperty
-            Component property cloned.
+        .ComponentProperty
         """
         return ComponentProperty(self.__stub.Clone(messages.edb_obj_message(self)))
 
     @property
-    def package_mounting_offset(self):
-        """:class:`.Value`: Mounting offset of the package definition object.
+    def package_mounting_offset(self) -> Value:
+        """:class:`.Value`: Package mounting offset of the component.
 
         This property can be set with :term:`ValueLike`.
         """
         return Value(self.__stub.GetPackageMountingOffset(messages.edb_obj_message(self)))
 
     @package_mounting_offset.setter
-    def package_mounting_offset(self, offset):
+    def package_mounting_offset(self, offset: ValueLike):
         self.__stub.SetPackageMountingOffset(
             messages.value_property_message(self, messages.value_message(offset))
         )
 
     @property
-    def package_def(self):
-        """:obj:`PackageDef`: Package definition object."""
+    def package_def(self) -> PackageDef:
+        """:obj:`.PackageDef`: Package definition of the component."""
         return package_def.PackageDef(self.__stub.GetPackageDef(messages.edb_obj_message(self)))
 
     @package_def.setter
-    def package_def(self, value):
+    def package_def(self, value: PackageDef):
         self.__stub.SetPackageDef(messages.pointer_property_message(target=self, value=value))
 
     @property
-    def model(self):
-        """:class:`.Model`: Model object.
+    def model(self) -> Model:
+        """:class:`.Model`: Model of the component.
 
         This is a copy of the model object. Use the setter for any modifications to be reflected.
         """
@@ -75,5 +82,5 @@ class ComponentProperty(ObjBase):
         return get_model_obj_type()(comp_model_msg.model)
 
     @model.setter
-    def model(self, value):
+    def model(self, value: Model):
         self.__stub.SetModel(messages.pointer_property_message(target=self, value=value))

@@ -98,7 +98,7 @@ class MaterialDef(ObjBase):
         Returns
         -------
         .MaterialDef
-            Material definition object found.
+            Material definition object found. \
             If a material definition isn't found, the returned material definition is :meth:`null <.is_null>`.
         """
         return MaterialDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, name)))

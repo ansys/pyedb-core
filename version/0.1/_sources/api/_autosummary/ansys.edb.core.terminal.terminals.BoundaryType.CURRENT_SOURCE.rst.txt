@@ -1,0 +1,6 @@
+CURRENT\_SOURCE
+===============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoattribute:: BoundaryType.CURRENT_SOURCE

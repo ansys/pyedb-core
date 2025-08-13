@@ -1,0 +1,6 @@
+contact\_radius
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCSettings.contact_radius

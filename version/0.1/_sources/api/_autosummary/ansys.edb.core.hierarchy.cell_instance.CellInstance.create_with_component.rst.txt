@@ -1,0 +1,6 @@
+create\_with\_component
+=======================
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. automethod:: CellInstance.create_with_component

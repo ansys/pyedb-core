@@ -1,0 +1,6 @@
+NO\_DRILL
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. autoattribute:: BackDrillType.NO_DRILL

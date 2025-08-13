@@ -1,0 +1,6 @@
+fixed\_zone\_primitive
+======================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. autoproperty:: Layout.fixed_zone_primitive

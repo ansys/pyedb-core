@@ -1,0 +1,6 @@
+nets
+====
+
+.. currentmodule:: ansys.edb.core.net.extended_net
+
+.. autoproperty:: ExtendedNet.nets

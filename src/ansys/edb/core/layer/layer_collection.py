@@ -263,14 +263,16 @@ class LayerCollection(ObjBase):
         Returns
         -------
         Layer
+            The layer object if found, otherwise a null layer object.
         """
-        return Layer(
+        layer = Layer(
             get_layer_collection_stub().FindByName(
                 layer_collection_pb2.FindLayerByNameMessage(
                     layer_collection=self.msg, name=layer_name
                 )
             )
-        ).cast()
+        )
+        return layer if layer.is_null else layer.cast()
 
     @staticmethod
     def _get_layer_filter(layer_types):

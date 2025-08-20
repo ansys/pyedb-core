@@ -373,6 +373,8 @@ def _msg_to_sweep_data(msg):
         FrequencyData(Distribution[params[0]], *params[1:4])
         for params in (line.split() for line in freq_str_ranges if line.strip())
     ]
+    if len(ff) == 1:
+        ff = ff[0]
     sweep_data = SweepData(msg.name, ff)
     sweep_data.enabled = msg.enabled
     sweep_data.type = FreqSweepType(msg.type)

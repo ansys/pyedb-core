@@ -1,0 +1,6 @@
+use\_arc\_chord\_error\_approx
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedMeshingSettings.use_arc_chord_error_approx

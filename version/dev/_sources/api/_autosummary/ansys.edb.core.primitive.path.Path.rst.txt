@@ -1,0 +1,117 @@
+﻿Path
+====
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. autoclass:: Path
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Path.add_void
+      
+      
+      Path.cast
+      
+      
+      Path.create
+      
+      
+      Path.create_3d_comp
+      
+      
+      Path.create_hfss
+      
+      
+      Path.create_stride
+      
+      
+      Path.delete
+      
+      
+      Path.find_by_id
+      
+      
+      Path.get_clip_info
+      
+      
+      Path.get_end_cap_style
+      
+      
+      Path.get_hfss_prop
+      
+      
+      Path.get_product_property
+      
+      
+      Path.get_product_property_ids
+      
+      
+      Path.make_zone_primitive
+      
+      
+      Path.remove_hfss_prop
+      
+      
+      Path.render
+      
+      
+      Path.set_clip_info
+      
+      
+      Path.set_end_cap_style
+      
+      
+      Path.set_hfss_prop
+      
+      
+      Path.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Path.can_be_zone_primitive
+      Path.center_line
+      Path.component
+      Path.corner_style
+      Path.edb_uid
+      Path.group
+      Path.has_voids
+      Path.id
+      Path.is_mcad
+      Path.is_mcad_3d_comp
+      Path.is_mcad_hfss
+      Path.is_mcad_stride
+      Path.is_negative
+      Path.is_null
+      Path.is_parameterized
+      Path.is_void
+      Path.is_zone_primitive
+      Path.layer
+      Path.layout
+      Path.layout_obj_type
+      Path.miter_ratio
+      Path.msg
+      Path.net
+      Path.obj_type
+      Path.owner
+      Path.polygon_data
+      Path.primitive_type
+      Path.voids
+      Path.width
+   
+   

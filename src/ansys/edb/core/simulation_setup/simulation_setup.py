@@ -368,16 +368,14 @@ def _msg_to_interpolating_sweep_data(msg):
 
 def _msg_to_sweep_data(msg):
     """Create a ``SweepData`` from a ``SweepDataMessage``."""
-    freq_str_params = msg.frequency_string.split()
-    sweep_data = SweepData(
-        msg.name,
-        FrequencyData(
-            Distribution[freq_str_params[0]],
-            freq_str_params[1],
-            freq_str_params[2],
-            freq_str_params[3],
-        ),
-    )
+    freq_str_ranges: list[str] = msg.frequency_string.split("\n")
+    ff = [
+        FrequencyData(Distribution[params[0]], *params[1:4])
+        for params in (line.split() for line in freq_str_ranges if line.strip())
+    ]
+    if len(ff) == 1:
+        ff = ff[0]
+    sweep_data = SweepData(msg.name, ff)
     sweep_data.enabled = msg.enabled
     sweep_data.type = FreqSweepType(msg.type)
     sweep_data.use_q3d_for_dc = msg.use_q3d_for_dc

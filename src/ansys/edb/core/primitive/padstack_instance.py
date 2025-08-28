@@ -4,9 +4,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.net.net import Net
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.typing import ValueLike
+    from ansys.edb.core.typing import ValueLike, LayerLike, NetLike
     from ansys.edb.core.hierarchy.pin_group import PinGroup
 
 
@@ -45,15 +44,15 @@ class PadstackInstance(conn_obj.ConnObj):
     def create(
         cls,
         layout: Layout,
-        net: Net,
+        net: NetLike,
         name: str,
         padstack_def: PadstackDef,
         position_x: ValueLike,
         position_y: ValueLike,
         rotation: ValueLike,
-        top_layer: Layer,
-        bottom_layer: Layer,
-        solder_ball_layer: Layer | None = None,
+        top_layer: LayerLike,
+        bottom_layer: LayerLike,
+        solder_ball_layer: LayerLike | None = None,
         layer_map: LayerMap | None = None,
     ) -> PadstackInstance:
         """Create a padstack instance.
@@ -62,7 +61,7 @@ class PadstackInstance(conn_obj.ConnObj):
         ----------
         layout : .Layout
             Layout to create the padstack instance in.
-        net : .Net
+        net : :term:`NetLike`
             Net of the padstack instance.
         name : str
             Name of the padstack instance.
@@ -74,13 +73,13 @@ class PadstackInstance(conn_obj.ConnObj):
             Position y of the padstack instance.
         rotation : :term:`ValueLike`
             Rotation of the padstack instance.
-        top_layer : .Layer
+        top_layer : :term:`LayerLike`
             Top layer of the padstack instance.
-        bottom_layer : .Layer
+        bottom_layer : :term:`LayerLike`
             Bottom layer of the padstack instance.
-        solder_ball_layer : .Layer
+        solder_ball_layer : :term:`LayerLike` or None
             Solder ball layer of the padstack instance or ``None`` for none.
-        layer_map : .LayerMap
+        layer_map : .LayerMap or None
             Layer map of the padstack instance. ``None`` or empty results in
             auto-mapping.
 
@@ -93,13 +92,13 @@ class PadstackInstance(conn_obj.ConnObj):
             cls.__stub.Create(
                 padstack_instance_pb2.PadstackInstCreateMessage(
                     layout=layout.msg,
-                    net=net.msg,
+                    net=messages.net_ref_message(net),
                     name=name,
                     padstack_def=padstack_def.msg,
                     rotation=messages.value_message(rotation),
-                    top_layer=top_layer.msg,
-                    bottom_layer=bottom_layer.msg,
-                    solder_ball_layer=messages.edb_obj_message(solder_ball_layer),
+                    top_layer=messages.layer_ref_message(top_layer),
+                    bottom_layer=messages.layer_ref_message(bottom_layer),
+                    solder_ball_layer=messages.layer_ref_message(solder_ball_layer),
                     layer_map=messages.edb_obj_message(layer_map),
                 )
             )

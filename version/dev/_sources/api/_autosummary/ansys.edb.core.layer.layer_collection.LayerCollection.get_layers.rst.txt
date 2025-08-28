@@ -1,0 +1,6 @@
+get\_layers
+===========
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.get_layers

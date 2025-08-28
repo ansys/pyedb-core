@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. automethod:: PinGroup.create

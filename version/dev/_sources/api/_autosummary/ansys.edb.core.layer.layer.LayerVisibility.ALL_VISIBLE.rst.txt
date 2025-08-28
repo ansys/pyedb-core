@@ -1,0 +1,6 @@
+ALL\_VISIBLE
+============
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: LayerVisibility.ALL_VISIBLE

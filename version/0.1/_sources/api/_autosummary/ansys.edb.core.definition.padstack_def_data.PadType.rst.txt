@@ -1,0 +1,26 @@
+﻿PadType
+=======
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoclass:: PadType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PadType.REGULAR_PAD
+      PadType.ANTI_PAD
+      PadType.THERMAL_PAD
+      PadType.HOLE
+      PadType.UNKNOWN_GEOM_TYPE
+   
+   

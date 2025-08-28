@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. automethod:: PadstackInstanceTerminal.create_hfss

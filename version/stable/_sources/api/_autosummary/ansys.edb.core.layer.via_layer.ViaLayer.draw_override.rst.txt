@@ -1,0 +1,6 @@
+draw\_override
+==============
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. autoproperty:: ViaLayer.draw_override

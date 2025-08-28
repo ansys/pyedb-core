@@ -1,0 +1,6 @@
+GENERIC\_TRANSLATOR
+===================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoattribute:: ProductIdType.GENERIC_TRANSLATOR

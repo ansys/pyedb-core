@@ -1,0 +1,6 @@
+CCW
+===
+
+.. currentmodule:: ansys.edb.core.geometry.arc_data
+
+.. autoattribute:: RotationDirection.CCW

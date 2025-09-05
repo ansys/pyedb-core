@@ -1,0 +1,6 @@
+ET\_0\_5
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoattribute:: ErrorTolerance.ET_0_5

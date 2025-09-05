@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.dataset_def
+
+.. autoproperty:: DatasetDef.is_null

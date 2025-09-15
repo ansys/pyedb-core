@@ -4,7 +4,7 @@ from ansys.edb.core.terminal.edge_terminal import EdgeTerminal
 from ansys.edb.core.terminal.terminal import Terminal
 
 
-def test_edge_primitive(circuit_cell_with_edge_terminals: Cell):
+def test_primitive_edge_primitive(circuit_cell_with_edge_terminals: Cell):
     layout = circuit_cell_with_edge_terminals.layout
     terminal: EdgeTerminal = Terminal.find(layout, "P1")
     assert len(terminal.edges) == 1

@@ -167,4 +167,4 @@ class EdgeTerminal(Terminal):
 
     @edges.setter
     def edges(self, edges):
-        self.__stub.GetEdges(messages.edge_term_set_edges_message(self, edges))
+        self.__stub.SetEdges(messages.edge_term_set_edges_message(self, edges))

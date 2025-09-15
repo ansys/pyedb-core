@@ -1,0 +1,6 @@
+perform\_erc
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIGeneralSettings.perform_erc

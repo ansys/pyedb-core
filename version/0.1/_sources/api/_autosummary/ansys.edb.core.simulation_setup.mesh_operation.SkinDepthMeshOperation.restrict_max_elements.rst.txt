@@ -1,0 +1,6 @@
+restrict\_max\_elements
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoproperty:: SkinDepthMeshOperation.restrict_max_elements

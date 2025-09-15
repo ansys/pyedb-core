@@ -1,0 +1,6 @@
+INVALID\_RECT\_TYPE
+===================
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. autoattribute:: RectangleRepresentationType.INVALID_RECT_TYPE

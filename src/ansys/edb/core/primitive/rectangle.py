@@ -75,8 +75,9 @@ class Rectangle(Primitive):
         Rectangle
             Rectangle created.
         """
+        stub = cls.get_stub(cls, cls.__stub)
         return Rectangle(
-            cls.__stub.Create(
+            stub.Create(
                 rectangle_pb2.RectangleCreationMessage(
                     layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
@@ -119,7 +120,8 @@ class Rectangle(Primitive):
 
             **rotation** : Rotation.
         """
-        rect_param_msg = self.__stub.GetParameters(self.msg)
+        stub = self.get_stub(self, self.__stub)
+        rect_param_msg = stub.GetParameters(self.msg)
         return (
             RectangleRepresentationType(rect_param_msg.representation_type),
             Value(rect_param_msg.parameter1),
@@ -159,7 +161,8 @@ class Rectangle(Primitive):
         rotation : :term:`ValueLike`
             Rotation.
         """
-        self.__stub.SetParameters(
+        stub = self.get_stub(self, self.__stub)
+        stub.SetParameters(
             rectangle_pb2.SetRectangleParametersMessage(
                 target=self.msg,
                 parameters=rectangle_pb2.RectangleParametersMessage(
@@ -190,7 +193,8 @@ class Rectangle(Primitive):
 
         This property is read-only.
         """
-        return self.__stub.GetPolygonData(self.msg)
+        stub = self.get_stub(self, self.__stub)
+        return stub.GetPolygonData(self.msg)
 
     @classmethod
     @parser.to_polygon_data

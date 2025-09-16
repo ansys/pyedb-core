@@ -1,8 +1,8 @@
 from time import time
 
-import settings
-
 from ansys.edb.core.database import Database
+
+# from ansys.edb.core.inner.conn_obj import ConnObj
 from ansys.edb.core.layer.layer import LayerType
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.layout.cell import Cell, CellType
@@ -11,7 +11,12 @@ from ansys.edb.core.net.net import Net
 from ansys.edb.core.primitive.rectangle import Rectangle, RectangleRepresentationType
 from ansys.edb.core.session import session
 from ansys.edb.core.utility.io_manager import IOMangementType, enable_io_manager
+
+# from src.ansys.edb.core.primitive.primitive import Primitive
 import tests.e2e.settings as settings
+
+# import tests.e2e.settings as settings
+
 
 db_name = "io_performance_test.aedb"
 lyr_name = "signal_1"
@@ -145,12 +150,48 @@ def read_write_test():
     )
 
 
+def smart_cache_invalidation_test():
+    with enable_io_manager(IOMangementType.READ_AND_WRITE):
+        create_prims()
+        prims = lyt.primitives
+        for prim in prims:
+            rect0: Rectangle = prim
+            params = rect0.get_parameters()
+            rect0.set_parameters(params[0], params[1], params[2], params[3], params[4], 1e-3, 0.0)
+            # rect1: Rectangle = prims[i+1]
+            # rect0: Rectangle = prims[i]
+            # rect1: Rectangle = prims[i+1]
+            # params = rect0.get_parameters()
+            # rect0.set_parameters(params[0], params[1], params[2], params[3], params[4], 1e-3, 0.0)
+            # rect_0_ret = Primitive.find_by_id(lyt, rect0.edb_uid)
+            # rect_0_ret = Primitive.find_by_id(lyt, rect0.edb_uid)
+            # rect1_params = rect1.get_parameters()
+            # rect1.set_parameters(params[0], params[1], params[2], params[3], params[4], 1e-3, 0.0)
+            # # Rectangle.create(lyt,
+            # #     lyr_name,
+            # #     net_name,
+            # #     RectangleRepresentationType.CENTER_WIDTH_HEIGHT,
+            # #     0,
+            # #     0,
+            # #     1e-3,
+            # #     1e-3,
+            # #     0.0,
+            # #     0.0)
+            # rect_0_ret = Primitive.find_by_id(lyt, rect0.edb_uid)
+            # rect2: Rectangle = prims[i+2]
+            # rect2_params = rect2.get_parameters()
+            # rect2.set_parameters(params[0], params[1], params[2], params[3], params[4], 1e-3, 0.0)
+            # #new_rect0_params = rect0.get_parameters()
+        # print(new_rect0_params)
+
+
 if __name__ == "__main__":
-    with session(settings.server_exe_dir()):
+    with session(settings.server_exe_dir(), dump_traffic_log=True):
         setup()
         start = time()
-        read_write_test()
-        caching_flushing_blocking_test()
+        # read_write_test()
+        # caching_flushing_blocking_test()
+        smart_cache_invalidation_test()
         end = time()
         print(f"total time: {end - start} seconds")
         teardown()

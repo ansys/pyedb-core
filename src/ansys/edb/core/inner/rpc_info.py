@@ -1,6 +1,24 @@
 """Defines container which gives additional information for RPC methods."""
 
 
+class _InvalidationInfo:
+    def __init__(self, rpc, service=None):
+        self._rpc = rpc
+        self._service = service
+
+    @property
+    def rpc(self):
+        return self._rpc
+
+    @property
+    def service(self):
+        return self._service
+
+    @property
+    def is_self_invalidation(self):
+        return self.service is None
+
+
 class _RpcInfo:
     def __init__(
         self,
@@ -10,6 +28,7 @@ class _RpcInfo:
         buffer=False,
         returns_future=False,
         write_no_cache_invalidation=False,
+        invalidations=None,
     ):
         self._read_no_cache = read_no_cache
         self._write_no_buffer = write_no_buffer
@@ -17,6 +36,7 @@ class _RpcInfo:
         self._buffer = buffer
         self._write_no_cache_invalidation = write_no_cache_invalidation
         self._returns_future = returns_future
+        self._invalidations = invalidations
 
     @property
     def is_read(self):
@@ -41,6 +61,14 @@ class _RpcInfo:
     @property
     def invalidates_cache(self):
         return self.is_write and not self._write_no_cache_invalidation
+
+    @property
+    def invalidations(self):
+        return self._invalidations
+
+    @property
+    def has_smart_invalidation(self):
+        return bool(self.invalidations)
 
 
 rpc_information = {
@@ -228,7 +256,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.ConnectableService": {
         "GetObjType": _RpcInfo(cache=True),
-        "FindByIdAndType": _RpcInfo(cache=True),
+        "FindByIdAndType": _RpcInfo(cache=True, invalidations=True),
         "GetId": _RpcInfo(cache=True),
         "GetComponent": _RpcInfo(cache=True),
         "GetGroup": _RpcInfo(cache=True),
@@ -1044,11 +1072,31 @@ rpc_information = {
         "SetNetSettingsOptions": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.RectangleService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetParameters": _RpcInfo(cache=True),
-        "SetParameters": _RpcInfo(buffer=True),
-        "Render": _RpcInfo(cache=True),
-        "GetPolygonData": _RpcInfo(cache=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                _InvalidationInfo(
+                    rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                ),
+                _InvalidationInfo(
+                    rpc="GetExpandedExtentFromNets", service="ansys.api.edb.v1.LayoutService"
+                ),
+            ],
+        ),
+        "GetParameters": _RpcInfo(cache=True, invalidations=True),
+        "SetParameters": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                _InvalidationInfo(rpc="GetParameters"),
+                _InvalidationInfo(rpc="GetPolygonData"),
+                _InvalidationInfo(
+                    rpc="GetExpandedExtentFromNets", service="ansys.api.edb.v1.LayoutService"
+                ),
+            ],
+        ),
+        "Render": _RpcInfo(cache=True, invalidations=True),
+        "GetPolygonData": _RpcInfo(cache=True, invalidations=[_InvalidationInfo(rpc=True)]),
     },
     "ansys.api.edb.v1.RLCComponentPropertyService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),

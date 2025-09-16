@@ -19,25 +19,32 @@ class ConnObj(layout_obj.LayoutObj):
         """Verify that the object type received from the server matches the object type requested by the client."""
         client_obj = cls(edb_obj_msg)
         if cls.layout_obj_type == LayoutObjType.PRIMITIVE:
-            import ansys.edb.core.primitive.primitive as primitive
+            from ansys.edb.core.primitive.board_bend_def import BoardBendDef
+            from ansys.edb.core.primitive.bondwire import Bondwire
+            from ansys.edb.core.primitive.circle import Circle
+            from ansys.edb.core.primitive.path import Path
+            from ansys.edb.core.primitive.polygon import Polygon
+            from ansys.edb.core.primitive.primitive import Primitive, PrimitiveType
+            from ansys.edb.core.primitive.rectangle import Rectangle
+            from ansys.edb.core.primitive.text import Text
 
             def get_client_prim_type_from_class():
-                if cls == primitive.Circle:
-                    return primitive.PrimitiveType.CIRCLE
-                if cls == primitive.Rectangle:
-                    return primitive.PrimitiveType.RECTANGLE
-                if cls == primitive.Polygon:
-                    return primitive.PrimitiveType.POLYGON
-                if cls == primitive.Path:
-                    return primitive.PrimitiveType.PATH
-                if cls == primitive.Bondwire:
-                    return primitive.PrimitiveType.BONDWIRE
-                if cls == primitive.BoardBendDef:
-                    return primitive.PrimitiveType.BOARD_BEND
-                if cls == primitive.Text:
-                    return primitive.PrimitiveType.TEXT
+                if cls == Circle:
+                    return PrimitiveType.CIRCLE
+                if cls == Rectangle:
+                    return PrimitiveType.RECTANGLE
+                if cls == Polygon:
+                    return PrimitiveType.POLYGON
+                if cls == Path:
+                    return PrimitiveType.PATH
+                if cls == Bondwire:
+                    return PrimitiveType.BONDWIRE
+                if cls == BoardBendDef:
+                    return PrimitiveType.BOARD_BEND
+                if cls == Text:
+                    return PrimitiveType.TEXT
 
-            if get_client_prim_type_from_class() == primitive.Primitive(edb_obj_msg).primitive_type:
+            if get_client_prim_type_from_class() == Primitive(edb_obj_msg).primitive_type:
                 return client_obj
         elif cls.layout_obj_type == LayoutObjType.TERMINAL:
             from ansys.edb.core.terminal import terminals

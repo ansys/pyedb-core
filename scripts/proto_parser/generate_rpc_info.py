@@ -9,10 +9,33 @@ tab = "    "
 ansys_api_edb_repo_env_str = "ANSYS_API_EDB_REPO_PATH"
 
 
+def _get_rpc_invalidation_info_params_str(invalidation: str, data: RpcData):
+    tokens = invalidation.split(".")
+    is_self_invalidation = len(tokens) == 1
+    params_str = f'rpc="{tokens[0 if is_self_invalidation else 1]}"'
+    if not is_self_invalidation:
+        params_str += f', service="{data.package_name}.{tokens[0]}Service"'
+    return params_str
+
+
+def _get_rpc_invalidation_infos_str(invalidations: list[str], data: RpcData):
+    return ", ".join(
+        f"_InvalidationInfo({_get_rpc_invalidation_info_params_str(invalidation, data)})"
+        for invalidation in invalidations
+    )
+
+
+def _get_rpc_invalidations_str(invalidations: list[str], data: RpcData):
+    return f"invalidations=[{_get_rpc_invalidation_infos_str(invalidations, data)}]"
+
+
 def _get_rpc_info_object_str(data: RpcData):
     io_flag_params = ", ".join(
-        [f"{io_flag}={True}" for io_flag in sorted(data.io_flags, key=str.lower)]
+        [f"{io_flag}={True}" for io_flag in sorted(data.io_flags.str_flags, key=str.lower)]
     )
+    invalidations = data.io_flags.get_dict_flag("invalidations")
+    if invalidations:
+        io_flag_params += f", {_get_rpc_invalidations_str(invalidations, data)}"
     return f"_RpcInfo({io_flag_params})"
 
 
@@ -40,6 +63,23 @@ def _rpc_info_to_str(rpc_datas: List[RpcData]):
 def _get_rpc_info_file_str(rpc_datas: List[RpcData]):
     return f"""\"\"\"Defines container which gives additional information for RPC methods.\"\"\"
 
+class _InvalidationInfo:
+    def __init__(self, rpc, service=None):
+        self._rpc = rpc
+        self._service = service
+
+    @property
+    def rpc(self):
+        return self._rpc
+
+    @property
+    def service(self):
+        return self._service
+
+    @property
+    def is_self_invalidation(self):
+        return self.service is None
+
 
 class _RpcInfo:
     def __init__(
@@ -50,6 +90,7 @@ class _RpcInfo:
         buffer=False,
         returns_future=False,
         write_no_cache_invalidation=False,
+        invalidations=None
     ):
         self._read_no_cache = read_no_cache
         self._write_no_buffer = write_no_buffer
@@ -57,6 +98,7 @@ class _RpcInfo:
         self._buffer = buffer
         self._write_no_cache_invalidation = write_no_cache_invalidation
         self._returns_future = returns_future
+        self._invalidations = invalidations
 
     @property
     def is_read(self):
@@ -81,6 +123,14 @@ class _RpcInfo:
     @property
     def invalidates_cache(self):
         return self.is_write and not self._write_no_cache_invalidation
+
+    @property
+    def invalidations(self):
+        return self._invalidations
+
+    @property
+    def has_smart_invalidation(self):
+        return bool(self.invalidations)
 
 
 rpc_information = {{

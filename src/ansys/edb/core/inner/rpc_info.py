@@ -1096,7 +1096,7 @@ rpc_information = {
             ],
         ),
         "Render": _RpcInfo(cache=True, invalidations=True),
-        "GetPolygonData": _RpcInfo(cache=True, invalidations=[_InvalidationInfo(rpc=True)]),
+        "GetPolygonData": _RpcInfo(cache=True, invalidations=True),
     },
     "ansys.api.edb.v1.RLCComponentPropertyService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),

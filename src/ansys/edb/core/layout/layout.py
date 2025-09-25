@@ -547,3 +547,19 @@ class Layout(ObjBase, variable_server.VariableServer):
            are supported in primitive instance collections.
         """
         self.__stub.CompressPrimitives(self.msg)
+
+    def flatten_cell_instances(self, use_net_mapping: bool, delete_dummy_net: bool):
+        """Flatten all cell instances in the layout.
+
+        Parameters
+        ----------
+        use_net_mapping : bool
+            Whether to use net mapping when flattening cell instances.
+        delete_dummy_net : bool
+           Whether to delete geometry on dummy nets.
+        """
+        self.__stub.FlattenCellInstances(
+            layout_pb2.FlattenCellInstancesMessage(
+                layout=self.msg, use_net_mapping=use_net_mapping, delete_dummy_net=delete_dummy_net
+            )
+        )

@@ -7,6 +7,8 @@ from enum import Enum
 import errno
 import json
 import os
+from pathlib import Path
+from platform import system
 from shutil import which
 import socket
 from struct import pack, unpack
@@ -266,6 +268,50 @@ class _Session:
     def is_launch(self) -> bool:
         return self.ansys_em_root is not None
 
+    def _is_legacy_version(self) -> bool:
+        bad_port_num = -1
+        cmd = [self.server_executable, "-a", "bad_auth", "-p", str(bad_port_num)]
+
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        return result.stderr == f"Port number must be positive: {bad_port_num}"
+
+    @staticmethod
+    def _get_uds_folder() -> Path:
+        def _get_env(env: str) -> str:
+            return os.environ.get(env, "")
+
+        uds_path = _get_env("AnsysEM_UDS")
+        if uds_path:
+            return Path(uds_path)
+        home = _get_env("USERPROFILE")
+        if not home:
+            home = _get_env("HOME")
+        return Path(home) / ".conn"
+
+    def _get_uds_file(self) -> Path:
+        return _Session._get_uds_folder() / f"AnsysEMUDS{self.port_num}.sock"
+
+    def _get_uds_address(self) -> str:
+        return f"unix:{self._get_uds_file()}"
+
+    @staticmethod
+    def _is_windows():
+        return system() == "Windows"
+
+    def _get_address(self) -> str:
+        is_launch = self.is_launch()
+        if is_launch and self._is_legacy_version():
+            LOGGER.warn(
+                "You are currently using an outdated version of AEDT. "
+                "Please consider updating to the most recent service pack."
+            )
+            return self.server_url
+        if self._is_windows():
+            return self.server_url
+        if not is_launch and not os.path.exists(self._get_uds_file()):
+            return self.server_url
+        return self._get_uds_address()
+
     def connect(self):
         if self.is_active():
             return
@@ -273,7 +319,9 @@ class _Session:
         if self.is_launch():
             self.start_server()
 
-        self.channel = grpc.insecure_channel(self.server_url)
+        options = (("grpc.default_authority", "localhost"),)
+        address = self._get_address()
+        self.channel = grpc.insecure_channel(address, options=options)
         self.channel = grpc.intercept_channel(self.channel, *self.interceptors)
 
         self._initialize_stubs()

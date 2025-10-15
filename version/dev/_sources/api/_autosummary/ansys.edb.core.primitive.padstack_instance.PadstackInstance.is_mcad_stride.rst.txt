@@ -1,0 +1,6 @@
+is\_mcad\_stride
+================
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. autoproperty:: PadstackInstance.is_mcad_stride

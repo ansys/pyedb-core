@@ -1,0 +1,6 @@
+BROADBAND\_SWEEP
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: FreqSweepType.BROADBAND_SWEEP

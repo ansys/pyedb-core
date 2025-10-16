@@ -18,6 +18,7 @@ from ansys.edb.core.utility.hfss_extent_info import (
     OpenRegionType,
 )
 from ansys.edb.core.utility.temperature_settings import TemperatureSettings
+from ansys.edb.core.utility.touchstone_export_settings import TouchstoneExportSettings
 from ansys.edb.core.utility.value import Value
 
 
@@ -334,6 +335,39 @@ class Cell(ObjBase, variable_server.VariableServer):
     def temperature_settings(self, value):
         self.__stub.SetTemperatureSettings(
             messages.cell_set_temperature_settings_message(self, value)
+        )
+
+    @property
+    def touchstone_export_settings(self):
+        """:class:`.TouchstoneExportSettings`: \
+        TouchstoneExport settings."""
+        msg = self.__stub.GetTouchstoneExportSettings(self.msg)
+        return TouchstoneExportSettings(
+            msg.export_after_solve,
+            msg.export_dir,
+            msg.export_type,
+            msg.enforce_passivity,
+            msg.enforce_causality,
+            msg.use_common_ground,
+            msg.show_gamma_comments,
+            msg.do_renormalize,
+            msg.renorm_impedance,
+            msg.fitting_error,
+            msg.max_poles,
+            msg.passivity_algorithm,
+            msg.column_fitting_algorithm,
+            msg.ss_fitting_algorithm,
+            msg.relative_error_tolerance,
+            msg.ensure_accurate_zfit,
+            msg.touchstone_format,
+            msg.touchstone_units,
+            msg.touchstone_precision,
+        )
+
+    @touchstone_export_settings.setter
+    def touchstone_export_settings(self, value):
+        self.__stub.SetTouchstoneExportSettings(
+            messages.cell_set_touchstone_export_settings_message(self, value)
         )
 
     def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True):

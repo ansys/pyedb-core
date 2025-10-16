@@ -9,6 +9,7 @@ from ansys.api.edb.v1.cell_pb2 import (
     CellCutOutMessage,
     CellFindMessage,
     CellSetTemperatureSettingsMessage,
+    CellSetTouchstoneExportSettingsMessage,
 )
 from ansys.api.edb.v1.component_def_pb2 import ComponentDefCreateMessage
 from ansys.api.edb.v1.component_group_pb2 import (
@@ -52,6 +53,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     StringsMessage,
     StringsPropertyMessage,
     TemperatureSettingsMessage,
+    TouchstoneExportSettingsMessage,
     UInt64PropertyMessage,
     ValueMessage,
     ValuePairMessage,
@@ -539,6 +541,31 @@ def temperature_settings_message(settings):
     )
 
 
+def touchstone_export_settings_message(settings):
+    """Convert to a ``TouchstoneExportSettingsMessage`` object."""
+    return TouchstoneExportSettingsMessage(
+        export_after_solve=settings.export_after_solve,
+        export_dir=settings.export_dir,
+        export_type=settings.export_type,
+        enforce_passivity=settings.enforce_passivity,
+        enforce_causality=settings.enforce_causality,
+        use_common_ground=settings.use_common_ground,
+        show_gamma_comments=settings.show_gamma_comments,
+        do_renormalize=settings.do_renormalize,
+        renorm_impedance=settings.renorm_impedance,
+        fitting_error=settings.fitting_error,
+        max_poles=settings.max_poles,
+        passivity_algorithm=settings.passivity_algorithm,
+        column_fitting_algorithm=settings.column_fitting_algorithm,
+        ss_fitting_algorithm=settings.ss_fitting_algorithm,
+        relative_error_tolerance=settings.relative_error_tolerance,
+        ensure_accurate_zfit=settings.ensure_accurate_zfit,
+        touchstone_format=settings.touchstone_format,
+        touchstone_units=settings.touchstone_units,
+        touchstone_precision=settings.touchstone_precision,
+    )
+
+
 def hfss_extent_message(hfss_val):
     """Convert to an ``ExtentMessage`` object."""
     if type(hfss_val) == float or type(hfss_val) == int:
@@ -602,6 +629,13 @@ def cell_set_temperature_settings_message(cell, temp_settings):
     """Convert to a ``CellSetTemperatureSettingsMessage`` object."""
     return CellSetTemperatureSettingsMessage(
         cell=cell.msg, temp_settings=temperature_settings_message(temp_settings)
+    )
+
+
+def cell_set_touchstone_export_settings_message(cell, ts_settings):
+    """Convert to a ``CellSetTouchstoneExportSettingsMessage`` object."""
+    return CellSetTouchstoneExportSettingsMessage(
+        cell=cell.msg, ts_settings=touchstone_export_settings_message(ts_settings)
     )
 
 

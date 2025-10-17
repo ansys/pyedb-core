@@ -336,7 +336,14 @@ class Cell(ObjBase, variable_server.VariableServer):
             messages.cell_set_temperature_settings_message(self, value)
         )
 
-    def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True):
+    def cutout(
+        self,
+        included_nets,
+        clipped_nets,
+        clipping_polygon,
+        clean_clipping=True,
+        cutout_in_place=False,
+    ):
         """Cut out an existing cell into a new cell.
 
         Parameters
@@ -349,6 +356,8 @@ class Cell(ObjBase, variable_server.VariableServer):
             Clipping polygon.
         clean_clipping : bool, optional
             Whether to perform clean clipping. The default is ``True``.
+        cutout_in_place : bool, optional
+            Whether to perform the cutout directly on the target cell. The default is ``False``.
 
         Returns
         -------
@@ -358,7 +367,12 @@ class Cell(ObjBase, variable_server.VariableServer):
         return Cell(
             self.__stub.CutOut(
                 messages.cell_cutout_message(
-                    self, included_nets, clipped_nets, clipping_polygon, clean_clipping
+                    self,
+                    included_nets,
+                    clipped_nets,
+                    clipping_polygon,
+                    clean_clipping,
+                    cutout_in_place,
                 )
             )
         )

@@ -1,0 +1,6 @@
+terminal\_pin\_pairs
+====================
+
+.. currentmodule:: ansys.edb.core.hierarchy.spice_model
+
+.. autoproperty:: SPICEModel.terminal_pin_pairs

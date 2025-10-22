@@ -1,0 +1,6 @@
+rms\_surface\_roughness
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIGeneralSettings.rms_surface_roughness

@@ -1,0 +1,46 @@
+﻿Transform
+=========
+
+.. currentmodule:: ansys.edb.core.utility.transform
+
+.. autoclass:: Transform
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Transform.create
+      
+      
+      Transform.transform_point
+      
+      
+      Transform.transform_polygon
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Transform.id
+      Transform.is_identity
+      Transform.is_null
+      Transform.mirror
+      Transform.msg
+      Transform.offset_x
+      Transform.offset_y
+      Transform.rotation
+      Transform.scale
+   
+   

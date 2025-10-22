@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. automethod:: CellInstance.delete

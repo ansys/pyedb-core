@@ -17,6 +17,12 @@ Classes
    hfss_simulation_settings.HFSSAdvancedSettings
    hfss_simulation_settings.HFSSAdvancedMeshingSettings
    hfss_simulation_settings.HFSSDCRSettings
+   hfss_pi_simulation_setup.HFSSPISimulationSetup
+   hfss_pi_simulation_settings.HFSSPISimulationSettings
+   hfss_pi_simulation_settings.HFSSPIGeneralSettings
+   hfss_pi_simulation_settings.HFSSPISettingsOptions
+   hfss_pi_simulation_settings.HFSSPISolverSettings
+   hfss_pi_simulation_settings.HFSSPIAdvancedSettings
    adaptive_solutions.AdaptiveFrequency
    adaptive_solutions.BroadbandAdaptiveSolution
    adaptive_solutions.MatrixConvergenceData
@@ -50,12 +56,12 @@ Classes
    siwave_simulation_settings.SIWaveDCAdvancedSettings
    siwave_simulation_settings.SIWaveSParameterSettings
    siwave_simulation_setup.SIWaveSimulationSetup
-   hfss_pi_simulation_settings.HFSSPISimulationSettings
-   hfss_pi_simulation_settings.HFSSPIGeneralSettings
-   hfss_pi_simulation_settings.HFSSPINetProcessingSettings
-   hfss_pi_simulation_settings.HFSSPIPowerGroundNetsSettings
-   hfss_pi_simulation_settings.HFSSPISignalNetsSettings
-   hfss_pi_simulation_setup.HFSSPISimulationSetup
+   siwave_psi_simulation_settings.SIwavePSISimulationSettings
+   siwave_psi_simulation_settings.SIwavePSIGeneralSettings
+   siwave_psi_simulation_settings.SIwavePSINetProcessingSettings
+   siwave_psi_simulation_settings.SIwavePSIPowerGroundNetsSettings
+   siwave_psi_simulation_settings.SIwavePSISignalNetsSettings
+   siwave_psi_simulation_setup.SIwavePSISimulationSetup
    q3d_simulation_settings.Q3DSimulationSettings
    q3d_simulation_settings.Q3DGeneralSettings
    q3d_simulation_settings.Q3DDCRLSettings
@@ -76,16 +82,17 @@ Enums
       hfss_simulation_settings.AdaptType
       hfss_simulation_settings.BasisFunctionOrder
       hfss_simulation_settings.SolverType
+      hfss_pi_simulation_settings.HFSSPIModelType
       simulation_settings.ViaStyle
       simulation_settings.ModelType
       siwave_simulation_settings.SParamInterpolation
       siwave_simulation_settings.SParamExtrapolation
       siwave_simulation_settings.SParamDCBehavior
-      hfss_pi_simulation_settings.HFSSPISimulationPreference
-      hfss_pi_simulation_settings.HFSSPIModelType
-      hfss_pi_simulation_settings.SurfaceRoughnessModel
-      hfss_pi_simulation_settings.ImprovedLossModel
-      hfss_pi_simulation_settings.ConductorModeling
-      hfss_pi_simulation_settings.ErrorTolerance
+      siwave_psi_simulation_settings.SIwavePSISimulationPreference
+      siwave_psi_simulation_settings.SIwavePSIModelType
+      siwave_psi_simulation_settings.SurfaceRoughnessModel
+      siwave_psi_simulation_settings.ImprovedLossModel
+      siwave_psi_simulation_settings.ConductorModeling
+      siwave_psi_simulation_settings.ErrorTolerance
       q3d_simulation_settings.Q3DSolutionOrder
       q3d_simulation_settings.Q3DSettingsType

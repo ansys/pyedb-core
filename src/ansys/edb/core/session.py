@@ -48,12 +48,6 @@ from ansys.api.edb.v1.edb_error_manager_pb2_grpc import EDBErrorManagerServiceSt
 from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
-from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import (
-    HFSSPIGeneralSettingsServiceStub,
-    HFSSPINetProcessingSettingsServiceStub,
-    HFSSPIPowerGroundNetsServiceStub,
-    HFSSPISignalNetsSettingsServiceStub,
-)
 from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
     DCRSettingsServiceStub,
     HFSSAdvancedMeshingSettingsServiceStub,
@@ -61,6 +55,11 @@ from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
     HFSSGeneralSettingsServiceStub,
     HFSSOptionsSettingsServiceStub,
     HFSSSolverSettingsServiceStub,
+)
+from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import (
+    HFSSPIAdvancedSettingsServiceStub,
+    HFSSPIGeneralSettingsServiceStub,
+    HFSSPISolverSettingsServiceStub,
 )
 from ansys.api.edb.v1.hfss_simulation_setup_pb2_grpc import HfssSimulationSetupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
@@ -139,6 +138,12 @@ from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import (
     SIWaveDCSettingsServiceStub,
     SIWaveGeneralSettingsServiceStub,
     SIWaveSParameterSettingsServiceStub,
+)
+from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import (
+    SIwavePSIGeneralSettingsServiceStub,
+    SIwavePSINetProcessingSettingsServiceStub,
+    SIwavePSIPowerGroundNetsServiceStub,
+    SIwavePSISignalNetsSettingsServiceStub,
 )
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
     AdvancedMeshingSettingsServiceStub,
@@ -449,9 +454,12 @@ class StubType(Enum):
     hfss_dcr_sim_settings = DCRSettingsServiceStub
     hfss_sim_setup = HfssSimulationSetupServiceStub
     hfss_pi_general_sim_settings = HFSSPIGeneralSettingsServiceStub
-    hfss_pi_net_processing_sim_settings = HFSSPINetProcessingSettingsServiceStub
-    hfss_pi_power_ground_sim_settings = HFSSPIPowerGroundNetsServiceStub
-    hfss_pi_signal_nets_sim_settings = HFSSPISignalNetsSettingsServiceStub
+    hfss_pi_advanced_sim_settings = HFSSPIAdvancedSettingsServiceStub
+    hfss_pi_solver_sim_settings = HFSSPISolverSettingsServiceStub
+    siwave_psi_general_sim_settings = SIwavePSIGeneralSettingsServiceStub
+    siwave_psi_net_processing_sim_settings = SIwavePSINetProcessingSettingsServiceStub
+    siwave_psi_power_ground_sim_settings = SIwavePSIPowerGroundNetsServiceStub
+    siwave_psi_signal_nets_sim_settings = SIwavePSISignalNetsSettingsServiceStub
     sim_setup = SimulationSetupServiceStub
     sim_settings = SimulationSettingsServiceStub
     sim_settings_options = SettingsOptionsServiceStub

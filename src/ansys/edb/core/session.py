@@ -49,10 +49,9 @@ from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalSer
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import (
+    HFSSPIAdvancedSettingsServiceStub,
     HFSSPIGeneralSettingsServiceStub,
-    HFSSPINetProcessingSettingsServiceStub,
-    HFSSPIPowerGroundNetsServiceStub,
-    HFSSPISignalNetsSettingsServiceStub,
+    HFSSPISolverSettingsServiceStub,
 )
 from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
     DCRSettingsServiceStub,
@@ -132,6 +131,12 @@ from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropert
 from ansys.api.edb.v1.s_parameter_model_pb2_grpc import SParameterModelServiceStub
 from ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2_grpc import (
     SIWaveDCIRSimulationSettingsServiceStub,
+)
+from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import (
+    SIwavePSIGeneralSettingsServiceStub,
+    SIwavePSINetProcessingSettingsServiceStub,
+    SIwavePSIPowerGroundNetsServiceStub,
+    SIwavePSISignalNetsSettingsServiceStub,
 )
 from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import (
     SIWaveAdvancedSettingsServiceStub,
@@ -449,9 +454,12 @@ class StubType(Enum):
     hfss_dcr_sim_settings = DCRSettingsServiceStub
     hfss_sim_setup = HfssSimulationSetupServiceStub
     hfss_pi_general_sim_settings = HFSSPIGeneralSettingsServiceStub
-    hfss_pi_net_processing_sim_settings = HFSSPINetProcessingSettingsServiceStub
-    hfss_pi_power_ground_sim_settings = HFSSPIPowerGroundNetsServiceStub
-    hfss_pi_signal_nets_sim_settings = HFSSPISignalNetsSettingsServiceStub
+    hfss_pi_advanced_sim_settings = HFSSPIAdvancedSettingsServiceStub
+    hfss_pi_solver_sim_settings = HFSSPISolverSettingsServiceStub
+    siwave_psi_general_sim_settings = SIwavePSIGeneralSettingsServiceStub
+    siwave_psi_net_processing_sim_settings = SIwavePSINetProcessingSettingsServiceStub
+    siwave_psi_power_ground_sim_settings = SIwavePSIPowerGroundNetsServiceStub
+    siwave_psi_signal_nets_sim_settings = SIwavePSISignalNetsSettingsServiceStub
     sim_setup = SimulationSetupServiceStub
     sim_settings = SimulationSettingsServiceStub
     sim_settings_options = SettingsOptionsServiceStub

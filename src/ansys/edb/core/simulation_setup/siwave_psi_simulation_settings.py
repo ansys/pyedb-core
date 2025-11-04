@@ -1,4 +1,4 @@
-"""SIwavePSI simulation settings."""
+"""SIWavePSI simulation settings."""
 from __future__ import annotations
 
 from enum import Enum
@@ -8,10 +8,10 @@ import ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import (
-    SIwavePSIGeneralSettingsServiceStub,
-    SIwavePSINetProcessingSettingsServiceStub,
-    SIwavePSIPowerGroundNetsServiceStub,
-    SIwavePSISignalNetsSettingsServiceStub,
+    SIWavePSIGeneralSettingsServiceStub,
+    SIWavePSINetProcessingSettingsServiceStub,
+    SIWavePSIPowerGroundNetsServiceStub,
+    SIWavePSISignalNetsSettingsServiceStub,
     StubAccessor,
     StubType,
 )
@@ -21,15 +21,15 @@ from ansys.edb.core.simulation_setup.simulation_settings import (
 )
 
 
-class SIwavePSISimulationPreference(Enum):
-    """Provides an enum representing SIwavePSI simulation preferences."""
+class SIWavePSISimulationPreference(Enum):
+    """Provides an enum representing SIWavePSI simulation preferences."""
 
     BALANCED = pb.BALANCED
     ACCURACY = pb.ACCURACY
 
 
-class SIwavePSIModelType(Enum):
-    """Provides an enum representing SIwavePSI model types."""
+class SIWavePSIModelType(Enum):
+    """Provides an enum representing SIWavePSI model types."""
 
     RDL = pb.RDL
     PACKAGE = pb.PACKAGE
@@ -37,7 +37,7 @@ class SIwavePSIModelType(Enum):
 
 
 class SurfaceRoughnessModel(Enum):
-    """Provides an enum representing SIwavePSI surface roughness models."""
+    """Provides an enum representing SIWavePSI surface roughness models."""
 
     NONE = pb.NONE
     EXPONENTIAL = pb.EXPONENTIAL
@@ -45,7 +45,7 @@ class SurfaceRoughnessModel(Enum):
 
 
 class ImprovedLossModel(Enum):
-    """Provides an enum representing SIwavePSI improved loss models."""
+    """Provides an enum representing SIWavePSI improved loss models."""
 
     LEVEL_1 = pb.LEVEL_1
     LEVEL_2 = pb.LEVEL_2
@@ -53,14 +53,14 @@ class ImprovedLossModel(Enum):
 
 
 class ConductorModeling(Enum):
-    """Provides an enum representing SIwavePSI conductor modeling options."""
+    """Provides an enum representing SIWavePSI conductor modeling options."""
 
     MESH_INSIDE = pb.MESH_INSIDE
     IMPEDANCE_BOUNDARY = pb.IMPEDANCE_BOUNDARY
 
 
 class ErrorTolerance(Enum):
-    """Provides an enum representing SIwavePSI error tolerance values."""
+    """Provides an enum representing SIWavePSI error tolerance values."""
 
     ET_0_0 = pb.ET_0_0
     ET_0_02 = pb.ET_0_02
@@ -73,64 +73,64 @@ class ErrorTolerance(Enum):
     ET_1_0 = pb.ET_1_0
 
 
-class SIwavePSISimulationSettings(SimulationSettings):
-    """Represents SIwavePSI simulation settings."""
+class SIWavePSISimulationSettings(SimulationSettings):
+    """Represents SIWavePSI simulation settings."""
 
     @property
-    def general(self) -> SIwavePSIGeneralSettings:
-        """:class:`.SIwavePSIGeneralSettings`: General settings for SIwavePSI simulations."""
-        return SIwavePSIGeneralSettings(self)
+    def general(self) -> SIWavePSIGeneralSettings:
+        """:class:`.SIWavePSIGeneralSettings`: General settings for SIWavePSI simulations."""
+        return SIWavePSIGeneralSettings(self)
 
     @property
-    def net_processing(self) -> SIwavePSINetProcessingSettings:
-        """:class:`.SIwavePSINetProcessingSettings`: Net processing settings for SIwavePSI simulations."""
-        return SIwavePSINetProcessingSettings(self)
+    def net_processing(self) -> SIWavePSINetProcessingSettings:
+        """:class:`.SIWavePSINetProcessingSettings`: Net processing settings for SIWavePSI simulations."""
+        return SIWavePSINetProcessingSettings(self)
 
     @property
-    def power_ground_nets(self) -> SIwavePSIPowerGroundNetsSettings:
-        """:class:`.SIwavePSIPowerGroundNetsSettings`: Power/ground nets settings for SIwavePSI simulations."""
-        return SIwavePSIPowerGroundNetsSettings(self)
+    def power_ground_nets(self) -> SIWavePSIPowerGroundNetsSettings:
+        """:class:`.SIWavePSIPowerGroundNetsSettings`: Power/ground nets settings for SIWavePSI simulations."""
+        return SIWavePSIPowerGroundNetsSettings(self)
 
     @property
-    def signal_nets(self) -> SIwavePSISignalNetsSettings:
-        """:class:`.SIwavePSISignalNetsSettings`: Signal nets settings for SIwavePSI simulations."""
-        return SIwavePSISignalNetsSettings(self)
+    def signal_nets(self) -> SIWavePSISignalNetsSettings:
+        """:class:`.SIWavePSISignalNetsSettings`: Signal nets settings for SIWavePSI simulations."""
+        return SIWavePSISignalNetsSettings(self)
 
 
-class SIwavePSIGeneralSettings(SimulationSettingsBase):
-    """Represents SIwavePSI general settings."""
+class SIWavePSIGeneralSettings(SimulationSettingsBase):
+    """Represents SIWavePSI general settings."""
 
-    __stub: SIwavePSIGeneralSettingsServiceStub = StubAccessor(
+    __stub: SIWavePSIGeneralSettingsServiceStub = StubAccessor(
         StubType.siwave_psi_general_sim_settings
     )
 
     @property
-    def simulation_preference(self) -> SIwavePSISimulationPreference:
-        """:class:`.SIwavePSISimulationPreference`: Simulation preference. \
+    def simulation_preference(self) -> SIWavePSISimulationPreference:
+        """:class:`.SIWavePSISimulationPreference`: Simulation preference. \
             Balanced (i.e., use less memory) or Accuracy (i.e., use more memory)."""
-        return SIwavePSISimulationPreference(
+        return SIWavePSISimulationPreference(
             self.__stub.GetPISliderPos(self.msg).si_wave_psi_simulation_preference
         )
 
     @simulation_preference.setter
-    def simulation_preference(self, simulation_preference: SIwavePSISimulationPreference):
+    def simulation_preference(self, simulation_preference: SIWavePSISimulationPreference):
         self.__stub.SetPISliderPos(
-            pb.SIwavePSISimulationPreferencePropertyMessage(
+            pb.SIWavePSISimulationPreferencePropertyMessage(
                 target=self.msg, si_wave_psi_simulation_preference=simulation_preference.value
             )
         )
 
     @property
-    def model_type(self) -> SIwavePSIModelType:
-        """:class:`.SIwavePSIModelType`: (General Mode Only) Model type."""
-        return SIwavePSIModelType(
-            self.__stub.GetSIwavePSIModelType(self.msg).si_wave_psi_model_type
+    def model_type(self) -> SIWavePSIModelType:
+        """:class:`.SIWavePSIModelType`: (General Mode Only) Model type."""
+        return SIWavePSIModelType(
+            self.__stub.GetSIWavePSIModelType(self.msg).si_wave_psi_model_type
         )
 
     @model_type.setter
-    def model_type(self, si_wave_psi_model_type: SIwavePSIModelType):
-        self.__stub.SetSIwavePSIModelType(
-            pb.SIwavePSIModelTypePropertyMessage(
+    def model_type(self, si_wave_psi_model_type: SIWavePSIModelType):
+        self.__stub.SetSIWavePSIModelType(
+            pb.SIWavePSIModelTypePropertyMessage(
                 target=self.msg, si_wave_psi_model_type=si_wave_psi_model_type.value
             )
         )
@@ -218,10 +218,10 @@ class SIwavePSIGeneralSettings(SimulationSettingsBase):
         self.__stub.SetPerformERC(messages.bool_property_message(self, perform_erc))
 
 
-class SIwavePSINetProcessingSettings(SimulationSettingsBase):
-    """Represents SIwavePSI net processing settings."""
+class SIWavePSINetProcessingSettings(SimulationSettingsBase):
+    """Represents SIWavePSI net processing settings."""
 
-    __stub: SIwavePSINetProcessingSettingsServiceStub = StubAccessor(
+    __stub: SIWavePSINetProcessingSettingsServiceStub = StubAccessor(
         StubType.siwave_psi_net_processing_sim_settings
     )
 
@@ -249,7 +249,7 @@ class SIwavePSINetProcessingSettings(SimulationSettingsBase):
 
     @property
     def include_nets(self) -> List[str]:
-        """:obj:`list` of :obj:`str`: Nets to include in SIwavePSI simulation."""
+        """:obj:`list` of :obj:`str`: Nets to include in SIWavePSI simulation."""
         return self.__stub.GetIncludeNets(self.msg).strings
 
     @include_nets.setter
@@ -257,10 +257,10 @@ class SIwavePSINetProcessingSettings(SimulationSettingsBase):
         self.__stub.SetIncludeNets(messages.strings_property_message(self, value))
 
 
-class SIwavePSIPowerGroundNetsSettings(SimulationSettingsBase):
-    """Represents SIwavePSI power/ground nets settings."""
+class SIWavePSIPowerGroundNetsSettings(SimulationSettingsBase):
+    """Represents SIWavePSI power/ground nets settings."""
 
-    __stub: SIwavePSIPowerGroundNetsServiceStub = StubAccessor(
+    __stub: SIWavePSIPowerGroundNetsServiceStub = StubAccessor(
         StubType.siwave_psi_power_ground_sim_settings
     )
 
@@ -303,10 +303,10 @@ class SIwavePSIPowerGroundNetsSettings(SimulationSettingsBase):
         )
 
 
-class SIwavePSISignalNetsSettings(SimulationSettingsBase):
-    """Represents SIwavePSI signal nets settings."""
+class SIWavePSISignalNetsSettings(SimulationSettingsBase):
+    """Represents SIWavePSI signal nets settings."""
 
-    __stub: SIwavePSISignalNetsSettingsServiceStub = StubAccessor(
+    __stub: SIWavePSISignalNetsSettingsServiceStub = StubAccessor(
         StubType.siwave_psi_signal_nets_sim_settings
     )
 

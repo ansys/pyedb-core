@@ -1,23 +1,23 @@
-"""SIwavePSI simulation setup."""
+"""SIWavePSI simulation setup."""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
 from ansys.edb.core.simulation_setup.siwave_psi_simulation_settings import (
-    SIwavePSISimulationSettings,
+    SIWavePSISimulationSettings,
 )
 
 if TYPE_CHECKING:
     from ansys.edb.core.layout.cell import Cell
 
 
-class SIwavePSISimulationSetup(SimulationSetup):
-    """Represents SIwavePSI simulation setup data."""
+class SIWavePSISimulationSetup(SimulationSetup):
+    """Represents SIWavePSI simulation setup data."""
 
     @classmethod
-    def create(cls, cell: Cell, name: str) -> SIwavePSISimulationSetup:
-        """Create a SIwavePSI simulation setup.
+    def create(cls, cell: Cell, name: str) -> SIWavePSISimulationSetup:
+        """Create a SIWavePSI simulation setup.
 
         Parameters
         ----------
@@ -28,12 +28,12 @@ class SIwavePSISimulationSetup(SimulationSetup):
 
         Returns
         -------
-        SIwavePSISimulationSetup
-            SIwavePSI simulation setup created.
+        SIWavePSISimulationSetup
+            SIWavePSI simulation setup created.
         """
         return super()._create(cell, name, SimulationSetupType.SI_WAVE_PSI)
 
     @property
-    def settings(self) -> SIwavePSISimulationSettings:
-        """:class:`.SIwavePSISimulationSettings`: Simulation settings of the SIwavePSI simulation setup."""
-        return SIwavePSISimulationSettings(self)
+    def settings(self) -> SIWavePSISimulationSettings:
+        """:class:`.SIWavePSISimulationSettings`: Simulation settings of the SIWavePSI simulation setup."""
+        return SIWavePSISimulationSettings(self)

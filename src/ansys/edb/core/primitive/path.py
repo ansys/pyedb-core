@@ -80,7 +80,7 @@ class Path(Primitive):
             Path created.
         """
         return Path(
-            cls.__stub.Create(
+            cls.get_stub(cls, cls.__stub).Create(
                 path_pb2.PathCreationMessage(
                     layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
@@ -124,7 +124,7 @@ class Path(Primitive):
         .PolygonData
             Path rendered.
         """
-        return cls.__stub.Render(
+        return cls.get_stub(cls, cls.__stub).Render(
             path_pb2.PathRenderMessage(
                 width=messages.value_message(width),
                 end_cap1=end_cap1.value,
@@ -141,13 +141,13 @@ class Path(Primitive):
 
         This property is read-only.
         """
-        return self.__stub.GetPolygonData(self.msg)
+        return self.get_stub(self, self.__stub).GetPolygonData(self.msg)
 
     @property
     @parser.to_polygon_data
     def center_line(self) -> PolygonData:
         """:class:`.PolygonData`: Center line for the path."""
-        return self.__stub.GetCenterLine(self.msg)
+        return self.get_stub(self, self.__stub).GetCenterLine(self.msg)
 
     @center_line.setter
     def center_line(self, center_line: PolygonData):
@@ -170,7 +170,7 @@ class Path(Primitive):
 
             **end_cap2** : End cap style of path end end cap.
         """
-        end_cap_msg = self.__stub.GetEndCapStyle(self.msg)
+        end_cap_msg = self.get_stub(self, self.__stub).GetEndCapStyle(self.msg)
         return PathEndCapType(end_cap_msg.end_cap1), PathEndCapType(end_cap_msg.end_cap2)
 
     def set_end_cap_style(self, end_cap1: PathEndCapType, end_cap2: PathEndCapType):
@@ -183,7 +183,7 @@ class Path(Primitive):
         end_cap2 : .PathEndCapType
             End cap style for the end of the path.
         """
-        self.__stub.SetEndCapStyle(
+        self.get_stub(self, self.__stub).SetEndCapStyle(
             path_pb2.SetEndCapStyleMessage(
                 target=self.msg,
                 end_cap=path_pb2.EndCapStyleMessage(
@@ -207,7 +207,7 @@ class Path(Primitive):
 
             **keep_inside** : Indicates whether the part of the path inside the polygon is preserved.
         """
-        clip_info_msg = self.__stub.GetClipInfo(self.msg)
+        clip_info_msg = self.get_stub(self, self.__stub).GetClipInfo(self.msg)
         return (
             parser.to_polygon_data(clip_info_msg.clipping_poly),
             clip_info_msg.keep_inside,
@@ -223,7 +223,7 @@ class Path(Primitive):
         keep_inside : bool, default: True
             Whether the part of the path inside the polygon should be preserved.
         """
-        self.__stub.SetClipInfo(
+        self.get_stub(self, self.__stub).SetClipInfo(
             path_pb2.SetClipInfoMessage(
                 target=self.msg,
                 clipping_poly=messages.polygon_data_message(clipping_poly),
@@ -234,11 +234,13 @@ class Path(Primitive):
     @property
     def corner_style(self) -> PathCornerType:
         """:class:`PathCornerType`: Corner style of the path."""
-        return PathCornerType(self.__stub.GetCornerStyle(self.msg).corner_style)
+        return PathCornerType(
+            self.get_stub(self, self.__stub).GetCornerStyle(self.msg).corner_style
+        )
 
     @corner_style.setter
     def corner_style(self, corner_type: PathCornerType):
-        self.__stub.SetCornerStyle(
+        self.get_stub(self, self.__stub).SetCornerStyle(
             path_pb2.SetCornerStyleMessage(
                 target=self.msg,
                 corner_style=path_pb2.CornerStyleMessage(corner_style=corner_type.value),
@@ -248,11 +250,11 @@ class Path(Primitive):
     @property
     def width(self) -> Value:
         """:class:`.Value`: Path width."""
-        return Value(self.__stub.GetWidth(self.msg).width)
+        return Value(self.get_stub(self, self.__stub).GetWidth(self.msg).width)
 
     @width.setter
     def width(self, width: ValueLike):
-        self.__stub.SetWidth(
+        self.get_stub(self, self.__stub).SetWidth(
             path_pb2.SetWidthMessage(
                 target=self.msg,
                 width=path_pb2.WidthMessage(width=messages.value_message(width)),
@@ -262,11 +264,11 @@ class Path(Primitive):
     @property
     def miter_ratio(self) -> Value:
         """:class:`.Value`: Miter ratio."""
-        return Value(self.__stub.GetMiterRatio(self.msg).miter_ratio)
+        return Value(self.get_stub(self, self.__stub).GetMiterRatio(self.msg).miter_ratio)
 
     @miter_ratio.setter
     def miter_ratio(self, miter_ratio: ValueLike):
-        self.__stub.SetMiterRatio(
+        self.get_stub(self, self.__stub).SetMiterRatio(
             path_pb2.SetMiterRatioMessage(
                 target=self.msg,
                 miter_ratio=path_pb2.MiterRatioMessage(

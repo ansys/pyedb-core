@@ -34,7 +34,9 @@ class Net(layout_obj.LayoutObj):
         Net
             Net created.
         """
-        return Net(cls.__stub.Create(messages.string_property_message(layout, name)))
+        return Net(
+            cls.get_stub(cls, cls.__stub).Create(messages.string_property_message(layout, name))
+        )
 
     @classmethod
     def find_by_name(cls, layout, name):
@@ -53,16 +55,22 @@ class Net(layout_obj.LayoutObj):
             Net found. Check the :obj:`is_null <.Net.is_null>` property
             of the returned net to see if it exists.
         """
-        return Net(cls.__stub.FindByName(messages.string_property_message(layout, name)))
+        return Net(
+            cls.get_stub(cls, cls.__stub).FindByName(messages.string_property_message(layout, name))
+        )
 
     @property
     def name(self):
         """:class:`str`: Name of the net."""
-        return self.no_net_name if self.is_no_net else self.__stub.GetName(self.msg).value
+        return (
+            self.no_net_name
+            if self.is_no_net
+            else self.get_stub(self, self.__stub).GetName(self.msg).value
+        )
 
     @name.setter
     def name(self, value):
-        self.__stub.SetName(messages.string_property_message(self, value))
+        self.get_stub(self, self.__stub).SetName(messages.string_property_message(self, value))
 
     @property
     def is_power_ground(self):
@@ -70,11 +78,13 @@ class Net(layout_obj.LayoutObj):
 
         This property is read-only.
         """
-        return self.__stub.GetIsPowerGround(self.msg).value
+        return self.get_stub(self, self.__stub).GetIsPowerGround(self.msg).value
 
     @is_power_ground.setter
     def is_power_ground(self, value):
-        self.__stub.SetIsPowerGround(messages.bool_property_message(self, value))
+        self.get_stub(self, self.__stub).SetIsPowerGround(
+            messages.bool_property_message(self, value)
+        )
 
     @property
     def primitives(self):

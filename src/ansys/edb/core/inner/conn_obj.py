@@ -74,7 +74,7 @@ class ConnObj(layout_obj.LayoutObj):
         if self.layout_obj_type != LayoutObjType.INVALID_LAYOUT_OBJ:
             return super().obj_type
         else:
-            return LayoutObjType(self.__stub.GetObjType(self.msg).type)
+            return LayoutObjType(self.get_stub(self, self.__stub).GetObjType(self.msg).type)
 
     @classmethod
     def find_by_id(cls, layout, uid):
@@ -92,7 +92,7 @@ class ConnObj(layout_obj.LayoutObj):
         :term:`Connectable`
             Connectable object with the given database ID.
         """
-        found_edb_obj_msg = cls.__stub.FindByIdAndType(
+        found_edb_obj_msg = cls.get_stub(cls, cls.__stub).FindByIdAndType(
             connectable_pb2.FindByIdLayoutObjMessage(
                 layout=layout.msg,
                 type=cls.layout_obj_type.value,
@@ -110,7 +110,7 @@ class ConnObj(layout_obj.LayoutObj):
 
         This property is read-only.
         """
-        return self.__stub.GetId(self.msg).id
+        return self.get_stub(self, self.__stub).GetId(self.msg).id
 
     @property
     def component(self):
@@ -118,18 +118,20 @@ class ConnObj(layout_obj.LayoutObj):
         Component of the :term:`Connectable` object."""
         from ansys.edb.core.hierarchy.component_group import ComponentGroup
 
-        return ComponentGroup(self.__stub.GetComponent(self.msg))
+        return ComponentGroup(self.get_stub(self, self.__stub).GetComponent(self.msg))
 
     @property
     def group(self):
         """:class:`.Group` object."""
         from ansys.edb.core.hierarchy.group import Group
 
-        return Group(self.__stub.GetGroup(self.msg)).cast()
+        return Group(self.get_stub(self, self.__stub).GetGroup(self.msg)).cast()
 
     @group.setter
     def group(self, group):
-        self.__stub.SetGroup(messages.pointer_property_message(target=self, value=group))
+        self.get_stub(self, self.__stub).SetGroup(
+            messages.pointer_property_message(target=self, value=group)
+        )
 
     @property
     def net(self):
@@ -139,11 +141,11 @@ class ConnObj(layout_obj.LayoutObj):
         """
         from ansys.edb.core.net.net import Net
 
-        return Net(self.__stub.GetNet(self.msg))
+        return Net(self.get_stub(self, self.__stub).GetNet(self.msg))
 
     @net.setter
     def net(self, net):
-        self.__stub.SetNet(
+        self.get_stub(self, self.__stub).SetNet(
             connectable_pb2.SetNetMessage(
                 target=self.msg,
                 net=messages.net_ref_message(net),

@@ -209,8 +209,10 @@ class _Buffer(_IOOptimizer):
     def _hijack_request(self, service_name, rpc_name, request):
         if (rpc_info := get_rpc_info(service_name, rpc_name)) is None or rpc_info.is_read:
             if (
-                rpc_info is not None and not rpc_info.has_smart_invalidation
-            ) or get_invalidation_tracker().is_response_invalidated(service_name, rpc_name):
+                rpc_info is None
+                or (rpc_info is not None and not rpc_info.has_smart_invalidation)
+                or get_invalidation_tracker().is_response_invalidated(service_name, rpc_name)
+            ):
                 # TODO: Need to clean up invalidation tracker after flushing buffer
                 self.flush()
             return

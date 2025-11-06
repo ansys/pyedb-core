@@ -23,8 +23,8 @@ class ObjBase:
 
         This property is read-only.
         """
-        if (buffer := get_buffer()) is not None:
-            buffer.flush()
+        # if (buffer := get_buffer()) is not None:
+        #     buffer.flush()
         return self.id == 0
 
     @property

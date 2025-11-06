@@ -43,7 +43,7 @@ class Polygon(Primitive):
             Polygon created.
         """
         return Polygon(
-            cls.__stub.Create(
+            cls.get_stub(cls, cls.__stub).Create(
                 polygon_pb2.PolygonCreationMessage(
                     layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
@@ -57,11 +57,11 @@ class Polygon(Primitive):
     @parser.to_polygon_data
     def polygon_data(self) -> PolygonData:
         """:class:`.PolygonData`: Outer contour of the polygon."""
-        return self.__stub.GetPolygonData(self.msg)
+        return self.get_stub(self, self.__stub).GetPolygonData(self.msg)
 
     @polygon_data.setter
     def polygon_data(self, poly: PolygonData):
-        self.__stub.SetPolygonData(
+        self.get_stub(self, self.__stub).SetPolygonData(
             polygon_pb2.SetPolygonDataMessage(
                 target=self.msg, poly=messages.polygon_data_message(poly)
             )

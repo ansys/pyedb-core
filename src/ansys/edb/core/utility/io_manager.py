@@ -339,6 +339,7 @@ class _InvalidationTracker:
             )
             invalidations[invalidated_service_name].add(invalidation.rpc)
             # TODO: Need to handle class level invalidations specified by class level invalidations
+            # TODO: Handle invalidations made by derived class
 
     def untrack_invalidation(self, service_name, rpc):
         is_class_level = isinstance(self._active_obj, type)

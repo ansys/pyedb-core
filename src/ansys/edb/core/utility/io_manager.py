@@ -352,6 +352,8 @@ class _InvalidationTracker:
 
     def is_response_invalidated(self, service_name, rpc_name):
         is_class_level = isinstance(self._active_obj, type)
+        if not is_class_level and self._active_obj._is_future:
+            return True
         invalidations = (
             self._class_invalidation_tracker
             if is_class_level

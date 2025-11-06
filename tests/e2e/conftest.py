@@ -6,7 +6,9 @@ from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.definition.padstack_def_data import PadGeometryType, PadstackDefData, PadType
 from ansys.edb.core.geometry.polygon_data import PolygonData
 from ansys.edb.core.layer.layer import LayerType
+from ansys.edb.core.layer.layer_collection import LayerCollectionMode
 from ansys.edb.core.layer.stackup_layer import StackupLayer
+from ansys.edb.core.layer.via_layer import ViaLayer
 from ansys.edb.core.layout.cell import Cell, CellType
 from ansys.edb.core.net.net import Net
 from ansys.edb.core.primitive.path import Path as Line
@@ -18,7 +20,7 @@ from ansys.edb.core.terminal.edge_terminal import EdgeTerminal, PrimitiveEdge
 
 @pytest.fixture
 def test_session():
-    with session(settings.server_exe_dir(), 50051):
+    with session(settings.server_exe_dir()):
         yield
 
 
@@ -37,6 +39,20 @@ def new_database(test_session, new_database_path):
 @pytest.fixture
 def circuit_cell(new_database):
     return Cell.create(new_database, CellType.CIRCUIT_CELL, "circuit_cell")
+
+
+@pytest.fixture()
+def circuit_cell_with_overlapping_stackup(circuit_cell: Cell):
+    layers = [
+        StackupLayer.create("D1", LayerType.DIELECTRIC_LAYER, 150e-6, 0.0, "FR4_epoxy"),
+        StackupLayer.create("L1", LayerType.CONDUCTING_LAYER, 25e-6, 125e-6, "copper"),
+        StackupLayer.create("L2", LayerType.CONDUCTING_LAYER, 25e-6, 0.0, "copper"),
+        ViaLayer.create("V1", "L2", "L1", "copper"),
+    ]
+    circuit_cell.layout.layer_collection.mode = LayerCollectionMode.OVERLAPPING
+    for layer in layers:
+        circuit_cell.layout.layer_collection.add_stackup_layer_at_elevation(layer)
+    yield circuit_cell
 
 
 @pytest.fixture()

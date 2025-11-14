@@ -1,0 +1,6 @@
+UNKNOWN\_COMPONENT\_MODEL\_TYPE
+===============================
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. autoattribute:: ComponentModelType.UNKNOWN_COMPONENT_MODEL_TYPE

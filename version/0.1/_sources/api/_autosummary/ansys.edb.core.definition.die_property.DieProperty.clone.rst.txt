@@ -1,0 +1,6 @@
+clone
+=====
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. automethod:: DieProperty.clone

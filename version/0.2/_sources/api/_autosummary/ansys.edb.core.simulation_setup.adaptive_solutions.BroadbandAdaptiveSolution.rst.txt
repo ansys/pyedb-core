@@ -1,0 +1,32 @@
+﻿BroadbandAdaptiveSolution
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoclass:: BroadbandAdaptiveSolution
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BroadbandAdaptiveSolution.high_frequency
+      BroadbandAdaptiveSolution.low_frequency
+      BroadbandAdaptiveSolution.max_delta
+      BroadbandAdaptiveSolution.max_num_passes
+   
+   

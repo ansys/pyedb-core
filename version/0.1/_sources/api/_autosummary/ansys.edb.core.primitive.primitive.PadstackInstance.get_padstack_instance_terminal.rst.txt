@@ -1,0 +1,6 @@
+get\_padstack\_instance\_terminal
+=================================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.get_padstack_instance_terminal

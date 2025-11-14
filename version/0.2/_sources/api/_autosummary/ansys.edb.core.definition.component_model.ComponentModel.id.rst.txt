@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. autoproperty:: ComponentModel.id

@@ -1,0 +1,6 @@
+find
+====
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. automethod:: PointTerminal.find

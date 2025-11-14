@@ -1,0 +1,6 @@
+is\_mcad\_stride
+================
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. autoproperty:: Structure3D.is_mcad_stride

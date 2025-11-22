@@ -58,6 +58,9 @@ doc = [
     "ansys_sphinx_theme>=0.12.2",
     "sphinx-copybutton==0.5.2",
 ]
+shapely = [
+    "shapely==2.1.2",
+]
 
 [tool.flit.module]
 name = "ansys.edb.core"

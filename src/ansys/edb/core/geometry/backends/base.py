@@ -1,0 +1,102 @@
+"""Abstract base class for polygon computation backends."""
+
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+
+
+class PolygonBackend(ABC):
+    """Abstract base class for polygon computation backends.
+
+    This class defines the interface that all computation backends must implement.
+    Backends handle geometry operations that can be performed either on the server
+    or locally using libraries like Shapely.
+    """
+
+    @abstractmethod
+    def area(self, polygon: PolygonData) -> float:
+        """Compute the area of a polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to compute area for.
+
+        Returns
+        -------
+        float
+            Area of the polygon.
+        """
+        pass
+
+    @abstractmethod
+    def is_convex(self, polygon: PolygonData) -> bool:
+        """Determine whether the polygon is convex.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+
+        Returns
+        -------
+        bool
+            ``True`` when the polygon is convex, ``False`` otherwise.
+        """
+        pass
+
+    @abstractmethod
+    def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
+        """Determine whether a point is inside the polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        point : tuple[float, float]
+            Point coordinates (x, y).
+
+        Returns
+        -------
+        bool
+            ``True`` if the point is inside the polygon, ``False`` otherwise.
+        """
+        pass
+
+    @abstractmethod
+    def bbox(self, polygon: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
+        """Compute the bounding box of a polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to compute bounding box for.
+
+        Returns
+        -------
+        tuple[tuple[float, float], tuple[float, float]]
+            Bounding box as ((min_x, min_y), (max_x, max_y)).
+        """
+        pass
+
+    @abstractmethod
+    def bbox_of_polygons(
+        self, polygons: list[PolygonData]
+    ) -> tuple[tuple[float, float], tuple[float, float]]:
+        """Compute the bounding box of a list of polygons.
+
+        Parameters
+        ----------
+        polygons : list[PolygonData]
+            List of polygons to compute bounding box for.
+
+        Returns
+        -------
+        tuple[tuple[float, float], tuple[float, float]]
+            Bounding box as ((min_x, min_y), (max_x, max_y)).
+        """
+        pass

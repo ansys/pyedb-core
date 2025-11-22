@@ -19,6 +19,7 @@ from ansys.edb.core.geometry.arc_data import ArcData
 from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.utility import conversions
+from ansys.edb.core.geometry.backends import get_backend
 
 
 class PolygonSenseType(Enum):
@@ -63,6 +64,34 @@ class PolygonData:
     __stub: polygon_data_pb2_grpc.PolygonDataServiceStub = session.StubAccessor(
         session.StubType.polygon_data
     )
+
+    # Computation backend instance
+    _backend = None
+
+    @classmethod
+    def _get_backend(cls):
+        """Get the computation backend, initializing it if needed.
+
+        Returns
+        -------
+        PolygonBackend
+            The computation backend instance.
+        """
+        if cls._backend is None:
+            cls._backend = get_backend(stub=cls.__stub)
+        return cls._backend
+
+    @classmethod
+    def reset_backend(cls):
+        """Reset the backend (useful for testing or changing configuration at runtime).
+
+        Examples
+        --------
+        >>> from ansys.edb.core.config import Config, ComputationBackend
+        >>> Config.set_computation_backend(ComputationBackend.SHAPELY)
+        >>> PolygonData.reset_backend()
+        """
+        cls._backend = None
 
     def __init__(
         self,
@@ -246,7 +275,7 @@ class PolygonData:
         bool
             ``True`` when the polygon is a convex hull, ``False`` otherwise.
         """
-        return self.__stub.IsConvex(messages.polygon_data_message(self)).value
+        return self._get_backend().is_convex(self)
 
     def area(self) -> float:
         """Compute the area of the polygon.
@@ -256,7 +285,7 @@ class PolygonData:
         float
             Area of the polygon.
         """
-        return self.__stub.GetArea(messages.polygon_data_message(self)).value
+        return self._get_backend().area(self)
 
     def has_self_intersections(self, tol: float = 1e-9) -> bool:
         """Determine whether the polygon contains any self-intersections.
@@ -371,7 +400,6 @@ class PolygonData:
         """
         return self.__stub.Transform(messages.polygon_data_transform_message("mirror_x", x))
 
-    @parser.to_box
     def bbox(self) -> tuple[PointData, PointData]:
         """Compute the bounding box.
 
@@ -379,10 +407,18 @@ class PolygonData:
          -------
         tuple of (.PointData, .PointData)
         """
-        return self.__stub.GetBBox(messages.polygon_data_list_message([self]))
+        from ansys.edb.core.geometry.point_data import PointData
+
+        # Use backend to compute the bounding box
+        (min_x, min_y), (max_x, max_y) = self._get_backend().bbox(self)
+
+        # Convert to PointData objects
+        lower_left = PointData(min_x, min_y)
+        upper_right = PointData(max_x, max_y)
+
+        return (lower_left, upper_right)
 
     @classmethod
-    @parser.to_box
     def bbox_of_polygons(cls, polygons: list[PolygonData]) -> tuple[PointData, PointData]:
         """Compute the bounding box of a list of polygons.
 
@@ -395,7 +431,16 @@ class PolygonData:
         -------
         tuple of (.PointData, .PointData)
         """
-        return cls.__stub.GetStreamedBBox(PolygonData._polygon_data_request_iterator(polygons))
+        from ansys.edb.core.geometry.point_data import PointData
+
+        # Use backend to compute the bounding box
+        (min_x, min_y), (max_x, max_y) = cls._get_backend().bbox_of_polygons(polygons)
+
+        # Convert to PointData objects
+        lower_left = PointData(min_x, min_y)
+        upper_right = PointData(max_x, max_y)
+
+        return (lower_left, upper_right)
 
     @parser.to_circle
     def bounding_circle(self) -> tuple[PointData, Value]:
@@ -472,7 +517,7 @@ class PolygonData:
         bool
             ``True`` if the point is inside the polygon, ``False`` otherwise.
         """
-        return self.__stub.IsInside(messages.polygon_data_with_point_message(self, point)).value
+        return self._get_backend().is_inside(self, point)
 
     def intersection_type(self, other: PolygonData, tol: float = 1e-9) -> IntersectionType:
         """Get the intersection type with another polygon.

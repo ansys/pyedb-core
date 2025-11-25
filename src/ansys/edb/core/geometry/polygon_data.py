@@ -81,6 +81,11 @@ class PolygonData:
             cls._backend = get_backend(stub=cls.__stub)
         return cls._backend
 
+    def _invalidate_cache(self):
+        """Invalidate cached backend-specific representations."""
+        if hasattr(self, "_shapely_cache"):
+            delattr(self, "_shapely_cache")
+
     @classmethod
     def reset_backend(cls):
         """Reset the backend (useful for testing or changing configuration at runtime).

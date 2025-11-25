@@ -64,12 +64,19 @@ class ShapelyBackend(PolygonBackend):
         - Converting points to coordinate tuples
         - Handling holes in polygons
         - Approximating arcs with line segments (if present)
+        - Caching the result on the PolygonData instance to avoid repeated conversions
         """
+        # Check if we have a cached Shapely polygon
+        if hasattr(polygon, "_shapely_cache"):
+            return polygon._shapely_cache
+
         # Get the outer boundary coordinates
         # Note: If polygon has arcs, we should use without_arcs() first
         if polygon.has_arcs():
-            # Convert arcs to line segments
+            # Convert arcs to line segments using server
             polygon = polygon.without_arcs()
+            # without_arcs() returns a new PolygonData, so recursively process it
+            return ShapelyBackend._to_shapely_polygon(polygon)
 
         # Extract coordinates from points
         exterior_coords = [(pt.x.double, pt.y.double) for pt in polygon.points]
@@ -78,15 +85,20 @@ class ShapelyBackend(PolygonBackend):
         holes = []
         for hole in polygon.holes:
             if hole.has_arcs():
+                # Convert hole arcs to line segments using server
                 hole = hole.without_arcs()
             hole_coords = [(pt.x.double, pt.y.double) for pt in hole.points]
             holes.append(hole_coords)
 
         # Create Shapely polygon
         if holes:
-            return ShapelyPolygon(shell=exterior_coords, holes=holes)
+            shapely_poly = ShapelyPolygon(shell=exterior_coords, holes=holes)
         else:
-            return ShapelyPolygon(shell=exterior_coords)
+            shapely_poly = ShapelyPolygon(shell=exterior_coords)
+
+        # Cache the result for future use
+        polygon._shapely_cache = shapely_poly
+        return shapely_poly
 
     def area(self, polygon: PolygonData) -> float:
         """Compute the area of a polygon using Shapely.

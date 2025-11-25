@@ -61,7 +61,8 @@ def get_backend(stub=None) -> PolygonBackend:
         except ImportError:
             warnings.warn(
                 "Shapely is not installed. Falling back to server backend. "
-                "For better performance, install Shapely: pip install shapely",
+                "For better performance, install Shapely: pip install shapely. "
+                "Check the pyproject.toml file for the correct Shapely version.",
                 UserWarning,
                 stacklevel=2,
             )

@@ -5,12 +5,12 @@ from enum import Enum
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.hierarchy.cell_instance import CellInstance
     from ansys.edb.core.layout.layout import Layout
     from ansys.edb.core.typing import NetLike, ValueLike, LayerLike
 
 from ansys.api.edb.v1 import bondwire_pb2, bondwire_pb2_grpc
 
+from ansys.edb.core.hierarchy.cell_instance import CellInstance
 from ansys.edb.core.inner import messages
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.primitive.primitive import Primitive
@@ -275,22 +275,23 @@ class Bondwire(Primitive):
             bondwire_pb2.BondwireValueMessage(target=self.msg, value=messages.value_message(width))
         )
 
-    def get_start_elevation(self, start_context: CellInstance) -> Layer:
+    def get_start_elevation(self) -> tuple[CellInstance, Layer]:
         """Get the start elevation layer of the bondwire.
-
-        Parameters
-        ----------
-        start_context : .CellInstance
-            Start cell context of the bondwire.
 
         Returns
         -------
-        .Layer
-            Start elevation level of the bondwire.
+        tuple of (.CellInstance, .Layer)
+
+            Returns a tuple in this format:
+
+            **(CellInstance, Layer)**
+
+            **CellInstance** : Start cell context of the bondwire.
+
+            **Layer** : Start elevation level of the bondwire.
         """
-        return Layer(
-            self.__stub.GetStartElevation(Bondwire._get_elevation_message(self, start_context))
-        ).cast()
+        edb_obj_pair_msg = self.__stub.GetStartElevation(self.msg)
+        return (CellInstance(edb_obj_pair_msg.edb_obj_0), Layer(edb_obj_pair_msg.edb_obj_1).cast())
 
     def set_start_elevation(self, start_context: CellInstance, layer: LayerLike):
         """Set the start elevation of the bondwire.
@@ -304,22 +305,22 @@ class Bondwire(Primitive):
         """
         self.__stub.SetStartElevation(Bondwire._set_elevation_message(self, start_context, layer))
 
-    def get_end_elevation(self, end_context: CellInstance) -> Layer:
+    def get_end_elevation(self) -> tuple[CellInstance, Layer]:
         """Get the end elevation layer of the bondwire.
-
-        Parameters
-        ----------
-        end_context : .CellInstance
-            End cell context of the bondwire.
 
         Returns
         -------
-        .Layer
-            End elevation layer of the bondwire.
+        tuple of (.CellInstance, .Layer)
+            Returns a tuple in this format:
+
+            **(CellInstance, Layer)**
+
+            **CellInstance** : End cell context of the bondwire.
+
+            **Layer** : End elevation level of the bondwire.
         """
-        return Layer(
-            self.__stub.GetEndElevation(Bondwire._get_elevation_message(self, end_context))
-        ).cast()
+        edb_obj_pair_msg = self.__stub.GetEndElevation(self.msg)
+        return (CellInstance(edb_obj_pair_msg.edb_obj_0), Layer(edb_obj_pair_msg.edb_obj_1).cast())
 
     def set_end_elevation(self, end_context: CellInstance, layer: LayerLike):
         """Set the end elevation of the bondwire.

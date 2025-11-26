@@ -473,7 +473,6 @@ class PolygonData:
         """
         return cls.__stub.GetConvexHull(messages.polygon_data_list_message(polygons))
 
-    @parser.to_polygon_data
     def without_arcs(
         self, max_chord_error: float = 0, max_arc_angle: float = math.pi / 6, max_points: int = 8
     ) -> PolygonData:
@@ -482,18 +481,14 @@ class PolygonData:
         Parameters
         ----------
         max_chord_error : float, default: 0
-        max_arc_angle : float, default: math.pi
+        max_arc_angle : float, default: math.pi / 6
         max_points : int, default: 8
 
         Returns
         -------
         .PolygonData
         """
-        return self.__stub.RemoveArcs(
-            messages.polygon_data_remove_arc_message(
-                self, max_chord_error, max_arc_angle, max_points
-            )
-        )
+        return self._get_backend().without_arcs(self, max_chord_error, max_arc_angle, max_points)
 
     @parser.to_polygon_data
     def defeature(self, tol: float = 1e-9) -> PolygonData:

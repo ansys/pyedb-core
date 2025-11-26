@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+import math
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -98,5 +99,33 @@ class PolygonBackend(ABC):
         -------
         tuple[tuple[float, float], tuple[float, float]]
             Bounding box as ((min_x, min_y), (max_x, max_y)).
+        """
+        pass
+
+    @abstractmethod
+    def without_arcs(
+        self,
+        polygon: PolygonData,
+        max_chord_error: float = 0,
+        max_arc_angle: float = math.pi / 6,
+        max_points: int = 8,
+    ) -> PolygonData:
+        """Get polygon data with all arcs removed.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+        max_chord_error : float, default: 0
+            Maximum allowed chord error for arc tessellation.
+        max_arc_angle : float, default: math.pi / 6
+            Maximum angle (in radians) for each arc segment.
+        max_points : int, default: 8
+            Maximum number of points per arc.
+
+        Returns
+        -------
+        PolygonData
+            Polygon with all arcs tessellated into line segments.
         """
         pass

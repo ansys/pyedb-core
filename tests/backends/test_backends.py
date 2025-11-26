@@ -1,7 +1,9 @@
 import os
+import math
 import pytest
 from ansys.edb.core.config import Config, ComputationBackend
 from ansys.edb.core.session import launch_session
+from ansys.edb.core.geometry.arc_data import ArcData
 
 os.environ["ANSYSEM_EDB_EXE_DIR"] = r"C:\Program Files\ANSYS Inc\v262\AnsysEM"
 EXE_DIR = os.environ["ANSYSEM_EDB_EXE_DIR"]
@@ -454,6 +456,238 @@ def test_bbox_of_polygons_backends_match(session, polygons, expected_bbox):
     assert server_bbox[0].y.double == pytest.approx(expected_bbox[0][1])
     assert server_bbox[1].x.double == pytest.approx(expected_bbox[1][0])
     assert server_bbox[1].y.double == pytest.approx(expected_bbox[1][1])
+
+@pytest.mark.parametrize("arc_config, expected_result", [
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)], 7.0),
+])
+def test_tessellation_server_backend(session, arc_config, expected_result):
+    """Test tessellation with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.arc_data import ArcData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    # Create a polygon with arcs
+    poly = PolygonData(arcs=arc_config)
+    
+    # Verify polygon has arcs
+    assert poly.has_arcs() == True
+    
+    # Tessellate the polygon
+    tessellated = poly.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
+    
+    # Verify tessellation removed arcs
+    assert tessellated.has_arcs() == False
+    
+    # Verify tessellated polygon has more points than arcs
+    assert len(tessellated.points) > len(poly.points)
+    
+    # Verify area is approximately correct
+    tessellated_area = tessellated.area()
+    assert tessellated_area == pytest.approx(expected_result, rel=1e-9)
+
+
+@pytest.mark.parametrize("arc_config, expected_result", [
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)], 7.0),
+])
+def test_tessellation_shapely_backend(session, arc_config, expected_result):
+    """Test tessellation with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.arc_data import ArcData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    # Create a polygon with arcs
+    poly = PolygonData(arcs=arc_config)
+    
+    # Verify polygon has arcs
+    assert poly.has_arcs() == True
+    
+    # Tessellate the polygon
+    tessellated = poly.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
+    
+    # Verify tessellation removed arcs
+    assert tessellated.has_arcs() == False
+    
+    # Verify tessellated polygon has more points than arcs
+    assert len(tessellated.points) > len(poly.points)
+    
+    # Verify area is approximately correct
+    original_area = poly.area()  # Unlike server backend, in Shapely backend, area() performs tessellation internally. As a result, in shapely backend, area() before and after tessellation should match. In server backend, area() before tessellation will be larger than after.
+    tessellated_area = tessellated.area()
+    assert tessellated_area == pytest.approx(expected_result, rel=1e-9)
+    assert tessellated_area == pytest.approx(original_area, rel=1e-9)
+
+
+@pytest.mark.parametrize("arc_config", [
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)]),
+])
+def test_tessellation_backends_match(session, arc_config):
+    """Test that server and Shapely backends produce consistent tessellation results."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.arc_data import ArcData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    rounded_poly_server = PolygonData(arcs=arc_config)
+    tessellated_server = rounded_poly_server.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
+    server_area = tessellated_server.area()
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    rounded_poly_shapely = PolygonData(arcs=arc_config)
+    tessellated_shapely = rounded_poly_shapely.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
+    shapely_area = tessellated_shapely.area()
+    
+    # Both tessellations should produce similar areas
+    assert server_area == pytest.approx(shapely_area, rel=1e-9)
+    
+    # Both should have no arcs after tessellation
+    assert tessellated_server.has_arcs() == False
+    assert tessellated_shapely.has_arcs() == False
+
+
+@pytest.mark.parametrize("arc_config, expected_has_more_points", [
+    # Simple arc
+    ([ArcData((0, 0), (10, 0), height=2.0), ArcData((10, 0), (10, 10), height=0.0), 
+      ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], True),
+    # Multiple arcs
+    ([ArcData((0, 0), (5, 0), height=1.0), ArcData((5, 0), (5, 5), height=1.0), 
+      ArcData((5, 5), (0, 5), height=1.0), ArcData((0, 5), (0, 0), height=1.0)], True),
+    # No arcs (all straight edges)
+    ([ArcData((0, 0), (5, 0), height=0.0), ArcData((5, 0), (5, 5), height=0.0), 
+      ArcData((5, 5), (0, 5), height=0.0), ArcData((0, 5), (0, 0), height=0.0)], False),
+])
+def test_tessellation_point_count_server(session, arc_config, expected_has_more_points):
+    """Test that tessellation produces expected number of points with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(arcs=arc_config)
+    original_point_count = len(poly.points)
+    
+    tessellated = poly.without_arcs(max_chord_error=0.01, max_arc_angle=0.5, max_points=8)
+    tessellated_point_count = len(tessellated.points)
+    
+    if expected_has_more_points:
+        assert tessellated_point_count > original_point_count
+    else:
+        # For polygons with no arcs, point count should be similar
+        assert ((tessellated_point_count + 1 == original_point_count) or (tessellated_point_count == original_point_count))  # May close differently
+
+
+@pytest.mark.parametrize("arc_config, expected_has_more_points", [
+    # Simple arc
+    ([ArcData((0, 0), (10, 0), height=2.0), ArcData((10, 0), (10, 10), height=0.0), 
+      ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], True),
+    # Multiple arcs
+    ([ArcData((0, 0), (5, 0), height=1.0), ArcData((5, 0), (5, 5), height=1.0), 
+      ArcData((5, 5), (0, 5), height=1.0), ArcData((0, 5), (0, 0), height=1.0)], True),
+    # No arcs (all straight edges)
+    ([ArcData((0, 0), (5, 0), height=0.0), ArcData((5, 0), (5, 5), height=0.0), 
+      ArcData((5, 5), (0, 5), height=0.0), ArcData((0, 5), (0, 0), height=0.0)], False),
+])
+def test_tessellation_point_count_shapely(session, arc_config, expected_has_more_points):
+    """Test that tessellation produces expected number of points with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(arcs=arc_config)
+    original_point_count = len(poly.points)
+    
+    tessellated = poly.without_arcs(max_chord_error=0.01, max_arc_angle=0.5, max_points=8)
+    tessellated_point_count = len(tessellated.points)
+    
+    if expected_has_more_points:
+        assert tessellated_point_count > original_point_count
+    else:
+        # For polygons with no arcs, point count should be similar
+        assert ((tessellated_point_count + 1 == original_point_count) or (tessellated_point_count == original_point_count))  # May close differently
+
+
+@pytest.mark.parametrize("arc_config", [
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)]),
+])
+def test_tessellation_operations_on_arc_polygon_server(session, arc_config):
+    """Test that geometry operations work on arc polygons with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.arc_data import ArcData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    # Create a polygon with arcs
+    rounded_poly = PolygonData(arcs=arc_config)
+    
+    # Test that operations work
+    area = rounded_poly.area()
+    assert area > 0
+    
+    is_convex = rounded_poly.is_convex()
+    assert isinstance(is_convex, bool)
+    
+    is_inside = rounded_poly.is_inside((1, 1))
+    assert is_inside == True
+    
+    bbox = rounded_poly.bbox()
+    assert bbox is not None
+
+
+@pytest.mark.parametrize("arc_config", [
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)]),
+])
+def test_tessellation_operations_on_arc_polygon_shapely(session, arc_config):
+    """Test that geometry operations work on arc polygons with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.arc_data import ArcData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    # Create a polygon with arcs
+    rounded_poly = PolygonData(arcs=arc_config)
+    
+    # Test that operations work (Shapely backend should tessellate internally)
+    area = rounded_poly.area()
+    assert area > 0
+    
+    is_convex = rounded_poly.is_convex()
+    assert isinstance(is_convex, bool)
+    
+    is_inside = rounded_poly.is_inside((1, 1))
+    assert is_inside == True
+    
+    bbox = rounded_poly.bbox()
+    assert bbox is not None
 
 
 if __name__ == "__main__":

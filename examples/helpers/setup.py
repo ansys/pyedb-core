@@ -291,7 +291,8 @@ def initialize_edb(script_path: str = None):
     # Launch EDB session
     os.environ["ANSYSEM_EDB_EXE_DIR"] = r"C:\Program Files\ANSYS Inc\v262\AnsysEM"
     EXE_DIR = os.environ["ANSYSEM_EDB_EXE_DIR"]
-    session = launch_session(EXE_DIR, 50052)
+    # session = launch_session(EXE_DIR, 50052)
+    session = launch_session(EXE_DIR)
 
     # Prepare output directory
     if not pathlib.Path(get_output_dir(script_path)).is_dir():

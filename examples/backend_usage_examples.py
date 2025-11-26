@@ -31,9 +31,6 @@ def example_basic_usage():
     Config.set_computation_backend(ComputationBackend.SERVER)
     PolygonData.reset_backend()
 
-    # Initialize EDB
-    initialize_edb(__file__)
-
     print(f"Area: {polygon.area()}")
     print(f"Is convex: {polygon.is_convex()}")
     print(f"Is (5, 5) inside: {polygon.is_inside((5, 5))}")
@@ -283,16 +280,13 @@ def example_polygon_with_arcs():
     print("Example 7: Polygon with Arcs")
     print("=" * 70)
 
-    # Initialize EDB
-    initialize_edb(__file__)
-
     # Create a simple polygon with straight edges
     simple_poly = PolygonData([(0, 0), (10, 0), (10, 5), (0, 5)])
     print(f"\nSimple polygon area: {simple_poly.area()}")
     print(f"Has arcs: {simple_poly.has_arcs()}")
 
     # Create a polygon with arcs using ArcData
-    # This creates a rounded rectangle - a rectangle with rounded corners
+    # This creates a rounded rectangle
     arc1 = ArcData((0, 0), (2, 0), height=0.5)  # Bottom edge with arc
     arc2 = ArcData((2, 0), (2, 2), height=0.0)  # Right edge (straight)
     arc3 = ArcData((2, 2), (0, 2), height=0.5)  # Top edge with arc
@@ -346,6 +340,8 @@ def example_polygon_with_arcs():
 
 
 if __name__ == "__main__":
+    initialize_edb(__file__)
+
     example_basic_usage()
     example_performance_comparison()
     example_environment_variable()

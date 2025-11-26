@@ -1474,6 +1474,13 @@ rpc_information = {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
         "GetRefLayerName": _RpcInfo(cache=True),
         "SetRefLayer": _RpcInfo(buffer=True),
+        "GetIsTSV": _RpcInfo(cache=True),
+        "SetIsTSV": _RpcInfo(buffer=True),
+        "AddOxideLayers": _RpcInfo(buffer=True),
+        "RemoveOxideLayers": _RpcInfo(buffer=True),
+        "GetNumOxideLayers": _RpcInfo(cache=True),
+        "GetOxideLayers": _RpcInfo(cache=True),
+        "SetOxideLayerData": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.VoltageRegulatorService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),

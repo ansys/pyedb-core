@@ -1,4 +1,11 @@
 """Layout instance."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.typing import LayerLike, NetLike
+
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
 from ansys.edb.core.geometry.point_data import PointData
@@ -11,9 +18,9 @@ from ansys.edb.core.inner.messages import (
     polygon_data_message,
     strings_message,
 )
+from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.layout_instance import layout_obj_instance
 from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
-from ansys.edb.core.utility.io_manager import get_cache
 
 
 class LayoutInstance(ObjBase):
@@ -25,72 +32,106 @@ class LayoutInstance(ObjBase):
         """Refresh the layout instance so it contains an up-to-date geometry."""
         self.__stub.Refresh(self.msg)
 
-    def query_layout_obj_instances(self, layer_filter=None, net_filter=None, spatial_filter=None):
+    @staticmethod
+    def _query_request_iterator(requests):
+        chunk_entry_creator = lambda request: request
+        chunk_entries_getter = lambda chunk: chunk.queries
+        return client_stream_iterator(
+            requests,
+            layout_instance_pb2.LayoutObjInstancesQueriesMessage,
+            chunk_entry_creator,
+            chunk_entries_getter,
+        )
+
+    def query_layout_obj_instances(
+        self,
+        layer_filter: LayerLike | list[LayerLike] = None,
+        net_filter: NetLike | list[NetLike] = None,
+        spatial_filter: PolygonData | PointData | None | list[PolygonData | PointData] = None,
+    ):
         """Query layout object instances using the provided filters.
 
         Parameters
         ----------
-        layer_filter : list[:class:`.Layer` or str or None], default: None
+        layer_filter : :term:`LayerLike` or list of :term:`LayerLike`, default: None
             Layers to query. The default is ``None``, in which case all layers are queried.
-        net_filter : list[:class:`.Net` or str or None], default: None
+        net_filter : :term:`NetLike` or list of :term:`NetLike`, default: None
             Nets to query. The default is ``None``, in which case all nets are queried.
-        spatial_filter : :class:`.PolygonData` or
-         :class:`.PointData` or ``None``, default: None
-            Area of the design to query. The default is ``None``, in which case the entire
+        spatial_filter : .PolygonData or .PointData or :obj:`None` or \
+        list of .PolygonData or .PointData, default: None
+            Area of the design to query. The default is :obj:`None`, in which case the entire
             spatial domain of the design is queried.
 
         Returns
         -------
-        list[:class:`.LayoutObjInstance`] or tuple[list[:class:`.LayoutObjInstance`], list[:class:`.LayoutObjInstance`]]
-            If a polygonal spatial filter is specified, a tuple of lists of hits is returned in this
-            format: ``[<hits_completely_enclosed_in_polygon_region>, <hits_partially_enclosed_in_polygon_region>]``.
-            Otherwise, a list containing all hits is returned.
+        :term:`LayoutInstanceQueryResult` or list of :term:`LayoutInstanceQueryResult`
+            If a single query is provided, one :term:`LayoutInstanceQueryResult` is returned. If a \
+            list of spatial queries is provided, then a list of :term:`LayoutInstanceQueryResult` is \
+            returned where each entry maps to the spatial query at the same index.
         """
 
         def to_msg_filter_list(client_filter, ref_msg_type):
-            return (
-                utils.map_list(client_filter, ref_msg_type) if client_filter is not None else None
+            if client_filter is None:
+                return None
+            return utils.map_list(utils.ensure_is_list(client_filter), ref_msg_type)
+
+        def spatial_filter_to_msg(_spatial_filter):
+            is_point_filter = isinstance(_spatial_filter, PointData)
+            spatial_filter_field = "point_filter" if is_point_filter else "region_filter"
+            spatial_filter_msg = (
+                point_message(_spatial_filter)
+                if is_point_filter
+                else polygon_data_message(_spatial_filter)
+            )
+            return layout_instance_pb2.LayoutObjInstancesQueryMessage(
+                **{spatial_filter_field: spatial_filter_msg}
             )
 
-        msg_params = {
+        # Create queries
+        lyt_inst_net_filter_lyr_filter_params = {
             "layout_inst": self.msg,
             "layer_filter": to_msg_filter_list(layer_filter, layer_ref_message),
             "net_filter": to_msg_filter_list(net_filter, net_ref_message),
         }
-        if spatial_filter is not None:
-            is_point_filter = isinstance(spatial_filter, PointData)
-            spatial_filter_field = "point_filter" if is_point_filter else "region_filter"
-            spatial_filter_msg = (
-                point_message(spatial_filter)
-                if is_point_filter
-                else polygon_data_message(spatial_filter)
+        requests = [
+            layout_instance_pb2.LayoutObjInstancesQueryMessage(
+                **lyt_inst_net_filter_lyr_filter_params
             )
-            msg_params[spatial_filter_field] = spatial_filter_msg
+        ]
+        has_spatial_filter = spatial_filter is not None
+        if has_spatial_filter:
+            for sf in utils.ensure_is_list(spatial_filter):
+                requests.append(spatial_filter_to_msg(sf))
 
-        request = layout_instance_pb2.LayoutObjInstancesQueryMessage(**msg_params)
         all_hits = []
-        if (cache := get_cache()) is not None:
-            for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(request):
-                all_hits.append(hits_chunk)
-        else:
-            all_hits.append(self.__stub.QueryLayoutObjInstances(request))
+        for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
+            self._query_request_iterator(requests)
+        ):
+            for hit in hits_chunk.query_results:
+                all_hits.append(hit)
 
-        if isinstance(spatial_filter, PolygonData):
+        def process_hits(_spatial_filter, hits_iter):
             full_hits = []
             partial_hits = []
-            for hits in all_hits:
-                full_partial_hits = hits.full_partial_hits
-                for full_hit in full_partial_hits.full.items:
-                    full_hits.append(layout_obj_instance.LayoutObjInstance(full_hit))
-                for partial_hit in full_partial_hits.partial.items:
-                    partial_hits.append(layout_obj_instance.LayoutObjInstance(partial_hit))
-                return full_hits, partial_hits
+            for hit in hits_iter:
+                if hit.is_end_of_query_results_group:
+                    break
+                lyt_obj_inst = layout_obj_instance.LayoutObjInstance(hit.edb_obj)
+                if hit.is_partial:
+                    partial_hits.append(lyt_obj_inst)
+                else:
+                    full_hits.append(lyt_obj_inst)
+            return (
+                (full_hits, partial_hits) if isinstance(_spatial_filter, PolygonData) else full_hits
+            )
+
+        all_hits_iter = iter(all_hits)
+        if not has_spatial_filter:
+            return process_hits(None, all_hits_iter)
+        elif len(spatial_filter) == 1:
+            return process_hits(spatial_filter[1], all_hits_iter)
         else:
-            return [
-                layout_obj_instance.LayoutObjInstance(hit)
-                for hits in all_hits
-                for hit in hits.hits.items
-            ]
+            return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.

@@ -463,3 +463,29 @@ class ShapelyBackend(PolygonBackend):
 
         # Create and return new PolygonData without arcs
         return PolygonData(points=new_points, holes=new_holes, sense=polygon.sense, closed=polygon.is_closed)
+
+    def has_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
+        """Determine whether the polygon contains any self-intersections using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        tol : float, default: 1e-9
+            Tolerance (not used in Shapely implementation but kept for API consistency).
+
+        Returns
+        -------
+        bool
+            ``True`` when the polygon contains self-intersections, ``False`` otherwise.
+
+        Notes
+        -----
+        This implementation uses Shapely's `is_valid` property. A polygon is considered
+        valid if it does not have self-intersections. The tolerance parameter is kept
+        for API consistency with the server backend but is not used in this implementation
+        as Shapely uses its own internal tolerance.
+        """
+        shapely_poly = self._to_shapely_polygon(polygon)
+        # A polygon with self-intersections is invalid in Shapely
+        return not shapely_poly.is_valid

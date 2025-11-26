@@ -129,3 +129,21 @@ class PolygonBackend(ABC):
             Polygon with all arcs tessellated into line segments.
         """
         pass
+
+    @abstractmethod
+    def has_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
+        """Determine whether the polygon contains any self-intersections.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        bool
+            ``True`` when the polygon contains self-intersections, ``False`` otherwise.
+        """
+        pass

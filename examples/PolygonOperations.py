@@ -1,4 +1,3 @@
-from helpers.plot import *
 from helpers.setup import *
 
 # Initialize with this script's path

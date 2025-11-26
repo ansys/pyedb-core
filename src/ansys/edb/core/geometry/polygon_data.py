@@ -305,9 +305,7 @@ class PolygonData:
         bool
             ``True`` when the polygon contains self-intersections, ``False`` otherwise.
         """
-        return self.__stub.HasSelfIntersections(
-            messages.polygon_data_with_tol_message(self, tol)
-        ).value
+        return self._get_backend().has_self_intersections(self, tol)
 
     @parser.to_polygon_data_list
     def remove_self_intersections(self, tol: float = 1e-9) -> list[PolygonData]:

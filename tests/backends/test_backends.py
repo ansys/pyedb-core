@@ -690,5 +690,73 @@ def test_tessellation_operations_on_arc_polygon_shapely(session, arc_config):
     assert bbox is not None
 
 
+@pytest.mark.parametrize("polygon, expected_result", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], False),  # Simple square - no self-intersections
+    ([(0, 0), (10, 10), (10, 0), (0, 10)], True),   # Bow-tie - has self-intersections
+    ([(0, 0), (5, 0), (5, 5), (0, 5)], False),      # Another simple polygon - no self-intersections
+])
+def test_has_self_intersections_server_backend(session, polygon, expected_result):
+    """Test has_self_intersections with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    
+    result = poly.has_self_intersections()
+    assert result == expected_result
+
+
+@pytest.mark.parametrize("polygon, expected_result", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], False),  # Simple square - no self-intersections
+    ([(0, 0), (10, 10), (10, 0), (0, 10)], True),   # Bow-tie - has self-intersections
+    ([(0, 0), (5, 0), (5, 5), (0, 5)], False),      # Another simple polygon - no self-intersections
+])
+def test_has_self_intersections_shapely_backend(session, polygon, expected_result):
+    """Test has_self_intersections with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    
+    result = poly.has_self_intersections()
+    assert result == expected_result
+
+
+@pytest.mark.parametrize("polygon, expected_result", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], False),  # Simple square - no self-intersections
+    ([(0, 0), (10, 10), (10, 0), (0, 10)], True),   # Bow-tie - has self-intersections
+])
+def test_has_self_intersections_backends_match(session, polygon, expected_result):
+    """Test that both backends give the same result for has_self_intersections."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    poly_server = PolygonData(points=polygon)
+    result_server = poly_server.has_self_intersections()
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    poly_shapely = PolygonData(points=polygon)
+    result_shapely = poly_shapely.has_self_intersections()
+    
+    # Both backends should give the same result
+    assert result_server == result_shapely == expected_result
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

@@ -155,3 +155,22 @@ class ServerBackend(PolygonBackend):
             )
         )
         return parser.to_polygon_data(result)
+
+    def has_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
+        """Determine whether the polygon contains any self-intersections using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        bool
+            ``True`` when the polygon contains self-intersections, ``False`` otherwise.
+        """
+        return self._stub.HasSelfIntersections(
+            messages.polygon_data_with_tol_message(polygon, tol)
+        ).value

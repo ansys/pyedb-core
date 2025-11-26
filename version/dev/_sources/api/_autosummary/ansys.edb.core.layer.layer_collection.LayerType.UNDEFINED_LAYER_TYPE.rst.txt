@@ -1,0 +1,6 @@
+UNDEFINED\_LAYER\_TYPE
+======================
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoattribute:: LayerType.UNDEFINED_LAYER_TYPE

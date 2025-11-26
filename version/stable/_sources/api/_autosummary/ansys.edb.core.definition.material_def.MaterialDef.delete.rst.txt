@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.definition.material_def
+
+.. automethod:: MaterialDef.delete

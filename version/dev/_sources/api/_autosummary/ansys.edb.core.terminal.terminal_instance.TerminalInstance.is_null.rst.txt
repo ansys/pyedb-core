@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. autoproperty:: TerminalInstance.is_null

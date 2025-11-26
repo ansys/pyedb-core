@@ -1,0 +1,48 @@
+﻿SolderBallProperty
+==================
+
+.. currentmodule:: ansys.edb.core.definition.solder_ball_property
+
+.. autoclass:: SolderBallProperty
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SolderBallProperty.clone
+      
+      
+      SolderBallProperty.create
+      
+      
+      SolderBallProperty.get_diameter
+      
+      
+      SolderBallProperty.set_diameter
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SolderBallProperty.height
+      SolderBallProperty.id
+      SolderBallProperty.is_null
+      SolderBallProperty.material_name
+      SolderBallProperty.msg
+      SolderBallProperty.placement
+      SolderBallProperty.shape
+      SolderBallProperty.uses_solderball
+   
+   

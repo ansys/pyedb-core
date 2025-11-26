@@ -1,0 +1,6 @@
+OTHER\_ORIENTED
+===============
+
+.. currentmodule:: ansys.edb.core.utility.heat_sink
+
+.. autoattribute:: HeatSinkFinOrientation.OTHER_ORIENTED

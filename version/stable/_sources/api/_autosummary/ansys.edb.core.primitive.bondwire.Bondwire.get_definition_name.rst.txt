@@ -1,0 +1,6 @@
+get\_definition\_name
+=====================
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. automethod:: Bondwire.get_definition_name

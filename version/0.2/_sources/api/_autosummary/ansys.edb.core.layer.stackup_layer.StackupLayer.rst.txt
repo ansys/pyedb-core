@@ -1,0 +1,98 @@
+﻿StackupLayer
+============
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoclass:: StackupLayer
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      StackupLayer.cast
+      
+      
+      StackupLayer.clone
+      
+      
+      StackupLayer.create
+      
+      
+      StackupLayer.get_fill_material
+      
+      
+      StackupLayer.get_material
+      
+      
+      StackupLayer.get_product_property
+      
+      
+      StackupLayer.get_product_property_ids
+      
+      
+      StackupLayer.get_roughness_model
+      
+      
+      StackupLayer.is_in_zone
+      
+      
+      StackupLayer.set_fill_material
+      
+      
+      StackupLayer.set_is_in_zone
+      
+      
+      StackupLayer.set_material
+      
+      
+      StackupLayer.set_product_property
+      
+      
+      StackupLayer.set_roughness_model
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      StackupLayer.color
+      StackupLayer.draw_override
+      StackupLayer.etch_factor
+      StackupLayer.etch_factor_enabled
+      StackupLayer.etch_net_class
+      StackupLayer.hfss_solver_properties
+      StackupLayer.id
+      StackupLayer.is_null
+      StackupLayer.is_stackup_layer
+      StackupLayer.is_via_layer
+      StackupLayer.layer_id
+      StackupLayer.layout_obj_type
+      StackupLayer.locked
+      StackupLayer.lower_elevation
+      StackupLayer.msg
+      StackupLayer.name
+      StackupLayer.negative
+      StackupLayer.referencing_via_layer_ids
+      StackupLayer.roughness_enabled
+      StackupLayer.thickness
+      StackupLayer.top_bottom_association
+      StackupLayer.transparency
+      StackupLayer.type
+      StackupLayer.upper_elevation
+      StackupLayer.use_solver_properties
+      StackupLayer.visibility_mask
+      StackupLayer.zone
+      StackupLayer.zones
+   
+   

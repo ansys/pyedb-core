@@ -1,0 +1,63 @@
+﻿ComponentDef
+============
+
+.. currentmodule:: ansys.edb.core.definition.component_def
+
+.. autoclass:: ComponentDef
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ComponentDef.add_component_model
+      
+      
+      ComponentDef.create
+      
+      
+      ComponentDef.find
+      
+      
+      ComponentDef.get_product_property
+      
+      
+      ComponentDef.get_product_property_ids
+      
+      
+      ComponentDef.remove_component_model
+      
+      
+      ComponentDef.remove_pin
+      
+      
+      ComponentDef.reorder_pins
+      
+      
+      ComponentDef.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ComponentDef.component_models
+      ComponentDef.component_pins
+      ComponentDef.definition_type
+      ComponentDef.footprint
+      ComponentDef.id
+      ComponentDef.is_null
+      ComponentDef.msg
+      ComponentDef.name
+   
+   

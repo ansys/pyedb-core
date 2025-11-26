@@ -1,0 +1,6 @@
+import\_layout\_component
+=========================
+
+.. currentmodule:: ansys.edb.core.hierarchy.layout_component
+
+.. automethod:: LayoutComponent.import_layout_component

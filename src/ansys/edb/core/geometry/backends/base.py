@@ -165,3 +165,19 @@ class PolygonBackend(ABC):
             A list of non self-intersecting polygons.
         """
         pass
+
+    @abstractmethod
+    def normalized(self, polygon: PolygonData) -> list:
+        """Get the normalized points of the polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+
+        Returns
+        -------
+        list[PointData]
+            List of normalized points.
+        """
+        pass

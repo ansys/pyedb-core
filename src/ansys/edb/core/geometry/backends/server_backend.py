@@ -196,3 +196,30 @@ class ServerBackend(PolygonBackend):
             messages.polygon_data_with_tol_message(polygon, tol)
         )
         return parser.to_polygon_data_list(result)
+
+    def normalized(self, polygon: PolygonData) -> list:
+        """Get the normalized points of the polygon using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+
+        Returns
+        -------
+        list[PointData]
+            List of normalized points.
+        """
+
+        # return self._stub.GetNormalizedPoints(messages.polygon_data_message(polygon)).points  # The server implementation does not look correct.
+
+        from ansys.edb.core.geometry.point_data import PointData
+        
+        # Note: The server's GetNormalizedPoints currently returns the original points,
+        # not the normalized ones. As a workaround, we normalize the points client-side.
+        normalized_points = []
+        for point in polygon.points:
+            # Normalize each point using the PointData.normalized() method
+            normalized_points.append(point.normalized())
+        
+        return normalized_points

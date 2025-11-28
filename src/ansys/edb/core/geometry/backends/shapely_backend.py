@@ -590,3 +590,30 @@ class ShapelyBackend(PolygonBackend):
         
         return result_polygons
 
+    def normalized(self, polygon: PolygonData) -> list:
+        """Get the normalized points of the polygon using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+
+        Returns
+        -------
+        list[PointData]
+            List of normalized points.
+
+        Notes
+        -----
+        This implementation normalizes each point in the polygon by treating it as a vector
+        and dividing by its magnitude. Points at the origin (0, 0) will remain at the origin.
+        """
+        from ansys.edb.core.geometry.point_data import PointData
+        
+        normalized_points = []
+        for point in polygon.points:
+            # Normalize each point using the PointData.normalized() method
+            normalized_points.append(point.normalized())
+        
+        return normalized_points
+

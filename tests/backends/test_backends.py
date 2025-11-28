@@ -828,5 +828,93 @@ def test_remove_self_intersections_backends_match(session, polygon):
         assert not p.has_self_intersections()
 
 
+@pytest.mark.parametrize("polygon, expected_normalized", [
+    ([(3, 0), (0, 4), (5, 12)], [(1.0, 0.0), (0.0, 1.0), (5/13, 12/13)]),  # Triangle
+    ([(1, 0), (0, 1), (1, 1)], [(1.0, 0.0), (0.0, 1.0), (1/math.sqrt(2), 1/math.sqrt(2))]),  # Triangle
+    ([(0, 0), (5, 0), (0, 5)], [(0.0, 0.0), (1.0, 0.0), (0.0, 1.0)]),  # Triangle with origin point
+])
+def test_normalized_server_backend(session, polygon, expected_normalized):
+    """Test normalized with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    normalized = poly.normalized()
+    
+    # Check that we get the expected number of points
+    assert len(normalized) == len(expected_normalized)
+    
+    # Verify each normalized point
+    for i, (actual_point, expected_coords) in enumerate(zip(normalized, expected_normalized)):
+        print(f"Point {i}: actual=({actual_point.x.double}, {actual_point.y.double}), expected=({expected_coords[0]}, {expected_coords[1]})")
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-9)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-9)
+
+
+@pytest.mark.parametrize("polygon, expected_normalized", [
+    ([(3, 0), (0, 4), (5, 12)], [(1.0, 0.0), (0.0, 1.0), (5/13, 12/13)]),  # Triangle
+    ([(1, 0), (0, 1), (1, 1)], [(1.0, 0.0), (0.0, 1.0), (1/math.sqrt(2), 1/math.sqrt(2))]),  # Triangle
+    ([(0, 0), (5, 0), (0, 5)], [(0.0, 0.0), (1.0, 0.0), (0.0, 1.0)]),  # Triangle with origin point
+])
+def test_normalized_shapely_backend(session, polygon, expected_normalized):
+    """Test normalized with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    normalized = poly.normalized()
+    
+    # Check that we get the expected number of points
+    assert len(normalized) == len(expected_normalized)
+    
+    # Verify each normalized point
+    for i, (actual_point, expected_coords) in enumerate(zip(normalized, expected_normalized)):
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-9)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-9)
+
+
+@pytest.mark.parametrize("polygon", [
+    ([(3, 0), (0, 4), (5, 12)]),  # Triangle
+    ([(1, 0), (0, 1), (1, 1)]),  # Triangle with diagonal point
+    ([(10, 0), (0, 10), (10, 10), (5, 5)]),  # Square
+    ([(0, 0), (5, 0), (0, 5)]),  # Triangle with origin point
+])
+def test_normalized_backends_match(session, polygon):
+    """Test that both backends give the same result for normalized."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    poly_server = PolygonData(points=polygon)
+    result_server = poly_server.normalized()
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    poly_shapely = PolygonData(points=polygon)
+    result_shapely = poly_shapely.normalized()
+    
+    # Both backends should give the same number of points
+    assert len(result_server) == len(result_shapely)
+    
+    # All normalized points should match between backends
+    for server_point, shapely_point in zip(result_server, result_shapely):
+        assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-9)
+        assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-9)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

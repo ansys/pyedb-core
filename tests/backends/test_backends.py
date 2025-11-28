@@ -1010,5 +1010,149 @@ def test_move_backends_match(session, polygon, vector):
         assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-9)
 
 
+@pytest.mark.parametrize("polygon, angle, center, expected_points", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi / 2, (0, 0), [(0, 0), (0, 10), (-10, 10), (-10, 0)]),  # Square rotated 90 degrees (π/2) around origin
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi, (5, 5), [(10, 10), (0, 10), (0, 0), (10, 0)]),  # Square rotated 180 degrees (π) around its center
+    ([(0, 0), (5, 0), (2.5, 5)], 0, (0, 0), [(0, 0), (5, 0), (2.5, 5)]),  # Triangle rotated 0 degrees (no rotation)
+])
+def test_rotate_server_backend(session, polygon, angle, center, expected_points):
+    """Test rotate with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    original_area = poly.area()
+    rotated = poly.rotate(angle, center)
+    
+    # Check that we get the expected number of points
+    assert len(rotated.points) == len(expected_points)
+
+    # Check area remains the same (rotation preserves area)
+    assert rotated.area() == pytest.approx(original_area, abs=1e-9)
+    
+    # Verify each rotated point
+    for actual_point, expected_coords in zip(rotated.points, expected_points):
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-6)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-6)
+
+
+@pytest.mark.parametrize("polygon, angle, center, expected_points", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi / 2, (0, 0), [(0, 0), (0, 10), (-10, 10), (-10, 0)]),  # Square rotated 90 degrees (π/2) around origin
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi, (5, 5), [(10, 10), (0, 10), (0, 0), (10, 0)]),  # Square rotated 180 degrees (π) around its center
+    ([(0, 0), (5, 0), (2.5, 5)], 0, (0, 0), [(0, 0), (5, 0), (2.5, 5)]),# Triangle rotated 0 degrees (no rotation)
+])
+def test_rotate_shapely_backend(session, polygon, angle, center, expected_points):
+    """Test rotate with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    original_area = poly.area()
+    rotated = poly.rotate(angle, center)
+    
+    # Check that we get the expected number of points
+    assert len(rotated.points) == len(expected_points)
+
+    # Check area remains the same (rotation preserves area)
+    assert rotated.area() == pytest.approx(original_area, abs=1e-9)
+    
+    # Verify each rotated point
+    for actual_point, expected_coords in zip(rotated.points, expected_points):
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-6)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-6)
+
+
+@pytest.mark.parametrize("polygon, angle, center", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi / 2, (0, 0)),  # Square rotated 90 degrees around origin
+    ([(0, 0), (6, 0), (3, 6)], math.pi / 4, (3, 2)),  # Triangle rotated 45 degrees around its centroid
+    ([(0, 0), (8, 0), (8, 4), (0, 4)], math.pi, (4, 2)),  # Rectangle rotated 180 degrees around center
+    ([(1, 0), (2, 1), (1.5, 2.5), (0.5, 2.5), (0, 1)], math.pi / 3, (0, 0)),  # Pentagon rotated 60 degrees around origin
+])
+def test_rotate_backends_match(session, polygon, angle, center):
+    """Test that server and Shapely backends produce the same result for rotate."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    poly_server = PolygonData(points=polygon)
+    result_server = poly_server.rotate(angle, center)
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    poly_shapely = PolygonData(points=polygon)
+    result_shapely = poly_shapely.rotate(angle, center)
+    
+    # Both backends should give the same number of points
+    assert len(result_server.points) == len(result_shapely.points)
+
+    # Check area remains the same (rotation preserves area)
+    assert result_server.area() == pytest.approx(result_shapely.area(), abs=1e-9)
+    
+    # All rotated points should match between backends
+    for server_point, shapely_point in zip(result_server.points, result_shapely.points):
+        assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
+        assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
+
+
+@pytest.mark.parametrize("polygon, angle, center", [
+    ([(0, 0), (20, 0), (20, 20), (0, 20)], math.pi / 2, (0, 0)),  # Square with a hole, rotated 90 degrees around origin
+])
+def test_rotate_with_holes_backends_match(session, polygon, angle, center):
+    """Test that rotation works correctly with polygons containing holes."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    # Create a polygon with a hole
+    hole = PolygonData(points=[(5, 5), (15, 5), (15, 15), (5, 15)])
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    poly_server = PolygonData(points=polygon, holes=[hole])
+    result_server = poly_server.rotate(angle, center)
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    poly_shapely = PolygonData(points=polygon, holes=[hole])
+    result_shapely = poly_shapely.rotate(angle, center)
+    
+    # Both backends should give the same number of points
+    assert len(result_server.points) == len(result_shapely.points)
+    assert len(result_server.holes) == len(result_shapely.holes)
+    
+    # Check area remains the same
+    assert result_server.area() == pytest.approx(result_shapely.area(), abs=1e-9)
+    
+    # All rotated points should match between backends
+    for server_point, shapely_point in zip(result_server.points, result_shapely.points):
+        assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
+        assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
+    
+    # Check that holes are also rotated correctly
+    for server_hole, shapely_hole in zip(result_server.holes, result_shapely.holes):
+        assert len(server_hole.points) == len(shapely_hole.points)
+        for server_point, shapely_point in zip(server_hole.points, shapely_hole.points):
+            assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
+            assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

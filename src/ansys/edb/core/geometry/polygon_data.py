@@ -363,9 +363,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Transform(
-            messages.polygon_data_transform_message("rotate", self, angle, center)
-        )
+        return self._get_backend().rotate(self, angle, center)
 
     @parser.to_polygon_data
     def scale(self, factor: float, center: PointLike) -> PolygonData:

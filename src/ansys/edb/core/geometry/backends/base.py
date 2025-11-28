@@ -181,3 +181,21 @@ class PolygonBackend(ABC):
             List of normalized points.
         """
         pass
+
+    @abstractmethod
+    def move(self, polygon: PolygonData, vector: tuple[float, float]) -> PolygonData:
+        """Move the polygon by a vector.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to move.
+        vector : tuple[float, float]
+            Vector coordinates (x, y).
+
+        Returns
+        -------
+        PolygonData
+            Moved polygon.
+        """
+        pass

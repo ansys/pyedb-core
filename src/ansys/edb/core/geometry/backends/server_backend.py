@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
 from ansys.edb.core.geometry.backends.base import PolygonBackend
-from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import messages, parser
 
 
 class ServerBackend(PolygonBackend):
@@ -88,7 +88,6 @@ class ServerBackend(PolygonBackend):
         tuple[tuple[float, float], tuple[float, float]]
             Bounding box as ((min_x, min_y), (max_x, max_y)).
         """
-        from ansys.edb.core.inner import parser
 
         result = self._stub.GetBBox(messages.polygon_data_list_message([polygon]))
         lower_left, upper_right = parser.to_box(result)
@@ -112,7 +111,6 @@ class ServerBackend(PolygonBackend):
         tuple[tuple[float, float], tuple[float, float]]
             Bounding box as ((min_x, min_y), (max_x, max_y)).
         """
-        from ansys.edb.core.inner import parser
         from ansys.edb.core.geometry.polygon_data import PolygonData
 
         result = self._stub.GetStreamedBBox(PolygonData._polygon_data_request_iterator(polygons))
@@ -122,6 +120,7 @@ class ServerBackend(PolygonBackend):
             (upper_right.x.double, upper_right.y.double),
         )
 
+    @parser.to_polygon_data
     def without_arcs(
         self,
         polygon: PolygonData,
@@ -147,14 +146,13 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Polygon with all arcs tessellated into line segments.
         """
-        from ansys.edb.core.inner import parser
 
         result = self._stub.RemoveArcs(
             messages.polygon_data_remove_arc_message(
                 polygon, max_chord_error, max_arc_angle, max_points
             )
         )
-        return parser.to_polygon_data(result)
+        return result
 
     def has_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
         """Determine whether the polygon contains any self-intersections using the server.
@@ -175,6 +173,7 @@ class ServerBackend(PolygonBackend):
             messages.polygon_data_with_tol_message(polygon, tol)
         ).value
 
+    @parser.to_polygon_data_list
     def remove_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> list[PolygonData]:
         """Remove self-intersections from a polygon using the server.
 
@@ -190,13 +189,13 @@ class ServerBackend(PolygonBackend):
         list[PolygonData]
             A list of non self-intersecting polygons.
         """
-        from ansys.edb.core.inner import parser
 
         result = self._stub.RemoveSelfIntersections(
             messages.polygon_data_with_tol_message(polygon, tol)
         )
-        return parser.to_polygon_data_list(result)
+        return result
 
+    @parser.to_point_data_list
     def normalized(self, polygon: PolygonData) -> list:
         """Get the normalized points of the polygon using the server.
 
@@ -223,3 +222,23 @@ class ServerBackend(PolygonBackend):
             normalized_points.append(point.normalized())
         
         return normalized_points
+
+    @parser.to_polygon_data
+    def move(self, polygon: PolygonData, vector: tuple[float, float]) -> PolygonData:
+        """Move the polygon by a vector using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to move.
+        vector : tuple[float, float]
+            Vector coordinates (x, y).
+
+        Returns
+        -------
+        PolygonData
+            Moved polygon.
+        """
+
+        result = self._stub.Transform(messages.polygon_data_transform_message("move", polygon, vector))
+        return result

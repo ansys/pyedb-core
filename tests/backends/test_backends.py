@@ -848,7 +848,6 @@ def test_normalized_server_backend(session, polygon, expected_normalized):
     
     # Verify each normalized point
     for i, (actual_point, expected_coords) in enumerate(zip(normalized, expected_normalized)):
-        print(f"Point {i}: actual=({actual_point.x.double}, {actual_point.y.double}), expected=({expected_coords[0]}, {expected_coords[1]})")
         assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-9)
         assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-9)
 
@@ -912,6 +911,101 @@ def test_normalized_backends_match(session, polygon):
     
     # All normalized points should match between backends
     for server_point, shapely_point in zip(result_server, result_shapely):
+        assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-9)
+        assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-9)
+
+
+@pytest.mark.parametrize("polygon, vector, expected_points", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], (5, 5), [(5, 5), (15, 5), (15, 15), (5, 15)]),  # Square moved by (5, 5)
+    ([(0, 0), (5, 0), (2.5, 5)], (-2, 3), [(-2, 3), (3, 3), (0.5, 8)]),  # Triangle moved by (-2, 3)
+    ([(1, 1), (4, 1), (4, 4), (1, 4)], (0, 0), [(1, 1), (4, 1), (4, 4), (1, 4)]),  # Square moved by (0, 0)
+])
+def test_move_server_backend(session, polygon, vector, expected_points):
+    """Test move with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    moved = poly.move(vector)
+    
+    # Check that we get the expected number of points
+    assert len(moved.points) == len(expected_points)
+
+    # Check area remains the same
+    assert moved.area() == poly.area()
+    
+    # Verify each moved point
+    for actual_point, expected_coords in zip(moved.points, expected_points):
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-9)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-9)
+
+
+@pytest.mark.parametrize("polygon, vector, expected_points", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], (5, 5), [(5, 5), (15, 5), (15, 15), (5, 15)]),  # Square moved by (5, 5)
+    ([(0, 0), (5, 0), (2.5, 5)], (-2, 3), [(-2, 3), (3, 3), (0.5, 8)]),  # Triangle moved by (-2, 3)
+    ([(1, 1), (4, 1), (4, 4), (1, 4)], (0, 0), [(1, 1), (4, 1), (4, 4), (1, 4)]),  # Square moved by (0, 0)
+])
+def test_move_shapely_backend(session, polygon, vector, expected_points):
+    """Test move with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    moved = poly.move(vector)
+    
+    # Check that we get the expected number of points
+    assert len(moved.points) == len(expected_points)
+
+    # Check area remains the same
+    assert moved.area() == poly.area()
+    
+    # Verify each moved point
+    for actual_point, expected_coords in zip(moved.points, expected_points):
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-9)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-9)
+
+
+@pytest.mark.parametrize("polygon, vector", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], (5, 5)),  # Square
+    ([(0, 0), (5, 0), (2.5, 5)], (-2, 3)),  # Triangle
+    ([(1, 1), (3, 1), (3, 3), (1, 3)], (10, -5)),  # Square
+])
+def test_move_backends_match(session, polygon, vector):
+    """Test that server and Shapely backends produce the same result for move."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    poly_server = PolygonData(points=polygon)
+    result_server = poly_server.move(vector)
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    poly_shapely = PolygonData(points=polygon)
+    result_shapely = poly_shapely.move(vector)
+    
+    # Both backends should give the same number of points
+    assert len(result_server.points) == len(result_shapely.points)
+
+    # Check area remains the same
+    assert result_server.area() == result_shapely.area()
+    
+    # All moved points should match between backends
+    for server_point, shapely_point in zip(result_server.points, result_shapely.points):
         assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-9)
         assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-9)
 

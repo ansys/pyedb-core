@@ -346,7 +346,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Transform(messages.polygon_data_transform_message("move", self, vector))
+        return self._get_backend().move(self, vector)
 
     @parser.to_polygon_data
     def rotate(self, angle: float, center: PointLike) -> PolygonData:

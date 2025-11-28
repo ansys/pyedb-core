@@ -617,3 +617,53 @@ class ShapelyBackend(PolygonBackend):
         
         return normalized_points
 
+    def move(self, polygon: PolygonData, vector: tuple[float, float]) -> PolygonData:
+        """Move the polygon by a vector using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to move.
+        vector : tuple[float, float]
+            Vector coordinates (x, y).
+
+        Returns
+        -------
+        PolygonData
+            Moved polygon.
+
+        Notes
+        -----
+        This implementation moves each point in the polygon by adding the vector to it.
+        Arc points are preserved, and holes are also moved by the same vector.
+        """
+        from ansys.edb.core.geometry.point_data import PointData
+        from ansys.edb.core.geometry.polygon_data import PolygonData
+        from ansys.edb.core.utility import conversions
+        
+        # Convert vector to PointData for easy addition
+        vector_point = conversions.to_point(vector)
+        
+        # Move all points in the polygon
+        moved_points = []
+        for point in polygon.points:
+            moved_point = point.move(vector_point)
+            if moved_point is not None:
+                moved_points.append(moved_point)
+            else:
+                # If move returns None (arc points), keep the original point
+                moved_points.append(point)
+        
+        # Move holes
+        moved_holes = []
+        for hole in polygon.holes:
+            moved_hole = self.move(hole, vector)
+            moved_holes.append(moved_hole)
+        
+        # Create and return new PolygonData with moved points
+        return PolygonData(
+            points=moved_points,
+            holes=moved_holes,
+            sense=polygon.sense,
+            closed=polygon.is_closed
+        )

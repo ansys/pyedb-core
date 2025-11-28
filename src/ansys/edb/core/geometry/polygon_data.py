@@ -77,26 +77,12 @@ class PolygonData:
         PolygonBackend
             The computation backend instance.
         """
-        if cls._backend is None:
-            cls._backend = get_backend(stub=cls.__stub)
-        return cls._backend
+        return get_backend(stub=cls.__stub)
 
     def _invalidate_cache(self):
         """Invalidate cached backend-specific representations."""
         if hasattr(self, "_shapely_cache"):
             delattr(self, "_shapely_cache")
-
-    @classmethod
-    def reset_backend(cls):
-        """Reset the backend (useful for testing or changing configuration at runtime).
-
-        Examples
-        --------
-        >>> from ansys.edb.core.config import Config, ComputationBackend
-        >>> Config.set_computation_backend(ComputationBackend.SHAPELY)
-        >>> PolygonData.reset_backend()
-        """
-        cls._backend = None
 
     def __init__(
         self,
@@ -363,9 +349,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Transform(
-            messages.polygon_data_transform_message("rotate", self, angle, center)
-        )
+        return self._get_backend().rotate(self, angle, center)
 
     @parser.to_polygon_data
     def scale(self, factor: float, center: PointLike) -> PolygonData:

@@ -15,6 +15,11 @@ class Config:
     """Global configuration for pyedb-core.
 
     Configuration can be set via environment variables or programmatically.
+    CAUTION: if you are setting the backend programmatically by calling
+    ``Config.set_computation_backend()``, the ``Config.reset()`` method is called
+    automatically to clear any previous settings. However, if you set the backend
+    via the environment variable ``PYEDB_COMPUTATION_BACKEND``, you need to call
+    ``Config.reset()`` manually to ensure the new setting is applied.
 
     Environment Variables:
         PYEDB_COMPUTATION_BACKEND: Set to 'server', 'shapely', or 'auto' (default: 'auto')
@@ -22,6 +27,7 @@ class Config:
     Examples:
         >>> # Set via environment variable (before importing)
         >>> import os
+        >>> Config.reset()  # Clear previous settings
         >>> os.environ['PYEDB_COMPUTATION_BACKEND'] = 'shapely'
 
         >>> # Set programmatically
@@ -65,6 +71,7 @@ class Config:
             >>> Config.set_computation_backend(ComputationBackend.SHAPELY)
             >>> Config.set_computation_backend('shapely')
         """
+        cls.reset()
         if isinstance(backend, str):
             backend = ComputationBackend(backend.lower())
         cls._computation_backend = backend

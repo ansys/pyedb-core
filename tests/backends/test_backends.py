@@ -7,7 +7,6 @@ from utils.fixtures import session
 
 def test_config_default(session):
     """Test default configuration."""
-    Config.reset()
     backend = Config.get_computation_backend()
     assert backend == ComputationBackend.AUTO
 
@@ -19,32 +18,22 @@ def test_config_set_backend(session):
     
     Config.set_computation_backend('shapely')
     assert Config.get_computation_backend() == ComputationBackend.SHAPELY
-    
-    Config.reset()
 
 
 def test_config_environment_variable(session):
     """Test setting backend via environment variable."""
     import os
     
-    # Save original value
-    original = os.environ.get('PYEDB_COMPUTATION_BACKEND')
-    
     try:
-        os.environ['PYEDB_COMPUTATION_BACKEND'] = 'server'
         Config.reset()
+        os.environ['PYEDB_COMPUTATION_BACKEND'] = 'server'
         assert Config.get_computation_backend() == ComputationBackend.SERVER
         
-        os.environ['PYEDB_COMPUTATION_BACKEND'] = 'shapely'
         Config.reset()
+        os.environ['PYEDB_COMPUTATION_BACKEND'] = 'shapely'
         assert Config.get_computation_backend() == ComputationBackend.SHAPELY
         
     finally:
-        # Restore original value
-        if original is not None:
-            os.environ['PYEDB_COMPUTATION_BACKEND'] = original
-        elif 'PYEDB_COMPUTATION_BACKEND' in os.environ:
-            del os.environ['PYEDB_COMPUTATION_BACKEND']
         Config.reset()
 
 
@@ -89,20 +78,24 @@ def test_backend_factory_shapely_not_available(session):
 
 @pytest.mark.parametrize("test_case, expected_result", [
     ([(0, 0), (10, 0), (10, 10)], 50.0),  # Triangle
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], 100.0),  # Square
+    ([(0, 0), (-20, 0), (-20, 10), (0, 10)], 200.0),  # Rectangle with negative coords
 ])
 def test_polygon_area_server_backend(session, test_case, expected_result):
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
 
     polygon = PolygonData(test_case)
     area = polygon.area()
+
     assert area == pytest.approx(expected_result)
 
 
 @pytest.mark.parametrize("test_case, expected_result", [
     ([(0, 0), (10, 0), (10, 10)], 50.0),  # Triangle
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], 100.0),  # Square
+    ([(0, 0), (-20, 0), (-20, 10), (0, 10)], 200.0),  # Rectangle with negative coords
 ])
 def test_polygon_area_shapely_backend(session, test_case, expected_result):
     from ansys.edb.core.geometry.polygon_data import PolygonData
@@ -112,15 +105,17 @@ def test_polygon_area_shapely_backend(session, test_case, expected_result):
         pytest.skip("Shapely not installed")
      
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     polygon = PolygonData(test_case)
     area = polygon.area()
+    
     assert area == pytest.approx(expected_result)
 
 
 @pytest.mark.parametrize("test_case", [
     ([(0, 0), (10, 0), (10, 10)]),  # Triangle
+    ([(0, 0), (10, 0), (10, 10), (0, 10)]),  # Square
+    ([(0, 0), (-20, 0), (-20, 10), (0, 10)]),  # Rectangle with negative coords
 ])
 def test_polygon_backends_match(session, test_case):
     '''Test that server and Shapely backends give same results.'''
@@ -132,13 +127,12 @@ def test_polygon_backends_match(session, test_case):
     
     # Get result from server
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     polygon1 = PolygonData(test_case)
     server_area = polygon1.area()
+
     
     # Get result from Shapely
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     polygon2 = PolygonData(test_case)
     shapely_area = polygon2.area()
     
@@ -155,7 +149,6 @@ def test_is_convex_server_backend(session, test_case, expected_result):
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
 
     polygon = PolygonData(test_case)
     assert polygon.is_convex() == expected_result
@@ -174,7 +167,6 @@ def test_is_convex_shapely_backend(session, test_case, expected_result):
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     convex_polygon = PolygonData(test_case)
     assert convex_polygon.is_convex() == expected_result
@@ -194,13 +186,11 @@ def test_is_convex_backends_match(session, test_case, expected_result):
     
     # Get result from server
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     polygon1 = PolygonData(test_case)
     server_result = polygon1.is_convex()
     
     # Get result from Shapely
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     polygon2 = PolygonData(test_case)
     shapely_result = polygon2.is_convex()
     
@@ -220,7 +210,6 @@ def test_is_inside_server_backend(session, polygon, point, expected_result):
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
 
     poly = PolygonData(polygon)
     assert poly.is_inside(point) == expected_result
@@ -241,7 +230,6 @@ def test_is_inside_shapely_backend(session, polygon, point, expected_result):
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly = PolygonData(polygon)
     assert poly.is_inside(point) == expected_result
@@ -263,13 +251,11 @@ def test_is_inside_backends_match(session, polygon, point, expected_result):
     
     # Get result from server
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     polygon1 = PolygonData(polygon)
     server_result = polygon1.is_inside(point)
     
     # Get result from Shapely
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     polygon2 = PolygonData(polygon)
     shapely_result = polygon2.is_inside(point)
     
@@ -287,7 +273,6 @@ def test_bbox_server_backend(session, polygon, expected_bbox):
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
 
     poly = PolygonData(polygon)
     bbox = poly.bbox()
@@ -312,7 +297,6 @@ def test_bbox_shapely_backend(session, polygon, expected_bbox):
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly = PolygonData(polygon)
     bbox = poly.bbox()
@@ -338,13 +322,11 @@ def test_bbox_backends_match(session, polygon, expected_bbox):
     
     # Get result from server
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     polygon1 = PolygonData(polygon)
     server_bbox = polygon1.bbox()
     
     # Get result from Shapely
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     polygon2 = PolygonData(polygon)
     shapely_bbox = polygon2.bbox()
     
@@ -371,7 +353,6 @@ def test_bbox_of_polygons_server_backend(session, polygons, expected_bbox):
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
 
     poly_list = [PolygonData(p) for p in polygons]
     bbox = PolygonData.bbox_of_polygons(poly_list)
@@ -397,7 +378,6 @@ def test_bbox_of_polygons_shapely_backend(session, polygons, expected_bbox):
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly_list = [PolygonData(p) for p in polygons]
     bbox = PolygonData.bbox_of_polygons(poly_list)
@@ -423,13 +403,11 @@ def test_bbox_of_polygons_backends_match(session, polygons, expected_bbox):
     
     # Get result from server
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     poly_list_1 = [PolygonData(p) for p in polygons]
     server_bbox = PolygonData.bbox_of_polygons(poly_list_1)
     
     # Get result from Shapely
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     poly_list_2 = [PolygonData(p) for p in polygons]
     shapely_bbox = PolygonData.bbox_of_polygons(poly_list_2)
     
@@ -455,7 +433,6 @@ def test_tessellation_server_backend(session, arc_config, expected_result):
     from ansys.edb.core.geometry.arc_data import ArcData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     
     # Create a polygon with arcs
     poly = PolygonData(arcs=arc_config)
@@ -491,7 +468,6 @@ def test_tessellation_shapely_backend(session, arc_config, expected_result):
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     # Create a polygon with arcs
     poly = PolygonData(arcs=arc_config)
@@ -530,14 +506,12 @@ def test_tessellation_backends_match(session, arc_config):
     
     # Test with server backend
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     rounded_poly_server = PolygonData(arcs=arc_config)
     tessellated_server = rounded_poly_server.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
     server_area = tessellated_server.area()
     
     # Test with Shapely backend
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     rounded_poly_shapely = PolygonData(arcs=arc_config)
     tessellated_shapely = rounded_poly_shapely.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
     shapely_area = tessellated_shapely.area()
@@ -566,7 +540,6 @@ def test_tessellation_point_count_server(session, arc_config, expected_has_more_
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     
     poly = PolygonData(arcs=arc_config)
     original_point_count = len(poly.points)
@@ -601,7 +574,6 @@ def test_tessellation_point_count_shapely(session, arc_config, expected_has_more
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly = PolygonData(arcs=arc_config)
     original_point_count = len(poly.points)
@@ -626,7 +598,6 @@ def test_tessellation_operations_on_arc_polygon_server(session, arc_config):
     from ansys.edb.core.geometry.arc_data import ArcData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     
     # Create a polygon with arcs
     rounded_poly = PolygonData(arcs=arc_config)
@@ -659,7 +630,6 @@ def test_tessellation_operations_on_arc_polygon_shapely(session, arc_config):
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     # Create a polygon with arcs
     rounded_poly = PolygonData(arcs=arc_config)
@@ -688,7 +658,6 @@ def test_has_self_intersections_server_backend(session, polygon, expected_result
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     
@@ -710,7 +679,6 @@ def test_has_self_intersections_shapely_backend(session, polygon, expected_resul
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     
@@ -732,13 +700,11 @@ def test_has_self_intersections_backends_match(session, polygon, expected_result
     
     # Test with server backend
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     poly_server = PolygonData(points=polygon)
     result_server = poly_server.has_self_intersections()
     
     # Test with Shapely backend
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     poly_shapely = PolygonData(points=polygon)
     result_shapely = poly_shapely.has_self_intersections()
     
@@ -755,7 +721,6 @@ def test_remove_self_intersections_server_backend(session, polygon, expected_cou
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     result = poly.remove_self_intersections()
@@ -781,7 +746,6 @@ def test_remove_self_intersections_shapely_backend(session, polygon, expected_co
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     result = poly.remove_self_intersections()
@@ -808,13 +772,11 @@ def test_remove_self_intersections_backends_match(session, polygon):
     
     # Test with server backend
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     poly_server = PolygonData(points=polygon)
     result_server = poly_server.remove_self_intersections()
     
     # Test with Shapely backend
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     poly_shapely = PolygonData(points=polygon)
     result_shapely = poly_shapely.remove_self_intersections()
     
@@ -838,7 +800,6 @@ def test_normalized_server_backend(session, polygon, expected_normalized):
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     normalized = poly.normalized()
@@ -866,7 +827,6 @@ def test_normalized_shapely_backend(session, polygon, expected_normalized):
         pytest.skip("Shapely not installed")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     normalized = poly.normalized()
@@ -896,13 +856,11 @@ def test_normalized_backends_match(session, polygon):
     
     # Test with server backend
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     poly_server = PolygonData(points=polygon)
     result_server = poly_server.normalized()
     
     # Test with Shapely backend
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     poly_shapely = PolygonData(points=polygon)
     result_shapely = poly_shapely.normalized()
     
@@ -925,7 +883,6 @@ def test_move_server_backend(session, polygon, vector, expected_points):
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     moved = poly.move(vector)
@@ -956,7 +913,6 @@ def test_move_shapely_backend(session, polygon, vector, expected_points):
         pytest.skip("Shapely not available")
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     
     poly = PolygonData(points=polygon)
     moved = poly.move(vector)
@@ -988,13 +944,11 @@ def test_move_backends_match(session, polygon, vector):
     
     # Test with server backend
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
     poly_server = PolygonData(points=polygon)
     result_server = poly_server.move(vector)
     
     # Test with Shapely backend
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
     poly_shapely = PolygonData(points=polygon)
     result_shapely = poly_shapely.move(vector)
     
@@ -1008,6 +962,235 @@ def test_move_backends_match(session, polygon, vector):
     for server_point, shapely_point in zip(result_server.points, result_shapely.points):
         assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-9)
         assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-9)
+
+
+@pytest.mark.parametrize("polygon, angle, center, expected_points", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi / 2, (0, 0), [(0, 0), (0, 10), (-10, 10), (-10, 0)]),  # Square rotated 90 degrees (π/2) around origin
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi, (5, 5), [(10, 10), (0, 10), (0, 0), (10, 0)]),  # Square rotated 180 degrees (π) around its center
+    ([(0, 0), (5, 0), (2.5, 5)], 0, (0, 0), [(0, 0), (5, 0), (2.5, 5)]),  # Triangle rotated 0 degrees (no rotation)
+])
+def test_rotate_server_backend(session, polygon, angle, center, expected_points):
+    """Test rotate with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    
+    poly = PolygonData(points=polygon)
+    original_area = poly.area()
+    rotated = poly.rotate(angle, center)
+    
+    # Check that we get the expected number of points
+    assert len(rotated.points) == len(expected_points)
+
+    # Check area remains the same (rotation preserves area)
+    assert rotated.area() == pytest.approx(original_area, abs=1e-9)
+    
+    # Verify each rotated point
+    for actual_point, expected_coords in zip(rotated.points, expected_points):
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-6)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-6)
+
+
+@pytest.mark.parametrize("arc_config, angle, center", [
+    ([ArcData((0, 0), (10, 0), height=-2.0), ArcData((10, 0), (10, 10), height=0.0), 
+      ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], math.pi, (0, 0)),  # Rectangle with arc rotated 180 degrees (π) about origin
+    ([ArcData((0, 0), (4, 0), height=-2.0), ArcData((4, 0), (4, 4), height=-2.0), 
+      ArcData((4, 4), (0, 4), height=-2.0), ArcData((0, 4), (0, 0), height=-2.0)], math.pi/2.0, (2, 2)),  # Rounded square rotated 90 degrees (π/2) about center
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)], 0.0, (1, 1)),  # Rounded rectangle rotated 0 degrees about center
+])
+def test_polygon_rotate_with_arcs_server_backend(session, arc_config, angle, center):
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+
+    poly = PolygonData(arcs=arc_config)
+    original_area = poly.area()
+    rotated = poly.rotate(angle, center)
+
+    # Check area remains the same (rotation preserves area)
+    assert rotated.area() == pytest.approx(original_area, abs=1e-9)
+    
+    # Check that polygon still has arcs after rotation
+    assert rotated.has_arcs() == True
+
+
+@pytest.mark.parametrize("polygon, angle, center, expected_points", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi / 2, (0, 0), [(0, 0), (0, 10), (-10, 10), (-10, 0)]),  # Square rotated 90 degrees (π/2) around origin
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi, (5, 5), [(10, 10), (0, 10), (0, 0), (10, 0)]),  # Square rotated 180 degrees (π) around its center
+    ([(0, 0), (5, 0), (2.5, 5)], 0, (0, 0), [(0, 0), (5, 0), (2.5, 5)]),# Triangle rotated 0 degrees (no rotation)
+])
+def test_rotate_shapely_backend(session, polygon, angle, center, expected_points):
+    """Test rotate with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    
+    poly = PolygonData(points=polygon)
+    original_area = poly.area()
+    rotated = poly.rotate(angle, center)
+    
+    # Check that we get the expected number of points
+    assert len(rotated.points) == len(expected_points)
+
+    # Check area remains the same (rotation preserves area)
+    assert rotated.area() == pytest.approx(original_area, abs=1e-9)
+    
+    # Verify each rotated point
+    for actual_point, expected_coords in zip(rotated.points, expected_points):
+        assert actual_point.x.double == pytest.approx(expected_coords[0], abs=1e-6)
+        assert actual_point.y.double == pytest.approx(expected_coords[1], abs=1e-6)
+
+
+@pytest.mark.parametrize("arc_config, angle, center", [
+    ([ArcData((0, 0), (10, 0), height=-2.0), ArcData((10, 0), (10, 10), height=0.0), 
+      ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], math.pi, (0, 0)),  # Rectangle with arc rotated 180 degrees (π) about origin
+    ([ArcData((0, 0), (4, 0), height=-2.0), ArcData((4, 0), (4, 4), height=-2.0), 
+      ArcData((4, 4), (0, 4), height=-2.0), ArcData((0, 4), (0, 0), height=-2.0)], math.pi/2.0, (2, 2)),  # Rounded square rotated 90 degrees (π/2) about center
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)], 0.0, (1, 1)),  # Rounded rectangle rotated 0 degrees about center
+])
+def test_polygon_rotate_with_arcs_shapely_backend(session, arc_config, angle, center):
+    """Test rotate with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+
+    poly = PolygonData(arcs=arc_config)
+    original_area = poly.area()
+    rotated = poly.rotate(angle, center)
+
+    # Check area remains the same (rotation preserves area)
+    assert rotated.area() == pytest.approx(original_area, abs=1e-9)
+    
+    # Check that polygon still has arcs after rotation
+    assert rotated.has_arcs() == True
+
+
+@pytest.mark.parametrize("polygon, angle, center", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], math.pi / 2, (0, 0)),  # Square rotated 90 degrees around origin
+    ([(0, 0), (6, 0), (3, 6)], math.pi / 4, (3, 2)),  # Triangle rotated 45 degrees around its centroid
+    ([(0, 0), (8, 0), (8, 4), (0, 4)], math.pi, (4, 2)),  # Rectangle rotated 180 degrees around center
+    ([(1, 0), (2, 1), (1.5, 2.5), (0.5, 2.5), (0, 1)], math.pi / 3, (0, 0)),  # Pentagon rotated 60 degrees around origin
+])
+def test_rotate_backends_match(session, polygon, angle, center):
+    """Test that server and Shapely backends produce the same result for rotate."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    poly_server = PolygonData(points=polygon)
+    result_server = poly_server.rotate(angle, center)
+    area_server = result_server.area()
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    poly_shapely = PolygonData(points=polygon)
+    result_shapely = poly_shapely.rotate(angle, center)
+    area_shapely = result_shapely.area()
+
+    # Both backends should give the same number of points
+    assert len(result_server.points) == len(result_shapely.points)
+
+    # Check area remains the same (rotation preserves area)
+    assert area_server == pytest.approx(area_shapely, abs=1e-9)
+    
+    # All rotated points should match between backends
+    for server_point, shapely_point in zip(result_server.points, result_shapely.points):
+        assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
+        assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
+
+
+@pytest.mark.parametrize("arc_config, angle, center", [
+    ([ArcData((0, 0), (10, 0), height=-2.0), ArcData((10, 0), (10, 10), height=0.0), 
+      ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], math.pi, (0, 0)),  # Rectangle with arc rotated 180 degrees (π) about origin
+    ([ArcData((0, 0), (4, 0), height=-2.0), ArcData((4, 0), (4, 4), height=-2.0), 
+      ArcData((4, 4), (0, 4), height=-2.0), ArcData((0, 4), (0, 0), height=-2.0)], math.pi/2.0, (2, 2)),  # Rounded square rotated 90 degrees (π/2) about center
+    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), 
+      ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)], 0.0, (1, 1)),  # Rounded rectangle rotated 0 degrees about center
+])
+def test_polygon_rotate_with_arcs_backends_match(session, arc_config, angle, center):
+    """Test that both backends produce the same results for rotate operations with arcs."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    poly_server = PolygonData(arcs=arc_config)
+    result_server = poly_server.rotate(angle, center)
+    area_server = result_server.area()
+
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    poly_shapely = PolygonData(arcs=arc_config)
+    result_shapely = poly_shapely.rotate(angle, center)
+    area_shapely = result_shapely.area()
+
+    # Areas from both backends should match
+    assert area_server == pytest.approx(area_shapely, abs=1e-9)
+
+    # Both backends should preserve arcs
+    assert result_server.has_arcs() == True
+    assert result_shapely.has_arcs() == True
+
+
+@pytest.mark.parametrize("polygon, angle, center", [
+    ([(0, 0), (20, 0), (20, 20), (0, 20)], math.pi / 2, (0, 0)),  # Square with a hole, rotated 90 degrees around origin
+])
+def test_rotate_with_holes_backends_match(session, polygon, angle, center):
+    """Test that rotation works correctly with polygons containing holes."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not available")
+    
+    # Create a polygon with a hole
+    hole = PolygonData(points=[(5, 5), (15, 5), (15, 15), (5, 15)])
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    poly_server = PolygonData(points=polygon, holes=[hole])
+    result_server = poly_server.rotate(angle, center)
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    poly_shapely = PolygonData(points=polygon, holes=[hole])
+    result_shapely = poly_shapely.rotate(angle, center)
+    
+    # Both backends should give the same number of points
+    assert len(result_server.points) == len(result_shapely.points)
+    assert len(result_server.holes) == len(result_shapely.holes)
+    
+    # Check area remains the same
+    assert result_server.area() == pytest.approx(result_shapely.area(), abs=1e-9)
+    
+    # All rotated points should match between backends
+    for server_point, shapely_point in zip(result_server.points, result_shapely.points):
+        assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
+        assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
+    
+    # Check that holes are also rotated correctly
+    for server_hole, shapely_hole in zip(result_server.holes, result_shapely.holes):
+        assert len(server_hole.points) == len(shapely_hole.points)
+        for server_point, shapely_point in zip(server_hole.points, shapely_hole.points):
+            assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
+            assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
 
 
 if __name__ == "__main__":

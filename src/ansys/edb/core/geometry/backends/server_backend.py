@@ -242,3 +242,25 @@ class ServerBackend(PolygonBackend):
 
         result = self._stub.Transform(messages.polygon_data_transform_message("move", polygon, vector))
         return result
+
+    @parser.to_polygon_data
+    def rotate(self, polygon: PolygonData, angle: float, center: tuple[float, float]) -> PolygonData:
+        """Rotate the polygon at a center by an angle using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to rotate.
+        angle : float
+            Angle in radians.
+        center : tuple[float, float]
+            Center coordinates (x, y).
+
+        Returns
+        -------
+        PolygonData
+            Rotated polygon.
+        """
+
+        result = self._stub.Transform(messages.polygon_data_transform_message("rotate", polygon, angle, center))
+        return result

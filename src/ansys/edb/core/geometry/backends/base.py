@@ -199,3 +199,23 @@ class PolygonBackend(ABC):
             Moved polygon.
         """
         pass
+
+    @abstractmethod
+    def rotate(self, polygon: PolygonData, angle: float, center: tuple[float, float]) -> PolygonData:
+        """Rotate the polygon at a center by an angle.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to rotate.
+        angle : float
+            Angle in radians.
+        center : tuple[float, float]
+            Center coordinates (x, y).
+
+        Returns
+        -------
+        PolygonData
+            Rotated polygon.
+        """
+        pass

@@ -174,3 +174,25 @@ class ServerBackend(PolygonBackend):
         return self._stub.HasSelfIntersections(
             messages.polygon_data_with_tol_message(polygon, tol)
         ).value
+
+    def remove_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> list[PolygonData]:
+        """Remove self-intersections from a polygon using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        list[PolygonData]
+            A list of non self-intersecting polygons.
+        """
+        from ansys.edb.core.inner import parser
+
+        result = self._stub.RemoveSelfIntersections(
+            messages.polygon_data_with_tol_message(polygon, tol)
+        )
+        return parser.to_polygon_data_list(result)

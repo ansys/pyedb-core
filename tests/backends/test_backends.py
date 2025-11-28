@@ -1,20 +1,8 @@
-import os
 import math
 import pytest
 from ansys.edb.core.config import Config, ComputationBackend
-from ansys.edb.core.session import launch_session
 from ansys.edb.core.geometry.arc_data import ArcData
-
-os.environ["ANSYSEM_EDB_EXE_DIR"] = r"C:\Program Files\ANSYS Inc\v262\AnsysEM"
-EXE_DIR = os.environ["ANSYSEM_EDB_EXE_DIR"]
-
-
-@pytest.fixture
-def session():
-    """Fixture that launches a session for tests that need it."""
-    session = launch_session(EXE_DIR)
-    yield session
-    session.disconnect()
+from utils.fixtures import session
 
 
 def test_config_default(session):
@@ -756,6 +744,88 @@ def test_has_self_intersections_backends_match(session, polygon, expected_result
     
     # Both backends should give the same result
     assert result_server == result_shapely == expected_result
+
+
+@pytest.mark.parametrize("polygon, expected_count", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], 1),  # Simple square - should return 1 polygon
+    # ([(0, 0), (10, 10), (10, 0), (0, 10)], 2),  # Bow-tie - should split into 2 polygons. However, the server implementation is returning 1 which is incorrect. This needs to be fixed in the server backend.
+])
+def test_remove_self_intersections_server_backend(session, polygon, expected_count):
+    """Test remove_self_intersections with server backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    result = poly.remove_self_intersections()
+    
+    # Check that we get the expected number of polygons
+    assert len(result) == expected_count
+    
+    # All resulting polygons should have no self-intersections
+    for p in result:
+        assert not p.has_self_intersections()
+
+
+@pytest.mark.parametrize("polygon, expected_count", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], 1),  # Simple square - should return 1 polygon
+    ([(0, 0), (10, 10), (10, 0), (0, 10)], 2),  # Bow-tie - should split into 2 polygons
+])
+def test_remove_self_intersections_shapely_backend(session, polygon, expected_count):
+    """Test remove_self_intersections with Shapely backend."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    
+    poly = PolygonData(points=polygon)
+    result = poly.remove_self_intersections()
+    
+    # Check that we get the expected number of polygons
+    assert len(result) == expected_count
+    
+    # All resulting polygons should have no self-intersections
+    for p in result:
+        assert not p.has_self_intersections()
+
+
+@pytest.mark.parametrize("polygon", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)]),  # Simple square
+    # ([(0, 0), (10, 10), (10, 0), (0, 10)]),  # Bow-tie. The server implementation is returning 1 which is incorrect. It should return 2. This needs to be fixed in the server backend.
+])
+def test_remove_self_intersections_backends_match(session, polygon):
+    """Test that both backends produce consistent results for remove_self_intersections."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    
+    if not SHAPELY_AVAILABLE:
+        pytest.skip("Shapely not installed")
+    
+    # Test with server backend
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    PolygonData.reset_backend()
+    poly_server = PolygonData(points=polygon)
+    result_server = poly_server.remove_self_intersections()
+    
+    # Test with Shapely backend
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    PolygonData.reset_backend()
+    poly_shapely = PolygonData(points=polygon)
+    result_shapely = poly_shapely.remove_self_intersections()
+    
+    # Both backends should give the same number of resulting polygons
+    assert len(result_server) == len(result_shapely)
+    
+    # All resulting polygons from both backends should have no self-intersections
+    for p in result_server:
+        assert not p.has_self_intersections()
+    for p in result_shapely:
+        assert not p.has_self_intersections()
 
 
 if __name__ == "__main__":

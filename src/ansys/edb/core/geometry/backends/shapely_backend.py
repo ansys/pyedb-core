@@ -6,7 +6,7 @@ import math
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
     from ansys.edb.core.geometry.point_data import PointData
 
 from ansys.edb.core.geometry.backends.base import PolygonBackend
@@ -45,6 +45,7 @@ class ShapelyBackend(PolygonBackend):
             raise ImportError(
                 "Shapely is not installed. Install it with: pip install shapely (check the pyproject.toml for the correct version)\nOr set PYEDB_COMPUTATION_BACKEND=server to use the server backend."
             )
+
 
     @staticmethod
     def _tessellate_arc(
@@ -171,6 +172,7 @@ class ShapelyBackend(PolygonBackend):
 
         return points
 
+
     @staticmethod
     def _extract_coordinates_with_arcs(
         points: list[PointData],
@@ -246,6 +248,7 @@ class ShapelyBackend(PolygonBackend):
 
         return coords
 
+
     @staticmethod
     def _to_shapely_polygon(
         polygon: PolygonData,
@@ -310,6 +313,42 @@ class ShapelyBackend(PolygonBackend):
         # Cache the result for future use
         polygon._shapely_cache = shapely_poly
         return shapely_poly
+    
+
+    @staticmethod
+    def _shapely_to_polygon_data(shapely_poly: ShapelyPolygon, sense: PolygonSenseType) -> PolygonData:
+        """Convert a Shapely polygon to PolygonData.
+
+        Parameters
+        ----------
+        shapely_poly : ShapelyPolygon
+            The Shapely polygon to convert.
+        sense : PolygonSenseType
+            The sense to apply to the resulting polygon.
+
+        Returns
+        -------
+        PolygonData
+            The converted polygon data.
+        """
+        from ansys.edb.core.geometry.point_data import PointData
+        from ansys.edb.core.geometry.polygon_data import PolygonData
+
+        # Extract exterior coordinates
+        exterior_coords = list(shapely_poly.exterior.coords[:-1])  # Exclude closing point
+        points = [PointData(x, y) for x, y in exterior_coords]
+
+        # Extract holes if any
+        holes = []
+        for interior in shapely_poly.interiors:
+            hole_coords = list(interior.coords[:-1])  # Exclude closing point
+            hole_points = [PointData(x, y) for x, y in hole_coords]
+            # Holes are typically CCW in Shapely, but we create them with opposite sense
+            hole_sense = PolygonSenseType.SENSE_CW if sense == PolygonSenseType.SENSE_CCW else PolygonSenseType.SENSE_CCW
+            holes.append(PolygonData(points=hole_points, sense=hole_sense, closed=True))
+        
+        return PolygonData(points=points, holes=holes, sense=sense, closed=True)
+
 
     def area(self, polygon: PolygonData) -> float:
         """Compute the area of a polygon using Shapely.
@@ -327,6 +366,7 @@ class ShapelyBackend(PolygonBackend):
         shapely_poly = self._to_shapely_polygon(polygon)
         return shapely_poly.area
 
+
     def is_convex(self, polygon: PolygonData) -> bool:
         """Determine whether the polygon is convex using Shapely.
 
@@ -343,6 +383,7 @@ class ShapelyBackend(PolygonBackend):
         shapely_poly = self._to_shapely_polygon(polygon)
         # A polygon is convex if it equals its convex hull
         return shapely_poly.equals(shapely_poly.convex_hull)
+
 
     def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
         """Determine whether a point is inside the polygon using Shapely.
@@ -363,6 +404,7 @@ class ShapelyBackend(PolygonBackend):
         shapely_point = ShapelyPoint(point)
         return shapely_poly.intersects(shapely_point)
 
+
     def bbox(self, polygon: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
         """Compute the bounding box of a polygon using Shapely.
 
@@ -379,6 +421,7 @@ class ShapelyBackend(PolygonBackend):
         shapely_poly = self._to_shapely_polygon(polygon)
         min_x, min_y, max_x, max_y = shapely_poly.bounds
         return ((min_x, min_y), (max_x, max_y))
+
 
     def bbox_of_polygons(
         self, polygons: list[PolygonData]
@@ -412,6 +455,7 @@ class ShapelyBackend(PolygonBackend):
             max_y = max(max_y, p_max_y)
 
         return ((min_x, min_y), (max_x, max_y))
+
 
     def without_arcs(
         self,
@@ -464,6 +508,7 @@ class ShapelyBackend(PolygonBackend):
         # Create and return new PolygonData without arcs
         return PolygonData(points=new_points, holes=new_holes, sense=polygon.sense, closed=polygon.is_closed)
 
+
     def has_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
         """Determine whether the polygon contains any self-intersections using Shapely.
 
@@ -489,3 +534,59 @@ class ShapelyBackend(PolygonBackend):
         shapely_poly = self._to_shapely_polygon(polygon)
         # A polygon with self-intersections is invalid in Shapely
         return not shapely_poly.is_valid
+
+
+    def remove_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> list[PolygonData]:
+        """Remove self-intersections from a polygon using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+        tol : float, default: 1e-9
+            Tolerance (not used in Shapely implementation but kept for API consistency).
+
+        Returns
+        -------
+        list[PolygonData]
+            A list of non self-intersecting polygons.
+
+        Notes
+        -----
+        This implementation uses Shapely's `make_valid` operation to fix self-intersections.
+        The make_valid function converts invalid geometries into valid ones by splitting
+        or modifying them as needed. The result may be a single polygon, multiple polygons
+        (MultiPolygon), or an empty geometry depending on the nature of the self-intersections.
+        The tolerance parameter is kept for API consistency with the server backend but is
+        not used in this implementation as Shapely uses its own internal tolerance.
+        """
+        from shapely.geometry import MultiPolygon
+        from shapely import make_valid
+
+        shapely_poly = self._to_shapely_polygon(polygon)
+        
+        # If the polygon is already valid, return it as-is
+        if shapely_poly.is_valid:
+            return [polygon]
+        
+        # Use buffer(0) to fix self-intersections
+        fixed_geom = make_valid(shapely_poly)
+        
+        # Handle different result types
+        result_polygons = []
+        
+        if fixed_geom.is_empty:
+            # If the result is empty, return an empty list
+            return []
+        
+        # Check if result is a MultiPolygon
+        if isinstance(fixed_geom, MultiPolygon):
+            # Convert each polygon in the MultiPolygon to PolygonData
+            for poly in fixed_geom.geoms:
+                result_polygons.append(self._shapely_to_polygon_data(poly, polygon.sense))
+        else:
+            # Single polygon result
+            result_polygons.append(self._shapely_to_polygon_data(fixed_geom, polygon.sense))
+        
+        return result_polygons
+

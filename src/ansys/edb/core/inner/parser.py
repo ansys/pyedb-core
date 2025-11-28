@@ -200,6 +200,7 @@ def msg_to_polygon_data(message):
     :class:`.PolygonData`
     """
     from ansys.api.edb.v1.point_data_pb2 import BoxMessage
+    from ansys.api.edb.v1.point_data_pb2 import SENSE_CCW
 
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
@@ -210,8 +211,8 @@ def msg_to_polygon_data(message):
         return PolygonData(
             points=_to_point_data_list(message.points),
             holes=_to_polygon_data_list(message.holes),
-            sense=message.sense,
-            closed=message.closed,
+            sense=getattr(message, 'sense', SENSE_CCW),
+            closed=getattr(message, 'closed', True),
         )
 
 

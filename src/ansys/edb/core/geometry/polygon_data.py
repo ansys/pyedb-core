@@ -321,9 +321,7 @@ class PolygonData:
         list of .PolygonData
             A list of non self-intersecting polygons.
         """
-        return self.__stub.RemoveSelfIntersections(
-            messages.polygon_data_with_tol_message(self, tol)
-        )
+        return self._get_backend().remove_self_intersections(self, tol)
 
     @parser.to_point_data_list
     def normalized(self) -> list[PointData]:

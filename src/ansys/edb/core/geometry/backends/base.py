@@ -147,3 +147,21 @@ class PolygonBackend(ABC):
             ``True`` when the polygon contains self-intersections, ``False`` otherwise.
         """
         pass
+
+    @abstractmethod
+    def remove_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> list[PolygonData]:
+        """Remove self-intersections from a polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        list[PolygonData]
+            A list of non self-intersecting polygons.
+        """
+        pass

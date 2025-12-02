@@ -219,3 +219,23 @@ class PolygonBackend(ABC):
             Rotated polygon.
         """
         pass
+
+    @abstractmethod
+    def scale(self, polygon: PolygonData, factor: float, center: tuple[float, float]) -> PolygonData:
+        """Scale the polygon by a linear factor from a center.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to scale.
+        factor : float
+            Linear scaling factor.
+        center : tuple[float, float]
+            Center coordinates (x, y).
+
+        Returns
+        -------
+        PolygonData
+            Scaled polygon.
+        """
+        pass

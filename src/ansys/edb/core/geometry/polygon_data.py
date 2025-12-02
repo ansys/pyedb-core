@@ -366,9 +366,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Transform(
-            messages.polygon_data_transform_message("scale", self, factor, center)
-        )
+        return self._get_backend().scale(self, factor, center)
 
     @parser.to_polygon_data
     def mirror_x(self, x: float) -> PolygonData:

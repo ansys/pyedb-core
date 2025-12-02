@@ -720,3 +720,68 @@ class ShapelyBackend(PolygonBackend):
             sense=polygon.sense,
             closed=polygon.is_closed
         )
+
+    def scale(self, polygon: PolygonData, factor: float, center: tuple[float, float]) -> PolygonData:
+        """Scale the polygon by a linear factor from a center using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to scale.
+        factor : float
+            Linear scaling factor.
+        center : tuple[float, float]
+            Center coordinates (x, y).
+
+        Returns
+        -------
+        PolygonData
+            Scaled polygon.
+
+        Notes
+        -----
+        This implementation scales each point in the polygon relative to the given center.
+        The scaling is done by: new_point = center + factor * (point - center).
+        Arc points are preserved with their heights scaled, and holes are also scaled from the same center.
+        """
+        from ansys.edb.core.geometry.point_data import PointData
+        from ansys.edb.core.geometry.polygon_data import PolygonData
+        from ansys.edb.core.utility import conversions
+        
+        # Convert center to PointData
+        center_point = conversions.to_point(center)
+        cx, cy = center_point.x.double, center_point.y.double
+        
+        # Scale all points in the polygon
+        scaled_points = []
+        for point in polygon.points:
+            # Create new point, preserving arc information
+            if point.is_arc:
+                # For arc points, scale the height as well
+                new_height = point.arc_height * factor
+                scaled_point = PointData(new_height)
+            else:
+                # Get the point coordinates
+                px, py = point.x.double, point.y.double
+                
+                # Calculate scaled position: new_point = center + factor * (point - center)
+                new_x = cx + factor * (px - cx)
+                new_y = cy + factor * (py - cy)
+
+                scaled_point = PointData(new_x, new_y)
+            
+            scaled_points.append(scaled_point)
+        
+        # Scale holes
+        scaled_holes = []
+        for hole in polygon.holes:
+            scaled_hole = self.scale(hole, factor, center)
+            scaled_holes.append(scaled_hole)
+        
+        # Create and return new PolygonData with scaled points
+        return PolygonData(
+            points=scaled_points,
+            holes=scaled_holes,
+            sense=polygon.sense,
+            closed=polygon.is_closed
+        )

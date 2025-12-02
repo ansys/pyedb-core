@@ -170,7 +170,7 @@ from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 from ansys.api.edb.v1.voltage_regulator_pb2_grpc import VoltageRegulatorServiceStub
-import grpc
+from ansys.tools.common.cyberchannel import create_channel
 
 from ansys.edb.core.inner import LOGGER
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
@@ -209,7 +209,8 @@ class _Session:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
         self.ip_address = ip_address or DEFAULT_ADDRESS
-        self.port_num = port_num or _find_available_port()
+        self.transport_mode = "wnua" if self._is_windows() else "uds"
+        self.port_num = port_num or _find_available_port(check_uds=self._uses_uds())
         self.ansys_em_root = ansys_em_root
         self.channel = None
         self.local_server_proc = None
@@ -288,29 +289,43 @@ class _Session:
             home = _get_env("HOME")
         return Path(home) / ".conn"
 
-    def _get_uds_file(self) -> Path:
-        return _Session._get_uds_folder() / f"AnsysEMUDS{self.port_num}.sock"
+    @staticmethod
+    def _get_uds_file_from_port_num(port_num: int):
+        return str(_Session._get_uds_folder() / f"AnsysEMUDS{port_num}.sock")
 
-    def _get_uds_address(self) -> str:
-        return f"unix:{self._get_uds_file()}"
+    def _get_uds_file(self) -> str:
+        return self._get_uds_file_from_port_num(self.port_num)
 
     @staticmethod
     def _is_windows():
         return system() == "Windows"
 
-    def _get_address(self) -> str:
+    def _check_for_legacy_server(self):
         is_launch = self.is_launch()
-        if is_launch and self._is_legacy_version():
+        is_launching_legacy_server = is_launch and self._is_legacy_version()
+        is_attaching_to_legacy_nx_server = (
+            not self._is_windows() and not is_launch and not os.path.exists(self._get_uds_file())
+        )
+        if is_launching_legacy_server or is_attaching_to_legacy_nx_server:
+            self.transport_mode = "insecure"
+
+    def _create_channel(self):
+        self._check_for_legacy_server()
+        if self.transport_mode == "insecure":
             LOGGER.warn(
                 "You are currently using an outdated version of AEDT. "
                 "Please consider updating to the most recent service pack."
             )
-            return self.server_url
-        if self._is_windows():
-            return self.server_url
-        if not is_launch and not os.path.exists(self._get_uds_file()):
-            return self.server_url
-        return self._get_uds_address()
+        channel_params = {"transport_mode": self.transport_mode}
+        if self._uses_uds():
+            channel_params["uds_fullpath"] = self._get_uds_file()
+        else:
+            channel_params["host"] = "localhost"
+            channel_params["port"] = self.port_num
+        return create_channel(**channel_params)
+
+    def _uses_uds(self):
+        return self.transport_mode == "uds"
 
     def connect(self):
         if self.is_active():
@@ -319,10 +334,7 @@ class _Session:
         if self.is_launch():
             self.start_server()
 
-        options = (("grpc.default_authority", "localhost"),)
-        address = self._get_address()
-        self.channel = grpc.insecure_channel(address, options=options)
-        self.channel = grpc.intercept_channel(self.channel, *self.interceptors)
+        self.channel = self._create_channel()
 
         self._initialize_stubs()
 
@@ -343,6 +355,7 @@ class _Session:
 
         if self.is_launch():
             self.stop_server()
+            self.clean_up_uds_file()
 
     def start_server(self):
         if not self.is_local():
@@ -402,6 +415,16 @@ class _Session:
             self.local_server_proc.terminate()
             self.local_server_proc.wait()
         self.local_server_proc = None
+
+    def clean_up_uds_file(self):
+        if not self._uses_uds() or not self.is_launch():
+            return
+        uds_file_path = self._get_uds_file()
+        if os.path.exists(uds_file_path):
+            try:
+                os.remove(uds_file_path)
+            except OSError as e:
+                LOGGER.warn(f"Warning: Could not remove socket file {uds_file_path}: {e}")
 
 
 class StubType(Enum):
@@ -697,7 +720,7 @@ def _ensure_session(
 
 
 def _find_available_port(
-    interface: str = None, start_port: int = 50051, end_port: int = 60000
+    interface: str = None, start_port: int = 50051, end_port: int = 60000, check_uds: bool = False
 ) -> int:
     """Find an available port in the given range.
 
@@ -709,6 +732,8 @@ def _find_available_port(
         First port number to check.
     end_port : int, default: ``60000``
         Last port number to check.
+    check_uds : bool, default: False
+        Check uds socket files to see if a port is in use by another server.
 
     Returns
     -------
@@ -716,6 +741,8 @@ def _find_available_port(
         First available port in the range.
     """
     for port in range(start_port, end_port):
+        if check_uds and os.path.exists(_Session._get_uds_file_from_port_num(port)):
+            continue
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             if sock.connect_ex((interface or DEFAULT_ADDRESS, port)) == errno.ECONNREFUSED:
                 return port

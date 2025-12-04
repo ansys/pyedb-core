@@ -275,3 +275,23 @@ class ServerBackend(PolygonBackend):
 
         result = self._stub.Transform(messages.polygon_data_transform_message("scale", polygon, factor, center))
         return result
+
+    @parser.to_polygon_data
+    def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
+        """Mirror the polygon across a vertical line at x using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to mirror.
+        x : float
+            X-coordinate of the vertical line to mirror across.
+
+        Returns
+        -------
+        PolygonData
+            Mirrored polygon.
+        """
+
+        result = self._stub.Transform(messages.polygon_data_transform_message("mirror_x", polygon, x))
+        return result

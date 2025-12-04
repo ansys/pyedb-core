@@ -381,7 +381,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Transform(messages.polygon_data_transform_message("mirror_x", x))
+        return self._get_backend().mirror_x(self, x)
 
     def bbox(self) -> tuple[PointData, PointData]:
         """Compute the bounding box.

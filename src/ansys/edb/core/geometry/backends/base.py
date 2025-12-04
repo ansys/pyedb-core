@@ -239,3 +239,21 @@ class PolygonBackend(ABC):
             Scaled polygon.
         """
         pass
+
+    @abstractmethod
+    def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
+        """Mirror the polygon across a vertical line at x.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to mirror.
+        x : float
+            X-coordinate of the vertical line to mirror across.
+
+        Returns
+        -------
+        PolygonData
+            Mirrored polygon.
+        """
+        pass

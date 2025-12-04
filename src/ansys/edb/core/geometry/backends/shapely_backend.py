@@ -795,3 +795,71 @@ class ShapelyBackend(PolygonBackend):
             sense=polygon.sense,
             closed=polygon.is_closed
         )
+
+    def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
+        """Mirror the polygon across a vertical line at x using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to mirror.
+        x : float
+            X-coordinate of the vertical line to mirror across.
+
+        Returns
+        -------
+        PolygonData
+            Mirrored polygon.
+
+        Notes
+        -----
+        This implementation mirrors each point in the polygon across the vertical line x=constant.
+        The mirroring is done by: new_x = 2*x - old_x, new_y = old_y.
+        Arc points are preserved with their heights negated (to maintain arc direction),
+        and holes are also mirrored across the same line.
+        The polygon sense is also flipped (CCW becomes CW and vice versa) because mirroring
+        reverses the orientation.
+        """
+        from ansys.edb.core.geometry.point_data import PointData
+        from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
+        
+        # Mirror all points in the polygon
+        mirrored_points = []
+        for point in polygon.points:
+            # Create new point, preserving arc information
+            if point.is_arc:
+                # For arc points, negate the height to maintain correct arc orientation
+                new_height = -point.arc_height.double
+                mirrored_point = PointData(new_height)
+            else:
+                # Get the point coordinates
+                px, py = point.x.double, point.y.double
+                
+                # Calculate mirrored position: new_x = 2*x - old_x
+                new_x = 2 * x - px
+                new_y = py
+
+                mirrored_point = PointData(new_x, new_y)
+            
+            mirrored_points.append(mirrored_point)
+        
+        # Mirror holes
+        mirrored_holes = []
+        for hole in polygon.holes:
+            mirrored_hole = self.mirror_x(hole, x)
+            mirrored_holes.append(mirrored_hole)
+        
+        # Flip the polygon sense (mirroring reverses orientation)
+        new_sense = (
+            PolygonSenseType.SENSE_CW 
+            if polygon.sense == PolygonSenseType.SENSE_CCW 
+            else PolygonSenseType.SENSE_CCW
+        )
+        
+        # Create and return new PolygonData with mirrored points
+        return PolygonData(
+            points=mirrored_points,
+            holes=mirrored_holes,
+            sense=new_sense,
+            closed=polygon.is_closed
+        )

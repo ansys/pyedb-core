@@ -453,5 +453,47 @@ def test_scale(session, polygon, holes, factor, center, expected_points):
             assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
 
 
+#TODO: Fix the expected_points
+@pytest.mark.parametrize("polygon, holes, x, expected_points", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], 10.0, [(20.0, 0.0), (10.0, 0.0), (10.0, 10.0), (20.0, 10.0)]),  # Square
+    ([(5, 5), (15, 5), (10, 15)], [], 0, [(-5.0, 5.0), (-15.0, 5.0), (-10.0, 15.0)]),  # Triangle
+    #TODO: The server backend is not handling arcs correctly after this operation.
+    # ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [], 5.0, []),  # Square with two convex arcs
+    ([(0, 0), (10, 10), (10, 0), (0, 10)], [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], 5.0, [(10.0, 0.0), (0.0, 10.0), (0.0, 0.0), (10.0, 10.0)])  # Bow-tie with one hole in each lobe
+])
+def test_mirror_x(session, polygon, holes, x, expected_points):
+    """Test mirror_x with server backend."""
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon, holes)
+    area_server = polygon_server.area()
+    mirrored_server = polygon_server.mirror_x(x)
+    mirrored_area_server = mirrored_server.area()
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon, holes)
+    area_shapely = polygon_shapely.area()
+    mirrored_shapely = polygon_shapely.mirror_x(x)
+    mirrored_area_shapely = mirrored_shapely.area()
+
+    tol = 1e-9
+    if isinstance(polygon[0], ArcData):
+        tol = 0.1
+
+    assert mirrored_area_server == pytest.approx(area_server, rel=tol)
+    assert mirrored_area_shapely == pytest.approx(area_shapely, rel=tol)
+    assert mirrored_area_server == pytest.approx(mirrored_area_shapely, rel=tol)
+
+    for server_point, shapely_point, expected_point in zip(mirrored_server.points, mirrored_shapely.points, expected_points):
+        assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6) == pytest.approx(expected_point[0], abs=1e-6)
+        assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6) == pytest.approx(expected_point[1], abs=1e-6)
+
+    for server_hole, shapely_hole in zip(mirrored_server.holes, mirrored_shapely.holes):
+        assert len(server_hole.points) == len(shapely_hole.points)
+        for server_point, shapely_point in zip(server_hole.points, shapely_hole.points):
+            assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
+            assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

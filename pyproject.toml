@@ -28,7 +28,8 @@ dependencies = [
     "ansys-api-edb==0.3.dev1",
     "protobuf>=3.19.3,<7",
     "grpcio>=1.44.0",
-    "Django>=4.2.16"
+    "Django>=4.2.16",
+    "shapely==2.1.2"
 ]
 
 [project.urls]
@@ -57,9 +58,6 @@ doc = [
     "numpydoc==1.9.0",
     "ansys_sphinx_theme>=0.12.2",
     "sphinx-copybutton==0.5.2",
-]
-shapely = [
-    "shapely==2.1.2",
 ]
 
 [tool.flit.module]

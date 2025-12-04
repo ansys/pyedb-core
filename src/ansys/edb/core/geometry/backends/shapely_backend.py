@@ -65,7 +65,9 @@ class ShapelyBackend(PolygonBackend):
         end : PointData
             End point of the arc.
         height : float
-            Arc height (sagitta). Positive for clockwise, negative for counter-clockwise.
+            Arc height (sagitta). 
+            - Negative: center on LEFT side, small arc on RIGHT (< 180°)
+            - Positive: center on RIGHT side, large arc on RIGHT (> 180°)
         max_chord_error : float, default: 0
             Maximum allowed chord error (distance from arc to chord).
         max_arc_angle : float, default: math.pi / 6
@@ -82,6 +84,9 @@ class ShapelyBackend(PolygonBackend):
         -----
         Arc is defined by three points: start, arc point (with height), and end.
         The height (sagitta) is the perpendicular distance from the chord midpoint to the arc.
+        When going from start to end:
+        - Negative height: center on LEFT, arc on RIGHT (small arc, < 180°)
+        - Positive height: center on RIGHT, arc on RIGHT (large arc, > 180°)
         """
         # If height is zero or very small, it's a straight line
         if abs(height) < 1e-12:
@@ -94,7 +99,7 @@ class ShapelyBackend(PolygonBackend):
         # Calculate chord properties
         chord_dx = x2 - x1
         chord_dy = y2 - y1
-        chord_length = math.sqrt(chord_dx**2 + chord_dy**2)
+        chord_length = math.sqrt(chord_dx * chord_dx + chord_dy * chord_dy)
 
         # If chord length is zero, start and end are the same point
         if chord_length < 1e-12:
@@ -111,37 +116,31 @@ class ShapelyBackend(PolygonBackend):
         chord_mid_x = (x1 + x2) / 2
         chord_mid_y = (y1 + y2) / 2
 
-        # Perpendicular direction (rotated 90 degrees from chord)
-        perp_dx = -chord_dy / chord_length
-        perp_dy = chord_dx / chord_length
+        # Perpendicular direction to the right when going from start to end
+        perp_dx = chord_dy / chord_length
+        perp_dy = -chord_dx / chord_length
 
-        # Distance from chord midpoint to center
-        center_dist = radius - h
-
-        # Adjust direction based on arc orientation (height sign)
-        if height > 0:  # Clockwise
-            center_x = chord_mid_x + perp_dx * center_dist
-            center_y = chord_mid_y + perp_dy * center_dist
-        else:  # Counter-clockwise
-            center_x = chord_mid_x - perp_dx * center_dist
-            center_y = chord_mid_y - perp_dy * center_dist
-
-        # Calculate total angle subtended by the arc
+        # Place center based on height sign:
+        # - Negative height: center on LEFT side, arc on RIGHT (small portion)
+        # - Positive height: center on RIGHT side, arc on RIGHT (large portion)
+        if height < 0:  # Center on LEFT, small arc on RIGHT
+            center_x = chord_mid_x - perp_dx * (radius + height)
+            center_y = chord_mid_y - perp_dy * (radius + height)
+        else:  # Center on RIGHT, large arc on RIGHT
+            center_x = chord_mid_x + perp_dx * (radius - height)
+            center_y = chord_mid_y + perp_dy * (radius - height)
+        
+        dot_product = (x1-center_x)*(x2-center_x) + (y1-center_y)*(y2-center_y)
+        temp_angle = math.acos(dot_product/(radius*radius))
         angle1 = math.atan2(y1 - center_y, x1 - center_x)
-        angle2 = math.atan2(y2 - center_y, x2 - center_x)
-
-        # Determine the arc angle considering direction
-        if height > 0:  # Clockwise
-            if angle2 > angle1:
-                arc_angle = angle2 - angle1 - 2 * math.pi
-            else:
-                arc_angle = angle2 - angle1
-        else:  # Counter-clockwise
-            if angle2 < angle1:
-                arc_angle = angle2 - angle1 + 2 * math.pi
-            else:
-                arc_angle = angle2 - angle1
-
+        if height < 0 and radius > abs(height):
+            arc_angle = temp_angle
+        if height < 0 and radius <= abs(height):
+            arc_angle = (2*math.pi - temp_angle)
+        if height > 0 and radius > abs(height):
+            arc_angle = (2*math.pi - temp_angle)
+        if height > 0 and radius <= abs(height):
+            arc_angle = temp_angle
         total_angle = abs(arc_angle)
 
         # Determine number of segments
@@ -245,6 +244,13 @@ class ShapelyBackend(PolygonBackend):
                 # Regular point - just add it
                 coords.append((pt.x.double, pt.y.double))
                 i += 1
+        
+        # Remove consecutive duplicate points that may have arisen from tessellation
+        i = 0
+        while i < len(coords) - 1:
+            if math.isclose(coords[i][0], coords[i+1][0], rel_tol=1e-9) and math.isclose(coords[i][1], coords[i+1][1], rel_tol=1e-9):
+                coords.pop(i+1)
+            i += 1
 
         return coords
 
@@ -332,7 +338,7 @@ class ShapelyBackend(PolygonBackend):
             The converted polygon data.
         """
         from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.geometry.polygon_data import PolygonData
+        from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
 
         # Extract exterior coordinates
         exterior_coords = list(shapely_poly.exterior.coords[:-1])  # Exclude closing point
@@ -363,8 +369,8 @@ class ShapelyBackend(PolygonBackend):
         float
             Area of the polygon.
         """
-        shapely_poly = self._to_shapely_polygon(polygon)
-        return shapely_poly.area
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        return shapely_polygon.area
 
 
     def is_convex(self, polygon: PolygonData) -> bool:
@@ -380,9 +386,9 @@ class ShapelyBackend(PolygonBackend):
         bool
             ``True`` when the polygon is convex, ``False`` otherwise.
         """
-        shapely_poly = self._to_shapely_polygon(polygon)
+        shapely_polygon = self._to_shapely_polygon(polygon)
         # A polygon is convex if it equals its convex hull
-        return shapely_poly.equals(shapely_poly.convex_hull)
+        return shapely_polygon.equals(shapely_polygon.convex_hull)
 
 
     def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
@@ -400,9 +406,9 @@ class ShapelyBackend(PolygonBackend):
         bool
             ``True`` if the point is inside the polygon, ``False`` otherwise.
         """
-        shapely_poly = self._to_shapely_polygon(polygon)
+        shapely_polygon = self._to_shapely_polygon(polygon)
         shapely_point = ShapelyPoint(point)
-        return shapely_poly.intersects(shapely_point)
+        return shapely_polygon.intersects(shapely_point)
 
 
     def bbox(self, polygon: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
@@ -418,8 +424,8 @@ class ShapelyBackend(PolygonBackend):
         tuple[tuple[float, float], tuple[float, float]]
             Bounding box as ((min_x, min_y), (max_x, max_y)).
         """
-        shapely_poly = self._to_shapely_polygon(polygon)
-        min_x, min_y, max_x, max_y = shapely_poly.bounds
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        min_x, min_y, max_x, max_y = shapely_polygon.bounds
         return ((min_x, min_y), (max_x, max_y))
 
 
@@ -531,9 +537,9 @@ class ShapelyBackend(PolygonBackend):
         for API consistency with the server backend but is not used in this implementation
         as Shapely uses its own internal tolerance.
         """
-        shapely_poly = self._to_shapely_polygon(polygon)
+        shapely_polygon = self._to_shapely_polygon(polygon)
         # A polygon with self-intersections is invalid in Shapely
-        return not shapely_poly.is_valid
+        return not shapely_polygon.is_valid
 
 
     def remove_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> list[PolygonData]:
@@ -563,15 +569,15 @@ class ShapelyBackend(PolygonBackend):
         from shapely.geometry import MultiPolygon
         from shapely import make_valid
 
-        shapely_poly = self._to_shapely_polygon(polygon)
-        
+        shapely_polygon = self._to_shapely_polygon(polygon)
+
         # If the polygon is already valid, return it as-is
-        if shapely_poly.is_valid:
+        if shapely_polygon.is_valid:
             return [polygon]
         
         # Use buffer(0) to fix self-intersections
-        fixed_geom = make_valid(shapely_poly)
-        
+        fixed_geom = make_valid(shapely_polygon)
+
         # Handle different result types
         result_polygons = []
         
@@ -601,19 +607,24 @@ class ShapelyBackend(PolygonBackend):
         Returns
         -------
         list[PointData]
-            List of normalized points.
+            List of normalized points where outer contours are CCW and holes are CW.
 
         Notes
         -----
-        This implementation normalizes each point in the polygon by treating it as a vector
-        and dividing by its magnitude. Points at the origin (0, 0) will remain at the origin.
+        This method normalizes the polygon orientation:
+        - Outer contours (shell) are returned in counter-clockwise (CCW) order
+        - Holes are returned in clockwise (CW) order
+        
+        Shapely's exterior coordinates are always in CCW order by default,
+        and interior coordinates (holes) are in CW order.
         """
+        from shapely.geometry.polygon import orient
         from ansys.edb.core.geometry.point_data import PointData
         
-        normalized_points = []
-        for point in polygon.points:
-            # Normalize each point using the PointData.normalized() method
-            normalized_points.append(point.normalized())
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        shapely_polygon = orient(shapely_polygon, sign=1.0)
+        exterior_coords = list(shapely_polygon.exterior.coords[:-1])
+        normalized_points = [PointData(x, y) for x, y in exterior_coords]
         
         return normalized_points
 
@@ -637,7 +648,6 @@ class ShapelyBackend(PolygonBackend):
         This implementation moves each point in the polygon by adding the vector to it.
         Arc points are preserved, and holes are also moved by the same vector.
         """
-        from ansys.edb.core.geometry.point_data import PointData
         from ansys.edb.core.geometry.polygon_data import PolygonData
         from ansys.edb.core.utility import conversions
         

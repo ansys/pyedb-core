@@ -326,7 +326,7 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
 
-def plot_poly(ax, p, color):
+def plot_poly(ax, p, color, label=None, linetype='solid'):
     pts = p.points
     if len(pts) == 0:
         return
@@ -384,10 +384,12 @@ def plot_poly(ax, p, color):
         ax.add_patch(a)
 
     for i in range(0, len(xss)):
-        ax.plot(xss[i], yss[i], color=color)
+        ax.plot(xss[i], yss[i], color=color, linestyle=linetype)
+
+    ax.plot(xss[0][0], yss[0][0], color=color, label=label, linestyle=linetype)
 
 
-def plot_polys(ax, ps, title):
+def plot_polys(ax, ps, title, labels=[]):
     try:
         if len(ps) == 0:
             return
@@ -396,11 +398,37 @@ def plot_polys(ax, ps, title):
 
     ax.set_title(title)
 
-    # plot contours
-    for p in ps:
-        plot_poly(ax, p, color="tab:blue")
+    # Count total number of polygons and holes
+    total_holes = sum(len(p.holes) for p in ps)
+    total_items = len(ps) + total_holes
+    
+    # Generate different colors for all polygons and holes
+    colors = plt.cm.tab10(range(total_items))
+    
+    # Define line styles for holes
+    line_styles = ['dashed', 'dotted', 'dashdot', (0, (3, 1, 1, 1)), (0, (5, 2, 1, 2))]
 
-    # plot holes
-    holes = [h for p in ps for h in p.holes]
-    for h in holes:
-        plot_poly(ax, h, color="tab:orange")
+    clean_labels = []
+    for i, _ in enumerate(ps):
+        label = labels[i] if labels is not None and i < len(labels) else None
+        clean_labels.append(label)
+
+    # plot contours
+    color_index = 0
+    for i, p in enumerate(ps):
+        plot_poly(ax, p, color=colors[color_index], label=clean_labels[i])
+        color_index += 1
+
+    # plot holes with unique colors and line styles
+    hole_index = 0
+    for p in ps:
+        for h in p.holes:
+            linestyle = line_styles[hole_index % len(line_styles)]
+            plot_poly(ax, h, color=colors[color_index], label=f'Hole in {clean_labels[color_index%len(ps)]}', linetype=linestyle)
+            color_index += 1
+            hole_index += 1
+
+    if labels is not None:
+        ax.legend()
+
+    # ax.set_aspect('equal')

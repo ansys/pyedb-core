@@ -295,3 +295,39 @@ class ServerBackend(PolygonBackend):
 
         result = self._stub.Transform(messages.polygon_data_transform_message("mirror_x", polygon, x))
         return result
+
+    def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
+        """Compute the bounding circle of the polygon using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to compute bounding circle for.
+
+        Returns
+        -------
+        tuple[tuple[float, float], float]
+            Bounding circle as ((center_x, center_y), radius).
+        """
+        from ansys.edb.core.utility.value import Value
+
+        result = self._stub.GetBoundingCircle(messages.polygon_data_message(polygon))
+        center = parser.msg_to_point_data(result.center)
+        radius = Value(result.radius)
+        return ((center.x.double, center.y.double), radius.double)
+
+    @parser.to_polygon_data
+    def convex_hull(self, polygons: list[PolygonData]) -> PolygonData:
+        """Compute the convex hull of the union of a list of polygons using the server.
+
+        Parameters
+        ----------
+        polygons : list[PolygonData]
+            List of polygons.
+
+        Returns
+        -------
+        PolygonData
+            The convex hull polygon.
+        """
+        return self._stub.GetConvexHull(messages.polygon_data_list_message(polygons))

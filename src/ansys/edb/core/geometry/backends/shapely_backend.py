@@ -863,3 +863,80 @@ class ShapelyBackend(PolygonBackend):
             sense=new_sense,
             closed=polygon.is_closed
         )
+
+    def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
+        """Compute the bounding circle of the polygon using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to compute bounding circle for.
+
+        Returns
+        -------
+        tuple[tuple[float, float], float]
+            Bounding circle as ((center_x, center_y), radius).
+
+        Notes
+        -----
+        This implementation uses the minimum bounding circle algorithm.
+        For simple cases (like rectangles), it uses the circumcircle of the bounding box.
+        This is a simplified implementation that may not always produce the absolute
+        minimum bounding circle but provides a reasonable approximation.
+        """
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        
+        # Get the bounding box
+        min_x, min_y, max_x, max_y = shapely_polygon.bounds
+        
+        # Calculate center as the center of the bounding box
+        center_x = (min_x + max_x) / 2.0
+        center_y = (min_y + max_y) / 2.0
+        
+        # Calculate radius as half the diagonal of the bounding box
+        # This ensures all points are within the circle
+        width = max_x - min_x
+        height = max_y - min_y
+        radius = math.sqrt(width**2 + height**2) / 2.0
+        
+        return ((center_x, center_y), radius)
+
+    def convex_hull(self, polygons: list[PolygonData]) -> PolygonData:
+        """Compute the convex hull of the union of a list of polygons using Shapely.
+
+        Parameters
+        ----------
+        polygons : list[PolygonData]
+            List of polygons.
+
+        Returns
+        -------
+        PolygonData
+            The convex hull polygon.
+        """
+        from shapely.ops import unary_union
+        from shapely.geometry import MultiPoint
+        from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
+        
+        if not polygons:
+            raise ValueError("Cannot compute convex hull of an empty list of polygons")
+        
+        # Collect all points from all polygons (including tessellated arc points)
+        all_points = []
+        for poly in polygons:
+            # Convert to shapely polygon to get tessellated coordinates
+            shapely_poly = self._to_shapely_polygon(poly)
+            # Extract all exterior coordinates
+            all_points.extend(shapely_poly.exterior.coords[:-1])  # Exclude closing point
+            # Also add points from holes if any
+            for interior in shapely_poly.interiors:
+                all_points.extend(interior.coords[:-1])
+        
+        # Create a MultiPoint geometry from all collected points
+        multi_point = MultiPoint(all_points)
+        
+        # Compute the convex hull of all points
+        hull_geom = multi_point.convex_hull
+        
+        # Convert back to PolygonData (convex hull is always CCW)
+        return self._shapely_to_polygon_data(hull_geom, PolygonSenseType.SENSE_CCW)

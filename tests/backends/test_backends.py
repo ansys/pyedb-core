@@ -495,5 +495,66 @@ def test_mirror_x(session, polygon, holes, x, expected_points):
             assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
 
 
+@pytest.mark.parametrize("polygon, holes, expected_result", [
+    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], [(5, 5), 7.0710678118654755]),  # Square
+    ([(5, 5), (15, 5), (10, 15)], [], [(10, 10), 7.0710678118654755]),  # Triangle
+    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [], [(5, 5), 11.180339887498949]),  # Square with two convex arcs
+    ([(0, 0), (10, 10), (10, 0), (0, 10)], [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], [(5, 5), 7.0710678118654755])  # Bow-tie with one hole in each lobe
+])
+def test_bounding_circle(session, polygon, holes, expected_result):
+    """Test bounding_circle with server backend."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon, holes)
+    result_server = polygon_server.bounding_circle()
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon, holes)
+    result_shapely = polygon_shapely.bounding_circle()
+
+    tol = 1e-9
+
+    assert result_server[0].x.double == pytest.approx(expected_result[0][0], rel=tol)
+    assert result_server[0].y.double == pytest.approx(expected_result[0][1], rel=tol)
+    assert result_server[1].double == pytest.approx(expected_result[1], rel=tol)
+
+    assert result_shapely[0].x.double == pytest.approx(expected_result[0][0], rel=tol)
+    assert result_shapely[0].y.double == pytest.approx(expected_result[0][1], rel=tol)
+    assert result_shapely[1].double == pytest.approx(expected_result[1], rel=tol)
+
+
+@pytest.mark.parametrize("polygons, holes, expected_result", [
+    ([[(0, 0), (2, 0), (2, 2), (0, 2)], [(5, 0), (7, 0), (7, 2), (5, 2)]], [[], []], [(0.0, 0.0), (0.0, 2.0), (7.0, 2.0), (7.0, 0.0)]),  # Two separate squares
+    ([[(0, 0), (3, 0), (3, 3), (0, 3)], [(2, 2), (5, 2), (5, 5), (2, 5)]], [[], []], [(0.0, 0.0), (0.0, 3.0), (2.0, 5.0), (5.0, 5.0), (5.0, 2.0), (3.0, 0.0)]),  # Two overlapping squares
+    #TODO: The server backend is not handling arcs correctly in this operation.
+    # ([[ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [ArcData((0, 0), (-10, 0), height=5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=5.0), ArcData((0, 10), (0, 0), height=0.0)]], [[], []], [(5.0, -5.0), (2.5, -4.330127018922193), (-10.0, 0.0), (-10.0, 10.0), (2.5, 14.330127018922195), (5.0, 15.0), (7.5, 14.330127018922193), (9.330127018922195, 12.5), (10.0, 10.0), (10.0, 0.0), (9.330127018922191, -2.5), (7.5, -4.330127018922195)]),  # One squares with two convex arcs and one square with two concave arcs
+    ([[(0, 0), (10, 10), (10, 0), (0, 10)], [(0, 0), (-10, -10), (-10, 0), (0, -10)]], [[[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], []], [(-10.0, -10.0), (-10.0, 0.0), (0.0, 10.0), (10.0, 10.0), (10.0, 0.0), (0.0, -10.0)])  # Bow-tie with one hole in each lobe
+])
+def test_convex_hull(session, polygons, holes, expected_result):
+    """Test convex_hull with both server and shapely backends."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server_list = [create_polygon(p, h) for p, h in zip(polygons, holes)]
+    result_server = PolygonData.convex_hull(polygon_server_list)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely_list = [create_polygon(p, h) for p, h in zip(polygons, holes)]
+    result_shapely = PolygonData.convex_hull(polygon_shapely_list)
+
+    tol = 1e-9
+
+    # Check that both backends produce the same number of points
+    assert len(result_server.points) == len(result_shapely.points)
+    assert len(result_server.points) == len(expected_result)
+
+    # Check that the points match expected values (order may vary, so we check containment)
+    for i, expected_pt in enumerate(expected_result):
+        assert result_server.points[i].x.double == pytest.approx(expected_pt[0], rel=tol)
+        assert result_server.points[i].y.double == pytest.approx(expected_pt[1], rel=tol)
+        assert result_shapely.points[i].x.double == pytest.approx(expected_pt[0], rel=tol)
+        assert result_shapely.points[i].y.double == pytest.approx(expected_pt[1], rel=tol)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

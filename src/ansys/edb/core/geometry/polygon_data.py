@@ -425,7 +425,6 @@ class PolygonData:
 
         return (lower_left, upper_right)
 
-    @parser.to_circle
     def bounding_circle(self) -> tuple[PointData, Value]:
         """Compute the bounding circle of the polygon.
 
@@ -433,7 +432,17 @@ class PolygonData:
         -------
         tuple of (.PointData, .Value)
         """
-        return self.__stub.GetBoundingCircle(messages.polygon_data_message(self))
+        from ansys.edb.core.geometry.point_data import PointData
+        from ansys.edb.core.utility.value import Value
+
+        # Use backend to compute the bounding circle
+        (center_x, center_y), radius = self._get_backend().bounding_circle(self)
+
+        # Convert to PointData and Value objects
+        center = PointData(center_x, center_y)
+        radius_value = Value(radius)
+
+        return (center, radius_value)
 
     @classmethod
     @parser.to_polygon_data
@@ -449,7 +458,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return cls.__stub.GetConvexHull(messages.polygon_data_list_message(polygons))
+        return cls._get_backend().convex_hull(polygons)
 
     def without_arcs(
         self, max_chord_error: float = 0, max_arc_angle: float = math.pi / 6, max_points: int = 8

@@ -257,3 +257,35 @@ class PolygonBackend(ABC):
             Mirrored polygon.
         """
         pass
+
+    @abstractmethod
+    def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
+        """Compute the bounding circle of the polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to compute bounding circle for.
+
+        Returns
+        -------
+        tuple[tuple[float, float], float]
+            Bounding circle as ((center_x, center_y), radius).
+        """
+        pass
+
+    @abstractmethod
+    def convex_hull(self, polygons: list[PolygonData]) -> PolygonData:
+        """Compute the convex hull of the union of a list of polygons.
+
+        Parameters
+        ----------
+        polygons : list[PolygonData]
+            List of polygons.
+
+        Returns
+        -------
+        PolygonData
+            The convex hull polygon.
+        """
+        pass

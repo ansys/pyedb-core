@@ -1,0 +1,6 @@
+circle\_start\_azimuth
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedMeshingSettings.circle_start_azimuth

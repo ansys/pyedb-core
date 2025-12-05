@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. autoproperty:: TerminalInstance.msg

@@ -1,0 +1,6 @@
+enhanced\_low\_frequency\_accuracy
+==================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPISolverSettings.enhanced_low_frequency_accuracy

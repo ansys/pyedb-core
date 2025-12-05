@@ -1,0 +1,6 @@
+midpoint
+========
+
+.. currentmodule:: ansys.edb.core.geometry.point3d_data
+
+.. automethod:: Point3DData.midpoint

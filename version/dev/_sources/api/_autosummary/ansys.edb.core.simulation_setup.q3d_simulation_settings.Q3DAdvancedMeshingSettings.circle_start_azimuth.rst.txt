@@ -1,0 +1,6 @@
+circle\_start\_azimuth
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedMeshingSettings.circle_start_azimuth

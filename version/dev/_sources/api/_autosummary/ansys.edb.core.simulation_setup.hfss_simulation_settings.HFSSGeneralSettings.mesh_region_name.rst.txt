@@ -1,0 +1,6 @@
+mesh\_region\_name
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSGeneralSettings.mesh_region_name

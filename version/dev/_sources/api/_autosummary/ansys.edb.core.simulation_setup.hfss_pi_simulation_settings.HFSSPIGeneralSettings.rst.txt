@@ -1,0 +1,33 @@
+﻿HFSSPIGeneralSettings
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPIGeneralSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPIGeneralSettings.mesh_region_name
+      HFSSPIGeneralSettings.model_type
+      HFSSPIGeneralSettings.msg
+      HFSSPIGeneralSettings.use_auto_mesh_region
+      HFSSPIGeneralSettings.use_mesh_region
+   
+   

@@ -1,0 +1,35 @@
+﻿Q3DAdvancedMeshingSettings
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DAdvancedMeshingSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DAdvancedMeshingSettings.arc_step_size
+      Q3DAdvancedMeshingSettings.arc_to_chord_error
+      Q3DAdvancedMeshingSettings.circle_start_azimuth
+      Q3DAdvancedMeshingSettings.layer_alignment
+      Q3DAdvancedMeshingSettings.max_num_arc_points
+      Q3DAdvancedMeshingSettings.msg
+      Q3DAdvancedMeshingSettings.use_arc_chord_error_approx
+   
+   

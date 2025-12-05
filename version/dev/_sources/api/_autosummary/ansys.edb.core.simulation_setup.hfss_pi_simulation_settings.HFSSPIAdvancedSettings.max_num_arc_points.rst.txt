@@ -1,0 +1,6 @@
+max\_num\_arc\_points
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIAdvancedSettings.max_num_arc_points

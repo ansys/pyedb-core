@@ -1,0 +1,6 @@
+tangent\_at
+===========
+
+.. currentmodule:: ansys.edb.core.geometry.arc_data
+
+.. automethod:: ArcData.tangent_at

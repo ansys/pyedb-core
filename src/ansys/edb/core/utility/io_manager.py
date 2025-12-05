@@ -193,7 +193,9 @@ class _Buffer(_IOOptimizer):
         self._allow_flushing = True
 
     def _hijack_request(self, service_name, rpc_name, request):
-        if (rpc_info := get_rpc_info(service_name, rpc_name)) is None or rpc_info.is_read:
+        if (rpc_info := get_rpc_info(service_name, rpc_name)) is None or (
+            rpc_info.is_read and not rpc_info.can_buffer
+        ):
             self.flush()
             return
         if not rpc_info.can_buffer:

@@ -24,7 +24,7 @@ class _RpcInfo:
 
     @property
     def is_write(self):
-        return self._buffer or self._write_no_buffer
+        return (self._buffer or self._write_no_buffer) and not self.is_read
 
     @property
     def can_cache(self):
@@ -115,7 +115,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.CellService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetLayout": _RpcInfo(cache=True),
+        "GetLayout": _RpcInfo(buffer=True, cache=True, returns_future=True),
         "Find": _RpcInfo(cache=True),
         "Delete": _RpcInfo(buffer=True),
         "GetDatabase": _RpcInfo(cache=True),
@@ -137,6 +137,8 @@ rpc_information = {
         "SetHfssExtentInfo": _RpcInfo(buffer=True),
         "GetTemperatureSettings": _RpcInfo(cache=True),
         "SetTemperatureSettings": _RpcInfo(buffer=True),
+        "GetTouchstoneExportSettings": _RpcInfo(cache=True),
+        "SetTouchstoneExportSettings": _RpcInfo(buffer=True),
         "GetProductPropertyIds": _RpcInfo(cache=True),
         "GetProductProperty": _RpcInfo(cache=True),
         "SetProductProperty": _RpcInfo(buffer=True),
@@ -551,7 +553,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.LayoutService": {
         "GetCell": _RpcInfo(cache=True),
-        "GetLayerCollection": _RpcInfo(cache=True),
+        "GetLayerCollection": _RpcInfo(buffer=True, cache=True, returns_future=True),
         "SetLayerCollection": _RpcInfo(buffer=True),
         "GetItems": _RpcInfo(read_no_cache=True),
         "StreamItems": _RpcInfo(read_no_cache=True),
@@ -1147,11 +1149,11 @@ rpc_information = {
         "GetUseLoopResForPerPin": _RpcInfo(cache=True),
         "SetUseLoopResForPerPin": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSIGeneralSettingsService": {
+    "ansys.api.edb.v1.SIWavePSIGeneralSettingsService": {
         "GetPISliderPos": _RpcInfo(cache=True),
         "SetPISliderPos": _RpcInfo(buffer=True),
-        "GetSIwavePSIModelType": _RpcInfo(cache=True),
-        "SetSIwavePSIModelType": _RpcInfo(buffer=True),
+        "GetSIWavePSIModelType": _RpcInfo(cache=True),
+        "SetSIWavePSIModelType": _RpcInfo(buffer=True),
         "GetMinPlaneAreaToMesh": _RpcInfo(cache=True),
         "SetMinPlaneAreaToMesh": _RpcInfo(buffer=True),
         "GetMinVoidAreaToMesh": _RpcInfo(cache=True),
@@ -1167,7 +1169,7 @@ rpc_information = {
         "GetPerformERC": _RpcInfo(cache=True),
         "SetPerformERC": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSINetProcessingSettingsService": {
+    "ansys.api.edb.v1.SIWavePSINetProcessingSettingsService": {
         "GetAutoSelectNetsForSimulation": _RpcInfo(cache=True),
         "SetAutoSelectNetsForSimulation": _RpcInfo(buffer=True),
         "GetIgnoreDummyNetsForSelectedNets": _RpcInfo(cache=True),
@@ -1175,7 +1177,7 @@ rpc_information = {
         "GetIncludeNets": _RpcInfo(cache=True),
         "SetIncludeNets": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSIPowerGroundNetsService": {
+    "ansys.api.edb.v1.SIWavePSIPowerGroundNetsService": {
         "GetImprovedLossModel": _RpcInfo(cache=True),
         "SetImprovedLossModel": _RpcInfo(buffer=True),
         "GetAutoDetectIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True),
@@ -1183,7 +1185,7 @@ rpc_information = {
         "GetIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True),
         "SetIgnoreSmallHolesMinDiameter": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSISignalNetsSettingsService": {
+    "ansys.api.edb.v1.SIWavePSISignalNetsSettingsService": {
         "GetSignalNetsErrorTolerance": _RpcInfo(cache=True),
         "SetSignalNetsErrorTolerance": _RpcInfo(buffer=True),
         "GetSignalNetsConductorModeling": _RpcInfo(cache=True),

@@ -940,3 +940,34 @@ class ShapelyBackend(PolygonBackend):
         
         # Convert back to PolygonData (convex hull is always CCW)
         return self._shapely_to_polygon_data(hull_geom, PolygonSenseType.SENSE_CCW)
+
+    def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
+        """Defeature a polygon by removing small features using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to defeature.
+        tol : float, default: 1e-9
+            Tolerance for defeaturing. Points closer than this distance may be simplified.
+
+        Returns
+        -------
+        PolygonData
+            Defeatured polygon.
+
+        Notes
+        -----
+        This implementation uses Shapely's `simplify` method with the Douglas-Peucker algorithm.
+        The tolerance represents the maximum distance from the original geometry to the simplified one.
+        Small features smaller than the tolerance will be removed. The operation preserves topology
+        to ensure the result is valid.
+        """
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        
+        # Simplify the polygon using Douglas-Peucker algorithm
+        # preserve_topology=True ensures the result remains valid
+        simplified_polygon = shapely_polygon.simplify(tolerance=tol, preserve_topology=True)
+        
+        # Convert back to PolygonData
+        return self._shapely_to_polygon_data(simplified_polygon, polygon.sense)

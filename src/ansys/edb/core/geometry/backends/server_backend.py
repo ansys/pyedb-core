@@ -331,3 +331,21 @@ class ServerBackend(PolygonBackend):
             The convex hull polygon.
         """
         return self._stub.GetConvexHull(messages.polygon_data_list_message(polygons))
+
+    @parser.to_polygon_data
+    def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
+        """Defeature a polygon by removing small features using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to defeature.
+        tol : float, default: 1e-9
+            Tolerance for defeaturing.
+
+        Returns
+        -------
+        PolygonData
+            Defeatured polygon.
+        """
+        return self._stub.Defeature(messages.polygon_data_with_tol_message(polygon, tol))

@@ -556,5 +556,32 @@ def test_convex_hull(session, polygons, holes, expected_result):
         assert result_shapely.points[i].y.double == pytest.approx(expected_pt[1], rel=tol)
 
 
+@pytest.mark.parametrize("polygon, holes, tol, expected_area", [
+    ([ArcData((0, 0), (1, 0), height=-1.0), ArcData((1, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [], 1.0, 89.26990509033203),  # Square with two convex arcs
+    #TODO: The server backend is not handling this case correctly.
+    # ([(0, 0), (10, 0), (11, 0), (11, 0.5), (10, 0.5), (10, 10), (0, 10)], [], 1.0, 105.0),  # Square with a small feature
+    ([(0, 0), (10, 1), (10, 0), (0, 10)], [], 1.0, 50.0),  # Bow-tie with a small lobe
+])
+def test_defeature(session, polygon, holes, tol, expected_area):
+    """Test defeature with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon, holes)
+    defeatured_server = polygon_server.defeature(tol)
+    area_server = defeatured_server.area()
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon, holes)
+    defeatured_shapely = polygon_shapely.defeature(tol)
+    area_shapely = defeatured_shapely.area()
+
+    tol = 1e-9
+    if isinstance(polygon[0], ArcData):
+        tol = 0.1
+
+    assert area_server == pytest.approx(expected_area, rel=tol)
+    assert area_shapely == pytest.approx(expected_area, rel=tol)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

@@ -490,7 +490,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Defeature(messages.polygon_data_with_tol_message(self, tol))
+        return self._get_backend().defeature(self, tol)
 
     def is_inside(self, point: PointLike) -> bool:
         """Determine whether the point is inside the polygon.

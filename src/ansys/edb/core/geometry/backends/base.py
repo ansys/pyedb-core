@@ -289,3 +289,21 @@ class PolygonBackend(ABC):
             The convex hull polygon.
         """
         pass
+
+    @abstractmethod
+    def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
+        """Defeature a polygon by removing small features.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to defeature.
+        tol : float, default: 1e-9
+            Tolerance for defeaturing.
+
+        Returns
+        -------
+        PolygonData
+            Defeatured polygon.
+        """
+        pass

@@ -166,6 +166,7 @@ from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 from ansys.api.edb.v1.voltage_regulator_pb2_grpc import VoltageRegulatorServiceStub
 from ansys.tools.common.cyberchannel import create_channel
+import grpc
 
 from ansys.edb.core.inner import LOGGER
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
@@ -317,7 +318,7 @@ class _Session:
         else:
             channel_params["host"] = "localhost"
             channel_params["port"] = self.port_num
-        return create_channel(**channel_params)
+        return grpc.intercept_channel(create_channel(**channel_params), *self.interceptors)
 
     def _uses_uds(self):
         return self.transport_mode == "uds"

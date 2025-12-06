@@ -349,3 +349,45 @@ class ServerBackend(PolygonBackend):
             Defeatured polygon.
         """
         return self._stub.Defeature(messages.polygon_data_with_tol_message(polygon, tol))
+
+    def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
+        """Get the intersection type with another polygon using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The first polygon.
+        other : PolygonData
+            The second polygon.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        int
+            The intersection type enum value.
+        """
+        return self._stub.GetIntersectionType(
+            messages.polygon_data_pair_with_tolerance_message(polygon, other, tol)
+        ).intersection_type
+
+    def circle_intersect(self, polygon: PolygonData, center: tuple[float, float], radius: float) -> bool:
+        """Determine whether a circle intersects with a polygon using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        center : tuple[float, float]
+            Center coordinates (x, y) of the circle.
+        radius : float
+            Radius of the circle.
+
+        Returns
+        -------
+        bool
+            ``True`` if the circle intersects with the polygon, ``False`` otherwise.
+        """
+        return self._stub.CircleIntersectsPolygon(
+            messages.polygon_data_with_circle_message(polygon, center, radius)
+        ).value

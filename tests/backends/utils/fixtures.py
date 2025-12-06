@@ -14,30 +14,36 @@ def _get_session_scope(fixture_name, config):
     return config.getoption("--session-scope", default="module")
 
 
-def create_polygon(data, holes = []):
-    """Create a PolygonData object based on input data type.
+def create_polygon(geometry: dict = None):
+    """Create a PolygonData object from a geometry dictionary.
     
     Args:
-        data: Either a list of point tuples [(x, y), ...] or a list of ArcData objects
+        geometry: A dictionary containing polygon geometry data with:
+            - 'data': Either a list of point tuples [(x, y), ...] or a list of ArcData objects
+            - 'holes' (optional): A list of hole definitions, where each hole is either
+                                  a list of point tuples or a list of ArcData objects
         
     Returns:
-        PolygonData: A polygon created with either points or arcs based on the input
+        PolygonData: A polygon created with either points or arcs, optionally with holes
     """
     from ansys.edb.core.geometry.polygon_data import PolygonData
-    
-    # Check if data contains ArcData objects
-    if data and isinstance(data[0], ArcData):
-        # Create polygon with arcs
-        if holes and isinstance(holes[0][0], ArcData):
-            return PolygonData(arcs=data, holes=[PolygonData(arcs=h) for h in holes])
-        else:
-            return PolygonData(arcs=data, holes=[PolygonData(h) for h in holes])
+
+    params = {}
+    if isinstance(geometry['data'][0], ArcData):
+        params['arcs'] = geometry['data']
     else:
-        # Create polygon with points
-        if holes and isinstance(holes[0][0], ArcData):
-            return PolygonData(data, holes=[PolygonData(arcs=h) for h in holes])
-        else:
-            return PolygonData(data, holes=[PolygonData(h) for h in holes])
+        params['points'] = geometry['data']
+
+    if 'holes' in geometry:
+        holes = []
+        for hole in geometry['holes']:
+            if isinstance(hole[0], ArcData):
+                holes.append(PolygonData(arcs=hole))
+            else:
+                holes.append(PolygonData(points=hole))
+        params['holes'] = holes
+
+    return PolygonData(**params)
 
 
 @pytest.fixture(scope=_get_session_scope)

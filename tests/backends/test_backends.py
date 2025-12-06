@@ -2,6 +2,7 @@ import math
 import pytest
 from ansys.edb.core.config import Config, ComputationBackend
 from ansys.edb.core.geometry.arc_data import ArcData
+from ansys.edb.core.geometry.polygon_data import IntersectionType
 from utils.fixtures import session, create_polygon
 
 
@@ -76,100 +77,100 @@ def test_backend_factory_shapely_not_available(session):
         _get_shapely_backend()
 
 
-@pytest.mark.parametrize("test_case, holes, expected_result", [
-    ([(0, 0), (10, 0), (10, 10)], [], 50.0),  # Triangle
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], 100.0),  # Square
-    ([(0, 0), (-20, 0), (-20, 10), (0, 10)], [], 200.0),  # Rectangle with negative coords
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], 139.26991271972656),  # Square with one convex arc
-    ([ArcData((0, 0), (-10, 0), height=-1.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], 93.28030395507812),  # Square with one concave arc
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]], 0.52),  # Square with two holes
+@pytest.mark.parametrize("test_case, expected_result", [
+    ({'data': [(0, 0), (10, 0), (10, 10)]}, 50.0),  # Triangle
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 100.0),  # Square
+    ({'data': [(0, 0), (-20, 0), (-20, 10), (0, 10)]}, 200.0),  # Rectangle with negative coords
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, 139.26991271972656),  # Square with one convex arc
+    ({'data': [ArcData((0, 0), (-10, 0), height=-1.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, 93.28030395507812),  # Square with one concave arc
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}, 0.52),  # Square with two holes
 ])
-def test_polygon_area(session, test_case, holes, expected_result):
+def test_area(session, test_case, expected_result):
     """Test area computation with server backend."""
 
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(test_case, holes)
+    polygon_server = create_polygon(test_case)
     result_server = polygon_server.area()
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(test_case, holes)
+    polygon_shapely = create_polygon(test_case)
     result_shapely = polygon_shapely.area()
 
     tol = 1e-6
-    if isinstance(test_case[0], ArcData):
+    if isinstance(test_case['data'][0], ArcData):
         tol = 0.1
 
     assert result_server == pytest.approx(expected_result, rel=tol)
     assert result_shapely == pytest.approx(expected_result, rel=tol)
 
 
-@pytest.mark.parametrize("test_case, holes, expected_result", [
-    ([(0, 0), (1, 0), (0.5, 1)], [], True),  # Triangle
-    ([(0, 0), (2, 0), (2, 1), (1, 1), (1, 2), (0, 2)], [], False),  # L-shape
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], True),  # Square with one convex arc
-    ([ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], False),  # Square with one concave arc
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]], False),  # Square with two holes
+@pytest.mark.parametrize("test_case, expected_result", [
+    ({'data': [(0, 0), (1, 0), (0.5, 1)]}, True),  # Triangle
+    ({'data': [(0, 0), (2, 0), (2, 1), (1, 1), (1, 2), (0, 2)]}, False),  # L-shape
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, True),  # Square with one convex arc
+    ({'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, False),  # Square with one concave arc
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}, False),  # Square with two holes
 ])
-def test_is_convex(session, test_case, holes, expected_result):
+def test_is_convex(session, test_case, expected_result):
     """Test is_convex with server backend."""
 
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(test_case, holes)
+    polygon_server = create_polygon(test_case)
     result_server = polygon_server.is_convex()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(test_case, holes)
+    polygon_shapely = create_polygon(test_case)
     result_shapely = polygon_shapely.is_convex()
 
     assert result_server == expected_result
     assert result_shapely == expected_result
 
 
-@pytest.mark.parametrize("polygon, holes, point, expected_result", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], (5, 5), True),  # Point inside square
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], (15, 5), False),  # Point outside square
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], (0, 0), True),  # Point on vertex
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], (5, 0), True),  # Point on edge
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], (5, 0), True),  # Point inside square with one convex arc
-    ([ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], (-5, 0), False),  # Point outside square with one concave arc
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [], (7.5, 5), True),  # Point inside Bow-tie
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [], (2.5, 5), True),  # Point inside Bow-tie
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [], (5, 0), False),  # Point outside Bow-tie
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]], (0.5, 0.5), True),  # Point inside the body of a square with two holes
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]], (0.25, 0.5), False),  # Point inside the hole of a square with two holes
+@pytest.mark.parametrize("polygon, point, expected_result", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, (5, 5), True),  # Point inside square
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, (15, 5), False),  # Point outside square
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, (0, 0), True),  # Point on vertex
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, (5, 0), True),  # Point on edge
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, (5, 0), True),  # Point inside square with one convex arc
+    ({'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, (-5, 0), False),  # Point outside square with one concave arc
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, (7.5, 5), True),  # Point inside Bow-tie
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, (2.5, 5), True),  # Point inside Bow-tie
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, (5, 0), False),  # Point outside Bow-tie
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}, (0.5, 0.5), True),  # Point inside the body of a square with two holes
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}, (0.25, 0.5), False),  # Point inside the hole of a square with two holes
 ])
-def test_is_inside(session, polygon, holes, point, expected_result):
+def test_is_inside(session, polygon, point, expected_result):
     """Test is_inside with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     result_server = polygon_server.is_inside(point)
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.is_inside(point)
 
     assert result_shapely == expected_result
     assert result_server == expected_result
 
 
-@pytest.mark.parametrize("polygon, holes, expected_bbox", [
-    ([(0, 0), (5, 0), (2.5, 5)], [], ((0, 0), (5, 5))),  # Triangle
-    ([(1, 1), (4, 2), (3, 5), (0, 4)], [], ((0, 1), (4, 5))),  # Irregular polygon
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], ((0, -5), (10, 10))),  # Square with one convex arc
-    ([ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], ((-10, 0), (0, 10))),  # Square with one concave arc
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [], ((0, 0), (10, 10))),  # Bow-tie
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]], ((0, 0), (1, 1))),  # Square with two holes
+@pytest.mark.parametrize("polygon, expected_bbox", [
+    ({'data': [(0, 0), (5, 0), (2.5, 5)]}, ((0, 0), (5, 5))),  # Triangle
+    ({'data': [(1, 1), (4, 2), (3, 5), (0, 4)]}, ((0, 1), (4, 5))),  # Irregular polygon
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, ((0, -5), (10, 10))),  # Square with one convex arc
+    ({'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, ((-10, 0), (0, 10))),  # Square with one concave arc
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, ((0, 0), (10, 10))),  # Bow-tie
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}, ((0, 0), (1, 1))),  # Square with two holes
 ])
-def test_bbox(session, polygon, holes, expected_bbox):
+def test_bbox(session, polygon, expected_bbox):
     """Test bbox with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     result_server = polygon_server.bbox()
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.bbox()
 
     tol = 1e-9
@@ -185,24 +186,24 @@ def test_bbox(session, polygon, holes, expected_bbox):
     assert result_shapely[1].y.double == pytest.approx(expected_bbox[1][1], rel=tol)
 
 
-@pytest.mark.parametrize("polygons, holes, expected_bbox", [
-    ([[(0, 0), (5, 0), (5, 5), (0, 5)]], [[]], ((0, 0), (5, 5))),  # Single square
-    ([[(0, 0), (5, 0), (5, 5), (0, 5)], [(10, 10), (15, 10), (15, 15), (10, 15)]], [[], []], ((0, 0), (15, 15))),  # Two non-overlapping squares
-    ([[(0, 0), (10, 0), (10, 10), (0, 10)], [(5, 5), (15, 5), (15, 15), (5, 15)]], [[], []], ((0, 0), (15, 15))),  # Two overlapping squares
-    ([[ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]], [[], []], ((-10, -5), (10, 10))),  # A square with one convex arc and a square with one concave arc
-    ([[(0, 0), (10, 10), (10, 0), (0, 10)]], [[]], ((0, 0), (10, 10))),  # Bow-tie
-    ([[(0, 1), (0, 0), (1, 0), (1, 1)]], [[[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]], ((0, 0), (1, 1))),  # Square with two holes
+@pytest.mark.parametrize("polygons, expected_bbox", [
+    ([{'data': [(0, 0), (5, 0), (5, 5), (0, 5)]}], ((0, 0), (5, 5))),  # Single square
+    ([{'data': [(0, 0), (5, 0), (5, 5), (0, 5)]}, {'data': [(10, 10), (15, 10), (15, 15), (10, 15)]}], ((0, 0), (15, 15))),  # Two non-overlapping squares
+    ([{'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, {'data': [(5, 5), (15, 5), (15, 15), (5, 15)]}], ((0, 0), (15, 15))),  # Two overlapping squares
+    ([{'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}], ((-10, -5), (10, 10))),  # A square with one convex arc and a square with one concave arc
+    ([{'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}], ((0, 0), (10, 10))),  # Bow-tie
+    ([{'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}], ((0, 0), (1, 1))),  # Square with two holes
 ])
-def test_bbox_of_polygons(session, polygons, holes, expected_bbox):
+def test_bbox_of_polygons(session, polygons, expected_bbox):
     """Test bbox_of_polygons with server backend."""
     from ansys.edb.core.geometry.polygon_data import PolygonData
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server_list = [create_polygon(p, h) for p, h in zip(polygons, holes)]
+    polygon_server_list = [create_polygon(p) for p in polygons]
     result_server = PolygonData.bbox_of_polygons(polygon_server_list)
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely_list = [create_polygon(p, h) for p, h in zip(polygons, holes)]
+    polygon_shapely_list = [create_polygon(p) for p in polygons]
     result_shapely = PolygonData.bbox_of_polygons(polygon_shapely_list)
 
     assert result_server[0].x.double == pytest.approx(expected_bbox[0][0], rel=1e-9)
@@ -215,82 +216,82 @@ def test_bbox_of_polygons(session, polygons, holes, expected_bbox):
     assert result_shapely[1].x.double == pytest.approx(expected_bbox[1][0], rel=1e-9)
     assert result_shapely[1].y.double == pytest.approx(expected_bbox[1][1], rel=1e-9)
 
-@pytest.mark.parametrize("polygons, holes, expected_result", [
-    ([ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)], [], 7.0),  # Square with arcs
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], 137.5),  # Square with one convex arc
-    ([ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], 62.5),  # Square with one concave arc
-    ([ArcData((0, 0), (-10, 0), height=-8.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=8.0), ArcData((0, 10), (0, 0), height=0.0)], [], 6.573724563263833),  # Square with two concave arcs.
-    ([ArcData((0, 0), (-10, 0), height=-1.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [[ArcData((-4, 4), (-6, 4), height=-1.0), ArcData((-6, 4), (-6, 6), height=0.0), ArcData((-6, 6), (-4, 6), height=0.0), ArcData((-4, 6), (-4, 4), height=0.0)]], 92.5),  # Square with one concave arc and one hole
+@pytest.mark.parametrize("polygons, expected_result", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 100.0),  # Simple square
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, 0.0),   # Bow-tie
+    ({'data': [ArcData((0, 0), (2, 0), height=-1.0), ArcData((2, 0), (2, 2), height=0.0), ArcData((2, 2), (0, 2), height=-1.0), ArcData((0, 2), (0, 0), height=0.0)]}, 7.0),  # Square with arcs
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, 137.5),  # Square with one convex arc
+    ({'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, 62.5),  # Square with one concave arc
+    ({'data': [ArcData((0, 0), (-10, 0), height=-8.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=8.0), ArcData((0, 10), (0, 0), height=0.0)]}, 6.573724563263833),  # Square with two concave arcs.
+    ({'data': [ArcData((0, 0), (-10, 0), height=-1.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], 'holes': [[ArcData((-4, 4), (-6, 4), height=-1.0), ArcData((-6, 4), (-6, 6), height=0.0), ArcData((-6, 6), (-4, 6), height=0.0), ArcData((-4, 6), (-4, 4), height=0.0)]]}, 92.5),  # Square with one concave arc and one hole
 ])
-def test_without_arcs(session, polygons, holes, expected_result):
+def test_without_arcs(session, polygons, expected_result):
     """Test tessellation with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygons, holes)
+    polygon_server = create_polygon(polygons)
     tessellated_server = polygon_server.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
     tessellated_area_server = tessellated_server.area()
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygons, holes)
+    polygon_shapely = create_polygon(polygons)
     tessellated_shapely = polygon_shapely.without_arcs(max_chord_error=0, max_arc_angle=math.pi/6, max_points=8)
     tessellated_area_shapely = tessellated_shapely.area()
 
     tol = 1e-9
 
     #TODO:
-    # # Server tessellation is not correct at the moment, so commenting out these assertions. This needs to be fixed in the server backend.
-    # assert polygon_server.has_arcs() == True
+    ## Server tessellation is not correct at the moment, so commenting out these assertions. This needs to be fixed in the server backend.
     # assert tessellated_server.has_arcs() == False
     # assert tessellated_area_server == pytest.approx(expected_result, rel=tol)
 
-    assert polygon_shapely.has_arcs() == True
     assert tessellated_shapely.has_arcs() == False
     assert tessellated_area_shapely == pytest.approx(expected_result, rel=tol)
 
 
-@pytest.mark.parametrize("polygon, holes, expected_result", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], False),  # Simple square
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [], True),   # Bow-tie
-    ([(0, 0), (5, 0), (5, 5), (0, 5)], [], False),      # Simple polygon
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=-5.0), ArcData((0, 8), (0, 0), height=0.0)], [], False),  # Square with two convex arcs
-    ([ArcData((0, 0), (-10, 0), height=-8.0), ArcData((-10, 0), (-10, 8), height=0.0), ArcData((-10, 8), (0, 8), height=-8.0), ArcData((0, 8), (0, 0), height=0.0)], [], True),  # Square with two concave arcs
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]], False),  # Square with two non-intersecting holes
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.6, 0.9), (0.6, 0.1)], [(0.4, 0.1), (0.9, 0.1), (0.9, 0.9), (0.4, 0.9)]], True),  # Square with two intersecting holes
+@pytest.mark.parametrize("polygon, expected_result", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, False),  # Simple square
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, True),   # Bow-tie
+    ({'data': [(0, 0), (5, 0), (5, 5), (0, 5)]}, False),      # Simple polygon
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=-5.0), ArcData((0, 8), (0, 0), height=0.0)]}, False),  # Square with two convex arcs
+    ({'data': [ArcData((0, 0), (-10, 0), height=-8.0), ArcData((-10, 0), (-10, 8), height=0.0), ArcData((-10, 8), (0, 8), height=-8.0), ArcData((0, 8), (0, 0), height=0.0)]}, True),  # Square with two concave arcs
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}, False),  # Square with two non-intersecting holes
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.6, 0.9), (0.6, 0.1)], [(0.4, 0.1), (0.9, 0.1), (0.9, 0.9), (0.4, 0.9)]]}, True),  # Square with two intersecting holes
 ])
-def test_has_self_intersections(session, polygon, holes, expected_result):
+def test_has_self_intersections(session, polygon, expected_result):
     """Test has_self_intersections with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     result_server = polygon_server.has_self_intersections()
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.has_self_intersections()
 
     assert result_server == expected_result
     assert result_shapely == expected_result
 
 
-@pytest.mark.parametrize("polygon, holes, expected_count", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], 1),  # Simple square
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [], 2),  # Bow-tie
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=-5.0), ArcData((0, 8), (0, 0), height=0.0)], [], 1),  # Square with two convex arcs
-    ([ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 8), height=0.0), ArcData((-10, 8), (0, 8), height=-5.0), ArcData((0, 8), (0, 0), height=0.0)], [], 3),  # Square with two concave arcs
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]], 1),  # Square with two non-intersecting holes
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], 2),  # Bow-tie with one hole in each lobe
+@pytest.mark.parametrize("polygon, expected_count", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 1),  # Simple square
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, 2),  # Bow-tie
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=-5.0), ArcData((0, 8), (0, 0), height=0.0)]}, 1),  # Square with two convex arcs
+    ({'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 8), height=0.0), ArcData((-10, 8), (0, 8), height=-5.0), ArcData((0, 8), (0, 0), height=0.0)]}, 3),  # Square with two concave arcs
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.1, 0.1), (0.1, 0.9), (0.4, 0.9), (0.4, 0.1)], [(0.6, 0.1), (0.9, 0.1), (0.9, 0.9), (0.6, 0.9)]]}, 1),  # Square with two non-intersecting holes
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)], 'holes': [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]]}, 2),  # Bow-tie with one hole in each lobe
 ])
-def test_remove_self_intersections(session, polygon, holes, expected_count):
+def test_remove_self_intersections(session, polygon, expected_count):
     """Test remove_self_intersections with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     no_self_intersections_server = polygon_server.remove_self_intersections()
     result_server = [polygon.has_self_intersections() for polygon in no_self_intersections_server]
 
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     no_self_intersections_shapely = polygon_shapely.remove_self_intersections()
     result_shapely = [polygon.has_self_intersections() for polygon in no_self_intersections_shapely]
 
@@ -305,21 +306,21 @@ def test_remove_self_intersections(session, polygon, holes, expected_count):
         assert not item
 
 
-@pytest.mark.parametrize("polygon, holes", [
-    ([(3, 0), (0, 4), (5, 12)], []),  # Clock-wise triangle with no hole
-    ([(0, 1), (0, 0), (1, 0), (1, 1)], [[(0.25, 0.25), (0.25, 0.75), (0.75, 0.75), (0.75, 0.25)]]),  # Counter clock-wise square with counter clock-wise hole
-    ([(0, 0), (0, 5), (5, 0)], [[(1, 1), (1, 3), (3, 1)]]),  # Clock-wise triangle with with clock-wise hole
-    ([ArcData((0, 0), (10, 0), height=-1.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=0.0), ArcData((0, 8), (0, 0), height=0.0)], []),  # Square with one convex arc.
+@pytest.mark.parametrize("polygon", [
+    ({'data': [(3, 0), (0, 4), (5, 12)]}),  # Clock-wise triangle with no hole
+    ({'data': [(0, 1), (0, 0), (1, 0), (1, 1)], 'holes': [[(0.25, 0.25), (0.25, 0.75), (0.75, 0.75), (0.75, 0.25)]]}),  # Counter clock-wise square with counter clock-wise hole
+    ({'data': [(0, 0), (0, 5), (5, 0)], 'holes': [[(1, 1), (1, 3), (3, 1)]]}),  # Clock-wise triangle with with clock-wise hole
+    ({'data': [ArcData((0, 0), (10, 0), height=-1.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=0.0), ArcData((0, 8), (0, 0), height=0.0)]}),  # Square with one convex arc.
 ])
-def test_normalized(session, polygon, holes):
+def test_normalized(session, polygon):
     """Test normalized with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     normalized_server = polygon_server.normalized()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     normalized_shapely = polygon_shapely.normalized()
 
     tol = 1e-9
@@ -329,29 +330,29 @@ def test_normalized(session, polygon, holes):
 
 
 #TODO: Fix the expected_points
-@pytest.mark.parametrize("polygon, holes, vector, expected_points", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [[(2, 2), (3, 2), (3, 3), (2, 3)]], (5, 5), [(5, 5), (15, 5), (15, 15), (5, 15)]),  # Square with hole moved by (5, 5)
-    ([(0, 0), (5, 0), (2.5, 5)], [], (-2, 3), [(-2, 3), (3, 3), (0.5, 8)]),  # Triangle moved by (-2, 3)
-    ([(1, 1), (4, 1), (4, 4), (1, 4)], [[(2, 2), (3, 2), (3, 3), (2, 3)]], (0, 0), [(1, 1), (4, 1), (4, 4), (1, 4)]),  # Square with hole moved by (0, 0)
-    ([ArcData((0, 0), (10, 0), height=-1.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=0.0), ArcData((0, 8), (0, 0), height=0.0)], [], (2, 2), [ArcData((2, 2), (12, 2), height=-1.0), ArcData((12, 2), (12, 10), height=0.0), ArcData((12, 10), (2, 10), height=0.0), ArcData((2, 10), (2, 2), height=0.0)]),  # Square with one convex arc and no holes moved by (2, 2).
+@pytest.mark.parametrize("polygon, vector, expected_points", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(2, 2), (3, 2), (3, 3), (2, 3)]]}, (5, 5), [(5, 5), (15, 5), (15, 15), (5, 15)]),  # Square with hole moved by (5, 5)
+    ({'data': [(0, 0), (5, 0), (2.5, 5)]}, (-2, 3), [(-2, 3), (3, 3), (0.5, 8)]),  # Triangle moved by (-2, 3)
+    ({'data': [(1, 1), (4, 1), (4, 4), (1, 4)], 'holes': [[(2, 2), (3, 2), (3, 3), (2, 3)]]}, (0, 0), [(1, 1), (4, 1), (4, 4), (1, 4)]),  # Square with hole moved by (0, 0)
+    ({'data': [ArcData((0, 0), (10, 0), height=-1.0), ArcData((10, 0), (10, 8), height=0.0), ArcData((10, 8), (0, 8), height=0.0), ArcData((0, 8), (0, 0), height=0.0)]}, (2, 2), [ArcData((2, 2), (12, 2), height=-1.0), ArcData((12, 2), (12, 10), height=0.0), ArcData((12, 10), (2, 10), height=0.0), ArcData((2, 10), (2, 2), height=0.0)]),  # Square with one convex arc and no holes moved by (2, 2).
 ])
-def test_move(session, polygon, holes, vector, expected_points):
+def test_move(session, polygon, vector, expected_points):
     """Test move with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     area_server = polygon_server.area()
     moved_server = polygon_server.move(vector)
     moved_area_server = moved_server.area()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     area_shapely = polygon_shapely.area()
     moved_shapely = polygon_shapely.move(vector)
     moved_area_shapely = moved_shapely.area()
 
     tol = 1e-9
-    if isinstance(polygon[0], ArcData):
+    if isinstance(polygon['data'][0], ArcData):
         tol = 0.1
 
     assert area_server == pytest.approx(moved_area_server, rel=tol)
@@ -370,29 +371,29 @@ def test_move(session, polygon, holes, vector, expected_points):
 
 
 #TODO: Fix the expected_points
-@pytest.mark.parametrize("polygon, holes, angle, center, expected_points", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], math.pi / 2, (0, 0), [(0, 0), (0, 10), (-10, 10), (-10, 0)]),  # Square rotated 90 degrees (π/2) around origin
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [[(1, 1), (1, 9), (9, 9), (9, 1)]], math.pi, (5, 5), [(10, 10), (0, 10), (0, 0), (10, 0)]),  # Square rotated 180 degrees (π) around its center
-    ([(0, 0), (5, 0), (2.5, 5)], [], 0, (0, 0), [(0, 0), (5, 0), (2.5, 5)]),  # Triangle rotated 0 degrees (no rotation)
-    ([ArcData((0, 0), (10, 0), height=-1.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)], [], math.pi / 2, (0, 0), [ArcData((0, 0), (0, 10), height=-1.0), ArcData((0, 10), (-10, 10), height=0.0), ArcData((-10, 10), (-10, 0), height=0.0), ArcData((-10, 0), (0, 0), height=0.0)]),  # Square with one convex arc and no holes rotated by 90 degrees (π/2) around origin.
+@pytest.mark.parametrize("polygon, angle, center, expected_points", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, math.pi / 2, (0, 0), [(0, 0), (0, 10), (-10, 10), (-10, 0)]),  # Square rotated 90 degrees (π/2) around origin
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (1, 9), (9, 9), (9, 1)]]}, math.pi, (5, 5), [(10, 10), (0, 10), (0, 0), (10, 0)]),  # Square rotated 180 degrees (π) around its center
+    ({'data': [(0, 0), (5, 0), (2.5, 5)]}, 0, (0, 0), [(0, 0), (5, 0), (2.5, 5)]),  # Triangle rotated 0 degrees (no rotation)
+    ({'data': [ArcData((0, 0), (10, 0), height=-1.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, math.pi / 2, (0, 0), [ArcData((0, 0), (0, 10), height=-1.0), ArcData((0, 10), (-10, 10), height=0.0), ArcData((-10, 10), (-10, 0), height=0.0), ArcData((-10, 0), (0, 0), height=0.0)]),  # Square with one convex arc and no holes rotated by 90 degrees (π/2) around origin.
 ])
-def test_rotate(session, polygon, holes, angle, center, expected_points):
+def test_rotate(session, polygon, angle, center, expected_points):
     """Test rotate with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     area_server = polygon_server.area()
     rotated_server = polygon_server.rotate(angle, center)
     rotated_area_server = rotated_server.area()
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     area_shapely = polygon_shapely.area()
     rotated_shapely = polygon_shapely.rotate(angle, center)
     rotated_area_shapely = rotated_shapely.area()
 
     tol = 1e-9
-    if isinstance(polygon[0], ArcData):
+    if isinstance(polygon['data'][0], ArcData):
         tol = 0.1
 
     assert rotated_area_server == pytest.approx(area_server, rel=tol)
@@ -411,31 +412,31 @@ def test_rotate(session, polygon, holes, angle, center, expected_points):
 
 
 #TODO: Fix the expected_points
-@pytest.mark.parametrize("polygon, holes, factor, center, expected_points", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], 2.0, (0, 0), [(0, 0), (20, 0), (20, 20), (0, 20)]),  # Square scaled 2x from origin
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], 0.5, (0, 0), [(0, 0), (5, 0), (5, 5), (0, 5)]),  # Square scaled 0.5x from origin
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], 2.0, (5, 5), [(-5, -5), (15, -5), (15, 15), (-5, 15)]),  # Square scaled 2x from center
-    ([(5, 5), (15, 5), (10, 15)], [], 3.0, (10, 10), [(-5, -5), (25, -5), (10, 25)]),  # Triangle scaled 3x from point
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [], 2.0, (0, 0), [ArcData((0, 0), (20, 0), height=-10.0), ArcData((20, 0), (20, 20), height=0.0), ArcData((20, 20), (0, 20), height=-10.0), ArcData((0, 20), (0, 0), height=0.0)]),  # Square with two convex arcs scaled 2x from origin
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], 2.0, (5, 5), [(-5, -5), (15, 15), (15, -5), (-5, 15)])  # Bow-tie with one hole in each lobe scaled 2x from (5, 5).
+@pytest.mark.parametrize("polygon, factor, center, expected_points", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 2.0, (0, 0), [(0, 0), (20, 0), (20, 20), (0, 20)]),  # Square scaled 2x from origin
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 0.5, (0, 0), [(0, 0), (5, 0), (5, 5), (0, 5)]),  # Square scaled 0.5x from origin
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 2.0, (5, 5), [(-5, -5), (15, -5), (15, 15), (-5, 15)]),  # Square scaled 2x from center
+    ({'data': [(5, 5), (15, 5), (10, 15)]}, 3.0, (10, 10), [(-5, -5), (25, -5), (10, 25)]),  # Triangle scaled 3x from point
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, 2.0, (0, 0), [ArcData((0, 0), (20, 0), height=-10.0), ArcData((20, 0), (20, 20), height=0.0), ArcData((20, 20), (0, 20), height=-10.0), ArcData((0, 20), (0, 0), height=0.0)]),  # Square with two convex arcs scaled 2x from origin
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)]}, 2.0, (5, 5), [(-5, -5), (15, 15), (15, -5), (-5, 15)])  # Bow-tie with one hole in each lobe scaled 2x from (5, 5).
 ])
-def test_scale(session, polygon, holes, factor, center, expected_points):
+def test_scale(session, polygon, factor, center, expected_points):
     """Test scale with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     area_server = polygon_server.area()
     scaled_server = polygon_server.scale(factor, center)
     scaled_area_server = scaled_server.area()
     
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     area_shapely = polygon_shapely.area()
     scaled_shapely = polygon_shapely.scale(factor, center)
     scaled_area_shapely = scaled_shapely.area()
 
     tol = 1e-9
-    if isinstance(polygon[0], ArcData):
+    if isinstance(polygon['data'][0], ArcData):
         tol = 0.1
 
     assert scaled_area_server == pytest.approx(factor*factor*area_server, rel=tol)
@@ -454,24 +455,24 @@ def test_scale(session, polygon, holes, factor, center, expected_points):
 
 
 #TODO: Fix the expected_points
-@pytest.mark.parametrize("polygon, holes, x, expected_points", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], 10.0, [(20.0, 0.0), (10.0, 0.0), (10.0, 10.0), (20.0, 10.0)]),  # Square
-    ([(5, 5), (15, 5), (10, 15)], [], 0, [(-5.0, 5.0), (-15.0, 5.0), (-10.0, 15.0)]),  # Triangle
+@pytest.mark.parametrize("polygon, x, expected_points", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 10.0, [(20.0, 0.0), (10.0, 0.0), (10.0, 10.0), (20.0, 10.0)]),  # Square
+    ({'data': [(5, 5), (15, 5), (10, 15)]}, 0, [(-5.0, 5.0), (-15.0, 5.0), (-10.0, 15.0)]),  # Triangle
     #TODO: The server backend is not handling arcs correctly after this operation.
     # ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [], 5.0, []),  # Square with two convex arcs
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], 5.0, [(10.0, 0.0), (0.0, 10.0), (0.0, 0.0), (10.0, 10.0)])  # Bow-tie with one hole in each lobe
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)], 'holes': [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]]}, 5.0, [(10.0, 0.0), (0.0, 10.0), (0.0, 0.0), (10.0, 10.0)])  # Bow-tie with one hole in each lobe
 ])
-def test_mirror_x(session, polygon, holes, x, expected_points):
+def test_mirror_x(session, polygon, x, expected_points):
     """Test mirror_x with server backend."""
     
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     area_server = polygon_server.area()
     mirrored_server = polygon_server.mirror_x(x)
     mirrored_area_server = mirrored_server.area()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     area_shapely = polygon_shapely.area()
     mirrored_shapely = polygon_shapely.mirror_x(x)
     mirrored_area_shapely = mirrored_shapely.area()
@@ -495,21 +496,21 @@ def test_mirror_x(session, polygon, holes, x, expected_points):
             assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
 
 
-@pytest.mark.parametrize("polygon, holes, expected_result", [
-    ([(0, 0), (10, 0), (10, 10), (0, 10)], [], [(5, 5), 7.0710678118654755]),  # Square
-    ([(5, 5), (15, 5), (10, 15)], [], [(10, 10), 7.0710678118654755]),  # Triangle
-    ([ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [], [(5, 5), 11.180339887498949]),  # Square with two convex arcs
-    ([(0, 0), (10, 10), (10, 0), (0, 10)], [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], [(5, 5), 7.0710678118654755])  # Bow-tie with one hole in each lobe
+@pytest.mark.parametrize("polygon, expected_result", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, [(5, 5), 7.0710678118654755]),  # Square
+    ({'data': [(5, 5), (15, 5), (10, 15)]}, [(10, 10), 7.0710678118654755]),  # Triangle
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], 'holes': []}, [(5, 5), 11.180339887498949]),  # Square with two convex arcs
+    ({'data': [(0, 0), (10, 10), (10, 0), (0, 10)], 'holes': [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]]}, [(5, 5), 7.0710678118654755])  # Bow-tie with one hole in each lobe
 ])
-def test_bounding_circle(session, polygon, holes, expected_result):
+def test_bounding_circle(session, polygon, expected_result):
     """Test bounding_circle with server backend."""
 
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     result_server = polygon_server.bounding_circle()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.bounding_circle()
 
     tol = 1e-9
@@ -523,23 +524,23 @@ def test_bounding_circle(session, polygon, holes, expected_result):
     assert result_shapely[1].double == pytest.approx(expected_result[1], rel=tol)
 
 
-@pytest.mark.parametrize("polygons, holes, expected_result", [
-    ([[(0, 0), (2, 0), (2, 2), (0, 2)], [(5, 0), (7, 0), (7, 2), (5, 2)]], [[], []], [(0.0, 0.0), (0.0, 2.0), (7.0, 2.0), (7.0, 0.0)]),  # Two separate squares
-    ([[(0, 0), (3, 0), (3, 3), (0, 3)], [(2, 2), (5, 2), (5, 5), (2, 5)]], [[], []], [(0.0, 0.0), (0.0, 3.0), (2.0, 5.0), (5.0, 5.0), (5.0, 2.0), (3.0, 0.0)]),  # Two overlapping squares
+@pytest.mark.parametrize("polygons, expected_result", [
+    ([{'data': [(0, 0), (2, 0), (2, 2), (0, 2)]}, {'data': [(5, 0), (7, 0), (7, 2), (5, 2)]}], [(0.0, 0.0), (0.0, 2.0), (7.0, 2.0), (7.0, 0.0)]),  # Two separate squares
+    ([{'data': [(0, 0), (3, 0), (3, 3), (0, 3)]}, {'data': [(2, 2), (5, 2), (5, 5), (2, 5)]}], [(0.0, 0.0), (0.0, 3.0), (2.0, 5.0), (5.0, 5.0), (5.0, 2.0), (3.0, 0.0)]),  # Two overlapping squares
     #TODO: The server backend is not handling arcs correctly in this operation.
     # ([[ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [ArcData((0, 0), (-10, 0), height=5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=5.0), ArcData((0, 10), (0, 0), height=0.0)]], [[], []], [(5.0, -5.0), (2.5, -4.330127018922193), (-10.0, 0.0), (-10.0, 10.0), (2.5, 14.330127018922195), (5.0, 15.0), (7.5, 14.330127018922193), (9.330127018922195, 12.5), (10.0, 10.0), (10.0, 0.0), (9.330127018922191, -2.5), (7.5, -4.330127018922195)]),  # One squares with two convex arcs and one square with two concave arcs
-    ([[(0, 0), (10, 10), (10, 0), (0, 10)], [(0, 0), (-10, -10), (-10, 0), (0, -10)]], [[[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]], []], [(-10.0, -10.0), (-10.0, 0.0), (0.0, 10.0), (10.0, 10.0), (10.0, 0.0), (0.0, -10.0)])  # Bow-tie with one hole in each lobe
+    ([{'data': [(0, 0), (10, 10), (10, 0), (0, 10)], 'holes': [[(1, 4), (2, 4), (2, 6), (1, 6)], [(8, 4), (9, 4), (9, 6), (8, 6)]]}, {'data': [(0, 0), (-10, -10), (-10, 0), (0, -10)]}], [(-10.0, -10.0), (-10.0, 0.0), (0.0, 10.0), (10.0, 10.0), (10.0, 0.0), (0.0, -10.0)])  # Bow-tie with one hole in each lobe
 ])
-def test_convex_hull(session, polygons, holes, expected_result):
+def test_convex_hull(session, polygons, expected_result):
     """Test convex_hull with both server and shapely backends."""
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server_list = [create_polygon(p, h) for p, h in zip(polygons, holes)]
+    polygon_server_list = [create_polygon(p) for p in polygons]
     result_server = PolygonData.convex_hull(polygon_server_list)
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely_list = [create_polygon(p, h) for p, h in zip(polygons, holes)]
+    polygon_shapely_list = [create_polygon(p) for p in polygons]
     result_shapely = PolygonData.convex_hull(polygon_shapely_list)
 
     tol = 1e-9
@@ -556,32 +557,81 @@ def test_convex_hull(session, polygons, holes, expected_result):
         assert result_shapely.points[i].y.double == pytest.approx(expected_pt[1], rel=tol)
 
 
-@pytest.mark.parametrize("polygon, holes, tol, expected_area", [
-    ([ArcData((0, 0), (1, 0), height=-1.0), ArcData((1, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [], 1.0, 89.26990509033203),  # Square with two convex arcs
+@pytest.mark.parametrize("polygon, tol, expected_area", [
+    ({'data': [ArcData((0, 0), (1, 0), height=-1.0), ArcData((1, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, 1.0, 89.26990509033203),  # Square with two convex arcs
     #TODO: The server backend is not handling this case correctly.
     # ([(0, 0), (10, 0), (11, 0), (11, 0.5), (10, 0.5), (10, 10), (0, 10)], [], 1.0, 105.0),  # Square with a small feature
-    ([(0, 0), (10, 1), (10, 0), (0, 10)], [], 1.0, 50.0),  # Bow-tie with a small lobe
+    ({'data': [(0, 0), (10, 1), (10, 0), (0, 10)]}, 1.0, 50.0),  # Bow-tie with a small lobe
 ])
-def test_defeature(session, polygon, holes, tol, expected_area):
+def test_defeature(session, polygon, tol, expected_area):
     """Test defeature with both server and shapely backends."""
 
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(polygon, holes)
+    polygon_server = create_polygon(polygon)
     defeatured_server = polygon_server.defeature(tol)
     area_server = defeatured_server.area()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(polygon, holes)
+    polygon_shapely = create_polygon(polygon)
     defeatured_shapely = polygon_shapely.defeature(tol)
     area_shapely = defeatured_shapely.area()
 
     tol = 1e-9
-    if isinstance(polygon[0], ArcData):
+    if isinstance(polygon['data'][0], ArcData):
         tol = 0.1
 
     assert area_server == pytest.approx(expected_area, rel=tol)
     assert area_shapely == pytest.approx(expected_area, rel=tol)
 
+
+@pytest.mark.parametrize("polygon, other, expected_result", [
+    ({'data': [(0, 0), (1, 0), (1, 1), (0, 1)]}, {'data': [(2, 2), (3, 2), (3, 3), (2, 3)]}, IntersectionType.NO_INTERSECTION),  # No intersection
+    ({'data': [(0, 0), (2, 0), (2, 2), (0, 2)]}, {'data': [(1, 1), (3, 1), (3, 3), (1, 3)]}, IntersectionType.COMMON_INTERSECTION),  # Common intersection
+    ({'data': [(0, 0), (3, 0), (3, 3), (0, 3)]}, {'data': [(1, 1), (2, 1), (2, 2), (1, 2)]}, IntersectionType.OTHER_INSIDE_THIS),  # Other inside this
+    ({'data': [(1, 1), (2, 1), (2, 2), (1, 2)]}, {'data': [(0, 0), (3, 0), (3, 3), (0, 3)]}, IntersectionType.THIS_INSIDE_OTHER),  # This inside other
+    ({'data': [(5, 5), (15, 5), (10, 15)]}, {'data': [(10, 10), (10, 15), (15, 15), (15, 10)]}, IntersectionType.COMMON_INTERSECTION),  # Common intersection
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [(0, 14), (10, 14), (10, 20), (0, 20)]}, IntersectionType.COMMON_INTERSECTION),  # Common intersection
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [(0, 16), (10, 16), (10, 20), (0, 20)]}, IntersectionType.NO_INTERSECTION),  # No intersection
+    #TODO: The server backend is not handling this case correctly.
+    # ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, {'data': [(2, 2), (8, 2), (8, 8), (2, 8)]}, IntersectionType.NO_INTERSECTION),  # Square inside the hole of another square - no intersection
+])
+def test_intersection_type(session, polygon, other, expected_result):
+    """Test intersection_type with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon)
+    other_server = create_polygon(other)
+    result_server = polygon_server.intersection_type(other_server)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon)
+    other_shapely = create_polygon(other)
+    result_shapely = polygon_shapely.intersection_type(other_shapely)
+
+    assert result_server == expected_result
+    assert result_shapely == expected_result
+
+
+@pytest.mark.parametrize("polygon, circle, expected_result", [
+    ({'data': [(0, 0), (1, 0), (1, 1), (0, 1)]}, {'center': (1, 1), 'radius': 0.5}, True),
+    ({'data': [(0, 0), (2, 0), (2, 2), (0, 2)]}, {'center': (-1, -1), 'radius': 0.5}, False),
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'center': (5, 5), 'radius': 4}, True),
+    ({'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'center': (-5, 0), 'radius': 4}, False),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, {'center': (5, 5), 'radius': 2}, False),  # Circle inside the hole of a square
+])
+def test_circle_intersect(session, polygon, circle, expected_result):
+    """Test circle_intersect with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon)
+    result_server = polygon_server.circle_intersect(**circle)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon)
+    result_shapely = polygon_shapely.circle_intersect(**circle)
+
+    assert result_server == expected_result
+    assert result_shapely == expected_result
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

@@ -971,3 +971,85 @@ class ShapelyBackend(PolygonBackend):
         
         # Convert back to PolygonData
         return self._shapely_to_polygon_data(simplified_polygon, polygon.sense)
+
+    def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
+        """Get the intersection type with another polygon using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The first polygon.
+        other : PolygonData
+            The second polygon.
+        tol : float, default: 1e-9
+            Tolerance (not used in Shapely implementation but kept for API consistency).
+
+        Returns
+        -------
+        int
+            The intersection type enum value.
+
+        Notes
+        -----
+        This implementation uses Shapely's geometric predicates to determine the relationship
+        between two polygons. The tolerance parameter is kept for API consistency with the
+        server backend but is not used in this implementation as Shapely uses its own
+        internal tolerance.
+
+        The intersection types are:
+        - NO_INTERSECTION (0): Polygons do not intersect
+        - THIS_INSIDE_OTHER (1): First polygon is completely inside the second
+        - OTHER_INSIDE_THIS (2): Second polygon is completely inside the first
+        - COMMON_INTERSECTION (3): Polygons partially intersect
+        - UNDEFINED_INTERSECTION (4): Intersection cannot be determined
+        """
+        from ansys.api.edb.v1 import polygon_data_pb2
+        
+        shapely_poly1 = self._to_shapely_polygon(polygon)
+        shapely_poly2 = self._to_shapely_polygon(other)
+        
+        # Check if polygons don't intersect
+        if not shapely_poly1.intersects(shapely_poly2):
+            return polygon_data_pb2.NO_INTERSECTION
+        
+        # Check if polygon is inside other
+        if shapely_poly1.within(shapely_poly2):
+            return polygon_data_pb2.THIS_INSIDE_OTHER
+        
+        # Check if other is inside polygon
+        if shapely_poly2.within(shapely_poly1):
+            return polygon_data_pb2.OTHER_INSIDE_THIS
+        
+        # If they intersect but neither is inside the other, they have common intersection
+        return polygon_data_pb2.COMMON_INTERSECTION
+
+    def circle_intersect(self, polygon: PolygonData, center: tuple[float, float], radius: float) -> bool:
+        """Determine whether a circle intersects with a polygon using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        center : tuple[float, float]
+            Center coordinates (x, y) of the circle.
+        radius : float
+            Radius of the circle.
+
+        Returns
+        -------
+        bool
+            ``True`` if the circle intersects with the polygon, ``False`` otherwise.
+
+        Notes
+        -----
+        This implementation creates a Shapely Point for the circle center and uses
+        the buffer operation to create a circular polygon, then checks for intersection.
+        """
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        
+        # Create a circle as a buffered point
+        circle_center = ShapelyPoint(center)
+        circle = circle_center.buffer(radius)
+        
+        # Check if the circle intersects with the polygon
+        return shapely_polygon.intersects(circle)

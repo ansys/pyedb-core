@@ -520,11 +520,7 @@ class PolygonData:
         -------
         .IntersectionType
         """
-        return IntersectionType(
-            self.__stub.GetIntersectionType(
-                messages.polygon_data_pair_with_tolerance_message(self, other, tol)
-            ).intersection_type
-        )
+        return IntersectionType(self._get_backend().intersection_type(self, other, tol))
 
     def circle_intersect(self, center: PointLike, radius: float) -> bool:
         """Determine whether the circle intersects with a polygon.
@@ -541,9 +537,8 @@ class PolygonData:
         bool
             ``True`` if the circle intersects with a polygon, ``False`` otherwise.
         """
-        return self.__stub.CircleIntersectsPolygon(
-            messages.polygon_data_with_circle_message(self, center, radius)
-        ).value
+        center_tuple = conversions.to_point(center)
+        return self._get_backend().circle_intersect(self, (center_tuple.x.double, center_tuple.y.double), radius)
 
     @parser.to_point_data
     def closest_point(self, point: PointLike) -> PointData:

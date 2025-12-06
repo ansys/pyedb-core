@@ -307,3 +307,43 @@ class PolygonBackend(ABC):
             Defeatured polygon.
         """
         pass
+
+    @abstractmethod
+    def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
+        """Get the intersection type with another polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The first polygon.
+        other : PolygonData
+            The second polygon.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        int
+            The intersection type enum value.
+        """
+        pass
+
+    @abstractmethod
+    def circle_intersect(self, polygon: PolygonData, center: tuple[float, float], radius: float) -> bool:
+        """Determine whether a circle intersects with a polygon.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        center : tuple[float, float]
+            Center coordinates (x, y) of the circle.
+        radius : float
+            Radius of the circle.
+
+        Returns
+        -------
+        bool
+            ``True`` if the circle intersects with the polygon, ``False`` otherwise.
+        """
+        pass

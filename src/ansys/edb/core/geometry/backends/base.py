@@ -347,3 +347,21 @@ class PolygonBackend(ABC):
             ``True`` if the circle intersects with the polygon, ``False`` otherwise.
         """
         pass
+
+    @abstractmethod
+    def closest_point(self, polygon: PolygonData, point: tuple[float, float]) -> tuple[float, float]:
+        """Compute a point on the polygon that is closest to another point.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        point : tuple[float, float]
+            Point coordinates (x, y).
+
+        Returns
+        -------
+        tuple[float, float]
+            Coordinates (x, y) of the closest point on the polygon.
+        """
+        pass

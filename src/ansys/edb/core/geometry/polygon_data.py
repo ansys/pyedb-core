@@ -554,9 +554,13 @@ class PolygonData:
         .PointData
             Point closest to the given point.
         """
-        return self.__stub.GetClosestPoints(
-            messages.polygon_data_with_points_message(self, point=point)
-        ).points[0]
+        from ansys.edb.core.geometry.point_data import PointData
+        from ansys.edb.core.utility import conversions
+        
+        # Convert point to tuple
+        point_tuple = conversions.to_point(point)
+
+        return self._get_backend().closest_point(self, (point_tuple.x.double, point_tuple.y.double))
 
     @parser.to_point_data_list
     def closest_points(self, polygon: PolygonData) -> tuple[PointData, PointData]:

@@ -169,9 +169,7 @@ class ServerBackend(PolygonBackend):
         bool
             ``True`` when the polygon contains self-intersections, ``False`` otherwise.
         """
-        return self._stub.HasSelfIntersections(
-            messages.polygon_data_with_tol_message(polygon, tol)
-        ).value
+        return self._stub.HasSelfIntersections(messages.polygon_data_with_tol_message(polygon, tol)).value
 
     @parser.to_polygon_data_list
     def remove_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> list[PolygonData]:
@@ -190,10 +188,7 @@ class ServerBackend(PolygonBackend):
             A list of non self-intersecting polygons.
         """
 
-        result = self._stub.RemoveSelfIntersections(
-            messages.polygon_data_with_tol_message(polygon, tol)
-        )
-        return result
+        return self._stub.RemoveSelfIntersections(messages.polygon_data_with_tol_message(polygon, tol))
 
     @parser.to_point_data_list
     def normalized(self, polygon: PolygonData) -> list:
@@ -229,8 +224,7 @@ class ServerBackend(PolygonBackend):
             Moved polygon.
         """
 
-        result = self._stub.Transform(messages.polygon_data_transform_message("move", polygon, vector))
-        return result
+        return self._stub.Transform(messages.polygon_data_transform_message("move", polygon, vector))
 
     @parser.to_polygon_data
     def rotate(self, polygon: PolygonData, angle: float, center: tuple[float, float]) -> PolygonData:
@@ -251,8 +245,7 @@ class ServerBackend(PolygonBackend):
             Rotated polygon.
         """
 
-        result = self._stub.Transform(messages.polygon_data_transform_message("rotate", polygon, angle, center))
-        return result
+        return self._stub.Transform(messages.polygon_data_transform_message("rotate", polygon, angle, center))
 
     @parser.to_polygon_data
     def scale(self, polygon: PolygonData, factor: float, center: tuple[float, float]) -> PolygonData:
@@ -273,8 +266,7 @@ class ServerBackend(PolygonBackend):
             Scaled polygon.
         """
 
-        result = self._stub.Transform(messages.polygon_data_transform_message("scale", polygon, factor, center))
-        return result
+        return self._stub.Transform(messages.polygon_data_transform_message("scale", polygon, factor, center))
 
     @parser.to_polygon_data
     def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
@@ -391,3 +383,22 @@ class ServerBackend(PolygonBackend):
         return self._stub.CircleIntersectsPolygon(
             messages.polygon_data_with_circle_message(polygon, center, radius)
         ).value
+
+    @parser.to_point_data
+    def closest_point(self, polygon: PolygonData, point: tuple[float, float]) -> tuple[float, float]:
+        """Compute a point on the polygon that is closest to another point using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        point : tuple[float, float]
+            Point coordinates (x, y).
+
+        Returns
+        -------
+        tuple[float, float]
+            Coordinates (x, y) of the closest point on the polygon.
+        """
+        
+        return self._stub.GetClosestPoints(messages.polygon_data_with_points_message(polygon, point=point)).points[0]

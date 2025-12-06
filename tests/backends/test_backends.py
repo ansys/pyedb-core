@@ -478,7 +478,7 @@ def test_mirror_x(session, polygon, x, expected_points):
     mirrored_area_shapely = mirrored_shapely.area()
 
     tol = 1e-9
-    if isinstance(polygon[0], ArcData):
+    if isinstance(polygon['data'][0], ArcData):
         tol = 0.1
 
     assert mirrored_area_server == pytest.approx(area_server, rel=tol)
@@ -632,6 +632,34 @@ def test_circle_intersect(session, polygon, circle, expected_result):
 
     assert result_server == expected_result
     assert result_shapely == expected_result
+
+
+@pytest.mark.parametrize("polygon, point, expected_result", [
+    ({'data': [(0, 0), (1, 0), (1, 1), (0, 1)]}, (2, 2), (1, 1)),
+    ({'data': [(0, 0), (1, 0), (1, 1), (0, 1)]}, (-1, -1), (0, 0)),
+    ({'data': [(0, 0), (2, 0), (1, 2)]}, (1, 10), (1, 2)),
+    #TODO: The server backend is not handling this case correctly.
+    # ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, (5, -2), (0, 0)),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, (5, 4), (5, 1)),
+])
+def test_closest_point(session, polygon, point, expected_result):
+    """Test closest_point with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon)
+    result_server = polygon_server.closest_point(point)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon)
+    result_shapely = polygon_shapely.closest_point(point)
+
+    tol = 1e-9
+
+    assert result_server.x.double == pytest.approx(expected_result[0], rel = tol)
+    assert result_server.y.double == pytest.approx(expected_result[1], rel = tol)
+    assert result_shapely.x.double == pytest.approx(expected_result[0], rel = tol)
+    assert result_shapely.y.double == pytest.approx(expected_result[1], rel = tol)
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

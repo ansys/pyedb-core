@@ -1053,3 +1053,36 @@ class ShapelyBackend(PolygonBackend):
         
         # Check if the circle intersects with the polygon
         return shapely_polygon.intersects(circle)
+
+    def closest_point(self, polygon: PolygonData, point: tuple[float, float]) -> tuple[float, float]:
+        """Compute a point on the polygon that is closest to another point using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+        point : tuple[float, float]
+            Point coordinates (x, y).
+
+        Returns
+        -------
+        tuple[float, float]
+            Coordinates (x, y) of the closest point on the polygon.
+
+        Notes
+        -----
+        This implementation uses Shapely's nearest_points function to find the closest
+        point on the polygon boundary to the given point. If the polygon has arcs,
+        they are tessellated first.
+        """
+        from shapely.ops import nearest_points
+        from ansys.edb.core.geometry.point_data import PointData
+        
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        shapely_point = ShapelyPoint(point)
+        
+        # Find the nearest points between the polygon boundary and the given point
+        # nearest_points returns a tuple of (nearest point on geom1, nearest point on geom2)
+        nearest_on_polygon, _ = nearest_points(shapely_polygon.boundary, shapely_point)
+        
+        return PointData(nearest_on_polygon.x, nearest_on_polygon.y)

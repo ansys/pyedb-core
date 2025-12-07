@@ -52,7 +52,7 @@ def create_prims():
             0.0,
             0.0,
         )
-        rect.set_hfss_prop("copper", True)
+        # rect.set_hfss_prop("copper", True)
     return num_prims
 
 
@@ -152,12 +152,20 @@ def read_write_test():
 
 def smart_cache_invalidation_test():
     with enable_io_manager(IOMangementType.READ_AND_WRITE):
+        try:
+            test_rect = Rectangle.find_by_id(lyt, 1)
+        except Exception as e:
+            pass
         create_prims()
+        test_rect = Rectangle.find_by_id(lyt, 1)
         prims = lyt.primitives
-        for prim in prims:
-            rect0: Rectangle = prim
+        for prim_idx in range(len(prims)):
+            rect0: Rectangle = prims[prim_idx]
+            rect1: Rectangle = prims[prim_idx + 1]
             params = rect0.get_parameters()
             rect0.set_parameters(params[0], params[1], params[2], params[3], params[4], 1e-3, 0.0)
+            params_1 = rect1.get_parameters()
+            params = rect0.get_parameters()
             # rect1: Rectangle = prims[i+1]
             # rect0: Rectangle = prims[i]
             # rect1: Rectangle = prims[i+1]

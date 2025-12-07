@@ -54,7 +54,7 @@ class Circle(Primitive):
             Circle created.
         """
         return Circle(
-            cls.get_stub(cls, cls.__stub).Create(
+            cls.__stub.Create(
                 circle_pb2.CircleCreationMessage(
                     layout=layout.msg,
                     layer=messages.layer_ref_message(layer),
@@ -89,7 +89,7 @@ class Circle(Primitive):
         .PolygonData
             Circle created.
         """
-        return cls.get_stub(cls, cls.__stub).Render(
+        return cls.__stub.Render(
             circle_pb2.CircleRenderMessage(
                 center_x=messages.value_message(center_x),
                 center_y=messages.value_message(center_y),
@@ -115,7 +115,7 @@ class Circle(Primitive):
 
             **radius** : Radius value of the circle.
         """
-        circle_param_msg = self.get_stub(self, self.__stub).GetParameters(self.msg)
+        circle_param_msg = self.__stub.GetParameters(self.msg)
         return (
             Value(circle_param_msg.center_x),
             Value(circle_param_msg.center_y),
@@ -134,7 +134,7 @@ class Circle(Primitive):
         radius : :term:`ValueLike`
             Radius value of the circle.
         """
-        self.get_stub(self, self.__stub).SetParameters(
+        self.__stub.SetParameters(
             circle_pb2.SetCircleParametersMessage(
                 target=self.msg,
                 parameters=circle_pb2.CircleParametersMessage(

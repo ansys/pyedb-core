@@ -65,14 +65,6 @@ class ObjBase:
             if (cache := get_cache()) is not None:
                 cache.add_from_cache_msg(msg)
 
-    @staticmethod
-    def get_stub(obj, stub):
-        """Retrieve the stub and track active object."""
-        io_mgr = get_io_manager()
-        if io_mgr.is_enabled:
-            io_mgr.invalidation_tracker.track_active_obj(obj)
-        return stub
-
 
 class TypeField(object):
     """Provides a descriptor for a type field that can be overridden by subclasses.

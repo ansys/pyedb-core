@@ -49,7 +49,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return PrimitiveType(self.get_stub(self, self.__stub).GetPrimitiveType(self.msg).type)
+        return PrimitiveType(self.__stub.GetPrimitiveType(self.msg).type)
 
     def add_void(self, hole):
         """Add a void to the primitive.
@@ -59,7 +59,7 @@ class Primitive(conn_obj.ConnObj):
         hole : .Primitive
             Void to add.
         """
-        self.get_stub(self, self.__stub).AddVoid(
+        self.__stub.AddVoid(
             primitive_pb2.PrimitiveVoidCreationMessage(target=self.msg, hole=hole.msg)
         )
 
@@ -73,7 +73,7 @@ class Primitive(conn_obj.ConnObj):
         solve_inside : bool
             Whether to solve inside.
         """
-        self.get_stub(self, self.__stub).SetHfssProp(
+        self.__stub.SetHfssProp(
             primitive_pb2.PrimitiveHfssPropMessage(
                 target=self.msg, material_name=material, solve_inside=solve_inside
             )
@@ -82,23 +82,23 @@ class Primitive(conn_obj.ConnObj):
     @property
     def layer(self) -> Layer:
         """:class:`.Layer`: Layer that the primitive object is on."""
-        layer_msg = self.get_stub(self, self.__stub).GetLayer(self.msg)
+        layer_msg = self.__stub.GetLayer(self.msg)
         return Layer(layer_msg).cast()
 
     @layer.setter
     def layer(self, layer: Layer):
-        self.get_stub(self, self.__stub).SetLayer(
+        self.__stub.SetLayer(
             primitive_pb2.SetLayerMessage(target=self.msg, layer=messages.layer_ref_message(layer))
         )
 
     @property
     def is_negative(self) -> bool:
         """:obj:`bool`: Flag indicating if the primitive is negative."""
-        return self.get_stub(self, self.__stub).GetIsNegative(self.msg).value
+        return self.__stub.GetIsNegative(self.msg).value
 
     @is_negative.setter
     def is_negative(self, is_negative: bool):
-        self.get_stub(self, self.__stub).SetIsNegative(
+        self.__stub.SetIsNegative(
             primitive_pb2.SetIsNegativeMessage(target=self.msg, is_negative=is_negative)
         )
 
@@ -108,7 +108,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return self.get_stub(self, self.__stub).IsVoid(self.msg).value
+        return self.__stub.IsVoid(self.msg).value
 
     @property
     def has_voids(self) -> bool:
@@ -116,7 +116,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return self.get_stub(self, self.__stub).HasVoids(self.msg).value
+        return self.__stub.HasVoids(self.msg).value
 
     @property
     def voids(self) -> list[Primitive]:
@@ -135,7 +135,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return Primitive(self.get_stub(self, self.__stub).GetOwner(self.msg)).cast()
+        return Primitive(self.__stub.GetOwner(self.msg)).cast()
 
     @property
     def is_parameterized(self) -> bool:
@@ -143,7 +143,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return self.get_stub(self, self.__stub).IsParameterized(self.msg).value
+        return self.__stub.IsParameterized(self.msg).value
 
     def get_hfss_prop(self) -> tuple[str, bool]:
         """Get HFSS properties.
@@ -160,12 +160,12 @@ class Primitive(conn_obj.ConnObj):
 
             **solve_inside** : Whether to solve inside.
         """
-        prop_msg = self.get_stub(self, self.__stub).GetHfssProp(self.msg)
+        prop_msg = self.__stub.GetHfssProp(self.msg)
         return prop_msg.material_name, prop_msg.solve_inside
 
     def remove_hfss_prop(self):
         """Remove HFSS properties."""
-        self.get_stub(self, self.__stub).RemoveHfssProp(self.msg)
+        self.__stub.RemoveHfssProp(self.msg)
 
     @property
     def is_zone_primitive(self) -> bool:
@@ -173,7 +173,7 @@ class Primitive(conn_obj.ConnObj):
 
         This property is read-only.
         """
-        return self.get_stub(self, self.__stub).IsZonePrimitive(self.msg).value
+        return self.__stub.IsZonePrimitive(self.msg).value
 
     @property
     def can_be_zone_primitive(self) -> bool:
@@ -191,6 +191,4 @@ class Primitive(conn_obj.ConnObj):
         zone_id : int
             ID of the zone primitive to use.
         """
-        self.get_stub(self, self.__stub).MakeZonePrimitive(
-            messages.int_property_message(self, zone_id)
-        )
+        self.__stub.MakeZonePrimitive(messages.int_property_message(self, zone_id))

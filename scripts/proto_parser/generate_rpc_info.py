@@ -9,10 +9,53 @@ tab = "    "
 ansys_api_edb_repo_env_str = "ANSYS_API_EDB_REPO_PATH"
 
 
+def _get_rpc_invalidation_info_params_str(invalidation: str, data: RpcData):
+    tokens = invalidation.split(".")
+    is_self_invalidation = len(tokens) == 1
+    service_name = f"{tokens[0]}Service" if not is_self_invalidation else data.service_name
+    return f'rpc="{tokens[0 if is_self_invalidation else 1]}", service="{data.package_name}.{service_name}"'
+
+
+def _get_rpc_invalidation_infos_str(invalidations: list[str], data: RpcData):
+    invalidation_infos_str = ", ".join(
+        f"_InvalidationInfo({_get_rpc_invalidation_info_params_str(invalidation, data)})"
+        for invalidation in invalidations
+    )
+    return f"[{invalidation_infos_str}]"
+
+
+def _get_invalidations_params_str(invalidations: list[str | dict[list[str]]], data: RpcData):
+    invalidations_params = []
+
+    def get_invalidation_accessor_params_str(invalidation_accessor_str: str):
+        invalidation_accessor_params_str = ",".join(
+            [f'"{accessor}"' for accessor in invalidation_accessor_str.split(".") if accessor]
+        )
+        return f"[{invalidation_accessor_params_str}]"
+
+    if isinstance(invalidations[0], str):
+        for invalidation_accessor in invalidations:
+            invalidations_params.append(get_invalidation_accessor_params_str(invalidation_accessor))
+    else:
+        for invalidation in invalidations:
+            for invalidation_accessor, invalidation_infos in invalidation.items():
+                invalidations_accessor = get_invalidation_accessor_params_str(invalidation_accessor)
+                invalidation_infos_str = _get_rpc_invalidation_infos_str(invalidation_infos, data)
+                invalidations_params.append(f"({invalidations_accessor},{invalidation_infos_str})")
+    return ",".join(invalidations_params)
+
+
+def _get_rpc_invalidations_str(invalidations: list[str], data: RpcData):
+    return f"invalidations=[{_get_invalidations_params_str(invalidations, data)}]"
+
+
 def _get_rpc_info_object_str(data: RpcData):
     io_flag_params = ", ".join(
-        [f"{io_flag}={True}" for io_flag in sorted(data.io_flags, key=str.lower)]
+        [f"{io_flag}={True}" for io_flag in sorted(data.io_flags.str_flags, key=str.lower)]
     )
+    invalidations = data.io_flags.get_dict_flag("invalidations")
+    if invalidations:
+        io_flag_params += f", {_get_rpc_invalidations_str(invalidations, data)}"
     return f"_RpcInfo({io_flag_params})"
 
 
@@ -40,6 +83,23 @@ def _rpc_info_to_str(rpc_datas: List[RpcData]):
 def _get_rpc_info_file_str(rpc_datas: List[RpcData]):
     return f"""\"\"\"Defines container which gives additional information for RPC methods.\"\"\"
 
+class _InvalidationInfo:
+    def __init__(self, rpc, service=None):
+        self._rpc = rpc
+        self._service = service
+
+    @property
+    def rpc(self):
+        return self._rpc
+
+    @property
+    def service(self):
+        return self._service
+
+    @property
+    def is_self_invalidation(self):
+        return self.service is None
+
 
 class _RpcInfo:
     def __init__(
@@ -50,6 +110,7 @@ class _RpcInfo:
         buffer=False,
         returns_future=False,
         write_no_cache_invalidation=False,
+        invalidations=None
     ):
         self._read_no_cache = read_no_cache
         self._write_no_buffer = write_no_buffer
@@ -57,6 +118,7 @@ class _RpcInfo:
         self._buffer = buffer
         self._write_no_cache_invalidation = write_no_cache_invalidation
         self._returns_future = returns_future
+        self._invalidations = invalidations
 
     @property
     def is_read(self):
@@ -81,6 +143,14 @@ class _RpcInfo:
     @property
     def invalidates_cache(self):
         return self.is_write and not self._write_no_cache_invalidation
+
+    @property
+    def invalidations(self):
+        return self._invalidations
+
+    @property
+    def has_smart_invalidation(self):
+        return bool(self.invalidations)
 
 
 rpc_information = {{

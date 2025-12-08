@@ -402,3 +402,79 @@ class ServerBackend(PolygonBackend):
         """
         
         return self._stub.GetClosestPoints(messages.polygon_data_with_points_message(polygon, point=point)).points[0]
+
+    @parser.to_polygon_data_list
+    def unite(self, polygons: list[PolygonData]) -> list[PolygonData]:
+        """Compute the union of a list of polygons using the server.
+
+        Parameters
+        ----------
+        polygons : list[PolygonData]
+            List of polygons to unite.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the union.
+        """
+        return self._stub.GetUnion(messages.polygon_data_list_message(polygons))
+
+    @parser.to_polygon_data_list
+    def intersect(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Compute the intersection of two lists of polygons using the server.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            First list of polygons.
+        polygons2 : list[PolygonData]
+            Second list of polygons.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the intersection.
+        """
+        return self._stub.GetIntersection(messages.polygon_data_pair_message(polygons1, polygons2))
+
+    @parser.to_polygon_data_list
+    def subtract(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Subtract a set of polygons from another set of polygons using the server.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            List of base polygons.
+        polygons2 : list[PolygonData]
+            List of polygons to subtract.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the subtraction.
+        """
+        return self._stub.Subtract(messages.polygon_data_pair_message(polygons1, polygons2))
+
+    @parser.to_polygon_data_list
+    def xor(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Compute an exclusive OR between two sets of polygons using the server.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            First list of polygons.
+        polygons2 : list[PolygonData]
+            Second list of polygons.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the XOR operation.
+        """
+        return self._stub.Xor(messages.polygon_data_pair_message(polygons1, polygons2))

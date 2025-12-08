@@ -365,3 +365,79 @@ class PolygonBackend(ABC):
             Coordinates (x, y) of the closest point on the polygon.
         """
         pass
+
+    @abstractmethod
+    def unite(self, polygons: list[PolygonData]) -> list[PolygonData]:
+        """Compute the union of a list of polygons.
+
+        Parameters
+        ----------
+        polygons : list[PolygonData]
+            List of polygons to unite.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the union.
+        """
+        pass
+
+    @abstractmethod
+    def intersect(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Compute the intersection of two lists of polygons.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            First list of polygons.
+        polygons2 : list[PolygonData]
+            Second list of polygons.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the intersection.
+        """
+        pass
+
+    @abstractmethod
+    def subtract(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Subtract a set of polygons from another set of polygons.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            List of base polygons.
+        polygons2 : list[PolygonData]
+            List of polygons to subtract.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the subtraction.
+        """
+        pass
+
+    @abstractmethod
+    def xor(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Compute an exclusive OR between two sets of polygons.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            First list of polygons.
+        polygons2 : list[PolygonData]
+            Second list of polygons.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the XOR operation.
+        """
+        pass

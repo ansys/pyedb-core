@@ -661,5 +661,148 @@ def test_closest_point(session, polygon, point, expected_result):
     assert result_shapely.y.double == pytest.approx(expected_result[1], rel = tol)
 
 
+@pytest.mark.parametrize("polygon1, polygon2, expected_area", [
+    ({'data': [(0, 0), (2, 0), (2, 2), (0, 2)]}, {'data': [(1, 1), (3, 1), (3, 3), (1, 3)]}, 1.0),
+    ({'data': [(0, 0), (4, 0), (4, 4), (0, 4)]}, {'data': [(2, 2), (6, 2), (6, 6), (2, 6)]}, 4.0),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, {'data': [(5, 5), (15, 5), (15, 15), (5, 15)]}, 25.0),
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [ArcData((0, 5), (10, 5), height=-5.0), ArcData((10, 5), (10, 15), height=0.0), ArcData((10, 15), (0, 15), height=-5.0), ArcData((0, 15), (0, 5), height=0.0)]}, 128.53981018066406),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, {'data': [(5, 0), (15, 0), (15, 10), (5, 10)], 'holes': [[(6, 1), (14, 1), (14, 9), (6, 9)]]}, 10.0),
+])
+def test_intersect(session, polygon1, polygon2, expected_area):
+    """Test polygon intersection using both backends."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    poly1_server = create_polygon(polygon1)
+    poly2_server = create_polygon(polygon2)
+    intersect_server = PolygonData.intersect(poly1_server, poly2_server)
+    area_server = [poly.area() for poly in intersect_server]
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    poly1_shapely = create_polygon(polygon1)
+    poly2_shapely = create_polygon(polygon2)
+    intersect_shapely = PolygonData.intersect(poly1_shapely, poly2_shapely)
+    area_shapely = [poly.area() for poly in intersect_shapely]
+
+    tol = 1e-9
+    if isinstance(polygon1['data'][0], ArcData) or isinstance(polygon2['data'][0], ArcData):
+        tol = 0.1
+
+    assert len(intersect_server) == len(intersect_shapely)
+
+    total_area_server = sum(area_server)
+    total_area_shapely = sum(area_shapely)
+
+    assert total_area_server == pytest.approx(expected_area, rel=tol)
+    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+
+
+@pytest.mark.parametrize("polygons, expected_area", [
+    ([{'data': [(0, 0), (2, 0), (2, 2), (0, 2)]}, {'data': [(1, 1), (3, 1), (3, 3), (1, 3)]}], 7.0),
+    ([{'data': [(0, 0), (1, 0), (1, 1), (0, 1)]}, {'data': [(2, 0), (3, 0), (3, 1), (2, 1)]}], 2.0),
+    ([{'data': [(0, 0), (4, 0), (4, 4), (0, 4)]}, {'data': [(2, 2), (6, 2), (6, 6), (2, 6)]}], 28.0),
+    ([{'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [ArcData((0, 5), (10, 5), height=-5.0), ArcData((10, 5), (10, 15), height=0.0), ArcData((10, 15), (0, 15), height=-5.0), ArcData((0, 15), (0, 5), height=0.0)]}], 228.53981018066406),
+    ([{'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, {'data': [(5, 0), (15, 0), (15, 10), (5, 10)], 'holes': [[(6, 1), (14, 1), (14, 9), (6, 9)]]}], 62.0),
+])
+def test_unite(session, polygons, expected_area):
+    """Test polygon union using both backends."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polys_server = [create_polygon(p) for p in polygons]
+    union_server = PolygonData.unite(polys_server)
+    area_server = [poly.area() for poly in union_server]
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polys_shapely = [create_polygon(p) for p in polygons]
+    union_shapely = PolygonData.unite(polys_shapely)
+    area_shapely = [poly.area() for poly in union_shapely]
+
+    tol = 1e-9
+    if any(isinstance(polygon['data'][0], ArcData) for polygon in polygons):
+        tol = 0.1
+
+    assert len(union_server) == len(union_shapely)
+
+    total_area_server = sum(area_server)
+    total_area_shapely = sum(area_shapely)
+    
+    assert total_area_server == pytest.approx(expected_area, rel=tol)
+    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+
+
+@pytest.mark.parametrize("polygon1, polygon2, expected_area", [
+    ({'data': [(0, 0), (4, 0), (4, 4), (0, 4)]}, {'data': [(2, 2), (6, 2), (6, 6), (2, 6)]}, 12.0),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, {'data': [(5, 5), (8, 5), (8, 8), (5, 8)]}, 91.0),
+    ({'data': [(0, 0), (5, 0), (5, 5), (0, 5)]}, {'data': [(1, 1), (4, 1), (4, 4), (1, 4)]}, 16.0),
+    #TODO: In the following case using server computations, the area is correct. However, the shape of the resulting polygone is not correct. This happens because of the same shortcomming of the server that makes it impossible to create a curve on the left side of an edge.
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [ArcData((0, 5), (10, 5), height=-5.0), ArcData((10, 5), (10, 15), height=0.0), ArcData((10, 15), (0, 15), height=-5.0), ArcData((0, 15), (0, 5), height=0.0)]}, 50.0),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, {'data': [(5, 0), (15, 0), (15, 10), (5, 10)], 'holes': [[(6, 1), (14, 1), (14, 9), (6, 9)]]}, 26.0),
+])
+def test_subtract(session, polygon1, polygon2, expected_area):
+    """Test polygon subtraction using both backends."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    poly1_server = create_polygon(polygon1)
+    poly2_server = create_polygon(polygon2)
+    subtract_server = PolygonData.subtract(poly1_server, poly2_server)
+    area_server = [poly.area() for poly in subtract_server]
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    poly1_shapely = create_polygon(polygon1)
+    poly2_shapely = create_polygon(polygon2)
+    subtract_shapely = PolygonData.subtract(poly1_shapely, poly2_shapely)
+    area_shapely = [poly.area() for poly in subtract_shapely]
+
+    tol = 1e-9
+    if isinstance(polygon1['data'][0], ArcData) or isinstance(polygon2['data'][0], ArcData):
+        tol = 0.1
+
+    assert len(subtract_server) == len(subtract_shapely)
+
+    total_area_server = sum(area_server)
+    total_area_shapely = sum(area_shapely)
+
+    assert total_area_server == pytest.approx(expected_area, rel=tol)
+    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+
+
+@pytest.mark.parametrize("polygon1, polygon2, expected_area", [
+    ({'data': [(0, 0), (2, 0), (2, 2), (0, 2)]}, {'data': [(1, 1), (3, 1), (3, 3), (1, 3)]}, 6.0),
+    ({'data': [(0, 0), (4, 0), (4, 4), (0, 4)]}, {'data': [(2, 2), (6, 2), (6, 6), (2, 6)]}, 24.0),
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [ArcData((0, 5), (10, 5), height=-5.0), ArcData((10, 5), (10, 15), height=0.0), ArcData((10, 15), (0, 15), height=-5.0), ArcData((0, 15), (0, 5), height=0.0)]}, 100.0),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, {'data': [(5, 0), (15, 0), (15, 10), (5, 10)], 'holes': [[(6, 1), (14, 1), (14, 9), (6, 9)]]}, 52.0),
+])
+def test_xor(session, polygon1, polygon2, expected_area):
+    """Test polygon XOR using both backends."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    poly1_server = create_polygon(polygon1)
+    poly2_server = create_polygon(polygon2)
+    xor_server = PolygonData.xor(poly1_server, poly2_server)
+    area_server = [poly.area() for poly in xor_server]
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    poly1_shapely = create_polygon(polygon1)
+    poly2_shapely = create_polygon(polygon2)
+    xor_shapely = PolygonData.xor(poly1_shapely, poly2_shapely)
+    area_shapely = [poly.area() for poly in xor_shapely]
+
+    tol = 1e-9
+    if isinstance(polygon1['data'][0], ArcData) or isinstance(polygon2['data'][0], ArcData):
+        tol = 0.1
+
+    # The xor operation in shapely has a different output compared to the server.
+    # assert len(xor_server) == len(xor_shapely)
+    
+    total_area_server = sum(area_server)
+    total_area_shapely = sum(area_shapely)
+
+    assert total_area_server == pytest.approx(expected_area, rel=tol)
+    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

@@ -579,7 +579,6 @@ class PolygonData:
         ).points
 
     @classmethod
-    @parser.to_polygon_data_list
     def unite(cls, polygons: list[PolygonData]) -> list[PolygonData]:
         """Compute the union of a list of polygons.
 
@@ -592,10 +591,9 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        return cls.__stub.GetUnion(messages.polygon_data_list_message(polygons))
+        return cls._get_backend().unite(polygons)
 
     @classmethod
-    @parser.to_polygon_data_list
     def intersect(
         cls, polygons1: list[PolygonData] | PolygonData, polygons2: list[PolygonData] | PolygonData
     ) -> list[PolygonData]:
@@ -612,10 +610,15 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        return cls.__stub.GetIntersection(messages.polygon_data_pair_message(polygons1, polygons2))
+        # Convert single polygons to lists
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
+        
+        return cls._get_backend().intersect(polygons1, polygons2)
 
     @classmethod
-    @parser.to_polygon_data_list
     def subtract(
         cls, polygons1: list[PolygonData] | PolygonData, polygons2: list[PolygonData] | PolygonData
     ) -> list[PolygonData]:
@@ -632,10 +635,15 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        return cls.__stub.Subtract(messages.polygon_data_pair_message(polygons1, polygons2))
+        # Convert single polygons to lists
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
+        
+        return cls._get_backend().subtract(polygons1, polygons2)
 
     @classmethod
-    @parser.to_polygon_data_list
     def xor(
         cls, polygons1: list[PolygonData] | PolygonData, polygons2: list[PolygonData] | PolygonData
     ) -> list[PolygonData]:
@@ -652,7 +660,13 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        return cls.__stub.Xor(messages.polygon_data_pair_message(polygons1, polygons2))
+        # Convert single polygons to lists
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
+        
+        return cls._get_backend().xor(polygons1, polygons2)
 
     @parser.to_polygon_data_list
     def expand(

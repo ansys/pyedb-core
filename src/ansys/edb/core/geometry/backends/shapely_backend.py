@@ -1086,3 +1086,219 @@ class ShapelyBackend(PolygonBackend):
         nearest_on_polygon, _ = nearest_points(shapely_polygon.boundary, shapely_point)
         
         return PointData(nearest_on_polygon.x, nearest_on_polygon.y)
+
+    def unite(self, polygons: list[PolygonData]) -> list[PolygonData]:
+        """Compute the union of a list of polygons using Shapely.
+
+        Parameters
+        ----------
+        polygons : list[PolygonData]
+            List of polygons to unite.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the union.
+
+        Notes
+        -----
+        This implementation uses Shapely's unary_union operation to efficiently
+        compute the union of multiple polygons. The result may be a single polygon
+        or multiple disjoint polygons (MultiPolygon).
+        """
+        from shapely.ops import unary_union
+        from shapely.geometry import MultiPolygon
+
+        if not polygons:
+            return []
+
+        # Convert all polygons to Shapely format
+        shapely_polygons = [self._to_shapely_polygon(p) for p in polygons]
+
+        # Compute the union
+        result = unary_union(shapely_polygons)
+
+        # Convert the result back to PolygonData
+        result_polygons = []
+        
+        if result.is_empty:
+            return []
+        
+        if isinstance(result, MultiPolygon):
+            for geom in result.geoms:
+                result_polygons.append(self._shapely_to_polygon_data(geom, polygons[0].sense))
+        else:
+            result_polygons.append(self._shapely_to_polygon_data(result, polygons[0].sense))
+        
+        return result_polygons
+
+    def intersect(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Compute the intersection of two lists of polygons using Shapely.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            First list of polygons.
+        polygons2 : list[PolygonData]
+            Second list of polygons.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the intersection.
+
+        Notes
+        -----
+        This implementation first unions each list separately, then computes the
+        intersection between the two unions. The result may be a single polygon,
+        multiple disjoint polygons (MultiPolygon), or empty if there's no intersection.
+        """
+        from shapely.ops import unary_union
+        from shapely.geometry import MultiPolygon
+
+        if not polygons1 or not polygons2:
+            return []
+
+        # Convert all polygons to Shapely format and union each set
+        shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]
+        shapely_polygons2 = [self._to_shapely_polygon(p) for p in polygons2]
+
+        # Union each set
+        union1 = unary_union(shapely_polygons1)
+        union2 = unary_union(shapely_polygons2)
+
+        # Compute the intersection
+        result = union1.intersection(union2)
+
+        # Convert the result back to PolygonData
+        result_polygons = []
+        
+        if result.is_empty:
+            return []
+        
+        if isinstance(result, MultiPolygon):
+            for geom in result.geoms:
+                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+        else:
+            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+        
+        return result_polygons
+
+    def subtract(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Subtract a set of polygons from another set of polygons using Shapely.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            List of base polygons.
+        polygons2 : list[PolygonData]
+            List of polygons to subtract.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the subtraction.
+
+        Notes
+        -----
+        This implementation first unions each list separately, then computes the
+        difference between the two unions. The result may be a single polygon,
+        multiple disjoint polygons (MultiPolygon), or empty if nothing remains.
+        """
+        from shapely.ops import unary_union
+        from shapely.geometry import MultiPolygon
+
+        if not polygons1:
+            return []
+        
+        if not polygons2:
+            return polygons1
+
+        # Convert all polygons to Shapely format and union each set
+        shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]
+        shapely_polygons2 = [self._to_shapely_polygon(p) for p in polygons2]
+
+        # Union each set
+        union1 = unary_union(shapely_polygons1)
+        union2 = unary_union(shapely_polygons2)
+
+        # Compute the difference
+        result = union1.difference(union2)
+
+        # Convert the result back to PolygonData
+        result_polygons = []
+        
+        if result.is_empty:
+            return []
+        
+        if isinstance(result, MultiPolygon):
+            for geom in result.geoms:
+                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+        else:
+            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+        
+        return result_polygons
+
+    def xor(
+        self, polygons1: list[PolygonData], polygons2: list[PolygonData]
+    ) -> list[PolygonData]:
+        """Compute an exclusive OR between two sets of polygons using Shapely.
+
+        Parameters
+        ----------
+        polygons1 : list[PolygonData]
+            First list of polygons.
+        polygons2 : list[PolygonData]
+            Second list of polygons.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons resulting from the XOR operation.
+
+        Notes
+        -----
+        This implementation first unions each list separately, then computes the
+        symmetric difference between the two unions. The result may be a single polygon,
+        multiple disjoint polygons (MultiPolygon), or empty.
+        """
+        from shapely.ops import unary_union
+        from shapely.geometry import MultiPolygon
+
+        if not polygons1 and not polygons2:
+            return []
+        
+        if not polygons1:
+            return polygons2
+        
+        if not polygons2:
+            return polygons1
+
+        # Convert all polygons to Shapely format and union each set
+        shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]
+        shapely_polygons2 = [self._to_shapely_polygon(p) for p in polygons2]
+
+        # Union each set
+        union1 = unary_union(shapely_polygons1)
+        union2 = unary_union(shapely_polygons2)
+
+        # Compute the symmetric difference (XOR)
+        result = union1.symmetric_difference(union2)
+
+        # Convert the result back to PolygonData
+        result_polygons = []
+        
+        if result.is_empty:
+            return []
+        
+        if isinstance(result, MultiPolygon):
+            for geom in result.geoms:
+                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+        else:
+            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+        
+        return result_polygons

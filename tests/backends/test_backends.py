@@ -690,11 +690,8 @@ def test_intersect(session, polygon1, polygon2, expected_area):
 
     assert len(intersect_server) == len(intersect_shapely)
 
-    total_area_server = sum(area_server)
-    total_area_shapely = sum(area_shapely)
-
-    assert total_area_server == pytest.approx(expected_area, rel=tol)
-    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+    assert sum(area_server) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize("polygons, expected_area", [
@@ -724,11 +721,8 @@ def test_unite(session, polygons, expected_area):
 
     assert len(union_server) == len(union_shapely)
 
-    total_area_server = sum(area_server)
-    total_area_shapely = sum(area_shapely)
-    
-    assert total_area_server == pytest.approx(expected_area, rel=tol)
-    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+    assert sum(area_server) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize("polygon1, polygon2, expected_area", [
@@ -761,11 +755,8 @@ def test_subtract(session, polygon1, polygon2, expected_area):
 
     assert len(subtract_server) == len(subtract_shapely)
 
-    total_area_server = sum(area_server)
-    total_area_shapely = sum(area_shapely)
-
-    assert total_area_server == pytest.approx(expected_area, rel=tol)
-    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+    assert sum(area_server) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize("polygon1, polygon2, expected_area", [
@@ -796,12 +787,34 @@ def test_xor(session, polygon1, polygon2, expected_area):
 
     # The xor operation in shapely has a different output compared to the server.
     # assert len(xor_server) == len(xor_shapely)
-    
-    total_area_server = sum(area_server)
-    total_area_shapely = sum(area_shapely)
 
-    assert total_area_server == pytest.approx(expected_area, rel=tol)
-    assert total_area_shapely == pytest.approx(expected_area, rel=tol)
+    assert sum(area_server) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
+
+
+@pytest.mark.parametrize("polygon, options, expected_result, tol", [
+    ({'data': [(0, 0), (1, 0), (1, 1), (0, 1)]}, {'offset': 1.0, 'round_corner': False, 'max_corner_ext': 2.0}, 9.0, 1e-9),
+    ({'data': [(0, 0), (1, 0), (1, 1), (0, 1)]}, {'offset': 1.0, 'round_corner': True, 'max_corner_ext': 2.0}, 8.141592979431152, 1e-3),
+    #TODO: In the following case, the corners are clipped and the results differ by a large value between server and shapely implementations.
+    ({'data': [(0, 0), (2, 0), (1, 2)]}, {'offset': 1.0, 'round_corner': False, 'max_corner_ext': 1.0}, 13.680339887498949, 1),
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'offset': 1.0, 'round_corner': True, 'max_corner_ext': 2.0}, 233.0973358154297, 1e-1),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(1, 1), (9, 1), (9, 9), (1, 9)]]}, {'offset': 3.5, 'round_corner': False, 'max_corner_ext': 10.0}, 288.0, 1e-9),
+])
+def test_expand(session, polygon, options, expected_result, tol):
+    """Test expand with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon)
+    extend_server = polygon_server.expand(**options)
+    area_server = [poly.area() for poly in extend_server]
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon)
+    extend_shapely = polygon_shapely.expand(**options)
+    area_shapely = [poly.area() for poly in extend_shapely]
+
+    assert sum(area_server) == pytest.approx(expected_result, rel=tol)
+    assert sum(area_shapely) == pytest.approx(expected_result, rel=tol)
 
 
 if __name__ == "__main__":

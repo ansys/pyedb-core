@@ -1302,3 +1302,79 @@ class ShapelyBackend(PolygonBackend):
             result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
         
         return result_polygons
+
+    def expand(
+        self, polygon: PolygonData, offset: float, round_corner: bool, max_corner_ext: float, tol: float = 1e-9
+    ) -> list[PolygonData]:
+        """Expand the polygon by an offset using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to expand.
+        offset : float
+            Expansion offset. Specify a negative value to shrink the polygon.
+        round_corner : bool
+            Whether the corners are rounded corners. If ``False``, the corners
+            are straight edges.
+        max_corner_ext : float
+            Maximum corner extension to clip the corner at.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of expanded polygons.
+
+        Notes
+        -----
+        This implementation uses Shapely's buffer operation to expand or shrink polygons.
+        When `round_corner` is True, rounded corners are created. When False, mitered
+        corners are used with the `max_corner_ext` parameter controlling the miter limit.
+        The miter limit is calculated as the ratio of max_corner_ext to offset.
+        """
+        from shapely.geometry import MultiPolygon
+
+        shapely_polygon = self._to_shapely_polygon(polygon)
+        
+        # Determine join style based on round_corner parameter
+        # JOIN_STYLE: 1 = round, 2 = mitre, 3 = bevel
+        if round_corner:
+            join_style = 1  # Round
+            mitre_limit = 5.0  # Default for round joins (not used)
+        else:
+            join_style = 2  # Mitre (sharp corners)
+            # Calculate mitre limit as the ratio of max extension to offset
+            # Shapely's mitre_limit is the ratio of the maximum corner extension to the buffer distance
+            if offset != 0:
+                mitre_limit = max_corner_ext / abs(offset)
+            else:
+                mitre_limit = 5.0  # Default value
+            
+            # Ensure mitre_limit is at least 1.0 to avoid errors
+            mitre_limit = max(1.0, mitre_limit)
+        
+        # Apply buffer operation
+        # Positive offset expands, negative offset shrinks
+        buffered = shapely_polygon.buffer(
+            offset,
+            join_style=join_style,
+            mitre_limit=mitre_limit
+        )
+        
+        # Convert result back to PolygonData
+        result_polygons = []
+        
+        if buffered.is_empty:
+            return []
+        
+        if isinstance(buffered, MultiPolygon):
+            # Multiple polygons resulted from the operation
+            for geom in buffered.geoms:
+                result_polygons.append(self._shapely_to_polygon_data(geom, polygon.sense))
+        else:
+            # Single polygon result
+            result_polygons.append(self._shapely_to_polygon_data(buffered, polygon.sense))
+        
+        return result_polygons

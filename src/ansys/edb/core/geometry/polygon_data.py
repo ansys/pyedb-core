@@ -668,7 +668,6 @@ class PolygonData:
         
         return cls._get_backend().xor(polygons1, polygons2)
 
-    @parser.to_polygon_data_list
     def expand(
         self, offset: float, round_corner: bool, max_corner_ext: float, tol: float = 1e-9
     ) -> list[PolygonData]:
@@ -690,9 +689,7 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        return self.__stub.Expand(
-            messages.polygon_data_expand_message(self, offset, tol, round_corner, max_corner_ext)
-        )
+        return self._get_backend().expand(self, offset, round_corner, max_corner_ext, tol)
 
     @classmethod
     @parser.to_polygon_data_list

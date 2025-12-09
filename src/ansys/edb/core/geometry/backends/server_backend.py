@@ -478,3 +478,32 @@ class ServerBackend(PolygonBackend):
             List of polygons resulting from the XOR operation.
         """
         return self._stub.Xor(messages.polygon_data_pair_message(polygons1, polygons2))
+
+    @parser.to_polygon_data_list
+    def expand(
+        self, polygon: PolygonData, offset: float, round_corner: bool, max_corner_ext: float, tol: float = 1e-9
+    ) -> list[PolygonData]:
+        """Expand the polygon by an offset using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to expand.
+        offset : float
+            Expansion offset. Specify a negative value to shrink the polygon.
+        round_corner : bool
+            Whether the corners are rounded corners. If ``False``, the corners
+            are straight edges.
+        max_corner_ext : float
+            Maximum corner extension to clip the corner at.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of expanded polygons.
+        """
+        return self._stub.Expand(
+            messages.polygon_data_expand_message(polygon, offset, tol, round_corner, max_corner_ext)
+        )

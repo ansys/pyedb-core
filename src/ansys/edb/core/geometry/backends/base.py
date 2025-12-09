@@ -441,3 +441,30 @@ class PolygonBackend(ABC):
             List of polygons resulting from the XOR operation.
         """
         pass
+
+    @abstractmethod
+    def expand(
+        self, polygon: PolygonData, offset: float, round_corner: bool, max_corner_ext: float, tol: float = 1e-9
+    ) -> list[PolygonData]:
+        """Expand the polygon by an offset.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to expand.
+        offset : float
+            Expansion offset. Specify a negative value to shrink the polygon.
+        round_corner : bool
+            Whether the corners are rounded corners. If ``False``, the corners
+            are straight edges.
+        max_corner_ext : float
+            Maximum corner extension to clip the corner at.
+        tol : float, default: 1e-9
+            Tolerance.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of expanded polygons.
+        """
+        pass

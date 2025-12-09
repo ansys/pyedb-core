@@ -12,6 +12,37 @@ os.environ["ANSYSEM_EDB_EXE_DIR"] = r"C:\Program Files\ANSYS Inc\v262\AnsysEM"
 EXE_DIR = os.environ["ANSYSEM_EDB_EXE_DIR"]
 session = launch_session(EXE_DIR)
 
+def create_polygon(geometry: dict = None):
+    """Create a PolygonData object from a geometry dictionary.
+    
+    Args:
+        geometry: A dictionary containing polygon geometry data with:
+            - 'data': Either a list of point tuples [(x, y), ...] or a list of ArcData objects
+            - 'holes' (optional): A list of hole definitions, where each hole is either
+                                  a list of point tuples or a list of ArcData objects
+        
+    Returns:
+        PolygonData: A polygon created with either points or arcs, optionally with holes
+    """
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+
+    params = {}
+    if isinstance(geometry['data'][0], ArcData):
+        params['arcs'] = geometry['data']
+    else:
+        params['points'] = geometry['data']
+
+    if 'holes' in geometry:
+        holes = []
+        for hole in geometry['holes']:
+            if isinstance(hole[0], ArcData):
+                holes.append(PolygonData(arcs=hole))
+            else:
+                holes.append(PolygonData(points=hole))
+        params['holes'] = holes
+
+    return PolygonData(**params)
+
 def tessellation():
     fig, axs = plt.subplots(2, 2, constrained_layout=True)
     plt.setp(axs)
@@ -100,8 +131,50 @@ def convex_hull():
 
     Config.reset()
 
+def boolean_operations():
+    fig, axs = plt.subplots(1, 2, constrained_layout=True)
+    plt.setp(axs)
+
+    points, hole = [[ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)], [ArcData((0, 5), (10, 5), height=-5.0), ArcData((10, 5), (10, 15), height=0.0), ArcData((10, 15), (0, 15), height=-5.0), ArcData((0, 15), (0, 5), height=0.0)]], [[], []]
+    polygons = [PolygonData(arcs=p, holes=[PolygonData(h) for h in holes]) for p, holes in zip(points, hole)]
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    result_server = PolygonData.subtract(*polygons)
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    result_shapely = PolygonData.subtract(*polygons)
+
+    plot_polys(axs[0], [*polygons, *result_server], title="Server subtraction", labels=[*['Original']*len(polygons), 'Subtraction'])
+    plot_polys(axs[1], [*polygons, *result_shapely], title="Shapely subtraction", labels=[*['Original']*len(polygons), 'Subtraction'])
+
+    plt.show()
+
+    Config.reset()
+
+def expand():
+    fig, axs = plt.subplots(1, 2, constrained_layout=True)
+    plt.setp(axs)
+
+    data = {'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}
+    data = {'data': [(0, 0), (2, 0), (1, 2)]}
+    polygon = create_polygon(geometry=data)
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    result_server = polygon.expand(offset=1.0, round_corner=False, max_corner_ext=3.0)
+    print(result_server[0].area())
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    result_shapely = polygon.expand(offset=1.0, round_corner=False, max_corner_ext=3.0)
+    print(result_shapely[0].area())
+
+    plot_polys(axs[0], [polygon, *result_server], title="Server expansion", labels=['Original', 'Expansion'])
+    plot_polys(axs[1], [polygon, *result_shapely], title="Shapely expansion", labels=['Original', 'Expansion'])
+
+    plt.show()
+
+    Config.reset()
+
 
 if __name__ == "__main__":
-    tessellation()
-    transformation()
-    convex_hull()
+    # tessellation()
+    # transformation()
+    # convex_hull()
+    # boolean_operations()
+    expand()

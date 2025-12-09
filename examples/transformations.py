@@ -155,6 +155,7 @@ def expand():
 
     data = {'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}
     data = {'data': [(0, 0), (2, 0), (1, 2)]}
+    data = {'data': [ArcData((0, 0), (-10, 0), height=-5.0), ArcData((-10, 0), (-10, 10), height=0.0), ArcData((-10, 10), (0, 10), height=5.0), ArcData((0, 10), (0, 0), height=0.0)]}
     polygon = create_polygon(geometry=data)
     Config.set_computation_backend(ComputationBackend.SERVER)
     result_server = polygon.expand(offset=1.0, round_corner=False, max_corner_ext=3.0)

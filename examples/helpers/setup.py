@@ -354,6 +354,11 @@ def plot_poly(ax, p, color, label=None, linetype='solid'):
             center_pt = [center.x.value, center.y.value]
             theta1 = math.atan2((start - center).y.value, (start - center).x.value)
             theta2 = math.atan2((end - center).y.value, (end - center).x.value)
+            
+            # Swap angles if arc_height is positive to draw on the left side
+            if pts[i].arc_height.value > 0:
+                theta1, theta2 = theta2, theta1
+            
             diameter = arc.radius * 2
             arcs.append(
                 mpatches.Arc(

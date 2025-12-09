@@ -79,14 +79,6 @@ class ShapelyBackend(PolygonBackend):
         -------
         list[tuple[float, float]]
             List of intermediate points (excluding start, including end).
-
-        Notes
-        -----
-        Arc is defined by three points: start, arc point (with height), and end.
-        The height (sagitta) is the perpendicular distance from the chord midpoint to the arc.
-        When going from start to end:
-        - Negative height: center on LEFT, arc on RIGHT (small arc, < 180°)
-        - Positive height: center on RIGHT, arc on RIGHT (large arc, > 180°)
         """
         # If height is zero or very small, it's a straight line
         if abs(height) < 1e-12:
@@ -121,26 +113,25 @@ class ShapelyBackend(PolygonBackend):
         perp_dy = -chord_dx / chord_length
 
         # Place center based on height sign:
-        # - Negative height: center on LEFT side, arc on RIGHT (small portion)
-        # - Positive height: center on RIGHT side, arc on RIGHT (large portion)
-        if height < 0:  # Center on LEFT, small arc on RIGHT
+        if height < 0:
             center_x = chord_mid_x - perp_dx * (radius + height)
             center_y = chord_mid_y - perp_dy * (radius + height)
-        else:  # Center on RIGHT, large arc on RIGHT
+        else:
             center_x = chord_mid_x + perp_dx * (radius - height)
             center_y = chord_mid_y + perp_dy * (radius - height)
         
         dot_product = (x1-center_x)*(x2-center_x) + (y1-center_y)*(y2-center_y)
         temp_angle = math.acos(dot_product/(radius*radius))
         angle1 = math.atan2(y1 - center_y, x1 - center_x)
-        if height < 0 and radius > abs(height):
+
+        if radius <= abs(height):
+            temp_angle = 2*math.pi - temp_angle
+
+        if height < 0:
             arc_angle = temp_angle
-        if height < 0 and radius <= abs(height):
-            arc_angle = (2*math.pi - temp_angle)
-        if height > 0 and radius > abs(height):
-            arc_angle = (2*math.pi - temp_angle)
-        if height > 0 and radius <= abs(height):
-            arc_angle = temp_angle
+        elif height >= 0:
+            arc_angle = -temp_angle
+
         total_angle = abs(arc_angle)
 
         # Determine number of segments

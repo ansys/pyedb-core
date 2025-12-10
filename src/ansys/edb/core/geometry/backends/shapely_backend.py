@@ -48,6 +48,33 @@ class ShapelyBackend(PolygonBackend):
 
 
     @staticmethod
+    def _to_tuple(point: tuple[float, float] | PointData) -> tuple[float, float]:
+        """Convert a point to a tuple of (x, y) coordinates.
+
+        Parameters
+        ----------
+        point : tuple[float, float] | PointData
+            Point as either a tuple of coordinates or a PointData object.
+
+        Returns
+        -------
+        tuple[float, float]
+            Point coordinates as (x, y) tuple.
+
+        Raises
+        ------
+        ValueError
+            If the point is not a valid tuple or PointData object.
+        """
+        from ansys.edb.core.geometry.point_data import PointData
+        
+        if isinstance(point, PointData):
+            return (point.x.double, point.y.double)
+        if isinstance(point, tuple) and len(point) == 2:
+            return point
+        raise ValueError("Point must be a tuple of (x, y) coordinates or a PointData object.")
+
+    @staticmethod
     def _tessellate_arc(
         start: PointData,
         end: PointData,
@@ -121,7 +148,12 @@ class ShapelyBackend(PolygonBackend):
             center_y = chord_mid_y + perp_dy * (radius - height)
         
         dot_product = (x1-center_x)*(x2-center_x) + (y1-center_y)*(y2-center_y)
-        temp_angle = math.acos(dot_product/(radius*radius))
+        temp = dot_product/(radius*radius)
+        if abs(temp)>1.0+1e-10:
+            raise ValueError("Numerical error in arc tessellation: acos argument out of range.")
+        if temp>1.0 or temp<-1.0:
+            temp = max(-1.0, min(1.0, temp))
+        temp_angle = math.acos(temp)
         angle1 = math.atan2(y1 - center_y, x1 - center_x)
 
         if radius <= abs(height):
@@ -397,6 +429,7 @@ class ShapelyBackend(PolygonBackend):
         bool
             ``True`` if the point is inside the polygon, ``False`` otherwise.
         """
+        point = self._to_tuple(point)
         shapely_polygon = self._to_shapely_polygon(polygon)
         shapely_point = ShapelyPoint(point)
         return shapely_polygon.intersects(shapely_point)
@@ -1036,6 +1069,7 @@ class ShapelyBackend(PolygonBackend):
         This implementation creates a Shapely Point for the circle center and uses
         the buffer operation to create a circular polygon, then checks for intersection.
         """
+        center = self._to_tuple(center)
         shapely_polygon = self._to_shapely_polygon(polygon)
         
         # Create a circle as a buffered point
@@ -1069,6 +1103,7 @@ class ShapelyBackend(PolygonBackend):
         from shapely.ops import nearest_points
         from ansys.edb.core.geometry.point_data import PointData
         
+        point = self._to_tuple(point)
         shapely_polygon = self._to_shapely_polygon(polygon)
         shapely_point = ShapelyPoint(point)
         

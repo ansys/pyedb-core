@@ -188,7 +188,7 @@ class ShapelyBackend(PolygonBackend):
             y = center_y + radius * math.sin(angle)
             points.append((x, y))
 
-        return points
+        return points, (center_x, center_y), radius
 
 
     @staticmethod
@@ -257,7 +257,7 @@ class ShapelyBackend(PolygonBackend):
                     coords.append((start.x.double, start.y.double))
 
                     # Tessellate the arc and add intermediate points (excluding start)
-                    arc_coords = ShapelyBackend._tessellate_arc(
+                    arc_coords, _, _ = ShapelyBackend._tessellate_arc(
                         start, end, height, max_chord_error, max_arc_angle, max_points
                     )
                     # arc_coords includes the end point, so add all of them
@@ -414,6 +414,70 @@ class ShapelyBackend(PolygonBackend):
         # A polygon is convex if it equals its convex hull
         return shapely_polygon.equals(shapely_polygon.convex_hull)
 
+    def is_circle(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
+        """Determine whether the outer contour of the polygon is a circle using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+
+        Returns
+        -------
+        bool
+            ``True`` when the outer contour of the polygon is a circle, ``False`` otherwise.
+        
+        Notes
+        -----
+        A circle is represented as a polygon with exactly 2 arc points where:
+        - Both points have is_arc=True
+        - The arc heights are equal in magnitude but opposite in sign
+        - The arc heights equal half the distance between the two points (radius)
+        """
+        # Check if polygon has holes - a circle cannot have holes
+        if polygon.has_holes():
+            return False
+        
+        points = polygon.points.copy()
+    
+        if points[0].is_arc:
+            if points[-1].is_arc:
+                points.insert(0, PointData(points[-2].x.double, points[-2].y.double))
+            else:
+                points.insert(0, PointData(points[-1].x.double, points[-1].y.double))
+        if points[-1].is_arc:
+            if points[0].is_arc:
+                points.append(PointData(points[1].x.double, points[1].y.double))
+            else:
+                points.append(PointData(points[0].x.double, points[0].y.double))
+
+        if not points[1].is_arc:
+            return False
+        
+        _, center, radius = self._tessellate_arc(points[0], points[2], points[1].arc_height.double)
+
+        i = 0
+        n = len(points)
+        while i < n:
+            pt = points[i]
+            if i + 1 < n and points[i + 1].is_arc:
+                if i + 2 < n:
+                    start = pt
+                    arc_pt = points[i + 1]
+                    end = points[i + 2]
+                    height = arc_pt.arc_height.double
+                    _, c, r = ShapelyBackend._tessellate_arc(start, end, height)
+                    if not (math.isclose(c[0], center[0], rel_tol=tol) and math.isclose(c[1], center[1], rel_tol=tol) and math.isclose(r, radius, rel_tol=tol)):
+                        return False
+                    i += 2
+                else:
+                    RuntimeError("Invalid arc definition: arc point without an end point.")
+            else:
+                if not (math.isclose((pt.x.double - center[0])*(pt.x.double - center[0])+ (pt.y.double - center[1])*(pt.y.double - center[1]), radius*radius, rel_tol=tol)):
+                    return False
+                i += 1
+
+        return True
 
     def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
         """Determine whether a point is inside the polygon using Shapely.

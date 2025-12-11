@@ -58,6 +58,21 @@ class ServerBackend(PolygonBackend):
         """
         return self._stub.IsConvex(messages.polygon_data_message(polygon)).value
 
+    def is_circle(self, polygon: PolygonData) -> bool:
+        """Determine whether the outer contour of the polygon is a circle using the server.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to check.
+
+        Returns
+        -------
+        bool
+            ``True`` when the outer contour of the polygon is a circle, ``False`` otherwise.
+        """
+        return self._stub.IsCircle(messages.polygon_data_message(polygon)).value
+
     def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
         """Determine whether a point is inside the polygon using the server.
 

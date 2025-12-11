@@ -246,7 +246,7 @@ class PolygonData:
         bool
             ``True`` when the outer contour of the polygon is a circle holes, ``False`` otherwise.
         """
-        return self.__stub.IsCircle(messages.polygon_data_message(self)).value
+        return self._get_backend().is_circle(self)
 
     def is_box(self) -> bool:
         """Determine whether the outer contour of the polygon is a box.

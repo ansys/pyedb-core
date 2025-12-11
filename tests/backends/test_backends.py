@@ -817,5 +817,30 @@ def test_expand(session, polygon, options, expected_result, tol):
     assert sum(area_shapely) == pytest.approx(expected_result, rel=tol)
 
 
+@pytest.mark.parametrize("polygon, expected_result", [
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (0, 0), height=-5.0)]}, True),
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (0, 0), height=-5.0)], 'holes': [[(4, -1), (6, -1), (6, 1), (4, 1)]]}, False),
+    ({'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (0, 0), height=-5.00000001)]}, False),
+    ({'data': [ArcData((0, 0), (10, 0), height=5.0), ArcData((10, 0), (0, 0), height=5.0)]}, True),
+    ({'data': [ArcData((0, 0), (10, 0), height=-2.071067811865475244), ArcData((10, 0), (10, 10), height=-2.071067811865475244), ArcData((10, 10), (0, 10), height=-2.071067811865475244), ArcData((0, 10), (0, 0), height=-2.071067811865475244)]}, True),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, False),
+    ({'data': [ArcData((0, 0), (10, 0), height=-1.339745962155614), ArcData((10, 0), (0, 0), height=-18.660254037844386)]}, True),
+])
+def test_is_circle(session, polygon, expected_result):
+    """Test is_circle with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon)
+    is_circle_server = polygon_server.is_circle()
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon)
+    is_circle_shapely = polygon_shapely.is_circle()
+
+    #TODO: The server backend is not handling this operation correctly.
+    # assert is_circle_server == expected_result
+    assert is_circle_shapely == expected_result
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

@@ -256,7 +256,7 @@ class PolygonData:
         bool
             ``True`` when the outer corner of the polygon is a box, ``False`` otherwise.
         """
-        return self.__stub.IsBox(messages.polygon_data_message(self)).value
+        return self._get_backend().is_box(self)
 
     def is_convex(self) -> bool:
         """Determine whether the polygon is a convex hull.

@@ -842,5 +842,33 @@ def test_is_circle(session, polygon, expected_result):
     assert is_circle_shapely == expected_result
 
 
+@pytest.mark.parametrize("polygon, expected_result", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, True),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)], 'holes': [[(5, 5), (5, 6), (6, 6), (6, 5)]]}, False),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10), (0, 0), (10, 0)]}, False),
+    ({'data': [(0, 0), (5, 0), (4, 0), (10, 0), (10, 10), (0, 10)]}, False),
+    ({'data': [(0, 0), (0, 0), (5, 0), (10, 0), (10, 1), (10, 1), (10, 2), (10, 10), (0, 10), (0, 10), (0, 0)]}, True),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 9.999)]}, False),
+    ({'data': [(0, 0), (10, 0), (10, 10)]}, False),
+    ({'data': [ArcData((0, 0), (10, 0), height=0.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, True),
+    ({'data': [ArcData((0, 0), (5, 0), height=0.0), ArcData((5, 0), (10, 0), height=0.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, True),
+    ({'data': [ArcData((0, 0), (5, 0), height=0.0), ArcData((5, 0), (5, 0), height=42.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, False),
+])
+def test_is_box(session, polygon, expected_result):
+    """Test is_box with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = create_polygon(polygon)
+    is_box_server = polygon_server.is_box()
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon_shapely = create_polygon(polygon)
+    is_box_shapely = polygon_shapely.is_box()
+
+    # TODO: The server backend is not handling this operation correctly.
+    # assert is_box_server == expected_result
+    assert is_box_shapely == expected_result
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

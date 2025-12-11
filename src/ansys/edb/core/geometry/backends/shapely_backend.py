@@ -5,10 +5,8 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
-    from ansys.edb.core.geometry.point_data import PointData
-
+from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
+from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.geometry.backends.base import PolygonBackend
 
 try:
@@ -65,9 +63,7 @@ class ShapelyBackend(PolygonBackend):
         ------
         ValueError
             If the point is not a valid tuple or PointData object.
-        """
-        from ansys.edb.core.geometry.point_data import PointData
-        
+        """        
         if isinstance(point, PointData):
             return (point.x.double, point.y.double)
         if isinstance(point, tuple) and len(point) == 2:
@@ -231,10 +227,20 @@ class ShapelyBackend(PolygonBackend):
         if not points:
             return []
 
+        if points[0].is_arc:
+            if points[-1].is_arc:
+                points.insert(0, PointData(points[-2].x.double, points[-2].y.double))
+            else:
+                points.insert(0, PointData(points[-1].x.double, points[-1].y.double))
+        if points[-1].is_arc:
+            if points[0].is_arc:
+                points.append(PointData(points[1].x.double, points[1].y.double))
+            else:
+                points.append(PointData(points[0].x.double, points[0].y.double))
+
         coords = []
         i = 0
         n = len(points)
-
         while i < n:
             pt = points[i]
 
@@ -260,9 +266,7 @@ class ShapelyBackend(PolygonBackend):
                     # Move to the end point (i+2), which will be processed in next iteration
                     i += 2
                 else:
-                    # Incomplete arc at the end - just add the current point
-                    coords.append((pt.x.double, pt.y.double))
-                    i += 1
+                    RuntimeError("Invalid arc definition: arc point without an end point.")
             else:
                 # Regular point - just add it
                 coords.append((pt.x.double, pt.y.double))
@@ -360,9 +364,6 @@ class ShapelyBackend(PolygonBackend):
         PolygonData
             The converted polygon data.
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
-
         # Extract exterior coordinates
         exterior_coords = list(shapely_poly.exterior.coords[:-1])  # Exclude closing point
         points = [PointData(x, y) for x, y in exterior_coords]
@@ -512,9 +513,6 @@ class ShapelyBackend(PolygonBackend):
         PolygonData
             Polygon with all arcs tessellated into line segments.
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.geometry.polygon_data import PolygonData
-
         # Extract coordinates with arcs tessellated
         exterior_coords = self._extract_coordinates_with_arcs(
             polygon.points, max_chord_error, max_arc_angle, max_points
@@ -643,8 +641,7 @@ class ShapelyBackend(PolygonBackend):
         and interior coordinates (holes) are in CW order.
         """
         from shapely.geometry.polygon import orient
-        from ansys.edb.core.geometry.point_data import PointData
-        
+
         shapely_polygon = self._to_shapely_polygon(polygon)
         shapely_polygon = orient(shapely_polygon, sign=1.0)
         exterior_coords = list(shapely_polygon.exterior.coords[:-1])
@@ -672,7 +669,6 @@ class ShapelyBackend(PolygonBackend):
         This implementation moves each point in the polygon by adding the vector to it.
         Arc points are preserved, and holes are also moved by the same vector.
         """
-        from ansys.edb.core.geometry.polygon_data import PolygonData
         from ansys.edb.core.utility import conversions
         
         # Convert vector to PointData for easy addition
@@ -724,8 +720,6 @@ class ShapelyBackend(PolygonBackend):
         This implementation rotates each point in the polygon around the given center.
         Arc points are preserved, and holes are also rotated around the same center.
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.geometry.polygon_data import PolygonData
         from ansys.edb.core.utility import conversions
         
         # Convert center to PointData
@@ -778,8 +772,6 @@ class ShapelyBackend(PolygonBackend):
         The scaling is done by: new_point = center + factor * (point - center).
         Arc points are preserved with their heights scaled, and holes are also scaled from the same center.
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.geometry.polygon_data import PolygonData
         from ansys.edb.core.utility import conversions
         
         # Convert center to PointData
@@ -844,9 +836,6 @@ class ShapelyBackend(PolygonBackend):
         The polygon sense is also flipped (CCW becomes CW and vice versa) because mirroring
         reverses the orientation.
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
-        
         # Mirror all points in the polygon
         mirrored_points = []
         for point in polygon.points:
@@ -940,7 +929,6 @@ class ShapelyBackend(PolygonBackend):
         """
         from shapely.ops import unary_union
         from shapely.geometry import MultiPoint
-        from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
         
         if not polygons:
             raise ValueError("Cannot compute convex hull of an empty list of polygons")
@@ -1101,7 +1089,6 @@ class ShapelyBackend(PolygonBackend):
         they are tessellated first.
         """
         from shapely.ops import nearest_points
-        from ansys.edb.core.geometry.point_data import PointData
         
         point = self._to_tuple(point)
         shapely_polygon = self._to_shapely_polygon(polygon)

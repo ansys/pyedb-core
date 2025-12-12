@@ -461,3 +461,15 @@ class Cell(ObjBase, variable_server.VariableServer):
             List of boxes, one around each via discovered.
         """
         self.__stub.GenerateViaSmartBox(messages.string_property_message(self, net_name))
+
+    def apply_technology(self, definition_name: str):
+        """Apply a technology definition to the cell.
+
+        Parameters
+        ----------
+        definition_name : str
+            Name of the technology definition.
+        """
+        self.__stub.ApplyTechnology(
+            cell_pb2.CellApplyTechnologyMessage(cell=self.msg, definition_name=definition_name)
+        )

@@ -562,7 +562,6 @@ class PolygonData:
 
         return self._get_backend().closest_point(self, (point_tuple.x.double, point_tuple.y.double))
 
-    @parser.to_point_data_list
     def closest_points(self, polygon: PolygonData) -> tuple[PointData, PointData]:
         """Compute points on this and another polygon that are closest to the other polygon.
 
@@ -574,9 +573,16 @@ class PolygonData:
         -------
         tuple of (.PointData, .PointData)
         """
-        return self.__stub.GetClosestPoints(
-            messages.polygon_data_with_points_message(self, polygon=polygon)
-        ).points
+        from ansys.edb.core.geometry.point_data import PointData
+        
+        # Use backend to compute closest points
+        (x1, y1), (x2, y2) = self._get_backend().closest_points(self, polygon)
+        
+        # Convert to PointData objects
+        point1 = PointData(x1, y1)
+        point2 = PointData(x2, y2)
+        
+        return (point1, point2)
 
     @classmethod
     def unite(cls, polygons: list[PolygonData]) -> list[PolygonData]:

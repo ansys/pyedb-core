@@ -870,5 +870,38 @@ def test_is_box(session, polygon, expected_result):
     assert is_box_shapely == expected_result
 
 
+@pytest.mark.parametrize("polygon1, polygon2, expected_point1, expected_point2", [
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, {'data': [(20, 20), (30, 20), (30, 30), (20, 30)]}, (10, 10), (20, 20)),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, {'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, (0, 0), (0, 0)),
+    ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, {'data': [(-20, -20), (-30, -20), (-30, -30), (-20, -30)]}, (0, 0), (-20, -20)),
+    ({'data': [(0, 0), (10, 0), (10, 10)]}, {'data': [(0, 10), (10, 10), (10, 20)]}, (10, 10), (10, 10)),
+    ({'data': [ArcData((0, 0), (10, 0), height=0), ArcData((10, 0), (10, 10), height=-5.0), ArcData((10, 10), (0, 10), height=0.0), ArcData((0, 10), (0, 0), height=0.0)]}, {'data': [(20, 0), (30, 0), (30, 10), (20, 10)]}, (15, 5), (20, 5)),
+])
+def test_closest_points(session, polygon1, polygon2, expected_point1, expected_point2):
+    """Test closest points with both server and shapely backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon1_server = create_polygon(polygon1)
+    polygon2_server = create_polygon(polygon2)
+    closest_point1_server, closest_point2_server = polygon1_server.closest_points(polygon2_server)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    polygon1_shapely = create_polygon(polygon1)
+    polygon2_shapely = create_polygon(polygon2)
+    closest_point1_shapely, closest_point2_shapely = polygon1_shapely.closest_points(polygon2_shapely)
+
+    tol = 1e-9
+
+    assert math.isclose(closest_point1_server.x.double, expected_point1[0], rel_tol=tol)
+    assert math.isclose(closest_point1_server.y.double, expected_point1[1], rel_tol=tol)
+    assert math.isclose(closest_point2_server.x.double, expected_point2[0], rel_tol=tol)
+    assert math.isclose(closest_point2_server.y.double, expected_point2[1], rel_tol=tol)
+
+    assert math.isclose(closest_point1_shapely.x.double, expected_point1[0], rel_tol=tol)
+    assert math.isclose(closest_point1_shapely.y.double, expected_point1[1], rel_tol=tol)
+    assert math.isclose(closest_point2_shapely.x.double, expected_point2[0], rel_tol=tol)
+    assert math.isclose(closest_point2_shapely.y.double, expected_point2[1], rel_tol=tol)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

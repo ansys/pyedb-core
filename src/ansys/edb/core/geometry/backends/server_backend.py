@@ -433,6 +433,31 @@ class ServerBackend(PolygonBackend):
         
         return self._stub.GetClosestPoints(messages.polygon_data_with_points_message(polygon, point=point)).points[0]
 
+    def closest_points(self, polygon1: PolygonData, polygon2: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
+        """Compute points on two polygons that are closest to each other using the server.
+
+        Parameters
+        ----------
+        polygon1 : PolygonData
+            The first polygon.
+        polygon2 : PolygonData
+            The second polygon.
+
+        Returns
+        -------
+        tuple[tuple[float, float], tuple[float, float]]
+            A tuple of two points ((x1, y1), (x2, y2)) where the first point is on polygon1
+            and the second point is on polygon2.
+        """
+        result = self._stub.GetClosestPoints(messages.polygon_data_with_points_message(polygon1, polygon=polygon2)).points
+        points = parser.to_point_data_list(result)
+        if len(points) >= 2:
+            p1 = points[0]
+            p2 = points[1]
+            return ((p1.x.double, p1.y.double), (p2.x.double, p2.y.double))
+        else:
+            raise ValueError("Expected at least 2 points from GetClosestPoints")
+
     @parser.to_polygon_data_list
     def unite(self, polygons: list[PolygonData]) -> list[PolygonData]:
         """Compute the union of a list of polygons using the server.

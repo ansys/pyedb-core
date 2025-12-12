@@ -399,6 +399,25 @@ class PolygonBackend(ABC):
         pass
 
     @abstractmethod
+    def closest_points(self, polygon1: PolygonData, polygon2: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
+        """Compute points on two polygons that are closest to each other.
+
+        Parameters
+        ----------
+        polygon1 : PolygonData
+            The first polygon.
+        polygon2 : PolygonData
+            The second polygon.
+
+        Returns
+        -------
+        tuple[tuple[float, float], tuple[float, float]]
+            A tuple of two points ((x1, y1), (x2, y2)) where the first point is on polygon1
+            and the second point is on polygon2.
+        """
+        pass
+
+    @abstractmethod
     def unite(self, polygons: list[PolygonData]) -> list[PolygonData]:
         """Compute the union of a list of polygons.
 

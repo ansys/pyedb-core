@@ -1239,6 +1239,44 @@ class ShapelyBackend(PolygonBackend):
         
         return PointData(nearest_on_polygon.x, nearest_on_polygon.y)
 
+    def closest_points(self, polygon1: PolygonData, polygon2: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
+        """Compute points on two polygons that are closest to each other using Shapely.
+
+        Parameters
+        ----------
+        polygon1 : PolygonData
+            The first polygon.
+        polygon2 : PolygonData
+            The second polygon.
+
+        Returns
+        -------
+        tuple[tuple[float, float], tuple[float, float]]
+            A tuple of two points ((x1, y1), (x2, y2)) where the first point is on polygon1
+            and the second point is on polygon2.
+
+        Notes
+        -----
+        This implementation uses Shapely's nearest_points function to find the closest
+        points between the boundaries of two polygons. If the polygons have arcs,
+        they are tessellated first.
+        """
+        from shapely.ops import nearest_points
+        
+        shapely_polygon1 = self._to_shapely_polygon(polygon1)
+        shapely_polygon2 = self._to_shapely_polygon(polygon2)
+        
+        # Find the nearest points between the two polygon boundaries
+        # nearest_points returns a tuple of (nearest point on geom1, nearest point on geom2)
+        nearest_on_polygon1, nearest_on_polygon2 = nearest_points(
+            shapely_polygon1.boundary, shapely_polygon2.boundary
+        )
+        
+        return (
+            (nearest_on_polygon1.x, nearest_on_polygon1.y),
+            (nearest_on_polygon2.x, nearest_on_polygon2.y)
+        )
+
     def unite(self, polygons: list[PolygonData]) -> list[PolygonData]:
         """Compute the union of a list of polygons using Shapely.
 

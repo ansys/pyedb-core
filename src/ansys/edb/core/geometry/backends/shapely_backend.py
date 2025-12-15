@@ -1568,3 +1568,45 @@ class ShapelyBackend(PolygonBackend):
             result_polygons.append(self._shapely_to_polygon_data(buffered, polygon.sense))
         
         return result_polygons
+
+    def alpha_shape(self, points: list[tuple[float, float]], alpha: float) -> list[PolygonData]:
+        """Compute the outline of a 2D point cloud using alpha shapes using Shapely.
+
+        This implementation returns the convex hull of the point cloud.
+
+        Parameters
+        ----------
+        points : list[tuple[float, float]]
+            List of point coordinates.
+        alpha : float
+            Alpha parameter (not used in this simplified implementation).
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons representing the convex hull.
+        """
+        # TODO: Implement true alpha shape algorithm following the implementation in the server backend.
+
+        import warnings
+        from shapely.geometry import MultiPoint
+        
+        warnings.warn(
+            "The Shapely backend currently returns the convex hull instead of a true alpha shape. "
+            "For accurate alpha shape computation, use the server backend by setting "
+            "PYEDB_COMPUTATION_BACKEND=server.",
+            UserWarning,
+            stacklevel=2
+        )
+        
+        if len(points) < 3:
+            return []
+        
+        # Convert points to Shapely MultiPoint
+        multi_point = MultiPoint(points)
+        
+        # Return the convex hull
+        hull = multi_point.convex_hull
+        if hull.is_empty or hull.geom_type == 'Point' or hull.geom_type == 'LineString':
+            return []
+        return [self._shapely_to_polygon_data(hull, PolygonSenseType.SENSE_CCW)]

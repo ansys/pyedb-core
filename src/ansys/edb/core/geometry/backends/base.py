@@ -519,3 +519,21 @@ class PolygonBackend(ABC):
             List of expanded polygons.
         """
         pass
+
+    @abstractmethod
+    def alpha_shape(self, points: list[tuple[float, float]], alpha: float) -> list[PolygonData]:
+        """Compute the outline of a 2D point cloud using alpha shapes.
+
+        Parameters
+        ----------
+        points : list[tuple[float, float]]
+            List of point coordinates.
+        alpha : float
+            Alpha parameter controlling the shape's tightness.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons representing the alpha shape.
+        """
+        pass

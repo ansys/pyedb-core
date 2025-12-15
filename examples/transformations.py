@@ -154,16 +154,16 @@ def test():
     plt.setp(axs)
 
     data = {'data': [ArcData((0, 0), (10, 0), height=-5.0), ArcData((10, 0), (10, 10), height=0.0), ArcData((10, 10), (0, 10), height=-5.0), ArcData((0, 10), (0, 0), height=0.0)]}
-    data = {'data': [(0, 0), (2, 0), (1, 2)]}
-    data = {'data': [ArcData((0, 0), (10, 0), height=-10+8.660254037844386), ArcData((10, 0), (0, 0), height=-18.660254037844386)]}
+    data = {'data': [(0, 0), (2, 0), (2, 2), (0, 2), (1, 1), (0.5, 0.5), (1.5, 1.5), (1, 3)]}
 
-    polygon = create_polygon(geometry=data)
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    polygon_server = PolygonData.alpha_shape(data['data'], alpha=1.0)
+
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-
-    print('Yo : ', polygon.is_circle())
-    print([a.is_arc for a in polygon.points])
-
-    plot_polys(axs[0], [polygon], title="Server expansion", labels=['1'])
+    polygon_shapely = PolygonData.alpha_shape(data['data'], alpha=1.0)
+    
+    plot_polys(axs[0], [*polygon_server], title="Server expansion", labels=['Server'])
+    plot_polys(axs[1], [*polygon_shapely], title="Shapely expansion", labels=['Shapely'])
 
     plt.show()
 

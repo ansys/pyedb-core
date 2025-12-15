@@ -562,3 +562,23 @@ class ServerBackend(PolygonBackend):
         return self._stub.Expand(
             messages.polygon_data_expand_message(polygon, offset, tol, round_corner, max_corner_ext)
         )
+
+    @parser.to_polygon_data_list
+    def alpha_shape(self, points: list[tuple[float, float]], alpha: float) -> list[PolygonData]:
+        """Compute the outline of a 2D point cloud using alpha shapes using the server.
+
+        Parameters
+        ----------
+        points : list[tuple[float, float]]
+            List of point coordinates.
+        alpha : float
+            Alpha parameter controlling the shape's tightness.
+
+        Returns
+        -------
+        list[PolygonData]
+            List of polygons representing the alpha shape.
+        """
+        return self._stub.Get2DAlphaShape(
+            messages.polygon_data_get_alpha_shape_message(points, alpha)
+        )

@@ -903,5 +903,45 @@ def test_closest_points(session, polygon1, polygon2, expected_point1, expected_p
     assert math.isclose(closest_point2_shapely.y.double, expected_point2[1], rel_tol=tol)
 
 
+@pytest.mark.parametrize("point_cloud, alpha, expected_points", [
+    ([(0, 0), (1, 0), (1, 1), (0, 1)], 2.0, [(0, 0), (1, 0), (1, 1), (0, 1)]),
+    ([(0, 0), (1, 0), (1, 1), (0, 1), (0.5, 0.5), (0.25, 0.25), (0.75, 0.75), (0.5, 2)], 2.0, [(0, 0), (1, 0), (1, 1), (0, 1), (0.5, 2)]),
+])
+def test_alpha_shape(session, point_cloud, alpha, expected_points):
+    """Test alpha shape with both server and shapely backends."""
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    alpha_shape_server = PolygonData.alpha_shape(point_cloud, alpha=alpha)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    alpha_shape_shapely = PolygonData.alpha_shape(point_cloud, alpha=alpha)
+
+    tol = 1e-9
+
+    # Convert points to tuples for comparison (order-independent)
+    server_points = [(p.x.double, p.y.double) for p in alpha_shape_server[0].points]
+    shapely_points = [(p.x.double, p.y.double) for p in alpha_shape_shapely[0].points]
+
+    # Check that all expected points are in the results (order-independent)
+    assert len(server_points) == len(expected_points)
+    assert len(shapely_points) == len(expected_points)
+
+    for expected_point in expected_points:
+        # Check if expected point exists in server result
+        assert any(
+            math.isclose(sp[0], expected_point[0], rel_tol=tol) and
+            math.isclose(sp[1], expected_point[1], rel_tol=tol)
+            for sp in server_points
+        ), f"Expected point {expected_point} not found in server results"
+
+        # Check if expected point exists in shapely result
+        assert any(
+            math.isclose(sp[0], expected_point[0], rel_tol=tol) and
+            math.isclose(sp[1], expected_point[1], rel_tol=tol)
+            for sp in shapely_points
+        ), f"Expected point {expected_point} not found in shapely results"
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

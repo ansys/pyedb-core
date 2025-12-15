@@ -698,7 +698,6 @@ class PolygonData:
         return self._get_backend().expand(self, offset, round_corner, max_corner_ext, tol)
 
     @classmethod
-    @parser.to_polygon_data_list
     def alpha_shape(cls, points: list[PointLike], alpha: float) -> list[PolygonData]:
         """Compute the outline of a 2D point cloud using alpha shapes.
 
@@ -707,11 +706,14 @@ class PolygonData:
         points : list of :term:`Point2DLike`
             List of points.
         alpha : float
+            Alpha parameter controlling the shape's tightness.
 
         Returns
         -------
         list of .PolygonData
         """
-        return cls.__stub.Get2DAlphaShape(
-            messages.polygon_data_get_alpha_shape_message(points, alpha)
-        )
+        
+        point_tuples = [conversions.to_point(pt) for pt in points]
+        point_coords = [(pt.x.double, pt.y.double) for pt in point_tuples]
+        
+        return cls._get_backend().alpha_shape(point_coords, alpha)

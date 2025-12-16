@@ -293,7 +293,6 @@ class PolygonData:
         """
         return self._get_backend().has_self_intersections(self, tol)
 
-    @parser.to_polygon_data_list
     def remove_self_intersections(self, tol: float = 1e-9) -> list[PolygonData]:
         """Remove self-intersections from this polygon.
 
@@ -319,7 +318,6 @@ class PolygonData:
         """
         return self._get_backend().normalized(self)
 
-    @parser.to_polygon_data
     def move(self, vector: PointLike) -> PolygonData:
         """Move the polygon by a vector.
 
@@ -334,7 +332,6 @@ class PolygonData:
         """
         return self._get_backend().move(self, vector)
 
-    @parser.to_polygon_data
     def rotate(self, angle: float, center: PointLike) -> PolygonData:
         """Rotate the polygon at a center by an angle.
 
@@ -351,7 +348,6 @@ class PolygonData:
         """
         return self._get_backend().rotate(self, angle, center)
 
-    @parser.to_polygon_data
     def scale(self, factor: float, center: PointLike) -> PolygonData:
         """Scale the polygon by a linear factor from a center.
 
@@ -368,7 +364,6 @@ class PolygonData:
         """
         return self._get_backend().scale(self, factor, center)
 
-    @parser.to_polygon_data
     def mirror_x(self, x: float) -> PolygonData:
         """Mirror a polygon by x line.
 
@@ -417,7 +412,6 @@ class PolygonData:
         return self._get_backend().bounding_circle(self)
 
     @classmethod
-    @parser.to_polygon_data
     def convex_hull(cls, polygons: list[PolygonData]) -> PolygonData:
         """Compute the convex hull of the union of a list of polygons.
 
@@ -449,7 +443,6 @@ class PolygonData:
         """
         return self._get_backend().without_arcs(self, max_chord_error, max_arc_angle, max_points)
 
-    @parser.to_polygon_data
     def defeature(self, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon.
 
@@ -511,7 +504,6 @@ class PolygonData:
         """
         return self._get_backend().circle_intersect(self, center, radius)
 
-    @parser.to_point_data
     def closest_point(self, point: PointLike) -> PointData:
         """Compute a point on the polygon that is closest to another point.
 

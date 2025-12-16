@@ -175,15 +175,15 @@ def test_bbox(session, polygon, expected_bbox):
 
     tol = 1e-9
 
-    assert result_server[0].x.double == pytest.approx(expected_bbox[0][0], rel=tol)
-    assert result_server[0].y.double == pytest.approx(expected_bbox[0][1], rel=tol)
-    assert result_server[1].x.double == pytest.approx(expected_bbox[1][0], rel=tol)
-    assert result_server[1].y.double == pytest.approx(expected_bbox[1][1], rel=tol)
+    assert result_server[0][0] == pytest.approx(expected_bbox[0][0], rel=tol)
+    assert result_server[0][1] == pytest.approx(expected_bbox[0][1], rel=tol)
+    assert result_server[1][0] == pytest.approx(expected_bbox[1][0], rel=tol)
+    assert result_server[1][1] == pytest.approx(expected_bbox[1][1], rel=tol)
 
-    assert result_shapely[0].x.double == pytest.approx(expected_bbox[0][0], rel=tol)
-    assert result_shapely[0].y.double == pytest.approx(expected_bbox[0][1], rel=tol)
-    assert result_shapely[1].x.double == pytest.approx(expected_bbox[1][0], rel=tol)
-    assert result_shapely[1].y.double == pytest.approx(expected_bbox[1][1], rel=tol)
+    assert result_shapely[0][0] == pytest.approx(expected_bbox[0][0], rel=tol)
+    assert result_shapely[0][1] == pytest.approx(expected_bbox[0][1], rel=tol)
+    assert result_shapely[1][0] == pytest.approx(expected_bbox[1][0], rel=tol)
+    assert result_shapely[1][1] == pytest.approx(expected_bbox[1][1], rel=tol)
 
 
 @pytest.mark.parametrize("polygons, expected_bbox", [
@@ -206,15 +206,15 @@ def test_bbox_of_polygons(session, polygons, expected_bbox):
     polygon_shapely_list = [create_polygon(p) for p in polygons]
     result_shapely = PolygonData.bbox_of_polygons(polygon_shapely_list)
 
-    assert result_server[0].x.double == pytest.approx(expected_bbox[0][0], rel=1e-9)
-    assert result_server[0].y.double == pytest.approx(expected_bbox[0][1], rel=1e-9)
-    assert result_server[1].x.double == pytest.approx(expected_bbox[1][0], rel=1e-9)
-    assert result_server[1].y.double == pytest.approx(expected_bbox[1][1], rel=1e-9)
+    assert result_server[0][0] == pytest.approx(expected_bbox[0][0], rel=1e-9)
+    assert result_server[0][1] == pytest.approx(expected_bbox[0][1], rel=1e-9)
+    assert result_server[1][0] == pytest.approx(expected_bbox[1][0], rel=1e-9)
+    assert result_server[1][1] == pytest.approx(expected_bbox[1][1], rel=1e-9)
 
-    assert result_shapely[0].x.double == pytest.approx(expected_bbox[0][0], rel=1e-9)
-    assert result_shapely[0].y.double == pytest.approx(expected_bbox[0][1], rel=1e-9)
-    assert result_shapely[1].x.double == pytest.approx(expected_bbox[1][0], rel=1e-9)
-    assert result_shapely[1].y.double == pytest.approx(expected_bbox[1][1], rel=1e-9)
+    assert result_shapely[0][0] == pytest.approx(expected_bbox[0][0], rel=1e-9)
+    assert result_shapely[0][1] == pytest.approx(expected_bbox[0][1], rel=1e-9)
+    assert result_shapely[1][0] == pytest.approx(expected_bbox[1][0], rel=1e-9)
+    assert result_shapely[1][1] == pytest.approx(expected_bbox[1][1], rel=1e-9)
 
 @pytest.mark.parametrize("polygons, expected_result", [
     ({'data': [(0, 0), (10, 0), (10, 10), (0, 10)]}, 100.0),  # Simple square
@@ -512,13 +512,13 @@ def test_bounding_circle(session, polygon, expected_result):
 
     tol = 1e-9
 
-    assert result_server[0].x.double == pytest.approx(expected_result[0][0], rel=tol)
-    assert result_server[0].y.double == pytest.approx(expected_result[0][1], rel=tol)
-    assert result_server[1].double == pytest.approx(expected_result[1], rel=tol)
+    assert result_server[0][0] == pytest.approx(expected_result[0][0], rel=tol)
+    assert result_server[0][1] == pytest.approx(expected_result[0][1], rel=tol)
+    assert result_server[1] == pytest.approx(expected_result[1], rel=tol)
 
-    assert result_shapely[0].x.double == pytest.approx(expected_result[0][0], rel=tol)
-    assert result_shapely[0].y.double == pytest.approx(expected_result[0][1], rel=tol)
-    assert result_shapely[1].double == pytest.approx(expected_result[1], rel=tol)
+    assert result_shapely[0][0] == pytest.approx(expected_result[0][0], rel=tol)
+    assert result_shapely[0][1] == pytest.approx(expected_result[0][1], rel=tol)
+    assert result_shapely[1] == pytest.approx(expected_result[1], rel=tol)
 
 
 @pytest.mark.parametrize("polygons, expected_area, expected_result", [
@@ -892,15 +892,15 @@ def test_closest_points(session, polygon1, polygon2, expected_point1, expected_p
 
     tol = 1e-9
 
-    assert math.isclose(closest_point1_server.x.double, expected_point1[0], rel_tol=tol)
-    assert math.isclose(closest_point1_server.y.double, expected_point1[1], rel_tol=tol)
-    assert math.isclose(closest_point2_server.x.double, expected_point2[0], rel_tol=tol)
-    assert math.isclose(closest_point2_server.y.double, expected_point2[1], rel_tol=tol)
+    assert math.isclose(closest_point1_server[0], expected_point1[0], rel_tol=tol)
+    assert math.isclose(closest_point1_server[1], expected_point1[1], rel_tol=tol)
+    assert math.isclose(closest_point2_server[0], expected_point2[0], rel_tol=tol)
+    assert math.isclose(closest_point2_server[1], expected_point2[1], rel_tol=tol)
 
-    assert math.isclose(closest_point1_shapely.x.double, expected_point1[0], rel_tol=tol)
-    assert math.isclose(closest_point1_shapely.y.double, expected_point1[1], rel_tol=tol)
-    assert math.isclose(closest_point2_shapely.x.double, expected_point2[0], rel_tol=tol)
-    assert math.isclose(closest_point2_shapely.y.double, expected_point2[1], rel_tol=tol)
+    assert math.isclose(closest_point1_shapely[0], expected_point1[0], rel_tol=tol)
+    assert math.isclose(closest_point1_shapely[1], expected_point1[1], rel_tol=tol)
+    assert math.isclose(closest_point2_shapely[0], expected_point2[0], rel_tol=tol)
+    assert math.isclose(closest_point2_shapely[1], expected_point2[1], rel_tol=tol)
 
 
 @pytest.mark.parametrize("point_cloud, alpha, expected_points", [

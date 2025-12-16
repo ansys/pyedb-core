@@ -29,32 +29,30 @@ def example_basic_usage():
     # Use server backend (explicit)
     print("\n--- Using Server Backend ---")
     Config.set_computation_backend(ComputationBackend.SERVER)
-    PolygonData.reset_backend()
 
     print(f"Area: {polygon.area()}")
     print(f"Is convex: {polygon.is_convex()}")
     print(f"Is (5, 5) inside: {polygon.is_inside((5, 5))}")
     print(
-        f"Bounding box: ({polygon.bbox()[0].x}, {polygon.bbox()[0].y}) -- ({polygon.bbox()[1].x}, {polygon.bbox()[1].y})"
+        f"Bounding box: ({polygon.bbox()[0][0]}, {polygon.bbox()[0][1]}) -- ({polygon.bbox()[1][0]}, {polygon.bbox()[1][1]})"
     )
     print(
-        f"Bounding box of multiple polygons: ({PolygonData.bbox_of_polygons([polygon, polygon2])[0].x}, {PolygonData.bbox_of_polygons([polygon, polygon2])[0].y}) -- ({PolygonData.bbox_of_polygons([polygon, polygon2])[1].x}, {PolygonData.bbox_of_polygons([polygon, polygon2])[1].y})"
+        f"Bounding box of multiple polygons: ({PolygonData.bbox_of_polygons([polygon, polygon2])[0][0]}, {PolygonData.bbox_of_polygons([polygon, polygon2])[0][1]}) -- ({PolygonData.bbox_of_polygons([polygon, polygon2])[1][0]}, {PolygonData.bbox_of_polygons([polygon, polygon2])[1][1]})"
     )
 
     # Use Shapely backend (if available)
     print("\n--- Using Shapely Backend ---")
     try:
         Config.set_computation_backend(ComputationBackend.SHAPELY)
-        PolygonData.reset_backend()
 
         print(f"Area: {polygon.area()}")
         print(f"Is convex: {polygon.is_convex()}")
         print(f"Is (5, 5) inside: {polygon.is_inside((5, 5))}")
         print(
-            f"Bounding box: ({polygon.bbox()[0].x}, {polygon.bbox()[0].y}) -- ({polygon.bbox()[1].x}, {polygon.bbox()[1].y})"
+            f"Bounding box: ({polygon.bbox()[0][0]}, {polygon.bbox()[0][1]}) -- ({polygon.bbox()[1][0]}, {polygon.bbox()[1][1]})"
         )
         print(
-            f"Bounding box of multiple polygons: ({PolygonData.bbox_of_polygons([polygon, polygon2])[0].x}, {PolygonData.bbox_of_polygons([polygon, polygon2])[0].y}) -- ({PolygonData.bbox_of_polygons([polygon, polygon2])[1].x}, {PolygonData.bbox_of_polygons([polygon, polygon2])[1].y})"
+            f"Bounding box of multiple polygons: ({PolygonData.bbox_of_polygons([polygon, polygon2])[0][0]}, {PolygonData.bbox_of_polygons([polygon, polygon2])[0][1]}) -- ({PolygonData.bbox_of_polygons([polygon, polygon2])[1][0]}, {PolygonData.bbox_of_polygons([polygon, polygon2])[1][1]})"
         )
     except ImportError as e:
         print(f"Shapely not available: {e}")
@@ -62,17 +60,16 @@ def example_basic_usage():
     # Use AUTO mode
     print("\n--- Using AUTO Mode ---")
     Config.set_computation_backend(ComputationBackend.AUTO)
-    PolygonData.reset_backend()
 
     print(f"Area: {polygon.area()}")
     print(f"Is convex: {polygon.is_convex()}")
     print(f"Is (5, 5) inside: {polygon.is_inside((5, 5))}")
     print(f"Backend used: {Config.get_computation_backend()}")
     print(
-        f"Bounding box: ({polygon.bbox()[0].x}, {polygon.bbox()[0].y}) -- ({polygon.bbox()[1].x}, {polygon.bbox()[1].y})"
+        f"Bounding box: ({polygon.bbox()[0][0]}, {polygon.bbox()[0][1]}) -- ({polygon.bbox()[1][0]}, {polygon.bbox()[1][1]})"
     )
     print(
-        f"Bounding box of multiple polygons: ({PolygonData.bbox_of_polygons([polygon, polygon2])[0].x}, {PolygonData.bbox_of_polygons([polygon, polygon2])[0].y}) -- ({PolygonData.bbox_of_polygons([polygon, polygon2])[1].x}, {PolygonData.bbox_of_polygons([polygon, polygon2])[1].y})"
+        f"Bounding box of multiple polygons: ({PolygonData.bbox_of_polygons([polygon, polygon2])[0][0]}, {PolygonData.bbox_of_polygons([polygon, polygon2])[0][1]}) -- ({PolygonData.bbox_of_polygons([polygon, polygon2])[1][0]}, {PolygonData.bbox_of_polygons([polygon, polygon2])[1][1]})"
     )
 
 
@@ -107,7 +104,7 @@ def example_performance_comparison():
     def benchmark_backend(backend_type, backend_name):
         """Run benchmark with a specific backend."""
         Config.set_computation_backend(backend_type)
-        PolygonData.reset_backend()
+        
 
         start = time.time()
         total_area = 0
@@ -126,7 +123,7 @@ def example_performance_comparison():
     def benchmark_backend_with_arcs(backend_type, backend_name):
         """Run benchmark with arc polygons using a specific backend."""
         Config.set_computation_backend(backend_type)
-        PolygonData.reset_backend()
+        
 
         start = time.time()
         total_area = 0
@@ -186,7 +183,7 @@ def example_environment_variable():
 
     # Reset config to pick up environment variable
     Config.reset()
-    PolygonData.reset_backend()
+    
 
     print(f"Backend from environment: {Config.get_computation_backend()}")
 
@@ -203,7 +200,7 @@ def example_batch_processing():
 
     # For batch processing, use Shapely for best performance
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
+    
 
     # Process multiple polygons
     results = []
@@ -234,7 +231,7 @@ def example_mixed_operations():
 
     # Use Shapely for fast computation
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
+    
 
     polygon = PolygonData([(0, 0), (10, 0), (10, 10), (0, 10)])
 
@@ -256,7 +253,7 @@ def example_error_handling():
 
     # Try to use Shapely when not installed
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    PolygonData.reset_backend()
+    
 
     try:
         polygon = PolygonData([(0, 0), (1, 0), (1, 1), (0, 1)])
@@ -268,7 +265,7 @@ def example_error_handling():
 
         # Fallback to server
         Config.set_computation_backend(ComputationBackend.SERVER)
-        PolygonData.reset_backend()
+        
 
         area = polygon.area()
         print(f"Area with server backend: {area}")
@@ -318,7 +315,7 @@ def example_polygon_with_arcs():
 
     # Use AUTO backend
     Config.set_computation_backend(ComputationBackend.AUTO)
-    PolygonData.reset_backend()
+    
 
     print(f"Is (1, 1) inside rounded polygon: {rounded_poly.is_inside((1, 1))}")
     print(f"Is convex (rounded): {rounded_poly.is_convex()}")

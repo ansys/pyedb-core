@@ -6,9 +6,9 @@ from enum import Enum
 class ComputationBackend(Enum):
     """Computation backend options for geometry operations."""
 
-    SERVER = "server"  # Use RPC server (server-side)
-    SHAPELY = "shapely"  # Use Shapely library (client-side)
-    AUTO = "auto"  # Auto-select: prefer shapely if available, fallback to server
+    SERVER = "server"  # Use RPC server
+    SHAPELY = "shapely"  # Use Shapely library
+    AUTO = "auto"  # Auto-select: prefer server
 
 
 class Config:
@@ -47,12 +47,10 @@ class Config:
             The configured computation backend.
         """
         if cls._computation_backend is None:
-            # Read from environment variable
             env_value = os.getenv("PYEDB_COMPUTATION_BACKEND", "auto").lower()
             try:
                 cls._computation_backend = ComputationBackend(env_value)
             except ValueError:
-                # Invalid value, default to AUTO
                 cls._computation_backend = ComputationBackend.AUTO
 
         return cls._computation_backend

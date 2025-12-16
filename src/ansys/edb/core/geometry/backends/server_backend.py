@@ -118,7 +118,6 @@ class ServerBackend(PolygonBackend):
         tuple[tuple[float, float], tuple[float, float]]
             Bounding box as ((min_x, min_y), (max_x, max_y)).
         """
-
         result = self._stub.GetBBox(messages.polygon_data_list_message([polygon]))
         lower_left, upper_right = parser.to_box(result)
         return (
@@ -176,7 +175,6 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Polygon with all arcs tessellated into line segments.
         """
-
         result = self._stub.RemoveArcs(
             messages.polygon_data_remove_arc_message(
                 polygon, max_chord_error, max_arc_angle, max_points
@@ -217,7 +215,6 @@ class ServerBackend(PolygonBackend):
         list[PolygonData]
             A list of non self-intersecting polygons.
         """
-
         return self._stub.RemoveSelfIntersections(messages.polygon_data_with_tol_message(polygon, tol))
 
     @parser.to_point_data_list
@@ -234,7 +231,6 @@ class ServerBackend(PolygonBackend):
         list[PointData]
             List of normalized points.
         """
-
         return self._stub.GetNormalizedPoints(messages.polygon_data_message(polygon)).points
 
     @parser.to_polygon_data
@@ -253,7 +249,6 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Moved polygon.
         """
-
         return self._stub.Transform(messages.polygon_data_transform_message("move", polygon, vector))
 
     @parser.to_polygon_data
@@ -274,7 +269,6 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Rotated polygon.
         """
-
         return self._stub.Transform(messages.polygon_data_transform_message("rotate", polygon, angle, center))
 
     @parser.to_polygon_data
@@ -295,7 +289,6 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Scaled polygon.
         """
-
         return self._stub.Transform(messages.polygon_data_transform_message("scale", polygon, factor, center))
 
     @parser.to_polygon_data
@@ -314,9 +307,7 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Mirrored polygon.
         """
-
-        result = self._stub.Transform(messages.polygon_data_transform_message("mirror_x", polygon, x))
-        return result
+        return self._stub.Transform(messages.polygon_data_transform_message("mirror_x", polygon, x))
 
     def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
         """Compute the bounding circle of the polygon using the server.
@@ -430,7 +421,6 @@ class ServerBackend(PolygonBackend):
         tuple[float, float]
             Coordinates (x, y) of the closest point on the polygon.
         """
-        
         return self._stub.GetClosestPoints(messages.polygon_data_with_points_message(polygon, point=point)).points[0]
 
     def closest_points(self, polygon1: PolygonData, polygon2: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:

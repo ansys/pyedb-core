@@ -3,10 +3,6 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    pass
 
 from ansys.edb.core.config import Config, ComputationBackend
 from ansys.edb.core.geometry.backends.base import PolygonBackend
@@ -55,18 +51,8 @@ def get_backend(stub=None) -> PolygonBackend:
         return _get_shapely_backend()
 
     elif backend_type == ComputationBackend.AUTO:
-        # Try Shapely first, fallback to server
-        try:
-            return _get_shapely_backend()
-        except ImportError:
-            warnings.warn(
-                "Shapely is not installed. Falling back to server backend. "
-                "For better performance, install Shapely: pip install shapely. "
-                "Check the pyproject.toml file for the correct Shapely version.",
-                UserWarning,
-                stacklevel=2,
-            )
-            return _get_server_backend(stub)
+        # Use server backend by default
+        return _get_server_backend(stub)
 
     else:
         raise ValueError(f"Unknown backend type: {backend_type}")

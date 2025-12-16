@@ -190,7 +190,7 @@ class ShapelyBackend(PolygonBackend):
         temp = dot_product/(radius*radius)
         if abs(temp)>1.0+1e-10:
             raise ValueError("Numerical error in arc tessellation: acos argument out of range.")
-        if temp>1.0 or temp<-1.0:
+        if abs(temp)>1.0:
             temp = max(-1.0, min(1.0, temp))
         temp_angle = math.acos(temp)
         angle1 = math.atan2(y1 - center_y, x1 - center_x)
@@ -736,7 +736,7 @@ class ShapelyBackend(PolygonBackend):
         if shapely_polygon.is_valid:
             return [polygon]
         
-        # Use buffer(0) to fix self-intersections
+        # Use make_valid to fix self-intersections
         fixed_geom = make_valid(shapely_polygon)
 
         # Handle different result types
@@ -1350,6 +1350,11 @@ class ShapelyBackend(PolygonBackend):
 
         if not polygons1 or not polygons2:
             return []
+        
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
 
         # Convert all polygons to Shapely format and union each set
         shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]
@@ -1404,9 +1409,13 @@ class ShapelyBackend(PolygonBackend):
 
         if not polygons1:
             return []
-        
         if not polygons2:
             return polygons1
+        
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
 
         # Convert all polygons to Shapely format and union each set
         shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]
@@ -1461,12 +1470,15 @@ class ShapelyBackend(PolygonBackend):
 
         if not polygons1 and not polygons2:
             return []
-        
         if not polygons1:
             return polygons2
-        
         if not polygons2:
             return polygons1
+        
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
 
         # Convert all polygons to Shapely format and union each set
         shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]

@@ -390,16 +390,7 @@ class PolygonData:
          -------
         tuple of (.PointData, .PointData)
         """
-        from ansys.edb.core.geometry.point_data import PointData
-
-        # Use backend to compute the bounding box
-        (min_x, min_y), (max_x, max_y) = self._get_backend().bbox(self)
-
-        # Convert to PointData objects
-        lower_left = PointData(min_x, min_y)
-        upper_right = PointData(max_x, max_y)
-
-        return (lower_left, upper_right)
+        return self._get_backend().bbox(self)
 
     @classmethod
     def bbox_of_polygons(cls, polygons: list[PolygonData]) -> tuple[PointData, PointData]:
@@ -414,16 +405,7 @@ class PolygonData:
         -------
         tuple of (.PointData, .PointData)
         """
-        from ansys.edb.core.geometry.point_data import PointData
-
-        # Use backend to compute the bounding box
-        (min_x, min_y), (max_x, max_y) = cls._get_backend().bbox_of_polygons(polygons)
-
-        # Convert to PointData objects
-        lower_left = PointData(min_x, min_y)
-        upper_right = PointData(max_x, max_y)
-
-        return (lower_left, upper_right)
+        return cls._get_backend().bbox_of_polygons(polygons)
 
     def bounding_circle(self) -> tuple[PointData, Value]:
         """Compute the bounding circle of the polygon.
@@ -432,17 +414,7 @@ class PolygonData:
         -------
         tuple of (.PointData, .Value)
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.utility.value import Value
-
-        # Use backend to compute the bounding circle
-        (center_x, center_y), radius = self._get_backend().bounding_circle(self)
-
-        # Convert to PointData and Value objects
-        center = PointData(center_x, center_y)
-        radius_value = Value(radius)
-
-        return (center, radius_value)
+        return self._get_backend().bounding_circle(self)
 
     @classmethod
     @parser.to_polygon_data
@@ -537,8 +509,7 @@ class PolygonData:
         bool
             ``True`` if the circle intersects with a polygon, ``False`` otherwise.
         """
-        center_tuple = conversions.to_point(center)
-        return self._get_backend().circle_intersect(self, (center_tuple.x.double, center_tuple.y.double), radius)
+        return self._get_backend().circle_intersect(self, center, radius)
 
     @parser.to_point_data
     def closest_point(self, point: PointLike) -> PointData:
@@ -554,13 +525,7 @@ class PolygonData:
         .PointData
             Point closest to the given point.
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        from ansys.edb.core.utility import conversions
-        
-        # Convert point to tuple
-        point_tuple = conversions.to_point(point)
-
-        return self._get_backend().closest_point(self, (point_tuple.x.double, point_tuple.y.double))
+        return self._get_backend().closest_point(self, point)
 
     def closest_points(self, polygon: PolygonData) -> tuple[PointData, PointData]:
         """Compute points on this and another polygon that are closest to the other polygon.
@@ -573,16 +538,7 @@ class PolygonData:
         -------
         tuple of (.PointData, .PointData)
         """
-        from ansys.edb.core.geometry.point_data import PointData
-        
-        # Use backend to compute closest points
-        (x1, y1), (x2, y2) = self._get_backend().closest_points(self, polygon)
-        
-        # Convert to PointData objects
-        point1 = PointData(x1, y1)
-        point2 = PointData(x2, y2)
-        
-        return (point1, point2)
+        return self._get_backend().closest_points(self, polygon)
 
     @classmethod
     def unite(cls, polygons: list[PolygonData]) -> list[PolygonData]:
@@ -615,13 +571,7 @@ class PolygonData:
         Returns
         -------
         list of .PolygonData
-        """
-        # Convert single polygons to lists
-        if not isinstance(polygons1, list):
-            polygons1 = [polygons1]
-        if not isinstance(polygons2, list):
-            polygons2 = [polygons2]
-        
+        """        
         return cls._get_backend().intersect(polygons1, polygons2)
 
     @classmethod
@@ -640,13 +590,7 @@ class PolygonData:
         Returns
         -------
         list of .PolygonData
-        """
-        # Convert single polygons to lists
-        if not isinstance(polygons1, list):
-            polygons1 = [polygons1]
-        if not isinstance(polygons2, list):
-            polygons2 = [polygons2]
-        
+        """        
         return cls._get_backend().subtract(polygons1, polygons2)
 
     @classmethod
@@ -666,12 +610,6 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        # Convert single polygons to lists
-        if not isinstance(polygons1, list):
-            polygons1 = [polygons1]
-        if not isinstance(polygons2, list):
-            polygons2 = [polygons2]
-        
         return cls._get_backend().xor(polygons1, polygons2)
 
     def expand(
@@ -712,8 +650,4 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        
-        point_tuples = [conversions.to_point(pt) for pt in points]
-        point_coords = [(pt.x.double, pt.y.double) for pt in point_tuples]
-        
-        return cls._get_backend().alpha_shape(point_coords, alpha)
+        return cls._get_backend().alpha_shape(points, alpha)

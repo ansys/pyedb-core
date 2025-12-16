@@ -46,7 +46,7 @@ def get_backend(stub=None) -> PolygonBackend:
         return _get_server_backend(stub)
 
     elif backend_type == ComputationBackend.SHAPELY:
-        return _get_shapely_backend()
+        return _get_shapely_backend(stub)
 
     elif backend_type == ComputationBackend.AUTO:
         # Use server backend by default
@@ -77,8 +77,14 @@ def _get_server_backend(stub) -> PolygonBackend:
     return ServerBackend(stub)
 
 
-def _get_shapely_backend() -> PolygonBackend:
+def _get_shapely_backend(stub=None) -> PolygonBackend:
     """Get the Shapely backend instance.
+
+    Parameters
+    ----------
+    stub : polygon_data_pb2_grpc.PolygonDataServiceStub, optional
+        The gRPC stub for polygon operations. Passed to ShapelyBackend for
+        methods that delegate to the server backend (e.g., alpha_shape).
 
     Returns
     -------
@@ -92,4 +98,4 @@ def _get_shapely_backend() -> PolygonBackend:
     """
     from ansys.edb.core.geometry.backends.shapely_backend import ShapelyBackend
 
-    return ShapelyBackend()
+    return ShapelyBackend(stub)

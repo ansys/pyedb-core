@@ -325,9 +325,10 @@ def polygon_data_expand_message(pd, offset, tol, round_corner, max_corner_expans
     )
 
 
-def polygon_data_get_alpha_shape_message(pd, alpha):
+def polygon_data_get_alpha_shape_message(points, alpha):
     """Convert to a ``PolygonDataGetAlphaShapeMessage`` object."""
-    return PolygonDataGetAlphaShapeMessage(polygon=polygon_data_message(pd), alpha=alpha)
+    # Convert list of point tuples to PointMessage objects
+    return PolygonDataGetAlphaShapeMessage(points=[point_message(pt) for pt in points], alpha=alpha)
 
 
 def _arc_rotation_dir(dir):

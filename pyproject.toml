@@ -30,7 +30,8 @@ dependencies = [
     "grpcio>=1.44.0",
     "Django>=4.2.16",
     "ansys-tools-common>=0.3.1",
-    "shapely==2.1.2"
+    "shapely==2.1.2",
+    "build123d==0.10.0"
 ]
 
 [project.urls]

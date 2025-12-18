@@ -22,6 +22,9 @@ def test_config_set_backend(session):
     Config.set_computation_backend("shapely")
     assert Config.get_computation_backend() == ComputationBackend.SHAPELY
 
+    Config.set_computation_backend("build123d")
+    assert Config.get_computation_backend() == ComputationBackend.BUILD123D
+
 
 def test_config_environment_variable(session):
     """Test setting backend via environment variable."""
@@ -35,6 +38,10 @@ def test_config_environment_variable(session):
         Config.reset()
         os.environ["PYEDB_COMPUTATION_BACKEND"] = "shapely"
         assert Config.get_computation_backend() == ComputationBackend.SHAPELY
+
+        Config.reset()
+        os.environ["PYEDB_COMPUTATION_BACKEND"] = "build123d"
+        assert Config.get_computation_backend() == ComputationBackend.BUILD123D
 
     finally:
         Config.reset()
@@ -77,6 +84,34 @@ def test_backend_factory_shapely_not_available(session):
 
     with pytest.raises(ImportError, match="Shapely is not installed"):
         _get_shapely_backend()
+
+
+def test_backend_factory_build123d(session):
+    """Test Build123d backend creation."""
+    from ansys.edb.core.geometry.backends.backend_factory import _get_build123d_backend
+    from ansys.edb.core.geometry.backends.build123d_backend import (
+        BUILD123D_AVAILABLE,
+        Build123dBackend,
+    )
+
+    if not BUILD123D_AVAILABLE:
+        pytest.skip("Build123d not installed")
+
+    backend = _get_build123d_backend()
+    assert isinstance(backend, Build123dBackend)
+
+
+def test_backend_factory_build123d_not_available(session):
+    """Test Build123d backend when library not available."""
+    from ansys.edb.core.geometry.backends.build123d_backend import BUILD123D_AVAILABLE
+
+    if BUILD123D_AVAILABLE:
+        pytest.skip("Build123d is installed, cannot test unavailable case")
+
+    from ansys.edb.core.geometry.backends.backend_factory import _get_build123d_backend
+
+    with pytest.raises(ImportError, match="Build123d is not installed"):
+        _get_build123d_backend()
 
 
 @pytest.mark.parametrize(
@@ -130,12 +165,17 @@ def test_area(session, test_case, expected_result):
     polygon_shapely = create_polygon(test_case)
     result_shapely = polygon_shapely.area()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(test_case)
+    result_build123d = polygon_build123d.area()
+
     tol = 1e-6
-    if isinstance(test_case["data"][0], ArcData):
-        tol = 0.1
 
     assert result_server == pytest.approx(expected_result, rel=tol)
-    assert result_shapely == pytest.approx(expected_result, rel=tol)
+    assert result_shapely == pytest.approx(
+        expected_result, rel=1e-1 if isinstance(test_case["data"][0], ArcData) else tol
+    )
+    assert result_build123d == pytest.approx(expected_result, rel=tol)
 
 
 @pytest.mark.parametrize(

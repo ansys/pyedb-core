@@ -83,6 +83,8 @@ class PolygonData:
         """Invalidate cached backend-specific representations."""
         if hasattr(self, "_shapely_cache"):
             delattr(self, "_shapely_cache")
+        if hasattr(self, "_build123d_cache"):
+            delattr(self, "_build123d_cache")
 
     def __init__(
         self,

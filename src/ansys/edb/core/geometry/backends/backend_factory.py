@@ -48,6 +48,9 @@ def get_backend(stub=None) -> PolygonBackend:
     elif backend_type == ComputationBackend.SHAPELY:
         return _get_shapely_backend(stub)
 
+    elif backend_type == ComputationBackend.BUILD123D:
+        return _get_build123d_backend(stub)
+
     elif backend_type == ComputationBackend.AUTO:
         # Use server backend by default
         return _get_server_backend(stub)
@@ -99,3 +102,27 @@ def _get_shapely_backend(stub=None) -> PolygonBackend:
     from ansys.edb.core.geometry.backends.shapely_backend import ShapelyBackend
 
     return ShapelyBackend(stub)
+
+
+def _get_build123d_backend(stub=None) -> PolygonBackend:
+    """Get the Build123d backend instance.
+
+    Parameters
+    ----------
+    stub : polygon_data_pb2_grpc.PolygonDataServiceStub, optional
+        The gRPC stub for polygon operations. Passed to Build123dBackend for
+        methods that delegate to the server backend (e.g., alpha_shape).
+
+    Returns
+    -------
+    Build123dBackend
+        Build123d computation backend.
+
+    Raises
+    ------
+    ImportError
+        If Build123d is not installed.
+    """
+    from ansys.edb.core.geometry.backends.build123d_backend import Build123dBackend
+
+    return Build123dBackend(stub)

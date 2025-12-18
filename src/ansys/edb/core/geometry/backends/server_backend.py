@@ -88,14 +88,14 @@ class ServerBackend(PolygonBackend):
         """
         return self._stub.IsBox(messages.polygon_data_message(polygon)).value
 
-    def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
+    def is_inside(self, polygon: PolygonData, point) -> bool:
         """Determine whether a point is inside the polygon using the server.
 
         Parameters
         ----------
         polygon : PolygonData
             The polygon to check.
-        point : tuple[float, float]
+        point : PointData
             Point coordinates (x, y).
 
         Returns
@@ -261,7 +261,7 @@ class ServerBackend(PolygonBackend):
 
     @parser.to_polygon_data
     def rotate(
-        self, polygon: PolygonData, angle: float, center: tuple[float, float]
+        self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
     ) -> PolygonData:
         """Rotate the polygon at a center by an angle using the server.
 
@@ -279,6 +279,9 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Rotated polygon.
         """
+        if not use_radians:
+            angle = math.radians(angle)
+
         return self._stub.Transform(
             messages.polygon_data_transform_message("rotate", polygon, angle, center)
         )

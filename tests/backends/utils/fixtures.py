@@ -48,6 +48,21 @@ def create_polygon(geometry: dict = None):
     return PolygonData(**params)
 
 
+def safe_tol(geometries, tolerance):
+    """Modify the tolerance for a give list of polygons."""
+
+    if not isinstance(geometries, list):
+        geometries = [geometries]
+
+    for poly in geometries:
+        for item in poly["data"]:
+            if isinstance(item, ArcData):
+                tolerance = 1e-1
+                return tolerance
+
+    return tolerance
+
+
 @pytest.fixture(scope=_get_session_scope)
 def session(request):
     """Fixture that launches a session for tests that need it.

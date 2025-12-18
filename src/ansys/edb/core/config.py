@@ -8,6 +8,7 @@ class ComputationBackend(Enum):
 
     SERVER = "server"  # Use RPC server
     SHAPELY = "shapely"  # Use Shapely library
+    BUILD123D = "build123d"  # Use Build123D library
     AUTO = "auto"  # Auto-select: prefer server
 
 
@@ -22,7 +23,7 @@ class Config:
     ``Config.reset()`` manually to ensure the new setting is applied.
 
     Environment Variables:
-        PYEDB_COMPUTATION_BACKEND: Set to 'server', 'shapely', or 'auto' (default: 'auto')
+        PYEDB_COMPUTATION_BACKEND: Set to 'server', 'shapely', 'build123d', or 'auto' (default: 'auto')
 
     Examples:
         >>> # Set via environment variable (before importing)
@@ -63,7 +64,7 @@ class Config:
         ----------
         backend : ComputationBackend or str
             The backend to use for geometry computations.
-            Can be 'server', 'shapely', or 'auto'.
+            Can be 'server', 'shapely', 'build123d', or 'auto'.
 
         Examples:
             >>> Config.set_computation_backend(ComputationBackend.SHAPELY)
@@ -72,6 +73,20 @@ class Config:
         cls.reset()
         if isinstance(backend, str):
             backend = ComputationBackend(backend.lower())
+
+        # Eagerly initialize the backend package to avoid slow first-time initialization
+        # during the first computation operation
+        if backend == ComputationBackend.SHAPELY:
+            try:
+                import shapely  # noqa: F401
+            except ImportError:
+                pass  # Will raise a more detailed error later when backend is used
+        elif backend == ComputationBackend.BUILD123D:
+            try:
+                import build123d  # noqa: F401
+            except ImportError:
+                pass  # Will raise a more detailed error later when backend is used
+
         cls._computation_backend = backend
 
     @classmethod

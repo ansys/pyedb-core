@@ -16,6 +16,7 @@ from ansys.edb.core import session
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility.value import Value
 
 
 class RotationDirection(Enum):
@@ -92,6 +93,9 @@ class ArcData:
         if self._height is None:
             self._height = self.__stub.GetHeight(messages.arc_message(self)).value
 
+        if isinstance(self._height, Value):
+            self._height = self._height.value
+
         return self._height
 
     def is_point(self, tolerance: float = 0.0) -> bool:
@@ -124,6 +128,7 @@ class ArcData:
         bool
             ``True`` when the arc is a straight line segment, ``False`` otherwise.
         """
+        # print(self.height, type(self.height))
         return math.fabs(self.height) <= tolerance
 
     @property

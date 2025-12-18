@@ -6,7 +6,7 @@ import math
 
 from ansys.edb.core.geometry.backends.base import PolygonBackend
 from ansys.edb.core.geometry.point_data import PointData
-from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
+from ansys.edb.core.geometry.polygon_data import PolygonData
 
 try:
     from shapely.geometry import Point as ShapelyPoint
@@ -53,54 +53,6 @@ class ShapelyBackend(PolygonBackend):
         self._stub = stub
 
     @staticmethod
-    def _remove_consecutive_duplicate_points(
-        points: list[PointData], tol: float = 1e-9
-    ) -> list[PointData]:
-        """Remove consecutive duplicate points from a list of PointData.
-
-        Parameters
-        ----------
-        points : list[PointData]
-            List of points to process.
-        tol : float, default: 1e-9
-            Tolerance for considering points as duplicates.
-
-        Returns
-        -------
-        list[PointData]
-            List of points with consecutive duplicates removed.
-        """
-        if not points:
-            return []
-
-        unique_points = [points[0]]
-        for pt in points[1:]:
-            last_pt = unique_points[-1]
-            if not (
-                math.isclose(pt.x.double, last_pt.x.double, rel_tol=tol)
-                and math.isclose(pt.y.double, last_pt.y.double, rel_tol=tol)
-            ):
-                unique_points.append(pt)
-
-        return unique_points
-
-    @staticmethod
-    def _sanitize_points(points: list[PointData]) -> list[PointData]:
-        """Sanitize points by making sure the first and last points are not arcs."""
-        if points[0].is_arc:
-            if points[-1].is_arc:
-                points.insert(0, PointData(points[-2].x.double, points[-2].y.double))
-            else:
-                points.insert(0, PointData(points[-1].x.double, points[-1].y.double))
-        if points[-1].is_arc:
-            if points[0].is_arc:
-                points.append(PointData(points[1].x.double, points[1].y.double))
-            else:
-                points.append(PointData(points[0].x.double, points[0].y.double))
-
-        return points
-
-    @staticmethod
     def _to_tuple(point: tuple[float, float] | PointData) -> tuple[float, float]:
         """Convert a point to a tuple of (x, y) coordinates.
 
@@ -125,211 +77,8 @@ class ShapelyBackend(PolygonBackend):
             return point
         raise ValueError("Point must be a tuple of (x, y) coordinates or a PointData object.")
 
-    @staticmethod
-    def _tessellate_arc(
-        start: PointData,
-        end: PointData,
-        height: float,
-        max_chord_error: float = 0,
-        max_arc_angle: float = math.pi / 6,
-        max_points: int = 8,
-    ) -> list[tuple[float, float]]:
-        """Tessellate an arc into line segments locally.
-
-        Parameters
-        ----------
-        start : PointData
-            Start point of the arc.
-        end : PointData
-            End point of the arc.
-        height : float
-            Arc height (sagitta).
-            - Negative: center on LEFT side, small arc on RIGHT (< 180°)
-            - Positive: center on RIGHT side, large arc on RIGHT (> 180°)
-        max_chord_error : float, default: 0
-            Maximum allowed chord error (distance from arc to chord).
-        max_arc_angle : float, default: math.pi / 6
-            Maximum angle (in radians) for each arc segment.
-        max_points : int, default: 8
-            Maximum number of points to generate.
-
-        Returns
-        -------
-        list[tuple[float, float]]
-            List of intermediate points (excluding start, including end).
-        """
-        # If height is zero or very small, it's a straight line
-        if abs(height) < 1e-12:
-            return [(end.x.double, end.y.double)]
-
-        # Extract coordinates
-        x1, y1 = start.x.double, start.y.double
-        x2, y2 = end.x.double, end.y.double
-
-        # Calculate chord properties
-        chord_dx = x2 - x1
-        chord_dy = y2 - y1
-        chord_length = math.sqrt(chord_dx * chord_dx + chord_dy * chord_dy)
-
-        # If chord length is zero, start and end are the same point
-        if chord_length < 1e-12:
-            return [(x2, y2)]
-
-        # Calculate arc properties
-        # For a circular arc, radius r and sagitta h are related by:
-        # r = (h^2 + (c/2)^2) / (2*h) where c is chord length
-        h = abs(height)
-        radius = (h**2 + (chord_length / 2) ** 2) / (2 * h)
-
-        # Calculate the center of the arc
-        # The center is perpendicular to the chord at its midpoint
-        chord_mid_x = (x1 + x2) / 2
-        chord_mid_y = (y1 + y2) / 2
-
-        # Perpendicular direction to the right when going from start to end
-        perp_dx = chord_dy / chord_length
-        perp_dy = -chord_dx / chord_length
-
-        # Place center based on height sign:
-        if height < 0:
-            center_x = chord_mid_x - perp_dx * (radius + height)
-            center_y = chord_mid_y - perp_dy * (radius + height)
-        else:
-            center_x = chord_mid_x + perp_dx * (radius - height)
-            center_y = chord_mid_y + perp_dy * (radius - height)
-
-        dot_product = (x1 - center_x) * (x2 - center_x) + (y1 - center_y) * (y2 - center_y)
-        temp = dot_product / (radius * radius)
-        if abs(temp) > 1.0 + 1e-10:
-            raise ValueError("Numerical error in arc tessellation: acos argument out of range.")
-        if abs(temp) > 1.0:
-            temp = max(-1.0, min(1.0, temp))
-        temp_angle = math.acos(temp)
-        angle1 = math.atan2(y1 - center_y, x1 - center_x)
-
-        if radius <= abs(height):
-            temp_angle = 2 * math.pi - temp_angle
-
-        if height < 0:
-            arc_angle = temp_angle
-        elif height >= 0:
-            arc_angle = -temp_angle
-
-        total_angle = abs(arc_angle)
-
-        # Determine number of segments
-        # Method 1: Based on max_arc_angle
-        num_segments_angle = max(1, int(math.ceil(total_angle / max_arc_angle)))
-
-        # Method 2: Based on max_chord_error (if specified)
-        if max_chord_error > 0:
-            # Chord error for a segment: e = r * (1 - cos(θ/2))
-            # Solving for θ: θ = 2 * acos(1 - e/r)
-            max_segment_angle = 2 * math.acos(max(0, min(1, 1 - max_chord_error / radius)))
-            num_segments_error = max(1, int(math.ceil(total_angle / max_segment_angle)))
-        else:
-            num_segments_error = 1
-
-        # Take the maximum to satisfy both constraints, but limit to max_points
-        num_segments = min(max(num_segments_angle, num_segments_error), max_points)
-
-        # Generate intermediate points
-        points = []
-        angle_step = arc_angle / num_segments
-
-        for i in range(1, num_segments + 1):
-            angle = angle1 + angle_step * i
-            x = center_x + radius * math.cos(angle)
-            y = center_y + radius * math.sin(angle)
-            points.append((x, y))
-
-        return points, (center_x, center_y), radius
-
-    @staticmethod
-    def _extract_coordinates_with_arcs(
-        points: list[PointData],
-        max_chord_error: float = 0,
-        max_arc_angle: float = math.pi / 6,
-        max_points: int = 8,
-    ) -> list[tuple[float, float]]:
-        """Extract coordinates from points, tessellating arcs into line segments.
-
-        Parameters
-        ----------
-        points : list[PointData]
-            List of points, where arc points have is_arc=True and contain arc height.
-        max_chord_error : float, default: 0
-            Maximum allowed chord error for arc tessellation.
-        max_arc_angle : float, default: math.pi / 6
-            Maximum angle for each arc segment.
-        max_points : int, default: 8
-            Maximum number of points per arc.
-
-        Returns
-        -------
-        list[tuple[float, float]]
-            List of coordinate tuples.
-
-        Notes
-        -----
-        The arc representation in PolygonData works as follows:
-        - Point at index i is the start of an arc
-        - Point at index i+1 has is_arc=True and contains the arc height
-        - Point at index i+2 is the end of the arc
-        Then we skip to i+2 for the next segment.
-        """
-        if not points:
-            return []
-
-        points = ShapelyBackend._sanitize_points(points)
-
-        coords = []
-        i = 0
-        n = len(points)
-        while i < n:
-            pt = points[i]
-
-            # Check if the next point (if it exists) is an arc point
-            if i + 1 < n and points[i + 1].is_arc:
-                # This is the start of an arc segment
-                if i + 2 < n:
-                    start = pt
-                    arc_pt = points[i + 1]
-                    end = points[i + 2]
-                    height = arc_pt.arc_height.double
-
-                    # Add the start point
-                    coords.append((start.x.double, start.y.double))
-
-                    # Tessellate the arc and add intermediate points (excluding start)
-                    arc_coords, _, _ = ShapelyBackend._tessellate_arc(
-                        start, end, height, max_chord_error, max_arc_angle, max_points
-                    )
-                    # arc_coords includes the end point, so add all of them
-                    coords.extend(arc_coords[:-1])  # Exclude end point for now
-
-                    # Move to the end point (i+2), which will be processed in next iteration
-                    i += 2
-                else:
-                    RuntimeError("Invalid arc definition: arc point without an end point.")
-            else:
-                # Regular point - just add it
-                coords.append((pt.x.double, pt.y.double))
-                i += 1
-
-        # Remove consecutive duplicate points that may have arisen from tessellation
-        i = 0
-        while i < len(coords) - 1:
-            if math.isclose(coords[i][0], coords[i + 1][0], rel_tol=1e-9) and math.isclose(
-                coords[i][1], coords[i + 1][1], rel_tol=1e-9
-            ):
-                coords.pop(i + 1)
-            i += 1
-
-        return coords
-
-    @staticmethod
     def _to_shapely_polygon(
+        self,
         polygon: PolygonData,
         max_chord_error: float = 0,
         max_arc_angle: float = math.pi / 6,
@@ -370,14 +119,14 @@ class ShapelyBackend(PolygonBackend):
             return polygon._shapely_cache
 
         # Extract coordinates, tessellating arcs locally
-        exterior_coords = ShapelyBackend._extract_coordinates_with_arcs(
+        exterior_coords = PolygonBackend._extract_coordinates_with_arcs(
             polygon.points, max_chord_error, max_arc_angle, max_points
         )
 
         # Handle holes
         holes = []
         for hole in polygon.holes:
-            hole_coords = ShapelyBackend._extract_coordinates_with_arcs(
+            hole_coords = PolygonBackend._extract_coordinates_with_arcs(
                 hole.points, max_chord_error, max_arc_angle, max_points
             )
             if hole_coords:
@@ -394,17 +143,13 @@ class ShapelyBackend(PolygonBackend):
         return shapely_poly
 
     @staticmethod
-    def _shapely_to_polygon_data(
-        shapely_poly: ShapelyPolygon, sense: PolygonSenseType
-    ) -> PolygonData:
+    def _shapely_to_polygon_data(shapely_poly: ShapelyPolygon) -> PolygonData:
         """Convert a Shapely polygon to PolygonData.
 
         Parameters
         ----------
         shapely_poly : ShapelyPolygon
             The Shapely polygon to convert.
-        sense : PolygonSenseType
-            The sense to apply to the resulting polygon.
 
         Returns
         -------
@@ -420,15 +165,9 @@ class ShapelyBackend(PolygonBackend):
         for interior in shapely_poly.interiors:
             hole_coords = list(interior.coords[:-1])  # Exclude closing point
             hole_points = [PointData(x, y) for x, y in hole_coords]
-            # Holes are typically CCW in Shapely, but we create them with opposite sense
-            hole_sense = (
-                PolygonSenseType.SENSE_CW
-                if sense == PolygonSenseType.SENSE_CCW
-                else PolygonSenseType.SENSE_CCW
-            )
-            holes.append(PolygonData(points=hole_points, sense=hole_sense, closed=True))
+            holes.append(PolygonData(points=hole_points, closed=True))
 
-        return PolygonData(points=points, holes=holes, sense=sense, closed=True)
+        return PolygonData(points=points, holes=holes, closed=True)
 
     def area(self, polygon: PolygonData) -> float:
         """Compute the area of a polygon using Shapely.
@@ -463,7 +202,7 @@ class ShapelyBackend(PolygonBackend):
         # A polygon is convex if it equals its convex hull
         return shapely_polygon.equals(shapely_polygon.convex_hull)
 
-    def is_circle(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
+    def is_circle(self, polygon: PolygonData) -> bool:
         """Determine whether the outer contour of the polygon is a circle using Shapely.
 
         Parameters
@@ -476,11 +215,13 @@ class ShapelyBackend(PolygonBackend):
         bool
             ``True`` when the outer contour of the polygon is a circle, ``False`` otherwise.
         """
+        tol = 1e-8
+
         # Check if polygon has holes - a circle cannot have holes
         if polygon.has_holes():
             return False
 
-        points = ShapelyBackend._sanitize_points(polygon.points.copy())
+        points = PolygonBackend._sanitize_points(polygon.points.copy())
 
         if not points[1].is_arc:
             return False
@@ -536,70 +277,23 @@ class ShapelyBackend(PolygonBackend):
         bool
             ``True`` when the outer contour of the polygon is a box, ``False`` otherwise.
         """
-
-        def extract_next_vector(points: list[PointData], i: int) -> tuple[float, float]:
-            n = len(points)
-            pt = points[i]
-            if i + 1 < n:
-                start = pt
-                end = points[i + 1]
-                i += 1
-            else:
-                return None, i
-
-            return (end.x.double - start.x.double, end.y.double - start.y.double), i
-
         # A box cannot have holes or arcs
         if (
             polygon.has_holes() or polygon.has_arcs()
         ):  # If the polygon was set up with arcs of zero height, the has_arcs() will return False.
             return False
 
-        points = ShapelyBackend._sanitize_points(polygon.points.copy())
-        points = [
-            points[-2],
-            points[-1],
-            *points,
-            points[0],
-            points[1],
-        ]  # Close the loop on both ends
-        points = ShapelyBackend._remove_consecutive_duplicate_points(points, tol=tol)
+        return PolygonBackend._is_box(polygon, tol)
 
-        index = 0
-        while index < len(points):
-            vec1, index = extract_next_vector(points, index)
-            if vec1 is None:
-                break
-
-            vec2, index = extract_next_vector(points, index)
-            if vec2 is None:
-                break
-
-            dot_product = vec1[0] * vec2[0] + vec1[1] * vec2[1]
-            if not math.isclose(math.hypot(*vec1), 0.0, rel_tol=tol):
-                dot_product /= math.hypot(*vec1)
-            if not math.isclose(math.hypot(*vec2), 0.0, rel_tol=tol):
-                dot_product /= math.hypot(*vec2)
-
-            if not (
-                math.isclose(dot_product, 0.0, rel_tol=tol)
-                or math.isclose(dot_product, 1.0, rel_tol=tol)
-            ):
-                return False
-
-            index -= 1
-
-        return True
-
-    def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
+    def is_inside(self, polygon: PolygonData, point) -> bool:
         """Determine whether a point is inside the polygon using Shapely.
 
         Parameters
         ----------
         polygon : PolygonData
             The polygon to check.
-        point : tuple[float, float]
-            Point coordinates (x, y).
+        point : PointData
+            The point to check.
 
         Returns
         -------
@@ -646,12 +340,11 @@ class ShapelyBackend(PolygonBackend):
         if not polygons:
             return ((0.0, 0.0), (0.0, 0.0))
 
-        # Initialize with the first polygon's bounds
-        first_poly = self._to_shapely_polygon(polygons[0])
-        min_x, min_y, max_x, max_y = first_poly.bounds
+        min_x, min_y = math.inf, math.inf
+        max_x, max_y = -math.inf, -math.inf
 
         # Expand to include all other polygons
-        for polygon in polygons[1:]:
+        for polygon in polygons:
             shapely_poly = self._to_shapely_polygon(polygon)
             p_min_x, p_min_y, p_max_x, p_max_y = shapely_poly.bounds
             min_x = min(min_x, p_min_x)
@@ -686,30 +379,7 @@ class ShapelyBackend(PolygonBackend):
         PolygonData
             Polygon with all arcs tessellated into line segments.
         """
-        # Extract coordinates with arcs tessellated
-        exterior_coords = self._extract_coordinates_with_arcs(
-            polygon.points, max_chord_error, max_arc_angle, max_points
-        )
-
-        # Convert coordinates back to PointData objects (non-arc points)
-        new_points = [PointData(x, y) for x, y in exterior_coords]
-
-        # Process holes
-        new_holes = []
-        for hole in polygon.holes:
-            hole_coords = self._extract_coordinates_with_arcs(
-                hole.points, max_chord_error, max_arc_angle, max_points
-            )
-            hole_points = [PointData(x, y) for x, y in hole_coords]
-            # Create a new PolygonData for the hole without arcs
-
-            new_hole = PolygonData(points=hole_points, sense=hole.sense, closed=hole.is_closed)
-            new_holes.append(new_hole)
-
-        # Create and return new PolygonData without arcs
-        return PolygonData(
-            points=new_points, holes=new_holes, sense=polygon.sense, closed=polygon.is_closed
-        )
+        return PolygonBackend._without_arcs(polygon, max_chord_error, max_arc_angle, max_points)
 
     def has_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
         """Determine whether the polygon contains any self-intersections using Shapely.
@@ -786,10 +456,10 @@ class ShapelyBackend(PolygonBackend):
         if isinstance(fixed_geom, MultiPolygon):
             # Convert each polygon in the MultiPolygon to PolygonData
             for poly in fixed_geom.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(poly, polygon.sense))
+                result_polygons.append(self._shapely_to_polygon_data(poly))
         else:
             # Single polygon result
-            result_polygons.append(self._shapely_to_polygon_data(fixed_geom, polygon.sense))
+            result_polygons.append(self._shapely_to_polygon_data(fixed_geom))
 
         return result_polygons
 
@@ -838,40 +508,16 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Moved polygon.
-
-        Notes
-        -----
-        This implementation moves each point in the polygon by adding the vector to it.
-        Arc points are preserved, and holes are also moved by the same vector.
         """
-        from ansys.edb.core.utility import conversions
+        from shapely.affinity import translate
 
-        # Convert vector to PointData for easy addition
-        vector_point = conversions.to_point(vector)
+        shape = self._to_shapely_polygon(polygon)
+        shape = translate(shape, xoff=vector[0], yoff=vector[1])
 
-        # Move all points in the polygon
-        moved_points = []
-        for point in polygon.points:
-            moved_point = point.move(vector_point)
-            if moved_point is not None:
-                moved_points.append(moved_point)
-            else:
-                # If move returns None (arc points), keep the original point
-                moved_points.append(point)
-
-        # Move holes
-        moved_holes = []
-        for hole in polygon.holes:
-            moved_hole = self.move(hole, vector)
-            moved_holes.append(moved_hole)
-
-        # Create and return new PolygonData with moved points
-        return PolygonData(
-            points=moved_points, holes=moved_holes, sense=polygon.sense, closed=polygon.is_closed
-        )
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def rotate(
-        self, polygon: PolygonData, angle: float, center: tuple[float, float]
+        self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
     ) -> PolygonData:
         """Rotate the polygon at a center by an angle using Shapely.
 
@@ -888,39 +534,13 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Rotated polygon.
-
-        Notes
-        -----
-        This implementation rotates each point in the polygon around the given center.
-        Arc points are preserved, and holes are also rotated around the same center.
         """
-        from ansys.edb.core.utility import conversions
+        from shapely.affinity import rotate
 
-        # Convert center to PointData
-        center_point = conversions.to_point(center)
+        shape = self._to_shapely_polygon(polygon)
+        shape = rotate(shape, angle, origin=center, use_radians=use_radians)
 
-        # Rotate all points in the polygon
-        rotated_points = []
-        for point in polygon.points:
-            if point.is_arc:
-                rotated_point = point  # Preserve arc points as-is
-            else:
-                rotated_point = point.rotate(angle, center_point)
-            rotated_points.append(rotated_point)
-
-        # Rotate holes
-        rotated_holes = []
-        for hole in polygon.holes:
-            rotated_hole = self.rotate(hole, angle, center)
-            rotated_holes.append(rotated_hole)
-
-        # Create and return new PolygonData with rotated points
-        return PolygonData(
-            points=rotated_points,
-            holes=rotated_holes,
-            sense=polygon.sense,
-            closed=polygon.is_closed,
-        )
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def scale(
         self, polygon: PolygonData, factor: float, center: tuple[float, float]
@@ -940,49 +560,13 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Scaled polygon.
-
-        Notes
-        -----
-        This implementation scales each point in the polygon relative to the given center.
-        The scaling is done by: new_point = center + factor * (point - center).
-        Arc points are preserved with their heights scaled, and holes are also scaled from the same center.
         """
-        from ansys.edb.core.utility import conversions
+        from shapely.affinity import scale
 
-        # Convert center to PointData
-        center_point = conversions.to_point(center)
-        cx, cy = center_point.x.double, center_point.y.double
+        shape = self._to_shapely_polygon(polygon)
+        shape = scale(shape, xfact=factor, yfact=factor, origin=center)
 
-        # Scale all points in the polygon
-        scaled_points = []
-        for point in polygon.points:
-            # Create new point, preserving arc information
-            if point.is_arc:
-                # For arc points, scale the height as well
-                new_height = point.arc_height * factor
-                scaled_point = PointData(new_height)
-            else:
-                # Get the point coordinates
-                px, py = point.x.double, point.y.double
-
-                # Calculate scaled position: new_point = center + factor * (point - center)
-                new_x = cx + factor * (px - cx)
-                new_y = cy + factor * (py - cy)
-
-                scaled_point = PointData(new_x, new_y)
-
-            scaled_points.append(scaled_point)
-
-        # Scale holes
-        scaled_holes = []
-        for hole in polygon.holes:
-            scaled_hole = self.scale(hole, factor, center)
-            scaled_holes.append(scaled_hole)
-
-        # Create and return new PolygonData with scaled points
-        return PolygonData(
-            points=scaled_points, holes=scaled_holes, sense=polygon.sense, closed=polygon.is_closed
-        )
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
         """Mirror the polygon across a vertical line at x using Shapely.
@@ -998,53 +582,15 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Mirrored polygon.
-
-        Notes
-        -----
-        This implementation mirrors each point in the polygon across the vertical line x=constant.
-        The mirroring is done by: new_x = 2*x - old_x, new_y = old_y.
-        Arc points are preserved with their heights negated (to maintain arc direction),
-        and holes are also mirrored across the same line.
-        The polygon sense is also flipped (CCW becomes CW and vice versa) because mirroring
-        reverses the orientation.
         """
-        # Mirror all points in the polygon
-        mirrored_points = []
-        for point in polygon.points:
-            # Create new point, preserving arc information
-            if point.is_arc:
-                # For arc points, negate the height to maintain correct arc orientation
-                new_height = -point.arc_height.double
-                mirrored_point = PointData(new_height)
-            else:
-                # Get the point coordinates
-                px, py = point.x.double, point.y.double
+        from shapely.affinity import scale, translate
 
-                # Calculate mirrored position: new_x = 2*x - old_x
-                new_x = 2 * x - px
-                new_y = py
+        shape = self._to_shapely_polygon(polygon)
+        shape = translate(shape, xoff=-x)
+        shape = scale(shape, xfact=-1, yfact=1, origin=(0, 0))
+        shape = translate(shape, xoff=x)
 
-                mirrored_point = PointData(new_x, new_y)
-
-            mirrored_points.append(mirrored_point)
-
-        # Mirror holes
-        mirrored_holes = []
-        for hole in polygon.holes:
-            mirrored_hole = self.mirror_x(hole, x)
-            mirrored_holes.append(mirrored_hole)
-
-        # Flip the polygon sense (mirroring reverses orientation)
-        new_sense = (
-            PolygonSenseType.SENSE_CW
-            if polygon.sense == PolygonSenseType.SENSE_CCW
-            else PolygonSenseType.SENSE_CCW
-        )
-
-        # Create and return new PolygonData with mirrored points
-        return PolygonData(
-            points=mirrored_points, holes=mirrored_holes, sense=new_sense, closed=polygon.is_closed
-        )
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
         """Compute the bounding circle of the polygon using Shapely.
@@ -1100,6 +646,8 @@ class ShapelyBackend(PolygonBackend):
 
         if not polygons:
             raise ValueError("Cannot compute convex hull of an empty list of polygons")
+        if not isinstance(polygons, list):
+            polygons = [polygons]
 
         # Collect all points from all polygons (including tessellated arc points)
         all_points = []
@@ -1118,8 +666,8 @@ class ShapelyBackend(PolygonBackend):
         # Compute the convex hull of all points
         hull_geom = multi_point.convex_hull
 
-        # Convert back to PolygonData (convex hull is always CCW)
-        return self._shapely_to_polygon_data(hull_geom, PolygonSenseType.SENSE_CCW)
+        # Convert back to PolygonData
+        return self._shapely_to_polygon_data(hull_geom)
 
     def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon by removing small features using Shapely.
@@ -1150,7 +698,7 @@ class ShapelyBackend(PolygonBackend):
         simplified_polygon = shapely_polygon.simplify(tolerance=tol, preserve_topology=True)
 
         # Convert back to PolygonData
-        return self._shapely_to_polygon_data(simplified_polygon, polygon.sense)
+        return self._shapely_to_polygon_data(simplified_polygon)
 
     def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
         """Get the intersection type with another polygon using Shapely.
@@ -1351,9 +899,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1391,18 +939,14 @@ class ShapelyBackend(PolygonBackend):
         if not isinstance(polygons2, list):
             polygons2 = [polygons2]
 
-        # Convert all polygons to Shapely format and union each set
         shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]
         shapely_polygons2 = [self._to_shapely_polygon(p) for p in polygons2]
 
-        # Union each set
         union1 = unary_union(shapely_polygons1)
         union2 = unary_union(shapely_polygons2)
 
-        # Compute the intersection
         result = union1.intersection(union2)
 
-        # Convert the result back to PolygonData
         result_polygons = []
 
         if result.is_empty:
@@ -1410,9 +954,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1471,9 +1015,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1532,9 +1076,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1608,10 +1152,10 @@ class ShapelyBackend(PolygonBackend):
         if isinstance(buffered, MultiPolygon):
             # Multiple polygons resulted from the operation
             for geom in buffered.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygon.sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
             # Single polygon result
-            result_polygons.append(self._shapely_to_polygon_data(buffered, polygon.sense))
+            result_polygons.append(self._shapely_to_polygon_data(buffered))
 
         return result_polygons
 

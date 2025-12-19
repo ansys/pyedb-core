@@ -51,6 +51,106 @@ class Build123dBackend(PolygonBackend):
             )
         self._stub = stub
 
+    @staticmethod
+    def _sanitize_points(points: list[PointData], tol: float = 1e-9) -> list[PointData]:
+        """Remove duplicate points and fix arc points at the start/end of the point list.
+
+        Parameters
+        ----------
+        points : list[PointData]
+            The list of points to sanitize.
+        tol : float, default: 1e-9
+            Tolerance for detecting duplicate points.
+
+        Returns
+        -------
+        list[PointData]
+            Sanitized list of points with duplicates removed and arc endpoints fixed.
+
+        Notes
+        -----
+        Arc points require a preceding regular point to define the arc start.
+        This method ensures that if the first or last point is an arc, an appropriate
+        regular point is added before/after it.
+        """
+        if not points:
+            return []
+
+        sanitized = points.copy()
+
+        if sanitized[0].is_arc:
+            prev_point = sanitized[-2] if sanitized[-1].is_arc else sanitized[-1]
+            sanitized.insert(0, PointData(prev_point.x.double, prev_point.y.double))
+
+        if sanitized[-1].is_arc:
+            next_point = sanitized[1] if sanitized[0].is_arc else sanitized[0]
+            sanitized.append(PointData(next_point.x.double, next_point.y.double))
+
+        unique_points = [sanitized[0]]
+        for point in sanitized[1:]:
+            last_point = unique_points[-1]
+            if not (
+                math.isclose(point.x.double, last_point.x.double, rel_tol=tol)
+                and math.isclose(point.y.double, last_point.y.double, rel_tol=tol)
+            ):
+                unique_points.append(point)
+        if not (
+            math.isclose(unique_points[0].x.double, unique_points[-1].x.double, rel_tol=tol)
+            and math.isclose(unique_points[0].y.double, unique_points[-1].y.double, rel_tol=tol)
+        ):
+            unique_points.append(unique_points[0])
+
+        return unique_points
+
+    @staticmethod
+    def _points_to_wire(points: list[PointData]) -> "build123d.Wire":
+        """Convert a list of PointData objects to a build123d Wire.
+
+        Parameters
+        ----------
+        points : list[PointData]
+            The list of points defining the wire. Arc points must be followed by
+            an endpoint to complete the arc definition.
+
+        Returns
+        -------
+        build123d.Wire
+            A wire constructed from line segments and arcs based on the point data.
+
+        Notes
+        -----
+        This method constructs a wire by iterating through the points and creating
+        either line segments or three-point arcs. When an arc point is encountered,
+        it uses the previous point as the start, calculates a midpoint based on the
+        arc height, and uses the next point as the end of the arc.
+        """
+        edges = []
+        i = 1
+        while i < len(points):
+            p1 = build123d.Vector(points[i - 1].x.double, points[i - 1].y.double)
+            if points[i].is_arc:
+                arc_height = points[i].arc_height.double
+                p3 = build123d.Vector(points[i + 1].x.double, points[i + 1].y.double)
+
+                mid = (p1 + p3) / 2
+                direction = p3 - p1
+                perp = build123d.Vector(direction.Y, -direction.X)
+                perp_length = math.sqrt(perp.X**2 + perp.Y**2)
+                if perp_length > 0:
+                    perp_normalized = perp / perp_length
+                else:
+                    perp_normalized = build123d.Vector(0, 0)
+                p2 = mid - perp_normalized * arc_height
+
+                edges.append(build123d.ThreePointArc(p1, p2, p3))
+                i += 2
+            else:
+                p2 = build123d.Vector(points[i].x.double, points[i].y.double)
+                edges.append(build123d.Line(p1, p2))
+                i += 1
+
+        return build123d.Wire(edges)
+
     def _polygon_data_to_build123d(self, polygon: PolygonData) -> "build123d.Face":
         """Convert a PolygonData object to a build123d Face.
 
@@ -67,49 +167,25 @@ class Build123dBackend(PolygonBackend):
         Notes
         -----
         This method converts the outer contour and holes of a PolygonData to build123d.
-        Arcs in the polygon are currently tessellated into line segments.
         The result is cached on the PolygonData instance to avoid repeated conversions.
         """
-        # Check if we have a cached build123d face
         if hasattr(polygon, "_build123d_cache"):
             return polygon._build123d_cache
 
-        # Extract outer contour points
-        outer_points = []
-        for point in polygon.points:
-            if point.is_arc:
-                # For now, arcs need to be tessellated
-                # This is a simplified approach - arc handling would need refinement
-                continue
-            outer_points.append((point.x.double, point.y.double))
+        points = Build123dBackend._sanitize_points(polygon.points)
+        main_wire = Build123dBackend._points_to_wire(points)
 
-        # Create the outer wire from points
-        outer_wire = build123d.Wire.make_polygon(
-            [build123d.Vector(x, y) for x, y in outer_points], close=polygon.is_closed
-        )
-
-        # Handle holes if present
         hole_wires = []
         if polygon.holes:
             for hole_polygon in polygon.holes:
-                hole_points = []
-                for point in hole_polygon.points:
-                    if point.is_arc:
-                        continue
-                    hole_points.append((point.x.double, point.y.double))
+                hole_points = Build123dBackend._sanitize_points(hole_polygon.points)
+                hole_wires.append(Build123dBackend._points_to_wire(hole_points))
 
-                hole_wire = build123d.Wire.make_polygon(
-                    [build123d.Vector(x, y) for x, y in hole_points], close=hole_polygon.is_closed
-                )
-                hole_wires.append(hole_wire)
-
-        # Create face with outer contour and holes
         if hole_wires:
-            face = build123d.Face(outer_wire, hole_wires)
+            face = build123d.Face(main_wire, hole_wires)
         else:
-            face = build123d.Face(outer_wire)
+            face = build123d.Face(main_wire)
 
-        # Cache the result for future use
         polygon._build123d_cache = face
         return face
 

@@ -228,8 +228,13 @@ def test_is_convex(session, test_case, expected_result):
     polygon_shapely = create_polygon(test_case)
     result_shapely = polygon_shapely.is_convex()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(test_case)
+    result_build123d = polygon_build123d.is_convex()
+
     assert result_server == expected_result
     assert result_shapely == expected_result
+    assert result_build123d == expected_result
 
 
 @pytest.mark.parametrize(
@@ -1835,9 +1840,14 @@ def test_is_circle(session, polygon, expected_result):
     polygon_shapely = create_polygon(polygon)
     is_circle_shapely = polygon_shapely.is_circle()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    is_circle_build123d = polygon_build123d.is_circle()
+
     # TODO: The server backend is not handling this operation correctly.
     # assert is_circle_server == expected_result
     assert is_circle_shapely == expected_result
+    assert is_circle_build123d == expected_result
 
 
 @pytest.mark.parametrize(

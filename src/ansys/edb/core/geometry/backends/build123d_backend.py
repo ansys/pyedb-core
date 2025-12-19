@@ -256,7 +256,16 @@ class Build123dBackend(PolygonBackend):
         bool
             ``True`` when the polygon is convex, ``False`` otherwise.
         """
-        raise NotImplementedError("Build123d backend: is_convex method not yet implemented")
+        if polygon.has_holes():
+            return False
+
+        face = self._polygon_data_to_build123d(polygon)
+
+        outer_wire = build123d.Wire(face.edges())
+        hull_wire = outer_wire.make_convex_hull(outer_wire.edges())
+        hull_face = build123d.Face(hull_wire)
+
+        return math.isclose(face.area, hull_face.area, rel_tol=1e-9)
 
     def is_circle(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
         """Determine whether the outer contour of the polygon is a circle using Build123d.
@@ -273,7 +282,26 @@ class Build123dBackend(PolygonBackend):
         bool
             ``True`` when the outer contour of the polygon is a circle, ``False`` otherwise.
         """
-        raise NotImplementedError("Build123d backend: is_circle method not yet implemented")
+        if polygon.has_holes():
+            return False
+
+        face = self._polygon_data_to_build123d(polygon)
+
+        face_center = face.center().to_tuple()
+        face_radius = math.sqrt(face.area / math.pi)
+        for item in face.edges():
+            try:
+                arc_center = item.arc_center
+                arc_radius = item.radius
+                if not (
+                    math.isclose(math.dist(face_center, arc_center), 0.0, abs_tol=tol)
+                    and math.isclose(arc_radius, face_radius, rel_tol=tol)
+                ):
+                    return False
+            except Exception:
+                return False
+
+        return True
 
     def is_box(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
         """Determine whether the outer contour of the polygon is a box using Build123d.

@@ -1931,9 +1931,14 @@ def test_is_box(session, polygon, expected_result):
     polygon_shapely = create_polygon(polygon)
     is_box_shapely = polygon_shapely.is_box()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    is_box_build123d = polygon_build123d.is_box()
+
     # TODO: The server backend is not handling this operation correctly.
     # assert is_box_server == expected_result
     assert is_box_shapely == expected_result
+    assert is_box_build123d == expected_result
 
 
 @pytest.mark.parametrize(

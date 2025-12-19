@@ -7,6 +7,7 @@ import math
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from ansys.edb.core.geometry.point_data import PointData
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
 
@@ -17,6 +18,136 @@ class PolygonBackend(ABC):
     Backends handle geometry operations that can be performed either on the server
     or locally using libraries like Shapely.
     """
+
+    @staticmethod
+    def _sanitize_points(points: list[PointData], tol: float = 1e-9) -> list[PointData]:
+        """Remove duplicate points and fix arc points at the start/end of the point list.
+
+        Parameters
+        ----------
+        points : list[PointData]
+            The list of points to sanitize.
+        tol : float, default: 1e-9
+            Tolerance for detecting duplicate points.
+
+        Returns
+        -------
+        list[PointData]
+            Sanitized list of points with duplicates removed and arc endpoints fixed.
+
+        Notes
+        -----
+        Arc points require a preceding regular point to define the arc start.
+        This method ensures that if the first or last point is an arc, an appropriate
+        regular point is added before/after it.
+        """
+        if not points:
+            return []
+
+        sanitized = points.copy()
+
+        if sanitized[0].is_arc:
+            prev_point = sanitized[-2] if sanitized[-1].is_arc else sanitized[-1]
+            sanitized.insert(0, PointData(prev_point.x.double, prev_point.y.double))
+
+        if sanitized[-1].is_arc:
+            next_point = sanitized[1] if sanitized[0].is_arc else sanitized[0]
+            sanitized.append(PointData(next_point.x.double, next_point.y.double))
+
+        unique_points = [sanitized[0]]
+        for point in sanitized[1:]:
+            last_point = unique_points[-1]
+            if not (
+                math.isclose(point.x.double, last_point.x.double, rel_tol=tol)
+                and math.isclose(point.y.double, last_point.y.double, rel_tol=tol)
+            ):
+                unique_points.append(point)
+        if not (
+            math.isclose(unique_points[0].x.double, unique_points[-1].x.double, rel_tol=tol)
+            and math.isclose(unique_points[0].y.double, unique_points[-1].y.double, rel_tol=tol)
+        ):
+            unique_points.append(unique_points[0])
+
+        return unique_points
+
+    @staticmethod
+    def _is_box(polygon: PolygonData, tol: float = 1e-9) -> bool:
+        """Check if points form a box (rectangle).
+
+        A box is defined as a rectangle (quadrilateral with 4 right angles).
+        This shared implementation is used by all backends to ensure consistency.
+
+        Parameters
+        ----------
+        points : list[PointData]
+            The list of points to check. Should be preprocessed (sanitized and
+            optionally deduplicated) by the calling backend.
+        tol : float, default: 1e-9
+            Tolerance for box detection.
+
+        Returns
+        -------
+        bool
+            ``True`` when the points form a box, ``False`` otherwise.
+
+        Notes
+        -----
+        This method expects that the calling backend has already:
+        1. Checked for holes and arcs (boxes cannot have either)
+        2. Sanitized the points
+        3. Optionally removed consecutive duplicates
+        4. Extended the points list to close the loop on both ends
+        """
+
+        def extract_next_vector(
+            pts: list[PointData], i: int
+        ) -> tuple[tuple[float, float] | None, int]:
+            n = len(pts)
+            pt = pts[i]
+            if i + 1 < n:
+                start = pt
+                end = pts[i + 1]
+                i += 1
+            else:
+                return None, i
+
+            return (end.x.double - start.x.double, end.y.double - start.y.double), i
+
+        points = PolygonBackend._sanitize_points(polygon.points.copy())
+
+        points = [
+            points[-2],
+            points[-1],
+            *points,
+            points[0],
+            points[1],
+        ]  # Close the loop on both ends
+
+        index = 0
+        while index < len(points):
+            vec1, index = extract_next_vector(points, index)
+            if vec1 is None:
+                break
+
+            vec2, index = extract_next_vector(points, index)
+            if vec2 is None:
+                break
+
+            dot_product = vec1[0] * vec2[0] + vec1[1] * vec2[1]
+            if not math.isclose(math.hypot(*vec1), 0.0, rel_tol=tol):
+                dot_product /= math.hypot(*vec1)
+            if not math.isclose(math.hypot(*vec2), 0.0, rel_tol=tol):
+                dot_product /= math.hypot(*vec2)
+
+            if not (
+                math.isclose(dot_product, 0.0, rel_tol=tol)
+                or math.isclose(dot_product, 1.0, rel_tol=tol)
+            ):
+                return False
+
+            index -= 1
+
+        return True
 
     @abstractmethod
     def area(self, polygon: PolygonData) -> float:

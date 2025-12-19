@@ -53,54 +53,6 @@ class ShapelyBackend(PolygonBackend):
         self._stub = stub
 
     @staticmethod
-    def _remove_consecutive_duplicate_points(
-        points: list[PointData], tol: float = 1e-9
-    ) -> list[PointData]:
-        """Remove consecutive duplicate points from a list of PointData.
-
-        Parameters
-        ----------
-        points : list[PointData]
-            List of points to process.
-        tol : float, default: 1e-9
-            Tolerance for considering points as duplicates.
-
-        Returns
-        -------
-        list[PointData]
-            List of points with consecutive duplicates removed.
-        """
-        if not points:
-            return []
-
-        unique_points = [points[0]]
-        for pt in points[1:]:
-            last_pt = unique_points[-1]
-            if not (
-                math.isclose(pt.x.double, last_pt.x.double, rel_tol=tol)
-                and math.isclose(pt.y.double, last_pt.y.double, rel_tol=tol)
-            ):
-                unique_points.append(pt)
-
-        return unique_points
-
-    @staticmethod
-    def _sanitize_points(points: list[PointData]) -> list[PointData]:
-        """Sanitize points by making sure the first and last points are not arcs."""
-        if points[0].is_arc:
-            if points[-1].is_arc:
-                points.insert(0, PointData(points[-2].x.double, points[-2].y.double))
-            else:
-                points.insert(0, PointData(points[-1].x.double, points[-1].y.double))
-        if points[-1].is_arc:
-            if points[0].is_arc:
-                points.append(PointData(points[1].x.double, points[1].y.double))
-            else:
-                points.append(PointData(points[0].x.double, points[0].y.double))
-
-        return points
-
-    @staticmethod
     def _to_tuple(point: tuple[float, float] | PointData) -> tuple[float, float]:
         """Convert a point to a tuple of (x, y) coordinates.
 
@@ -281,7 +233,7 @@ class ShapelyBackend(PolygonBackend):
         if not points:
             return []
 
-        points = ShapelyBackend._sanitize_points(points)
+        points = PolygonBackend._sanitize_points(points)
 
         coords = []
         i = 0
@@ -480,7 +432,7 @@ class ShapelyBackend(PolygonBackend):
         if polygon.has_holes():
             return False
 
-        points = ShapelyBackend._sanitize_points(polygon.points.copy())
+        points = PolygonBackend._sanitize_points(polygon.points.copy())
 
         if not points[1].is_arc:
             return False
@@ -536,60 +488,13 @@ class ShapelyBackend(PolygonBackend):
         bool
             ``True`` when the outer contour of the polygon is a box, ``False`` otherwise.
         """
-
-        def extract_next_vector(points: list[PointData], i: int) -> tuple[float, float]:
-            n = len(points)
-            pt = points[i]
-            if i + 1 < n:
-                start = pt
-                end = points[i + 1]
-                i += 1
-            else:
-                return None, i
-
-            return (end.x.double - start.x.double, end.y.double - start.y.double), i
-
         # A box cannot have holes or arcs
         if (
             polygon.has_holes() or polygon.has_arcs()
         ):  # If the polygon was set up with arcs of zero height, the has_arcs() will return False.
             return False
 
-        points = ShapelyBackend._sanitize_points(polygon.points.copy())
-        points = [
-            points[-2],
-            points[-1],
-            *points,
-            points[0],
-            points[1],
-        ]  # Close the loop on both ends
-        points = ShapelyBackend._remove_consecutive_duplicate_points(points, tol=tol)
-
-        index = 0
-        while index < len(points):
-            vec1, index = extract_next_vector(points, index)
-            if vec1 is None:
-                break
-
-            vec2, index = extract_next_vector(points, index)
-            if vec2 is None:
-                break
-
-            dot_product = vec1[0] * vec2[0] + vec1[1] * vec2[1]
-            if not math.isclose(math.hypot(*vec1), 0.0, rel_tol=tol):
-                dot_product /= math.hypot(*vec1)
-            if not math.isclose(math.hypot(*vec2), 0.0, rel_tol=tol):
-                dot_product /= math.hypot(*vec2)
-
-            if not (
-                math.isclose(dot_product, 0.0, rel_tol=tol)
-                or math.isclose(dot_product, 1.0, rel_tol=tol)
-            ):
-                return False
-
-            index -= 1
-
-        return True
+        return PolygonBackend._is_box(polygon, tol)
 
     def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
         """Determine whether a point is inside the polygon using Shapely.

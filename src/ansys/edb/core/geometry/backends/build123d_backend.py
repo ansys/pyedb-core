@@ -52,57 +52,6 @@ class Build123dBackend(PolygonBackend):
         self._stub = stub
 
     @staticmethod
-    def _sanitize_points(points: list[PointData], tol: float = 1e-9) -> list[PointData]:
-        """Remove duplicate points and fix arc points at the start/end of the point list.
-
-        Parameters
-        ----------
-        points : list[PointData]
-            The list of points to sanitize.
-        tol : float, default: 1e-9
-            Tolerance for detecting duplicate points.
-
-        Returns
-        -------
-        list[PointData]
-            Sanitized list of points with duplicates removed and arc endpoints fixed.
-
-        Notes
-        -----
-        Arc points require a preceding regular point to define the arc start.
-        This method ensures that if the first or last point is an arc, an appropriate
-        regular point is added before/after it.
-        """
-        if not points:
-            return []
-
-        sanitized = points.copy()
-
-        if sanitized[0].is_arc:
-            prev_point = sanitized[-2] if sanitized[-1].is_arc else sanitized[-1]
-            sanitized.insert(0, PointData(prev_point.x.double, prev_point.y.double))
-
-        if sanitized[-1].is_arc:
-            next_point = sanitized[1] if sanitized[0].is_arc else sanitized[0]
-            sanitized.append(PointData(next_point.x.double, next_point.y.double))
-
-        unique_points = [sanitized[0]]
-        for point in sanitized[1:]:
-            last_point = unique_points[-1]
-            if not (
-                math.isclose(point.x.double, last_point.x.double, rel_tol=tol)
-                and math.isclose(point.y.double, last_point.y.double, rel_tol=tol)
-            ):
-                unique_points.append(point)
-        if not (
-            math.isclose(unique_points[0].x.double, unique_points[-1].x.double, rel_tol=tol)
-            and math.isclose(unique_points[0].y.double, unique_points[-1].y.double, rel_tol=tol)
-        ):
-            unique_points.append(unique_points[0])
-
-        return unique_points
-
-    @staticmethod
     def _points_to_wire(points: list[PointData]) -> "build123d.Wire":
         """Convert a list of PointData objects to a build123d Wire.
 
@@ -172,13 +121,13 @@ class Build123dBackend(PolygonBackend):
         if hasattr(polygon, "_build123d_cache"):
             return polygon._build123d_cache
 
-        points = Build123dBackend._sanitize_points(polygon.points)
+        points = PolygonBackend._sanitize_points(polygon.points)
         main_wire = Build123dBackend._points_to_wire(points)
 
         hole_wires = []
         if polygon.holes:
             for hole_polygon in polygon.holes:
-                hole_points = Build123dBackend._sanitize_points(hole_polygon.points)
+                hole_points = PolygonBackend._sanitize_points(hole_polygon.points)
                 hole_wires.append(Build123dBackend._points_to_wire(hole_points))
 
         if hole_wires:
@@ -320,7 +269,13 @@ class Build123dBackend(PolygonBackend):
         bool
             ``True`` when the outer contour of the polygon is a box, ``False`` otherwise.
         """
-        raise NotImplementedError("Build123d backend: is_box method not yet implemented")
+        # A box cannot have holes or arcs
+        if (
+            polygon.has_holes() or polygon.has_arcs()
+        ):  # If the polygon was set up with arcs of zero height, the has_arcs() will return False.
+            return False
+
+        return PolygonBackend._is_box(polygon, tol)
 
     def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
         """Determine whether a point is inside the polygon using Build123d.

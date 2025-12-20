@@ -71,6 +71,209 @@ class PolygonBackend(ABC):
         return unique_points
 
     @staticmethod
+    def _tessellate_arc(
+        start: PointData,
+        end: PointData,
+        height: float,
+        max_chord_error: float = 0,
+        max_arc_angle: float = math.pi / 6,
+        max_points: int = 8,
+    ) -> list[tuple[float, float]]:
+        """Tessellate an arc into line segments locally.
+
+        Parameters
+        ----------
+        start : PointData
+            Start point of the arc.
+        end : PointData
+            End point of the arc.
+        height : float
+            Arc height (sagitta).
+            - Negative: center on LEFT side, small arc on RIGHT (< 180°)
+            - Positive: center on RIGHT side, large arc on RIGHT (> 180°)
+        max_chord_error : float, default: 0
+            Maximum allowed chord error (distance from arc to chord).
+        max_arc_angle : float, default: math.pi / 6
+            Maximum angle (in radians) for each arc segment.
+        max_points : int, default: 8
+            Maximum number of points to generate.
+
+        Returns
+        -------
+        list[tuple[float, float]]
+            List of intermediate points (excluding start, including end).
+        """
+        # If height is zero or very small, it's a straight line
+        if abs(height) < 1e-12:
+            return [(end.x.double, end.y.double)]
+
+        # Extract coordinates
+        x1, y1 = start.x.double, start.y.double
+        x2, y2 = end.x.double, end.y.double
+
+        # Calculate chord properties
+        chord_dx = x2 - x1
+        chord_dy = y2 - y1
+        chord_length = math.sqrt(chord_dx * chord_dx + chord_dy * chord_dy)
+
+        # If chord length is zero, start and end are the same point
+        if chord_length < 1e-12:
+            return [(x2, y2)]
+
+        # Calculate arc properties
+        # For a circular arc, radius r and sagitta h are related by:
+        # r = (h^2 + (c/2)^2) / (2*h) where c is chord length
+        h = abs(height)
+        radius = (h**2 + (chord_length / 2) ** 2) / (2 * h)
+
+        # Calculate the center of the arc
+        # The center is perpendicular to the chord at its midpoint
+        chord_mid_x = (x1 + x2) / 2
+        chord_mid_y = (y1 + y2) / 2
+
+        # Perpendicular direction to the right when going from start to end
+        perp_dx = chord_dy / chord_length
+        perp_dy = -chord_dx / chord_length
+
+        # Place center based on height sign:
+        if height < 0:
+            center_x = chord_mid_x - perp_dx * (radius + height)
+            center_y = chord_mid_y - perp_dy * (radius + height)
+        else:
+            center_x = chord_mid_x + perp_dx * (radius - height)
+            center_y = chord_mid_y + perp_dy * (radius - height)
+
+        dot_product = (x1 - center_x) * (x2 - center_x) + (y1 - center_y) * (y2 - center_y)
+        temp = dot_product / (radius * radius)
+        if abs(temp) > 1.0 + 1e-10:
+            raise ValueError("Numerical error in arc tessellation: acos argument out of range.")
+        if abs(temp) > 1.0:
+            temp = max(-1.0, min(1.0, temp))
+        temp_angle = math.acos(temp)
+        angle1 = math.atan2(y1 - center_y, x1 - center_x)
+
+        if radius <= abs(height):
+            temp_angle = 2 * math.pi - temp_angle
+
+        if height < 0:
+            arc_angle = temp_angle
+        elif height >= 0:
+            arc_angle = -temp_angle
+
+        total_angle = abs(arc_angle)
+
+        # Determine number of segments
+        # Method 1: Based on max_arc_angle
+        num_segments_angle = max(1, int(math.ceil(total_angle / max_arc_angle)))
+
+        # Method 2: Based on max_chord_error (if specified)
+        if max_chord_error > 0:
+            # Chord error for a segment: e = r * (1 - cos(θ/2))
+            # Solving for θ: θ = 2 * acos(1 - e/r)
+            max_segment_angle = 2 * math.acos(max(0, min(1, 1 - max_chord_error / radius)))
+            num_segments_error = max(1, int(math.ceil(total_angle / max_segment_angle)))
+        else:
+            num_segments_error = 1
+
+        # Take the maximum to satisfy both constraints, but limit to max_points
+        num_segments = min(max(num_segments_angle, num_segments_error), max_points)
+
+        # Generate intermediate points
+        points = []
+        angle_step = arc_angle / num_segments
+
+        for i in range(1, num_segments + 1):
+            angle = angle1 + angle_step * i
+            x = center_x + radius * math.cos(angle)
+            y = center_y + radius * math.sin(angle)
+            points.append((x, y))
+
+        return points, (center_x, center_y), radius
+
+    @staticmethod
+    def _extract_coordinates_with_arcs(
+        points: list[PointData],
+        max_chord_error: float = 0,
+        max_arc_angle: float = math.pi / 6,
+        max_points: int = 8,
+    ) -> list[tuple[float, float]]:
+        """Extract coordinates from points, tessellating arcs into line segments.
+
+        Parameters
+        ----------
+        points : list[PointData]
+            List of points, where arc points have is_arc=True and contain arc height.
+        max_chord_error : float, default: 0
+            Maximum allowed chord error for arc tessellation.
+        max_arc_angle : float, default: math.pi / 6
+            Maximum angle for each arc segment.
+        max_points : int, default: 8
+            Maximum number of points per arc.
+
+        Returns
+        -------
+        list[tuple[float, float]]
+            List of coordinate tuples.
+
+        Notes
+        -----
+        The arc representation in PolygonData works as follows:
+        - Point at index i is the start of an arc
+        - Point at index i+1 has is_arc=True and contains the arc height
+        - Point at index i+2 is the end of the arc
+        Then we skip to i+2 for the next segment.
+        """
+        if not points:
+            return []
+
+        points = PolygonBackend._sanitize_points(points)
+
+        coords = []
+        i = 0
+        n = len(points)
+        while i < n:
+            pt = points[i]
+
+            # Check if the next point (if it exists) is an arc point
+            if i + 1 < n and points[i + 1].is_arc:
+                # This is the start of an arc segment
+                if i + 2 < n:
+                    start = pt
+                    arc_pt = points[i + 1]
+                    end = points[i + 2]
+                    height = arc_pt.arc_height.double
+
+                    # Add the start point
+                    coords.append((start.x.double, start.y.double))
+
+                    # Tessellate the arc and add intermediate points (excluding start)
+                    arc_coords, _, _ = PolygonBackend._tessellate_arc(
+                        start, end, height, max_chord_error, max_arc_angle, max_points
+                    )
+                    # arc_coords includes the end point, so add all of them
+                    coords.extend(arc_coords[:-1])  # Exclude end point for now
+
+                    # Move to the end point (i+2), which will be processed in next iteration
+                    i += 2
+                else:
+                    RuntimeError("Invalid arc definition: arc point without an end point.")
+            else:
+                # Regular point - just add it
+                coords.append((pt.x.double, pt.y.double))
+                i += 1
+
+        # Remove consecutive duplicate points that may have arisen from tessellation
+        i = 0
+        while i < len(coords) - 1:
+            if math.isclose(coords[i][0], coords[i + 1][0], rel_tol=1e-9) and math.isclose(
+                coords[i][1], coords[i + 1][1], rel_tol=1e-9
+            ):
+                coords.pop(i + 1)
+            i += 1
+
+        return coords
+
+    @staticmethod
     def _is_box(polygon: PolygonData, tol: float = 1e-9) -> bool:
         """Check if points form a box (rectangle).
 
@@ -148,6 +351,59 @@ class PolygonBackend(ABC):
             index -= 1
 
         return True
+
+    @staticmethod
+    def _without_arcs(
+        polygon: PolygonData,
+        max_chord_error: float = 0,
+        max_arc_angle: float = math.pi / 6,
+        max_points: int = 8,
+    ) -> PolygonData:
+        """Get polygon data with all arcs removed using Shapely.
+
+        Parameters
+        ----------
+        polygon : PolygonData
+            The polygon to process.
+        max_chord_error : float, default: 0
+            Maximum allowed chord error for arc tessellation.
+        max_arc_angle : float, default: math.pi / 6
+            Maximum angle (in radians) for each arc segment.
+        max_points : int, default: 8
+            Maximum number of points per arc.
+
+        Returns
+        -------
+        PolygonData
+            Polygon with all arcs tessellated into line segments.
+        """
+        from ansys.edb.core.geometry.point_data import PointData
+        from ansys.edb.core.geometry.polygon_data import PolygonData
+
+        # Extract coordinates with arcs tessellated
+        exterior_coords = PolygonBackend._extract_coordinates_with_arcs(
+            polygon.points, max_chord_error, max_arc_angle, max_points
+        )
+
+        # Convert coordinates back to PointData objects (non-arc points)
+        new_points = [PointData(x, y) for x, y in exterior_coords]
+
+        # Process holes
+        new_holes = []
+        for hole in polygon.holes:
+            hole_coords = PolygonBackend._extract_coordinates_with_arcs(
+                hole.points, max_chord_error, max_arc_angle, max_points
+            )
+            hole_points = [PointData(x, y) for x, y in hole_coords]
+            # Create a new PolygonData for the hole without arcs
+
+            new_hole = PolygonData(points=hole_points, sense=hole.sense, closed=hole.is_closed)
+            new_holes.append(new_hole)
+
+        # Create and return new PolygonData without arcs
+        return PolygonData(
+            points=new_points, holes=new_holes, sense=polygon.sense, closed=polygon.is_closed
+        )
 
     @abstractmethod
     def area(self, polygon: PolygonData) -> float:

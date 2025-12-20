@@ -370,7 +370,7 @@ class Build123dBackend(PolygonBackend):
         PolygonData
             Polygon with all arcs tessellated into line segments.
         """
-        raise NotImplementedError("Build123d backend: without_arcs method not yet implemented")
+        return PolygonBackend._without_arcs(polygon, max_chord_error, max_arc_angle, max_points)
 
     def has_self_intersections(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
         """Determine whether the polygon contains any self-intersections using Build123d.

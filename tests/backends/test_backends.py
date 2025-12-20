@@ -565,6 +565,13 @@ def test_without_arcs(session, polygons, expected_result):
     )
     tessellated_area_shapely = tessellated_shapely.area()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygons)
+    tessellated_build123d = polygon_build123d.without_arcs(
+        max_chord_error=0, max_arc_angle=math.pi / 6, max_points=8
+    )
+    tessellated_area_build123d = tessellated_build123d.area()
+
     tol = 1e-9
 
     assert tessellated_server.has_arcs() == False
@@ -572,6 +579,9 @@ def test_without_arcs(session, polygons, expected_result):
 
     assert tessellated_shapely.has_arcs() == False
     assert tessellated_area_shapely == pytest.approx(expected_result, rel=tol)
+
+    assert tessellated_build123d.has_arcs() == False
+    assert tessellated_area_build123d == pytest.approx(expected_result, rel=tol)
 
 
 @pytest.mark.parametrize(

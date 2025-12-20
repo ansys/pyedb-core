@@ -292,7 +292,9 @@ class Build123dBackend(PolygonBackend):
         bool
             ``True`` if the point is inside the polygon, ``False`` otherwise.
         """
-        raise NotImplementedError("Build123d backend: is_inside method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        point = build123d.Vector(point[0], point[1], 0)
+        return face.is_inside(point)
 
     def bbox(self, polygon: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
         """Compute the bounding box of a polygon using Build123d.

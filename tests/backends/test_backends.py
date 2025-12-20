@@ -368,6 +368,10 @@ def test_bbox(session, polygon, expected_bbox):
     polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.bbox()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    result_build123d = polygon_build123d.bbox()
+
     tol = 1e-9
 
     assert result_server[0][0] == pytest.approx(expected_bbox[0][0], rel=tol)
@@ -379,6 +383,11 @@ def test_bbox(session, polygon, expected_bbox):
     assert result_shapely[0][1] == pytest.approx(expected_bbox[0][1], rel=tol)
     assert result_shapely[1][0] == pytest.approx(expected_bbox[1][0], rel=tol)
     assert result_shapely[1][1] == pytest.approx(expected_bbox[1][1], rel=tol)
+
+    assert result_build123d[0][0] == pytest.approx(expected_bbox[0][0], rel=tol)
+    assert result_build123d[0][1] == pytest.approx(expected_bbox[0][1], rel=tol)
+    assert result_build123d[1][0] == pytest.approx(expected_bbox[1][0], rel=tol)
+    assert result_build123d[1][1] == pytest.approx(expected_bbox[1][1], rel=tol)
 
 
 @pytest.mark.parametrize(
@@ -447,15 +456,26 @@ def test_bbox_of_polygons(session, polygons, expected_bbox):
     polygon_shapely_list = [create_polygon(p) for p in polygons]
     result_shapely = PolygonData.bbox_of_polygons(polygon_shapely_list)
 
-    assert result_server[0][0] == pytest.approx(expected_bbox[0][0], rel=1e-9)
-    assert result_server[0][1] == pytest.approx(expected_bbox[0][1], rel=1e-9)
-    assert result_server[1][0] == pytest.approx(expected_bbox[1][0], rel=1e-9)
-    assert result_server[1][1] == pytest.approx(expected_bbox[1][1], rel=1e-9)
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d_list = [create_polygon(p) for p in polygons]
+    result_build123d = PolygonData.bbox_of_polygons(polygon_build123d_list)
 
-    assert result_shapely[0][0] == pytest.approx(expected_bbox[0][0], rel=1e-9)
-    assert result_shapely[0][1] == pytest.approx(expected_bbox[0][1], rel=1e-9)
-    assert result_shapely[1][0] == pytest.approx(expected_bbox[1][0], rel=1e-9)
-    assert result_shapely[1][1] == pytest.approx(expected_bbox[1][1], rel=1e-9)
+    tol = 1e-9
+
+    assert result_server[0][0] == pytest.approx(expected_bbox[0][0], rel=tol)
+    assert result_server[0][1] == pytest.approx(expected_bbox[0][1], rel=tol)
+    assert result_server[1][0] == pytest.approx(expected_bbox[1][0], rel=tol)
+    assert result_server[1][1] == pytest.approx(expected_bbox[1][1], rel=tol)
+
+    assert result_shapely[0][0] == pytest.approx(expected_bbox[0][0], rel=tol)
+    assert result_shapely[0][1] == pytest.approx(expected_bbox[0][1], rel=tol)
+    assert result_shapely[1][0] == pytest.approx(expected_bbox[1][0], rel=tol)
+    assert result_shapely[1][1] == pytest.approx(expected_bbox[1][1], rel=tol)
+
+    assert result_build123d[0][0] == pytest.approx(expected_bbox[0][0], rel=tol)
+    assert result_build123d[0][1] == pytest.approx(expected_bbox[0][1], rel=tol)
+    assert result_build123d[1][0] == pytest.approx(expected_bbox[1][0], rel=tol)
+    assert result_build123d[1][1] == pytest.approx(expected_bbox[1][1], rel=tol)
 
 
 @pytest.mark.parametrize(

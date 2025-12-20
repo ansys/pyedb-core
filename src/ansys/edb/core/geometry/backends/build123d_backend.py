@@ -309,7 +309,9 @@ class Build123dBackend(PolygonBackend):
         tuple[tuple[float, float], tuple[float, float]]
             Bounding box as ((min_x, min_y), (max_x, max_y)).
         """
-        raise NotImplementedError("Build123d backend: bbox method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        bbox = face.bounding_box()
+        return ((bbox.min.X, bbox.min.Y), (bbox.max.X, bbox.max.Y))
 
     def bbox_of_polygons(
         self, polygons: list[PolygonData]
@@ -326,7 +328,22 @@ class Build123dBackend(PolygonBackend):
         tuple[tuple[float, float], tuple[float, float]]
             Bounding box as ((min_x, min_y), (max_x, max_y)).
         """
-        raise NotImplementedError("Build123d backend: bbox_of_polygons method not yet implemented")
+        if not polygons:
+            return ((0.0, 0.0), (0.0, 0.0))
+
+        min_x, min_y = math.inf, math.inf
+        max_x, max_y = -math.inf, -math.inf
+
+        # Expand to include all other polygons
+        for polygon in polygons:
+            face = self._polygon_data_to_build123d(polygon)
+            bbox = face.bounding_box()
+            min_x = min(min_x, bbox.min.X)
+            min_y = min(min_y, bbox.min.Y)
+            max_x = max(max_x, bbox.max.X)
+            max_y = max(max_y, bbox.max.Y)
+
+        return ((min_x, min_y), (max_x, max_y))
 
     def without_arcs(
         self,

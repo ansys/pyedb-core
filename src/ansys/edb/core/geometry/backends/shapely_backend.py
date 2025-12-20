@@ -551,12 +551,11 @@ class ShapelyBackend(PolygonBackend):
         if not polygons:
             return ((0.0, 0.0), (0.0, 0.0))
 
-        # Initialize with the first polygon's bounds
-        first_poly = self._to_shapely_polygon(polygons[0])
-        min_x, min_y, max_x, max_y = first_poly.bounds
+        min_x, min_y = math.inf, math.inf
+        max_x, max_y = -math.inf, -math.inf
 
         # Expand to include all other polygons
-        for polygon in polygons[1:]:
+        for polygon in polygons:
             shapely_poly = self._to_shapely_polygon(polygon)
             p_min_x, p_min_y, p_max_x, p_max_y = shapely_poly.bounds
             min_x = min(min_x, p_min_x)

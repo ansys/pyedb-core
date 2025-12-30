@@ -1,0 +1,6 @@
+LAYER\_DRILL
+============
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. autoattribute:: BackDrillType.LAYER_DRILL

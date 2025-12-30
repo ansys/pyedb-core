@@ -1,0 +1,6 @@
+part\_index
+===========
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. automethod:: McadModel.part_index

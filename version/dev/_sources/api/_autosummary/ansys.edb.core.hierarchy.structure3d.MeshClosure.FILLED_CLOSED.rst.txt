@@ -1,0 +1,6 @@
+FILLED\_CLOSED
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. autoattribute:: MeshClosure.FILLED_CLOSED

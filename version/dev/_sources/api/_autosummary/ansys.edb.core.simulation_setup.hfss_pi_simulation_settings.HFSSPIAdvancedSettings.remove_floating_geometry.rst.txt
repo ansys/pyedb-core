@@ -1,0 +1,6 @@
+remove\_floating\_geometry
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIAdvancedSettings.remove_floating_geometry

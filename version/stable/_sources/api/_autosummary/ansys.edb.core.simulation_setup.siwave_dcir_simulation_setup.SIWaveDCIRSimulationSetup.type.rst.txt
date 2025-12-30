@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup
+
+.. autoproperty:: SIWaveDCIRSimulationSetup.type

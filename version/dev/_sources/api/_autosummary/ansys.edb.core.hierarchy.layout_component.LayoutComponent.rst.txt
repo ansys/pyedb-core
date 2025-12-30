@@ -1,0 +1,38 @@
+﻿LayoutComponent
+===============
+
+.. currentmodule:: ansys.edb.core.hierarchy.layout_component
+
+.. autoclass:: LayoutComponent
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LayoutComponent.export_layout_component
+      
+      
+      LayoutComponent.import_layout_component
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayoutComponent.cell_instance
+      LayoutComponent.id
+      LayoutComponent.is_null
+      LayoutComponent.msg
+   
+   

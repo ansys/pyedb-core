@@ -22,7 +22,10 @@ if TYPE_CHECKING:
     from src.ansys.edb.core.primitive.padstack_instance import PadstackInstance
     from src.ansys.edb.core.terminal.terminal import Terminal
 
+from enum import Enum
+
 from ansys.api.edb.v1 import layout_pb2
+from ansys.api.edb.v1.edb_defs_pb2 import ViaClusteringMethod as ViaClusteringMethod_pb2
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
@@ -34,6 +37,14 @@ from ansys.edb.core.layout_instance import layout_instance
 from ansys.edb.core.primitive.board_bend_def import BoardBendDef
 from ansys.edb.core.primitive.primitive import Primitive
 from ansys.edb.core.session import StubAccessor, StubType
+
+
+class ViaClusteringMethod(Enum):
+    """Enum representing different via clustering algorithms."""
+
+    PROXIMITY_CLUSTERING = ViaClusteringMethod_pb2.VIA_CLUSTERING_PROXIMITY
+    RANGE_CLUSTERING = ViaClusteringMethod_pb2.VIA_CLUSTERING_RANGE
+    DENSITY_CLUSTERING = ViaClusteringMethod_pb2.VIA_CLUSTERING_DENSITY
 
 
 def _geometry_simplifications_settings_msg(layout, layer, tol):
@@ -398,9 +409,9 @@ class Layout(ObjBase, variable_server.VariableServer):
     def group_vias(
         self,
         layer: LayerListLike,
-        max_grouping_distance: ValueLike = "100um",
+        tolerance: ValueLike = "100um",
         persistent_vias: bool = False,
-        group_by_proximity: bool = True,
+        clustering_method: ViaClusteringMethod = ViaClusteringMethod.PROXIMITY_CLUSTERING,
         check_containment: bool = True,
     ):
         """Create via groups from the primitives on the specified layers.
@@ -409,26 +420,33 @@ class Layout(ObjBase, variable_server.VariableServer):
         ----------
         layer : :term:`LayerLike` or list of :term:`LayerLike`
             Layers containing the primitives to be grouped.
-        max_grouping_distance : :term:`ValueLike`
-            Maximum distance between via primitives in a via group .
+        tolerance : :term:`ValueLike`
+            The tolerance for the clustering algorithm.
+            - PROXIMITY_CLUSTERING: threshold for the relative position of vias to each other.
+            - RANGE_CLUSTERING: any via primitives within the toelrance of each other are grouped.
+            - DENSITY_CLUSTERING: cluster according to density.
         persistent_vias : bool
             Whether to preserve primitives during via group creation. If ``False``
             primitives are deleted during via group creation.
-        group_by_proximity : bool
-            If ``True``, via primitives are grouped by proximity (relative position to each other).
-            If ``False``, via primitives are grouped by range (any via primitives within the specified maximum
-            grouping distance of each other are grouped)
+        clustering_method : .ViaClusteringMethod
+            The clustering method to use.
         check_containment : bool
             If ``True``, the connectivity of via groups is checked and enforced to prevent
             short circuits in geometry connecting to the via group. If false, via primitives are
             grouped regardless of the connectivity of touching geometry.
         """
         self.__stub.GroupVias(
+            # simplification_method is deprecated for group_vias.
+            # For backwards compatibility, if clustering_method is PROXIMITY_CLUSTERING, the server selects
+            # PROXIMITY_CLUSTERING if simplification_method is True and RANGE_CLUSTERING if it's False.
+            # Hardcoding it to True here ensures PROXIMITY_CLUSTERING is the algorithm used when clustering_method
+            # is PROXIMITY_CLUSTERING.
             layout_pb2.ViaGroupingSettingsMessage(
                 via_simplification_settings=_via_simplifications_settings_with_option_msg(
-                    self, layer, max_grouping_distance, check_containment, group_by_proximity
+                    self, layer, tolerance, check_containment, True
                 ),
                 persistent=persistent_vias,
+                clustering_method=clustering_method.value,
             )
         )
 

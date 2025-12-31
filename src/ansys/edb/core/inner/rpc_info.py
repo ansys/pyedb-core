@@ -82,36 +82,207 @@ rpc_information = {
         "ClosestPoints": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.BoardBendDefService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetBoundaryPrim": _RpcInfo(cache=True),
-        "GetBendMiddle": _RpcInfo(cache=True),
-        "SetBendMiddle": _RpcInfo(buffer=True),
-        "GetRadius": _RpcInfo(cache=True),
-        "SetRadius": _RpcInfo(buffer=True),
-        "GetAngle": _RpcInfo(cache=True),
-        "SetAngle": _RpcInfo(buffer=True),
-        "GetBentRegions": _RpcInfo(cache=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetBoundaryPrim": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetBendMiddle": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetBendMiddle": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetBendMiddle", service="ansys.api.edb.v1.BoardBendDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetRadius": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRadius": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetBendMiddle", service="ansys.api.edb.v1.BoardBendDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetAngle": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAngle": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetBendMiddle", service="ansys.api.edb.v1.BoardBendDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetBentRegions": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.BondwireService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetMaterial": _RpcInfo(cache=True),
-        "SetMaterial": _RpcInfo(buffer=True),
-        "GetType": _RpcInfo(cache=True),
-        "SetType": _RpcInfo(buffer=True),
-        "GetCrossSectionType": _RpcInfo(cache=True),
-        "SetCrossSectionType": _RpcInfo(buffer=True),
-        "GetCrossSectionHeight": _RpcInfo(cache=True),
-        "SetCrossSectionHeight": _RpcInfo(buffer=True),
-        "GetDefinitionName": _RpcInfo(cache=True),
-        "SetDefinitionName": _RpcInfo(buffer=True),
-        "GetStartElevation": _RpcInfo(cache=True),
-        "SetStartElevation": _RpcInfo(buffer=True),
-        "GetEndElevation": _RpcInfo(cache=True),
-        "SetEndElevation": _RpcInfo(buffer=True),
-        "GetTraj": _RpcInfo(cache=True),
-        "SetTraj": _RpcInfo(buffer=True),
-        "GetWidthValue": _RpcInfo(cache=True),
-        "SetWidthValue": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaterial": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaterial": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaterial", service="ansys.api.edb.v1.BondwireService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [_InvalidationInfo(rpc="GetType", service="ansys.api.edb.v1.BondwireService")],
+                )
+            ],
+        ),
+        "GetCrossSectionType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetCrossSectionType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetCrossSectionType", service="ansys.api.edb.v1.BondwireService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetCrossSectionHeight": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetCrossSectionHeight": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetCrossSectionHeight", service="ansys.api.edb.v1.BondwireService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDefinitionName": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDefinitionName": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDefinitionName", service="ansys.api.edb.v1.BondwireService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetStartElevation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetStartElevation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetStartElevation", service="ansys.api.edb.v1.BondwireService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetEndElevation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEndElevation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEndElevation", service="ansys.api.edb.v1.BondwireService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetTraj": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetTraj": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [_InvalidationInfo(rpc="GetTraj", service="ansys.api.edb.v1.BondwireService")],
+                )
+            ],
+        ),
+        "GetWidthValue": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetWidthValue": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetWidthValue", service="ansys.api.edb.v1.BondwireService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.BondwireDefService": {
         "Delete": _RpcInfo(buffer=True),
@@ -2312,9 +2483,30 @@ rpc_information = {
         "SetTerminalInstance": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.TextService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetTextData": _RpcInfo(cache=True),
-        "SetTextData": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetTextData": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetTextData": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [_InvalidationInfo(rpc="GetTextData", service="ansys.api.edb.v1.TextService")],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.TransformService": {
         "Rotate": _RpcInfo(cache=True),

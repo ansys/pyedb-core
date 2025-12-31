@@ -1086,54 +1086,235 @@ rpc_information = {
     },
     "ansys.api.edb.v1.LayerService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetLayerType": _RpcInfo(cache=True),
-        "SetLayerType": _RpcInfo(buffer=True),
-        "IsViaLayer": _RpcInfo(cache=True),
-        "GetName": _RpcInfo(cache=True),
+        "GetLayerType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLayerType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLayerType", service="ansys.api.edb.v1.LayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "IsViaLayer": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetName": _RpcInfo(cache=True, invalidations=[[]]),
         "SetName": _RpcInfo(buffer=True),
         "Clone": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetLayerId": _RpcInfo(cache=True),
-        "GetTopBottomAssociation": _RpcInfo(cache=True),
-        "SetTopBottomAssociation": _RpcInfo(buffer=True),
-        "GetColor": _RpcInfo(cache=True),
-        "SetColor": _RpcInfo(buffer=True),
-        "GetVisibilityMask": _RpcInfo(cache=True),
-        "SetVisibilityMask": _RpcInfo(buffer=True),
-        "GetLocked": _RpcInfo(cache=True),
-        "SetLocked": _RpcInfo(buffer=True),
-        "GetTransparency": _RpcInfo(cache=True),
-        "SetTransparency": _RpcInfo(buffer=True),
-        "GetDrawOverride": _RpcInfo(cache=True),
-        "SetDrawOverride": _RpcInfo(buffer=True),
-        "GetProductProperty": _RpcInfo(cache=True),
-        "SetProductProperty": _RpcInfo(buffer=True),
-        "GetProductPropertyIds": _RpcInfo(cache=True),
-        "IsInZone": _RpcInfo(cache=True),
-        "SetIsInZone": _RpcInfo(buffer=True),
-        "GetZones": _RpcInfo(cache=True),
-        "GetZone": _RpcInfo(cache=True),
+        "GetLayerId": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetTopBottomAssociation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetTopBottomAssociation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetTopBottomAssociation", service="ansys.api.edb.v1.LayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetColor": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetColor": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [_InvalidationInfo(rpc="GetColor", service="ansys.api.edb.v1.LayerService")],
+                )
+            ],
+        ),
+        "GetVisibilityMask": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetVisibilityMask": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetVisibilityMask", service="ansys.api.edb.v1.LayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetLocked": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLocked": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [_InvalidationInfo(rpc="GetLocked", service="ansys.api.edb.v1.LayerService")],
+                )
+            ],
+        ),
+        "GetTransparency": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetTransparency": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetTransparency", service="ansys.api.edb.v1.LayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDrawOverride": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDrawOverride": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDrawOverride", service="ansys.api.edb.v1.LayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetProductProperty": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
+        "SetProductProperty": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetProductProperty", service="ansys.api.edb.v1.LayerService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetProductPropertyIds", service="ansys.api.edb.v1.LayerService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetProductPropertyIds": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
+        "IsInZone": _RpcInfo(cache=True, invalidations=[["layer"]]),
+        "SetIsInZone": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["zone_msg", "layer"],
+                    [
+                        _InvalidationInfo(rpc="IsInZone", service="ansys.api.edb.v1.LayerService"),
+                        _InvalidationInfo(rpc="GetZones", service="ansys.api.edb.v1.LayerService"),
+                        _InvalidationInfo(rpc="GetZone", service="ansys.api.edb.v1.LayerService"),
+                    ],
+                )
+            ],
+        ),
+        "GetZones": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetZone": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.LayerCollectionService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
         "Clone": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetMode": _RpcInfo(cache=True, write_no_cache_invalidation=True),
-        "SetMode": _RpcInfo(buffer=True),
-        "AddLayers": _RpcInfo(buffer=True),
-        "AddLayer": _RpcInfo(buffer=True, returns_future=True),
-        "IsValid": _RpcInfo(cache=True),
-        "FindByName": _RpcInfo(cache=True),
+        "GetMode": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMode": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer_collection"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMode", service="ansys.api.edb.v1.LayerCollectionService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "AddLayers": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer_collection"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.LayerCollectionService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "AddLayer": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layer_collection"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.LayerCollectionService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "IsValid": _RpcInfo(cache=True, invalidations=[[]]),
+        "FindByName": _RpcInfo(cache=True, invalidations=[["layer_collection"]]),
         "GetTopBottomStackupLayers": _RpcInfo(cache=True),
         "GetLayers": _RpcInfo(read_no_cache=True),
         "StreamLayers": _RpcInfo(read_no_cache=True),
-        "GetProductProperty": _RpcInfo(cache=True),
-        "SetProductProperty": _RpcInfo(buffer=True),
-        "GetProductPropertyIds": _RpcInfo(cache=True),
+        "GetProductProperty": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
+        "SetProductProperty": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["edb_obj"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetProductProperty",
+                            service="ansys.api.edb.v1.LayerCollectionService",
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetProductPropertyIds",
+                            service="ansys.api.edb.v1.LayerCollectionService",
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetProductPropertyIds": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
         "MergeDielectrics": _RpcInfo(buffer=True, returns_future=True),
-        "GetZoneIds": _RpcInfo(cache=True),
-        "GetZoneName": _RpcInfo(cache=True),
-        "SetZoneName": _RpcInfo(buffer=True),
+        "GetZoneIds": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetZoneName": _RpcInfo(cache=True, invalidations=[["layer_collection"]]),
+        "SetZoneName": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer_collection"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetZoneName", service="ansys.api.edb.v1.LayerCollectionService"
+                        )
+                    ],
+                )
+            ],
+        ),
         "RemoveZone": _RpcInfo(buffer=True),
-        "AddZoneToLayer": _RpcInfo(buffer=True),
+        "AddZoneToLayer": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(rpc="IsInZone", service="ansys.api.edb.v1.LayerService"),
+                        _InvalidationInfo(rpc="GetZones", service="ansys.api.edb.v1.LayerService"),
+                        _InvalidationInfo(rpc="GetZone", service="ansys.api.edb.v1.LayerService"),
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.LayerMapService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
@@ -1294,15 +1475,7 @@ rpc_information = {
         ),
         "FindByName": _RpcInfo(cache=True, invalidations=[["target"]]),
         "GetName": _RpcInfo(cache=True, invalidations=[[]]),
-        "SetName": _RpcInfo(
-            buffer=True,
-            invalidations=[
-                (
-                    ["target"],
-                    [_InvalidationInfo(rpc="GetName", service="ansys.api.edb.v1.NetService")],
-                )
-            ],
-        ),
+        "SetName": _RpcInfo(buffer=True),
         "GetIsPowerGround": _RpcInfo(cache=True, invalidations=[[]]),
         "SetIsPowerGround": _RpcInfo(
             buffer=True,
@@ -2458,32 +2631,155 @@ rpc_information = {
     },
     "ansys.api.edb.v1.StackupLayerService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetNegative": _RpcInfo(cache=True),
-        "SetNegative": _RpcInfo(buffer=True),
-        "GetThickness": _RpcInfo(cache=True),
+        "GetNegative": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetNegative": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetNegative", service="ansys.api.edb.v1.StackupLayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetThickness": _RpcInfo(cache=True, invalidations=[[]]),
         "SetThickness": _RpcInfo(buffer=True),
-        "GetLowerElevation": _RpcInfo(cache=True),
+        "GetLowerElevation": _RpcInfo(cache=True, invalidations=[[]]),
         "SetLowerElevation": _RpcInfo(buffer=True),
-        "GetUpperElevation": _RpcInfo(cache=True),
-        "GetMaterial": _RpcInfo(cache=True),
-        "SetMaterial": _RpcInfo(buffer=True),
-        "GetFillMaterial": _RpcInfo(cache=True),
-        "SetFillMaterial": _RpcInfo(buffer=True),
-        "SetRoughnessEnabled": _RpcInfo(buffer=True),
-        "IsRoughnessEnabled": _RpcInfo(cache=True),
-        "GetRoughnessModel": _RpcInfo(cache=True),
-        "SetRoughnessModel": _RpcInfo(buffer=True),
-        "IsEtchFactorEnabled": _RpcInfo(cache=True),
-        "SetEtchFactorEnabled": _RpcInfo(buffer=True),
-        "SetEtchFactor": _RpcInfo(buffer=True),
-        "GetEtchFactor": _RpcInfo(cache=True),
-        "SetEtchNetClass": _RpcInfo(buffer=True),
-        "GetEtchNetClass": _RpcInfo(cache=True),
-        "GetUseSolverProperties": _RpcInfo(cache=True),
-        "SetUseSolverProperties": _RpcInfo(buffer=True),
-        "GetHFSSSolverProperties": _RpcInfo(cache=True),
-        "SetHFSSSolverProperties": _RpcInfo(buffer=True),
-        "GetReferencingViaLayerIds": _RpcInfo(cache=True),
+        "GetUpperElevation": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetMaterial": _RpcInfo(cache=True, invalidations=[["layer"]]),
+        "SetMaterial": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaterial", service="ansys.api.edb.v1.StackupLayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetFillMaterial": _RpcInfo(cache=True, invalidations=[["layer"]]),
+        "SetFillMaterial": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetFillMaterial", service="ansys.api.edb.v1.StackupLayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "SetRoughnessEnabled": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="IsRoughnessEnabled", service="ansys.api.edb.v1.StackupLayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "IsRoughnessEnabled": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetRoughnessModel": _RpcInfo(cache=True, invalidations=[["layer"]]),
+        "SetRoughnessModel": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer_rough_region", "layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRoughnessModel", service="ansys.api.edb.v1.StackupLayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "IsEtchFactorEnabled": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEtchFactorEnabled": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="IsEtchFactorEnabled",
+                            service="ansys.api.edb.v1.StackupLayerService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "SetEtchFactor": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEtchFactor", service="ansys.api.edb.v1.StackupLayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetEtchFactor": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEtchNetClass": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEtchNetClass", service="ansys.api.edb.v1.StackupLayerService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetEtchNetClass": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetUseSolverProperties": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseSolverProperties": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseSolverProperties",
+                            service="ansys.api.edb.v1.StackupLayerService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetHFSSSolverProperties": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetHFSSSolverProperties": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["layer"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetHFSSSolverProperties",
+                            service="ansys.api.edb.v1.StackupLayerService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetReferencingViaLayerIds": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.Structure3DService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
@@ -2741,7 +3037,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.ViaLayerService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetRefLayerName": _RpcInfo(cache=True),
+        "GetRefLayerName": _RpcInfo(cache=True, invalidations=[[]]),
         "SetRefLayer": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.VoltageRegulatorService": {

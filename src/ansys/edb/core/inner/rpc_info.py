@@ -122,7 +122,7 @@ rpc_information = {
                     ["target"],
                     [
                         _InvalidationInfo(
-                            rpc="GetBendMiddle", service="ansys.api.edb.v1.BoardBendDefService"
+                            rpc="GetRadius", service="ansys.api.edb.v1.BoardBendDefService"
                         ),
                         _InvalidationInfo(
                             rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
@@ -139,7 +139,7 @@ rpc_information = {
                     ["target"],
                     [
                         _InvalidationInfo(
-                            rpc="GetBendMiddle", service="ansys.api.edb.v1.BoardBendDefService"
+                            rpc="GetAngle", service="ansys.api.edb.v1.BoardBendDefService"
                         ),
                         _InvalidationInfo(
                             rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
@@ -645,10 +645,36 @@ rpc_information = {
         "SetOrientation": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.DifferentialPairService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "FindByName": _RpcInfo(cache=True),
-        "GetDifferentialPair": _RpcInfo(cache=True),
-        "SetDifferentialPair": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.DifferentialPairService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "FindByName": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "GetDifferentialPair": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDifferentialPair": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["dp"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDifferentialPair",
+                            service="ansys.api.edb.v1.DifferentialPairService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.DjordjecvicSarkarModelService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
@@ -680,11 +706,24 @@ rpc_information = {
         "SetEdges": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.ExtendedNetService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "FindByName": _RpcInfo(cache=True),
-        "RemoveNet": _RpcInfo(buffer=True),
-        "AddNet": _RpcInfo(buffer=True),
-        "RemoveAllNets": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.ExtendedNetService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "FindByName": _RpcInfo(cache=True, invalidations=[["layout"]]),
+        "RemoveNet": _RpcInfo(buffer=True, write_no_cache_invalidation=True),
+        "AddNet": _RpcInfo(buffer=True, write_no_cache_invalidation=True),
+        "RemoveAllNets": _RpcInfo(buffer=True, write_no_cache_invalidation=True),
     },
     "ansys.api.edb.v1.GroupService": {
         "Create": _RpcInfo(
@@ -1299,16 +1338,73 @@ rpc_information = {
         ),
     },
     "ansys.api.edb.v1.NetClassService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "FindByName": _RpcInfo(cache=True),
-        "GetName": _RpcInfo(cache=True),
-        "SetName": _RpcInfo(buffer=True),
-        "GetDescription": _RpcInfo(cache=True),
-        "SetDescription": _RpcInfo(buffer=True),
-        "IsPowerGround": _RpcInfo(cache=True),
-        "AddNet": _RpcInfo(buffer=True),
-        "RemoveNet": _RpcInfo(buffer=True),
-        "ContainsNet": _RpcInfo(cache=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.NetClassService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "FindByName": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "GetName": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetName": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [_InvalidationInfo(rpc="GetName", service="ansys.api.edb.v1.NetClassService")],
+                )
+            ],
+        ),
+        "GetDescription": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDescription": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDescription", service="ansys.api.edb.v1.NetClassService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "IsPowerGround": _RpcInfo(cache=True, invalidations=[[]]),
+        "AddNet": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="ContainsNet", service="ansys.api.edb.v1.NetClassService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "RemoveNet": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="ContainsNet", service="ansys.api.edb.v1.NetClassService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "ContainsNet": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.PackageDefService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),

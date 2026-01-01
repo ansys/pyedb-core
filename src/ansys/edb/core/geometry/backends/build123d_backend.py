@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import math
 
+from ansys.edb.core.geometry.arc_data import ArcData
 from ansys.edb.core.geometry.backends.base import PolygonBackend
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.geometry.polygon_data import PolygonData
 
 try:
     import build123d
+    from build123d import GeomType
 
     BUILD123D_AVAILABLE = True
 except ImportError:
@@ -100,6 +102,38 @@ class Build123dBackend(PolygonBackend):
 
         return build123d.Wire(edges)
 
+    @staticmethod
+    def _edge_to_arc_data(edge: "build123d.Edge") -> ArcData:
+        """Convert a build123d Edge to an ArcData object.
+
+        Parameters
+        ----------
+        edge : build123d.Edge
+            The edge to convert.
+
+        Returns
+        -------
+        ArcData
+            The ArcData representation of the edge.
+        """
+        start_point = edge.start_point()
+        end_point = edge.end_point()
+        arc_height = 0.0
+
+        if edge.geom_type == GeomType.CIRCLE:
+            mid_point = 0.5 * (start_point + end_point)
+            edge_center = edge.center()
+            arc_height = (mid_point - edge_center).length
+            v1 = end_point - start_point
+            v2 = edge_center - start_point
+            cross_product = v1.cross(v2)
+            if cross_product.Z < 0:
+                arc_height = -arc_height
+
+        return ArcData(
+            (start_point.X, start_point.Y), (end_point.X, end_point.Y), height=arc_height
+        )
+
     def _polygon_data_to_build123d(self, polygon: PolygonData) -> "build123d.Face":
         """Convert a PolygonData object to a build123d Face.
 
@@ -138,7 +172,8 @@ class Build123dBackend(PolygonBackend):
         polygon._build123d_cache = face
         return face
 
-    def _build123d_to_polygon_data(self, face: "build123d.Face") -> PolygonData:
+    @staticmethod
+    def _build123d_to_polygon_data(face: "build123d.Face") -> PolygonData:
         """Convert a build123d Face to a PolygonData object.
 
         Parameters
@@ -154,27 +189,21 @@ class Build123dBackend(PolygonBackend):
         Notes
         -----
         This method converts build123d faces back to PolygonData format.
-        Curved edges are tessellated into line segments.
         """
-        # Get the outer wire
+        params = {"arcs": [], "holes": []}
+
         outer_wire = face.outer_wire()
+        for edge in outer_wire.edges():
+            params["arcs"].append(Build123dBackend._edge_to_arc_data(edge))
 
-        # Extract points from outer wire
-        outer_points = []
-        for vertex in outer_wire.vertices():
-            outer_points.append(PointData(vertex.X, vertex.Y))
-
-        # Handle inner wires (holes)
-        holes = []
         inner_wires = face.inner_wires()
         for wire in inner_wires:
-            hole_points = []
-            for vertex in wire.vertices():
-                hole_points.append(PointData(vertex.X, vertex.Y))
-            holes.append(PolygonData(points=hole_points, closed=True))
+            hole = []
+            for edge in wire.edges():
+                hole.append(Build123dBackend._edge_to_arc_data(edge))
+            params["holes"].append(PolygonData(arcs=hole))
 
-        # Create and return the PolygonData
-        return PolygonData(points=outer_points, holes=holes if holes else None, closed=True)
+        return PolygonData(**params)
 
     def area(self, polygon: PolygonData) -> float:
         """Compute the area of a polygon using Build123d.
@@ -236,7 +265,7 @@ class Build123dBackend(PolygonBackend):
 
         face = self._polygon_data_to_build123d(polygon)
 
-        face_center = face.center().to_tuple()
+        face_center = tuple(face.center())
         face_radius = math.sqrt(face.area / math.pi)
         for item in face.edges():
             try:
@@ -387,9 +416,21 @@ class Build123dBackend(PolygonBackend):
         bool
             ``True`` when the polygon contains self-intersections, ``False`` otherwise.
         """
-        raise NotImplementedError(
-            "Build123d backend: has_self_intersections method not yet implemented"
-        )
+        import warnings
+
+        if self._stub is None:
+            warnings.warn(
+                "Server stub is not available for has_self_intersections. "
+                "Self-intersection detection requires server backend. "
+                "This may fail if the stub is not properly initialized.",
+                UserWarning,
+                stacklevel=2,
+            )
+
+        from ansys.edb.core.geometry.backends.server_backend import ServerBackend
+
+        server_backend = ServerBackend(self._stub)
+        return server_backend.has_self_intersections(polygon, tol)
 
     def remove_self_intersections(
         self, polygon: PolygonData, tol: float = 1e-9
@@ -424,8 +465,20 @@ class Build123dBackend(PolygonBackend):
         -------
         list[PointData]
             List of normalized points where outer contours are CCW and holes are CW.
+
+        Notes
+        -----
+        This method normalizes the polygon orientation:
+        - Outer contours (shell) are returned in counter-clockwise (CCW) order
+        - Holes are returned in clockwise (CW) order
+
+        Build123d's faces can have their wires oriented, and we extract the
+        outer wire to ensure CCW orientation for the normalized points.
         """
-        raise NotImplementedError("Build123d backend: normalized method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        outer_wire = face.outer_wire()
+
+        return [PointData(vertex.X, vertex.Y) for vertex in outer_wire.vertices()]
 
     def move(self, polygon: PolygonData, vector: tuple[float, float]) -> PolygonData:
         """Move the polygon by a vector using Build123d.
@@ -442,7 +495,10 @@ class Build123dBackend(PolygonBackend):
         PolygonData
             Moved polygon.
         """
-        raise NotImplementedError("Build123d backend: move method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        moved_face = face.translate((*vector, 0))
+
+        return Build123dBackend._build123d_to_polygon_data(moved_face)
 
     def rotate(
         self, polygon: PolygonData, angle: float, center: tuple[float, float]

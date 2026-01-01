@@ -530,7 +530,7 @@ class ShapelyBackend(PolygonBackend):
         return ShapelyBackend._shapely_to_polygon_data(shape, polygon.sense)
 
     def rotate(
-        self, polygon: PolygonData, angle: float, center: tuple[float, float]
+        self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
     ) -> PolygonData:
         """Rotate the polygon at a center by an angle using Shapely.
 
@@ -553,33 +553,12 @@ class ShapelyBackend(PolygonBackend):
         This implementation rotates each point in the polygon around the given center.
         Arc points are preserved, and holes are also rotated around the same center.
         """
-        from ansys.edb.core.utility import conversions
+        from shapely.affinity import rotate
 
-        # Convert center to PointData
-        center_point = conversions.to_point(center)
+        shape = self._to_shapely_polygon(polygon)
+        shape = rotate(shape, angle, origin=center, use_radians=use_radians)
 
-        # Rotate all points in the polygon
-        rotated_points = []
-        for point in polygon.points:
-            if point.is_arc:
-                rotated_point = point  # Preserve arc points as-is
-            else:
-                rotated_point = point.rotate(angle, center_point)
-            rotated_points.append(rotated_point)
-
-        # Rotate holes
-        rotated_holes = []
-        for hole in polygon.holes:
-            rotated_hole = self.rotate(hole, angle, center)
-            rotated_holes.append(rotated_hole)
-
-        # Create and return new PolygonData with rotated points
-        return PolygonData(
-            points=rotated_points,
-            holes=rotated_holes,
-            sense=polygon.sense,
-            closed=polygon.is_closed,
-        )
+        return ShapelyBackend._shapely_to_polygon_data(shape, polygon.sense)
 
     def scale(
         self, polygon: PolygonData, factor: float, center: tuple[float, float]

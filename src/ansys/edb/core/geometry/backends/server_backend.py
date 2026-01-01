@@ -261,7 +261,7 @@ class ServerBackend(PolygonBackend):
 
     @parser.to_polygon_data
     def rotate(
-        self, polygon: PolygonData, angle: float, center: tuple[float, float]
+        self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
     ) -> PolygonData:
         """Rotate the polygon at a center by an angle using the server.
 
@@ -279,6 +279,9 @@ class ServerBackend(PolygonBackend):
         PolygonData
             Rotated polygon.
         """
+        if not use_radians:
+            angle = math.radians(angle)
+
         return self._stub.Transform(
             messages.polygon_data_transform_message("rotate", polygon, angle, center)
         )

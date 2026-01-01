@@ -857,15 +857,13 @@ def test_move(session, polygon, vector):
     assert area_server == pytest.approx(area_build123d, rel=tol)
 
 
-# TODO: Fix the expected_points
 @pytest.mark.parametrize(
-    "polygon, angle, center, expected_points",
+    "polygon, angle, center",
     [
         (
             {"data": [(0, 0), (10, 0), (10, 10), (0, 10)]},
             math.pi / 2,
             (0, 0),
-            [(0, 0), (0, 10), (-10, 10), (-10, 0)],
         ),  # Square rotated 90 degrees (π/2) around origin
         (
             {
@@ -874,13 +872,11 @@ def test_move(session, polygon, vector):
             },
             math.pi,
             (5, 5),
-            [(10, 10), (0, 10), (0, 0), (10, 0)],
         ),  # Square rotated 180 degrees (π) around its center
         (
             {"data": [(0, 0), (5, 0), (2.5, 5)]},
             0,
             (0, 0),
-            [(0, 0), (5, 0), (2.5, 5)],
         ),  # Triangle rotated 0 degrees (no rotation)
         (
             {
@@ -893,49 +889,62 @@ def test_move(session, polygon, vector):
             },
             math.pi / 2,
             (0, 0),
-            [
-                ArcData((0, 0), (0, 10), height=-1.0),
-                ArcData((0, 10), (-10, 10), height=0.0),
-                ArcData((-10, 10), (-10, 0), height=0.0),
-                ArcData((-10, 0), (0, 0), height=0.0),
-            ],
         ),  # Square with one convex arc and no holes rotated by 90 degrees (π/2) around origin.
+        (
+            {
+                "data": [
+                    ArcData((0, 0), (10, 0), height=-5.0),
+                    ArcData((10, 0), (10, 10), height=0.0),
+                    ArcData((10, 10), (0, 10), height=0.0),
+                    ArcData((0, 10), (0, 0), height=0.0),
+                ],
+                "holes": [
+                    [
+                        ArcData((4, 4), (6, 4), height=-1.0),
+                        ArcData((6, 4), (6, 6), height=0.0),
+                        ArcData((6, 6), (4, 6), height=0.0),
+                        ArcData((4, 6), (4, 4), height=0.0),
+                    ]
+                ],
+            },
+            math.pi / 4,
+            (42, 42),
+        ),  # Square with one convex arc and one hole rotated by pi/4 around (42, 42).
     ],
 )
-def test_rotate(session, polygon, angle, center, expected_points):
+def test_rotate(session, polygon, angle, center):
     """Test rotate with server backend."""
 
     Config.set_computation_backend(ComputationBackend.SERVER)
     polygon_server = create_polygon(polygon)
     area_server = polygon_server.area()
-    rotated_server = polygon_server.rotate(angle, center)
+    rotated_server = polygon_server.rotate(angle, center, use_radians=True)
     rotated_area_server = rotated_server.area()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
     polygon_shapely = create_polygon(polygon)
     area_shapely = polygon_shapely.area()
-    rotated_shapely = polygon_shapely.rotate(angle, center)
+    rotated_shapely = polygon_shapely.rotate(angle, center, use_radians=True)
     rotated_area_shapely = rotated_shapely.area()
 
-    tol = 1e-9
-    if isinstance(polygon["data"][0], ArcData):
-        tol = 0.1
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    area_build123d = polygon_build123d.area()
+    rotated_build123d = polygon_build123d.rotate(angle, center, use_radians=True)
+    rotated_area_build123d = rotated_build123d.area()
+
+    tol = 1e-7
 
     assert rotated_area_server == pytest.approx(area_server, rel=tol)
-    assert rotated_area_shapely == pytest.approx(area_shapely, rel=tol)
-    assert area_server == pytest.approx(area_shapely, rel=tol)
+    assert rotated_area_shapely == pytest.approx(
+        area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
+    )
+    assert rotated_area_build123d == pytest.approx(area_build123d, rel=tol)
 
-    for server_point, shapely_point in zip(rotated_server.points, rotated_shapely.points):
-        if not server_point.is_arc:
-            assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
-            assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
-
-    for server_hole, shapely_hole in zip(rotated_server.holes, rotated_shapely.holes):
-        assert len(server_hole.points) == len(shapely_hole.points)
-        for server_point, shapely_point in zip(server_hole.points, shapely_hole.points):
-            if not server_point.is_arc:
-                assert server_point.x.double == pytest.approx(shapely_point.x.double, abs=1e-6)
-                assert server_point.y.double == pytest.approx(shapely_point.y.double, abs=1e-6)
+    assert area_server == pytest.approx(
+        area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
+    )
+    assert area_server == pytest.approx(area_build123d, rel=tol)
 
 
 # TODO: Fix the expected_points

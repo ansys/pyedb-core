@@ -334,7 +334,7 @@ class PolygonData:
         """
         return self._get_backend().move(self, vector)
 
-    def rotate(self, angle: float, center: PointLike) -> PolygonData:
+    def rotate(self, angle: float, center: PointLike, use_radians: bool) -> PolygonData:
         """Rotate the polygon at a center by an angle.
 
         Parameters
@@ -348,7 +348,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self._get_backend().rotate(self, angle, center)
+        return self._get_backend().rotate(self, angle, center, use_radians)
 
     def scale(self, factor: float, center: PointLike) -> PolygonData:
         """Scale the polygon by a linear factor from a center.

@@ -58,13 +58,17 @@ class PolygonBackend(ABC):
         for point in sanitized[1:]:
             last_point = unique_points[-1]
             if not (
-                math.isclose(point.x.double, last_point.x.double, rel_tol=tol)
-                and math.isclose(point.y.double, last_point.y.double, rel_tol=tol)
+                math.isclose(point.x.double, last_point.x.double, rel_tol=tol, abs_tol=tol)
+                and math.isclose(point.y.double, last_point.y.double, rel_tol=tol, abs_tol=tol)
             ):
                 unique_points.append(point)
         if not (
-            math.isclose(unique_points[0].x.double, unique_points[-1].x.double, rel_tol=tol)
-            and math.isclose(unique_points[0].y.double, unique_points[-1].y.double, rel_tol=tol)
+            math.isclose(
+                unique_points[0].x.double, unique_points[-1].x.double, rel_tol=tol, abs_tol=tol
+            )
+            and math.isclose(
+                unique_points[0].y.double, unique_points[-1].y.double, rel_tol=tol, abs_tol=tol
+            )
         ):
             unique_points.append(unique_points[0])
 
@@ -623,7 +627,11 @@ class PolygonBackend(ABC):
 
     @abstractmethod
     def rotate(
-        self, polygon: PolygonData, angle: float, center: tuple[float, float]
+        self,
+        polygon: PolygonData,
+        angle: float,
+        center: tuple[float, float],
+        use_radians: bool = True,
     ) -> PolygonData:
         """Rotate the polygon at a center by an angle.
 

@@ -496,12 +496,12 @@ class Build123dBackend(PolygonBackend):
             Moved polygon.
         """
         face = self._polygon_data_to_build123d(polygon)
-        moved_face = face.translate((*vector, 0))
+        moved_face = face.translate(build123d.Vector(*vector, 0))
 
         return Build123dBackend._build123d_to_polygon_data(moved_face)
 
     def rotate(
-        self, polygon: PolygonData, angle: float, center: tuple[float, float]
+        self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
     ) -> PolygonData:
         """Rotate the polygon at a center by an angle using Build123d.
 
@@ -519,7 +519,19 @@ class Build123dBackend(PolygonBackend):
         PolygonData
             Rotated polygon.
         """
-        raise NotImplementedError("Build123d backend: rotate method not yet implemented")
+        # Build123d expects angle in degrees.
+        if use_radians:
+            angle = math.degrees(angle)
+
+        face = self._polygon_data_to_build123d(polygon)
+        rotated_face = face.rotate(
+            axis=build123d.Axis(
+                origin=build123d.Vector(*center, 0), direction=build123d.Vector(0, 0, 1)
+            ),
+            angle=angle,
+        )
+
+        return Build123dBackend._build123d_to_polygon_data(rotated_face)
 
     def scale(
         self, polygon: PolygonData, factor: float, center: tuple[float, float]

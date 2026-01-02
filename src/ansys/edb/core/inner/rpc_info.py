@@ -313,33 +313,149 @@ rpc_information = {
         "StreamTerminals": _RpcInfo(read_no_cache=True),
     },
     "ansys.api.edb.v1.CellService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["database"],
+                    [_InvalidationInfo(rpc="Find", service="ansys.api.edb.v1.CellService")],
+                )
+            ],
+        ),
         "GetLayout": _RpcInfo(cache=True, invalidations=[[]]),
-        "Find": _RpcInfo(cache=True),
+        "Find": _RpcInfo(cache=True, invalidations=[["database"]]),
         "Delete": _RpcInfo(buffer=True),
-        "GetDatabase": _RpcInfo(cache=True),
-        "IsFootprint": _RpcInfo(cache=True),
-        "IsBlackBox": _RpcInfo(cache=True),
-        "SetBlackBox": _RpcInfo(buffer=True),
-        "GetSuppressPads": _RpcInfo(cache=True),
-        "SetSuppressPads": _RpcInfo(buffer=True),
-        "GetAntiPadsAlwaysOn": _RpcInfo(cache=True),
-        "SetAntiPadsAlwaysOn": _RpcInfo(buffer=True),
-        "GetAntiPadsOption": _RpcInfo(cache=True),
-        "SetAntiPadsOption": _RpcInfo(buffer=True),
-        "IsSymbolicFootprint": _RpcInfo(cache=True),
-        "GetName": _RpcInfo(cache=True),
+        "GetDatabase": _RpcInfo(cache=True, invalidations=[[]]),
+        "IsFootprint": _RpcInfo(cache=True, invalidations=[[]]),
+        "IsBlackBox": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetBlackBox": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [_InvalidationInfo(rpc="IsBlackBox", service="ansys.api.edb.v1.CellService")],
+                )
+            ],
+        ),
+        "GetSuppressPads": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSuppressPads": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSuppressPads", service="ansys.api.edb.v1.CellService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetAntiPadsAlwaysOn": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAntiPadsAlwaysOn": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAntiPadsAlwaysOn", service="ansys.api.edb.v1.CellService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetAntiPadsOption": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAntiPadsOption": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAntiPadsOption", service="ansys.api.edb.v1.CellService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "IsSymbolicFootprint": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetName": _RpcInfo(cache=True, invalidations=[[]]),
         "SetName": _RpcInfo(buffer=True),
-        "GetDesignMode": _RpcInfo(cache=True),
-        "SetDesignMode": _RpcInfo(buffer=True),
-        "GetHfssExtentInfo": _RpcInfo(cache=True),
-        "SetHfssExtentInfo": _RpcInfo(buffer=True),
-        "GetTemperatureSettings": _RpcInfo(cache=True),
-        "SetTemperatureSettings": _RpcInfo(buffer=True),
-        "GetProductPropertyIds": _RpcInfo(cache=True),
-        "GetProductProperty": _RpcInfo(cache=True),
-        "SetProductProperty": _RpcInfo(buffer=True),
-        "DeleteSimulationSetup": _RpcInfo(buffer=True),
+        "GetDesignMode": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDesignMode": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDesignMode", service="ansys.api.edb.v1.CellService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetHfssExtentInfo": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetHfssExtentInfo": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["cell"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetHfssExtentInfo", service="ansys.api.edb.v1.CellService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetTemperatureSettings": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetTemperatureSettings": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["cell"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetTemperatureSettings", service="ansys.api.edb.v1.CellService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetProductPropertyIds": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
+        "GetProductProperty": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
+        "SetProductProperty": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["edb_obj"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetProductProperty", service="ansys.api.edb.v1.CellService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetProductPropertyIds", service="ansys.api.edb.v1.CellService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "DeleteSimulationSetup": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSimulationSetups", service="ansys.api.edb.v1.CellService"
+                        )
+                    ],
+                )
+            ],
+        ),
         "GetSimulationSetups": _RpcInfo(read_no_cache=True),
         "StreamSimulationSetups": _RpcInfo(read_no_cache=True),
         "GenerateAutoHFSSRegions": _RpcInfo(buffer=True),
@@ -1334,8 +1450,20 @@ rpc_information = {
         "ArePortReferenceTerminalsConnected": _RpcInfo(cache=True),
         "GetZonePrimitives": _RpcInfo(read_no_cache=True),
         "StreamZonePrimitives": _RpcInfo(read_no_cache=True),
-        "SetFixedZonePrimitives": _RpcInfo(buffer=True),
-        "GetFixedZonePrimitive": _RpcInfo(cache=True),
+        "SetFixedZonePrimitives": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetFixedZonePrimitive", service="ansys.api.edb.v1.LayoutService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetFixedZonePrimitive": _RpcInfo(cache=True, invalidations=[[]]),
         "GetBoardBendDefs": _RpcInfo(read_no_cache=True),
         "StreamBoardBendDefs": _RpcInfo(read_no_cache=True),
         "GetLayoutInstance": _RpcInfo(cache=True),
@@ -1428,31 +1556,107 @@ rpc_information = {
         "GetThermalModifierExpression": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.McadModelService": {
-        "CreateStride": _RpcInfo(buffer=True, returns_future=True),
-        "CreateHfss": _RpcInfo(buffer=True, returns_future=True),
-        "Create3dComp": _RpcInfo(buffer=True, returns_future=True),
-        "IsMcad": _RpcInfo(cache=True),
-        "IsMcadStride": _RpcInfo(cache=True),
-        "IsMcadHfss": _RpcInfo(cache=True),
-        "IsMcad3dComp": _RpcInfo(cache=True),
-        "GetOrigin": _RpcInfo(cache=True),
-        "SetOrigin": _RpcInfo(buffer=True),
-        "GetRotation": _RpcInfo(cache=True),
-        "SetRotation": _RpcInfo(buffer=True),
-        "GetScale": _RpcInfo(cache=True),
-        "SetScale": _RpcInfo(buffer=True),
-        "GetMaterial": _RpcInfo(cache=True),
-        "SetMaterial": _RpcInfo(buffer=True),
-        "GetVisible": _RpcInfo(cache=True),
-        "SetVisible": _RpcInfo(buffer=True),
-        "GetModeled": _RpcInfo(cache=True),
-        "SetModeled": _RpcInfo(buffer=True),
-        "GetCellInst": _RpcInfo(cache=True),
-        "GetPartCount": _RpcInfo(cache=True),
-        "GetPartName": _RpcInfo(cache=True),
-        "GetPartIndex": _RpcInfo(cache=True),
-        "GetModelName": _RpcInfo(cache=True),
-        "GetDesignName": _RpcInfo(cache=True),
+        "CreateStride": _RpcInfo(
+            buffer=True, returns_future=True, write_no_cache_invalidation=True
+        ),
+        "CreateHfss": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "Create3dComp": _RpcInfo(
+            buffer=True, returns_future=True, write_no_cache_invalidation=True
+        ),
+        "IsMcad": _RpcInfo(cache=True, invalidations=[[]]),
+        "IsMcadStride": _RpcInfo(cache=True, invalidations=[[]]),
+        "IsMcadHfss": _RpcInfo(cache=True, invalidations=[[]]),
+        "IsMcad3dComp": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetOrigin": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetOrigin": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetOrigin", service="ansys.api.edb.v1.McadModelService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetRotation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRotation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["model"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRotation", service="ansys.api.edb.v1.McadModelService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetScale": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetScale": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetScale", service="ansys.api.edb.v1.McadModelService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaterial": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaterial": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["model"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaterial", service="ansys.api.edb.v1.McadModelService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetVisible": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetVisible": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["model"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetVisible", service="ansys.api.edb.v1.McadModelService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetModeled": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetModeled": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["model"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetModeled", service="ansys.api.edb.v1.McadModelService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetCellInst": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetPartCount": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetPartName": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetPartIndex": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetModelName": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetDesignName": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.ModelService": {
         "Clone": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True)
@@ -3041,29 +3245,210 @@ rpc_information = {
         "SetRefLayer": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.VoltageRegulatorService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetName": _RpcInfo(cache=True),
-        "SetName": _RpcInfo(buffer=True),
-        "IsActive": _RpcInfo(cache=True),
-        "SetIsActive": _RpcInfo(buffer=True),
-        "GetVoltage": _RpcInfo(cache=True),
-        "SetVoltage": _RpcInfo(buffer=True),
-        "GetLoadRegulationCurrent": _RpcInfo(cache=True),
-        "SetLoadRegulationCurrent": _RpcInfo(buffer=True),
-        "GetLoadRegulationPercent": _RpcInfo(cache=True),
-        "SetLoadRegulationPercent": _RpcInfo(buffer=True),
-        "GetPosRemoteSensePin": _RpcInfo(cache=True),
-        "SetPosRemoteSensePin": _RpcInfo(buffer=True),
-        "GetNegRemoteSensePin": _RpcInfo(cache=True),
-        "SetNegRemoteSensePin": _RpcInfo(buffer=True),
-        "GetNPowerModules": _RpcInfo(cache=True),
-        "GetNActivePowerModules": _RpcInfo(cache=True),
-        "GetPowerModule": _RpcInfo(cache=True),
-        "GetAllPowerModules": _RpcInfo(cache=True),
-        "AddPowerModule": _RpcInfo(buffer=True),
-        "RemovePowerModule": _RpcInfo(buffer=True),
-        "AddPowerModules": _RpcInfo(buffer=True),
-        "RemovePowerModules": _RpcInfo(buffer=True),
-        "RemoveAllPowerModules": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetName": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetName": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetName", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "IsActive": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIsActive": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="IsActive", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetVoltage": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetVoltage": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetVoltage", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetLoadRegulationCurrent": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLoadRegulationCurrent": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLoadRegulationCurrent",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetLoadRegulationPercent": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLoadRegulationPercent": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLoadRegulationPercent",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPosRemoteSensePin": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPosRemoteSensePin": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPosRemoteSensePin",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetNegRemoteSensePin": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetNegRemoteSensePin": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetNegRemoteSensePin",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetNPowerModules": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetNActivePowerModules": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetPowerModule": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetAllPowerModules": _RpcInfo(cache=True, invalidations=[[]]),
+        "AddPowerModule": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["vrm"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAllPowerModules",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetPowerModule", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "RemovePowerModule": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAllPowerModules",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetPowerModule", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "AddPowerModules": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["vrm"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAllPowerModules",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetPowerModule", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "RemovePowerModules": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["edb_obj"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAllPowerModules",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetPowerModule", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "RemoveAllPowerModules": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    [],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAllPowerModules",
+                            service="ansys.api.edb.v1.VoltageRegulatorService",
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetPowerModule", service="ansys.api.edb.v1.VoltageRegulatorService"
+                        ),
+                    ],
+                )
+            ],
+        ),
     },
 }

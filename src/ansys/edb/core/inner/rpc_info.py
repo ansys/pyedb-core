@@ -811,9 +811,22 @@ rpc_information = {
     },
     "ansys.api.edb.v1.EDBErrorManagerService": {"GetErrors": _RpcInfo(read_no_cache=True)},
     "ansys.api.edb.v1.EdgeService": {
-        "GetEdgeType": _RpcInfo(cache=True),
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetParameters": _RpcInfo(cache=True),
+        "GetEdgeType": _RpcInfo(cache=True, invalidations=[[]]),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetParameters": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.EdgeTerminalService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),
@@ -2658,9 +2671,38 @@ rpc_information = {
         "StreamPinGroups": _RpcInfo(read_no_cache=True),
     },
     "ansys.api.edb.v1.PadstackInstanceTerminalService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetParameters": _RpcInfo(cache=True),
-        "SetParameters": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.TerminalService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetParameters": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetParameters": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["term"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetParameters",
+                            service="ansys.api.edb.v1.PadstackInstanceTerminalService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.PathService": {
         "Create": _RpcInfo(
@@ -2829,10 +2871,42 @@ rpc_information = {
                 ),
             ],
         ),
-        "GetPinGroup": _RpcInfo(cache=True),
-        "SetPinGroup": _RpcInfo(buffer=True),
-        "GetLayer": _RpcInfo(cache=True),
-        "SetLayer": _RpcInfo(buffer=True),
+        "GetPinGroup": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPinGroup": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["term"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPinGroup", service="ansys.api.edb.v1.PinGroupTerminalService"
+                        )
+                    ],
+                ),
+                (
+                    ["pin_group"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPinGroupTerminal", service="ansys.api.edb.v1.PinGroupService"
+                        )
+                    ],
+                ),
+            ],
+        ),
+        "GetLayer": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLayer": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["term"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLayer", service="ansys.api.edb.v1.PinGroupTerminalService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.PinPairModelService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
@@ -2859,9 +2933,37 @@ rpc_information = {
         "Distance": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.PointTerminalService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetParameters": _RpcInfo(cache=True),
-        "SetParameters": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.TerminalService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetParameters": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetParameters": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["term"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetParameters", service="ansys.api.edb.v1.PointTerminalService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.PolygonService": {
         "Create": _RpcInfo(
@@ -5483,22 +5585,88 @@ rpc_information = {
         ),
     },
     "ansys.api.edb.v1.TerminalService": {
-        "FindByName": _RpcInfo(buffer=True, returns_future=True),
-        "GetParams": _RpcInfo(cache=True),
-        "SetParams": _RpcInfo(buffer=True),
-        "GetProductSolvers": _RpcInfo(cache=True),
-        "SetProductSolverOptions": _RpcInfo(buffer=True),
+        "FindByName": _RpcInfo(buffer=True, returns_future=True, invalidations=[["layout"]]),
+        "GetParams": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetParams": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["term"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetParams", service="ansys.api.edb.v1.TerminalService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetProductSolvers": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetProductSolverOptions": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["term"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetProductSolvers", service="ansys.api.edb.v1.TerminalService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.TerminalInstanceService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetOwningCellInstance": _RpcInfo(cache=True),
-        "GetDefinitionTerminal": _RpcInfo(cache=True),
-        "GetDefinitionTerminalName": _RpcInfo(cache=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetOwningCellInstance": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetDefinitionTerminal": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetDefinitionTerminalName": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.TerminalInstanceTerminalService": {
-        "Create": _RpcInfo(buffer=True, returns_future=True),
-        "GetTerminalInstance": _RpcInfo(cache=True),
-        "SetTerminalInstance": _RpcInfo(buffer=True),
+        "Create": _RpcInfo(
+            buffer=True,
+            returns_future=True,
+            invalidations=[
+                (
+                    ["layout"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.TerminalService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetTerminalInstance": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetTerminalInstance": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["term"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetTerminalInstance",
+                            service="ansys.api.edb.v1.TerminalInstanceTerminalService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.TextService": {
         "Create": _RpcInfo(

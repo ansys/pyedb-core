@@ -914,128 +914,790 @@ rpc_information = {
         "GetGroupType": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.HFSSPIGeneralSettingsService": {
-        "GetPISliderPos": _RpcInfo(cache=True),
-        "SetPISliderPos": _RpcInfo(buffer=True),
-        "GetHFSSPIModelType": _RpcInfo(cache=True),
-        "SetHFSSPIModelType": _RpcInfo(buffer=True),
-        "GetMinPlaneAreaToMesh": _RpcInfo(cache=True),
-        "SetMinPlaneAreaToMesh": _RpcInfo(buffer=True),
-        "GetMinVoidAreaToMesh": _RpcInfo(cache=True),
-        "SetMinVoidAreaToMesh": _RpcInfo(buffer=True),
-        "GetSnapLengthThreshold": _RpcInfo(cache=True),
-        "SetSnapLengthThreshold": _RpcInfo(buffer=True),
-        "GetIncludeEnhancedBondWireModeling": _RpcInfo(cache=True),
-        "SetIncludeEnhancedBondWireModeling": _RpcInfo(buffer=True),
-        "GetSurfaceRoughnessModel": _RpcInfo(cache=True),
-        "SetSurfaceRoughnessModel": _RpcInfo(buffer=True),
-        "GetRMSSurfaceRoughness": _RpcInfo(cache=True),
-        "SetRMSSurfaceRoughness": _RpcInfo(buffer=True),
-        "GetPerformERC": _RpcInfo(cache=True),
-        "SetPerformERC": _RpcInfo(buffer=True),
+        "GetPISliderPos": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPISliderPos": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPISliderPos",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetHFSSPIModelType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetHFSSPIModelType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetHFSSPIModelType",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinPlaneAreaToMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinPlaneAreaToMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinPlaneAreaToMesh",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinVoidAreaToMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinVoidAreaToMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinVoidAreaToMesh",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSnapLengthThreshold": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSnapLengthThreshold": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSnapLengthThreshold",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeEnhancedBondWireModeling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeEnhancedBondWireModeling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeEnhancedBondWireModeling",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSurfaceRoughnessModel": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSurfaceRoughnessModel": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSurfaceRoughnessModel",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetRMSSurfaceRoughness": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRMSSurfaceRoughness": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRMSSurfaceRoughness",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPerformERC": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPerformERC": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPerformERC",
+                            service="ansys.api.edb.v1.HFSSPIGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSPINetProcessingSettingsService": {
-        "GetAutoSelectNetsForSimulation": _RpcInfo(cache=True),
-        "SetAutoSelectNetsForSimulation": _RpcInfo(buffer=True),
-        "GetIgnoreDummyNetsForSelectedNets": _RpcInfo(cache=True),
-        "SetIgnoreDummyNetsForSelectedNets": _RpcInfo(buffer=True),
-        "GetIncludeNets": _RpcInfo(cache=True),
-        "SetIncludeNets": _RpcInfo(buffer=True),
+        "GetAutoSelectNetsForSimulation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAutoSelectNetsForSimulation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAutoSelectNetsForSimulation",
+                            service="ansys.api.edb.v1.HFSSPINetProcessingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIgnoreDummyNetsForSelectedNets": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIgnoreDummyNetsForSelectedNets": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIgnoreDummyNetsForSelectedNets",
+                            service="ansys.api.edb.v1.HFSSPINetProcessingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeNets": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeNets": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["edb_obj"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeNets",
+                            service="ansys.api.edb.v1.HFSSPINetProcessingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSPIPowerGroundNetsService": {
-        "GetImprovedLossModel": _RpcInfo(cache=True),
-        "SetImprovedLossModel": _RpcInfo(buffer=True),
-        "GetAutoDetectIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True),
-        "SetAutoDetectIgnoreSmallHolesMinDiameter": _RpcInfo(buffer=True),
-        "GetIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True),
-        "SetIgnoreSmallHolesMinDiameter": _RpcInfo(buffer=True),
+        "GetImprovedLossModel": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetImprovedLossModel": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetImprovedLossModel",
+                            service="ansys.api.edb.v1.HFSSPIPowerGroundNetsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetAutoDetectIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAutoDetectIgnoreSmallHolesMinDiameter": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAutoDetectIgnoreSmallHolesMinDiameter",
+                            service="ansys.api.edb.v1.HFSSPIPowerGroundNetsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIgnoreSmallHolesMinDiameter": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIgnoreSmallHolesMinDiameter",
+                            service="ansys.api.edb.v1.HFSSPIPowerGroundNetsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSPISignalNetsSettingsService": {
-        "GetSignalNetsErrorTolerance": _RpcInfo(cache=True),
-        "SetSignalNetsErrorTolerance": _RpcInfo(buffer=True),
-        "GetSignalNetsConductorModeling": _RpcInfo(cache=True),
-        "SetSignalNetsConductorModeling": _RpcInfo(buffer=True),
-        "GetSignalNetsIncludeImprovedLossHandling": _RpcInfo(cache=True),
-        "SetSignalNetsIncludeImprovedLossHandling": _RpcInfo(buffer=True),
-        "GetSignalNetsIncludeImprovedDielectricFillRefinement": _RpcInfo(cache=True),
-        "SetSignalNetsIncludeImprovedDielectricFillRefinement": _RpcInfo(buffer=True),
+        "GetSignalNetsErrorTolerance": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSignalNetsErrorTolerance": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSignalNetsErrorTolerance",
+                            service="ansys.api.edb.v1.HFSSPISignalNetsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSignalNetsConductorModeling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSignalNetsConductorModeling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSignalNetsConductorModeling",
+                            service="ansys.api.edb.v1.HFSSPISignalNetsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSignalNetsIncludeImprovedLossHandling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSignalNetsIncludeImprovedLossHandling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSignalNetsIncludeImprovedLossHandling",
+                            service="ansys.api.edb.v1.HFSSPISignalNetsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSignalNetsIncludeImprovedDielectricFillRefinement": _RpcInfo(
+            cache=True, invalidations=[[]]
+        ),
+        "SetSignalNetsIncludeImprovedDielectricFillRefinement": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSignalNetsIncludeImprovedDielectricFillRefinement",
+                            service="ansys.api.edb.v1.HFSSPISignalNetsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSGeneralSettingsService": {
-        "GetSingleFrequencyAdaptiveSolution": _RpcInfo(cache=True),
-        "SetSingleFrequencyAdaptiveSolution": _RpcInfo(buffer=True),
-        "GetMultiFrequencyAdaptiveSolution": _RpcInfo(cache=True),
-        "SetMultiFrequencyAdaptiveSolution": _RpcInfo(buffer=True),
-        "GetBroadbandFrequencyAdaptiveSolution": _RpcInfo(cache=True),
-        "SetBroadbandFrequencyAdaptiveSolution": _RpcInfo(buffer=True),
-        "GetSaveFieldsFlag": _RpcInfo(cache=True),
-        "SetSaveFieldsFlag": _RpcInfo(buffer=True),
-        "GetUseMeshRegion": _RpcInfo(cache=True),
-        "SetUseMeshRegion": _RpcInfo(buffer=True),
-        "GetMeshRegionName": _RpcInfo(cache=True),
-        "SetMeshRegionName": _RpcInfo(buffer=True),
-        "GetUseParallelRefinement": _RpcInfo(cache=True),
-        "SetUseParallelRefinement": _RpcInfo(buffer=True),
-        "GetAdaptType": _RpcInfo(cache=True),
-        "SetAdaptType": _RpcInfo(buffer=True),
-        "GetSaveRadFieldsOnlyFlag": _RpcInfo(cache=True),
-        "SetSaveRadFieldsOnlyFlag": _RpcInfo(buffer=True),
+        "GetSingleFrequencyAdaptiveSolution": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSingleFrequencyAdaptiveSolution": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSingleFrequencyAdaptiveSolution",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMultiFrequencyAdaptiveSolution": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMultiFrequencyAdaptiveSolution": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMultiFrequencyAdaptiveSolution",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetBroadbandFrequencyAdaptiveSolution": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetBroadbandFrequencyAdaptiveSolution": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetBroadbandFrequencyAdaptiveSolution",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSaveFieldsFlag": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSaveFieldsFlag": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSaveFieldsFlag",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseMeshRegion": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseMeshRegion": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseMeshRegion",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshRegionName": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshRegionName": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshRegionName",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseParallelRefinement": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseParallelRefinement": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseParallelRefinement",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetAdaptType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAdaptType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAdaptType",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSaveRadFieldsOnlyFlag": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSaveRadFieldsOnlyFlag": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSaveRadFieldsOnlyFlag",
+                            service="ansys.api.edb.v1.HFSSGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSOptionsSettingsService": {
-        "GetMaxRefinementPerPass": _RpcInfo(cache=True),
-        "SetMaxRefinementPerPass": _RpcInfo(buffer=True),
-        "GetMinPasses": _RpcInfo(cache=True),
-        "SetMinPasses": _RpcInfo(buffer=True),
-        "GetMinConvergedPasses": _RpcInfo(cache=True),
-        "SetMinConvergedPasses": _RpcInfo(buffer=True),
-        "GetUseMaxRefinement": _RpcInfo(cache=True),
-        "SetUseMaxRefinement": _RpcInfo(buffer=True),
-        "GetBasisFunctionOrder": _RpcInfo(cache=True),
-        "SetBasisFunctionOrder": _RpcInfo(buffer=True),
-        "GetSolverTypeOrder": _RpcInfo(cache=True),
-        "SetSolverTypeOrder": _RpcInfo(buffer=True),
-        "GetRelativeResidual": _RpcInfo(cache=True),
-        "SetRelativeResidual": _RpcInfo(buffer=True),
-        "GetUseShellElements": _RpcInfo(cache=True),
-        "SetUseShellElements": _RpcInfo(buffer=True),
-        "GetEnhancedLowFrequencyAccuracy": _RpcInfo(cache=True),
-        "SetEnhancedLowFrequencyAccuracy": _RpcInfo(buffer=True),
+        "GetMaxRefinementPerPass": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxRefinementPerPass": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxRefinementPerPass",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinPasses": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinPasses",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinConvergedPasses": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinConvergedPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinConvergedPasses",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseMaxRefinement": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseMaxRefinement": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseMaxRefinement",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetBasisFunctionOrder": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetBasisFunctionOrder": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetBasisFunctionOrder",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSolverTypeOrder": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSolverTypeOrder": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSolverTypeOrder",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetRelativeResidual": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRelativeResidual": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRelativeResidual",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseShellElements": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseShellElements": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseShellElements",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetEnhancedLowFrequencyAccuracy": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEnhancedLowFrequencyAccuracy": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEnhancedLowFrequencyAccuracy",
+                            service="ansys.api.edb.v1.HFSSOptionsSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSAdvancedSettingsService": {
-        "GetICModeAutoResolution": _RpcInfo(cache=True),
-        "SetICModeAutoResolution": _RpcInfo(buffer=True),
-        "GetICModeLength": _RpcInfo(cache=True),
-        "SetICModeLength": _RpcInfo(buffer=True),
+        "GetICModeAutoResolution": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetICModeAutoResolution": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetICModeAutoResolution",
+                            service="ansys.api.edb.v1.HFSSAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetICModeLength": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetICModeLength": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetICModeLength",
+                            service="ansys.api.edb.v1.HFSSAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSAdvancedMeshingSettingsService": {
-        "GetLayerAlignment": _RpcInfo(cache=True),
-        "SetLayerAlignment": _RpcInfo(buffer=True),
+        "GetLayerAlignment": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLayerAlignment": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLayerAlignment",
+                            service="ansys.api.edb.v1.HFSSAdvancedMeshingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HFSSSolverSettingsService": {
-        "GetMaxDeltaZ0": _RpcInfo(cache=True),
-        "SetMaxDeltaZ0": _RpcInfo(buffer=True),
-        "GetSetTrianglesForWaveport": _RpcInfo(cache=True),
-        "SetSetTrianglesForWaveport": _RpcInfo(buffer=True),
-        "GetMinTrianglesForWavePort": _RpcInfo(cache=True),
-        "SetMinTrianglesForWavePort": _RpcInfo(buffer=True),
-        "GetMaxTrianglesForWavePort": _RpcInfo(cache=True),
-        "SetMaxTrianglesForWavePort": _RpcInfo(buffer=True),
-        "GetIntraPlaneCouplingEnabled": _RpcInfo(cache=True),
-        "SetIntraPlaneCouplingEnabled": _RpcInfo(buffer=True),
+        "GetMaxDeltaZ0": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxDeltaZ0": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxDeltaZ0",
+                            service="ansys.api.edb.v1.HFSSSolverSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSetTrianglesForWaveport": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSetTrianglesForWaveport": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSetTrianglesForWaveport",
+                            service="ansys.api.edb.v1.HFSSSolverSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinTrianglesForWavePort": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinTrianglesForWavePort": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinTrianglesForWavePort",
+                            service="ansys.api.edb.v1.HFSSSolverSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaxTrianglesForWavePort": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxTrianglesForWavePort": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxTrianglesForWavePort",
+                            service="ansys.api.edb.v1.HFSSSolverSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIntraPlaneCouplingEnabled": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIntraPlaneCouplingEnabled": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIntraPlaneCouplingEnabled",
+                            service="ansys.api.edb.v1.HFSSSolverSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.DCRSettingsService": {
-        "GetMaxPasses": _RpcInfo(cache=True),
-        "SetMaxPasses": _RpcInfo(buffer=True),
-        "GetMinPasses": _RpcInfo(cache=True),
-        "SetMinPasses": _RpcInfo(buffer=True),
-        "GetMinConvergedPasses": _RpcInfo(cache=True),
-        "SetMinConvergedPasses": _RpcInfo(buffer=True),
-        "GetPercentError": _RpcInfo(cache=True),
-        "SetPercentError": _RpcInfo(buffer=True),
-        "GetPercentRefinementPerPass": _RpcInfo(cache=True),
-        "SetPercentRefinementPerPass": _RpcInfo(buffer=True),
+        "GetMaxPasses": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxPasses", service="ansys.api.edb.v1.DCRSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinPasses": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinPasses", service="ansys.api.edb.v1.DCRSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinConvergedPasses": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinConvergedPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinConvergedPasses",
+                            service="ansys.api.edb.v1.DCRSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPercentError": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPercentError": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPercentError", service="ansys.api.edb.v1.DCRSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPercentRefinementPerPass": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPercentRefinementPerPass": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPercentRefinementPerPass",
+                            service="ansys.api.edb.v1.DCRSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HfssSimulationSetupService": {
-        "GetMeshOperations": _RpcInfo(cache=True),
-        "SetMeshOperations": _RpcInfo(buffer=True),
+        "GetMeshOperations": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshOperations": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshOperations",
+                            service="ansys.api.edb.v1.HfssSimulationSetupService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.HierarchyObjectService": {
         "GetTransform": _RpcInfo(cache=True, invalidations=[[]]),
@@ -2377,120 +3039,760 @@ rpc_information = {
         "Decompose": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.Q3DGeneralSettingsService": {
-        "GetSolutionFrequency": _RpcInfo(cache=True),
-        "SetSolutionFrequency": _RpcInfo(buffer=True),
-        "GetDoDC": _RpcInfo(cache=True),
-        "SetDoDC": _RpcInfo(buffer=True),
-        "GetDoDCResOnly": _RpcInfo(cache=True),
-        "SetDoDCResOnly": _RpcInfo(buffer=True),
-        "GetDoCG": _RpcInfo(cache=True),
-        "SetDoCG": _RpcInfo(buffer=True),
-        "GetDoAC": _RpcInfo(cache=True),
-        "SetDoAC": _RpcInfo(buffer=True),
-        "GetSaveFields": _RpcInfo(cache=True),
-        "SetSaveFields": _RpcInfo(buffer=True),
+        "GetSolutionFrequency": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSolutionFrequency": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSolutionFrequency",
+                            service="ansys.api.edb.v1.Q3DGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDoDC": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDoDC": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDoDC", service="ansys.api.edb.v1.Q3DGeneralSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDoDCResOnly": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDoDCResOnly": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDoDCResOnly",
+                            service="ansys.api.edb.v1.Q3DGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDoCG": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDoCG": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDoCG", service="ansys.api.edb.v1.Q3DGeneralSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDoAC": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDoAC": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDoAC", service="ansys.api.edb.v1.Q3DGeneralSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSaveFields": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSaveFields": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSaveFields",
+                            service="ansys.api.edb.v1.Q3DGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.Q3DSettingsService": {
-        "GetMaxPasses": _RpcInfo(cache=True),
-        "SetMaxPasses": _RpcInfo(buffer=True),
-        "GetMinPasses": _RpcInfo(cache=True),
-        "SetMinPasses": _RpcInfo(buffer=True),
-        "GetMinConvergedPasses": _RpcInfo(cache=True),
-        "SetMinConvergedPasses": _RpcInfo(buffer=True),
-        "GetPercentError": _RpcInfo(cache=True),
-        "SetPercentError": _RpcInfo(buffer=True),
-        "GetMaxRefinePerPass": _RpcInfo(cache=True),
-        "SetMaxRefinePerPass": _RpcInfo(buffer=True),
+        "GetMaxPasses": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "SetMaxPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["q3d_settings"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxPasses", service="ansys.api.edb.v1.Q3DSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinPasses": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "SetMinPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["q3d_settings"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinPasses", service="ansys.api.edb.v1.Q3DSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinConvergedPasses": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "SetMinConvergedPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["q3d_settings"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinConvergedPasses",
+                            service="ansys.api.edb.v1.Q3DSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPercentError": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "SetPercentError": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["q3d_settings"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPercentError", service="ansys.api.edb.v1.Q3DSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaxRefinePerPass": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "SetMaxRefinePerPass": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["q3d_settings"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxRefinePerPass", service="ansys.api.edb.v1.Q3DSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.Q3DDCRLSettingsService": {
-        "GetSolutionOrder": _RpcInfo(cache=True),
-        "SetSolutionOrder": _RpcInfo(buffer=True),
+        "GetSolutionOrder": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSolutionOrder": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSolutionOrder",
+                            service="ansys.api.edb.v1.Q3DDCRLSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.Q3DCGSettingsService": {
-        "GetAutoIncrSolOrder": _RpcInfo(cache=True),
-        "SetAutoIncrSolOrder": _RpcInfo(buffer=True),
-        "GetSolutionOrder": _RpcInfo(cache=True),
-        "SetSolutionOrder": _RpcInfo(buffer=True),
-        "GetSolverType": _RpcInfo(cache=True),
-        "SetSolverType": _RpcInfo(buffer=True),
-        "GetCompressionTol": _RpcInfo(cache=True),
-        "SetCompressionTol": _RpcInfo(buffer=True),
+        "GetAutoIncrSolOrder": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAutoIncrSolOrder": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAutoIncrSolOrder",
+                            service="ansys.api.edb.v1.Q3DCGSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSolutionOrder": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSolutionOrder": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSolutionOrder", service="ansys.api.edb.v1.Q3DCGSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSolverType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSolverType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSolverType", service="ansys.api.edb.v1.Q3DCGSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetCompressionTol": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetCompressionTol": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetCompressionTol", service="ansys.api.edb.v1.Q3DCGSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.Q3DAdvancedSettingsService": {
-        "GetICModeAutoResolution": _RpcInfo(cache=True),
-        "SetICModeAutoResolution": _RpcInfo(buffer=True),
-        "GetICModeLength": _RpcInfo(cache=True),
-        "SetICModeLength": _RpcInfo(buffer=True),
+        "GetICModeAutoResolution": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetICModeAutoResolution": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetICModeAutoResolution",
+                            service="ansys.api.edb.v1.Q3DAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetICModeLength": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetICModeLength": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetICModeLength",
+                            service="ansys.api.edb.v1.Q3DAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.Q3DAdvancedMeshingSettingsService": {
-        "GetLayerAlignment": _RpcInfo(cache=True),
-        "SetLayerAlignment": _RpcInfo(buffer=True),
+        "GetLayerAlignment": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLayerAlignment": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLayerAlignment",
+                            service="ansys.api.edb.v1.Q3DAdvancedMeshingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.RaptorXGeneralSettingsService": {
-        "GetUseGoldEMSolver": _RpcInfo(cache=True),
-        "SetUseGoldEMSolver": _RpcInfo(buffer=True),
-        "GetMaxFrequency": _RpcInfo(cache=True),
-        "SetMaxFrequency": _RpcInfo(buffer=True),
-        "GetGlobalTemperature": _RpcInfo(cache=True),
-        "SetGlobalTemperature": _RpcInfo(buffer=True),
-        "GetSaveNetlist": _RpcInfo(cache=True),
-        "SetSaveNetlist": _RpcInfo(buffer=True),
-        "GetNetlistExportSpectre": _RpcInfo(cache=True),
-        "SetNetlistExportSpectre": _RpcInfo(buffer=True),
-        "GetSaveRFM": _RpcInfo(cache=True),
-        "SetSaveRFM": _RpcInfo(buffer=True),
+        "GetUseGoldEMSolver": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseGoldEMSolver": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseGoldEMSolver",
+                            service="ansys.api.edb.v1.RaptorXGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaxFrequency": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxFrequency": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxFrequency",
+                            service="ansys.api.edb.v1.RaptorXGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetGlobalTemperature": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetGlobalTemperature": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetGlobalTemperature",
+                            service="ansys.api.edb.v1.RaptorXGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSaveNetlist": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSaveNetlist": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSaveNetlist",
+                            service="ansys.api.edb.v1.RaptorXGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetNetlistExportSpectre": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetNetlistExportSpectre": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetNetlistExportSpectre",
+                            service="ansys.api.edb.v1.RaptorXGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSaveRFM": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSaveRFM": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSaveRFM",
+                            service="ansys.api.edb.v1.RaptorXGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.RaptorXAdvancedSettingsService": {
-        "GetUseMeshFrequency": _RpcInfo(cache=True),
-        "SetUseMeshFrequency": _RpcInfo(buffer=True),
-        "GetMeshFrequency": _RpcInfo(cache=True),
-        "SetMeshFrequency": _RpcInfo(buffer=True),
-        "GetUseEdgeMesh": _RpcInfo(cache=True),
-        "SetUseEdgeMesh": _RpcInfo(buffer=True),
-        "GetEdgeMesh": _RpcInfo(cache=True),
-        "SetEdgeMesh": _RpcInfo(buffer=True),
-        "GetUseCellsPerWavelength": _RpcInfo(cache=True),
-        "SetUseCellsPerWavelength": _RpcInfo(buffer=True),
-        "GetCellsPerWavelength": _RpcInfo(cache=True),
-        "SetCellsPerWavelength": _RpcInfo(buffer=True),
-        "GetUsePlaneProjectionFactor": _RpcInfo(cache=True),
-        "SetUsePlaneProjectionFactor": _RpcInfo(buffer=True),
-        "GetPlaneProjectionFactor": _RpcInfo(cache=True),
-        "SetPlaneProjectionFactor": _RpcInfo(buffer=True),
-        "GetUseRelaxedZAxis": _RpcInfo(cache=True),
-        "SetUseRelaxedZAxis": _RpcInfo(buffer=True),
-        "GetUseEliminateSlitPerHoles": _RpcInfo(cache=True),
-        "SetUseEliminateSlitPerHoles": _RpcInfo(buffer=True),
-        "GetEliminateSlitPerHoles": _RpcInfo(cache=True),
-        "SetEliminateSlitPerHoles": _RpcInfo(buffer=True),
-        "GetUseAutoRemovalSliverPoly": _RpcInfo(cache=True),
-        "SetUseAutoRemovalSliverPoly": _RpcInfo(buffer=True),
-        "GetAutoRemovalSliverPoly": _RpcInfo(cache=True),
-        "SetAutoRemovalSliverPoly": _RpcInfo(buffer=True),
-        "GetUseAccelerateViaExtraction": _RpcInfo(cache=True),
-        "SetUseAccelerateViaExtraction": _RpcInfo(buffer=True),
-        "GetUseEnableSubstrateNetworkExtraction": _RpcInfo(cache=True),
-        "SetUseEnableSubstrateNetworkExtraction": _RpcInfo(buffer=True),
-        "GetUseLDE": _RpcInfo(cache=True),
-        "SetUseLDE": _RpcInfo(buffer=True),
-        "GetUseExtractFloatingMetalsDummy": _RpcInfo(cache=True),
-        "SetUseExtractFloatingMetalsDummy": _RpcInfo(buffer=True),
-        "GetUseExtractFloatingMetalsFloating": _RpcInfo(cache=True),
-        "SetUseExtractFloatingMetalsFloating": _RpcInfo(buffer=True),
-        "GetUseEnableEtchTransform": _RpcInfo(cache=True),
-        "SetUseEnableEtchTransform": _RpcInfo(buffer=True),
-        "GetUseEnableHybridExtraction": _RpcInfo(cache=True),
-        "SetUseEnableHybridExtraction": _RpcInfo(buffer=True),
-        "GetUseEnableAdvancedCapEffects": _RpcInfo(cache=True),
-        "SetUseEnableAdvancedCapEffects": _RpcInfo(buffer=True),
-        "GetUseOverrideShrinkFac": _RpcInfo(cache=True),
-        "SetUseOverrideShrinkFac": _RpcInfo(buffer=True),
-        "GetOverrideShrinkFac": _RpcInfo(cache=True),
-        "SetOverrideShrinkFac": _RpcInfo(buffer=True),
-        "GetAdvancedOptions": _RpcInfo(cache=True),
-        "SetAdvancedOptions": _RpcInfo(buffer=True),
-        "GetNetSettingsOptions": _RpcInfo(cache=True),
-        "SetNetSettingsOptions": _RpcInfo(buffer=True),
+        "GetUseMeshFrequency": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseMeshFrequency": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseMeshFrequency",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshFrequency": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshFrequency": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshFrequency",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseEdgeMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseEdgeMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseEdgeMesh",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetEdgeMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEdgeMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEdgeMesh",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseCellsPerWavelength": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseCellsPerWavelength": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseCellsPerWavelength",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetCellsPerWavelength": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetCellsPerWavelength": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetCellsPerWavelength",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUsePlaneProjectionFactor": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUsePlaneProjectionFactor": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUsePlaneProjectionFactor",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPlaneProjectionFactor": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPlaneProjectionFactor": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPlaneProjectionFactor",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseRelaxedZAxis": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseRelaxedZAxis": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseRelaxedZAxis",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseEliminateSlitPerHoles": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseEliminateSlitPerHoles": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseEliminateSlitPerHoles",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetEliminateSlitPerHoles": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEliminateSlitPerHoles": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEliminateSlitPerHoles",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseAutoRemovalSliverPoly": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseAutoRemovalSliverPoly": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseAutoRemovalSliverPoly",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetAutoRemovalSliverPoly": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAutoRemovalSliverPoly": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAutoRemovalSliverPoly",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseAccelerateViaExtraction": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseAccelerateViaExtraction": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseAccelerateViaExtraction",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseEnableSubstrateNetworkExtraction": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseEnableSubstrateNetworkExtraction": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseEnableSubstrateNetworkExtraction",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseLDE": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseLDE": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseLDE",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseExtractFloatingMetalsDummy": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseExtractFloatingMetalsDummy": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseExtractFloatingMetalsDummy",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseExtractFloatingMetalsFloating": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseExtractFloatingMetalsFloating": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseExtractFloatingMetalsFloating",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseEnableEtchTransform": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseEnableEtchTransform": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseEnableEtchTransform",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseEnableHybridExtraction": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseEnableHybridExtraction": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseEnableHybridExtraction",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseEnableAdvancedCapEffects": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseEnableAdvancedCapEffects": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseEnableAdvancedCapEffects",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseOverrideShrinkFac": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseOverrideShrinkFac": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseOverrideShrinkFac",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetOverrideShrinkFac": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetOverrideShrinkFac": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetOverrideShrinkFac",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetAdvancedOptions": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAdvancedOptions": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAdvancedOptions",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetNetSettingsOptions": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetNetSettingsOptions": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetNetSettingsOptions",
+                            service="ansys.api.edb.v1.RaptorXAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.RectangleService": {
         "Create": _RpcInfo(
@@ -2549,204 +3851,1324 @@ rpc_information = {
         "GetVisit": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.SimulationSettingsService": {
-        "GetEnabled": _RpcInfo(cache=True),
-        "SetEnabled": _RpcInfo(buffer=True),
+        "GetEnabled": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEnabled": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEnabled", service="ansys.api.edb.v1.SimulationSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SettingsOptionsService": {
-        "GetDoLamdaRefineFlag": _RpcInfo(cache=True),
-        "SetDoLamdaRefineFlag": _RpcInfo(buffer=True),
-        "GetLamdaTarget": _RpcInfo(cache=True),
-        "SetLamdaTarget": _RpcInfo(buffer=True),
-        "GetMeshSizefactor": _RpcInfo(cache=True),
-        "SetMeshSizefactor": _RpcInfo(buffer=True),
-        "GetUseDefaultLamda": _RpcInfo(cache=True),
-        "SetUseDefaultLamda": _RpcInfo(buffer=True),
+        "GetDoLamdaRefineFlag": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDoLamdaRefineFlag": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDoLamdaRefineFlag",
+                            service="ansys.api.edb.v1.SettingsOptionsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetLamdaTarget": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetLamdaTarget": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLamdaTarget", service="ansys.api.edb.v1.SettingsOptionsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshSizefactor": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshSizefactor": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshSizefactor",
+                            service="ansys.api.edb.v1.SettingsOptionsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseDefaultLamda": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseDefaultLamda": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseDefaultLamda",
+                            service="ansys.api.edb.v1.SettingsOptionsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.AdvancedSettingsService": {
-        "GetUnionPolygons": _RpcInfo(cache=True),
-        "SetUnionPolygons": _RpcInfo(buffer=True),
-        "GetRemoveFloatingGeometry": _RpcInfo(cache=True),
-        "SetRemoveFloatingGeometry": _RpcInfo(buffer=True),
-        "GetHealingOption": _RpcInfo(cache=True),
-        "SetHealingOption": _RpcInfo(buffer=True),
-        "GetSmallVoidArea": _RpcInfo(cache=True),
-        "SetSmallVoidArea": _RpcInfo(buffer=True),
-        "GetUseDefeature": _RpcInfo(cache=True),
-        "SetUseDefeature": _RpcInfo(buffer=True),
-        "GetUseDefeatureAbsoluteLength": _RpcInfo(cache=True),
-        "SetUseDefeatureAbsoluteLength": _RpcInfo(buffer=True),
-        "GetDefeatureAbsoluteLength": _RpcInfo(cache=True),
-        "SetDefeatureAbsoluteLength": _RpcInfo(buffer=True),
-        "GetDefeatureRatio": _RpcInfo(cache=True),
-        "SetDefeatureRatio": _RpcInfo(buffer=True),
-        "GetViaModelType": _RpcInfo(cache=True),
-        "SetViaModelType": _RpcInfo(buffer=True),
-        "GetNumViaSides": _RpcInfo(cache=True),
-        "SetNumViaSides": _RpcInfo(buffer=True),
-        "GetViaDensity": _RpcInfo(cache=True),
-        "SetViaDensity": _RpcInfo(buffer=True),
-        "GetViaMaterial": _RpcInfo(cache=True),
-        "SetViaMaterial": _RpcInfo(buffer=True),
-        "GetMeshForViaPlating": _RpcInfo(cache=True),
-        "SetMeshForViaPlating": _RpcInfo(buffer=True),
-        "GetModelType": _RpcInfo(cache=True),
-        "SetModelType": _RpcInfo(buffer=True),
+        "GetUnionPolygons": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUnionPolygons": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUnionPolygons",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetRemoveFloatingGeometry": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRemoveFloatingGeometry": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRemoveFloatingGeometry",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetHealingOption": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetHealingOption": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetHealingOption",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSmallVoidArea": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSmallVoidArea": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSmallVoidArea",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseDefeature": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseDefeature": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseDefeature",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseDefeatureAbsoluteLength": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseDefeatureAbsoluteLength": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseDefeatureAbsoluteLength",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDefeatureAbsoluteLength": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDefeatureAbsoluteLength": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDefeatureAbsoluteLength",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDefeatureRatio": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDefeatureRatio": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDefeatureRatio",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetViaModelType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetViaModelType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetViaModelType",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetNumViaSides": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetNumViaSides": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetNumViaSides", service="ansys.api.edb.v1.AdvancedSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetViaDensity": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetViaDensity": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetViaDensity", service="ansys.api.edb.v1.AdvancedSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetViaMaterial": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetViaMaterial": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetViaMaterial", service="ansys.api.edb.v1.AdvancedSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshForViaPlating": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshForViaPlating": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshForViaPlating",
+                            service="ansys.api.edb.v1.AdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetModelType": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetModelType": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetModelType", service="ansys.api.edb.v1.AdvancedSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.AdvancedMeshingSettingsService": {
-        "GetArcStepSize": _RpcInfo(cache=True),
-        "SetArcStepSize": _RpcInfo(buffer=True),
-        "GetCircleStartAzimuth": _RpcInfo(cache=True),
-        "SetCircleStartAzimuth": _RpcInfo(buffer=True),
-        "GetMaxNumArcPoints": _RpcInfo(cache=True),
-        "SetMaxNumArcPoints": _RpcInfo(buffer=True),
-        "GetUseArcChordErrorApprox": _RpcInfo(cache=True),
-        "SetUseArcChordErrorApprox": _RpcInfo(buffer=True),
-        "GetArcChordErrorApprox": _RpcInfo(cache=True),
-        "SetArcChordErrorApprox": _RpcInfo(buffer=True),
+        "GetArcStepSize": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetArcStepSize": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetArcStepSize",
+                            service="ansys.api.edb.v1.AdvancedMeshingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetCircleStartAzimuth": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetCircleStartAzimuth": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetCircleStartAzimuth",
+                            service="ansys.api.edb.v1.AdvancedMeshingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaxNumArcPoints": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxNumArcPoints": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxNumArcPoints",
+                            service="ansys.api.edb.v1.AdvancedMeshingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseArcChordErrorApprox": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseArcChordErrorApprox": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseArcChordErrorApprox",
+                            service="ansys.api.edb.v1.AdvancedMeshingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetArcChordErrorApprox": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetArcChordErrorApprox": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetArcChordErrorApprox",
+                            service="ansys.api.edb.v1.AdvancedMeshingSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SolverSettingsService": {
-        "GetThinSignalLayerThreshold": _RpcInfo(cache=True),
-        "SetThinSignalLayerThreshold": _RpcInfo(buffer=True),
-        "GetThinDielectricLayerThreshold": _RpcInfo(cache=True),
-        "SetThinDielectricLayerThreshold": _RpcInfo(buffer=True),
+        "GetThinSignalLayerThreshold": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetThinSignalLayerThreshold": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetThinSignalLayerThreshold",
+                            service="ansys.api.edb.v1.SolverSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetThinDielectricLayerThreshold": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetThinDielectricLayerThreshold": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetThinDielectricLayerThreshold",
+                            service="ansys.api.edb.v1.SolverSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SimulationSetupService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetName": _RpcInfo(cache=True),
-        "SetName": _RpcInfo(buffer=True),
-        "GetPosition": _RpcInfo(cache=True),
-        "SetPosition": _RpcInfo(buffer=True),
-        "GetSweepData": _RpcInfo(cache=True),
-        "SetSweepData": _RpcInfo(buffer=True),
-        "GetType": _RpcInfo(cache=True),
+        "GetName": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetName": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetName", service="ansys.api.edb.v1.SimulationSetupService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPosition": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPosition": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPosition", service="ansys.api.edb.v1.SimulationSetupService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSweepData": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSweepData": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSweepData", service="ansys.api.edb.v1.SimulationSetupService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetType": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService": {
-        "GetIcepakTempFile": _RpcInfo(cache=True),
-        "SetIcepakTempFile": _RpcInfo(buffer=True),
-        "GetSourceTermsToGround": _RpcInfo(cache=True),
-        "SetSourceTermsToGround": _RpcInfo(buffer=True),
-        "GetExportDCThermalData": _RpcInfo(cache=True),
-        "SetExportDCThermalData": _RpcInfo(buffer=True),
-        "GetImportThermalData": _RpcInfo(cache=True),
-        "SetImportThermalData": _RpcInfo(buffer=True),
-        "GetFullDCReportPath": _RpcInfo(cache=True),
-        "SetFullDCReportPath": _RpcInfo(buffer=True),
-        "GetViaReportPath": _RpcInfo(cache=True),
-        "SetViaReportPath": _RpcInfo(buffer=True),
-        "GetPerPinResPath": _RpcInfo(cache=True),
-        "SetPerPinResPath": _RpcInfo(buffer=True),
-        "GetDCReportConfigFile": _RpcInfo(cache=True),
-        "SetDCReportConfigFile": _RpcInfo(buffer=True),
-        "GetDCReportShowActiveDevices": _RpcInfo(cache=True),
-        "SetDCReportShowActiveDevices": _RpcInfo(buffer=True),
-        "GetPerPinUsePinFormat": _RpcInfo(cache=True),
-        "SetPerPinUsePinFormat": _RpcInfo(buffer=True),
-        "GetUseLoopResForPerPin": _RpcInfo(cache=True),
-        "SetUseLoopResForPerPin": _RpcInfo(buffer=True),
+        "GetIcepakTempFile": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIcepakTempFile": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIcepakTempFile",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSourceTermsToGround": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSourceTermsToGround": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSourceTermsToGround",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetExportDCThermalData": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetExportDCThermalData": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetExportDCThermalData",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetImportThermalData": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetImportThermalData": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetImportThermalData",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetFullDCReportPath": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetFullDCReportPath": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetFullDCReportPath",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetViaReportPath": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetViaReportPath": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetViaReportPath",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPerPinResPath": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPerPinResPath": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPerPinResPath",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDCReportConfigFile": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDCReportConfigFile": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDCReportConfigFile",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDCReportShowActiveDevices": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDCReportShowActiveDevices": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDCReportShowActiveDevices",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPerPinUsePinFormat": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPerPinUsePinFormat": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPerPinUsePinFormat",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseLoopResForPerPin": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseLoopResForPerPin": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseLoopResForPerPin",
+                            service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SIWaveGeneralSettingsService": {
-        "GetUseSISettings": _RpcInfo(cache=True),
-        "SetUseSISettings": _RpcInfo(buffer=True),
-        "GetUseCustomSettings": _RpcInfo(cache=True),
-        "SetUseCustomSettings": _RpcInfo(buffer=True),
-        "GetSISliderPos": _RpcInfo(cache=True),
-        "SetSISliderPos": _RpcInfo(buffer=True),
-        "GetPISliderPos": _RpcInfo(cache=True),
-        "SetPISliderPos": _RpcInfo(buffer=True),
+        "GetUseSISettings": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseSISettings": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseSISettings",
+                            service="ansys.api.edb.v1.SIWaveGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetUseCustomSettings": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseCustomSettings": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseCustomSettings",
+                            service="ansys.api.edb.v1.SIWaveGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSISliderPos": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSISliderPos": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSISliderPos",
+                            service="ansys.api.edb.v1.SIWaveGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPISliderPos": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPISliderPos": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPISliderPos",
+                            service="ansys.api.edb.v1.SIWaveGeneralSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SIWaveAdvancedSettingsService": {
-        "GetIncludeCoPlaneCoupling": _RpcInfo(cache=True),
-        "SetIncludeCoPlaneCoupling": _RpcInfo(buffer=True),
-        "GetIncludeInterPlaneCoupling": _RpcInfo(cache=True),
-        "SetIncludeInterPlaneCoupling": _RpcInfo(buffer=True),
-        "GetIncludeSplitPlaneCoupling": _RpcInfo(cache=True),
-        "SetIncludeSplitPlaneCoupling": _RpcInfo(buffer=True),
-        "GetIncludeFringePlaneCoupling": _RpcInfo(cache=True),
-        "SetIncludeFringePlaneCoupling": _RpcInfo(buffer=True),
-        "GetIncludeTracePlaneCoupling": _RpcInfo(cache=True),
-        "SetIncludeTracePlaneCoupling": _RpcInfo(buffer=True),
-        "GetCrossTalkThreshold": _RpcInfo(cache=True),
-        "SetCrossTalkThreshold": _RpcInfo(buffer=True),
-        "GetMaxCoupledLines": _RpcInfo(cache=True),
-        "SetMaxCoupledLines": _RpcInfo(buffer=True),
-        "GetMinVoidArea": _RpcInfo(cache=True),
-        "SetMinVoidArea": _RpcInfo(buffer=True),
-        "GetMinPadAreaToMesh": _RpcInfo(cache=True),
-        "SetMinPadAreaToMesh": _RpcInfo(buffer=True),
-        "GetMinPlaneAreaToMesh": _RpcInfo(cache=True),
-        "SetMinPlaneAreaToMesh": _RpcInfo(buffer=True),
-        "GetSnapLengthThreshold": _RpcInfo(cache=True),
-        "SetSnapLengthThreshold": _RpcInfo(buffer=True),
-        "GetMeshAutomatic": _RpcInfo(cache=True),
-        "SetMeshAutomatic": _RpcInfo(buffer=True),
-        "GetMeshFrequency": _RpcInfo(cache=True),
-        "SetMeshFrequency": _RpcInfo(buffer=True),
-        "GetAcDcMergeMode": _RpcInfo(cache=True),
-        "SetAcDcMergeMode": _RpcInfo(buffer=True),
-        "Get3DReturnCurrentDistribution": _RpcInfo(cache=True),
-        "Set3DReturnCurrentDistribution": _RpcInfo(buffer=True),
-        "GetIncludeVISources": _RpcInfo(cache=True),
-        "SetIncludeVISources": _RpcInfo(buffer=True),
-        "GetIncludeInfGnd": _RpcInfo(cache=True),
-        "SetIncludeInfGnd": _RpcInfo(buffer=True),
-        "GetInfGndLocation": _RpcInfo(cache=True),
-        "SetInfGndLocation": _RpcInfo(buffer=True),
-        "GetPerformERC": _RpcInfo(cache=True),
-        "SetPerformERC": _RpcInfo(buffer=True),
-        "GetIgnoreNonFunctionalPads": _RpcInfo(cache=True),
-        "SetIgnoreNonFunctionalPads": _RpcInfo(buffer=True),
+        "GetIncludeCoPlaneCoupling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeCoPlaneCoupling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeCoPlaneCoupling",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeInterPlaneCoupling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeInterPlaneCoupling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeInterPlaneCoupling",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeSplitPlaneCoupling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeSplitPlaneCoupling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeSplitPlaneCoupling",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeFringePlaneCoupling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeFringePlaneCoupling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeFringePlaneCoupling",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeTracePlaneCoupling": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeTracePlaneCoupling": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeTracePlaneCoupling",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetCrossTalkThreshold": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetCrossTalkThreshold": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetCrossTalkThreshold",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaxCoupledLines": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxCoupledLines": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxCoupledLines",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinVoidArea": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinVoidArea": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinVoidArea",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinPadAreaToMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinPadAreaToMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinPadAreaToMesh",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinPlaneAreaToMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinPlaneAreaToMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinPlaneAreaToMesh",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSnapLengthThreshold": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSnapLengthThreshold": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSnapLengthThreshold",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshAutomatic": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshAutomatic": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshAutomatic",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshFrequency": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshFrequency": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshFrequency",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetAcDcMergeMode": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetAcDcMergeMode": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAcDcMergeMode",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "Get3DReturnCurrentDistribution": _RpcInfo(cache=True, invalidations=[[]]),
+        "Set3DReturnCurrentDistribution": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="Get3DReturnCurrentDistribution",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeVISources": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeVISources": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeVISources",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIncludeInfGnd": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIncludeInfGnd": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIncludeInfGnd",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetInfGndLocation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetInfGndLocation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetInfGndLocation",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPerformERC": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPerformERC": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPerformERC",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetIgnoreNonFunctionalPads": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetIgnoreNonFunctionalPads": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetIgnoreNonFunctionalPads",
+                            service="ansys.api.edb.v1.SIWaveAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SIWaveDCSettingsService": {
-        "GetUseDCCustomSettings": _RpcInfo(cache=True),
-        "SetUseDCCustomSettings": _RpcInfo(buffer=True),
-        "GetComputeInductance": _RpcInfo(cache=True),
-        "SetComputeInductance": _RpcInfo(buffer=True),
-        "GetPlotJV": _RpcInfo(cache=True),
-        "SetPlotJV": _RpcInfo(buffer=True),
-        "GetContactRadius": _RpcInfo(cache=True),
-        "SetContactRadius": _RpcInfo(buffer=True),
-        "GetDCSliderPos": _RpcInfo(cache=True),
-        "SetDCSliderPos": _RpcInfo(buffer=True),
+        "GetUseDCCustomSettings": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseDCCustomSettings": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseDCCustomSettings",
+                            service="ansys.api.edb.v1.SIWaveDCSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetComputeInductance": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetComputeInductance": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetComputeInductance",
+                            service="ansys.api.edb.v1.SIWaveDCSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPlotJV": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPlotJV": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPlotJV", service="ansys.api.edb.v1.SIWaveDCSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetContactRadius": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetContactRadius": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetContactRadius",
+                            service="ansys.api.edb.v1.SIWaveDCSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDCSliderPos": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDCSliderPos": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDCSliderPos", service="ansys.api.edb.v1.SIWaveDCSettingsService"
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SIWaveDCAdvancedSettingsService": {
-        "GetDCMinPlaneAreaToMesh": _RpcInfo(cache=True),
-        "SetDCMinPlaneAreaToMesh": _RpcInfo(buffer=True),
-        "GetDCMinVoidAreaToMesh": _RpcInfo(cache=True),
-        "SetDCMinVoidAreaToMesh": _RpcInfo(buffer=True),
-        "GetMaxInitMeshEdgeLength": _RpcInfo(cache=True),
-        "SetMaxInitMeshEdgeLength": _RpcInfo(buffer=True),
-        "GetPerformAdaptiveRefinement": _RpcInfo(cache=True),
-        "SetPerformAdaptiveRefinement": _RpcInfo(buffer=True),
-        "GetMaxNumPasses": _RpcInfo(cache=True),
-        "SetMaxNumPasses": _RpcInfo(buffer=True),
-        "GetMinNumPasses": _RpcInfo(cache=True),
-        "SetMinNumPasses": _RpcInfo(buffer=True),
-        "GetPercentLocalRefinement": _RpcInfo(cache=True),
-        "SetPercentLocalRefinement": _RpcInfo(buffer=True),
-        "GetEnergyError": _RpcInfo(cache=True),
-        "SetEnergyError": _RpcInfo(buffer=True),
-        "GetMeshBws": _RpcInfo(cache=True),
-        "SetMeshBws": _RpcInfo(buffer=True),
-        "GetRefineBws": _RpcInfo(cache=True),
-        "SetRefineBws": _RpcInfo(buffer=True),
-        "GetMeshVias": _RpcInfo(cache=True),
-        "SetMeshVias": _RpcInfo(buffer=True),
-        "GetRefineVias": _RpcInfo(cache=True),
-        "SetRefineVias": _RpcInfo(buffer=True),
-        "GetNumBwSides": _RpcInfo(cache=True),
-        "SetNumBwSides": _RpcInfo(buffer=True),
-        "GetNumViaSides": _RpcInfo(cache=True),
-        "SetNumViaSides": _RpcInfo(buffer=True),
+        "GetDCMinPlaneAreaToMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDCMinPlaneAreaToMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDCMinPlaneAreaToMesh",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDCMinVoidAreaToMesh": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDCMinVoidAreaToMesh": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDCMinVoidAreaToMesh",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaxInitMeshEdgeLength": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxInitMeshEdgeLength": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxInitMeshEdgeLength",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPerformAdaptiveRefinement": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPerformAdaptiveRefinement": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPerformAdaptiveRefinement",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMaxNumPasses": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMaxNumPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMaxNumPasses",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMinNumPasses": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMinNumPasses": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMinNumPasses",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetPercentLocalRefinement": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetPercentLocalRefinement": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetPercentLocalRefinement",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetEnergyError": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetEnergyError": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetEnergyError",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshBws": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshBws": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshBws",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetRefineBws": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRefineBws": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRefineBws",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetMeshVias": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMeshVias": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMeshVias",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetRefineVias": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRefineVias": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRefineVias",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetNumBwSides": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetNumBwSides": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetNumBwSides",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetNumViaSides": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetNumViaSides": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetNumViaSides",
+                            service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SIWaveSParameterSettingsService": {
-        "GetUseStateSpace": _RpcInfo(cache=True),
-        "SetUseStateSpace": _RpcInfo(buffer=True),
-        "GetInterpolation": _RpcInfo(cache=True),
-        "SetInterpolation": _RpcInfo(buffer=True),
-        "GetExtrapolation": _RpcInfo(cache=True),
-        "SetExtrapolation": _RpcInfo(buffer=True),
-        "GetDCBehavior": _RpcInfo(cache=True),
-        "SetDCBehavior": _RpcInfo(buffer=True),
+        "GetUseStateSpace": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetUseStateSpace": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetUseStateSpace",
+                            service="ansys.api.edb.v1.SIWaveSParameterSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetInterpolation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetInterpolation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetInterpolation",
+                            service="ansys.api.edb.v1.SIWaveSParameterSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetExtrapolation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetExtrapolation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetExtrapolation",
+                            service="ansys.api.edb.v1.SIWaveSParameterSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetDCBehavior": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetDCBehavior": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetDCBehavior",
+                            service="ansys.api.edb.v1.SIWaveSParameterSettingsService",
+                        )
+                    ],
+                )
+            ],
+        ),
     },
     "ansys.api.edb.v1.SolderBallPropertyService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),

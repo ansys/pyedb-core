@@ -319,7 +319,21 @@ rpc_information = {
             invalidations=[
                 (
                     ["database"],
-                    [_InvalidationInfo(rpc="Find", service="ansys.api.edb.v1.CellService")],
+                    [
+                        _InvalidationInfo(rpc="Find", service="ansys.api.edb.v1.CellService"),
+                        _InvalidationInfo(
+                            rpc="GetTopCircuits", service="ansys.api.edb.v1.CellService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TopCircuitCells", service="ansys.api.edb.v1.CellService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetCircuits", service="ansys.api.edb.v1.CellService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetFootprints", service="ansys.api.edb.v1.CellService"
+                        ),
+                    ],
                 )
             ],
         ),
@@ -704,25 +718,67 @@ rpc_information = {
         ),
     },
     "ansys.api.edb.v1.DatabaseService": {
-        "IsReadOnly": _RpcInfo(cache=True),
-        "GetTopCircuits": _RpcInfo(cache=True),
-        "GetId": _RpcInfo(cache=True),
-        "FindById": _RpcInfo(cache=True),
-        "GetVersionByRelease": _RpcInfo(cache=True),
-        "GetDirectory": _RpcInfo(cache=True),
-        "GetProductProperty": _RpcInfo(cache=True),
-        "SetProductProperty": _RpcInfo(buffer=True),
-        "GetProductPropertyIds": _RpcInfo(cache=True),
-        "GetVersion": _RpcInfo(cache=True),
+        "Create": _RpcInfo(write_no_cache_invalidation=True),
+        "Open": _RpcInfo(read_no_cache=True),
+        "Delete": _RpcInfo(write_no_cache_invalidation=True),
+        "IsReadOnly": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetTopCircuits": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetId": _RpcInfo(cache=True, invalidations=[[]]),
+        "FindById": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetVersionByRelease": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetDirectory": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetProductProperty": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
+        "SetProductProperty": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["edb_obj"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetProductProperty", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetProductPropertyIds", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetProductPropertyIds": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
+        "GetVersion": _RpcInfo(cache=True, invalidations=[[]]),
         "Scale": _RpcInfo(buffer=True),
-        "GetSource": _RpcInfo(cache=True),
-        "SetSource": _RpcInfo(buffer=True),
-        "GetSourceVersion": _RpcInfo(cache=True),
-        "SetSourceVersion": _RpcInfo(buffer=True),
+        "GetSource": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSource": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSource", service="ansys.api.edb.v1.DatabaseService"
+                        )
+                    ],
+                )
+            ],
+        ),
+        "GetSourceVersion": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetSourceVersion": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetSourceVersion", service="ansys.api.edb.v1.DatabaseService"
+                        )
+                    ],
+                )
+            ],
+        ),
         "GetDefinitionObjs": _RpcInfo(cache=True),
-        "TopCircuitCells": _RpcInfo(cache=True),
-        "GetCircuits": _RpcInfo(cache=True),
-        "GetFootprints": _RpcInfo(cache=True),
+        "TopCircuitCells": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetCircuits": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetFootprints": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.DatasetDefService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),

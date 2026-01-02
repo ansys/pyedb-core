@@ -2109,8 +2109,38 @@ rpc_information = {
     },
     "ansys.api.edb.v1.LayerMapService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "Clear": _RpcInfo(buffer=True),
-        "SetMapping": _RpcInfo(buffer=True),
+        "Clear": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    [],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMappingForward", service="ansys.api.edb.v1.LayerMapService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetMappingBackward", service="ansys.api.edb.v1.LayerMapService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "SetMapping": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    [],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMappingForward", service="ansys.api.edb.v1.LayerMapService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetMappingBackward", service="ansys.api.edb.v1.LayerMapService"
+                        ),
+                    ],
+                )
+            ],
+        ),
         "GetMappingForward": _RpcInfo(cache=True),
         "GetMappingBackward": _RpcInfo(cache=True),
     },
@@ -5695,22 +5725,129 @@ rpc_information = {
         ),
     },
     "ansys.api.edb.v1.TransformService": {
-        "Rotate": _RpcInfo(cache=True),
+        "Rotate": _RpcInfo(cache=True, invalidations=[[]]),
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetScale": _RpcInfo(cache=True),
-        "SetScale": _RpcInfo(buffer=True),
-        "GetMirror": _RpcInfo(cache=True),
-        "SetMirror": _RpcInfo(buffer=True),
-        "GetRotation": _RpcInfo(cache=True),
-        "SetRotation": _RpcInfo(buffer=True),
-        "GetOffsetX": _RpcInfo(cache=True),
-        "SetOffsetX": _RpcInfo(buffer=True),
-        "GetOffsetY": _RpcInfo(cache=True),
-        "SetOffsetY": _RpcInfo(buffer=True),
-        "TransformPlus": _RpcInfo(buffer=True, returns_future=True),
-        "IsIdentity": _RpcInfo(cache=True),
-        "TransformPoint": _RpcInfo(cache=True),
-        "TransformPolygon": _RpcInfo(cache=True),
+        "GetScale": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetScale": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetScale", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPolygon", service="ansys.api.edb.v1.TransformService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetMirror": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMirror": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetMirror", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPolygon", service="ansys.api.edb.v1.TransformService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetRotation": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetRotation": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetRotation", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPolygon", service="ansys.api.edb.v1.TransformService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetOffsetX": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetOffsetX": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetOffsetX", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPolygon", service="ansys.api.edb.v1.TransformService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetOffsetY": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetOffsetY": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetOffsetY", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.TransformService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPolygon", service="ansys.api.edb.v1.TransformService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "TransformPlus": _RpcInfo(
+            buffer=True, returns_future=True, write_no_cache_invalidation=True
+        ),
+        "IsIdentity": _RpcInfo(cache=True, invalidations=[[]]),
+        "TransformPoint": _RpcInfo(cache=True, invalidations=[[]]),
+        "TransformPolygon": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.Transform3DService": {
         "CreateIdentity": _RpcInfo(
@@ -5741,21 +5878,121 @@ rpc_information = {
         "OperatorPlus": _RpcInfo(
             buffer=True, returns_future=True, write_no_cache_invalidation=True
         ),
-        "TransformPoint": _RpcInfo(cache=True),
-        "GetZYXRotation": _RpcInfo(cache=True),
-        "GetAxis": _RpcInfo(cache=True),
-        "Transpose": _RpcInfo(buffer=True),
-        "Invert": _RpcInfo(buffer=True),
-        "IsIdentity": _RpcInfo(cache=True),
-        "IsEqual": _RpcInfo(cache=True),
-        "GetScaling": _RpcInfo(cache=True),
-        "GetShift": _RpcInfo(cache=True),
-        "SetMatrix": _RpcInfo(buffer=True),
-        "GetMatrix": _RpcInfo(cache=True),
+        "TransformPoint": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetZYXRotation": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetAxis": _RpcInfo(cache=True, invalidations=[[]]),
+        "Transpose": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    [],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAxis", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetZYXRotation", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsEqual", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetScaling", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetShift", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetMatrix", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "Invert": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    [],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAxis", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetZYXRotation", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsEqual", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetScaling", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetShift", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetMatrix", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "IsIdentity": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "IsEqual": _RpcInfo(cache=True, invalidations=[["target"], ["value"]]),
+        "GetScaling": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetShift": _RpcInfo(cache=True, invalidations=[[]]),
+        "SetMatrix": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    [],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetAxis", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetZYXRotation", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsIdentity", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TransformPoint", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsEqual", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetScaling", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetShift", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetMatrix", service="ansys.api.edb.v1.Transform3DService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetMatrix": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.ValueService": {
-        "GetDouble": _RpcInfo(cache=True),
-        "GetComplex": _RpcInfo(cache=True),
+        "CreateValue": _RpcInfo(write_no_cache_invalidation=True),
+        "GetDouble": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetComplex": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.VariableServerService": {
         "AddVariable": _RpcInfo(

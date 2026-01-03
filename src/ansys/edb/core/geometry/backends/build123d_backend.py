@@ -595,8 +595,26 @@ class Build123dBackend(PolygonBackend):
         -------
         tuple[tuple[float, float], float]
             Bounding circle as ((center_x, center_y), radius).
+
+        Notes
+        -----
+        This implementation uses the bounding box to compute the bounding circle.
+        The circle is centered at the center of the bounding box with a radius
+        equal to half the diagonal of the bounding box, ensuring all points are
+        within the circle. This provides a reasonable approximation but may not
+        always produce the absolute minimum bounding circle.
         """
-        raise NotImplementedError("Build123d backend: bounding_circle method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        bbox = face.bounding_box()
+
+        center_x = (bbox.min.X + bbox.max.X) / 2.0
+        center_y = (bbox.min.Y + bbox.max.Y) / 2.0
+
+        width = bbox.max.X - bbox.min.X
+        height = bbox.max.Y - bbox.min.Y
+        radius = math.sqrt(width * width + height * height) / 2.0
+
+        return ((center_x, center_y), radius)
 
     def convex_hull(self, polygons: list[PolygonData]) -> PolygonData:
         """Compute the convex hull of the union of a list of polygons using Build123d.
@@ -611,7 +629,24 @@ class Build123dBackend(PolygonBackend):
         PolygonData
             The convex hull polygon.
         """
-        raise NotImplementedError("Build123d backend: convex_hull method not yet implemented")
+        if not polygons:
+            raise ValueError("Cannot compute convex hull of an empty list of polygons")
+
+        all_edges = []
+        for poly in polygons:
+            face = self._polygon_data_to_build123d(poly)
+
+            for edge in face.outer_wire().edges():
+                all_edges.append(edge)
+
+            for inner_wire in face.inner_wires():
+                for edge in inner_wire.edges():
+                    all_edges.append(edge)
+
+        hull_wire = build123d.Wire.make_convex_hull(all_edges)
+        hull_face = build123d.Face(hull_wire)
+
+        return Build123dBackend._build123d_to_polygon_data(hull_face)
 
     def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon by removing small features using Build123d.

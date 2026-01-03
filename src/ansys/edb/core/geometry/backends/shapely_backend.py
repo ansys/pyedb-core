@@ -6,6 +6,7 @@ import math
 
 from ansys.edb.core.geometry.backends.base import PolygonBackend
 from ansys.edb.core.geometry.point_data import PointData
+from ansys.edb.core.geometry.polygon_data import PolygonData
 
 try:
     from shapely.geometry import Point as ShapelyPoint

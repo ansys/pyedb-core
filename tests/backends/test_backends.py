@@ -1,7 +1,7 @@
 import math
 
 import pytest
-from utils.fixtures import create_polygon
+from utils.fixtures import create_polygon, safe_tol
 
 from ansys.edb.core.config import ComputationBackend, Config
 from ansys.edb.core.geometry.arc_data import ArcData
@@ -115,7 +115,7 @@ def test_backend_factory_build123d_not_available(session):
 
 
 @pytest.mark.parametrize(
-    "test_case, expected_result",
+    "polygon, expected_result",
     [
         ({"data": [(0, 0), (10, 0), (10, 10)]}, 50.0),  # Triangle
         ({"data": [(0, 0), (10, 0), (10, 10), (0, 10)]}, 100.0),  # Square
@@ -161,27 +161,25 @@ def test_backend_factory_build123d_not_available(session):
         ),  # Square with two holes
     ],
 )
-def test_area(session, test_case, expected_result):
+def test_area(session, polygon, expected_result):
     """Test area computation with server backend."""
 
     Config.set_computation_backend(ComputationBackend.SERVER)
-    polygon_server = create_polygon(test_case)
+    polygon_server = create_polygon(polygon)
     result_server = polygon_server.area()
 
     Config.set_computation_backend(ComputationBackend.SHAPELY)
-    polygon_shapely = create_polygon(test_case)
+    polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.area()
 
     Config.set_computation_backend(ComputationBackend.BUILD123D)
-    polygon_build123d = create_polygon(test_case)
+    polygon_build123d = create_polygon(polygon)
     result_build123d = polygon_build123d.area()
 
     tol = 1e-7
 
     assert result_server == pytest.approx(expected_result, rel=tol)
-    assert result_shapely == pytest.approx(
-        expected_result, rel=1e-1 if isinstance(test_case["data"][0], ArcData) else tol
-    )
+    assert result_shapely == pytest.approx(expected_result, rel=safe_tol(polygon, tol))
     assert result_build123d == pytest.approx(expected_result, rel=tol)
 
 
@@ -845,14 +843,10 @@ def test_move(session, polygon, vector):
     tol = 1e-7
 
     assert area_server == pytest.approx(moved_area_server, rel=tol)
-    assert area_shapely == pytest.approx(
-        moved_area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
-    )
+    assert area_shapely == pytest.approx(moved_area_shapely, rel=safe_tol(polygon, tol))
     assert area_build123d == pytest.approx(moved_area_build123d, rel=tol)
 
-    assert area_server == pytest.approx(
-        area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
-    )
+    assert area_server == pytest.approx(area_shapely, rel=safe_tol(polygon, tol))
     assert area_server == pytest.approx(area_build123d, rel=tol)
 
 
@@ -935,14 +929,10 @@ def test_rotate(session, polygon, angle, center):
     tol = 1e-7
 
     assert rotated_area_server == pytest.approx(area_server, rel=tol)
-    assert rotated_area_shapely == pytest.approx(
-        area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
-    )
+    assert rotated_area_shapely == pytest.approx(area_shapely, rel=safe_tol(polygon, tol))
     assert rotated_area_build123d == pytest.approx(area_build123d, rel=tol)
 
-    assert area_server == pytest.approx(
-        area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
-    )
+    assert area_server == pytest.approx(area_shapely, rel=safe_tol(polygon, tol))
     assert area_server == pytest.approx(area_build123d, rel=tol)
 
 
@@ -1013,7 +1003,7 @@ def test_scale(session, polygon, factor, center):
 
     assert scaled_area_server == pytest.approx(factor * factor * area_server, rel=tol)
     assert scaled_area_shapely == pytest.approx(
-        factor * factor * area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
+        factor * factor * area_shapely, rel=safe_tol(polygon, tol)
     )
     assert scaled_area_build123d == pytest.approx(factor * factor * area_build123d, rel=tol)
 
@@ -1071,14 +1061,10 @@ def test_mirror_x(session, polygon, x):
     tol = 1e-7
 
     assert mirrored_area_server == pytest.approx(area_server, rel=tol)
-    assert mirrored_area_shapely == pytest.approx(
-        area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
-    )
+    assert mirrored_area_shapely == pytest.approx(area_shapely, rel=safe_tol(polygon, tol))
     assert mirrored_area_build123d == pytest.approx(area_build123d, rel=tol)
 
-    assert mirrored_area_server == pytest.approx(
-        mirrored_area_shapely, rel=1e-1 if isinstance(polygon["data"][0], ArcData) else tol
-    )
+    assert mirrored_area_server == pytest.approx(mirrored_area_shapely, rel=safe_tol(polygon, tol))
     assert mirrored_area_server == pytest.approx(mirrored_area_build123d, rel=tol)
 
 
@@ -1119,19 +1105,24 @@ def test_bounding_circle(session, polygon, expected_result):
     polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.bounding_circle()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    result_build123d = polygon_build123d.bounding_circle()
+
     tol = 1e-9
 
-    assert result_server[0][0] == pytest.approx(expected_result[0][0], rel=tol)
-    assert result_server[0][1] == pytest.approx(expected_result[0][1], rel=tol)
+    assert result_server[0] == pytest.approx(expected_result[0], rel=tol)
     assert result_server[1] == pytest.approx(expected_result[1], rel=tol)
 
-    assert result_shapely[0][0] == pytest.approx(expected_result[0][0], rel=tol)
-    assert result_shapely[0][1] == pytest.approx(expected_result[0][1], rel=tol)
+    assert result_shapely[0] == pytest.approx(expected_result[0], rel=tol)
     assert result_shapely[1] == pytest.approx(expected_result[1], rel=tol)
+
+    assert result_build123d[0] == pytest.approx(expected_result[0], rel=tol)
+    assert result_build123d[1] == pytest.approx(expected_result[1], rel=tol)
 
 
 @pytest.mark.parametrize(
-    "polygons, expected_area, expected_result",
+    "polygons, expected_area",
     [
         (
             [
@@ -1139,7 +1130,6 @@ def test_bounding_circle(session, polygon, expected_result):
                 {"data": [(5, 0), (7, 0), (7, 2), (5, 2)]},
             ],
             14.0,
-            [(0.0, 0.0), (0.0, 2.0), (7.0, 2.0), (7.0, 0.0)],
         ),  # Two separate squares
         (
             [
@@ -1147,7 +1137,6 @@ def test_bounding_circle(session, polygon, expected_result):
                 {"data": [(2, 2), (5, 2), (5, 5), (2, 5)]},
             ],
             21.0,
-            [(0.0, 0.0), (0.0, 3.0), (2.0, 5.0), (5.0, 5.0), (5.0, 2.0), (3.0, 0.0)],
         ),  # Two overlapping squares
         (
             [
@@ -1168,8 +1157,7 @@ def test_bounding_circle(session, polygon, expected_result):
                     ]
                 },
             ],
-            175.0,
-            [],
+            178.53981633165816,
         ),  # One squares with two convex arcs and one square with two concave arcs
         (
             [
@@ -1180,11 +1168,10 @@ def test_bounding_circle(session, polygon, expected_result):
                 {"data": [(0, 0), (-10, -10), (-10, 0), (0, -10)]},
             ],
             300.0,
-            [(-10.0, -10.0), (-10.0, 0.0), (0.0, 10.0), (10.0, 10.0), (10.0, 0.0), (0.0, -10.0)],
         ),  # Bow-tie with one hole in each lobe
     ],
 )
-def test_convex_hull(session, polygons, expected_area, expected_result):
+def test_convex_hull(session, polygons, expected_area):
     """Test convex_hull with both server and shapely backends."""
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
@@ -1198,21 +1185,18 @@ def test_convex_hull(session, polygons, expected_area, expected_result):
     convex_hull_shapely = PolygonData.convex_hull(polygon_shapely_list)
     area_shapely = convex_hull_shapely.area()
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d_list = [create_polygon(p) for p in polygons]
+    convex_hull_build123d = PolygonData.convex_hull(polygon_build123d_list)
+    area_build123d = convex_hull_build123d.area()
+
     tol = 1e-9
 
-    assert area_server == pytest.approx(expected_area, rel=tol)
-    assert area_shapely == pytest.approx(expected_area, rel=tol)
-
-    # Check that both backends produce the same number of points
-    # assert len(result_server.points) == len(result_shapely.points)
-    # assert len(result_server.points) == len(expected_result)
-
-    # Check that the points match expected values (order may vary, so we check containment)
-    # for i, expected_pt in enumerate(expected_result):
-    #     assert result_server.points[i].x.double == pytest.approx(expected_pt[0], rel=tol)
-    #     assert result_server.points[i].y.double == pytest.approx(expected_pt[1], rel=tol)
-    #     assert result_shapely.points[i].x.double == pytest.approx(expected_pt[0], rel=tol)
-    #     assert result_shapely.points[i].y.double == pytest.approx(expected_pt[1], rel=tol)
+    assert area_server == pytest.approx(
+        expected_area, rel=safe_tol(polygons, tol)
+    )  # The server backend does not conserve exact arc shapes in convex hull calculation.
+    assert area_shapely == pytest.approx(expected_area, rel=safe_tol(polygons, tol))
+    assert area_build123d == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize(

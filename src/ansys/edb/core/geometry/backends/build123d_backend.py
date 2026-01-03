@@ -552,7 +552,13 @@ class Build123dBackend(PolygonBackend):
         PolygonData
             Scaled polygon.
         """
-        raise NotImplementedError("Build123d backend: scale method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        scaled_face = face.scale(factor=factor)
+        scaled_face = scaled_face.translate(
+            build123d.Vector(center[0] * (1 - factor), center[1] * (1 - factor), 0)
+        )
+
+        return Build123dBackend._build123d_to_polygon_data(scaled_face)
 
     def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
         """Mirror the polygon across a vertical line at x using Build123d.
@@ -569,7 +575,13 @@ class Build123dBackend(PolygonBackend):
         PolygonData
             Mirrored polygon.
         """
-        raise NotImplementedError("Build123d backend: mirror_x method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        mirror_plane = build123d.Plane(
+            origin=build123d.Vector(x, 0, 0), z_dir=build123d.Vector(1, 0, 0)
+        )
+        mirrored_face = face.mirror(mirror_plane)
+
+        return Build123dBackend._build123d_to_polygon_data(mirrored_face)
 
     def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
         """Compute the bounding circle of the polygon using Build123d.

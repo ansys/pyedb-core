@@ -6,7 +6,6 @@ import math
 
 from ansys.edb.core.geometry.backends.base import PolygonBackend
 from ansys.edb.core.geometry.point_data import PointData
-from ansys.edb.core.geometry.polygon_data import PolygonData, PolygonSenseType
 
 try:
     from shapely.geometry import Point as ShapelyPoint
@@ -143,17 +142,13 @@ class ShapelyBackend(PolygonBackend):
         return shapely_poly
 
     @staticmethod
-    def _shapely_to_polygon_data(
-        shapely_poly: ShapelyPolygon, sense: PolygonSenseType
-    ) -> PolygonData:
+    def _shapely_to_polygon_data(shapely_poly: ShapelyPolygon) -> PolygonData:
         """Convert a Shapely polygon to PolygonData.
 
         Parameters
         ----------
         shapely_poly : ShapelyPolygon
             The Shapely polygon to convert.
-        sense : PolygonSenseType
-            The sense to apply to the resulting polygon.
 
         Returns
         -------
@@ -169,15 +164,9 @@ class ShapelyBackend(PolygonBackend):
         for interior in shapely_poly.interiors:
             hole_coords = list(interior.coords[:-1])  # Exclude closing point
             hole_points = [PointData(x, y) for x, y in hole_coords]
-            # Holes are typically CCW in Shapely, but we create them with opposite sense
-            hole_sense = (
-                PolygonSenseType.SENSE_CW
-                if sense == PolygonSenseType.SENSE_CCW
-                else PolygonSenseType.SENSE_CCW
-            )
-            holes.append(PolygonData(points=hole_points, sense=hole_sense, closed=True))
+            holes.append(PolygonData(points=hole_points, closed=True))
 
-        return PolygonData(points=points, holes=holes, sense=sense, closed=True)
+        return PolygonData(points=points, holes=holes, closed=True)
 
     def area(self, polygon: PolygonData) -> float:
         """Compute the area of a polygon using Shapely.
@@ -464,10 +453,10 @@ class ShapelyBackend(PolygonBackend):
         if isinstance(fixed_geom, MultiPolygon):
             # Convert each polygon in the MultiPolygon to PolygonData
             for poly in fixed_geom.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(poly, polygon.sense))
+                result_polygons.append(self._shapely_to_polygon_data(poly))
         else:
             # Single polygon result
-            result_polygons.append(self._shapely_to_polygon_data(fixed_geom, polygon.sense))
+            result_polygons.append(self._shapely_to_polygon_data(fixed_geom))
 
         return result_polygons
 
@@ -516,18 +505,13 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Moved polygon.
-
-        Notes
-        -----
-        This implementation moves each point in the polygon by adding the vector to it.
-        Arc points are preserved, and holes are also moved by the same vector.
         """
         from shapely.affinity import translate
 
         shape = self._to_shapely_polygon(polygon)
         shape = translate(shape, xoff=vector[0], yoff=vector[1])
 
-        return ShapelyBackend._shapely_to_polygon_data(shape, polygon.sense)
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def rotate(
         self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
@@ -547,18 +531,13 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Rotated polygon.
-
-        Notes
-        -----
-        This implementation rotates each point in the polygon around the given center.
-        Arc points are preserved, and holes are also rotated around the same center.
         """
         from shapely.affinity import rotate
 
         shape = self._to_shapely_polygon(polygon)
         shape = rotate(shape, angle, origin=center, use_radians=use_radians)
 
-        return ShapelyBackend._shapely_to_polygon_data(shape, polygon.sense)
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def scale(
         self, polygon: PolygonData, factor: float, center: tuple[float, float]
@@ -578,49 +557,13 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Scaled polygon.
-
-        Notes
-        -----
-        This implementation scales each point in the polygon relative to the given center.
-        The scaling is done by: new_point = center + factor * (point - center).
-        Arc points are preserved with their heights scaled, and holes are also scaled from the same center.
         """
-        from ansys.edb.core.utility import conversions
+        from shapely.affinity import scale
 
-        # Convert center to PointData
-        center_point = conversions.to_point(center)
-        cx, cy = center_point.x.double, center_point.y.double
+        shape = self._to_shapely_polygon(polygon)
+        shape = scale(shape, xfact=factor, yfact=factor, origin=center)
 
-        # Scale all points in the polygon
-        scaled_points = []
-        for point in polygon.points:
-            # Create new point, preserving arc information
-            if point.is_arc:
-                # For arc points, scale the height as well
-                new_height = point.arc_height * factor
-                scaled_point = PointData(new_height)
-            else:
-                # Get the point coordinates
-                px, py = point.x.double, point.y.double
-
-                # Calculate scaled position: new_point = center + factor * (point - center)
-                new_x = cx + factor * (px - cx)
-                new_y = cy + factor * (py - cy)
-
-                scaled_point = PointData(new_x, new_y)
-
-            scaled_points.append(scaled_point)
-
-        # Scale holes
-        scaled_holes = []
-        for hole in polygon.holes:
-            scaled_hole = self.scale(hole, factor, center)
-            scaled_holes.append(scaled_hole)
-
-        # Create and return new PolygonData with scaled points
-        return PolygonData(
-            points=scaled_points, holes=scaled_holes, sense=polygon.sense, closed=polygon.is_closed
-        )
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
         """Mirror the polygon across a vertical line at x using Shapely.
@@ -636,53 +579,15 @@ class ShapelyBackend(PolygonBackend):
         -------
         PolygonData
             Mirrored polygon.
-
-        Notes
-        -----
-        This implementation mirrors each point in the polygon across the vertical line x=constant.
-        The mirroring is done by: new_x = 2*x - old_x, new_y = old_y.
-        Arc points are preserved with their heights negated (to maintain arc direction),
-        and holes are also mirrored across the same line.
-        The polygon sense is also flipped (CCW becomes CW and vice versa) because mirroring
-        reverses the orientation.
         """
-        # Mirror all points in the polygon
-        mirrored_points = []
-        for point in polygon.points:
-            # Create new point, preserving arc information
-            if point.is_arc:
-                # For arc points, negate the height to maintain correct arc orientation
-                new_height = -point.arc_height.double
-                mirrored_point = PointData(new_height)
-            else:
-                # Get the point coordinates
-                px, py = point.x.double, point.y.double
+        from shapely.affinity import scale, translate
 
-                # Calculate mirrored position: new_x = 2*x - old_x
-                new_x = 2 * x - px
-                new_y = py
+        shape = self._to_shapely_polygon(polygon)
+        shape = translate(shape, xoff=-x)
+        shape = scale(shape, xfact=-1, yfact=1, origin=(0, 0))
+        shape = translate(shape, xoff=x)
 
-                mirrored_point = PointData(new_x, new_y)
-
-            mirrored_points.append(mirrored_point)
-
-        # Mirror holes
-        mirrored_holes = []
-        for hole in polygon.holes:
-            mirrored_hole = self.mirror_x(hole, x)
-            mirrored_holes.append(mirrored_hole)
-
-        # Flip the polygon sense (mirroring reverses orientation)
-        new_sense = (
-            PolygonSenseType.SENSE_CW
-            if polygon.sense == PolygonSenseType.SENSE_CCW
-            else PolygonSenseType.SENSE_CCW
-        )
-
-        # Create and return new PolygonData with mirrored points
-        return PolygonData(
-            points=mirrored_points, holes=mirrored_holes, sense=new_sense, closed=polygon.is_closed
-        )
+        return ShapelyBackend._shapely_to_polygon_data(shape)
 
     def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
         """Compute the bounding circle of the polygon using Shapely.
@@ -756,8 +661,8 @@ class ShapelyBackend(PolygonBackend):
         # Compute the convex hull of all points
         hull_geom = multi_point.convex_hull
 
-        # Convert back to PolygonData (convex hull is always CCW)
-        return self._shapely_to_polygon_data(hull_geom, PolygonSenseType.SENSE_CCW)
+        # Convert back to PolygonData
+        return self._shapely_to_polygon_data(hull_geom)
 
     def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon by removing small features using Shapely.
@@ -788,7 +693,7 @@ class ShapelyBackend(PolygonBackend):
         simplified_polygon = shapely_polygon.simplify(tolerance=tol, preserve_topology=True)
 
         # Convert back to PolygonData
-        return self._shapely_to_polygon_data(simplified_polygon, polygon.sense)
+        return self._shapely_to_polygon_data(simplified_polygon)
 
     def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
         """Get the intersection type with another polygon using Shapely.
@@ -989,9 +894,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1048,9 +953,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1109,9 +1014,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1170,9 +1075,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygons1[0].sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result, polygons1[0].sense))
+            result_polygons.append(self._shapely_to_polygon_data(result))
 
         return result_polygons
 
@@ -1246,10 +1151,10 @@ class ShapelyBackend(PolygonBackend):
         if isinstance(buffered, MultiPolygon):
             # Multiple polygons resulted from the operation
             for geom in buffered.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom, polygon.sense))
+                result_polygons.append(self._shapely_to_polygon_data(geom))
         else:
             # Single polygon result
-            result_polygons.append(self._shapely_to_polygon_data(buffered, polygon.sense))
+            result_polygons.append(self._shapely_to_polygon_data(buffered))
 
         return result_polygons
 

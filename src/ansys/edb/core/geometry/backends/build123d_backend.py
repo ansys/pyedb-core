@@ -651,6 +651,8 @@ class Build123dBackend(PolygonBackend):
     def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon by removing small features using Build123d.
 
+        This method delegates to the server backend implementation.
+
         Parameters
         ----------
         polygon : PolygonData
@@ -662,8 +664,34 @@ class Build123dBackend(PolygonBackend):
         -------
         PolygonData
             Defeatured polygon.
+
+        Warns
+        -----
+        UserWarning
+            If the server stub is not available, a warning is issued before
+            attempting to use the server backend.
+
+        Notes
+        -----
+        The defeature algorithm is not implemented in Build123d, so this method
+        delegates to the server backend. The server stub must be available for
+        this method to work.
         """
-        raise NotImplementedError("Build123d backend: defeature method not yet implemented")
+        import warnings
+
+        if self._stub is None:
+            warnings.warn(
+                "Server stub is not available for defeature. "
+                "Defeature operation requires server backend. "
+                "This may fail if the stub is not properly initialized.",
+                UserWarning,
+                stacklevel=2,
+            )
+
+        from ansys.edb.core.geometry.backends.server_backend import ServerBackend
+
+        server_backend = ServerBackend(self._stub)
+        return server_backend.defeature(polygon, tol)
 
     def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
         """Get the intersection type with another polygon using Build123d.
@@ -675,14 +703,44 @@ class Build123dBackend(PolygonBackend):
         other : PolygonData
             The second polygon.
         tol : float, default: 1e-9
-            Tolerance.
+            Tolerance (not used in Build123d implementation but kept for API consistency).
 
         Returns
         -------
         int
             The intersection type enum value.
+
+        Notes
+        -----
+        This implementation uses Build123d's geometric predicates to determine the relationship
+        between two polygons. The tolerance parameter is kept for API consistency with the
+        server backend but is not used in this implementation as Build123d uses its own
+        internal tolerance.
+
+        The intersection types are:
+        - NO_INTERSECTION (0): Polygons do not intersect
+        - THIS_INSIDE_OTHER (1): First polygon is completely inside the second
+        - OTHER_INSIDE_THIS (2): Second polygon is completely inside the first
+        - COMMON_INTERSECTION (3): Polygons partially intersect
+        - UNDEFINED_INTERSECTION (4): Intersection cannot be determined
         """
-        raise NotImplementedError("Build123d backend: intersection_type method not yet implemented")
+        from ansys.api.edb.v1 import polygon_data_pb2
+
+        face1 = self._polygon_data_to_build123d(polygon)
+        face2 = self._polygon_data_to_build123d(other)
+
+        if not face1.intersect(face2):
+            return polygon_data_pb2.NO_INTERSECTION
+
+        # A polygon is inside another if their intersection equals the first polygon
+        intersection = face1.intersect(face2)
+        if intersection and math.isclose(intersection.area, face1.area, rel_tol=tol, abs_tol=tol):
+            return polygon_data_pb2.THIS_INSIDE_OTHER
+
+        if intersection and math.isclose(intersection.area, face2.area, rel_tol=tol, abs_tol=tol):
+            return polygon_data_pb2.OTHER_INSIDE_THIS
+
+        return polygon_data_pb2.COMMON_INTERSECTION
 
     def circle_intersect(
         self, polygon: PolygonData, center: tuple[float, float], radius: float

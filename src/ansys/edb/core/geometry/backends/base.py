@@ -6,8 +6,9 @@ from abc import ABC, abstractmethod
 import math
 from typing import TYPE_CHECKING
 
+from ansys.edb.core.geometry.point_data import PointData
+
 if TYPE_CHECKING:
-    from ansys.edb.core.geometry.point_data import PointData
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
 

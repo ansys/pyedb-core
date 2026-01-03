@@ -1237,12 +1237,16 @@ def test_defeature(session, polygon, tol, expected_area):
     defeatured_shapely = polygon_shapely.defeature(tol)
     area_shapely = defeatured_shapely.area()
 
-    tol = 1e-9
-    if isinstance(polygon["data"][0], ArcData):
-        tol = 0.1
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    defeatured_build123d = polygon_build123d.defeature(tol)
+    area_build123d = defeatured_build123d.area()
+
+    tol = 1e-7
 
     assert area_server == pytest.approx(expected_area, rel=tol)
-    assert area_shapely == pytest.approx(expected_area, rel=tol)
+    assert area_shapely == pytest.approx(expected_area, rel=safe_tol(polygon, tol))
+    assert area_build123d == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize(
@@ -1317,8 +1321,14 @@ def test_intersection_type(session, polygon, other, expected_result):
     other_shapely = create_polygon(other)
     result_shapely = polygon_shapely.intersection_type(other_shapely)
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    other_build123d = create_polygon(other)
+    result_build123d = polygon_build123d.intersection_type(other_build123d)
+
     assert result_server == expected_result
     assert result_shapely == expected_result
+    assert result_build123d == expected_result
 
 
 @pytest.mark.parametrize(

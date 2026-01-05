@@ -1381,8 +1381,13 @@ def test_circle_intersect(session, polygon, circle, expected_result):
     polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.circle_intersect(**circle)
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    result_build123d = polygon_build123d.circle_intersect(**circle)
+
     assert result_server == expected_result
     assert result_shapely == expected_result
+    assert result_build123d == expected_result
 
 
 @pytest.mark.parametrize(

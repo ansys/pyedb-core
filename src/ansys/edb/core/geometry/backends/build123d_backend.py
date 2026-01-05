@@ -761,7 +761,13 @@ class Build123dBackend(PolygonBackend):
         bool
             ``True`` if the circle intersects with the polygon, ``False`` otherwise.
         """
-        raise NotImplementedError("Build123d backend: circle_intersect method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        circle_wire = build123d.Circle(radius=radius).wire()
+        circle_face = build123d.Face(circle_wire).translate(build123d.Vector(*center, 0))
+
+        if not face.intersect(circle_face):
+            return False
+        return True
 
     def closest_point(
         self, polygon: PolygonData, point: tuple[float, float]

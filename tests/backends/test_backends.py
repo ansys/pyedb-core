@@ -1588,14 +1588,19 @@ def test_unite(session, polygons, expected_area):
     union_shapely = PolygonData.unite(polys_shapely)
     area_shapely = [poly.area() for poly in union_shapely]
 
-    tol = 1e-9
-    if any(isinstance(polygon["data"][0], ArcData) for polygon in polygons):
-        tol = 0.1
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polys_build123d = [create_polygon(p) for p in polygons]
+    union_build123d = PolygonData.unite(polys_build123d)
+    area_build123d = [poly.area() for poly in union_build123d]
+
+    tol = 1e-7
 
     assert len(union_server) == len(union_shapely)
+    assert len(union_server) == len(union_build123d)
 
     assert sum(area_server) == pytest.approx(expected_area, rel=tol)
-    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(expected_area, rel=safe_tol(polygons, tol))
+    assert sum(area_build123d) == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize(

@@ -898,7 +898,23 @@ class Build123dBackend(PolygonBackend):
         list[PolygonData]
             List of polygons resulting from the union.
         """
-        raise NotImplementedError("Build123d backend: unite method not yet implemented")
+        if not polygons:
+            return []
+
+        if len(polygons) == 1:
+            return polygons
+
+        faces = [self._polygon_data_to_build123d(poly) for poly in polygons]
+
+        result = faces[0]
+        for face in faces[1:]:
+            result = result.fuse(face)
+
+        if isinstance(result, build123d.Face):
+            return [Build123dBackend._build123d_to_polygon_data(result)]
+        else:
+            result_faces = result.faces()
+            return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
 
     def intersect(
         self, polygons1: list[PolygonData], polygons2: list[PolygonData]

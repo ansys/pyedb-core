@@ -1421,12 +1421,21 @@ def test_closest_point(session, polygon, point, expected_result):
     polygon_shapely = create_polygon(polygon)
     result_shapely = polygon_shapely.closest_point(point)
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    result_build123d = polygon_build123d.closest_point(point)
+
     tol = 1e-9
 
-    assert result_server.x.double == pytest.approx(expected_result[0], rel=tol)
-    assert result_server.y.double == pytest.approx(expected_result[1], rel=tol)
-    assert result_shapely.x.double == pytest.approx(expected_result[0], rel=tol)
-    assert result_shapely.y.double == pytest.approx(expected_result[1], rel=tol)
+    assert (result_server.x.double, result_server.y.double) == pytest.approx(
+        expected_result, rel=tol
+    )
+    assert (result_shapely.x.double, result_shapely.y.double) == pytest.approx(
+        expected_result, rel=tol
+    )
+    assert (result_build123d.x.double, result_build123d.y.double) == pytest.approx(
+        expected_result, rel=tol
+    )
 
 
 @pytest.mark.parametrize(

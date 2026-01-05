@@ -785,8 +785,32 @@ class Build123dBackend(PolygonBackend):
         -------
         tuple[float, float]
             Coordinates (x, y) of the closest point on the polygon.
+
+        Notes
+        -----
+        This implementation uses build123d's distance_to() and param_at_point() methods
+        to efficiently find the closest point on the polygon boundary to the given point.
         """
-        raise NotImplementedError("Build123d backend: closest_point method not yet implemented")
+        face = self._polygon_data_to_build123d(polygon)
+        query_point = build123d.Vector(*point, 0)
+
+        all_edges = list(face.outer_wire().edges())
+        for inner_wire in face.inner_wires():
+            all_edges.extend(inner_wire.edges())
+
+        if not all_edges:
+            vertices = face.outer_wire().vertices()
+            if vertices:
+                return PointData(vertices[0].X, vertices[0].Y)
+            else:
+                return point
+
+        closest_edge = min(all_edges, key=lambda e: e.distance_to(query_point))
+        closest_points_on_edge = closest_edge.closest_points(query_point)
+        u = closest_edge.param_at_point(closest_points_on_edge[0])
+        closest_point = closest_edge.position_at(u)
+
+        return PointData(closest_point.X, closest_point.Y)
 
     def closest_points(
         self, polygon1: PolygonData, polygon2: PolygonData

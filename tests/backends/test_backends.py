@@ -2037,17 +2037,23 @@ def test_closest_points(session, polygon1, polygon2, expected_point1, expected_p
         polygon2_shapely
     )
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon1_build123d = create_polygon(polygon1)
+    polygon2_build123d = create_polygon(polygon2)
+    closest_point1_build123d, closest_point2_build123d = polygon1_build123d.closest_points(
+        polygon2_build123d
+    )
+
     tol = 1e-9
 
-    assert math.isclose(closest_point1_server[0], expected_point1[0], rel_tol=tol)
-    assert math.isclose(closest_point1_server[1], expected_point1[1], rel_tol=tol)
-    assert math.isclose(closest_point2_server[0], expected_point2[0], rel_tol=tol)
-    assert math.isclose(closest_point2_server[1], expected_point2[1], rel_tol=tol)
+    assert closest_point1_server == pytest.approx(expected_point1, rel=tol, abs=tol)
+    assert closest_point2_server == pytest.approx(expected_point2, rel=tol, abs=tol)
 
-    assert math.isclose(closest_point1_shapely[0], expected_point1[0], rel_tol=tol)
-    assert math.isclose(closest_point1_shapely[1], expected_point1[1], rel_tol=tol)
-    assert math.isclose(closest_point2_shapely[0], expected_point2[0], rel_tol=tol)
-    assert math.isclose(closest_point2_shapely[1], expected_point2[1], rel_tol=tol)
+    assert closest_point1_shapely == pytest.approx(expected_point1, rel=tol, abs=tol)
+    assert closest_point2_shapely == pytest.approx(expected_point2, rel=tol, abs=tol)
+
+    assert closest_point1_build123d == pytest.approx(expected_point1, rel=tol, abs=tol)
+    assert closest_point2_build123d == pytest.approx(expected_point2, rel=tol, abs=tol)
 
 
 @pytest.mark.parametrize(

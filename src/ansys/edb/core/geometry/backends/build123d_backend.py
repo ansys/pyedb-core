@@ -829,8 +829,61 @@ class Build123dBackend(PolygonBackend):
         tuple[tuple[float, float], tuple[float, float]]
             A tuple of two points ((x1, y1), (x2, y2)) where the first point is on polygon1
             and the second point is on polygon2.
+
+        Notes
+        -----
+        This implementation collects all edges from both polygons (including outer and inner
+        wires) and finds the pair of edges with the minimum distance between them using
+        build123d's distance_to() and closest_points() methods.
         """
-        raise NotImplementedError("Build123d backend: closest_points method not yet implemented")
+        face1 = self._polygon_data_to_build123d(polygon1)
+        face2 = self._polygon_data_to_build123d(polygon2)
+
+        edges1 = list(face1.outer_wire().edges())
+        for inner_wire in face1.inner_wires():
+            edges1.extend(inner_wire.edges())
+
+        edges2 = list(face2.outer_wire().edges())
+        for inner_wire in face2.inner_wires():
+            edges2.extend(inner_wire.edges())
+
+        if not edges1 or not edges2:
+            vertices1 = face1.outer_wire().vertices()
+            vertices2 = face2.outer_wire().vertices()
+            if vertices1 and vertices2:
+                return (
+                    (vertices1[0].X, vertices1[0].Y),
+                    (vertices2[0].X, vertices2[0].Y),
+                )
+            else:
+                return ((0.0, 0.0), (0.0, 0.0))
+
+        min_distance = math.inf
+        closest_point1 = None
+        closest_point2 = None
+
+        for edge1 in edges1:
+            for edge2 in edges2:
+                distance = edge1.distance_to(edge2)
+                if distance < min_distance:
+                    min_distance = distance
+                    points = edge1.closest_points(edge2)
+                    if len(points) >= 2:
+                        closest_point1 = points[0]
+                        closest_point2 = points[1]
+
+        if closest_point1 is None or closest_point2 is None:
+            vertices1 = face1.outer_wire().vertices()
+            vertices2 = face2.outer_wire().vertices()
+            return (
+                (vertices1[0].X, vertices1[0].Y),
+                (vertices2[0].X, vertices2[0].Y),
+            )
+
+        return (
+            (closest_point1.X, closest_point1.Y),
+            (closest_point2.X, closest_point2.Y),
+        )
 
     def unite(self, polygons: list[PolygonData]) -> list[PolygonData]:
         """Compute the union of a list of polygons using Build123d.

@@ -1504,14 +1504,22 @@ def test_intersect(session, polygon1, polygon2, expected_area):
     intersect_shapely = PolygonData.intersect(poly1_shapely, poly2_shapely)
     area_shapely = [poly.area() for poly in intersect_shapely]
 
-    tol = 1e-9
-    if isinstance(polygon1["data"][0], ArcData) or isinstance(polygon2["data"][0], ArcData):
-        tol = 0.1
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    poly1_build123d = create_polygon(polygon1)
+    poly2_build123d = create_polygon(polygon2)
+    intersect_build123d = PolygonData.intersect(poly1_build123d, poly2_build123d)
+    area_build123d = [poly.area() for poly in intersect_build123d]
+
+    tol = 1e-7
 
     assert len(intersect_server) == len(intersect_shapely)
+    assert len(intersect_server) == len(intersect_build123d)
 
     assert sum(area_server) == pytest.approx(expected_area, rel=tol)
-    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(
+        expected_area, rel=safe_tol([polygon1, polygon2], tol)
+    )
+    assert sum(area_build123d) == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize(

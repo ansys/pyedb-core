@@ -980,7 +980,38 @@ class Build123dBackend(PolygonBackend):
         list[PolygonData]
             List of polygons resulting from the subtraction.
         """
-        raise NotImplementedError("Build123d backend: subtract method not yet implemented")
+        if not polygons1:
+            return []
+
+        if not polygons2:
+            return polygons1
+
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
+
+        faces1 = [self._polygon_data_to_build123d(poly) for poly in polygons1]
+        faces2 = [self._polygon_data_to_build123d(poly) for poly in polygons2]
+
+        union1 = faces1[0]
+        for face in faces1[1:]:
+            union1 = union1.fuse(face)
+
+        union2 = faces2[0]
+        for face in faces2[1:]:
+            union2 = union2.fuse(face)
+
+        result = union1.cut(union2)
+
+        if result is None:
+            return []
+
+        if isinstance(result, build123d.Face):
+            return [Build123dBackend._build123d_to_polygon_data(result)]
+        else:
+            result_faces = result.faces()
+            return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
 
     def xor(self, polygons1: list[PolygonData], polygons2: list[PolygonData]) -> list[PolygonData]:
         """Compute an exclusive OR between two sets of polygons using Build123d.

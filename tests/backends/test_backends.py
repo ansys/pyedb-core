@@ -1659,6 +1659,18 @@ def test_unite(session, polygons, expected_area):
             },
             26.0,
         ),
+        (
+            {
+                "data": [
+                    ArcData((0, 0), (10, 0), height=-5.0),
+                    ArcData((10, 0), (10, 10), height=0.0),
+                    ArcData((10, 10), (0, 10), height=5.0),
+                    ArcData((0, 10), (0, 0), height=0.0),
+                ]
+            },
+            {"data": [(0, 0), (0, -5), (10, -5), (10, 0)]},
+            60.7300910949707,
+        ),
     ],
 )
 def test_subtract(session, polygon1, polygon2, expected_area):
@@ -1677,14 +1689,22 @@ def test_subtract(session, polygon1, polygon2, expected_area):
     subtract_shapely = PolygonData.subtract(poly1_shapely, poly2_shapely)
     area_shapely = [poly.area() for poly in subtract_shapely]
 
-    tol = 1e-9
-    if isinstance(polygon1["data"][0], ArcData) or isinstance(polygon2["data"][0], ArcData):
-        tol = 0.1
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    poly1_build123d = create_polygon(polygon1)
+    poly2_build123d = create_polygon(polygon2)
+    subtract_build123d = PolygonData.subtract(poly1_build123d, poly2_build123d)
+    area_build123d = [poly.area() for poly in subtract_build123d]
+
+    tol = 1e-7
 
     assert len(subtract_server) == len(subtract_shapely)
+    assert len(subtract_server) == len(subtract_build123d)
 
     assert sum(area_server) == pytest.approx(expected_area, rel=tol)
-    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(
+        expected_area, rel=safe_tol([polygon1, polygon2], tol)
+    )
+    assert sum(area_build123d) == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize(

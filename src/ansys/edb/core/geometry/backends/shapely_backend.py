@@ -935,18 +935,14 @@ class ShapelyBackend(PolygonBackend):
         if not isinstance(polygons2, list):
             polygons2 = [polygons2]
 
-        # Convert all polygons to Shapely format and union each set
         shapely_polygons1 = [self._to_shapely_polygon(p) for p in polygons1]
         shapely_polygons2 = [self._to_shapely_polygon(p) for p in polygons2]
 
-        # Union each set
         union1 = unary_union(shapely_polygons1)
         union2 = unary_union(shapely_polygons2)
 
-        # Compute the intersection
         result = union1.intersection(union2)
 
-        # Convert the result back to PolygonData
         result_polygons = []
 
         if result.is_empty:

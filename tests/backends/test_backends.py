@@ -1750,6 +1750,18 @@ def test_subtract(session, polygon1, polygon2, expected_area):
             },
             52.0,
         ),
+        (
+            {
+                "data": [
+                    ArcData((0, 0), (10, 0), height=-5.0),
+                    ArcData((10, 0), (10, 10), height=0.0),
+                    ArcData((10, 10), (0, 10), height=5.0),
+                    ArcData((0, 10), (0, 0), height=0.0),
+                ]
+            },
+            {"data": [(0, 0), (0, -5), (10, -5), (10, 0)]},
+            71.4601821899414,
+        ),
     ],
 )
 def test_xor(session, polygon1, polygon2, expected_area):
@@ -1768,15 +1780,24 @@ def test_xor(session, polygon1, polygon2, expected_area):
     xor_shapely = PolygonData.xor(poly1_shapely, poly2_shapely)
     area_shapely = [poly.area() for poly in xor_shapely]
 
-    tol = 1e-9
-    if isinstance(polygon1["data"][0], ArcData) or isinstance(polygon2["data"][0], ArcData):
-        tol = 0.1
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    poly1_build123d = create_polygon(polygon1)
+    poly2_build123d = create_polygon(polygon2)
+    xor_build123d = PolygonData.xor(poly1_build123d, poly2_build123d)
+    area_build123d = [poly.area() for poly in xor_build123d]
 
-    # The xor operation in shapely has a different output compared to the server.
+    tol = 1e-7
+
+    # The xor operation in shapely and build123d have different outputs compared to the server.
     # assert len(xor_server) == len(xor_shapely)
+    # assert len(xor_server) == len(xor_build123d)
+    assert len(xor_shapely) == len(xor_build123d)
 
     assert sum(area_server) == pytest.approx(expected_area, rel=tol)
-    assert sum(area_shapely) == pytest.approx(expected_area, rel=tol)
+    assert sum(area_shapely) == pytest.approx(
+        expected_area, rel=safe_tol([polygon1, polygon2], tol)
+    )
+    assert sum(area_build123d) == pytest.approx(expected_area, rel=tol)
 
 
 @pytest.mark.parametrize(
@@ -1839,8 +1860,14 @@ def test_expand(session, polygon, options, expected_result, tol):
     extend_shapely = polygon_shapely.expand(**options)
     area_shapely = [poly.area() for poly in extend_shapely]
 
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    polygon_build123d = create_polygon(polygon)
+    extend_build123d = polygon_build123d.expand(**options)
+    area_build123d = [poly.area() for poly in extend_build123d]
+
     assert sum(area_server) == pytest.approx(expected_result, rel=tol)
     assert sum(area_shapely) == pytest.approx(expected_result, rel=tol)
+    assert sum(area_build123d) == pytest.approx(expected_result, rel=tol)
 
 
 @pytest.mark.parametrize(

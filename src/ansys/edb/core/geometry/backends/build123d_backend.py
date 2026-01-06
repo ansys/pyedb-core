@@ -1027,8 +1027,59 @@ class Build123dBackend(PolygonBackend):
         -------
         list[PolygonData]
             List of polygons resulting from the XOR operation.
+
+        Notes
+        -----
+        This implementation first unions each list separately, then computes the
+        symmetric difference between the two unions using build123d operations.
+        The XOR operation returns all regions that are in one polygon set or the other,
+        but not in both (i.e., union minus intersection).
         """
-        raise NotImplementedError("Build123d backend: xor method not yet implemented")
+        if not polygons1 and not polygons2:
+            return []
+        if not polygons1:
+            return polygons2
+        if not polygons2:
+            return polygons1
+
+        if not isinstance(polygons1, list):
+            polygons1 = [polygons1]
+        if not isinstance(polygons2, list):
+            polygons2 = [polygons2]
+
+        faces1 = [self._polygon_data_to_build123d(poly) for poly in polygons1]
+        faces2 = [self._polygon_data_to_build123d(poly) for poly in polygons2]
+
+        union1 = faces1[0]
+        for face in faces1[1:]:
+            union1 = union1.fuse(face)
+
+        union2 = faces2[0]
+        for face in faces2[1:]:
+            union2 = union2.fuse(face)
+
+        diff1 = union1.cut(union2)
+        diff2 = union2.cut(union1)
+
+        result_polygons = []
+
+        if diff1 is not None:
+            if isinstance(diff1, build123d.Face):
+                result_polygons.append(Build123dBackend._build123d_to_polygon_data(diff1))
+            else:
+                diff1_faces = diff1.faces()
+                for face in diff1_faces:
+                    result_polygons.append(Build123dBackend._build123d_to_polygon_data(face))
+
+        if diff2 is not None:
+            if isinstance(diff2, build123d.Face):
+                result_polygons.append(Build123dBackend._build123d_to_polygon_data(diff2))
+            else:
+                diff2_faces = diff2.faces()
+                for face in diff2_faces:
+                    result_polygons.append(Build123dBackend._build123d_to_polygon_data(face))
+
+        return result_polygons
 
     def expand(
         self,
@@ -1058,8 +1109,36 @@ class Build123dBackend(PolygonBackend):
         -------
         list[PolygonData]
             List of expanded polygons.
+
+        Notes
+        -----
+        This implementation uses Build123d's offset operation to expand or shrink polygons.
+        When `round_corner` is True, rounded corners are created using arc mode.
+        When False, intersection mode is used with mitred corners, and the `max_corner_ext`
+        parameter controls the miter limit.
         """
-        raise NotImplementedError("Build123d backend: expand method not yet implemented")
+        from build123d import Kind
+        from build123d import offset as build123d_offset
+
+        face = self._polygon_data_to_build123d(polygon)
+        kind = Kind.ARC if round_corner else Kind.INTERSECTION
+
+        offset_face = build123d_offset(face, amount=offset, kind=kind)
+
+        result_polygons = []
+
+        if offset_face is None:
+            return []
+
+        if hasattr(offset_face, "faces"):
+            faces = offset_face.faces()
+            if faces:
+                for f in faces:
+                    result_polygons.append(Build123dBackend._build123d_to_polygon_data(f))
+        else:
+            result_polygons.append(Build123dBackend._build123d_to_polygon_data(offset_face))
+
+        return result_polygons
 
     def alpha_shape(self, points: list[tuple[float, float]], alpha: float) -> list[PolygonData]:
         """Compute the outline of a 2D point cloud using alpha shapes.

@@ -55,14 +55,32 @@ class PolygonBackend(ABC):
             next_point = sanitized[1] if sanitized[0].is_arc else sanitized[0]
             sanitized.append(PointData(next_point.x.double, next_point.y.double))
 
+        assert not sanitized[0].is_arc
+        assert not sanitized[-1].is_arc
+        for i, point in enumerate(sanitized[1:]):
+            assert not (point.is_arc and sanitized[i - 1].is_arc)
+
         unique_points = [sanitized[0]]
-        for point in sanitized[1:]:
-            last_point = unique_points[-1]
+        index = 1
+        while index < len(sanitized):
+            point = sanitized[index]
+
+            if point.is_arc:
+                unique_points.append(point)
+                index += 1
+                point = sanitized[index]
+                last_point = unique_points[-2]
+            else:
+                last_point = unique_points[-1]
+
             if not (
                 math.isclose(point.x.double, last_point.x.double, rel_tol=tol, abs_tol=tol)
                 and math.isclose(point.y.double, last_point.y.double, rel_tol=tol, abs_tol=tol)
             ):
                 unique_points.append(point)
+
+            index += 1
+
         if not (
             math.isclose(
                 unique_points[0].x.double, unique_points[-1].x.double, rel_tol=tol, abs_tol=tol

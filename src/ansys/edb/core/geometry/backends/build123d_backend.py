@@ -54,7 +54,7 @@ class Build123dBackend(PolygonBackend):
         self._stub = stub
 
     @staticmethod
-    def _points_to_wire(points: list[PointData]) -> "build123d.Wire":
+    def _points_to_wire(points: list[PointData], tol: float) -> "build123d.Wire":
         """Convert a list of PointData objects to a build123d Wire.
 
         Parameters
@@ -78,26 +78,37 @@ class Build123dBackend(PolygonBackend):
         edges = []
         i = 1
         while i < len(points):
-            p1 = build123d.Vector(points[i - 1].x.double, points[i - 1].y.double)
+            p1 = build123d.Vector(points[i - 1].x.double, points[i - 1].y.double, 0.0)
             if points[i].is_arc:
                 arc_height = points[i].arc_height.double
-                p3 = build123d.Vector(points[i + 1].x.double, points[i + 1].y.double)
+                p3 = build123d.Vector(points[i + 1].x.double, points[i + 1].y.double, 0.0)
+
+                chord_length = math.sqrt((p3.X - p1.X) ** 2 + (p3.Y - p1.Y) ** 2)
+                if chord_length < tol:
+                    i += 2
+                    continue
 
                 mid = (p1 + p3) / 2
                 direction = p3 - p1
-                perp = build123d.Vector(direction.Y, -direction.X)
-                perp_length = math.sqrt(perp.X**2 + perp.Y**2)
-                if perp_length > 0:
+                perp = build123d.Vector(direction.Y, -direction.X, 0.0)
+                perp_length = math.sqrt(perp.X * perp.X + perp.Y * perp.Y)
+                if perp_length > 0.0:
                     perp_normalized = perp / perp_length
                 else:
-                    perp_normalized = build123d.Vector(0, 0)
+                    perp_normalized = build123d.Vector(0, 0, 0)
                 p2 = mid - perp_normalized * arc_height
 
-                edges.append(build123d.ThreePointArc(p1, p2, p3))
+                try:
+                    edges.append(build123d.ThreePointArc(p1, p2, p3))
+                except Exception:
+                    if chord_length >= tol:
+                        edges.append(build123d.Line(p1, p3))
                 i += 2
             else:
-                p2 = build123d.Vector(points[i].x.double, points[i].y.double)
-                edges.append(build123d.Line(p1, p2))
+                p2 = build123d.Vector(points[i].x.double, points[i].y.double, 0.0)
+                segment_length = math.sqrt((p2.X - p1.X) ** 2 + (p2.Y - p1.Y) ** 2)
+                if segment_length >= tol:
+                    edges.append(build123d.Line(p1, p2))
                 i += 1
 
         return build123d.Wire(edges)
@@ -156,13 +167,13 @@ class Build123dBackend(PolygonBackend):
             return polygon._build123d_cache
 
         points = PolygonBackend._sanitize_points(polygon.points)
-        main_wire = Build123dBackend._points_to_wire(points)
+        main_wire = Build123dBackend._points_to_wire(points, tol=1e-6)
 
         hole_wires = []
         if polygon.holes:
             for hole_polygon in polygon.holes:
                 hole_points = PolygonBackend._sanitize_points(hole_polygon.points)
-                hole_wires.append(Build123dBackend._points_to_wire(hole_points))
+                hole_wires.append(Build123dBackend._points_to_wire(hole_points, tol=1e-6))
 
         if hole_wires:
             face = build123d.Face(main_wire, hole_wires)

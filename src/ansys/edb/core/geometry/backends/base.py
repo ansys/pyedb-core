@@ -110,7 +110,11 @@ class PolygonBackend(ABC):
         """
         # If height is zero or very small, it's a straight line
         if abs(height) < 1e-12:
-            return [(end.x.double, end.y.double)]
+            return (
+                [(end.x.double, end.y.double)],
+                (0.5 * (start.x.double + end.x.double), 0.5 * (start.y.double + end.y.double)),
+                0.0,
+            )
 
         # Extract coordinates
         x1, y1 = start.x.double, start.y.double
@@ -123,7 +127,7 @@ class PolygonBackend(ABC):
 
         # If chord length is zero, start and end are the same point
         if chord_length < 1e-12:
-            return [(x2, y2)]
+            return [(x2, y2)], (x2, y2), 0.0
 
         # Calculate arc properties
         # For a circular arc, radius r and sagitta h are related by:

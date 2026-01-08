@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-edb-core"
-version = "0.2.4"
+version = "0.2.5"
 description = "A python wrapper for Ansys Edb service"
 readme = "README.rst"
 requires-python = ">=3.8"
@@ -26,7 +26,7 @@ classifiers = [
 
 dependencies = [
     "ansys-api-edb==0.2.1",
-    "protobuf>=3.19.3,<5",
+    "protobuf>=3.19.3",
     "grpcio>=1.44.0",
     "Django>=4.2.16",
     "ansys-tools-common>=0.3.1"

@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from ansys.edb.core.geometry.backends.base import PolygonBackend
+
 if TYPE_CHECKING:
     from ansys.edb.core.typing import PointLike
     from ansys.edb.core.utility.value import Value
@@ -178,6 +180,48 @@ class PolygonData:
             segments.append(ArcData(p1, p2, height=h))
             i += incr
         return segments
+
+    @property
+    def edges(self) -> list[ArcData]:
+        """
+        :obj:`list` of :class:`.ArcData`: List of edges as arcs.
+
+        Each edge is represented as an :class:`.ArcData` object.
+        For closed polygons, the last edge connects the last point to the first point.
+        For open polygons, there is no edge connecting the last point to the first point.
+
+        This property is read-only.
+
+        Examples
+        --------
+        >>> polygon = PolygonData(points=[(0, 0), (1, 0), (1, 1), (0, 1)])
+        >>> for edge in polygon.edges:
+        ...     start, end = edge
+        ...     print(f"Edge from {start} to {end}")
+        """
+        n = len(self.points)
+        if n < 2:
+            return None
+
+        sanitized_points = PolygonBackend._sanitize_points(self.points)
+
+        edges = []
+        i = 1
+        while i < len(sanitized_points):
+            if sanitized_points[i].is_arc:
+                edges.append(
+                    ArcData(
+                        sanitized_points[i - 1],
+                        sanitized_points[i + 1],
+                        height=sanitized_points[i].arc_height,
+                    )
+                )
+                i += 2
+            else:
+                edges.append(ArcData(sanitized_points[i - 1], sanitized_points[i], height=0.0))
+                i += 1
+
+        return edges
 
     def _is_ccw(self) -> bool:
         return self._sense == PolygonSenseType.SENSE_CCW

@@ -202,7 +202,7 @@ class ShapelyBackend(PolygonBackend):
         # A polygon is convex if it equals its convex hull
         return shapely_polygon.equals(shapely_polygon.convex_hull)
 
-    def is_circle(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
+    def is_circle(self, polygon: PolygonData) -> bool:
         """Determine whether the outer contour of the polygon is a circle using Shapely.
 
         Parameters
@@ -215,6 +215,8 @@ class ShapelyBackend(PolygonBackend):
         bool
             ``True`` when the outer contour of the polygon is a circle, ``False`` otherwise.
         """
+        tol = 1e-8
+
         # Check if polygon has holes - a circle cannot have holes
         if polygon.has_holes():
             return False
@@ -644,6 +646,8 @@ class ShapelyBackend(PolygonBackend):
 
         if not polygons:
             raise ValueError("Cannot compute convex hull of an empty list of polygons")
+        if not isinstance(polygons, list):
+            polygons = [polygons]
 
         # Collect all points from all polygons (including tessellated arc points)
         all_points = []

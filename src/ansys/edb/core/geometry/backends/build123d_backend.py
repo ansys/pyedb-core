@@ -54,7 +54,7 @@ class Build123dBackend(PolygonBackend):
         self._stub = stub
 
     @staticmethod
-    def _points_to_wire(points: list[PointData], tol: float) -> "build123d.Wire":
+    def _points_to_wire(points: list[PointData]) -> "build123d.Wire":
         """Convert a list of PointData objects to a build123d Wire.
 
         Parameters
@@ -83,11 +83,6 @@ class Build123dBackend(PolygonBackend):
                 arc_height = points[i].arc_height.double
                 p3 = build123d.Vector(points[i + 1].x.double, points[i + 1].y.double, 0.0)
 
-                chord_length = math.sqrt((p3.X - p1.X) ** 2 + (p3.Y - p1.Y) ** 2)
-                if chord_length < tol:
-                    i += 2
-                    continue
-
                 mid = (p1 + p3) / 2
                 direction = p3 - p1
                 perp = build123d.Vector(direction.Y, -direction.X, 0.0)
@@ -98,17 +93,11 @@ class Build123dBackend(PolygonBackend):
                     perp_normalized = build123d.Vector(0, 0, 0)
                 p2 = mid - perp_normalized * arc_height
 
-                try:
-                    edges.append(build123d.ThreePointArc(p1, p2, p3))
-                except Exception:
-                    if chord_length >= tol:
-                        edges.append(build123d.Line(p1, p3))
+                edges.append(build123d.ThreePointArc(p1, p2, p3))
                 i += 2
             else:
                 p2 = build123d.Vector(points[i].x.double, points[i].y.double, 0.0)
-                segment_length = math.sqrt((p2.X - p1.X) ** 2 + (p2.Y - p1.Y) ** 2)
-                if segment_length >= tol:
-                    edges.append(build123d.Line(p1, p2))
+                edges.append(build123d.Line(p1, p2))
                 i += 1
 
         return build123d.Wire(edges)
@@ -145,6 +134,31 @@ class Build123dBackend(PolygonBackend):
             (start_point.X, start_point.Y), (end_point.X, end_point.Y), height=arc_height
         )
 
+    @staticmethod
+    def _polygonEdge_to_build123dEdge(edge: "PolygonData.Edge") -> "build123d.Edge":
+        """Convert an edge to a build123d Edge primitive.
+
+        Parameters
+        ----------
+        edge : Edge
+            The edge to convert.
+
+        Returns
+        -------
+        build123d.Line or build123d.ThreePointArc
+            The build123d Edge representation of the edge.
+        """
+        if edge.is_point():
+            return None
+
+        p1 = build123d.Vector(edge.start.x.double, edge.start.y.double, 0.0)
+        p3 = build123d.Vector(edge.end.x.double, edge.end.y.double, 0.0)
+        if edge.is_segment():
+            return build123d.Line(p1, p3)
+
+        p2 = build123d.Vector(edge.midpoint.x.double, edge.midpoint.y.double, 0.0)
+        return build123d.ThreePointArc(p1, p2, p3)
+
     def _polygon_data_to_build123d(self, polygon: PolygonData) -> "build123d.Face":
         """Convert a PolygonData object to a build123d Face.
 
@@ -166,19 +180,23 @@ class Build123dBackend(PolygonBackend):
         if hasattr(polygon, "_build123d_cache"):
             return polygon._build123d_cache
 
-        points = PolygonBackend._sanitize_points(polygon.points)
-        main_wire = Build123dBackend._points_to_wire(points, tol=1e-6)
+        edges = []
+        for edge in polygon.edges:
+            edges.append(Build123dBackend._polygonEdge_to_build123dEdge(edge))
+        main_wire = build123d.Wire(edges)
 
         hole_wires = []
         if polygon.holes:
-            for hole_polygon in polygon.holes:
-                hole_points = PolygonBackend._sanitize_points(hole_polygon.points)
-                hole_wires.append(Build123dBackend._points_to_wire(hole_points, tol=1e-6))
+            for hole in polygon.holes:
+                edges = []
+                for edge in hole.edges:
+                    edges.append(Build123dBackend._polygonEdge_to_build123dEdge(edge))
+                hole_wires.append(build123d.Wire(edges))
 
         if hole_wires:
-            face = build123d.Face(main_wire, hole_wires)
+            face = build123d.Face(outer_wire=main_wire, inner_wires=hole_wires)
         else:
-            face = build123d.Face(main_wire)
+            face = build123d.Face(outer_wire=main_wire)
 
         polygon._build123d_cache = face
         return face
@@ -256,7 +274,7 @@ class Build123dBackend(PolygonBackend):
 
         return math.isclose(face.area, hull_face.area, rel_tol=1e-9)
 
-    def is_circle(self, polygon: PolygonData, tol: float = 1e-9) -> bool:
+    def is_circle(self, polygon: PolygonData) -> bool:
         """Determine whether the outer contour of the polygon is a circle using Build123d.
 
         Parameters
@@ -271,23 +289,25 @@ class Build123dBackend(PolygonBackend):
         bool
             ``True`` when the outer contour of the polygon is a circle, ``False`` otherwise.
         """
+        tol = 1e-8
+
         if polygon.has_holes():
             return False
 
         face = self._polygon_data_to_build123d(polygon)
 
-        face_center = tuple(face.center())
+        face_center = face.center()
         face_radius = math.sqrt(face.area / math.pi)
+        print(face_center, face_radius)
         for item in face.edges():
-            try:
-                arc_center = item.arc_center
-                arc_radius = item.radius
-                if not (
-                    math.isclose(math.dist(face_center, arc_center), 0.0, abs_tol=tol)
-                    and math.isclose(arc_radius, face_radius, rel_tol=tol)
-                ):
-                    return False
-            except Exception:
+            if item.geom_type != GeomType.CIRCLE:
+                return False
+            arc_center = item.arc_center
+            arc_radius = item.radius
+            if not (
+                ((face_center - arc_center).length < tol)
+                and math.isclose(arc_radius, face_radius, rel_tol=tol)
+            ):
                 return False
 
         return True
@@ -642,6 +662,8 @@ class Build123dBackend(PolygonBackend):
         """
         if not polygons:
             raise ValueError("Cannot compute convex hull of an empty list of polygons")
+        if not isinstance(polygons, list):
+            polygons = [polygons]
 
         all_edges = []
         for poly in polygons:

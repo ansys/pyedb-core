@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. automethod:: LayerMap.create

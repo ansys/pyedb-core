@@ -1,0 +1,6 @@
+CONVEX\_HUL
+===========
+
+.. currentmodule:: ansys.edb.core.utility.hfss_extent_info
+
+.. autoattribute:: HFSSExtentInfoType.CONVEX_HUL

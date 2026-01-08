@@ -1,0 +1,6 @@
+net
+===
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Rectangle.net

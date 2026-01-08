@@ -1,0 +1,6 @@
+is\_void
+========
+
+.. currentmodule:: ansys.edb.core.primitive.polygon
+
+.. autoproperty:: Polygon.is_void

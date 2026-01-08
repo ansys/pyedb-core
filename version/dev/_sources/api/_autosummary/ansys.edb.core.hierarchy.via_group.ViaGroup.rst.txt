@@ -1,0 +1,100 @@
+﻿ViaGroup
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. autoclass:: ViaGroup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ViaGroup.add_member
+      
+      
+      ViaGroup.cast
+      
+      
+      ViaGroup.create
+      
+      
+      ViaGroup.create_3d_comp
+      
+      
+      ViaGroup.create_hfss
+      
+      
+      ViaGroup.create_stride
+      
+      
+      ViaGroup.create_with_outline
+      
+      
+      ViaGroup.create_with_primitives
+      
+      
+      ViaGroup.delete
+      
+      
+      ViaGroup.find
+      
+      
+      ViaGroup.find_by_id
+      
+      
+      ViaGroup.get_product_property
+      
+      
+      ViaGroup.get_product_property_ids
+      
+      
+      ViaGroup.remove_member
+      
+      
+      ViaGroup.set_product_property
+      
+      
+      ViaGroup.ungroup
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ViaGroup.component
+      ViaGroup.component_def
+      ViaGroup.conductor_percentage
+      ViaGroup.edb_uid
+      ViaGroup.group
+      ViaGroup.id
+      ViaGroup.is_mcad
+      ViaGroup.is_mcad_3d_comp
+      ViaGroup.is_mcad_hfss
+      ViaGroup.is_mcad_stride
+      ViaGroup.is_null
+      ViaGroup.layout
+      ViaGroup.layout_obj_type
+      ViaGroup.location
+      ViaGroup.members
+      ViaGroup.msg
+      ViaGroup.name
+      ViaGroup.net
+      ViaGroup.obj_type
+      ViaGroup.outline
+      ViaGroup.persistent
+      ViaGroup.placement_layer
+      ViaGroup.solve_independent_preference
+      ViaGroup.transform
+   
+   

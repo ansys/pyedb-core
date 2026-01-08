@@ -1,0 +1,6 @@
+name
+====
+
+.. currentmodule:: ansys.edb.core.definition.dataset_def
+
+.. autoproperty:: DatasetDef.name

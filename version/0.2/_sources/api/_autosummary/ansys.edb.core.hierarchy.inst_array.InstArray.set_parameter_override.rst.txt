@@ -1,0 +1,6 @@
+set\_parameter\_override
+========================
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. automethod:: InstArray.set_parameter_override

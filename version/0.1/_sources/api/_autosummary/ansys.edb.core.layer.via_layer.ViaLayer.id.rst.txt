@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. autoproperty:: ViaLayer.id

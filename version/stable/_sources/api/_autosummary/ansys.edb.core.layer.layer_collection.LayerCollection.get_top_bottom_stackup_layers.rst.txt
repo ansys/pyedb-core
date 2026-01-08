@@ -1,0 +1,6 @@
+get\_top\_bottom\_stackup\_layers
+=================================
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.get_top_bottom_stackup_layers

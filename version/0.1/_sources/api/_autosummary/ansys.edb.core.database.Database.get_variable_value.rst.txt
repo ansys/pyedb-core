@@ -1,0 +1,6 @@
+get\_variable\_value
+====================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.get_variable_value

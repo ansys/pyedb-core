@@ -1,0 +1,6 @@
+version
+=======
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.version

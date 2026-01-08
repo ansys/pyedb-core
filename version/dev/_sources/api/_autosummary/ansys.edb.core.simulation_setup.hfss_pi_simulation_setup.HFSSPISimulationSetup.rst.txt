@@ -1,0 +1,42 @@
+﻿HFSSPISimulationSetup
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_setup
+
+.. autoclass:: HFSSPISimulationSetup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      HFSSPISimulationSetup.cast
+      
+      
+      HFSSPISimulationSetup.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPISimulationSetup.id
+      HFSSPISimulationSetup.is_null
+      HFSSPISimulationSetup.msg
+      HFSSPISimulationSetup.name
+      HFSSPISimulationSetup.position
+      HFSSPISimulationSetup.settings
+      HFSSPISimulationSetup.sweep_data
+      HFSSPISimulationSetup.type
+   
+   

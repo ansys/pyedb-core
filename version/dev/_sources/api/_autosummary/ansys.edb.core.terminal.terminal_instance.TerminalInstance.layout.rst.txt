@@ -1,0 +1,6 @@
+layout
+======
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. autoproperty:: TerminalInstance.layout

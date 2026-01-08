@@ -1,0 +1,6 @@
+use\_si\_settings
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveGeneralSettings.use_si_settings

@@ -1,0 +1,6 @@
+package\_def
+============
+
+.. currentmodule:: ansys.edb.core.definition.rlc_component_property
+
+.. autoproperty:: RLCComponentProperty.package_def

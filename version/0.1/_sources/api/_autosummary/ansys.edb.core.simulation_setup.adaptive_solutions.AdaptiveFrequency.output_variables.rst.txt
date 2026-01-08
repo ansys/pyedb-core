@@ -1,0 +1,6 @@
+output\_variables
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: AdaptiveFrequency.output_variables

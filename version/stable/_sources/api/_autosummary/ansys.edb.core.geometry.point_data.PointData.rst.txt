@@ -1,0 +1,63 @@
+﻿PointData
+=========
+
+.. currentmodule:: ansys.edb.core.geometry.point_data
+
+.. autoclass:: PointData
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PointData.angle
+      
+      
+      PointData.closest
+      
+      
+      PointData.cross
+      
+      
+      PointData.distance
+      
+      
+      PointData.dot
+      
+      
+      PointData.equals
+      
+      
+      PointData.magnitude
+      
+      
+      PointData.move
+      
+      
+      PointData.normalized
+      
+      
+      PointData.rotate
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PointData.arc_height
+      PointData.is_arc
+      PointData.is_parametric
+      PointData.x
+      PointData.y
+   
+   

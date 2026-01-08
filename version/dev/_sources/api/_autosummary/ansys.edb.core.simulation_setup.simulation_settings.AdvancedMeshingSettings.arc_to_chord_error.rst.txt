@@ -1,0 +1,6 @@
+arc\_to\_chord\_error
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedMeshingSettings.arc_to_chord_error

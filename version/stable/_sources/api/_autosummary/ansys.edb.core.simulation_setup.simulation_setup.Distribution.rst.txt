@@ -1,0 +1,26 @@
+﻿Distribution
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoclass:: Distribution
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Distribution.LIN
+      Distribution.LINC
+      Distribution.ESTP
+      Distribution.DEC
+      Distribution.OCT
+   
+   

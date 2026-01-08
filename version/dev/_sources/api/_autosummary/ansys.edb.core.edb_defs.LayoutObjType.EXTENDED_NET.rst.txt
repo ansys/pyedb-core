@@ -1,0 +1,6 @@
+EXTENDED\_NET
+=============
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.EXTENDED_NET

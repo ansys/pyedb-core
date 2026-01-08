@@ -1,0 +1,30 @@
+﻿EDBError
+========
+
+.. currentmodule:: ansys.edb.core.utility.edb_error_manager
+
+.. autoclass:: EDBError
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      EDBError.message
+      EDBError.severity
+   
+   

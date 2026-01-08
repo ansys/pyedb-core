@@ -1,0 +1,6 @@
+radius
+======
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: BoardBendDef.radius

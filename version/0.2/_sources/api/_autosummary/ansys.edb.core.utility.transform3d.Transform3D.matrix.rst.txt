@@ -1,0 +1,6 @@
+matrix
+======
+
+.. currentmodule:: ansys.edb.core.utility.transform3d
+
+.. autoproperty:: Transform3D.matrix

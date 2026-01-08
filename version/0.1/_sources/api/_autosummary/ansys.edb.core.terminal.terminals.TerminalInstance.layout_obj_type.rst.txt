@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoattribute:: TerminalInstance.layout_obj_type

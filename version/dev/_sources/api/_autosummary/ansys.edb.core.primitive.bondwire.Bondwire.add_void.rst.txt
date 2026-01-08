@@ -1,0 +1,6 @@
+add\_void
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. automethod:: Bondwire.add_void

@@ -1,0 +1,103 @@
+﻿Text
+====
+
+.. currentmodule:: ansys.edb.core.primitive.text
+
+.. autoclass:: Text
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Text.add_void
+      
+      
+      Text.cast
+      
+      
+      Text.create
+      
+      
+      Text.create_3d_comp
+      
+      
+      Text.create_hfss
+      
+      
+      Text.create_stride
+      
+      
+      Text.delete
+      
+      
+      Text.find_by_id
+      
+      
+      Text.get_hfss_prop
+      
+      
+      Text.get_product_property
+      
+      
+      Text.get_product_property_ids
+      
+      
+      Text.get_text_data
+      
+      
+      Text.make_zone_primitive
+      
+      
+      Text.remove_hfss_prop
+      
+      
+      Text.set_hfss_prop
+      
+      
+      Text.set_product_property
+      
+      
+      Text.set_text_data
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Text.can_be_zone_primitive
+      Text.component
+      Text.edb_uid
+      Text.group
+      Text.has_voids
+      Text.id
+      Text.is_mcad
+      Text.is_mcad_3d_comp
+      Text.is_mcad_hfss
+      Text.is_mcad_stride
+      Text.is_negative
+      Text.is_null
+      Text.is_parameterized
+      Text.is_void
+      Text.is_zone_primitive
+      Text.layer
+      Text.layout
+      Text.layout_obj_type
+      Text.msg
+      Text.net
+      Text.obj_type
+      Text.owner
+      Text.primitive_type
+      Text.voids
+   
+   

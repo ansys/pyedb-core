@@ -1,0 +1,6 @@
+END\_ON\_LOWER\_PAD
+===================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadstackHoleRange.END_ON_LOWER_PAD

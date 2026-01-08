@@ -1,0 +1,6 @@
+is\_zone\_primitive
+===================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Circle.is_zone_primitive

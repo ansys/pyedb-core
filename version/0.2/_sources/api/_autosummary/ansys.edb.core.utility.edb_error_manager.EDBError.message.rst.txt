@@ -1,0 +1,6 @@
+message
+=======
+
+.. currentmodule:: ansys.edb.core.utility.edb_error_manager
+
+.. autoproperty:: EDBError.message

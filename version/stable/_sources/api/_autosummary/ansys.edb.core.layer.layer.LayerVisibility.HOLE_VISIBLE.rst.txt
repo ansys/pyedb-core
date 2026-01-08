@@ -1,0 +1,6 @@
+HOLE\_VISIBLE
+=============
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: LayerVisibility.HOLE_VISIBLE

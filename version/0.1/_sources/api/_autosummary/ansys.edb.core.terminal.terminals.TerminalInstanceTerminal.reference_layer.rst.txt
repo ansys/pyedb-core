@@ -1,0 +1,6 @@
+reference\_layer
+================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: TerminalInstanceTerminal.reference_layer

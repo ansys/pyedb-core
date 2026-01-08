@@ -1,0 +1,6 @@
+sweep\_data
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoproperty:: SimulationSetup.sweep_data

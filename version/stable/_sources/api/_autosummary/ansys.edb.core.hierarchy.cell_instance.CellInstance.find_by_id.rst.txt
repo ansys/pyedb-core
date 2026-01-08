@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. automethod:: CellInstance.find_by_id

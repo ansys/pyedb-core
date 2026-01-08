@@ -1,0 +1,6 @@
+NET
+===
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.NET

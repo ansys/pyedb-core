@@ -1,0 +1,26 @@
+﻿LayerTypeSet
+============
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoclass:: LayerTypeSet
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayerTypeSet.STACKUP_LAYER_SET
+      LayerTypeSet.SIGNAL_LAYER_SET
+      LayerTypeSet.DIELECTRIC_LAYER_SET
+      LayerTypeSet.NON_STACKUP_LAYER_SET
+      LayerTypeSet.ALL_LAYER_SET
+   
+   

@@ -1,0 +1,6 @@
+upper\_elevation
+================
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.upper_elevation

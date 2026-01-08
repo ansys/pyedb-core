@@ -1,0 +1,6 @@
+make\_zone\_primitive
+=====================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Circle.make_zone_primitive

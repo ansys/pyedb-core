@@ -1,0 +1,6 @@
+PRIM\_PLUGIN
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PrimitiveType.PRIM_PLUGIN

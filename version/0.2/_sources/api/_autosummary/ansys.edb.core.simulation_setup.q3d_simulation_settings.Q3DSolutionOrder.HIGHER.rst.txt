@@ -1,0 +1,6 @@
+HIGHER
+======
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoattribute:: Q3DSolutionOrder.HIGHER

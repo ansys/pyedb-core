@@ -1,0 +1,50 @@
+﻿Q3DAdvancedSettings
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DAdvancedSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DAdvancedSettings.defeature_absolute_length
+      Q3DAdvancedSettings.defeature_ratio
+      Q3DAdvancedSettings.healing_option
+      Q3DAdvancedSettings.ic_mode_auto_resolution
+      Q3DAdvancedSettings.ic_mode_length
+      Q3DAdvancedSettings.max_passes
+      Q3DAdvancedSettings.max_refine_per_pass
+      Q3DAdvancedSettings.mesh_for_via_plating
+      Q3DAdvancedSettings.min_converged_passes
+      Q3DAdvancedSettings.min_passes
+      Q3DAdvancedSettings.model_type
+      Q3DAdvancedSettings.msg
+      Q3DAdvancedSettings.num_via_density
+      Q3DAdvancedSettings.num_via_sides
+      Q3DAdvancedSettings.percent_error
+      Q3DAdvancedSettings.remove_floating_geometry
+      Q3DAdvancedSettings.small_void_area
+      Q3DAdvancedSettings.union_polygons
+      Q3DAdvancedSettings.use_defeature
+      Q3DAdvancedSettings.use_defeature_absolute_length
+      Q3DAdvancedSettings.via_material
+      Q3DAdvancedSettings.via_model_type
+   
+   

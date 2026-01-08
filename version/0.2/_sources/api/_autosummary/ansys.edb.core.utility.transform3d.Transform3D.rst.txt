@@ -1,0 +1,81 @@
+﻿Transform3D
+===========
+
+.. currentmodule:: ansys.edb.core.utility.transform3d
+
+.. autoclass:: Transform3D
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Transform3D.create_copy
+      
+      
+      Transform3D.create_from_angle
+      
+      
+      Transform3D.create_from_axis
+      
+      
+      Transform3D.create_from_axis_and_angle
+      
+      
+      Transform3D.create_from_center_scale
+      
+      
+      Transform3D.create_from_matrix
+      
+      
+      Transform3D.create_from_offset
+      
+      
+      Transform3D.create_from_one_axis_to_another
+      
+      
+      Transform3D.create_from_transform_2d
+      
+      
+      Transform3D.create_identity
+      
+      
+      Transform3D.invert
+      
+      
+      Transform3D.is_equal
+      
+      
+      Transform3D.is_identity
+      
+      
+      Transform3D.transform_point
+      
+      
+      Transform3D.transpose
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Transform3D.axis
+      Transform3D.id
+      Transform3D.is_null
+      Transform3D.matrix
+      Transform3D.msg
+      Transform3D.scaling
+      Transform3D.shift
+      Transform3D.z_y_x_rotation
+   
+   

@@ -1,0 +1,6 @@
+NEGATIVE
+========
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: SourceTermToGroundType.NEGATIVE

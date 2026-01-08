@@ -1,0 +1,31 @@
+﻿AdaptiveFrequency
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoclass:: AdaptiveFrequency
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      AdaptiveFrequency.adaptive_frequency
+      AdaptiveFrequency.max_delta
+      AdaptiveFrequency.output_variables
+   
+   

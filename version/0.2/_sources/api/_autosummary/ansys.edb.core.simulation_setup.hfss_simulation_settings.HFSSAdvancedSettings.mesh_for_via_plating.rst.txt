@@ -1,0 +1,6 @@
+mesh\_for\_via\_plating
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSAdvancedSettings.mesh_for_via_plating

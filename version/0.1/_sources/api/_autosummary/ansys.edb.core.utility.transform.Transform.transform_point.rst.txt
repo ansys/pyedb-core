@@ -1,0 +1,6 @@
+transform\_point
+================
+
+.. currentmodule:: ansys.edb.core.utility.transform
+
+.. automethod:: Transform.transform_point

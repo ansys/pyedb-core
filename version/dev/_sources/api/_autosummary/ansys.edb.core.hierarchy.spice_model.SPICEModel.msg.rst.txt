@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.hierarchy.spice_model
+
+.. autoproperty:: SPICEModel.msg

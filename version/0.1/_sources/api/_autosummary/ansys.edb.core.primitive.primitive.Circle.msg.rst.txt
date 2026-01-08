@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Circle.msg

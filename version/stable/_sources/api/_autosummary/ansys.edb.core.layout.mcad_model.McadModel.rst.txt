@@ -1,0 +1,88 @@
+﻿McadModel
+=========
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. autoclass:: McadModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      McadModel.create_3d_comp
+      
+      
+      McadModel.create_hfss
+      
+      
+      McadModel.create_stride
+      
+      
+      McadModel.is_mcad
+      
+      
+      McadModel.is_mcad_3d_comp
+      
+      
+      McadModel.is_mcad_hfss
+      
+      
+      McadModel.is_mcad_stride
+      
+      
+      McadModel.material
+      
+      
+      McadModel.modeled
+      
+      
+      McadModel.part_count
+      
+      
+      McadModel.part_index
+      
+      
+      McadModel.part_name
+      
+      
+      McadModel.set_material
+      
+      
+      McadModel.set_modeled
+      
+      
+      McadModel.set_rotation
+      
+      
+      McadModel.set_visible
+      
+      
+      McadModel.visible
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      McadModel.cell_instance
+      McadModel.design_name
+      McadModel.id
+      McadModel.is_null
+      McadModel.model_name
+      McadModel.msg
+      McadModel.origin
+      McadModel.rotation
+      McadModel.scale
+   
+   

@@ -1,0 +1,37 @@
+﻿ComponentProperty
+=================
+
+.. currentmodule:: ansys.edb.core.definition.component_property
+
+.. autoclass:: ComponentProperty
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ComponentProperty.clone
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ComponentProperty.id
+      ComponentProperty.is_null
+      ComponentProperty.model
+      ComponentProperty.msg
+      ComponentProperty.package_def
+      ComponentProperty.package_mounting_offset
+   
+   

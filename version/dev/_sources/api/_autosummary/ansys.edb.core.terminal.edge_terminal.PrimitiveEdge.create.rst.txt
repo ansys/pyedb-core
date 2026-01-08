@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. automethod:: PrimitiveEdge.create

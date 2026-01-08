@@ -1,0 +1,6 @@
+zone
+====
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoproperty:: Layer.zone

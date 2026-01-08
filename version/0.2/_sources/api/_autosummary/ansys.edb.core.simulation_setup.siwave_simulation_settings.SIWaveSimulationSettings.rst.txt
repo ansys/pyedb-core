@@ -1,0 +1,35 @@
+﻿SIWaveSimulationSettings
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SIWaveSimulationSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveSimulationSettings.advanced
+      SIWaveSimulationSettings.dc
+      SIWaveSimulationSettings.dc_advanced
+      SIWaveSimulationSettings.enabled
+      SIWaveSimulationSettings.general
+      SIWaveSimulationSettings.msg
+      SIWaveSimulationSettings.s_parameter
+   
+   

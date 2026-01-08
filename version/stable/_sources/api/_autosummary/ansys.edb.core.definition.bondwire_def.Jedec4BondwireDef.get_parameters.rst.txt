@@ -1,0 +1,6 @@
+get\_parameters
+===============
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. automethod:: Jedec4BondwireDef.get_parameters

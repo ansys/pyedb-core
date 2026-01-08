@@ -1,0 +1,32 @@
+﻿HFSSPINetProcessingSettings
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPINetProcessingSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPINetProcessingSettings.auto_select_nets_for_simulation
+      HFSSPINetProcessingSettings.ignore_dummy_nets_for_selected_nets
+      HFSSPINetProcessingSettings.include_nets
+      HFSSPINetProcessingSettings.msg
+   
+   

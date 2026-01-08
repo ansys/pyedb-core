@@ -1,0 +1,6 @@
+create\_3d\_comp
+================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Path.create_3d_comp

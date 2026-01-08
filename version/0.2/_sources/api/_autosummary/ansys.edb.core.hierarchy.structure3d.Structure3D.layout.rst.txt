@@ -1,0 +1,6 @@
+layout
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. autoproperty:: Structure3D.layout

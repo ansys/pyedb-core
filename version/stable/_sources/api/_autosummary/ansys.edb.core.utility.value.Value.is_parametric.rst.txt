@@ -1,0 +1,6 @@
+is\_parametric
+==============
+
+.. currentmodule:: ansys.edb.core.utility.value
+
+.. autoproperty:: Value.is_parametric

@@ -1,0 +1,6 @@
+create\_stride
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. automethod:: InstArray.create_stride

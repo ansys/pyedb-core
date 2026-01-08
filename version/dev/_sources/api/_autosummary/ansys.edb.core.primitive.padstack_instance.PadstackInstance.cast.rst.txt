@@ -1,0 +1,6 @@
+cast
+====
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. automethod:: PadstackInstance.cast

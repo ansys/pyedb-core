@@ -1,0 +1,6 @@
+query\_layout\_obj\_instances
+=============================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance
+
+.. automethod:: LayoutInstance.query_layout_obj_instances

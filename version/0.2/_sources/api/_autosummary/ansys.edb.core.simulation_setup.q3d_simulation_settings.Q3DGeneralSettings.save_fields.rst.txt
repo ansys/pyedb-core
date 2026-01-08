@@ -1,0 +1,6 @@
+save\_fields
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DGeneralSettings.save_fields

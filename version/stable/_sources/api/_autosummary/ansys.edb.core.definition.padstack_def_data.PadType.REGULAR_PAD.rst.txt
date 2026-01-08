@@ -1,0 +1,6 @@
+REGULAR\_PAD
+============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadType.REGULAR_PAD

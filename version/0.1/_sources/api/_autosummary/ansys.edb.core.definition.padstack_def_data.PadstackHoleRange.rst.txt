@@ -1,0 +1,26 @@
+﻿PadstackHoleRange
+=================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoclass:: PadstackHoleRange
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PadstackHoleRange.THROUGH
+      PadstackHoleRange.BEGIN_ON_UPPER_PAD
+      PadstackHoleRange.END_ON_LOWER_PAD
+      PadstackHoleRange.UPPER_PAD_TO_LOWER_PAD
+      PadstackHoleRange.UNKNOWN_RANGE
+   
+   

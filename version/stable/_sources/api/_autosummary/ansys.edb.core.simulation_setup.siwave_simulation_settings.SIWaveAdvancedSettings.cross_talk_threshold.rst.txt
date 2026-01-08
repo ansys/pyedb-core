@@ -1,0 +1,6 @@
+cross\_talk\_threshold
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.cross_talk_threshold

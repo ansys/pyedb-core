@@ -1,0 +1,43 @@
+﻿SIWaveDCAdvancedSettings
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SIWaveDCAdvancedSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveDCAdvancedSettings.dc_min_plane_area_to_mesh
+      SIWaveDCAdvancedSettings.dc_min_void_area_to_mesh
+      SIWaveDCAdvancedSettings.energy_error
+      SIWaveDCAdvancedSettings.max_init_mesh_edge_length
+      SIWaveDCAdvancedSettings.max_num_passes
+      SIWaveDCAdvancedSettings.mesh_bws
+      SIWaveDCAdvancedSettings.mesh_vias
+      SIWaveDCAdvancedSettings.min_num_passes
+      SIWaveDCAdvancedSettings.msg
+      SIWaveDCAdvancedSettings.num_bw_sides
+      SIWaveDCAdvancedSettings.num_via_sides
+      SIWaveDCAdvancedSettings.percent_local_refinement
+      SIWaveDCAdvancedSettings.perform_adaptive_refinement
+      SIWaveDCAdvancedSettings.refine_bws
+      SIWaveDCAdvancedSettings.refine_vias
+   
+   

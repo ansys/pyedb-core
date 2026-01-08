@@ -1,0 +1,6 @@
+cast
+====
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. automethod:: CellInstance.cast

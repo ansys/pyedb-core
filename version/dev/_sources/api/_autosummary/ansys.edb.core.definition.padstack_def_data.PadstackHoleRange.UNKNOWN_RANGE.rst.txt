@@ -1,0 +1,6 @@
+UNKNOWN\_RANGE
+==============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadstackHoleRange.UNKNOWN_RANGE

@@ -1,0 +1,6 @@
+set\_product\_solver\_option
+============================
+
+.. currentmodule:: ansys.edb.core.terminal.pin_group_terminal
+
+.. automethod:: PinGroupTerminal.set_product_solver_option

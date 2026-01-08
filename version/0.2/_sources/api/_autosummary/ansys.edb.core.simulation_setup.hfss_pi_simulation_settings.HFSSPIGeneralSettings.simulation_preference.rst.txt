@@ -1,0 +1,6 @@
+simulation\_preference
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIGeneralSettings.simulation_preference

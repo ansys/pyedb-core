@@ -1,0 +1,6 @@
+lrp
+===
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: VoltageRegulator.lrp

@@ -1,0 +1,6 @@
+net\_processing
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPISimulationSettings.net_processing

@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.utility.transform
+
+.. autoproperty:: Transform.id

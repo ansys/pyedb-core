@@ -1,0 +1,6 @@
+tesselation\_data
+=================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_obj_instance
+
+.. autoproperty:: LayoutObjInstance3DGeometry.tesselation_data

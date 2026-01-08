@@ -1,0 +1,6 @@
+ABOVE\_PADSTACK
+===============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: SolderballPlacement.ABOVE_PADSTACK

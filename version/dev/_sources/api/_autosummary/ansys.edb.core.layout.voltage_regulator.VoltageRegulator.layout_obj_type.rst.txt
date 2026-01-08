@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoattribute:: VoltageRegulator.layout_obj_type

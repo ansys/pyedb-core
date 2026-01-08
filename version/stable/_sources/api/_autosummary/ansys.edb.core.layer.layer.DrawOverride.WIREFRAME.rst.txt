@@ -1,0 +1,6 @@
+WIREFRAME
+=========
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: DrawOverride.WIREFRAME

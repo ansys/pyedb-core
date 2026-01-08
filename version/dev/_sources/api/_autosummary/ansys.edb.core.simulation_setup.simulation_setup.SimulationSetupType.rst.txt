@@ -1,0 +1,28 @@
+﻿SimulationSetupType
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoclass:: SimulationSetupType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SimulationSetupType.HFSS
+      SimulationSetupType.HFSS_PI
+      SimulationSetupType.SI_WAVE
+      SimulationSetupType.SI_WAVE_DCIR
+      SimulationSetupType.SI_WAVE_PSI
+      SimulationSetupType.RAPTOR_X
+      SimulationSetupType.Q3D_SIM
+   
+   

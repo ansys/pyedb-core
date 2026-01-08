@@ -1,0 +1,6 @@
+num\_via\_density
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedSettings.num_via_density

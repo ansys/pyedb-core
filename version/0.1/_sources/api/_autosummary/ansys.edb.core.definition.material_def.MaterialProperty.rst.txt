@@ -1,0 +1,33 @@
+﻿MaterialProperty
+================
+
+.. currentmodule:: ansys.edb.core.definition.material_def
+
+.. autoclass:: MaterialProperty
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MaterialProperty.PERMITTIVITY
+      MaterialProperty.PERMEABILITY
+      MaterialProperty.CONDUCTIVITY
+      MaterialProperty.DIELECTRIC_LOSS_TANGENT
+      MaterialProperty.MAGNETIC_LOSS_TANGENT
+      MaterialProperty.THERMAL_CONDUCTIVITY
+      MaterialProperty.MASS_DENSITY
+      MaterialProperty.SPECIFIC_HEAT
+      MaterialProperty.YOUNGS_MODULUS
+      MaterialProperty.POISSONS_RATIO
+      MaterialProperty.THERMAL_EXPANSION_COEFFICIENT
+      MaterialProperty.INVALID_PROPERTY
+   
+   

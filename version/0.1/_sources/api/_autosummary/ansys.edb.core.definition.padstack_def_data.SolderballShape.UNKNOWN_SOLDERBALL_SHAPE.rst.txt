@@ -1,0 +1,6 @@
+UNKNOWN\_SOLDERBALL\_SHAPE
+==========================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: SolderballShape.UNKNOWN_SOLDERBALL_SHAPE

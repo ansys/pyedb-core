@@ -1,0 +1,6 @@
+get\_data
+=========
+
+.. currentmodule:: ansys.edb.core.definition.dataset_def
+
+.. automethod:: DatasetDef.get_data

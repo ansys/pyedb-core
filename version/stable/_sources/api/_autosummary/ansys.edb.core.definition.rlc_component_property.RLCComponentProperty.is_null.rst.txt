@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.rlc_component_property
+
+.. autoproperty:: RLCComponentProperty.is_null

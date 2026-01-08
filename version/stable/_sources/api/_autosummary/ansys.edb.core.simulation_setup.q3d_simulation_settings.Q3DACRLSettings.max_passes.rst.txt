@@ -1,0 +1,6 @@
+max\_passes
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DACRLSettings.max_passes

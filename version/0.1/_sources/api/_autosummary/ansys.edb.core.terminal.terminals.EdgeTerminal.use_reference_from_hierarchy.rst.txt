@@ -1,0 +1,6 @@
+use\_reference\_from\_hierarchy
+===============================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: EdgeTerminal.use_reference_from_hierarchy

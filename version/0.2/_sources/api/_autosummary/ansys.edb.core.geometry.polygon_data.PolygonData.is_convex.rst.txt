@@ -1,0 +1,6 @@
+is\_convex
+==========
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. automethod:: PolygonData.is_convex

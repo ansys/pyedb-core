@@ -1,0 +1,6 @@
+is\_valid
+=========
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.is_valid

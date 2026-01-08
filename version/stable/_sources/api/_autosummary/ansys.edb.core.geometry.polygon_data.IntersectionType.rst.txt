@@ -1,0 +1,26 @@
+﻿IntersectionType
+================
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoclass:: IntersectionType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      IntersectionType.NO_INTERSECTION
+      IntersectionType.THIS_INSIDE_OTHER
+      IntersectionType.OTHER_INSIDE_THIS
+      IntersectionType.COMMON_INTERSECTION
+      IntersectionType.UNDEFINED_INTERSECTION
+   
+   

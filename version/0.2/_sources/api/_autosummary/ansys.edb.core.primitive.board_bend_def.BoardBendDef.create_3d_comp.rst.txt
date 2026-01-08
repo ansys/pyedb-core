@@ -1,0 +1,6 @@
+create\_3d\_comp
+================
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. automethod:: BoardBendDef.create_3d_comp

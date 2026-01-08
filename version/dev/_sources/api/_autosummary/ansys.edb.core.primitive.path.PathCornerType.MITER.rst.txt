@@ -1,0 +1,6 @@
+MITER
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. autoattribute:: PathCornerType.MITER

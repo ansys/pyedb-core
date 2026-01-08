@@ -1,0 +1,6 @@
+import\_from\_control\_file
+===========================
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.import_from_control_file

@@ -1,0 +1,102 @@
+﻿VoltageRegulator
+================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoclass:: VoltageRegulator
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      VoltageRegulator.add_power_module
+      
+      
+      VoltageRegulator.add_power_modules
+      
+      
+      VoltageRegulator.cast
+      
+      
+      VoltageRegulator.create
+      
+      
+      VoltageRegulator.create_3d_comp
+      
+      
+      VoltageRegulator.create_hfss
+      
+      
+      VoltageRegulator.create_stride
+      
+      
+      VoltageRegulator.delete
+      
+      
+      VoltageRegulator.find_by_id
+      
+      
+      VoltageRegulator.get_all_power_modules
+      
+      
+      VoltageRegulator.get_power_module
+      
+      
+      VoltageRegulator.get_product_property
+      
+      
+      VoltageRegulator.get_product_property_ids
+      
+      
+      VoltageRegulator.remove_all_power_modules
+      
+      
+      VoltageRegulator.remove_power_module
+      
+      
+      VoltageRegulator.remove_power_modules
+      
+      
+      VoltageRegulator.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      VoltageRegulator.active
+      VoltageRegulator.component
+      VoltageRegulator.edb_uid
+      VoltageRegulator.group
+      VoltageRegulator.id
+      VoltageRegulator.is_mcad
+      VoltageRegulator.is_mcad_3d_comp
+      VoltageRegulator.is_mcad_hfss
+      VoltageRegulator.is_mcad_stride
+      VoltageRegulator.is_null
+      VoltageRegulator.layout
+      VoltageRegulator.layout_obj_type
+      VoltageRegulator.lrc
+      VoltageRegulator.lrp
+      VoltageRegulator.msg
+      VoltageRegulator.name
+      VoltageRegulator.neg_remote_sense_pin
+      VoltageRegulator.net
+      VoltageRegulator.num_active_power_modules
+      VoltageRegulator.num_power_modules
+      VoltageRegulator.obj_type
+      VoltageRegulator.pos_remote_sense_pin
+      VoltageRegulator.voltage
+   
+   

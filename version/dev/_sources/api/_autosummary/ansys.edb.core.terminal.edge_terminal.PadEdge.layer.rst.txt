@@ -1,0 +1,6 @@
+layer
+=====
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoproperty:: PadEdge.layer

@@ -1,0 +1,6 @@
+delete\_variable
+================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.delete_variable

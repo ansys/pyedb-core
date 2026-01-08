@@ -1,0 +1,6 @@
+num\_via\_sides
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCAdvancedSettings.num_via_sides

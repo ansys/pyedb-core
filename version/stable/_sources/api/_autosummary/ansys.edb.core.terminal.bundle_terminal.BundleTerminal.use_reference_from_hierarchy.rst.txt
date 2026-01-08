@@ -1,0 +1,6 @@
+use\_reference\_from\_hierarchy
+===============================
+
+.. currentmodule:: ansys.edb.core.terminal.bundle_terminal
+
+.. autoproperty:: BundleTerminal.use_reference_from_hierarchy

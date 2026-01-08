@@ -1,0 +1,6 @@
+save\_rad\_fields\_only
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSGeneralSettings.save_rad_fields_only

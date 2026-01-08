@@ -1,0 +1,6 @@
+POLYGON
+=======
+
+.. currentmodule:: ansys.edb.core.utility.hfss_extent_info
+
+.. autoattribute:: HFSSExtentInfoType.POLYGON

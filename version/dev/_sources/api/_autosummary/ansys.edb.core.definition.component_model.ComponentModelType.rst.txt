@@ -1,0 +1,24 @@
+﻿ComponentModelType
+==================
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. autoclass:: ComponentModelType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ComponentModelType.N_PORT
+      ComponentModelType.DYNAMIC_LINK
+      ComponentModelType.UNKNOWN_COMPONENT_MODEL_TYPE
+   
+   

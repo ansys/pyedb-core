@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedMeshingSettings.msg

@@ -1,0 +1,26 @@
+﻿ViaStyle
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoclass:: ViaStyle
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ViaStyle.WIREBOND
+      ViaStyle.RIBBON
+      ViaStyle.MESH
+      ViaStyle.FIELD
+      ViaStyle.NUM_VIA_STYLE
+   
+   

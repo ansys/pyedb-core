@@ -1,0 +1,6 @@
+NO\_GROUND
+==========
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: SourceTermToGroundType.NO_GROUND

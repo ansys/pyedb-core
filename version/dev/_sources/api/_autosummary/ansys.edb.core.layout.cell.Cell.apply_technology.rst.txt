@@ -1,0 +1,6 @@
+apply\_technology
+=================
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. automethod:: Cell.apply_technology

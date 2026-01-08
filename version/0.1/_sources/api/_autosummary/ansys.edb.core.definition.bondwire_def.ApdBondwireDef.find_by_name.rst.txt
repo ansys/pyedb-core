@@ -1,0 +1,6 @@
+find\_by\_name
+==============
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. automethod:: ApdBondwireDef.find_by_name

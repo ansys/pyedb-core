@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. automethod:: Path.create

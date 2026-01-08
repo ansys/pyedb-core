@@ -1,0 +1,6 @@
+ROUND
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: BondwireCrossSectionType.ROUND

@@ -1,0 +1,43 @@
+﻿HfssSimulationSetup
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_setup
+
+.. autoclass:: HfssSimulationSetup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      HfssSimulationSetup.cast
+      
+      
+      HfssSimulationSetup.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HfssSimulationSetup.id
+      HfssSimulationSetup.is_null
+      HfssSimulationSetup.mesh_operations
+      HfssSimulationSetup.msg
+      HfssSimulationSetup.name
+      HfssSimulationSetup.position
+      HfssSimulationSetup.settings
+      HfssSimulationSetup.sweep_data
+      HfssSimulationSetup.type
+   
+   

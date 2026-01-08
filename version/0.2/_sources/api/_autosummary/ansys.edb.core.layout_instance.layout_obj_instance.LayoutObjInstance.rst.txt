@@ -1,0 +1,41 @@
+﻿LayoutObjInstance
+=================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_obj_instance
+
+.. autoclass:: LayoutObjInstance
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LayoutObjInstance.get_bbox
+      
+      
+      LayoutObjInstance.get_geometries
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayoutObjInstance.context
+      LayoutObjInstance.id
+      LayoutObjInstance.is_null
+      LayoutObjInstance.layers
+      LayoutObjInstance.layout_instance_context
+      LayoutObjInstance.layout_obj
+      LayoutObjInstance.msg
+   
+   

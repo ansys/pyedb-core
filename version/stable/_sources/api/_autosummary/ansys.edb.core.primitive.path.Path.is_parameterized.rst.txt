@@ -1,0 +1,6 @@
+is\_parameterized
+=================
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. autoproperty:: Path.is_parameterized

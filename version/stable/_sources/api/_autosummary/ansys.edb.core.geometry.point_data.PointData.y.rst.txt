@@ -1,0 +1,6 @@
+y
+=
+
+.. currentmodule:: ansys.edb.core.geometry.point_data
+
+.. autoproperty:: PointData.y

@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.sparameter_model
+
+.. automethod:: SParameterModel.create

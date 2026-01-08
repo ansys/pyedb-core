@@ -1,0 +1,6 @@
+set\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. automethod:: InstArray.set_product_property

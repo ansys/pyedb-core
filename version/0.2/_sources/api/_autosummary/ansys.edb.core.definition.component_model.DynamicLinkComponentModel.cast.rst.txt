@@ -1,0 +1,6 @@
+cast
+====
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. automethod:: DynamicLinkComponentModel.cast

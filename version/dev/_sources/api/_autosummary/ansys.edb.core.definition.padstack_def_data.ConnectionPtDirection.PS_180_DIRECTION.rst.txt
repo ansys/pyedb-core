@@ -1,0 +1,6 @@
+PS\_180\_DIRECTION
+==================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: ConnectionPtDirection.PS_180_DIRECTION

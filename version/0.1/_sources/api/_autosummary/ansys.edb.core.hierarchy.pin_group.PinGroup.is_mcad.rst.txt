@@ -1,0 +1,6 @@
+is\_mcad
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. autoproperty:: PinGroup.is_mcad

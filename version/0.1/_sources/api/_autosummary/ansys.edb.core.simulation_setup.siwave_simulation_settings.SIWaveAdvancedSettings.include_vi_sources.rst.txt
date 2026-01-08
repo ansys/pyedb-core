@@ -1,0 +1,6 @@
+include\_vi\_sources
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.include_vi_sources

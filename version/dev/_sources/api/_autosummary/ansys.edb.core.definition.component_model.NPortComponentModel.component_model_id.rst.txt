@@ -1,0 +1,6 @@
+component\_model\_id
+====================
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. autoproperty:: NPortComponentModel.component_model_id

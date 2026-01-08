@@ -1,0 +1,6 @@
+cast
+====
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. automethod:: Bondwire.cast

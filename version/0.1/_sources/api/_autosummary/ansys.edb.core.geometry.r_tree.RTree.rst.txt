@@ -1,0 +1,67 @@
+﻿RTree
+=====
+
+.. currentmodule:: ansys.edb.core.geometry.r_tree
+
+.. autoclass:: RTree
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      RTree.connected_geometry
+      
+      
+      RTree.create
+      
+      
+      RTree.delete
+      
+      
+      RTree.empty
+      
+      
+      RTree.increment_visit
+      
+      
+      RTree.insert
+      
+      
+      RTree.is_visited
+      
+      
+      RTree.nearest_neighbor
+      
+      
+      RTree.search
+      
+      
+      RTree.touching_geometry
+      
+      
+      RTree.visit
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RTree.connected_geometry_sets
+      RTree.extent
+      RTree.get_visit
+      RTree.id
+      RTree.is_null
+      RTree.msg
+   
+   

@@ -1,0 +1,6 @@
+is\_mcad\_stride
+================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Circle.is_mcad_stride

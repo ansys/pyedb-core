@@ -1,0 +1,6 @@
+solder\_ball\_property
+======================
+
+.. currentmodule:: ansys.edb.core.definition.io_component_property
+
+.. autoproperty:: IOComponentProperty.solder_ball_property

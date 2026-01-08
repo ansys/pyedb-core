@@ -1,0 +1,6 @@
+max\_passes
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: MultiFrequencyAdaptiveSolution.max_passes

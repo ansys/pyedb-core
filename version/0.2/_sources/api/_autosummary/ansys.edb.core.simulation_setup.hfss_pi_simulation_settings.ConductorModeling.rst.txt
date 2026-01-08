@@ -1,0 +1,23 @@
+﻿ConductorModeling
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: ConductorModeling
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ConductorModeling.MESH_INSIDE
+      ConductorModeling.IMPEDANCE_BOUNDARY
+   
+   

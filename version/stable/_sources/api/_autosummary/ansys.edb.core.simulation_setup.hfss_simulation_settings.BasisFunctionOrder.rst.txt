@@ -1,0 +1,25 @@
+﻿BasisFunctionOrder
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoclass:: BasisFunctionOrder
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BasisFunctionOrder.ZERO_ORDER
+      BasisFunctionOrder.FIRST_ORDER
+      BasisFunctionOrder.SECOND_ORDER
+      BasisFunctionOrder.MIXED_ORDER
+   
+   

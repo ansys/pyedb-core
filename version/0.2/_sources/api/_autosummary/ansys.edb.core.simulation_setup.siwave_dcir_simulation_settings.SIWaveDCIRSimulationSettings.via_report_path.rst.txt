@@ -1,0 +1,6 @@
+via\_report\_path
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.via_report_path

@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.net.extended_net
+
+.. autoproperty:: ExtendedNet.msg

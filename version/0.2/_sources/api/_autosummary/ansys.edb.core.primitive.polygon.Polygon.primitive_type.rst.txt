@@ -1,0 +1,6 @@
+primitive\_type
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.polygon
+
+.. autoproperty:: Polygon.primitive_type

@@ -1,0 +1,6 @@
+USER\_DEFINED
+=============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoattribute:: ProductIdType.USER_DEFINED

@@ -1,0 +1,756 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Glossary &#8212; PyEDB-Core</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../_static/documentation_options.js?v=f434b289"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/glossary';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://edb.core.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../examples/index.html" />
+    <link rel="prev" title="Release notes" href="release_notes.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.5" />
+  <link rel="canonical" href="https://edb.core.docs.pyansys.com/version/stable/api/glossary.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pyansys-logo-black-cropped.png" class="logo__image only-light" alt="PyEDB-Core - Home"/>
+    <img src="../_static/pyansys-logo-black-cropped.png" class="logo__image only-dark pst-js-only" alt="PyEDB-Core - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="PyEDB-Core home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../contribute.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyedb-core" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="PyEDB-Core home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contribute.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyedb-core" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="definition.html">Definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hierarchy.html">Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layer.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout.html">Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout_instance.html">Layout instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="net.html">Nets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="primitive.html">Primitives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session.html">Session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation_setup.html">Simulation setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminal.html">Terminals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Glossary</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="primitive.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hierarchy.html">Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminal.html">Terminals</a></li>
+</ul>
+</details></li>
+</ul>
+
+    
+
+  </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">API reference</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Glossary</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="glossary">
+<h1>Glossary<a class="headerlink" href="#glossary" title="Link to this heading">#</a></h1>
+<dl class="glossary">
+<dt id="term-Connectable">Connectable<a class="headerlink" href="#term-Connectable" title="Link to this term">#</a></dt><dd><p>The generic type for most objects in Layout.</p>
+<p>Objects of the following types are all connectables :</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="primitive.html">Primitives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hierarchy.html">Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminal.html">Terminals</a></li>
+</ul>
+</div>
+</dd>
+<dt id="term-Zone">Zone<a class="headerlink" href="#term-Zone" title="Link to this term">#</a></dt><dd><p>Multizone stackups allow a design to be divided into areas called zones.</p>
+<p>Each zone contains a subset of layers available to the entire circuit board and is spatially defined by polygons on the Outline layer.</p>
+<p>All zones (except the “fixed” zone) can have bends applied to them by defining <a class="reference internal" href="_autosummary/ansys.edb.core.primitive.board_bend_def.BoardBendDef.html#ansys.edb.core.primitive.board_bend_def.BoardBendDef" title="ansys.edb.core.primitive.board_bend_def.BoardBendDef"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoardBendDefs</span></code></a> on zone primitives.</p>
+</dd>
+<dt id="term-ValueLike">ValueLike<a class="headerlink" href="#term-ValueLike" title="Link to this term">#</a></dt><dd><p>Any of the following data types that represents a numeric value</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#complex" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complex</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> for expressions (‘1nm’, ‘x + 1’ etc)</p></li>
+<li><p><a class="reference internal" href="_autosummary/ansys.edb.core.utility.value.Value.html#ansys.edb.core.utility.value.Value" title="ansys.edb.core.utility.value.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a></p></li>
+</ul>
+</dd>
+<dt id="term-Point2DLike">Point2DLike<a class="headerlink" href="#term-Point2DLike" title="Link to this term">#</a></dt><dd><p>Any of the following data types that represents (x, y) point on a 2D coordinate system.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_autosummary/ansys.edb.core.geometry.point_data.PointData.html#ansys.edb.core.geometry.point_data.PointData" title="ansys.edb.core.geometry.point_data.PointData"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointData</span></code></a></p></li>
+<li><p>(<a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>, <a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>) or any other iterable with 2 <a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a> inside</p></li>
+</ul>
+</dd>
+<dt id="term-Point3DLike">Point3DLike<a class="headerlink" href="#term-Point3DLike" title="Link to this term">#</a></dt><dd><p>Any of the following data types that represents (x, y, z) point on a 3D coordinate system.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_autosummary/ansys.edb.core.geometry.point3d_data.Point3DData.html#ansys.edb.core.geometry.point3d_data.Point3DData" title="ansys.edb.core.geometry.point3d_data.Point3DData"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point3DData</span></code></a></p></li>
+<li><p>(<a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>, <a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>, <a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>) or any other iterable with 3 <a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a> inside</p></li>
+</ul>
+</dd>
+<dt id="term-Triangle3DLike">Triangle3DLike<a class="headerlink" href="#term-Triangle3DLike" title="Link to this term">#</a></dt><dd><p>(<a class="reference internal" href="#term-Point3DLike"><span class="xref std std-term">Point3DLike</span></a>, <a class="reference internal" href="#term-Point3DLike"><span class="xref std std-term">Point3DLike</span></a>, <a class="reference internal" href="#term-Point3DLike"><span class="xref std std-term">Point3DLike</span></a>)</p>
+</dd>
+<dt id="term-LayerLike">LayerLike<a class="headerlink" href="#term-LayerLike" title="Link to this term">#</a></dt><dd><p>Any of the following data types that represent a layer.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/ansys.edb.core.layer.layer.Layer.html#ansys.edb.core.layer.layer.Layer" title="ansys.edb.core.layer.layer.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p></li>
+</ul>
+</dd>
+<dt id="term-NetLike">NetLike<a class="headerlink" href="#term-NetLike" title="Link to this term">#</a></dt><dd><p>Any of the following data types that represent a net.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/ansys.edb.core.net.net.Net.html#ansys.edb.core.net.net.Net" title="ansys.edb.core.net.net.Net"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p></li>
+</ul>
+</dd>
+<dt id="term-RoughnessModel">RoughnessModel<a class="headerlink" href="#term-RoughnessModel" title="Link to this term">#</a></dt><dd><p>A Groisse roughness model is represented by a single value containing the roughness value.
+A Huray roughness model is represented  by a tuple of the form [nodule_radius_value, surface_ratio_value]</p>
+<p><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>, (<a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>, <a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>)]</p>
+</dd>
+<dt id="term-HFSSSolverProperties">HFSSSolverProperties<a class="headerlink" href="#term-HFSSSolverProperties" title="Link to this term">#</a></dt><dd><p>HFSS solver properties are represented by a tuple of the form [dc_thickness_type, dc_thickness_value, solve_inside_enabled]</p>
+<p>(<a class="reference internal" href="_autosummary/ansys.edb.core.layer.stackup_layer.DCThicknessType.html#ansys.edb.core.layer.stackup_layer.DCThicknessType" title="ansys.edb.core.layer.stackup_layer.DCThicknessType"><code class="xref py py-class docutils literal notranslate"><span class="pre">DCThicknessType</span></code></a>, <a class="reference internal" href="#term-ValueLike"><span class="xref std std-term">ValueLike</span></a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>)</p>
+</dd>
+<dt id="term-HFSSExtents">HFSSExtents<a class="headerlink" href="#term-HFSSExtents" title="Link to this term">#</a></dt><dd><p>Extent box around the design, represented by a <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> with the following key:values</p>
+<div class="line-block">
+<div class="line"><strong>dielectric</strong>: (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>)</div>
+<div class="line-block">
+<div class="line">Dielectric extent size. First parameter is the value and second parameter indicates if the value is a multiple.</div>
+</div>
+<div class="line"><strong>airbox_horizontal</strong>: (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>)</div>
+<div class="line-block">
+<div class="line">Airbox horizontal extent size. First parameter is the value and second parameter indicates if the value is a multiple.</div>
+</div>
+<div class="line"><strong>airbox_vertical_positive</strong>: (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>)</div>
+<div class="line-block">
+<div class="line">Airbox positive vertical extent size. First parameter is the value and second parameter indicates if the value is a multiple.</div>
+</div>
+<div class="line"><strong>airbox_vertical_negative</strong>: (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>)</div>
+<div class="line-block">
+<div class="line">Airbox negative vertical extent size. First parameter is the value and second parameter indicates if the value is a multiple.</div>
+</div>
+<div class="line"><strong>airbox_truncate_at_ground</strong>: <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></div>
+<div class="line-block">
+<div class="line">Whether airbox will be truncated at the ground layers.</div>
+</div>
+</div>
+</dd>
+<dt id="term-Anisotropic-Material-Property-Component-IDs">Anisotropic Material Property Component IDs<a class="headerlink" href="#term-Anisotropic-Material-Property-Component-IDs" title="Link to this term">#</a></dt><dd><p>Anisotropic material properties use component ID values to specify tensor diagonal entries. Component ID values map to tensor diagonal entries as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">T[1,1]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">T[2,2]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">T[3,3]</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"> 
+<div class="tocsection editthispage">
+  <a href="None">
+    <i class="fa-solid fa-pencil"></i>
+       Edit
+    on GitHub  
+  </a>
+</div>
+
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/glossary.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.4. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

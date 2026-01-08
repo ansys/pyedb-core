@@ -1,0 +1,6 @@
+set\_hole\_parameters
+=====================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. automethod:: PadstackDefData.set_hole_parameters

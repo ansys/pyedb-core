@@ -1,0 +1,6 @@
+UNKNOWN\_PLACEMENT
+==================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: SolderballPlacement.UNKNOWN_PLACEMENT

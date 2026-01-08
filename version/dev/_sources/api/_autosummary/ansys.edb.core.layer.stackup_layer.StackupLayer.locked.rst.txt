@@ -1,0 +1,6 @@
+locked
+======
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.locked

@@ -1,0 +1,6 @@
+DYNAMIC\_LINK
+=============
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. autoattribute:: ComponentModelType.DYNAMIC_LINK

@@ -1,0 +1,6 @@
+positive\_net
+=============
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. autoproperty:: DifferentialPair.positive_net

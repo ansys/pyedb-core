@@ -1,0 +1,6 @@
+get\_product\_property\_ids
+===========================
+
+.. currentmodule:: ansys.edb.core.terminal.bundle_terminal
+
+.. automethod:: BundleTerminal.get_product_property_ids

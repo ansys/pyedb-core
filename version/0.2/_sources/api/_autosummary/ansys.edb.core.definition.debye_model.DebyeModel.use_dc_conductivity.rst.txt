@@ -1,0 +1,6 @@
+use\_dc\_conductivity
+=====================
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. autoproperty:: DebyeModel.use_dc_conductivity

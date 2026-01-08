@@ -1,0 +1,6 @@
+board\_bend\_defs
+=================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. autoproperty:: Layout.board_bend_defs

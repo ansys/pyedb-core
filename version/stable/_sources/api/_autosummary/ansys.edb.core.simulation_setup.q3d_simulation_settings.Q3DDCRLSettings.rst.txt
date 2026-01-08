@@ -1,0 +1,35 @@
+﻿Q3DDCRLSettings
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DDCRLSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DDCRLSettings.max_passes
+      Q3DDCRLSettings.max_refine_per_pass
+      Q3DDCRLSettings.min_converged_passes
+      Q3DDCRLSettings.min_passes
+      Q3DDCRLSettings.msg
+      Q3DDCRLSettings.percent_error
+      Q3DDCRLSettings.solution_order
+   
+   

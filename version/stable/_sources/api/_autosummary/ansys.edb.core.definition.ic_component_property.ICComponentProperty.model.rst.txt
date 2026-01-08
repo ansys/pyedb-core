@@ -1,0 +1,6 @@
+model
+=====
+
+.. currentmodule:: ansys.edb.core.definition.ic_component_property
+
+.. autoproperty:: ICComponentProperty.model

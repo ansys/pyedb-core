@@ -1,0 +1,6 @@
+set\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. automethod:: Structure3D.set_product_property

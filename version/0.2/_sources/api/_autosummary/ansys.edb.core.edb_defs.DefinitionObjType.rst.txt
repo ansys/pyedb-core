@@ -1,0 +1,29 @@
+﻿DefinitionObjType
+=================
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoclass:: DefinitionObjType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DefinitionObjType.INVALID_DEFINITION_TYPE
+      DefinitionObjType.PADSTACK_DEF
+      DefinitionObjType.COMPONENT_DEF
+      DefinitionObjType.BONDWIRE_DEF
+      DefinitionObjType.MATERIAL_DEF
+      DefinitionObjType.DATASET_DEF
+      DefinitionObjType.PACKAGE_DEF
+      DefinitionObjType.DEFINITION_TYPE_COUNT
+   
+   

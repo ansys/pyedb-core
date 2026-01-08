@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. automethod:: PointTerminal.create_hfss

@@ -1,0 +1,6 @@
+refresh
+=======
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance
+
+.. automethod:: LayoutInstance.refresh

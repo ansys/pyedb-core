@@ -1,0 +1,6 @@
+port\_property
+==============
+
+.. currentmodule:: ansys.edb.core.definition.io_component_property
+
+.. autoproperty:: IOComponentProperty.port_property

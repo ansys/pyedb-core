@@ -1,0 +1,41 @@
+﻿RLCComponentProperty
+====================
+
+.. currentmodule:: ansys.edb.core.definition.rlc_component_property
+
+.. autoclass:: RLCComponentProperty
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      RLCComponentProperty.clone
+      
+      
+      RLCComponentProperty.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RLCComponentProperty.enabled
+      RLCComponentProperty.id
+      RLCComponentProperty.is_null
+      RLCComponentProperty.model
+      RLCComponentProperty.msg
+      RLCComponentProperty.package_def
+      RLCComponentProperty.package_mounting_offset
+   
+   

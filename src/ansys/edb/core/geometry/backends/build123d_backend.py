@@ -154,6 +154,11 @@ class Build123dBackend(PolygonBackend):
         p1 = build123d.Vector(edge.start.x.double, edge.start.y.double, 0.0)
         p3 = build123d.Vector(edge.end.x.double, edge.end.y.double, 0.0)
         if edge.is_segment():
+            # NOTE: OpenCASCADE (OCC) Tolerance Limitation
+            # The underlying OCC library used by build123d has a hard-coded "confusion" tolerance
+            # of 1e-7 (see: https://pythonocc-documentation.readthedocs.io/en/review-gen-apidoc-rtd/apidoc/OCC.Core.Precision.html#OCC.Core.Precision.precision.Confusion).  # noqa: E501
+            # Line segments shorter than this tolerance may cause issues in geometric operations.
+            # TODO: Implement a solution to handle sub-tolerance geometry gracefully
             return build123d.Line(p1, p3)
 
         p2 = build123d.Vector(edge.midpoint.x.double, edge.midpoint.y.double, 0.0)

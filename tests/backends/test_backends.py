@@ -159,6 +159,12 @@ def test_backend_factory_build123d_not_available(session):
             },
             0.52,
         ),  # Square with two holes
+        (
+            {
+                "data": [(0, 1e-9), (0, 0), (1, 0), (1, 1)],
+            },
+            0.5,
+        ),  # Square with two holes
     ],
 )
 def test_area(session, polygon, expected_result):

@@ -21,7 +21,7 @@ class PolygonBackend(ABC):
     """
 
     @staticmethod
-    def _sanitize_points(points: list[PointData], tol: float = 1e-9) -> list[PointData]:
+    def _sanitize_points(points: list[PointData], tol: float = 1e-10) -> list[PointData]:
         """Remove duplicate points and fix arc points at the start/end of the point list.
 
         Parameters

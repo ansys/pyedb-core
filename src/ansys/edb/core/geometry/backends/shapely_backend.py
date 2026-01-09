@@ -285,15 +285,15 @@ class ShapelyBackend(PolygonBackend):
 
         return PolygonBackend._is_box(polygon, tol)
 
-    def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
+    def is_inside(self, polygon: PolygonData, point) -> bool:
         """Determine whether a point is inside the polygon using Shapely.
 
         Parameters
         ----------
         polygon : PolygonData
             The polygon to check.
-        point : tuple[float, float]
-            Point coordinates (x, y).
+        point : PointData
+            The point to check.
 
         Returns
         -------

@@ -88,14 +88,14 @@ class ServerBackend(PolygonBackend):
         """
         return self._stub.IsBox(messages.polygon_data_message(polygon)).value
 
-    def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
+    def is_inside(self, polygon: PolygonData, point) -> bool:
         """Determine whether a point is inside the polygon using the server.
 
         Parameters
         ----------
         polygon : PolygonData
             The polygon to check.
-        point : tuple[float, float]
+        point : PointData
             Point coordinates (x, y).
 
         Returns

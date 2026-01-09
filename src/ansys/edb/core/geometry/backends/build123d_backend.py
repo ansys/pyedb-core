@@ -303,7 +303,6 @@ class Build123dBackend(PolygonBackend):
 
         face_center = face.center()
         face_radius = math.sqrt(face.area / math.pi)
-        print(face_center, face_radius)
         for item in face.edges():
             if item.geom_type != GeomType.CIRCLE:
                 return False
@@ -342,15 +341,15 @@ class Build123dBackend(PolygonBackend):
 
         return PolygonBackend._is_box(polygon, tol)
 
-    def is_inside(self, polygon: PolygonData, point: tuple[float, float]) -> bool:
+    def is_inside(self, polygon: PolygonData, point) -> bool:
         """Determine whether a point is inside the polygon using Build123d.
 
         Parameters
         ----------
         polygon : PolygonData
             The polygon to check.
-        point : tuple[float, float]
-            Point coordinates (x, y).
+        point : PointData or tuple[float, float]
+            The point to check.
 
         Returns
         -------
@@ -358,7 +357,13 @@ class Build123dBackend(PolygonBackend):
             ``True`` if the point is inside the polygon, ``False`` otherwise.
         """
         face = self._polygon_data_to_build123d(polygon)
-        point = build123d.Vector(point[0], point[1], 0)
+
+        if isinstance(point, PointData):
+            x, y = point.x.double, point.y.double
+        else:
+            x, y = point[0], point[1]
+        point = build123d.Vector(x, y, 0)
+
         return face.is_inside(point)
 
     def bbox(self, polygon: PolygonData) -> tuple[tuple[float, float], tuple[float, float]]:
@@ -942,17 +947,17 @@ class Build123dBackend(PolygonBackend):
         if len(polygons) == 1:
             return polygons
 
-        faces = [self._polygon_data_to_build123d(poly) for poly in polygons]
+        sketch = build123d.Sketch()
+        for poly in polygons:
+            face = self._polygon_data_to_build123d(poly)
+            sketch += face
 
-        result = faces[0]
-        for face in faces[1:]:
-            result = result.fuse(face)
+        result_faces = sketch.faces()
 
-        if isinstance(result, build123d.Face):
-            return [Build123dBackend._build123d_to_polygon_data(result)]
-        else:
-            result_faces = result.faces()
-            return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
+        if not result_faces:
+            return []
+
+        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
 
     def intersect(
         self, polygons1: list[PolygonData], polygons2: list[PolygonData]
@@ -979,27 +984,23 @@ class Build123dBackend(PolygonBackend):
         if not isinstance(polygons2, list):
             polygons2 = [polygons2]
 
-        faces1 = [self._polygon_data_to_build123d(poly) for poly in polygons1]
-        faces2 = [self._polygon_data_to_build123d(poly) for poly in polygons2]
+        sketch1 = build123d.Sketch()
+        for poly in polygons1:
+            face = self._polygon_data_to_build123d(poly)
+            sketch1 += face
 
-        union1 = faces1[0]
-        for face in faces1[1:]:
-            union1 = union1.fuse(face)
+        sketch2 = build123d.Sketch()
+        for poly in polygons2:
+            face = self._polygon_data_to_build123d(poly)
+            sketch2 += face
 
-        union2 = faces2[0]
-        for face in faces2[1:]:
-            union2 = union2.fuse(face)
+        result_sketch = sketch1 & sketch2
+        result_faces = result_sketch.faces()
 
-        result = union1.intersect(union2)
-
-        if result is None:
+        if not result_faces:
             return []
 
-        if isinstance(result, build123d.Face):
-            return [Build123dBackend._build123d_to_polygon_data(result)]
-        else:
-            result_faces = result.faces()
-            return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
+        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
 
     def subtract(
         self, polygons1: list[PolygonData], polygons2: list[PolygonData]
@@ -1029,27 +1030,23 @@ class Build123dBackend(PolygonBackend):
         if not isinstance(polygons2, list):
             polygons2 = [polygons2]
 
-        faces1 = [self._polygon_data_to_build123d(poly) for poly in polygons1]
-        faces2 = [self._polygon_data_to_build123d(poly) for poly in polygons2]
+        sketch1 = build123d.Sketch()
+        for poly in polygons1:
+            face = self._polygon_data_to_build123d(poly)
+            sketch1 += face
 
-        union1 = faces1[0]
-        for face in faces1[1:]:
-            union1 = union1.fuse(face)
+        sketch2 = build123d.Sketch()
+        for poly in polygons2:
+            face = self._polygon_data_to_build123d(poly)
+            sketch2 += face
 
-        union2 = faces2[0]
-        for face in faces2[1:]:
-            union2 = union2.fuse(face)
+        result_sketch = sketch1 - sketch2
+        result_faces = result_sketch.faces()
 
-        result = union1.cut(union2)
-
-        if result is None:
+        if not result_faces:
             return []
 
-        if isinstance(result, build123d.Face):
-            return [Build123dBackend._build123d_to_polygon_data(result)]
-        else:
-            result_faces = result.faces()
-            return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
+        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
 
     def xor(self, polygons1: list[PolygonData], polygons2: list[PolygonData]) -> list[PolygonData]:
         """Compute an exclusive OR between two sets of polygons using Build123d.
@@ -1068,10 +1065,10 @@ class Build123dBackend(PolygonBackend):
 
         Notes
         -----
-        This implementation first unions each list separately, then computes the
-        symmetric difference between the two unions using build123d operations.
+        This implementation uses Build123d's Sketch operations to compute the
+        symmetric difference between two sets of polygons.
         The XOR operation returns all regions that are in one polygon set or the other,
-        but not in both (i.e., union minus intersection).
+        but not in both: (A - B) + (B - A).
         """
         if not polygons1 and not polygons2:
             return []
@@ -1085,39 +1082,26 @@ class Build123dBackend(PolygonBackend):
         if not isinstance(polygons2, list):
             polygons2 = [polygons2]
 
-        faces1 = [self._polygon_data_to_build123d(poly) for poly in polygons1]
-        faces2 = [self._polygon_data_to_build123d(poly) for poly in polygons2]
+        sketch1 = build123d.Sketch()
+        for poly in polygons1:
+            face = self._polygon_data_to_build123d(poly)
+            sketch1 += face
 
-        union1 = faces1[0]
-        for face in faces1[1:]:
-            union1 = union1.fuse(face)
+        sketch2 = build123d.Sketch()
+        for poly in polygons2:
+            face = self._polygon_data_to_build123d(poly)
+            sketch2 += face
 
-        union2 = faces2[0]
-        for face in faces2[1:]:
-            union2 = union2.fuse(face)
+        diff1_sketch = sketch1 - sketch2
+        diff2_sketch = sketch2 - sketch1
 
-        diff1 = union1.cut(union2)
-        diff2 = union2.cut(union1)
+        result_sketch = diff1_sketch + diff2_sketch
+        result_faces = result_sketch.faces()
 
-        result_polygons = []
+        if not result_faces:
+            return []
 
-        if diff1 is not None:
-            if isinstance(diff1, build123d.Face):
-                result_polygons.append(Build123dBackend._build123d_to_polygon_data(diff1))
-            else:
-                diff1_faces = diff1.faces()
-                for face in diff1_faces:
-                    result_polygons.append(Build123dBackend._build123d_to_polygon_data(face))
-
-        if diff2 is not None:
-            if isinstance(diff2, build123d.Face):
-                result_polygons.append(Build123dBackend._build123d_to_polygon_data(diff2))
-            else:
-                diff2_faces = diff2.faces()
-                for face in diff2_faces:
-                    result_polygons.append(Build123dBackend._build123d_to_polygon_data(face))
-
-        return result_polygons
+        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
 
     def expand(
         self,

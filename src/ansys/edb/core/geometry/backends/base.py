@@ -57,8 +57,8 @@ class PolygonBackend(ABC):
 
         assert not sanitized[0].is_arc
         assert not sanitized[-1].is_arc
-        for i, point in enumerate(sanitized[1:]):
-            assert not (point.is_arc and sanitized[i - 1].is_arc)
+        for i in range(1, len(sanitized) - 1):
+            assert not (sanitized[i].is_arc and sanitized[i - 1].is_arc)
 
         unique_points = [sanitized[0]]
         index = 1

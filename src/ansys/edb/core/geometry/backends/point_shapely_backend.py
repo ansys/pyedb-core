@@ -48,6 +48,33 @@ class PointShapelyBackend(PointBackend):
             raise ImportError("Shapely is required for PointShapelyBackend but is not installed")
         self._stub = stub
 
+    @staticmethod
+    def _to_shapely_point(point_data: PointData) -> Point:
+        """Convert a PointData to a Shapely Point with caching.
+
+        Parameters
+        ----------
+        point_data : PointData
+            The point to convert.
+
+        Returns
+        -------
+        Point
+            Shapely Point object.
+
+        Notes
+        -----
+        The Shapely Point is cached on the PointData instance to avoid
+        repeated conversions.
+        """
+        if hasattr(point_data, "_shapely_cache"):
+            return point_data._shapely_cache
+
+        shapely_point = Point(point_data.x.double, point_data.y.double)
+
+        point_data._shapely_cache = shapely_point
+        return shapely_point
+
     def closest(self, point: PointData, start: PointLike, end: PointLike) -> PointData:
         """Get the closest point on a line segment from the point using Shapely.
 
@@ -65,8 +92,20 @@ class PointShapelyBackend(PointBackend):
         PointData
             Closest point on the line segment.
         """
-        # TODO: Implement using Shapely
-        raise NotImplementedError("closest method not yet implemented for Shapely backend")
+        from ansys.edb.core.geometry.point_data import PointData
+
+        if isinstance(start, PointData):
+            start = [start.x.double, start.y.double]
+        if isinstance(end, PointData):
+            end = [end.x.double, end.y.double]
+
+        p = self._to_shapely_point(point)
+        line = LineString([start, end])
+
+        distance_along_line = line.project(p)
+        closest_point = line.interpolate(distance_along_line)
+
+        return PointData(closest_point.x, closest_point.y)
 
     def distance(self, point: PointData, start: PointLike, end: PointLike = None) -> float:
         """Compute the shortest distance from the point to a line segment or another point.

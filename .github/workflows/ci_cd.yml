@@ -25,7 +25,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: PyAnsys documentation style checks
-          uses: ansys/actions/doc-style@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
+          uses: ansys/actions/doc-style@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
             fail-level: 'warning'
@@ -36,7 +36,7 @@ jobs:
     needs: [doc-style]
     steps:
       - name: Documentation build
-        uses: ansys/actions/doc-build@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
+        uses: ansys/actions/doc-build@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           use-python-cache: false
@@ -57,7 +57,7 @@ jobs:
         python-version: ['3.10', '3.11', '3.12', '3.13']
     steps:
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
+        uses: ansys/actions/build-wheelhouse@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -98,7 +98,7 @@ jobs:
       id-token: write
     steps:
       - name: Build library source and wheel artifacts
-        uses: ansys/actions/build-library@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
+        uses: ansys/actions/build-library@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -128,7 +128,7 @@ jobs:
           packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
           skip-existing: false
       - name: Release to GitHub
-        uses: ansys/actions/release-github@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
+        uses: ansys/actions/release-github@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -141,7 +141,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [package, tests, doc-build]
     steps:
-      - uses: ansys/actions/doc-deploy-dev@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
+      - uses: ansys/actions/doc-deploy-dev@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -156,7 +156,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: release
     steps:
-      - uses: ansys/actions/doc-deploy-stable@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
+      - uses: ansys/actions/doc-deploy-stable@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}

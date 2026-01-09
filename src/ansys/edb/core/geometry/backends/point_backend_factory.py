@@ -1,22 +1,22 @@
-"""Factory for creating the appropriate polygon computation backend."""
+"""Factory for creating the appropriate point computation backend."""
 
 from __future__ import annotations
 
 from ansys.edb.core.config import ComputationBackend, Config
-from ansys.edb.core.geometry.backends.base import PolygonBackend
+from ansys.edb.core.geometry.backends.point_backend_base import PointBackend
 
 
-def get_backend(stub=None) -> PolygonBackend:
-    """Get the appropriate polygon computation backend based on configuration.
+def get_point_backend(stub=None) -> PointBackend:
+    """Get the appropriate point computation backend based on configuration.
 
     Parameters
     ----------
-    stub : polygon_data_pb2_grpc.PolygonDataServiceStub, optional
-        The gRPC stub for polygon operations. Required for server backend.
+    stub : point_data_pb2_grpc.PointDataServiceStub, optional
+        The gRPC stub for point operations. Required for server backend.
 
     Returns
     -------
-    PolygonBackend
+    PointBackend
         The configured computation backend.
 
     Notes
@@ -26,19 +26,20 @@ def get_backend(stub=None) -> PolygonBackend:
 
     - 'server': Always use server backend
     - 'shapely': Use Shapely backend (raises error if not installed)
-    - 'auto' (default): Try Shapely first, fallback to server if not available
+    - 'build123d': Use Build123d backend (raises error if not installed)
+    - 'auto' (default): Use server backend
 
     Examples
     --------
     >>> # Use server backend explicitly
     >>> import os
     >>> os.environ['PYEDB_COMPUTATION_BACKEND'] = 'server'
-    >>> backend = get_backend(stub)
+    >>> backend = get_point_backend(stub)
 
     >>> # Use Shapely backend
     >>> from ansys.edb.core.config import Config, ComputationBackend
     >>> Config.set_computation_backend(ComputationBackend.SHAPELY)
-    >>> backend = get_backend()
+    >>> backend = get_point_backend()
     """
     backend_type = Config.get_computation_backend()
 
@@ -59,39 +60,38 @@ def get_backend(stub=None) -> PolygonBackend:
         raise ValueError(f"Unknown backend type: {backend_type}")
 
 
-def _get_server_backend(stub) -> PolygonBackend:
+def _get_server_backend(stub) -> PointBackend:
     """Get the server backend instance.
 
     Parameters
     ----------
-    stub : polygon_data_pb2_grpc.PolygonDataServiceStub
-        The gRPC stub for polygon operations.
+    stub : point_data_pb2_grpc.PointDataServiceStub
+        The gRPC stub for point operations.
 
     Returns
     -------
-    ServerBackend
+    PointServerBackend
         Server computation backend.
     """
     if stub is None:
         raise ValueError("Server backend requires a stub parameter")
 
-    from ansys.edb.core.geometry.backends.server_backend import ServerBackend
+    from ansys.edb.core.geometry.backends.point_server_backend import PointServerBackend
 
-    return ServerBackend(stub)
+    return PointServerBackend(stub)
 
 
-def _get_shapely_backend(stub=None) -> PolygonBackend:
+def _get_shapely_backend(stub=None) -> PointBackend:
     """Get the Shapely backend instance.
 
     Parameters
     ----------
-    stub : polygon_data_pb2_grpc.PolygonDataServiceStub, optional
-        The gRPC stub for polygon operations. Passed to ShapelyBackend for
-        methods that delegate to the server backend (e.g., alpha_shape).
+    stub : point_data_pb2_grpc.PointDataServiceStub, optional
+        The gRPC stub for point operations.
 
     Returns
     -------
-    ShapelyBackend
+    PointShapelyBackend
         Shapely computation backend.
 
     Raises
@@ -99,23 +99,22 @@ def _get_shapely_backend(stub=None) -> PolygonBackend:
     ImportError
         If Shapely is not installed.
     """
-    from ansys.edb.core.geometry.backends.shapely_backend import ShapelyBackend
+    from ansys.edb.core.geometry.backends.point_shapely_backend import PointShapelyBackend
 
-    return ShapelyBackend(stub)
+    return PointShapelyBackend(stub)
 
 
-def _get_build123d_backend(stub=None) -> PolygonBackend:
+def _get_build123d_backend(stub=None) -> PointBackend:
     """Get the Build123d backend instance.
 
     Parameters
     ----------
-    stub : polygon_data_pb2_grpc.PolygonDataServiceStub, optional
-        The gRPC stub for polygon operations. Passed to Build123dBackend for
-        methods that delegate to the server backend (e.g., alpha_shape).
+    stub : point_data_pb2_grpc.PointDataServiceStub, optional
+        The gRPC stub for point operations.
 
     Returns
     -------
-    Build123dBackend
+    PointBuild123dBackend
         Build123d computation backend.
 
     Raises
@@ -123,6 +122,6 @@ def _get_build123d_backend(stub=None) -> PolygonBackend:
     ImportError
         If Build123d is not installed.
     """
-    from ansys.edb.core.geometry.backends.build123d_backend import Build123dBackend
+    from ansys.edb.core.geometry.backends.point_build123d_backend import PointBuild123dBackend
 
-    return Build123dBackend(stub)
+    return PointBuild123dBackend(stub)

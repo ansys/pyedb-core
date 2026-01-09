@@ -16,7 +16,8 @@ import sys
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
 from ansys.edb.core import session
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.geometry.backends import get_point_backend
+from ansys.edb.core.inner import parser
 from ansys.edb.core.utility import conversions, value
 
 
@@ -26,6 +27,20 @@ class PointData:
     __stub: point_data_pb2_grpc.PointDataServiceStub = session.StubAccessor(
         session.StubType.point_data
     )
+
+    # Computation backend instance
+    _backend = None
+
+    @classmethod
+    def _get_backend(cls):
+        """Get the computation backend, initializing it if needed.
+
+        Returns
+        -------
+        PointBackend
+            The computation backend instance.
+        """
+        return get_point_backend(stub=cls.__stub)
 
     def __init__(self, *data: Iterable[ValueLike]):
         """Initialize point data from a list of coordinates.
@@ -37,6 +52,12 @@ class PointData:
         self._x = self._y = self._arc_h = None
 
         if len(data) == 1:
+            # If already a PointData, copy its values
+            if isinstance(data[0], PointData):
+                self._x = data[0]._x
+                self._y = data[0]._y
+                self._arc_h = data[0]._arc_h
+                return
             # try to expand the argument.
             try:
                 iter(data[0])
@@ -237,7 +258,7 @@ class PointData:
             Closet PointData or :obj:`None` if either point is an arc.
         """
         if not self.is_arc:
-            return self.__stub.ClosestPoint(messages.point_data_with_line_message(self, start, end))
+            return self._get_backend().closest(self, start, end)
 
     def distance(self, start: PointLike, end: PointLike = None) -> float:
         """Compute the shortest distance from the point to a line segment when an end point is given. \
@@ -257,9 +278,7 @@ class PointData:
         if end is None:
             return (self - start).magnitude()
         else:
-            return self.__stub.Distance(
-                messages.point_data_with_line_message(self, start, end)
-            ).value
+            return self._get_backend().distance(self, start, end)
 
     def cross(self, other: PointLike) -> Value | None:
         """Compute the cross product of the point vector with another point vector.
@@ -312,7 +331,7 @@ class PointData:
             PointData after rotating or :obj:`None` if either point is an arc.
         """
         if not self.is_arc:
-            return self.__stub.Rotate(messages.point_data_rotate_message(self, center, angle))
+            return self._get_backend().rotate(self, angle, center)
 
     def dot(self, other: PointLike) -> float:
         """Perform per-component multiplication (dot product) of this point and another point.

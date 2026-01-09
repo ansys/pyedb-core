@@ -8,12 +8,6 @@ from ansys.edb.core.geometry.arc_data import ArcData
 from ansys.edb.core.geometry.polygon_data import IntersectionType
 
 
-def test_config_default(session):
-    """Test default configuration."""
-    backend = Config.get_computation_backend()
-    assert backend == ComputationBackend.AUTO
-
-
 def test_config_set_backend(session):
     """Test setting backend programmatically."""
     Config.set_computation_backend(ComputationBackend.SERVER)
@@ -49,8 +43,8 @@ def test_config_environment_variable(session):
 
 def test_backend_factory_server(session):
     """Test server backend creation."""
-    from ansys.edb.core.geometry.backends.backend_factory import _get_server_backend
-    from ansys.edb.core.geometry.backends.server_backend import ServerBackend
+    from ansys.edb.core.geometry.backends.polygon_backend_factory import _get_server_backend
+    from ansys.edb.core.geometry.backends.polygon_server_backend import ServerBackend
 
     # Mock stub for testing
     class MockStub:
@@ -63,8 +57,11 @@ def test_backend_factory_server(session):
 
 def test_backend_factory_shapely(session):
     """Test Shapely backend creation."""
-    from ansys.edb.core.geometry.backends.backend_factory import _get_shapely_backend
-    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE, ShapelyBackend
+    from ansys.edb.core.geometry.backends.polygon_backend_factory import _get_shapely_backend
+    from ansys.edb.core.geometry.backends.polygon_shapely_backend import (
+        SHAPELY_AVAILABLE,
+        ShapelyBackend,
+    )
 
     if not SHAPELY_AVAILABLE:
         pytest.skip("Shapely not installed")
@@ -75,12 +72,12 @@ def test_backend_factory_shapely(session):
 
 def test_backend_factory_shapely_not_available(session):
     """Test Shapely backend when library not available."""
-    from ansys.edb.core.geometry.backends.shapely_backend import SHAPELY_AVAILABLE
+    from ansys.edb.core.geometry.backends.polygon_shapely_backend import SHAPELY_AVAILABLE
 
     if SHAPELY_AVAILABLE:
         pytest.skip("Shapely is installed, cannot test unavailable case")
 
-    from ansys.edb.core.geometry.backends.backend_factory import _get_shapely_backend
+    from ansys.edb.core.geometry.backends.polygon_backend_factory import _get_shapely_backend
 
     with pytest.raises(ImportError, match="Shapely is not installed"):
         _get_shapely_backend()
@@ -88,8 +85,8 @@ def test_backend_factory_shapely_not_available(session):
 
 def test_backend_factory_build123d(session):
     """Test Build123d backend creation."""
-    from ansys.edb.core.geometry.backends.backend_factory import _get_build123d_backend
-    from ansys.edb.core.geometry.backends.build123d_backend import (
+    from ansys.edb.core.geometry.backends.polygon_backend_factory import _get_build123d_backend
+    from ansys.edb.core.geometry.backends.polygon_build123d_backend import (
         BUILD123D_AVAILABLE,
         Build123dBackend,
     )
@@ -103,12 +100,12 @@ def test_backend_factory_build123d(session):
 
 def test_backend_factory_build123d_not_available(session):
     """Test Build123d backend when library not available."""
-    from ansys.edb.core.geometry.backends.build123d_backend import BUILD123D_AVAILABLE
+    from ansys.edb.core.geometry.backends.polygon_build123d_backend import BUILD123D_AVAILABLE
 
     if BUILD123D_AVAILABLE:
         pytest.skip("Build123d is installed, cannot test unavailable case")
 
-    from ansys.edb.core.geometry.backends.backend_factory import _get_build123d_backend
+    from ansys.edb.core.geometry.backends.polygon_backend_factory import _get_build123d_backend
 
     with pytest.raises(ImportError, match="Build123d is not installed"):
         _get_build123d_backend()

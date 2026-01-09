@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
-from ansys.edb.core.geometry.backends.base import PolygonBackend
+from ansys.edb.core.geometry.backends.polygon_backend_base import PolygonBackend
 from ansys.edb.core.inner import messages, parser
 
 

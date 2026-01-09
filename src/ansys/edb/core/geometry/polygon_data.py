@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ansys.edb.core.geometry.backends.base import PolygonBackend
+from ansys.edb.core.geometry.backends.polygon_backend_base import PolygonBackend
 
 if TYPE_CHECKING:
     from ansys.edb.core.typing import PointLike

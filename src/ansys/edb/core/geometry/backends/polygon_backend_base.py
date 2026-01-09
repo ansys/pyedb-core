@@ -6,9 +6,8 @@ from abc import ABC, abstractmethod
 import math
 from typing import TYPE_CHECKING
 
-from ansys.edb.core.geometry.point_data import PointData
-
 if TYPE_CHECKING:
+    from ansys.edb.core.geometry.point_data import PointData
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
 
@@ -42,6 +41,8 @@ class PolygonBackend(ABC):
         This method ensures that if the first or last point is an arc, an appropriate
         regular point is added before/after it.
         """
+        from ansys.edb.core.geometry.point_data import PointData
+
         if not points:
             return []
 

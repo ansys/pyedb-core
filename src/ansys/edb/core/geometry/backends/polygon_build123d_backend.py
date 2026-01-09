@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 
 from ansys.edb.core.geometry.arc_data import ArcData
-from ansys.edb.core.geometry.backends.base import PolygonBackend
+from ansys.edb.core.geometry.backends.polygon_backend_base import PolygonBackend
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.geometry.polygon_data import PolygonData
 
@@ -468,7 +468,7 @@ class Build123dBackend(PolygonBackend):
                 stacklevel=2,
             )
 
-        from ansys.edb.core.geometry.backends.server_backend import ServerBackend
+        from ansys.edb.core.geometry.backends.polygon_server_backend import ServerBackend
 
         server_backend = ServerBackend(self._stub)
         return server_backend.has_self_intersections(polygon, tol)
@@ -731,7 +731,7 @@ class Build123dBackend(PolygonBackend):
                 stacklevel=2,
             )
 
-        from ansys.edb.core.geometry.backends.server_backend import ServerBackend
+        from ansys.edb.core.geometry.backends.polygon_server_backend import ServerBackend
 
         server_backend = ServerBackend(self._stub)
         return server_backend.defeature(polygon, tol)
@@ -1202,7 +1202,7 @@ class Build123dBackend(PolygonBackend):
                 stacklevel=2,
             )
 
-        from ansys.edb.core.geometry.backends.server_backend import ServerBackend
+        from ansys.edb.core.geometry.backends.polygon_server_backend import ServerBackend
 
         server_backend = ServerBackend(self._stub)
         return server_backend.alpha_shape(points, alpha)

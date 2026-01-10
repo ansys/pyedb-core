@@ -124,8 +124,20 @@ class PointShapelyBackend(PointBackend):
         float
             Distance value.
         """
-        # TODO: Implement using Shapely
-        raise NotImplementedError("distance method not yet implemented for Shapely backend")
+        from ansys.edb.core.geometry.point_data import PointData
+
+        if end is None:
+            return (point - start).magnitude()
+        else:
+            if isinstance(start, PointData):
+                start = [start.x.double, start.y.double]
+            if isinstance(end, PointData):
+                end = [end.x.double, end.y.double]
+
+            p = self._to_shapely_point(point)
+            line = LineString([start, end])
+
+            return p.distance(line)
 
     def rotate(self, point: PointData, angle: float, center: PointLike) -> PointData:
         """Rotate a point at a given center by a given angle using Shapely.

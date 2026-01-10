@@ -156,5 +156,14 @@ class PointShapelyBackend(PointBackend):
         PointData
             Rotated point.
         """
-        # TODO: Implement using Shapely
-        raise NotImplementedError("rotate method not yet implemented for Shapely backend")
+        from shapely.affinity import rotate
+
+        from ansys.edb.core.geometry.point_data import PointData
+
+        if isinstance(center, PointData):
+            center = (center.x.double, center.y.double)
+
+        p = self._to_shapely_point(point)
+        rotated_point = rotate(p, angle, origin=center, use_radians=True)
+
+        return PointData(rotated_point.x, rotated_point.y)

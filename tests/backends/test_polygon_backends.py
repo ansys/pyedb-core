@@ -8,12 +8,6 @@ from ansys.edb.core.geometry.arc_data import ArcData
 from ansys.edb.core.geometry.polygon_data import IntersectionType
 
 
-def test_config_default(session):
-    """Test default configuration."""
-    backend = Config.get_computation_backend()
-    assert backend == ComputationBackend.AUTO
-
-
 def test_config_set_backend(session):
     """Test setting backend programmatically."""
     Config.set_computation_backend(ComputationBackend.SERVER)

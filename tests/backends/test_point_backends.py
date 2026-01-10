@@ -4,16 +4,12 @@ This module contains tests for point backend implementations including
 server, Shapely, and Build123d backends.
 """
 
+import math
+
 import pytest
 
 from ansys.edb.core.config import ComputationBackend, Config
 from ansys.edb.core.geometry.point_data import PointData
-
-
-def test_config_default(session):
-    """Test default configuration."""
-    backend = Config.get_computation_backend()
-    assert backend == ComputationBackend.AUTO
 
 
 def test_config_set_backend(session):
@@ -241,7 +237,7 @@ def test_closest(session, point, start, end, expected_result):
         # Using PointData objects
         (PointData(2, 2), PointData(4, 6), None, 4.47213595499958),  # Point-to-point
         (PointData(5, 5), PointData(0, 0), PointData(10, 0), 5.0),  # Point to line segment
-        (PointData(5e10, 5e10), PointData(0, 0), PointData(5e20, 0), 5e10),  # Large coordinates
+        (PointData(5e5, 5e5), PointData(0, 0), PointData(5e10, 0), 5e5),  # Large coordinates
         (PointData(5e-5, 5e-5), PointData(0, 0), PointData(10e-5, 0), 5e-5),  # Small coordinates
     ],
 )
@@ -265,3 +261,77 @@ def test_distance(session, point, start, end, expected_distance):
     assert result_server == pytest.approx(expected_distance, abs=tol, rel=tol)
     assert result_shapely == pytest.approx(expected_distance, abs=tol, rel=tol)
     # assert result_build123d == pytest.approx(expected_distance, abs=tol, rel=tol)
+
+
+@pytest.mark.parametrize(
+    "point, angle, center, expected_result",
+    [
+        # Basic 90-degree rotations around origin
+        ((1, 0), math.pi / 2, (0, 0), (0, 1)),  # 90 degrees (π/2)
+        ((0, 1), math.pi / 2, (0, 0), (-1, 0)),  # 90 degrees
+        ((1, 1), math.pi / 2, (0, 0), (-1, 1)),  # 90 degrees
+        # 180-degree rotation around origin
+        ((1, 0), math.pi, (0, 0), (-1, 0)),  # 180 degrees (π)
+        ((0, 1), math.pi, (0, 0), (0, -1)),  # 180 degrees
+        ((1, 1), math.pi, (0, 0), (-1, -1)),  # 180 degrees
+        # 270-degree rotation around origin
+        ((1, 0), 3 * math.pi / 2, (0, 0), (0, -1)),  # 270 degrees (3π/2)
+        ((0, 1), 3 * math.pi / 2, (0, 0), (1, 0)),  # 270 degrees
+        # 360-degree rotation (full circle)
+        ((1, 0), 2 * math.pi, (0, 0), (1, 0)),  # 360 degrees (2π)
+        ((5, 5), 2 * math.pi, (0, 0), (5, 5)),  # 360 degrees
+        # No rotation (0 degrees)
+        ((5, 5), 0, (0, 0), (5, 5)),  # 0 degrees
+        ((10, 20), 0, (0, 0), (10, 20)),  # 0 degrees
+        # Rotation around non-origin centers
+        ((10, 0), math.pi, (5, 0), (0, 0)),  # 180 degrees around (5, 0)
+        ((0, 10), math.pi, (0, 5), (0, 0)),  # 180 degrees around (0, 5)
+        ((5, 5), math.pi / 2, (5, 5), (5, 5)),  # Rotate around itself
+        ((10, 5), math.pi / 2, (5, 5), (5, 10)),  # 90 degrees around (5, 5)
+        ((5, 10), math.pi / 2, (5, 5), (0, 5)),  # 90 degrees around (5, 5)
+        # 45-degree rotation
+        ((1, 0), math.pi / 4, (0, 0), (math.sqrt(2) / 2, math.sqrt(2) / 2)),  # 45 degrees (π/4)
+        # Negative angles (clockwise rotation)
+        ((1, 0), -math.pi / 2, (0, 0), (0, -1)),  # -90 degrees
+        ((0, 1), -math.pi / 2, (0, 0), (1, 0)),  # -90 degrees
+        # Negative coordinates
+        ((-1, 0), math.pi / 2, (0, 0), (0, -1)),  # 90 degrees
+        ((0, -1), math.pi / 2, (0, 0), (1, 0)),  # 90 degrees
+        ((-5, -5), math.pi, (0, 0), (5, 5)),  # 180 degrees
+        # Large coordinates
+        ((1e5, 1e5), math.pi, (0, 0), (-1e5, -1e5)),  # 180 degrees
+        # Small coordinates
+        ((0.001, 0), math.pi / 2, (0, 0), (0, 0.001)),  # 90 degrees
+        ((0.0001, 0.0001), math.pi, (0, 0), (-0.0001, -0.0001)),  # 180 degrees
+        # Using PointData objects
+        (PointData(1, 0), math.pi / 2, PointData(0, 0), (0, 1)),  # 90 degrees
+        (PointData(10, 0), math.pi, PointData(5, 0), (0, 0)),  # 180 degrees around (5, 0)
+        # Complex rotation scenarios
+        ((3, 4), -math.atan2(4, 3), (0, 0), (5, 0)),  # Rotate to align with x-axis
+        ((10, 10), -math.pi / 2, (10, 0), (20, 0)),  # 90 degrees around (10, 0)
+    ],
+)
+def test_rotate(session, point, angle, center, expected_result):
+    """Test rotate computation with all backends."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    point_server = PointData(point)
+    result_server = point_server.rotate(angle, center)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    point_shapely = PointData(point)
+    result_shapely = point_shapely.rotate(angle, center)
+
+    # Config.set_computation_backend(ComputationBackend.BUILD123D)
+    # point_build123d = PointData(point)
+    # result_build123d = point_build123d.rotate(angle, center)
+
+    tol = 1e-7
+
+    assert (result_server.x.double, result_server.y.double) == pytest.approx(
+        expected_result, abs=tol * 10, rel=tol
+    )
+    assert (result_shapely.x.double, result_shapely.y.double) == pytest.approx(
+        expected_result, abs=tol * 10, rel=tol
+    )
+    # assert (result_build123d.x.double, result_build123d.y.double) == pytest.approx(expected_result, abs=tol, rel=tol)

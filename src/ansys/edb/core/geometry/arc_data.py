@@ -128,7 +128,6 @@ class ArcData:
         bool
             ``True`` when the arc is a straight line segment, ``False`` otherwise.
         """
-        # print(self.height, type(self.height))
         return math.fabs(self.height) <= tolerance
 
     @property

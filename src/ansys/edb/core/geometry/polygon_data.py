@@ -115,6 +115,7 @@ class PolygonData:
             PolygonSenseType(sense),
             closed,
         )
+        self._points = None  # Will be lazily computed if needed
 
         if points is not None:
             self._points = [conversions.to_point(pt) for pt in points]
@@ -130,8 +131,7 @@ class PolygonData:
                 conversions.to_point(pt)
                 for pt in [(ll.x, ll.y), (ur.x, ll.y), (ur.x, ur.y), (ll.x, ur.y)]
             ]
-        else:
-            raise TypeError("PolygonData must be initialized from a list of points/arcs or a box.")
+        # Allow empty initialization for lazy conversion from backend cache
 
     def __len__(self) -> int:
         """Get the number of coordinates.
@@ -140,6 +140,7 @@ class PolygonData:
         -------
         int
         """
+        # Access via property to trigger lazy conversion if needed
         return len(self.points)
 
     @property
@@ -149,6 +150,33 @@ class PolygonData:
 
         This property is read-only.
         """
+        # Lazy conversion from cached backend representation if needed
+        if self._points is None:
+            if hasattr(self, "_build123d_cache"):
+                # Convert from build123d cache
+                from ansys.edb.core.geometry.backends.polygon_build123d_backend import (
+                    Build123dBackend,
+                )
+
+                converted = Build123dBackend._build123d_to_polygon_data(self._build123d_cache)
+                self._points = converted._points
+                self._holes = converted._holes
+                self._sense = converted._sense
+                self._is_closed = converted._is_closed
+            elif hasattr(self, "_shapely_cache"):
+                # Convert from shapely cache if needed (for future use)
+                from ansys.edb.core.geometry.backends.polygon_shapely_backend import ShapelyBackend
+
+                converted = ShapelyBackend._shapely_to_polygon_data(self._shapely_cache)
+                self._points = converted._points
+                self._holes = converted._holes
+                self._sense = converted._sense
+                self._is_closed = converted._is_closed
+            else:
+                raise ValueError(
+                    "PolygonData has no point data and no cached backend representation"
+                )
+
         return self._points
 
     @property

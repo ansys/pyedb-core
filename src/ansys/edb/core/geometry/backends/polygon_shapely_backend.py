@@ -169,6 +169,26 @@ class ShapelyBackend(PolygonBackend):
 
         return PolygonData(points=points, holes=holes, closed=True)
 
+    @staticmethod
+    def _create_polygon_with_cache(shapely_poly: ShapelyPolygon) -> PolygonData:
+        """Create a PolygonData with cached Shapely representation.
+
+        This avoids expensive conversion to points until needed.
+
+        Parameters
+        ----------
+        shapely_poly : ShapelyPolygon
+            The Shapely polygon to cache.
+
+        Returns
+        -------
+        PolygonData
+            A PolygonData object with the Shapely representation cached.
+        """
+        result = PolygonData()
+        result._shapely_cache = shapely_poly
+        return result
+
     def area(self, polygon: PolygonData) -> float:
         """Compute the area of a polygon using Shapely.
 
@@ -456,10 +476,10 @@ class ShapelyBackend(PolygonBackend):
         if isinstance(fixed_geom, MultiPolygon):
             # Convert each polygon in the MultiPolygon to PolygonData
             for poly in fixed_geom.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(poly))
+                result_polygons.append(self._create_polygon_with_cache(poly))
         else:
             # Single polygon result
-            result_polygons.append(self._shapely_to_polygon_data(fixed_geom))
+            result_polygons.append(self._create_polygon_with_cache(fixed_geom))
 
         return result_polygons
 
@@ -514,7 +534,7 @@ class ShapelyBackend(PolygonBackend):
         shape = self._to_shapely_polygon(polygon)
         shape = translate(shape, xoff=vector[0], yoff=vector[1])
 
-        return ShapelyBackend._shapely_to_polygon_data(shape)
+        return ShapelyBackend._create_polygon_with_cache(shape)
 
     def rotate(
         self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
@@ -540,7 +560,7 @@ class ShapelyBackend(PolygonBackend):
         shape = self._to_shapely_polygon(polygon)
         shape = rotate(shape, angle, origin=center, use_radians=use_radians)
 
-        return ShapelyBackend._shapely_to_polygon_data(shape)
+        return ShapelyBackend._create_polygon_with_cache(shape)
 
     def scale(
         self, polygon: PolygonData, factor: float, center: tuple[float, float]
@@ -566,7 +586,7 @@ class ShapelyBackend(PolygonBackend):
         shape = self._to_shapely_polygon(polygon)
         shape = scale(shape, xfact=factor, yfact=factor, origin=center)
 
-        return ShapelyBackend._shapely_to_polygon_data(shape)
+        return ShapelyBackend._create_polygon_with_cache(shape)
 
     def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
         """Mirror the polygon across a vertical line at x using Shapely.
@@ -590,7 +610,7 @@ class ShapelyBackend(PolygonBackend):
         shape = scale(shape, xfact=-1, yfact=1, origin=(0, 0))
         shape = translate(shape, xoff=x)
 
-        return ShapelyBackend._shapely_to_polygon_data(shape)
+        return ShapelyBackend._create_polygon_with_cache(shape)
 
     def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
         """Compute the bounding circle of the polygon using Shapely.
@@ -667,7 +687,7 @@ class ShapelyBackend(PolygonBackend):
         hull_geom = multi_point.convex_hull
 
         # Convert back to PolygonData
-        return self._shapely_to_polygon_data(hull_geom)
+        return self._create_polygon_with_cache(hull_geom)
 
     def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon by removing small features using Shapely.
@@ -698,7 +718,7 @@ class ShapelyBackend(PolygonBackend):
         simplified_polygon = shapely_polygon.simplify(tolerance=tol, preserve_topology=True)
 
         # Convert back to PolygonData
-        return self._shapely_to_polygon_data(simplified_polygon)
+        return self._create_polygon_with_cache(simplified_polygon)
 
     def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
         """Get the intersection type with another polygon using Shapely.
@@ -899,9 +919,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom))
+                result_polygons.append(self._create_polygon_with_cache(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result))
+            result_polygons.append(self._create_polygon_with_cache(result))
 
         return result_polygons
 
@@ -954,9 +974,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom))
+                result_polygons.append(self._create_polygon_with_cache(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result))
+            result_polygons.append(self._create_polygon_with_cache(result))
 
         return result_polygons
 
@@ -1015,9 +1035,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom))
+                result_polygons.append(self._create_polygon_with_cache(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result))
+            result_polygons.append(self._create_polygon_with_cache(result))
 
         return result_polygons
 
@@ -1076,9 +1096,9 @@ class ShapelyBackend(PolygonBackend):
 
         if isinstance(result, MultiPolygon):
             for geom in result.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom))
+                result_polygons.append(self._create_polygon_with_cache(geom))
         else:
-            result_polygons.append(self._shapely_to_polygon_data(result))
+            result_polygons.append(self._create_polygon_with_cache(result))
 
         return result_polygons
 
@@ -1152,10 +1172,10 @@ class ShapelyBackend(PolygonBackend):
         if isinstance(buffered, MultiPolygon):
             # Multiple polygons resulted from the operation
             for geom in buffered.geoms:
-                result_polygons.append(self._shapely_to_polygon_data(geom))
+                result_polygons.append(self._create_polygon_with_cache(geom))
         else:
             # Single polygon result
-            result_polygons.append(self._shapely_to_polygon_data(buffered))
+            result_polygons.append(self._create_polygon_with_cache(buffered))
 
         return result_polygons
 

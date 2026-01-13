@@ -405,7 +405,6 @@ class PolygonBackend(ABC):
         PolygonData
             Polygon with all arcs tessellated into line segments.
         """
-        from ansys.edb.core.geometry.point_data import PointData
         from ansys.edb.core.geometry.polygon_data import PolygonData
 
         # Extract coordinates with arcs tessellated
@@ -414,7 +413,7 @@ class PolygonBackend(ABC):
         )
 
         # Convert coordinates back to PointData objects (non-arc points)
-        new_points = [PointData(x, y) for x, y in exterior_coords]
+        # new_points = [(x, y) for x, y in exterior_coords]
 
         # Process holes
         new_holes = []
@@ -422,15 +421,15 @@ class PolygonBackend(ABC):
             hole_coords = PolygonBackend._extract_coordinates_with_arcs(
                 hole.points, max_chord_error, max_arc_angle, max_points
             )
-            hole_points = [PointData(x, y) for x, y in hole_coords]
+            # hole_points = [(x, y) for x, y in hole_coords]
             # Create a new PolygonData for the hole without arcs
 
-            new_hole = PolygonData(points=hole_points, sense=hole.sense, closed=hole.is_closed)
+            new_hole = PolygonData(points=hole_coords, sense=hole.sense, closed=hole.is_closed)
             new_holes.append(new_hole)
 
         # Create and return new PolygonData without arcs
         return PolygonData(
-            points=new_points, holes=new_holes, sense=polygon.sense, closed=polygon.is_closed
+            points=exterior_coords, holes=new_holes, sense=polygon.sense, closed=polygon.is_closed
         )
 
     @abstractmethod

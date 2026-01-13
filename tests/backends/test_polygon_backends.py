@@ -1160,7 +1160,7 @@ def test_bounding_circle(session, polygon, expected_result):
                     ]
                 },
             ],
-            178.53981633165816,
+            175.0,
         ),  # One squares with two convex arcs and one square with two concave arcs
         (
             [
@@ -1193,12 +1193,10 @@ def test_convex_hull(session, polygons, expected_area):
     convex_hull_build123d = PolygonData.convex_hull(polygon_build123d_list)
     area_build123d = convex_hull_build123d.area()
 
-    tol = 1e-7
+    tol = 1e-9
 
-    assert area_server == pytest.approx(
-        expected_area, rel=safe_tol(polygons, tol)
-    )  # The server backend does not conserve exact arc shapes in convex hull calculation.
-    assert area_shapely == pytest.approx(expected_area, rel=safe_tol(polygons, tol))
+    assert area_server == pytest.approx(expected_area, rel=tol)
+    assert area_shapely == pytest.approx(expected_area, rel=tol)
     assert area_build123d == pytest.approx(expected_area, rel=tol)
 
 

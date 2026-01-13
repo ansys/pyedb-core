@@ -239,6 +239,26 @@ class Build123dBackend(PolygonBackend):
 
         return PolygonData(**params)
 
+    @staticmethod
+    def _create_polygon_with_cache(face: "build123d.Face") -> PolygonData:
+        """Create a PolygonData with cached build123d representation.
+
+        This avoids expensive conversion to points/arcs until needed.
+
+        Parameters
+        ----------
+        face : build123d.Face
+            The build123d Face to cache.
+
+        Returns
+        -------
+        PolygonData
+            A PolygonData object with the build123d representation cached.
+        """
+        result = PolygonData()
+        result._build123d_cache = face
+        return result
+
     def area(self, polygon: PolygonData) -> float:
         """Compute the area of a polygon using Build123d.
 
@@ -267,6 +287,13 @@ class Build123dBackend(PolygonBackend):
         -------
         bool
             ``True`` when the polygon is convex, ``False`` otherwise.
+
+        Notes
+        -----
+        This implementation uses the cross-product method to efficiently check convexity.
+        For a polygon to be convex, all cross products of consecutive edge vectors must
+        have the same sign (all turns in the same direction). This works directly with
+        arcs since we check the tangent directions at arc endpoints.
         """
         if polygon.has_holes():
             return False
@@ -274,10 +301,47 @@ class Build123dBackend(PolygonBackend):
         face = self._polygon_data_to_build123d(polygon)
 
         outer_wire = build123d.Wire(face.edges())
-        hull_wire = outer_wire.make_convex_hull(outer_wire.edges())
-        hull_face = build123d.Face(hull_wire)
+        edges = list(outer_wire.edges())
 
-        return math.isclose(face.area, hull_face.area, rel_tol=1e-9)
+        # For convexity, all cross products must have the same sign
+        # We check the z-component of cross product between consecutive edge tangent vectors
+        sign = None
+
+        for i in range(len(edges)):
+            edge1 = edges[i]
+            edge2 = edges[(i + 1) % len(edges)]
+
+            # Get tangent direction at the end of edge1 (which connects to start of edge2)
+            # For build123d edges, we use tangent_at with parameter 1.0 for end
+            tangent1 = edge1.tangent_at(1.0)
+            v1_x = tangent1.X
+            v1_y = tangent1.Y
+
+            # Get tangent direction at the start of edge2 (parameter 0.0)
+            tangent2 = edge2.tangent_at(0.0)
+            v2_x = tangent2.X
+            v2_y = tangent2.Y
+
+            # Compute cross product z-component: v1 × v2
+            cross_z = v1_x * v2_y - v1_y * v2_x
+
+            # Treat near-zero cross products (collinear edges)
+            if abs(cross_z) < 1e-10:
+                dot_product = v1_x * v2_x + v1_y * v2_y
+                if dot_product < 0:
+                    return False
+
+                continue
+
+            current_sign = 1 if cross_z > 0 else -1
+
+            if sign is None:
+                sign = current_sign
+            elif sign != current_sign:
+                # Found inconsistent turn direction - not convex
+                return False
+
+        return True
 
     def is_circle(self, polygon: PolygonData) -> bool:
         """Determine whether the outer contour of the polygon is a circle using Build123d.
@@ -539,7 +603,8 @@ class Build123dBackend(PolygonBackend):
         face = self._polygon_data_to_build123d(polygon)
         moved_face = face.translate(build123d.Vector(*vector, 0))
 
-        return Build123dBackend._build123d_to_polygon_data(moved_face)
+        # Return a PolygonData with cached build123d representation
+        return Build123dBackend._create_polygon_with_cache(moved_face)
 
     def rotate(
         self, polygon: PolygonData, angle: float, center: tuple[float, float], use_radians: bool
@@ -572,7 +637,8 @@ class Build123dBackend(PolygonBackend):
             angle=angle,
         )
 
-        return Build123dBackend._build123d_to_polygon_data(rotated_face)
+        # Return a PolygonData with cached build123d representation
+        return Build123dBackend._create_polygon_with_cache(rotated_face)
 
     def scale(
         self, polygon: PolygonData, factor: float, center: tuple[float, float]
@@ -599,7 +665,8 @@ class Build123dBackend(PolygonBackend):
             build123d.Vector(center[0] * (1 - factor), center[1] * (1 - factor), 0)
         )
 
-        return Build123dBackend._build123d_to_polygon_data(scaled_face)
+        # Return a PolygonData with cached build123d representation
+        return Build123dBackend._create_polygon_with_cache(scaled_face)
 
     def mirror_x(self, polygon: PolygonData, x: float) -> PolygonData:
         """Mirror the polygon across a vertical line at x using Build123d.
@@ -622,7 +689,8 @@ class Build123dBackend(PolygonBackend):
         )
         mirrored_face = face.mirror(mirror_plane)
 
-        return Build123dBackend._build123d_to_polygon_data(mirrored_face)
+        # Return a PolygonData with cached build123d representation
+        return Build123dBackend._create_polygon_with_cache(mirrored_face)
 
     def bounding_circle(self, polygon: PolygonData) -> tuple[tuple[float, float], float]:
         """Compute the bounding circle of the polygon using Build123d.
@@ -669,7 +737,20 @@ class Build123dBackend(PolygonBackend):
         -------
         PolygonData
             The convex hull polygon.
+
+        Notes
+        -----
+        This method delegates to the Shapely backend for better performance.
+        The convex hull algorithm in Shapely is optimized for this operation.
         """
+        from ansys.edb.core.geometry.backends.polygon_shapely_backend import ShapelyBackend
+
+        shapely_backend = ShapelyBackend(self._stub)
+        return shapely_backend.convex_hull(polygons)
+
+        # Build123d implementation (less efficient than Shapely for this operation)
+        # The build123d convex hull algorithm preserves arcs, which is different than the Server behavior.
+        # Also, it is less efficient than both the Server and Shapely.
         if not polygons:
             raise ValueError("Cannot compute convex hull of an empty list of polygons")
         if not isinstance(polygons, list):
@@ -689,7 +770,7 @@ class Build123dBackend(PolygonBackend):
         hull_wire = build123d.Wire.make_convex_hull(all_edges)
         hull_face = build123d.Face(hull_wire)
 
-        return Build123dBackend._build123d_to_polygon_data(hull_face)
+        return Build123dBackend._create_polygon_with_cache(hull_face)
 
     def defeature(self, polygon: PolygonData, tol: float = 1e-9) -> PolygonData:
         """Defeature a polygon by removing small features using Build123d.
@@ -720,17 +801,6 @@ class Build123dBackend(PolygonBackend):
         delegates to the server backend. The server stub must be available for
         this method to work.
         """
-        import warnings
-
-        if self._stub is None:
-            warnings.warn(
-                "Server stub is not available for defeature. "
-                "Defeature operation requires server backend. "
-                "This may fail if the stub is not properly initialized.",
-                UserWarning,
-                stacklevel=2,
-            )
-
         from ansys.edb.core.geometry.backends.polygon_server_backend import ServerBackend
 
         server_backend = ServerBackend(self._stub)
@@ -957,7 +1027,7 @@ class Build123dBackend(PolygonBackend):
         if not result_faces:
             return []
 
-        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
+        return [Build123dBackend._create_polygon_with_cache(face) for face in result_faces]
 
     def intersect(
         self, polygons1: list[PolygonData], polygons2: list[PolygonData]
@@ -1000,7 +1070,7 @@ class Build123dBackend(PolygonBackend):
         if not result_faces:
             return []
 
-        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
+        return [Build123dBackend._create_polygon_with_cache(face) for face in result_faces]
 
     def subtract(
         self, polygons1: list[PolygonData], polygons2: list[PolygonData]
@@ -1046,7 +1116,7 @@ class Build123dBackend(PolygonBackend):
         if not result_faces:
             return []
 
-        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
+        return [Build123dBackend._create_polygon_with_cache(face) for face in result_faces]
 
     def xor(self, polygons1: list[PolygonData], polygons2: list[PolygonData]) -> list[PolygonData]:
         """Compute an exclusive OR between two sets of polygons using Build123d.
@@ -1101,7 +1171,7 @@ class Build123dBackend(PolygonBackend):
         if not result_faces:
             return []
 
-        return [Build123dBackend._build123d_to_polygon_data(face) for face in result_faces]
+        return [Build123dBackend._create_polygon_with_cache(face) for face in result_faces]
 
     def expand(
         self,
@@ -1156,9 +1226,9 @@ class Build123dBackend(PolygonBackend):
             faces = offset_face.faces()
             if faces:
                 for f in faces:
-                    result_polygons.append(Build123dBackend._build123d_to_polygon_data(f))
+                    result_polygons.append(Build123dBackend._create_polygon_with_cache(f))
         else:
-            result_polygons.append(Build123dBackend._build123d_to_polygon_data(offset_face))
+            result_polygons.append(Build123dBackend._create_polygon_with_cache(offset_face))
 
         return result_polygons
 

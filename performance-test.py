@@ -53,7 +53,7 @@ for backend in backends:
     profiler.enable()
 
     for _ in range(NUM_ITERATIONS):
-        polygon.convex_hull([polygon])
+        polygon.intersection_type(polygon)
 
     profiler.disable()
 

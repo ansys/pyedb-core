@@ -809,6 +809,8 @@ class Build123dBackend(PolygonBackend):
     def intersection_type(self, polygon: PolygonData, other: PolygonData, tol: float = 1e-9):
         """Get the intersection type with another polygon using Build123d.
 
+        This method delegates to the Shapely backend implementation.
+
         Parameters
         ----------
         polygon : PolygonData
@@ -816,7 +818,7 @@ class Build123dBackend(PolygonBackend):
         other : PolygonData
             The second polygon.
         tol : float, default: 1e-9
-            Tolerance (not used in Build123d implementation but kept for API consistency).
+            Tolerance.
 
         Returns
         -------
@@ -825,10 +827,9 @@ class Build123dBackend(PolygonBackend):
 
         Notes
         -----
-        This implementation uses Build123d's geometric predicates to determine the relationship
-        between two polygons. The tolerance parameter is kept for API consistency with the
-        server backend but is not used in this implementation as Build123d uses its own
-        internal tolerance.
+        The Shapely backend provides a faster implementation using geometric predicates
+        rather than computing full intersections. This method delegates to that implementation
+        for better performance while preserving curve data in the original polygons.
 
         The intersection types are:
         - NO_INTERSECTION (0): Polygons do not intersect
@@ -837,16 +838,22 @@ class Build123dBackend(PolygonBackend):
         - COMMON_INTERSECTION (3): Polygons partially intersect
         - UNDEFINED_INTERSECTION (4): Intersection cannot be determined
         """
+        from ansys.edb.core.geometry.backends.polygon_shapely_backend import ShapelyBackend
+
+        shapely_backend = ShapelyBackend(self._stub)
+        return shapely_backend.intersection_type(polygon, other, tol)
+
+        # Build123d implementation (less efficient than Shapely for this operation).
         from ansys.api.edb.v1 import polygon_data_pb2
 
         face1 = self._polygon_data_to_build123d(polygon)
         face2 = self._polygon_data_to_build123d(other)
 
-        if not face1.intersect(face2):
+        intersection = face1.intersect(face2)
+
+        if not intersection:
             return polygon_data_pb2.NO_INTERSECTION
 
-        # A polygon is inside another if their intersection equals the first polygon
-        intersection = face1.intersect(face2)
         if intersection and math.isclose(intersection.area, face1.area, rel_tol=tol, abs_tol=tol):
             return polygon_data_pb2.THIS_INSIDE_OTHER
 

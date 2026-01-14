@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from ansys.edb.core.typing import PointLike
 
 from ansys.edb.core.geometry.backends.point_backend_base import PointBackend
+from ansys.edb.core.geometry.backends.point_shapely_backend import PointShapelyBackend
 
 try:
     import build123d  # noqa: F401
@@ -49,6 +50,34 @@ class PointBuild123dBackend(PointBackend):
                 "Build123d is required for PointBuild123dBackend but is not installed"
             )
         self._stub = stub
+        self._shapely_backend = PointShapelyBackend(stub=stub)
+
+    @staticmethod
+    def _to_build123d_point(point_data: PointData) -> build123d.Point:
+        """Convert a PointData to a Build123d Point with caching.
+
+        Parameters
+        ----------
+        point_data : PointData
+            The point to convert.
+
+        Returns
+        -------
+        Point
+            Shapely Point object.
+
+        Notes
+        -----
+        The Shapely Point is cached on the PointData instance to avoid
+        repeated conversions.
+        """
+        if hasattr(point_data, "_build123d_cache"):
+            return point_data._build123d_cache
+
+        build123d_point = build123d.Point(point_data.x.double, point_data.y.double)
+
+        point_data._build123d_cache = build123d_point
+        return build123d_point
 
     def closest(self, point: PointData, start: PointLike, end: PointLike) -> PointData:
         """Get the closest point on a line segment from the point using Build123d.
@@ -67,8 +96,7 @@ class PointBuild123dBackend(PointBackend):
         PointData
             Closest point on the line segment.
         """
-        # TODO: Implement using Build123d
-        raise NotImplementedError("closest method not yet implemented for Build123d backend")
+        return self._shapely_backend.closest(point, start, end)
 
     def distance(self, point: PointData, start: PointLike, end: PointLike = None) -> float:
         """Compute the shortest distance from the point to a line segment or another point.
@@ -87,8 +115,7 @@ class PointBuild123dBackend(PointBackend):
         float
             Distance value.
         """
-        # TODO: Implement using Build123d
-        raise NotImplementedError("distance method not yet implemented for Build123d backend")
+        return self._shapely_backend.distance(point, start, end)
 
     def rotate(self, point: PointData, angle: float, center: PointLike) -> PointData:
         """Rotate a point at a given center by a given angle using Build123d.
@@ -107,5 +134,4 @@ class PointBuild123dBackend(PointBackend):
         PointData
             Rotated point.
         """
-        # TODO: Implement using Build123d
-        raise NotImplementedError("rotate method not yet implemented for Build123d backend")
+        return self._shapely_backend.rotate(point, angle, center)

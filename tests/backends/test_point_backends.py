@@ -175,9 +175,9 @@ def test_closest(session, point, start, end, expected_result):
     point_shapely = PointData(point)
     result_shapely = point_shapely.closest(start, end)
 
-    # Config.set_computation_backend(ComputationBackend.BUILD123D)
-    # point_build123d = PointData(point)
-    # result_build123d = point_build123d.closest(start, end)
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    point_build123d = PointData(point)
+    result_build123d = point_build123d.closest(start, end)
 
     tol = 1e-9
 
@@ -187,7 +187,9 @@ def test_closest(session, point, start, end, expected_result):
     assert (result_shapely.x.double, result_shapely.y.double) == pytest.approx(
         expected_result, abs=tol, rel=tol
     )
-    # assert (result_build123d.x.double, result_build123d.y.double) == pytest.approx(expected_result, abs=tol, rel=tol)
+    assert (result_build123d.x.double, result_build123d.y.double) == pytest.approx(
+        expected_result, abs=tol, rel=tol
+    )
 
 
 @pytest.mark.parametrize(
@@ -252,15 +254,15 @@ def test_distance(session, point, start, end, expected_distance):
     point_shapely = PointData(point)
     result_shapely = point_shapely.distance(start, end)
 
-    # Config.set_computation_backend(ComputationBackend.BUILD123D)
-    # point_build123d = PointData(point)
-    # result_build123d = point_build123d.distance(start, end)
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    point_build123d = PointData(point)
+    result_build123d = point_build123d.distance(start, end)
 
     tol = 1e-7
 
     assert result_server == pytest.approx(expected_distance, abs=tol, rel=tol)
     assert result_shapely == pytest.approx(expected_distance, abs=tol, rel=tol)
-    # assert result_build123d == pytest.approx(expected_distance, abs=tol, rel=tol)
+    assert result_build123d == pytest.approx(expected_distance, abs=tol, rel=tol)
 
 
 @pytest.mark.parametrize(
@@ -322,9 +324,9 @@ def test_rotate(session, point, angle, center, expected_result):
     point_shapely = PointData(point)
     result_shapely = point_shapely.rotate(angle, center)
 
-    # Config.set_computation_backend(ComputationBackend.BUILD123D)
-    # point_build123d = PointData(point)
-    # result_build123d = point_build123d.rotate(angle, center)
+    Config.set_computation_backend(ComputationBackend.BUILD123D)
+    point_build123d = PointData(point)
+    result_build123d = point_build123d.rotate(angle, center)
 
     tol = 1e-7
 
@@ -334,4 +336,6 @@ def test_rotate(session, point, angle, center, expected_result):
     assert (result_shapely.x.double, result_shapely.y.double) == pytest.approx(
         expected_result, abs=tol * 10, rel=tol
     )
-    # assert (result_build123d.x.double, result_build123d.y.double) == pytest.approx(expected_result, abs=tol, rel=tol)
+    assert (result_build123d.x.double, result_build123d.y.double) == pytest.approx(
+        expected_result, abs=tol, rel=tol
+    )

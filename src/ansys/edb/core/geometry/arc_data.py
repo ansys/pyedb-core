@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.typing import PointLike
+    from ansys.edb.core.geometry.polygon_data import PolygonData
 
 
 from enum import Enum
@@ -13,8 +14,9 @@ import math
 from ansys.api.edb.v1 import arc_data_pb2_grpc
 
 from ansys.edb.core import session
+from ansys.edb.core.geometry.backends.arc_backend_factory import get_arc_backend
 from ansys.edb.core.geometry.point_data import PointData
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner import parser
 from ansys.edb.core.utility import conversions
 from ansys.edb.core.utility.value import Value
 
@@ -31,6 +33,17 @@ class ArcData:
     """Represents arc data."""
 
     __stub: arc_data_pb2_grpc.ArcDataServiceStub = session.StubAccessor(session.StubType.arc_data)
+
+    @classmethod
+    def _get_backend(cls):
+        """Get the computation backend, initializing it if needed.
+
+        Returns
+        -------
+        ArcBackend
+            The computation backend instance.
+        """
+        return get_arc_backend(stub=cls.__stub)
 
     def __init__(self, start: PointLike, end: PointLike, **kwargs):
         """Create an arc.
@@ -91,7 +104,7 @@ class ArcData:
         This property is read-only.
         """
         if self._height is None:
-            self._height = self.__stub.GetHeight(messages.arc_message(self)).value
+            self._height = self._get_backend().get_height(self)
 
         if isinstance(self._height, Value):
             self._height = self._height.value
@@ -138,7 +151,7 @@ class ArcData:
 
         This property is read-only.
         """
-        return self.__stub.GetCenter(messages.arc_message(self))
+        return self._get_backend().center(self)
 
     @property
     @parser.to_point_data
@@ -148,7 +161,7 @@ class ArcData:
 
         This property is read-only.
         """
-        return self.__stub.GetMidpoint(messages.arc_message(self))
+        return self._get_backend().midpoint(self)
 
     @property
     def radius(self) -> float:
@@ -157,7 +170,7 @@ class ArcData:
 
         This property is read-only.
         """
-        return self.__stub.GetRadius(messages.arc_message(self)).value
+        return self._get_backend().radius(self)
 
     @property
     @parser.to_polygon_data
@@ -167,7 +180,7 @@ class ArcData:
 
         This property is read-only.
         """
-        return self.__stub.GetBoundingBox(messages.arc_message(self))
+        return self._get_backend().bbox(self)
 
     def is_big(self) -> bool:
         """Determine if the arc is big.
@@ -242,7 +255,7 @@ class ArcData:
             Angle in radians.
         """
         if arc is None:
-            return self.__stub.GetAngle(messages.arc_message(self)).value
+            return self._get_backend().angle(self)
 
         if self.is_segment() and arc.is_segment():
             vec1 = self.end - self.start
@@ -254,9 +267,9 @@ class ArcData:
         return vec1.angle(vec2)
 
     @property
-    def length(self) -> str:
+    def length(self) -> float:
         """
-        :obj:`str`: Circumference length of the arc.
+        :obj:`float`: Circumference length of the arc.
 
         This property is read-only.
         """
@@ -310,4 +323,4 @@ class ArcData:
         -------
         tuple of (.PointData, .PointData)
         """
-        return self.__stub.ClosestPoints(messages.arc_data_two_points(self, other))
+        return self._get_backend().closest_points(self, other)

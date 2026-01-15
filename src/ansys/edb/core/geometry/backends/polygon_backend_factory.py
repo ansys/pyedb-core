@@ -6,7 +6,7 @@ from ansys.edb.core.config import ComputationBackend, Config
 from ansys.edb.core.geometry.backends.polygon_backend_base import PolygonBackend
 
 
-def get_backend(stub=None) -> PolygonBackend:
+def get_polygon_backend(stub=None) -> PolygonBackend:
     """Get the appropriate polygon computation backend based on configuration.
 
     Parameters
@@ -33,12 +33,12 @@ def get_backend(stub=None) -> PolygonBackend:
     >>> # Use server backend explicitly
     >>> import os
     >>> os.environ['PYEDB_COMPUTATION_BACKEND'] = 'server'
-    >>> backend = get_backend(stub)
+    >>> backend = get_polygon_backend(stub)
 
     >>> # Use Shapely backend
     >>> from ansys.edb.core.config import Config, ComputationBackend
     >>> Config.set_computation_backend(ComputationBackend.SHAPELY)
-    >>> backend = get_backend()
+    >>> backend = get_polygon_backend()
     """
     backend_type = Config.get_computation_backend()
 

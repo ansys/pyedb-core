@@ -18,7 +18,7 @@ from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2, pol
 
 from ansys.edb.core import session
 from ansys.edb.core.geometry.arc_data import ArcData
-from ansys.edb.core.geometry.backends import get_backend
+from ansys.edb.core.geometry.backends import get_polygon_backend
 from ansys.edb.core.inner import messages, parser
 from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.utility import conversions
@@ -79,7 +79,7 @@ class PolygonData:
         PolygonBackend
             The computation backend instance.
         """
-        return get_backend(stub=cls.__stub)
+        return get_polygon_backend(stub=cls.__stub)
 
     def _invalidate_cache(self):
         """Invalidate cached backend-specific representations."""

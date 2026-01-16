@@ -10,6 +10,8 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING
 
+from ansys.edb.core.geometry.polygon_data import PolygonData
+
 if TYPE_CHECKING:
     from ansys.edb.core.geometry.arc_data import ArcData
     from ansys.edb.core.typing import PointLike
@@ -37,7 +39,7 @@ class ArcShapelyBackend(ArcBackend):
         If Shapely is not installed.
     """
 
-    def __init__(self, stub=None):
+    def __init__(self, stub=None, **kwargs):
         """Initialize the Shapely arc backend.
 
         Parameters
@@ -45,17 +47,28 @@ class ArcShapelyBackend(ArcBackend):
         stub : optional
             gRPC stub to allow delegating to server-backed computations when
             necessary.
+        max_chord_error : float, default: 0.0
+            Maximum allowed chord error for arc tessellation.
+        max_arc_angle : float, default: None (math.pi / 6.0)
+            Maximum angle (in radians) for each arc segment.
+        max_points : int, default: 8
+            Maximum number of points per arc.
+        **kwargs
+            Additional parameters (ignored for compatibility).
         """
         if not SHAPELY_AVAILABLE:
             raise ImportError("Shapely is required for ArcShapelyBackend but is not installed")
         self._stub = stub
+        self._max_chord_error = kwargs["max_chord_error"] if "max_chord_error" in kwargs else 0.0
+        self._max_arc_angle = (
+            kwargs["max_arc_angle"] if "max_arc_angle" in kwargs else math.pi / 6.0
+        )
+        self._max_points = kwargs["max_points"] if "max_points" in kwargs else 8
 
     def _to_shapely_linestring(
         self,
         arc: ArcData,
         max_chord_error: float = 0,
-        max_arc_angle: float = math.pi / 6,
-        max_points: int = 8,
     ) -> ShapelyLineString:
         """Convert a ArcData object to a Shapely Wire.
 
@@ -87,13 +100,13 @@ class ArcShapelyBackend(ArcBackend):
         based on the arc height (sagitta) which represents the perpendicular
         distance from the chord midpoint to the arc.
         """
-        # Check if we have a cached Shapely wire
+        # Check if we have a cached Shapely LineString
         if hasattr(arc, "_shapely_cache"):
             return arc._shapely_cache
 
         # Extract coordinates and arc metadata, tessellating arcs locally
         result, arc._center, arc._midpoint, arc._radius = ArcBackend._tessellate_arc(
-            arc, max_chord_error, max_arc_angle, max_points
+            arc, self._max_chord_error, self._max_arc_angle, self._max_points
         )
 
         # Create Shapely line string
@@ -101,7 +114,6 @@ class ArcShapelyBackend(ArcBackend):
 
         # Cache the result for future use
         arc._shapely_cache = shapely_linestring
-        arc.test = "sidhfkljashdfljka hsjdhsdalj"
         return shapely_linestring
 
     def center(self, arc: "ArcData") -> "PointLike":
@@ -122,17 +134,12 @@ class ArcShapelyBackend(ArcBackend):
 
         return arc._radius
 
-    def bbox(self, arc: "ArcData") -> object:
+    def bbox(self, arc: "ArcData") -> PolygonData:
         """Return the bounding box / polygon representing arc bounds."""
-        raise NotImplementedError("bbox is not implemented yet")
+        linestring = self._to_shapely_linestring(arc)
+        minx, miny, maxx, maxy = linestring.bounds
 
-    def is_point(self, arc: "ArcData", tolerance: float = 0.0) -> bool:
-        """Return True when the arc is effectively a point."""
-        raise NotImplementedError("is_point is not implemented yet")
-
-    def is_segment(self, arc: "ArcData", tolerance: float = 0.0) -> bool:
-        """Return True when the arc is effectively a straight segment."""
-        raise NotImplementedError("is_segment is not implemented yet")
+        return PolygonData(lower_left=(minx, miny), upper_right=(maxx, maxy))
 
     def angle(self, arc: "ArcData", other: "ArcData" | None = None) -> float:
         """Compute the angle for this arc or between two arcs."""
@@ -141,10 +148,6 @@ class ArcShapelyBackend(ArcBackend):
     def length(self, arc: "ArcData") -> float:
         """Return the length of the arc (circumference or segment length)."""
         raise NotImplementedError("length is not implemented yet")
-
-    def points(self, arc: "ArcData") -> list["PointLike"]:
-        """Return representative points for the arc (start, height, end)."""
-        raise NotImplementedError("points is not implemented yet")
 
     def closest_points(self, arc1: "ArcData", arc2: "ArcData") -> tuple["PointLike", "PointLike"]:
         """Return the pair of closest points between two arcs."""

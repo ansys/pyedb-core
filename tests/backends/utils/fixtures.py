@@ -51,6 +51,10 @@ def create_polygon(geometry: dict = None):
 def safe_tol(geometries, tolerance):
     """Modify the tolerance for a give list of polygons."""
 
+    if isinstance(geometries, ArcData):
+        tolerance = 1e-1
+        return tolerance
+
     if not isinstance(geometries, list):
         geometries = [geometries]
 

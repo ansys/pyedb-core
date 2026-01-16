@@ -19,9 +19,11 @@ def get_arc_backend(stub=None) -> ArcBackend:
     if backend_type == ComputationBackend.SERVER:
         return _get_server_backend(stub)
     elif backend_type == ComputationBackend.SHAPELY:
-        return _get_shapely_backend(stub)
+        params = Config.get_backend_parameters()
+        return _get_shapely_backend(stub, **params)
     elif backend_type == ComputationBackend.BUILD123D:
-        return _get_build123d_backend(stub)
+        params = Config.get_backend_parameters()
+        return _get_build123d_backend(stub, **params)
     elif backend_type == ComputationBackend.AUTO:
         return _get_server_backend(stub)
     else:
@@ -38,15 +40,15 @@ def _get_server_backend(stub) -> ArcBackend:
     return ArcServerBackend(stub)
 
 
-def _get_shapely_backend(stub=None) -> ArcBackend:
+def _get_shapely_backend(stub=None, **kwargs) -> ArcBackend:
     """Return the Shapely backend instance."""
     from ansys.edb.core.geometry.backends.arc_shapely_backend import ArcShapelyBackend
 
-    return ArcShapelyBackend(stub)
+    return ArcShapelyBackend(stub, **kwargs)
 
 
-def _get_build123d_backend(stub=None) -> ArcBackend:
+def _get_build123d_backend(stub=None, **kwargs) -> ArcBackend:
     """Return the Build123d backend instance."""
     from ansys.edb.core.geometry.backends.arc_build123d_backend import ArcBuild123dBackend
 
-    return ArcBuild123dBackend(stub)
+    return ArcBuild123dBackend(stub, **kwargs)

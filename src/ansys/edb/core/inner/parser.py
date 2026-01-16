@@ -203,7 +203,10 @@ def msg_to_polygon_data(message):
 
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
-    if isinstance(message, BoxMessage):
+    # If already a PolygonData object, return as-is
+    if isinstance(message, PolygonData):
+        return message
+    elif isinstance(message, BoxMessage):
         b = _to_box(message)
         return PolygonData(lower_left=b[0], upper_right=b[1])
     else:

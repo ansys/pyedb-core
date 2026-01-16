@@ -259,8 +259,3 @@ class ArcBackend(ABC):
     def length(self, arc: "ArcData") -> float:
         """Return the length of the arc."""
         pass
-
-    @abstractmethod
-    def points(self, arc: "ArcData") -> list["PointData"]:
-        """Return representative points for the arc (start, height, end)."""
-        pass

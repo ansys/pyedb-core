@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 from ansys.edb.core.geometry.backends.arc_backend_base import ArcBackend
 from ansys.edb.core.geometry.point_data import PointData
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner import messages
 
 
 class ArcServerBackend(ArcBackend):
@@ -53,11 +53,6 @@ class ArcServerBackend(ArcBackend):
         """Get the bounding box (polygon) of the arc from the server."""
         return self._stub.GetBoundingBox(messages.arc_message(arc))
 
-    @parser.to_box
-    def closest_points(self, arc1: "ArcData", arc2: "ArcData") -> tuple["PointData", "PointData"]:
-        """Get closest points between two arcs from the server."""
-        return self._stub.ClosestPoints(messages.arc_data_two_points(arc1, arc2))
-
     def angle(self, arc: "ArcData", other: "ArcData" | None = None) -> float:
         """Get the angle of the arc or between two arcs from the server."""
         if other is None:
@@ -70,6 +65,6 @@ class ArcServerBackend(ArcBackend):
             return arc.start.distance(arc.end)
         return abs(self._stub.GetAngle(messages.arc_message(arc)).value * self.radius(arc))
 
-    def points(self, arc: "ArcData") -> list["PointData"]:
-        """Return representative points for the arc using server data."""
-        return [arc.start, PointData(arc.height), arc.end]
+    def closest_points(self, arc1: "ArcData", arc2: "ArcData") -> tuple["PointData", "PointData"]:
+        """Get closest points between two arcs from the server."""
+        return self._stub.ClosestPoints(messages.arc_data_two_points(arc1, arc2))

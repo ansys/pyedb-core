@@ -37,7 +37,7 @@ class ArcBuild123dBackend(ArcBackend):
         If Build123d is not installed.
     """
 
-    def __init__(self, stub=None):
+    def __init__(self, stub=None, **kwargs):
         """Initialize the Build123d arc backend.
 
         Parameters
@@ -45,11 +45,13 @@ class ArcBuild123dBackend(ArcBackend):
         stub : optional
             gRPC stub to allow delegating to server-backed computations when
             necessary.
+        **kwargs
+            Additional parameters passed to Shapely backend.
         """
         if not BUILD123D_AVAILABLE:
             raise ImportError("Build123d is required for ArcBuild123dBackend but is not installed")
         self._stub = stub
-        self._shapely_backend = ArcShapelyBackend(stub=stub)
+        self._shapely_backend = ArcShapelyBackend(stub=stub, **kwargs)
 
     def center(self, arc: "ArcData") -> "PointLike":
         """Return the center point of the arc."""
@@ -67,14 +69,6 @@ class ArcBuild123dBackend(ArcBackend):
         """Return the bounding box / polygon representing arc bounds."""
         raise NotImplementedError("bbox is not implemented yet")
 
-    def is_point(self, arc: "ArcData", tolerance: float = 0.0) -> bool:
-        """Return True when the arc is effectively a point."""
-        raise NotImplementedError("is_point is not implemented yet")
-
-    def is_segment(self, arc: "ArcData", tolerance: float = 0.0) -> bool:
-        """Return True when the arc is effectively a straight segment."""
-        raise NotImplementedError("is_segment is not implemented yet")
-
     def angle(self, arc: "ArcData", other: "ArcData" | None = None) -> float:
         """Compute the angle for this arc or between two arcs."""
         raise NotImplementedError("angle is not implemented yet")
@@ -82,10 +76,6 @@ class ArcBuild123dBackend(ArcBackend):
     def length(self, arc: "ArcData") -> float:
         """Return the length of the arc (circumference or segment length)."""
         raise NotImplementedError("length is not implemented yet")
-
-    def points(self, arc: "ArcData") -> list["PointLike"]:
-        """Return representative points for the arc (start, height, end)."""
-        raise NotImplementedError("points is not implemented yet")
 
     def closest_points(self, arc1: "ArcData", arc2: "ArcData") -> tuple["PointLike", "PointLike"]:
         """Return the pair of closest points between two arcs."""

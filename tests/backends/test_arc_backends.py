@@ -7,6 +7,7 @@ server, Shapely, and Build123d backends.
 import math
 
 import pytest
+from utils.fixtures import safe_tol
 
 from ansys.edb.core.config import ComputationBackend, Config
 from ansys.edb.core.geometry.arc_data import ArcData
@@ -231,3 +232,53 @@ def test_radius(session, arc, expected_result):
     assert result_server == pytest.approx(expected_result, rel=tol)
     assert result_shapely == pytest.approx(expected_result, rel=tol)
     assert result_build123d == pytest.approx(expected_result, rel=tol)
+
+
+@pytest.mark.parametrize(
+    "arc, expected_result",
+    [
+        (ArcData((0, 0), (10, 0), height=0.0), [(0.0, 0.0), (10.0, 0.0)]),
+        (ArcData((10, 2), (10, 2), height=5.0), [(10.0, -0.5), (15.0, 4.5)]),
+        (ArcData((10, 0), (10, 0), height=0.0), [(10.0, 0.0), (10.0, 0.0)]),
+        (ArcData((0, 0), (10, 0), height=-5.0), [(0.0, -5.0), (10.0, 0.0)]),
+        (ArcData((0, 0), (10, 0), height=5.0), [(0.0, 0.0), (10.0, 5.0)]),
+        (ArcData((0, 0), (10, 0), height=1.0), [(0.0, 0.0), (10.0, 1.0)]),
+        (ArcData((0, 0), (10, 0), height=-2.0), [(0.0, -2.0), (10.0, 0.0)]),
+        (ArcData((5, -5), (5, 5), height=-10.0), [(5.0, -6.25), (15.0, 6.25)]),
+        (ArcData((2, 3), (30, 6), height=-4.0), [(2.0, 0.3703554127356483), (30.0, 6.0)]),
+        (
+            ArcData((-1, -2), (-10, -20), height=9.0),
+            [(-10.0, -20.62188470506255), (3.618769410125095, -2.0)],
+        ),
+    ],
+)
+def test_bbox(session, arc, expected_result):
+    """Test bounding box computation with server backend."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    arc_server = arc.bbox
+    result_server = [
+        (min(p.x.double for p in arc_server.points), min(p.y.double for p in arc_server.points)),
+        (max(p.x.double for p in arc_server.points), max(p.y.double for p in arc_server.points)),
+    ]
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    Config.set_backend_parameters(max_chord_error=0.0, max_arc_angle=math.pi / 128, max_points=128)
+    arc_shapely = arc.bbox
+    result_shapely = [
+        (min(p.x.double for p in arc_shapely.points), min(p.y.double for p in arc_shapely.points)),
+        (max(p.x.double for p in arc_shapely.points), max(p.y.double for p in arc_shapely.points)),
+    ]
+
+    print(result_server, result_shapely)
+
+    # Config.set_computation_backend(ComputationBackend.BUILD123D)
+    # result_build123d = arc.bbox
+
+    tol = 1e-9
+
+    for point_server, point_shapely, point_result in zip(
+        result_server, result_shapely, expected_result
+    ):
+        assert point_server == pytest.approx(point_result, rel=tol, abs=tol)
+        assert point_shapely == pytest.approx(point_result, rel=tol, abs=10 * safe_tol(arc, tol))

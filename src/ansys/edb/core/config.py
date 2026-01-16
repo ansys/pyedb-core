@@ -37,6 +37,7 @@ class Config:
     """
 
     _computation_backend: ComputationBackend = None
+    _backend_parameters: dict = {}
 
     @classmethod
     def get_computation_backend(cls) -> ComputationBackend:
@@ -90,6 +91,32 @@ class Config:
         cls._computation_backend = backend
 
     @classmethod
+    def set_backend_parameters(cls, **kwargs):
+        """Set parameters for the current backend.
+
+        Parameters
+        ----------
+        **kwargs
+            Backend-specific parameters (e.g., max_chord_error, max_arc_angle, max_points for Shapely)
+
+        Examples:
+            >>> Config.set_backend_parameters(max_chord_error=0.01, max_arc_angle=math.pi/12)
+        """
+        cls._backend_parameters = kwargs
+
+    @classmethod
+    def get_backend_parameters(cls) -> dict:
+        """Get the current backend parameters.
+
+        Returns
+        -------
+        dict
+            Dictionary of backend parameters.
+        """
+        return cls._backend_parameters.copy()
+
+    @classmethod
     def reset(cls):
         """Reset configuration to defaults (useful for testing)."""
         cls._computation_backend = None
+        cls._backend_parameters = {}

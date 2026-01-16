@@ -10,8 +10,6 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING
 
-from ansys.edb.core.geometry.point_data import PointData
-
 if TYPE_CHECKING:
     from ansys.edb.core.geometry.arc_data import ArcData
     from ansys.edb.core.typing import PointLike
@@ -19,8 +17,7 @@ if TYPE_CHECKING:
 from ansys.edb.core.geometry.backends.arc_backend_base import ArcBackend
 
 try:
-    # Import shapely modules you will need when implementing methods
-    from shapely.geometry import Point  # noqa: F401
+    from shapely.geometry import LineString as ShapelyLineString
 
     SHAPELY_AVAILABLE = True
 except ImportError:
@@ -53,92 +50,77 @@ class ArcShapelyBackend(ArcBackend):
             raise ImportError("Shapely is required for ArcShapelyBackend but is not installed")
         self._stub = stub
 
+    def _to_shapely_linestring(
+        self,
+        arc: ArcData,
+        max_chord_error: float = 0,
+        max_arc_angle: float = math.pi / 6,
+        max_points: int = 8,
+    ) -> ShapelyLineString:
+        """Convert a ArcData object to a Shapely Wire.
+
+        Parameters
+        ----------
+        arc : ArcData
+            The arc to convert.
+        max_chord_error : float, default: 0
+            Maximum allowed chord error for arc tessellation.
+        max_arc_angle : float, default: math.pi / 6
+            Maximum angle (in radians) for each arc segment.
+        max_points : int, default: 8
+            Maximum number of points per arc.
+
+        Returns
+        -------
+        ShapelyLineString
+            Shapely line string object.
+
+        Notes
+        -----
+        This method handles:
+        - Converting points to coordinate tuples
+        - Handling holes in polygons
+        - Approximating arcs with line segments locally (no server calls)
+        - Caching the result on the PolygonData instance to avoid repeated conversions
+
+        Arc tessellation is performed locally using mathematical calculations
+        based on the arc height (sagitta) which represents the perpendicular
+        distance from the chord midpoint to the arc.
+        """
+        # Check if we have a cached Shapely wire
+        if hasattr(arc, "_shapely_cache"):
+            return arc._shapely_cache
+
+        # Extract coordinates and arc metadata, tessellating arcs locally
+        result, arc._center, arc._midpoint, arc._radius = ArcBackend._tessellate_arc(
+            arc, max_chord_error, max_arc_angle, max_points
+        )
+
+        # Create Shapely line string
+        shapely_linestring = ShapelyLineString(result)
+
+        # Cache the result for future use
+        arc._shapely_cache = shapely_linestring
+        arc.test = "sidhfkljashdfljka hsjdhsdalj"
+        return shapely_linestring
+
     def center(self, arc: "ArcData") -> "PointLike":
         """Return the center point of the arc."""
-        height = arc.height
+        self._to_shapely_linestring(arc)
 
-        x1, y1 = arc.start.x.double, arc.start.y.double
-        x2, y2 = arc.end.x.double, arc.end.y.double
-
-        chord_dx = x2 - x1
-        chord_dy = y2 - y1
-        chord_length = math.sqrt(chord_dx * chord_dx + chord_dy * chord_dy)
-
-        if math.isclose(height, 0.0, abs_tol=1e-12):
-            if math.isclose(chord_length, 0.0, abs_tol=1e-12):
-                return PointData(x2, y2)
-            return PointData(math.nan, math.nan)
-
-        h = abs(height)
-        radius = (h**2 + (chord_length / 2) ** 2) / (2 * h)
-
-        chord_mid_x = (x1 + x2) / 2
-        chord_mid_y = (y1 + y2) / 2
-
-        # If the chord_length is zero, assume the perpendicular vector as (-1.0, 0.0).
-        perp_dx = -1.0
-        perp_dy = 0.0
-        if not math.isclose(chord_length, 0.0, abs_tol=1e-12):
-            perp_dx = chord_dy / chord_length
-            perp_dy = -chord_dx / chord_length
-
-        if height < 0:
-            center_x = chord_mid_x - perp_dx * (radius + height)
-            center_y = chord_mid_y - perp_dy * (radius + height)
-        else:
-            center_x = chord_mid_x + perp_dx * (radius - height)
-            center_y = chord_mid_y + perp_dy * (radius - height)
-
-        return PointData(center_x, center_y)
+        return arc._center
 
     def midpoint(self, arc: "ArcData") -> "PointLike":
         """Return the midpoint of the arc."""
-        height = arc.height
+        self._to_shapely_linestring(arc)
 
-        x1, y1 = arc.start.x.double, arc.start.y.double
-        x2, y2 = arc.end.x.double, arc.end.y.double
-
-        if math.isclose(height, 0.0, abs_tol=1e-12):
-            return PointData(0.5 * (x1 + x2), 0.5 * (y1 + y2))
-
-        chord_dx = x2 - x1
-        chord_dy = y2 - y1
-        chord_length = math.sqrt(chord_dx * chord_dx + chord_dy * chord_dy)
-
-        if math.isclose(chord_length, 0.0, abs_tol=1e-12):
-            return PointData(x2, y2)
-
-        chord_mid_x = (x1 + x2) / 2
-        chord_mid_y = (y1 + y2) / 2
-
-        perp_dx = chord_dy / chord_length
-        perp_dy = -chord_dx / chord_length
-
-        mid_x = chord_mid_x - perp_dx * height
-        mid_y = chord_mid_y - perp_dy * height
-
-        return PointData(mid_x, mid_y)
+        return arc._midpoint
 
     def radius(self, arc: "ArcData") -> float:
         """Return the radius of the arc."""
-        height = arc.height
+        self._to_shapely_linestring(arc)
 
-        x1, y1 = arc.start.x.double, arc.start.y.double
-        x2, y2 = arc.end.x.double, arc.end.y.double
-
-        chord_dx = x2 - x1
-        chord_dy = y2 - y1
-        chord_length = math.sqrt(chord_dx * chord_dx + chord_dy * chord_dy)
-
-        if math.isclose(height, 0.0, abs_tol=1e-12):
-            if math.isclose(chord_length, 0.0, abs_tol=1e-12):
-                return 0.0
-            return math.inf
-
-        h = abs(height)
-        radius = (h**2 + (chord_length / 2) ** 2) / (2 * h)
-
-        return radius
+        return arc._radius
 
     def bbox(self, arc: "ArcData") -> object:
         """Return the bounding box / polygon representing arc bounds."""

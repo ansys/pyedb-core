@@ -49,7 +49,6 @@ class ArcServerBackend(ArcBackend):
         """Get the radius of the arc from the server."""
         return self._stub.GetRadius(messages.arc_message(arc)).value
 
-    @parser.to_polygon_data
     def bbox(self, arc: "ArcData") -> "PolygonData":
         """Get the bounding box (polygon) of the arc from the server."""
         return self._stub.GetBoundingBox(messages.arc_message(arc))

@@ -16,7 +16,6 @@ from ansys.api.edb.v1 import arc_data_pb2_grpc
 from ansys.edb.core import session
 from ansys.edb.core.geometry.backends.arc_backend_factory import get_arc_backend
 from ansys.edb.core.geometry.point_data import PointData
-from ansys.edb.core.inner import parser
 from ansys.edb.core.utility import conversions
 from ansys.edb.core.utility.value import Value
 
@@ -144,7 +143,6 @@ class ArcData:
         return math.fabs(self.height) <= tolerance
 
     @property
-    @parser.to_point_data
     def center(self) -> PointData:
         """
         :class:`.PointData`: Center point of the arc.
@@ -154,7 +152,6 @@ class ArcData:
         return self._get_backend().center(self)
 
     @property
-    @parser.to_point_data
     def midpoint(self) -> PointData:
         """
         :class:`.PointData`: Midpoint of the arc.
@@ -173,7 +170,6 @@ class ArcData:
         return self._get_backend().radius(self)
 
     @property
-    @parser.to_polygon_data
     def bbox(self) -> PolygonData:
         """
         :class:`.PolygonData`: Rectangular bounding box of the arc.
@@ -310,7 +306,6 @@ class ArcData:
         else:
             return PointData(vec.y, -vec.x)
 
-    @parser.to_box
     def closest_points(self, other: ArcData) -> tuple[PointData, PointData]:
         """Get the closest points from this arc to another arc, and vice versa.
 

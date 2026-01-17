@@ -270,8 +270,6 @@ def test_bbox(session, arc, expected_result):
         (max(p.x.double for p in arc_shapely.points), max(p.y.double for p in arc_shapely.points)),
     ]
 
-    print(result_server, result_shapely)
-
     # Config.set_computation_backend(ComputationBackend.BUILD123D)
     # result_build123d = arc.bbox
 
@@ -282,3 +280,115 @@ def test_bbox(session, arc, expected_result):
     ):
         assert point_server == pytest.approx(point_result, rel=tol, abs=tol)
         assert point_shapely == pytest.approx(point_result, rel=tol, abs=10 * safe_tol(arc, tol))
+
+
+@pytest.mark.parametrize(
+    "arc, other, expected_result",
+    [
+        (ArcData((0, 0), (10, 0), height=0.0), None, 0.0),
+        (ArcData((10, 2), (10, 2), height=5.0), None, -2.0 * math.pi),
+        (ArcData((10, 0), (10, 0), height=0.0), None, 0.0),
+        (ArcData((0, 0), (10, 0), height=-5.0), None, math.pi),
+        (ArcData((0, 0), (10, 0), height=5.0), None, -math.pi),
+        (ArcData((0, 0), (10, 0), height=1.0), None, -0.7895822525024414),
+        (ArcData((0, 0), (10, 0), height=-2.0), None, 1.522025465965271),
+        (ArcData((5, -5), (5, 5), height=-10.0), None, 4.428595066070557),
+        (ArcData((2, 3), (30, 6), height=-4.0), None, 1.1071830987930298),
+        (ArcData((-1, -2), (-10, -20), height=9.0), None, -2.9189107418060303),
+        (ArcData((0, 0), (10, 0), height=-1.0), ArcData((10, 0), (20, 0), height=-1.0), 0.0),
+        (ArcData((0, 0), (10, 0), height=5.0), ArcData((5, 5), (5, 0), height=0.0), 0.0),
+        (
+            ArcData((0, 0), (10, 0), height=1.0),
+            ArcData((-1, -2), (-10, -20), height=9.0),
+            0.1456283805708231,
+        ),
+        (ArcData((0, 0), (10, 0), height=-2.0), None, 1.522025465965271),
+        (ArcData((5, -5), (5, 5), height=-10.0), None, 4.428595066070557),
+        (ArcData((2, 3), (30, 6), height=-4.0), None, 1.1071830987930298),
+        (ArcData((-1, -2), (-10, -20), height=9.0), None, -2.9189107418060303),
+    ],
+)
+def test_angle(session, arc, other, expected_result):
+    """Test angle computation with server backend."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    result_server = arc.angle(other)
+
+    # Config.set_computation_backend(ComputationBackend.SHAPELY)
+    # result_shapely = arc.angle
+
+    # Config.set_computation_backend(ComputationBackend.BUILD123D)
+    # result_build123d = arc.angle
+
+    tol = 1e-7
+
+    assert result_server == pytest.approx(expected_result, rel=tol)
+    # assert result_shapely == pytest.approx(expected_result, rel=tol)
+    # assert result_build123d == pytest.approx(expected_result, rel=tol)
+
+
+@pytest.mark.parametrize(
+    "arc, other, expected_result",
+    [
+        (
+            ArcData((0, 0), (10, 0), height=-5.0),
+            ArcData((10, 0), (20, 0), height=-5.0),
+            ((10.0, 0.0), (10.0, 0.0)),
+        ),
+        (
+            ArcData((0, 0), (10, 0), height=5.0),
+            ArcData((0, 10), (10, 10), height=-5.0),
+            ((5.0, 5.0), (5.0, 5.0)),
+        ),
+        (
+            ArcData((0, 0), (10, 0), height=1.0),
+            ArcData((0, 10), (10, 20), height=-1.0),
+            ((2.118925653343414, 0.676727125288977), (0.0, 10.0)),
+        ),
+        (
+            ArcData((0, 0), (10, 0), height=-2.0),
+            ArcData((0, 20), (10, 21), height=2.0),
+            ((0.0, 0.0), (0.0, 20.0)),
+        ),
+        (
+            ArcData((5, -5), (5, 5), height=-10.0),
+            ArcData((5, 10), (5, 15), height=-10.0),
+            ((9.217437176510213, 6.232495686802852), (9.290178399966319, 7.202378666217576)),
+        ),
+        (
+            ArcData((2, 3), (30, 6), height=-4.0),
+            ArcData((-2, -3), (10, -6), height=10.0),
+            ((11.376062491303584, 0.4606213285391212), (11.376062491303584, 0.4606213285391212)),
+        ),
+        (
+            ArcData((-1, -2), (-10, -20), height=9.0),
+            ArcData((2, 3), (30, 6), height=-4.0),
+            ((-1.0, -2.0), (2.0, 3.0)),
+        ),
+    ],
+)
+def test_closest_points(session, arc, other, expected_result):
+    """Test closest points computation with server backend."""
+
+    Config.set_computation_backend(ComputationBackend.SERVER)
+    result_server = ArcData.closest_points(arc, other)
+
+    Config.set_computation_backend(ComputationBackend.SHAPELY)
+    Config.set_backend_parameters(max_chord_error=0.0, max_arc_angle=math.pi / 128, max_points=128)
+    result_shapely = ArcData.closest_points(arc, other)
+
+    # Config.set_computation_backend(ComputationBackend.BUILD123D)
+    # result_build123d = arc.closest_points(other)
+
+    tol = 1e-9
+
+    for point_result, point_server, point_shapely in zip(
+        expected_result, result_server, result_shapely
+    ):
+        assert (point_server.x.double, point_server.y.double) == pytest.approx(
+            point_result, rel=tol, abs=tol
+        )
+        assert (point_shapely.x.double, point_shapely.y.double) == pytest.approx(
+            point_result, rel=safe_tol(arc, tol), abs=10 * safe_tol(arc, tol)
+        )
+    # assert result_build123d == pytest.approx(expected_result, rel=tol)

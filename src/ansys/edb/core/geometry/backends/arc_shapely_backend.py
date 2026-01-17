@@ -10,6 +10,7 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING
 
+from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.geometry.polygon_data import PolygonData
 
 if TYPE_CHECKING:
@@ -151,4 +152,14 @@ class ArcShapelyBackend(ArcBackend):
 
     def closest_points(self, arc1: "ArcData", arc2: "ArcData") -> tuple["PointLike", "PointLike"]:
         """Return the pair of closest points between two arcs."""
-        raise NotImplementedError("closest_points is not implemented yet")
+        from shapely.ops import nearest_points
+
+        linestring1 = self._to_shapely_linestring(arc1)
+        linestring2 = self._to_shapely_linestring(arc2)
+
+        nearest_on_linestring1, nearest_on_linestring2 = nearest_points(linestring1, linestring2)
+
+        return (
+            PointData(nearest_on_linestring1.x, nearest_on_linestring1.y),
+            PointData(nearest_on_linestring2.x, nearest_on_linestring2.y),
+        )

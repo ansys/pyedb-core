@@ -159,6 +159,7 @@ from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertySer
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure_3d_pb2_grpc import Structure3DServiceStub
+from ansys.api.edb.v1.technology_def_pb2_grpc import TechnologyDefServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
@@ -447,6 +448,7 @@ class StubType(Enum):
     rectangle = RectangleServiceStub
     via_group = ViaGroupServiceStub
     circle = CircleServiceStub
+    technology = TechnologyDefServiceStub
     text = TextServiceStub
     terminal = TerminalServiceStub
     terminal_instance = TerminalInstanceServiceStub

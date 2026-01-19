@@ -37,4 +37,5 @@ class DefinitionObjType(Enum):
     MATERIAL_DEF = definition_obj_pb2.MATERIAL_DEF
     DATASET_DEF = definition_obj_pb2.DATASET_DEF
     PACKAGE_DEF = definition_obj_pb2.PACKAGE_DEF
+    TECHNOLOGY_DEF = definition_obj_pb2.TECHNOLOGY_DEF
     DEFINITION_TYPE_COUNT = definition_obj_pb2.DEFINITION_TYPE_COUNT

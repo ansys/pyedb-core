@@ -3,11 +3,13 @@ import abc
 from collections import defaultdict
 from contextlib import contextmanager
 from enum import Enum, Flag, auto
+from importlib import import_module
+import re
 from sys import modules
+from typing import Any as AnyType
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
 from ansys.api.edb.v1.io_manager_pb2 import BufferEntryMessage, BufferMessage
-from django.utils.module_loading import import_string
 from google.protobuf.any_pb2 import Any
 from google.protobuf.empty_pb2 import Empty
 
@@ -30,6 +32,40 @@ def _get_io_manager_stub():
     from ansys.edb.core.session import StubAccessor, StubType
 
     return StubAccessor(StubType.io_manager).__get__()
+
+
+_DOTTED_NAME_PATTERN = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*(\.([a-zA-Z_][a-zA-Z0-9_]*))+$")
+
+
+def _import_attribute_from_module(dotted_path: str) -> AnyType:
+    """
+    Import a module attribute given its dotted path.
+
+    Modeled after Django's import_string function.
+
+    Parameters
+    ----------
+    dotted_path : str
+        The dotted path to the attribute to import.
+
+    Returns
+    -------
+    AnyType
+        The imported attribute.
+
+    Raises
+    ------
+    ImportError
+        If the module cannot be imported or the attribute does not exist.
+    """
+    if not _DOTTED_NAME_PATTERN.fullmatch(dotted_path):
+        raise ImportError(f"Invalid dotted path: {dotted_path}")
+    module_path, attribute_name = dotted_path.rsplit(".", 1)
+    module = import_module(module_path)
+    try:
+        return getattr(module, attribute_name)
+    except AttributeError as ex:
+        raise ImportError(f"Module '{module_path}' does not define '{attribute_name}'") from ex
 
 
 class _HijackedOutcome:
@@ -90,7 +126,7 @@ class _Cache(_IOOptimizer):
                 + "_pb2"
                 + msg_type_name[insertion_idx:]
             )
-            msg_type = import_string(msg_class_path)
+            msg_type = _import_attribute_from_module(msg_class_path)
             self._msg_type_cache[msg_type_name] = msg_type
         msg = msg_type()
         any_module_msg.any.Unpack(msg)

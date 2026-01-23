@@ -59,7 +59,10 @@ def _import_attribute_from_module(dotted_path: str) -> AnyType:
         If the module cannot be imported or the attribute does not exist.
     """
     if not _DOTTED_NAME_PATTERN.fullmatch(dotted_path):
-        raise ImportError(f"Invalid dotted path: {dotted_path}")
+        raise ImportError(
+            f"Invalid dotted path: {dotted_path}: must be in the form "
+            "module[.submodules...].attribute with valid Python identifiers"
+        )
     module_path, attribute_name = dotted_path.rsplit(".", 1)
     module = import_module(module_path)
     try:

@@ -98,7 +98,7 @@ class SettingsOptions(SimulationSettingsBase):
     @property
     def use_default_lambda_value(self):
         """:obj:`bool`: Flag indicating if the default lambda target value is used."""
-        return self.__stub.GetLamdaTarget(self.msg).value
+        return self.__stub.GetUseDefaultLamda(self.msg).value
 
     @use_default_lambda_value.setter
     def use_default_lambda_value(self, use_default_value):

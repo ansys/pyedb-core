@@ -339,4 +339,4 @@ class Q3DAdvancedMeshingSettings(AdvancedMeshingSettings):
 
     @layer_alignment.setter
     def layer_alignment(self, layer_alignment: str):
-        self.__stub.SetLayerAlignment(messages.bool_property_message(self, layer_alignment))
+        self.__stub.SetLayerAlignment(messages.string_property_message(self, layer_alignment))

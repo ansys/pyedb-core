@@ -277,10 +277,10 @@ class Terminal(conn_obj.ConnObj):
     def _product_solvers(self, product_id):
         return self.__stub.GetProductSolvers(
             messages.term_get_product_solver_message(self, product_id)
-        )
+        ).solvers
 
     def product_solver_option(self, product_id, solver_name):
-        """Get the name of the product solver option.
+        """Get the product solver option for a given solver.
 
         Parameters
         ----------
@@ -294,11 +294,10 @@ class Terminal(conn_obj.ConnObj):
         :obj:`str`
             Name of the product solver option.
         """
-        return next(
-            solver.option
-            for solver in self._product_solvers(product_id)
-            if solver.name == solver_name
-        )
+        for solver in self._product_solvers(product_id):
+            if solver.name == solver_name:
+                return solver.option
+        return ""
 
     def set_product_solver_option(self, product_id, solver_name, option):
         """Set the product solver option.

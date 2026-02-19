@@ -333,6 +333,8 @@ class PadstackInstance(conn_obj.ConnObj):
         ----------
         from_bottom : bool
             Whether to get the back drill type from the bottom.
+        include_fill_material : bool, optional
+            Input flag to obtain fill material as well as other parameters. If false, the return tuple does not include fill material and is backward compatible with previous versions.
 
         Returns
         -------
@@ -345,7 +347,6 @@ class PadstackInstance(conn_obj.ConnObj):
             - **offset** : Layer offset (or depth if layer is empty).
             - **diameter** : Drilling diameter.
             - **fill_material** : Fill material name (empty string if no fill). Returned only when include_fill_material is true.
-            - **include_fill_material** : Input flag to obtain fill material as well as other parameters. If false, the return tuple does not include fill material and is backward compatible with previous versions.
         """
         params = self.__stub.GetBackDrillByLayer(
             PadstackInstance._get_back_drill_message(self, from_bottom)
@@ -420,7 +421,8 @@ class PadstackInstance(conn_obj.ConnObj):
         ----------
         from_bottom : bool
             Whether to get the back drill type from the bottom.
-
+        include_fill_material : bool, optional
+            Input flag to obtain fill material as well as other parameters. If false, the return tuple does not include fill material and is backward compatible with previous versions.
         Returns
         -------
         tuple of (.Value, .Value, str)
@@ -430,7 +432,6 @@ class PadstackInstance(conn_obj.ConnObj):
             - **diameter** : Drilling diameter.
             - **fill_material** : Fill material name (empty string if no fill),
               only included when ``include_fill_material`` is True.
-            - **include_fill_material** : Input flag to obtain fill material as well as other parameters. If false, the return tuple does not include fill material and is backward compatible with previous versions.
 
         """
         

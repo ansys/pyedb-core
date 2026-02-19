@@ -28,6 +28,8 @@ def _get_invalidations_params_str(invalidations: list[str | dict[list[str]]], da
     invalidations_params = []
 
     def get_invalidation_accessor_params_str(invalidation_accessor_str: str):
+        if invalidation_accessor_str == "global":
+            return "None"
         invalidation_accessor_params_str = ",".join(
             [f'"{accessor}"' for accessor in invalidation_accessor_str.split(".") if accessor]
         )

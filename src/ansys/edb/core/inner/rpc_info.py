@@ -1357,7 +1357,10 @@ rpc_information = {
                     [
                         _InvalidationInfo(
                             rpc="GetNumberOfPins", service="ansys.api.edb.v1.ComponentGroupService"
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetMembers", service="ansys.api.edb.v1.GroupService"
+                        ),
                     ],
                 ),
                 (
@@ -1381,7 +1384,10 @@ rpc_information = {
                     [
                         _InvalidationInfo(
                             rpc="GetNumberOfPins", service="ansys.api.edb.v1.ComponentGroupService"
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetMembers", service="ansys.api.edb.v1.GroupService"
+                        ),
                     ],
                 ),
                 (
@@ -1397,9 +1403,27 @@ rpc_information = {
                 ),
             ],
         ),
-        "Ungroup": _RpcInfo(buffer=True),
-        "GetMembers": _RpcInfo(read_no_cache=True),
-        "StreamMembers": _RpcInfo(read_no_cache=True),
+        "Ungroup": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="GetComponent", service="ansys.api.edb.v1.ConnectableService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetGroup", service="ansys.api.edb.v1.ConnectableService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.GroupService"
+                        ),
+                    ],
+                )
+            ],
+        ),
+        "GetMembers": _RpcInfo(read_no_cache=True, invalidations=[[]]),
+        "StreamMembers": _RpcInfo(read_no_cache=True, invalidations=[[]]),
         "GetGroupType": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.HFSSPIGeneralSettingsService": {

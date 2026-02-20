@@ -18,6 +18,13 @@ from ansys.edb.core.utility.hfss_extent_info import (
     OpenRegionType,
 )
 from ansys.edb.core.utility.temperature_settings import TemperatureSettings
+from ansys.edb.core.utility.touchstone_export_settings import (
+    ColumnFittingAlgorithm,
+    ExportType,
+    PassivityAlgorithm,
+    SSFittingAlgorithm,
+    TouchstoneExportSettings,
+)
 from ansys.edb.core.utility.value import Value
 
 
@@ -472,4 +479,36 @@ class Cell(ObjBase, variable_server.VariableServer):
         """
         self.__stub.ApplyTechnology(
             cell_pb2.CellApplyTechnologyMessage(cell=self.msg, definition_name=definition_name)
+        )
+
+    @property
+    def touchstone_export_settings(self):
+        """Touchstone file export settings of the cell."""
+        msg = self.__stub.GetTouchstoneExportSettings(self.msg)
+        return TouchstoneExportSettings(
+            export_after_solve=msg.export_after_solve,
+            export_dir=msg.export_dir,
+            export_type=ExportType(msg.export_type),
+            enforce_passivity=msg.enforce_passivity,
+            enforce_causality=msg.enforce_causality,
+            use_common_ground=msg.use_common_ground,
+            show_gamma_comments=msg.show_gamma_comments,
+            do_renormalize=msg.do_renormalize,
+            renorm_impedance=msg.renorm_impedance,
+            fitting_error=msg.fitting_error,
+            max_poles=msg.max_poles,
+            passivity_algorithm=PassivityAlgorithm(msg.passivity_algorithm),
+            column_fitting_algorithm=ColumnFittingAlgorithm(msg.column_fitting_algorithm),
+            ss_fitting_algorithm=SSFittingAlgorithm(msg.ss_fitting_algorithm),
+            relative_error_tolerance=msg.relative_error_tolerance,
+            ensure_accurate_z_fit=msg.ensure_accurate_zfit,
+            touchstone_format=msg.touchstone_format,
+            touchstone_units=msg.touchstone_units,
+            touchstone_precision=msg.touchstone_precision,
+        )
+
+    @touchstone_export_settings.setter
+    def touchstone_export_settings(self, touchstone_export_settings):
+        self.__stub.SetTouchstoneExportSettings(
+            messages.cell_set_touchstone_export_settings_message(self, touchstone_export_settings)
         )

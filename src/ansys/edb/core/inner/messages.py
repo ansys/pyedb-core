@@ -9,6 +9,7 @@ from ansys.api.edb.v1.cell_pb2 import (
     CellCutOutMessage,
     CellFindMessage,
     CellSetTemperatureSettingsMessage,
+    CellSetTouchstoneExportSettingsMessage,
 )
 from ansys.api.edb.v1.component_def_pb2 import ComponentDefCreateMessage
 from ansys.api.edb.v1.component_group_pb2 import (
@@ -52,6 +53,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     StringsMessage,
     StringsPropertyMessage,
     TemperatureSettingsMessage,
+    TouchstoneExportSettingsMessage,
     UInt64PropertyMessage,
     ValueMessage,
     ValuePairMessage,
@@ -1388,6 +1390,38 @@ def edb_obj_collection_property_message(target, edb_objs):
     """Convert to a ``EDBObjCollectionPropertyMessage`` object."""
     return EDBObjCollectionPropertyMessage(
         target=target.msg, edb_objs=edb_obj_collection_message(edb_objs)
+    )
+
+
+def touchstone_export_settings_message(touchstone_export_settings):
+    """Convert to a ``TouchstoneExportSettingsMessage`` object."""
+    return TouchstoneExportSettingsMessage(
+        export_after_solve=touchstone_export_settings.export_after_solve,
+        export_dir=touchstone_export_settings.export_dir,
+        export_type=touchstone_export_settings.export_type.value,
+        enforce_passivity=touchstone_export_settings.enforce_passivity,
+        enforce_causality=touchstone_export_settings.enforce_causality,
+        use_common_ground=touchstone_export_settings.use_common_ground,
+        show_gamma_comments=touchstone_export_settings.show_gamma_comments,
+        do_renormalize=touchstone_export_settings.do_renormalize,
+        renorm_impedance=touchstone_export_settings.renorm_impedance,
+        fitting_error=touchstone_export_settings.fitting_error,
+        max_poles=touchstone_export_settings.max_poles,
+        passivity_algorithm=touchstone_export_settings.passivity_algorithm.value,
+        column_fitting_algorithm=touchstone_export_settings.column_fitting_algorithm.value,
+        ss_fitting_algorithm=touchstone_export_settings.ss_fitting_algorithm.value,
+        relative_error_tolerance=touchstone_export_settings.relative_error_tolerance,
+        ensure_accurate_zfit=touchstone_export_settings.ensure_accurate_z_fit,
+        touchstone_format=touchstone_export_settings.touchstone_format,
+        touchstone_units=touchstone_export_settings.touchstone_units,
+        touchstone_precision=touchstone_export_settings.touchstone_precision,
+    )
+
+
+def cell_set_touchstone_export_settings_message(target, touchstone_export_settings):
+    """Convert to a ``CellSetTouchstoneExportSettingsMessage`` object."""
+    return CellSetTouchstoneExportSettingsMessage(
+        cell=target.msg, ts_settings=touchstone_export_settings_message(touchstone_export_settings)
     )
 
 

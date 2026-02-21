@@ -147,7 +147,7 @@ class _Cache(_IOOptimizer):
             cache_entry = self._response_cache
             num_args = len(args)
             for arg_idx in range(num_args):
-                arg = args[arg_idx]
+                arg = str(args[arg_idx])
                 if arg in cache_entry:
                     if arg_idx == num_args - 1:
                         del cache_entry[arg]
@@ -404,7 +404,7 @@ class _InvalidationTracker:
             for service, rpcs in global_invalidations.items():
                 for rpc in rpcs:
                     cache.invalidate(service, rpc)
-                    self._untrack_invalidation("g", service, rpc)
+            del self._invalidation_tracker["g"]
 
 
 class _IOManager:

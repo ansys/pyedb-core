@@ -1388,6 +1388,9 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetMembers", service="ansys.api.edb.v1.GroupService"
                         ),
+                        _InvalidationInfo(
+                            rpc="StreamMembers", service="ansys.api.edb.v1.GroupService"
+                        ),
                     ],
                 ),
                 (

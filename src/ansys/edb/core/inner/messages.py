@@ -589,7 +589,9 @@ def cell_find_message(database, cell_type, cell_name=None, cell_id=None):
         assert False, "Either name or ID must be provided to find a cell."
 
 
-def cell_cutout_message(cell, included_nets, clipped_nets, clipping_polygon, clean_clipping):
+def cell_cutout_message(
+    cell, included_nets, clipped_nets, clipping_polygon, clean_clipping, in_place
+):
     """Convert to a ``CellCutOutMessage`` object."""
     return CellCutOutMessage(
         cell=cell.msg,
@@ -597,6 +599,7 @@ def cell_cutout_message(cell, included_nets, clipped_nets, clipping_polygon, cle
         clipped_nets=edb_obj_collection_message(clipped_nets),
         clipping_polygon=polygon_data_message(clipping_polygon),
         clean_clipping=clean_clipping,
+        flatten_in_place=in_place,
     )
 
 

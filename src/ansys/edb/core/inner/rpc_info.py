@@ -3400,8 +3400,8 @@ rpc_information = {
                 )
             ],
         ),
-        "GetItems": _RpcInfo(read_no_cache=True, invalidations=[[]]),
-        "StreamItems": _RpcInfo(read_no_cache=True, invalidations=[[]]),
+        "GetItems": _RpcInfo(read_no_cache=True, invalidations=[["target"]]),
+        "StreamItems": _RpcInfo(read_no_cache=True, invalidations=[["target"]]),
         "GetExpandedExtentFromNets": _RpcInfo(read_no_cache=True),
         "ConvertPrimitivesToVias": _RpcInfo(
             buffer=True,
@@ -8237,8 +8237,8 @@ rpc_information = {
             buffer=True, returns_future=True, write_no_cache_invalidation=True
         ),
         "IsIdentity": _RpcInfo(cache=True, invalidations=[[]]),
-        "TransformPoint": _RpcInfo(cache=True, invalidations=[[]]),
-        "TransformPolygon": _RpcInfo(cache=True, invalidations=[[]]),
+        "TransformPoint": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "TransformPolygon": _RpcInfo(cache=True, invalidations=[["target"]]),
     },
     "ansys.api.edb.v1.Transform3DService": {
         "CreateIdentity": _RpcInfo(

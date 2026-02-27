@@ -134,6 +134,7 @@ class MaterialDef(ObjBase):
     def delete(self):
         """Delete the material definition."""
         self.__stub.Delete(messages.edb_obj_message(self))
+        self.msg = None
 
     def set_property(
         self,

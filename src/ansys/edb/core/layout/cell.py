@@ -210,6 +210,7 @@ class Cell(ObjBase, variable_server.VariableServer):
     def delete(self):
         """Delete the cell."""
         self.__stub.Delete(self.msg)
+        self.msg = None
 
     @property
     def database(self):

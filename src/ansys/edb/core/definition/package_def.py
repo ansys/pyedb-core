@@ -178,6 +178,7 @@ class PackageDef(ObjBase):
     def delete(self):
         """Delete the package definition."""
         self.__stub.Delete(edb_obj_message(self))
+        self.msg = None
 
     def get_product_property(self, prod_id, attr_it):
         """Get the product property for a given product ID and attribute ID.

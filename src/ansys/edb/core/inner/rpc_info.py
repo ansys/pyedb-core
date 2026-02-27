@@ -122,6 +122,9 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
                         ),
+                        _InvalidationInfo(
+                            rpc="IsParameterized", service="ansys.api.edb.v1.PrimitiveService"
+                        ),
                     ],
                 )
             ],
@@ -139,6 +142,9 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
                         ),
+                        _InvalidationInfo(
+                            rpc="IsParameterized", service="ansys.api.edb.v1.PrimitiveService"
+                        ),
                     ],
                 )
             ],
@@ -155,6 +161,9 @@ rpc_information = {
                         ),
                         _InvalidationInfo(
                             rpc="GetBentRegions", service="ansys.api.edb.v1.BoardBendDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsParameterized", service="ansys.api.edb.v1.PrimitiveService"
                         ),
                     ],
                 )
@@ -235,7 +244,10 @@ rpc_information = {
                     [
                         _InvalidationInfo(
                             rpc="GetCrossSectionHeight", service="ansys.api.edb.v1.BondwireService"
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsParameterized", service="ansys.api.edb.v1.PrimitiveService"
+                        ),
                     ],
                 )
             ],
@@ -288,7 +300,14 @@ rpc_information = {
             invalidations=[
                 (
                     ["target"],
-                    [_InvalidationInfo(rpc="GetTraj", service="ansys.api.edb.v1.BondwireService")],
+                    [
+                        _InvalidationInfo(
+                            rpc="GetTraj", service="ansys.api.edb.v1.BondwireService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsParameterized", service="ansys.api.edb.v1.PrimitiveService"
+                        ),
+                    ],
                 )
             ],
         ),
@@ -301,7 +320,10 @@ rpc_information = {
                     [
                         _InvalidationInfo(
                             rpc="GetWidthValue", service="ansys.api.edb.v1.BondwireService"
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsParameterized", service="ansys.api.edb.v1.PrimitiveService"
+                        ),
                     ],
                 )
             ],
@@ -658,7 +680,78 @@ rpc_information = {
                             rpc="StreamSimulationSetups", service="ansys.api.edb.v1.CellService"
                         ),
                     ],
-                )
+                ),
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.Q3DGeneralSettingsService"
+                        ),
+                        _InvalidationInfo(rpc="*", service="ansys.api.edb.v1.Q3DSettingsService"),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.Q3DDCRLSettingsService"
+                        ),
+                        _InvalidationInfo(rpc="*", service="ansys.api.edb.v1.Q3DCGSettingsService"),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.Q3DAdvancedSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.RaptorXGeneralSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.RaptorXAdvancedSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSPIGeneralSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSPINetProcessingSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSPIPowerGroundNetsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSPISignalNetsSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSGeneralSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSOptionsSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSAdvancedSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSAdvancedMeshingSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HFSSSolverSettingsService"
+                        ),
+                        _InvalidationInfo(rpc="*", service="ansys.api.edb.v1.DCRSettingsService"),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.HfssSimulationSetupService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.SIWaveGeneralSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.SIWaveAdvancedSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.SIWaveDCSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.SIWaveDCAdvancedSettingsService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.SIWaveSParameterSettingsService"
+                        ),
+                    ],
+                ),
             ],
         ),
         "GetSimulationSetups": _RpcInfo(read_no_cache=True, invalidations=[[]]),
@@ -5108,7 +5201,7 @@ rpc_information = {
         "Voids": _RpcInfo(read_no_cache=True, invalidations=[[]]),
         "StreamVoids": _RpcInfo(read_no_cache=True, invalidations=[[]]),
         "GetOwner": _RpcInfo(cache=True, invalidations=[[]]),
-        "IsParameterized": _RpcInfo(cache=True),
+        "IsParameterized": _RpcInfo(cache=True, invalidations=[[]]),
         "GetHfssProp": _RpcInfo(cache=True, invalidations=[[]]),
         "RemoveHfssProp": _RpcInfo(
             buffer=True,

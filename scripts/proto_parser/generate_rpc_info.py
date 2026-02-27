@@ -112,7 +112,8 @@ class _RpcInfo:
         buffer=False,
         returns_future=False,
         write_no_cache_invalidation=False,
-        invalidations=None
+        invalidations=None,
+        read_no_buffer_flush=False
     ):
         self._read_no_cache = read_no_cache
         self._write_no_buffer = write_no_buffer
@@ -121,6 +122,7 @@ class _RpcInfo:
         self._write_no_cache_invalidation = write_no_cache_invalidation
         self._returns_future = returns_future
         self._invalidations = invalidations
+        self._read_no_buffer_flush = read_no_buffer_flush
 
     @property
     def is_read(self):
@@ -153,6 +155,10 @@ class _RpcInfo:
     @property
     def has_smart_invalidation(self):
         return bool(self.invalidations)
+
+    @property
+    def read_no_buffer_flush(self):
+        return self._read_no_buffer_flush
 
 
 rpc_information = {{

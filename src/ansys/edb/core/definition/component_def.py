@@ -65,9 +65,7 @@ class ComponentDef(ObjBase):
         ComponentDef
             Component definition found, ``None`` otherwise.
         """
-        return ComponentDef(
-            cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
-        )
+        return ComponentDef(cls.__stub.FindByName(messages.edb_obj_name_message(db, comp_def_name)))
 
     @property
     def definition_type(self):

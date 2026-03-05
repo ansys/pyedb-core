@@ -197,7 +197,7 @@ rpc_information = {
                 ),
             ],
         ),
-        "GetMaterial": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetMaterial": _RpcInfo(cache=True, invalidations=[["target"]]),
         "SetMaterial": _RpcInfo(
             buffer=True,
             invalidations=[
@@ -252,7 +252,7 @@ rpc_information = {
                 )
             ],
         ),
-        "GetDefinitionName": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetDefinitionName": _RpcInfo(cache=True, invalidations=[["target"]]),
         "SetDefinitionName": _RpcInfo(
             buffer=True,
             invalidations=[
@@ -266,7 +266,7 @@ rpc_information = {
                 )
             ],
         ),
-        "GetStartElevation": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetStartElevation": _RpcInfo(cache=True, invalidations=[["bw"]]),
         "SetStartElevation": _RpcInfo(
             buffer=True,
             invalidations=[
@@ -280,7 +280,7 @@ rpc_information = {
                 )
             ],
         ),
-        "GetEndElevation": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetEndElevation": _RpcInfo(cache=True, invalidations=[["bw"]]),
         "SetEndElevation": _RpcInfo(
             buffer=True,
             invalidations=[
@@ -330,7 +330,25 @@ rpc_information = {
         ),
     },
     "ansys.api.edb.v1.BondwireDefService": {
-        "Delete": _RpcInfo(buffer=True),
+        "Delete": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    ["target"],
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.BondwireDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                    ],
+                )
+            ],
+        ),
         "GetName": _RpcInfo(cache=True, invalidations=[[]]),
     },
     "ansys.api.edb.v1.ApdBondwireDefService": {
@@ -454,8 +472,14 @@ rpc_information = {
             returns_future=True,
             invalidations=[
                 (
-                    ["layout"],
+                    None,
                     [
+                        _InvalidationInfo(
+                            rpc="GetParams", service="ansys.api.edb.v1.TerminalService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamLayoutObjects", service="ansys.api.edb.v1.NetService"
+                        ),
                         _InvalidationInfo(
                             rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
                         ),
@@ -466,18 +490,7 @@ rpc_information = {
                             rpc="StreamItems", service="ansys.api.edb.v1.LayoutService"
                         ),
                     ],
-                ),
-                (
-                    None,
-                    [
-                        _InvalidationInfo(
-                            rpc="GetParams", service="ansys.api.edb.v1.TerminalService"
-                        ),
-                        _InvalidationInfo(
-                            rpc="StreamLayoutObjects", service="ansys.api.edb.v1.NetService"
-                        ),
-                    ],
-                ),
+                )
             ],
         ),
         "Ungroup": _RpcInfo(
@@ -517,22 +530,22 @@ rpc_information = {
                     [
                         _InvalidationInfo(rpc="Find", service="ansys.api.edb.v1.CellService"),
                         _InvalidationInfo(
-                            rpc="GetTopCircuits", service="ansys.api.edb.v1.CellService"
+                            rpc="GetTopCircuits", service="ansys.api.edb.v1.DatabaseService"
                         ),
                         _InvalidationInfo(
-                            rpc="TopCircuitCells", service="ansys.api.edb.v1.CellService"
+                            rpc="TopCircuitCells", service="ansys.api.edb.v1.DatabaseService"
                         ),
                         _InvalidationInfo(
-                            rpc="GetCircuits", service="ansys.api.edb.v1.CellService"
+                            rpc="GetCircuits", service="ansys.api.edb.v1.DatabaseService"
                         ),
                         _InvalidationInfo(
-                            rpc="GetFootprints", service="ansys.api.edb.v1.CellService"
+                            rpc="GetFootprints", service="ansys.api.edb.v1.DatabaseService"
                         ),
                         _InvalidationInfo(
-                            rpc="StreamCircuits", service="ansys.api.edb.v1.CellService"
+                            rpc="StreamCircuits", service="ansys.api.edb.v1.DatabaseService"
                         ),
                         _InvalidationInfo(
-                            rpc="StreamFootprints", service="ansys.api.edb.v1.CellService"
+                            rpc="StreamFootprints", service="ansys.api.edb.v1.DatabaseService"
                         ),
                     ],
                 )
@@ -540,7 +553,35 @@ rpc_information = {
         ),
         "GetLayout": _RpcInfo(cache=True, invalidations=[[]]),
         "Find": _RpcInfo(cache=True, invalidations=[["database"]]),
-        "Delete": _RpcInfo(buffer=True, write_no_cache_invalidation=True),
+        "Delete": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    None,
+                    [
+                        _InvalidationInfo(rpc="Find", service="ansys.api.edb.v1.CellService"),
+                        _InvalidationInfo(
+                            rpc="GetTopCircuits", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="TopCircuitCells", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetCircuits", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetFootprints", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamCircuits", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamFootprints", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                    ],
+                )
+            ],
+        ),
         "GetDatabase": _RpcInfo(cache=True, invalidations=[[]]),
         "IsFootprint": _RpcInfo(cache=True, invalidations=[[]]),
         "IsBlackBox": _RpcInfo(cache=True, invalidations=[[]]),
@@ -1077,6 +1118,9 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="FindByDef", service="ansys.api.edb.v1.ComponentGroupService"
                         ),
+                        _InvalidationInfo(
+                            rpc="StreamItems", service="ansys.api.edb.v1.LayoutService"
+                        ),
                     ],
                 )
             ],
@@ -1111,7 +1155,7 @@ rpc_information = {
                 )
             ],
         ),
-        "FindByDef": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "FindByDef": _RpcInfo(cache=True, invalidations=[["layout"]]),
     },
     "ansys.api.edb.v1.ComponentModelService": {
         "SetReferenceFile": _RpcInfo(
@@ -1223,7 +1267,7 @@ rpc_information = {
             buffer=True,
             invalidations=[
                 (
-                    ["GetPackageDef"],
+                    ["target"],
                     [
                         _InvalidationInfo(
                             rpc="GetPackageDef", service="ansys.api.edb.v1.ComponentPropertyService"
@@ -1292,8 +1336,8 @@ rpc_information = {
         "GetTopCircuits": _RpcInfo(cache=True, invalidations=[[]]),
         "StreamTopCircuits": _RpcInfo(read_no_cache=True, invalidations=[[]]),
         "GetId": _RpcInfo(cache=True, invalidations=[[]]),
-        "FindById": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetVersionByRelease": _RpcInfo(cache=True, invalidations=[[]]),
+        "FindById": _RpcInfo(cache=True),
+        "GetVersionByRelease": _RpcInfo(cache=True),
         "GetDirectory": _RpcInfo(cache=True, invalidations=[[]]),
         "GetProductProperty": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
         "SetProductProperty": _RpcInfo(
@@ -1344,7 +1388,7 @@ rpc_information = {
             ],
         ),
         "CopyCells": _RpcInfo(
-            read_no_cache=True,
+            write_no_buffer=True,
             invalidations=[
                 (
                     ["target"],
@@ -1372,8 +1416,8 @@ rpc_information = {
                 )
             ],
         ),
-        "GetDefinitionObjs": _RpcInfo(read_no_cache=True, invalidations=[[]]),
-        "StreamDefinitionObjs": _RpcInfo(read_no_cache=True, invalidations=[[]]),
+        "GetDefinitionObjs": _RpcInfo(read_no_cache=True, invalidations=[["target"]]),
+        "StreamDefinitionObjs": _RpcInfo(read_no_cache=True, invalidations=[["target"]]),
         "TopCircuitCells": _RpcInfo(read_no_cache=True, invalidations=[[]]),
         "GetCircuits": _RpcInfo(read_no_cache=True, invalidations=[[]]),
         "StreamCircuits": _RpcInfo(read_no_cache=True, invalidations=[[]]),
@@ -1744,14 +1788,6 @@ rpc_information = {
             returns_future=True,
             invalidations=[
                 (
-                    ["layout"],
-                    [
-                        _InvalidationInfo(
-                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
-                        )
-                    ],
-                ),
-                (
                     None,
                     [
                         _InvalidationInfo(
@@ -1760,8 +1796,11 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="StreamLayoutObjects", service="ansys.api.edb.v1.NetService"
                         ),
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        ),
                     ],
-                ),
+                )
             ],
         ),
         "GetParameters": _RpcInfo(cache=True, invalidations=[[]]),
@@ -2755,6 +2794,9 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetOrig", service="ansys.api.edb.v1.InstArrayService"
                         ),
+                        _InvalidationInfo(
+                            rpc="GetLocation", service="ansys.api.edb.v1.HierarchyObjectService"
+                        ),
                     ],
                 )
             ],
@@ -3026,7 +3068,18 @@ rpc_information = {
                             rpc="GetLayerType", service="ansys.api.edb.v1.LayerService"
                         )
                     ],
-                )
+                ),
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="GetLayers", service="ansys.api.edb.v1.LayerCollectionService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamLayers", service="ansys.api.edb.v1.LayerCollectionService"
+                        ),
+                    ],
+                ),
             ],
         ),
         "IsViaLayer": _RpcInfo(cache=True, invalidations=[[]]),
@@ -3237,9 +3290,9 @@ rpc_information = {
         ),
         "IsValid": _RpcInfo(cache=True, invalidations=[[]]),
         "FindByName": _RpcInfo(cache=True, invalidations=[["layer_collection"]]),
-        "GetTopBottomStackupLayers": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetLayers": _RpcInfo(read_no_cache=True, invalidations=[[]]),
-        "StreamLayers": _RpcInfo(read_no_cache=True, invalidations=[[]]),
+        "GetTopBottomStackupLayers": _RpcInfo(cache=True, invalidations=[["layer_collection"]]),
+        "GetLayers": _RpcInfo(read_no_cache=True, invalidations=[["layer_collection"]]),
+        "StreamLayers": _RpcInfo(read_no_cache=True, invalidations=[["layer_collection"]]),
         "GetProductProperty": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
         "SetProductProperty": _RpcInfo(
             buffer=True,
@@ -3391,13 +3444,24 @@ rpc_information = {
             buffer=True,
             invalidations=[
                 (
-                    ["target"],
+                    ["layout"],
                     [
                         _InvalidationInfo(
                             rpc="GetLayerCollection", service="ansys.api.edb.v1.LayoutService"
                         )
                     ],
-                )
+                ),
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="*", service="ansys.api.edb.v1.LayerCollectionService"
+                        ),
+                        _InvalidationInfo(rpc="*", service="ansys.api.edb.v1.LayerService"),
+                        _InvalidationInfo(rpc="*", service="ansys.api.edb.v1.StackupLayerService"),
+                        _InvalidationInfo(rpc="*", service="ansys.api.edb.v1.ViaLayerService"),
+                    ],
+                ),
             ],
         ),
         "GetItems": _RpcInfo(read_no_cache=True, invalidations=[["target"]]),
@@ -3516,25 +3580,48 @@ rpc_information = {
                 )
             ],
         ),
-        "QueryLayoutObjInstances": _RpcInfo(cache=True, invalidations=[[]]),
-        "StreamLayoutObjInstancesQuery": _RpcInfo(read_no_cache=True, invalidations=[[]]),
-        "GetLayoutObjInstanceInContext": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetConnectedObjects": _RpcInfo(read_no_cache=True, invalidations=[[]]),
-        "StreamConnectedObjects": _RpcInfo(read_no_cache=True, invalidations=[[]]),
+        "QueryLayoutObjInstances": _RpcInfo(cache=True, invalidations=[["layout_inst"]]),
+        "StreamLayoutObjInstancesQuery": _RpcInfo(
+            read_no_cache=True, invalidations=[["layout_inst"]]
+        ),
+        "GetLayoutObjInstanceInContext": _RpcInfo(cache=True, invalidations=[["layout_inst"]]),
+        "GetConnectedObjects": _RpcInfo(read_no_cache=True, invalidations=[["layout_inst"]]),
+        "StreamConnectedObjects": _RpcInfo(read_no_cache=True, invalidations=[["layout_inst"]]),
     },
     "ansys.api.edb.v1.LayoutInstanceContextService": {
         "GetLayout": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetBBox": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetBBox": _RpcInfo(cache=True, invalidations=[["target"]]),
         "IsTopOrBlackBox": _RpcInfo(cache=True, invalidations=[[]]),
         "GetTopOrBlackBox": _RpcInfo(cache=True, invalidations=[[]]),
         "GetPlacementElevation": _RpcInfo(cache=True, invalidations=[[]]),
-        "Is3DPlacement": _RpcInfo(cache=True, invalidations=[[]]),
+        "Is3DPlacement": _RpcInfo(cache=True, invalidations=[["target"]]),
         "GetTransformation": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetTransformationBetweenContexts": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetTransformationBetweenContexts": _RpcInfo(cache=True, invalidations=[["edb_obj_0"]]),
     },
     "ansys.api.edb.v1.LayoutObjService": {
-        "GetLayout": _RpcInfo(cache=True, invalidations=[[]]),
-        "Delete": _RpcInfo(buffer=True),
+        "GetLayout": _RpcInfo(cache=True, invalidations=[["target"]]),
+        "Delete": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.LayoutObjService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="FindByIdAndType", service="ansys.api.edb.v1.ConnectableService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamItems", service="ansys.api.edb.v1.LayoutService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamLayoutObjects", service="ansys.api.edb.v1.NetService"
+                        ),
+                    ],
+                )
+            ],
+        ),
         "GetProductProperty": _RpcInfo(cache=True, invalidations=[["target", "edb_obj"]]),
         "SetProductProperty": _RpcInfo(
             buffer=True,
@@ -3557,22 +3644,24 @@ rpc_information = {
     "ansys.api.edb.v1.LayoutObjInstanceService": {
         "GetLayers": _RpcInfo(cache=True, invalidations=[[]]),
         "StreamLayers": _RpcInfo(read_no_cache=True, invalidations=[[]]),
-        "GetGeometries": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetGeometries": _RpcInfo(cache=True, invalidations=[["edb_obj"]]),
         "GetContext": _RpcInfo(cache=True, invalidations=[[]]),
         "GetLayoutInstanceContext": _RpcInfo(cache=True, invalidations=[[]]),
         "GetLayoutObj": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetBBox": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetBBox": _RpcInfo(cache=True, invalidations=[["target"]]),
     },
     "ansys.api.edb.v1.LayoutObjInstance2DGeometryService": {
-        "IsNegative": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetPolygonData": _RpcInfo(cache=True, invalidations=[[]]),
+        "IsNegative": _RpcInfo(cache=True, invalidations=[["layout_obj_inst_geom", "geometry"]]),
+        "GetPolygonData": _RpcInfo(
+            cache=True, invalidations=[["layout_obj_inst_geom", "geometry"]]
+        ),
     },
     "ansys.api.edb.v1.LayoutObjInstance3DGeometryService": {
-        "GetTesselationData": _RpcInfo(cache=True, invalidations=[[]])
+        "GetTesselationData": _RpcInfo(cache=True, invalidations=[["geometry"]])
     },
     "ansys.api.edb.v1.LayoutObjInstanceGeometryService": {
-        "GetMaterial": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetColor": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetMaterial": _RpcInfo(cache=True, invalidations=[["geometry"]]),
+        "GetColor": _RpcInfo(cache=True, invalidations=[["geometry"]]),
     },
     "ansys.api.edb.v1.MaterialDefService": {
         "Create": _RpcInfo(
@@ -3615,7 +3704,25 @@ rpc_information = {
             ],
         ),
         "FindByName": _RpcInfo(cache=True, invalidations=[["target"]]),
-        "Delete": _RpcInfo(buffer=True, write_no_cache_invalidation=True),
+        "Delete": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.MaterialDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                    ],
+                )
+            ],
+        ),
         "GetProperty": _RpcInfo(cache=True, invalidations=[["materialDef"]]),
         "GetAllProperties": _RpcInfo(cache=True, invalidations=[[]]),
         "RemoveProperty": _RpcInfo(
@@ -3908,7 +4015,7 @@ rpc_information = {
             ],
         ),
         "GetLayoutObjects": _RpcInfo(read_no_cache=True, invalidations=[[]]),
-        "StreamLayoutObjects": _RpcInfo(read_no_cache=True, invalidations=[[]]),
+        "StreamLayoutObjects": _RpcInfo(read_no_cache=True, invalidations=[["target"]]),
     },
     "ansys.api.edb.v1.NetlistModelService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
@@ -3985,7 +4092,7 @@ rpc_information = {
             buffer=True,
             invalidations=[
                 (
-                    ["target"],
+                    ["netclass"],
                     [
                         _InvalidationInfo(
                             rpc="ContainsNet", service="ansys.api.edb.v1.NetClassService"
@@ -4004,7 +4111,7 @@ rpc_information = {
             buffer=True,
             invalidations=[
                 (
-                    ["target"],
+                    ["netclass"],
                     [
                         _InvalidationInfo(
                             rpc="ContainsNet", service="ansys.api.edb.v1.NetClassService"
@@ -4019,7 +4126,7 @@ rpc_information = {
                 )
             ],
         ),
-        "ContainsNet": _RpcInfo(cache=True, invalidations=[[]]),
+        "ContainsNet": _RpcInfo(cache=True, invalidations=[["netclass"]]),
     },
     "ansys.api.edb.v1.PackageDefService": {
         "Create": _RpcInfo(
@@ -4045,7 +4152,25 @@ rpc_information = {
                 )
             ],
         ),
-        "Delete": _RpcInfo(buffer=True, write_no_cache_invalidation=True),
+        "Delete": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.PackageDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                    ],
+                )
+            ],
+        ),
         "FindByName": _RpcInfo(cache=True, invalidations=[["target"]]),
         "FindByEDBUId": _RpcInfo(cache=True, invalidations=[["target"]]),
         "GetName": _RpcInfo(cache=True, invalidations=[[]]),
@@ -4223,7 +4348,25 @@ rpc_information = {
                 )
             ],
         ),
-        "Delete": _RpcInfo(buffer=True, write_no_cache_invalidation=True),
+        "Delete": _RpcInfo(
+            buffer=True,
+            invalidations=[
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="FindByName", service="ansys.api.edb.v1.PadstackDefService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamDefinitionObjs", service="ansys.api.edb.v1.DatabaseService"
+                        ),
+                    ],
+                )
+            ],
+        ),
         "FindByName": _RpcInfo(cache=True, invalidations=[["target"]]),
         "GetName": _RpcInfo(cache=True, invalidations=[[]]),
         "GetData": _RpcInfo(cache=True, invalidations=[[]]),
@@ -4280,12 +4423,18 @@ rpc_information = {
             buffer=True,
             invalidations=[
                 (
-                    ["target"],
+                    None,
                     [
                         _InvalidationInfo(
                             rpc="GetPadParameters",
                             service="ansys.api.edb.v1.PadstackDefDataService",
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetLayerIds", service="ansys.api.edb.v1.PadstackDefDataService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetLayerNames", service="ansys.api.edb.v1.PadstackDefDataService"
+                        ),
                     ],
                 )
             ],
@@ -4534,7 +4683,11 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetBackDrillByLayer",
                             service="ansys.api.edb.v1.PadstackInstanceService",
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetBackDrillType",
+                            service="ansys.api.edb.v1.PadstackInstanceService",
+                        ),
                     ],
                 )
             ],
@@ -4548,7 +4701,11 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetBackDrillByDepth",
                             service="ansys.api.edb.v1.PadstackInstanceService",
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetBackDrillType",
+                            service="ansys.api.edb.v1.PadstackInstanceService",
+                        ),
                     ],
                 )
             ],
@@ -4578,7 +4735,7 @@ rpc_information = {
                     ],
                 ),
                 (
-                    ["params", "params", "padstack_instance"],
+                    ["params", "padstack_instance"],
                     [
                         _InvalidationInfo(
                             rpc="GetPadstackInstanceTerminal",
@@ -4927,7 +5084,7 @@ rpc_information = {
     },
     "ansys.api.edb.v1.PinPairModelService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "GetRlc": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetRlc": _RpcInfo(cache=True, invalidations=[["target"]]),
         "SetRlc": _RpcInfo(
             buffer=True,
             invalidations=[
@@ -6617,12 +6774,10 @@ rpc_information = {
                     ["cell"],
                     [
                         _InvalidationInfo(
-                            rpc="GetSimulationSetups",
-                            service="ansys.api.edb.v1.SimulationSetupService",
+                            rpc="GetSimulationSetups", service="ansys.api.edb.v1.CellService"
                         ),
                         _InvalidationInfo(
-                            rpc="StreamSimulationSetups",
-                            service="ansys.api.edb.v1.SimulationSetupService",
+                            rpc="StreamSimulationSetups", service="ansys.api.edb.v1.CellService"
                         ),
                     ],
                 )
@@ -7980,7 +8135,18 @@ rpc_information = {
                             rpc="GetParams", service="ansys.api.edb.v1.TerminalService"
                         )
                     ],
-                )
+                ),
+                (
+                    None,
+                    [
+                        _InvalidationInfo(
+                            rpc="StreamLayoutObjects", service="ansys.api.edb.v1.NetService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="StreamItems", service="ansys.api.edb.v1.LayoutService"
+                        ),
+                    ],
+                ),
             ],
         ),
         "GetProductSolvers": _RpcInfo(cache=True, invalidations=[[]]),
@@ -8382,8 +8548,8 @@ rpc_information = {
     },
     "ansys.api.edb.v1.ValueService": {
         "CreateValue": _RpcInfo(write_no_cache_invalidation=True),
-        "GetDouble": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetComplex": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetDouble": _RpcInfo(cache=True),
+        "GetComplex": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.VariableServerService": {
         "AddVariable": _RpcInfo(
@@ -8395,7 +8561,13 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetAllVariableNames",
                             service="ansys.api.edb.v1.VariableServerService",
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetVariableValue", service="ansys.api.edb.v1.VariableServerService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsParameter", service="ansys.api.edb.v1.VariableServerService"
+                        ),
                     ],
                 )
             ],
@@ -8409,17 +8581,23 @@ rpc_information = {
                         _InvalidationInfo(
                             rpc="GetAllVariableNames",
                             service="ansys.api.edb.v1.VariableServerService",
-                        )
+                        ),
+                        _InvalidationInfo(
+                            rpc="GetVariableValue", service="ansys.api.edb.v1.VariableServerService"
+                        ),
+                        _InvalidationInfo(
+                            rpc="IsParameter", service="ansys.api.edb.v1.VariableServerService"
+                        ),
                     ],
                 )
             ],
         ),
         "DeleteVariable": _RpcInfo(buffer=True),
         "SetVariableValue": _RpcInfo(buffer=True),
-        "GetVariableValue": _RpcInfo(cache=True, invalidations=[[]]),
-        "IsParameter": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetVariableValue": _RpcInfo(cache=True, invalidations=[["variable_owner"]]),
+        "IsParameter": _RpcInfo(cache=True, invalidations=[["variable_owner"]]),
         "GetAllVariableNames": _RpcInfo(cache=True, invalidations=[[]]),
-        "GetVariableDesc": _RpcInfo(cache=True, invalidations=[[]]),
+        "GetVariableDesc": _RpcInfo(cache=True, invalidations=[["variable_owner"]]),
         "SetVariableDesc": _RpcInfo(
             buffer=True,
             invalidations=[

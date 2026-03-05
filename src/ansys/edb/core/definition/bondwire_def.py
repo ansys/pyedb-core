@@ -40,6 +40,7 @@ class BondwireDef(ObjBase):
     def delete(self):
         """Delete the bondwire definition."""
         self.__stub.Delete(self.msg)
+        self.msg = None
 
     @staticmethod
     def _bondwire_def_str_message(obj, string):

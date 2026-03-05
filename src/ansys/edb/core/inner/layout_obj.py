@@ -37,6 +37,7 @@ class LayoutObj(ObjBase):
     def delete(self):
         """Delete the layout object."""
         self.__stub.Delete(LayoutObj._layout_obj_target_msg(self, self.layout_obj_type))
+        self.msg = None
 
     def get_product_property(self, prod_id, attr_id):
         """Get the product property of the layout object for a given product ID and attribute ID.

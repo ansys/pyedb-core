@@ -22,12 +22,6 @@ if(PREBUILT_PYD)
     project(rpc_executor LANGUAGES NONE)
     message(STATUS "Cache hit: installing pre-built extension ${PREBUILT_PYD}")
     install(FILES "${PREBUILT_PYD}" DESTINATION ansys/edb/core/)
-    # Bundle the platform shared library alongside the extension module.
-    if(WIN32)
-        install(FILES deps/EDB_RPC_Services.dll DESTINATION ansys/edb/core/)
-    elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/libEDB_RPC_Services.so")
-        install(FILES deps/libEDB_RPC_Services.so DESTINATION ansys/edb/core/)
-    endif()
 
 elseif(WIN32)
     # Windows: compile the pybind11 extension with the MSVC toolchain and
@@ -43,9 +37,6 @@ elseif(WIN32)
     target_compile_definitions(rpc_executor PRIVATE RPC_EXECUTOR_PLATFORM_WINDOWS)
 
     install(TARGETS rpc_executor DESTINATION ansys/edb/core/)
-    # Bundle EDB_RPC_Services.dll alongside the .pyd.
-    # rpc_executor.h locates it via GetModuleFileName at runtime.
-    install(FILES deps/EDB_RPC_Services.dll DESTINATION ansys/edb/core/)
 
 else()
     # Linux / macOS: compile with the system C++ toolchain.
@@ -58,14 +49,10 @@ else()
     pybind11_add_module(rpc_executor deps/rpc_executor_bindings.cpp)
     target_include_directories(rpc_executor PRIVATE deps/)
     target_compile_features(rpc_executor PRIVATE cxx_std_17)
-    # CMAKE_DL_LIBS is '-ldl' on Linux (needed for dlopen/dladdr/dlsym)
-    # and empty on platforms where those symbols are built in (e.g. macOS).
+    # CMAKE_DL_LIBS is '-ldl' on Linux (needed for dlopen/dlsym) and
+    # empty on platforms where those symbols are built in (e.g. macOS).
     target_link_libraries(rpc_executor PRIVATE ${CMAKE_DL_LIBS})
 
     install(TARGETS rpc_executor DESTINATION ansys/edb/core/)
-    # Bundle libEDB_RPC_Services.so if present in deps/.
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/libEDB_RPC_Services.so")
-        install(FILES deps/libEDB_RPC_Services.so DESTINATION ansys/edb/core/)
-    endif()
 
 endif()

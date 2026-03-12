@@ -29,6 +29,10 @@ PYBIND11_MODULE(rpc_executor, m)
 
             success, response, error = rpc_executor.execute_rpc(
                 "MyService", "MyMethod", serialized_proto_bytes)
+
+        The EDB_RPC_Services shared library is loaded directly from the
+        directory supplied to :func:`initialize`.  It is **not** bundled
+        inside the Python package.
     )doc";
 
     // ------------------------------------------------------------------
@@ -45,16 +49,18 @@ PYBIND11_MODULE(rpc_executor, m)
             Load the EDB_RPC_Services shared library and initialize the
             plugin interface.
 
-            On Windows the directory is added to the DLL search path so
-            that transitive dependencies of EDB_RPC_Services.dll are
-            resolved.  On Linux it is prepended to LD_LIBRARY_PATH for
-            the same purpose.
+            The library is loaded directly from ``directory_path``; it must
+            exist there at runtime (it is not bundled in the Python package).
+            On Windows the directory is also added to the DLL search path so
+            that transitive dependencies of EDB_RPC_Services.dll are resolved.
+            On Linux it is prepended to LD_LIBRARY_PATH for the same purpose.
 
             Parameters
             ----------
             directory_path : str
                 Absolute path to the Ansys EM install directory containing
-                the EDB_RPC_Services shared library and its dependencies.
+                EDB_RPC_Services.dll (Windows) or libEDB_RPC_Services.so
+                (Linux) and their transitive dependencies.
 
             Returns
             -------

@@ -11,9 +11,11 @@ from grpc import (
     UnaryStreamClientInterceptor,
     UnaryUnaryClientInterceptor,
 )
+import rpc_executor
 
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode, InvalidArgumentException
 from ansys.edb.core.inner.rpc_info_utils import can_cache
+from ansys.edb.core.inner.rpc_response_map import get_rpc_response_type
 from ansys.edb.core.utility.io_manager import ServerNotification, get_io_manager
 
 
@@ -215,3 +217,36 @@ class IOInterceptor(Interceptor):
             self._get_client_call_details_with_caching_options(client_call_details),
             request_iterator,
         )
+
+
+class _LocalHostResult:
+    def __init__(self, result):
+        self._result = result
+
+    def result(self):
+        return self._result
+
+
+class LocalHostInterceptor(Interceptor):
+    """Returns cached values if a given request has already been made and caching is enabled."""
+
+    def __init__(self, logger):
+        """Initialize a caching interceptor with a logger and rpc counter."""
+        super().__init__(logger)
+
+    def _continue_unary_unary(self, continuation, client_call_details, request):
+        method_tokens = client_call_details.method.strip("/").split("/")
+        cache_key_details = method_tokens[0], method_tokens[1]
+        response_type = get_rpc_response_type(*cache_key_details)
+        success, serialized_response, error_message = rpc_executor.execute_rpc(
+            method_tokens[0], method_tokens[1], request.SerializeToString()
+        )
+        if success:
+            response = response_type()
+            response.ParseFromString(serialized_response)
+            return _LocalHostResult(response)
+        else:
+            raise RuntimeError(f"RPC execution failed: {error_message}")
+
+    def _post_process(self, response):
+        pass

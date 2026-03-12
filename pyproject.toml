@@ -80,3 +80,15 @@ source = ["ansys.edb"]
 
 [tool.coverage.report]
 show_missing = true
+
+[tool.cibuildwheel]
+# Build CPython wheels for all supported Python versions; skip musl (Alpine Linux).
+build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+skip = ["*-musllinux_*"]
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+# Compile inside the manylinux_2_28 (AlmaLinux 8) container so the resulting
+# .so only requires GLIBC >= 2.28, giving compatibility with RHEL 8,
+# Ubuntu 20.04+, and any enterprise Linux released after 2019.
+manylinux-x86_64-image = "manylinux_2_28"

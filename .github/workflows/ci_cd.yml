@@ -111,12 +111,19 @@ jobs:
           attest-provenance: true
 
   package-linux:
-    name: Package library (Linux)
-    # Produces the linux_x86_64 platform wheel only (the sdist is already
-    # produced by the Windows package job above).  Uses explicit steps with a
-    # distinct artifact name to avoid the 409 Conflict that would occur if
-    # ansys/actions/build-library were used here too (that action hardcodes the
-    # artifact name to "${library-name}-artifacts" with no override).
+    name: Package library (Linux manylinux)
+    # Produces manylinux_2_28_x86_64 platform wheels for all supported Python
+    # versions using cibuildwheel.  The sdist is already produced by the Windows
+    # package job above.  Uses a distinct artifact name to avoid the 409 Conflict
+    # that ansys/actions/build-library would cause (it hardcodes the artifact name
+    # to "${library-name}-artifacts" with no override).
+    #
+    # auditwheel repair is run with --exclude libstdc++.so.6 because rpc_executor.so
+    # relies on the .pth preload hook (ansys_edb_core_preload.py) to supply the
+    # AnsysEM-bundled libstdc++.so.6 at runtime.  That library provides GLIBCXX up
+    # to 3.4.30, which covers every symbol rpc_executor.so needs.  Letting
+    # auditwheel bundle a second copy would conflict with the preload mechanism and
+    # could cause the wrong libstdc++ to be used when libEDB_RPC_Services.so loads.
     runs-on: ubuntu-latest
     needs: [tests, doc-build]
     permissions:
@@ -126,16 +133,25 @@ jobs:
     steps:
       - name: Install Git and checkout project
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - name: Set up Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+      - name: Build manylinux wheels with cibuildwheel
+        uses: pypa/cibuildwheel@v2.22.0
+        env:
+          # Build CPython 3.10-3.13 on Linux x86_64 only.
+          CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+          CIBW_ARCHS: "x86_64"
+          # manylinux_2_28 (AlmaLinux 8, GCC 8.5) is the oldest baseline whose
+          # system libstdc++ supports the __cxx11 ABI by default (GCC 5+).
+          # Combined with the explicit _GLIBCXX_USE_CXX11_ABI=1 flag in
+          # CMakeLists.txt this guarantees std::string layout compatibility with
+          # libEDB_RPC_Services.so, which was built with GCC 12.
+          CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_28_x86_64"
+          # Exclude libstdc++.so.6 from the repaired wheel — see job comment above.
+          CIBW_REPAIR_WHEEL_COMMAND_LINUX: >-
+            auditwheel repair --exclude libstdc++.so.6 -w {dest_dir} {wheel}
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-      - name: Install build tools
-        run: python -m pip install build twine
-      - name: Build wheel artifact
-        run: python -m build --wheel --outdir dist
+          output-dir: dist
       - name: Check build health
-        run: python -m twine check dist/*
+        run: pip install twine && python -m twine check dist/*
       - name: Upload distribution artifacts to GitHub artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

@@ -22,11 +22,28 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # ---------------------------------------------------------------------------
+# Resolve the Python interpreter to use for the build.
+#
+# The system Python may lack development headers (python3-devel not installed).
+# If uv is available in the venv, prefer the uv-managed Python which ships as
+# a self-contained build and always includes full headers.  Fall back to the
+# plain 'python3' command if uv is not present.
+# ---------------------------------------------------------------------------
+UV="$REPO_ROOT/.venv/bin/uv"
+if [ -x "$UV" ]; then
+    # Install a managed Python if one isn't already present, then resolve its path.
+    "$UV" python install 3.11 --quiet 2>/dev/null || true
+    PYTHON3="$("$UV" python find --system 3.11 2>/dev/null || echo "")"
+fi
+# Fallback: use whatever python3 is on PATH.
+PYTHON3="${PYTHON3:-python3}"
+
+# ---------------------------------------------------------------------------
 # Helper: compute a 16-hex-char SHA-256 fingerprint of the C++ source tree
 # (deps/*.cpp, deps/*.h, CMakeLists.txt).
 # ---------------------------------------------------------------------------
 get_source_hash() {
-    python3 - "$REPO_ROOT" <<'EOF'
+    "$PYTHON3" - "$REPO_ROOT" <<'EOF'
 import hashlib, glob, os, sys
 base = sys.argv[1]
 files = sorted(
@@ -48,7 +65,7 @@ EOF
 # ---------------------------------------------------------------------------
 save_so_to_cache() {
     local cache_dir="$1"
-    python3 - "$cache_dir" "$REPO_ROOT" <<'EOF'
+    "$PYTHON3" - "$cache_dir" "$REPO_ROOT" <<'EOF'
 import zipfile, glob, os, sys
 cache_dir = sys.argv[1]
 repo_root = sys.argv[2]
@@ -79,7 +96,7 @@ EOF
 # 1. Compute source fingerprint and check the cache.
 # ---------------------------------------------------------------------------
 SOURCE_HASH="$(get_source_hash)"
-PYTHON_TAG="$(python3 -c "import sys; print('cp{}{}'.format(*sys.version_info[:2]))")"
+PYTHON_TAG="$("$PYTHON3" -c "import sys; print('cp{}{}'.format(*sys.version_info[:2]))")"
 CACHE_DIR="$REPO_ROOT/.pyd-cache/$PYTHON_TAG/$SOURCE_HASH"
 CACHED_SO="$(find "$CACHE_DIR" -name 'rpc_executor*.so' 2>/dev/null | head -1 || true)"
 
@@ -92,9 +109,9 @@ if [ -n "$CACHED_SO" ]; then
     echo "Cache hit [$SOURCE_HASH] - skipping C++ compilation."
     echo "Using: $CACHED_SO"
     echo ""
-    echo "Running: python3 -m build $*"
+    echo "Running: $PYTHON3 -m build $*"
     echo ""
-    PREBUILT_PYD="$CACHED_SO" python3 -m build "$@"
+    PREBUILT_PYD="$CACHED_SO" "$PYTHON3" -m build "$@"
 else
     # -----------------------------------------------------------------------
     # Cache miss: full C++ compilation required.
@@ -115,9 +132,9 @@ else
         exit 1
     fi
 
-    echo "Running: python3 -m build $*"
+    echo "Running: $PYTHON3 -m build $*"
     echo ""
-    python3 -m build "$@"
+    "$PYTHON3" -m build "$@"
 
     # Store the compiled .so for future builds.
     save_so_to_cache "$CACHE_DIR"

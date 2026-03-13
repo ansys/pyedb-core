@@ -222,7 +222,7 @@ class _Session:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
         self.ip_address = ip_address or DEFAULT_ADDRESS
-        self.transport_mode = "wnua" if self._is_windows() else "uds"
+        self.transport_mode = "insecure"#"wnua" if (self._is_windows() or in_memory) else "uds"
         self.port_num = (
             50051 if in_memory else (port_num or _find_available_port(check_uds=self._uses_uds()))
         )

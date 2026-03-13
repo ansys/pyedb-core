@@ -129,10 +129,19 @@ namespace RPCExecutor
                 unsetenv("LD_LIBRARY_PATH");
         };
 
-        // Load libEDB_RPC_Services.so directly from the install directory.
-        // RTLD_GLOBAL makes its symbols visible so transitive deps resolve.
+        // Load libEDB_RPC_Services.so with RTLD_GLOBAL so its symbols (and
+        // those of its transitive dependencies, including the license library)
+        // are promoted into the global namespace and shared with every other
+        // .so in the process.  Without RTLD_GLOBAL the license library is
+        // loaded into an isolated namespace, giving the licensor library a
+        // separate uninitialized instance and causing Initialize() to return
+        // a license-failure error code.
+        //
+        // If libEDB_RPC_Services.so requires a newer libstdc++ than the
+        // system default, pre-load it before starting the Python interpreter:
+        //   LD_PRELOAD=/path/to/ansysem/libstdc++.so.6
         const std::string libPath = ansysEmInstallDirectory + "/libEDB_RPC_Services.so";
-        void* hMod = dlopen(libPath.c_str(), RTLD_NOW | RTLD_GLOBAL);
+        void* hMod = dlopen(libPath.c_str(), RTLD_LAZY | RTLD_GLOBAL);
         if (!hMod) { restoreLdPath(); return false; }
 
         using GetIEDB_RPC_ServicesFn = IEDB_RPC_Services* (*)();

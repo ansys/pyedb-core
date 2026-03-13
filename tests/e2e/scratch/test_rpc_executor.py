@@ -14,6 +14,9 @@ Tests that verify failure-mode behaviour (bad path, pre-initialize call) run
 unconditionally and do not need a real EDB install.
 """
 
+import sys
+#sys.path.append(r"/srv/dmiller/installations/ansys_inc/v261_02_02_2026/AnsysEM")
+
 import os
 
 import pytest
@@ -115,3 +118,11 @@ def test_execute_rpc_serialized_request_must_be_bytes():
     rpc_executor.initialize(EDB_EXE_DIR)
     with pytest.raises(TypeError):
         rpc_executor.execute_rpc("EDBServer", "GetVersion", "not-bytes")
+
+@requires_install
+def test_load_edb():
+    from ansys.edb.core.session import launch_local_session
+    import os
+    from ansys.edb.core.database import Database
+    launch_local_session(os.environ.get("ANSYSEM_EDB_EXE_DIR"))
+    Database.open(r"/srv/dmiller/installations/ansys_inc/v261_02_02_2026/AnsysEM/Examples/HFSS 3D Layout/Signal Integrity/Diff_Via.aedb", True)

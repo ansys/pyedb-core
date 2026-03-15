@@ -16,6 +16,7 @@
 * [Isaac Waldron](https://github.com/isaacwaldron)
 * [Karan Bhagat](https://github.com/kbhagat-ansys)
 * [Kathy Pippert](https://github.com/PipKat)
+* [Krishna Prasad](https://github.com/anskprasad)
 * [Maxime Rey](https://github.com/MaxJPRey)
 * [Minsi Sung](https://github.com/ansminsisung)
 * [Roberto Pastor Muela](https://github.com/RobPasMue)

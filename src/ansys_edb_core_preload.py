@@ -15,19 +15,63 @@ it is the first copy resident in the process.  All subsequent C extensions
 that request libstdc++.so.6 (grpcio, etc.) will find it already loaded and
 use the same, newer copy.
 
+Install directory resolution order:
+  1. ANSYS_EDB_CORE_INSTALL_DIR — explicit override, highest priority.
+  2. ANSYSEM_ROOT<XYZ> (e.g. ANSYSEM_ROOT261) — the variable with the largest
+     numeric suffix is used when ANSYS_EDB_CORE_INSTALL_DIR is absent.
+  3. If neither is set, a warning is printed and the system libstdc++ is used.
+
 This is a no-op when:
   - Running on Windows or macOS (no action needed).
-  - ANSYSEM_EDB_EXE_DIR is not set (Ansys install unknown; nothing to load).
-  - The AnsysEM libstdc++.so.6 is not present at the expected path.
+  - No Ansys install directory can be resolved (see above).
+  - The AnsysEM libstdc++.so.6 is not present at the resolved path.
   - libstdc++.so.6 is already loaded (guards against double-execution).
 """
 import ctypes
 import os
+import re
 import sys
 
+_YELLOW = "\033[93m"
+_RESET = "\033[0m"
+_PREFIX = "ansys-edb-core:"
+
+
+def _warn(msg):
+    print(f"{_YELLOW}{_PREFIX} {msg}{_RESET}", file=sys.stderr)
+
+
+def _resolve_install_dir():
+    """Return the AnsysEM install directory to use, or an empty string."""
+    explicit = os.environ.get("ANSYS_EDB_CORE_INSTALL_DIR", "")
+    if explicit:
+        return explicit
+
+    # Scan for ANSYSEM_ROOT<digits> variables and pick the one with the
+    # largest numeric suffix.
+    best_version = -1
+    best_dir = ""
+    for key, value in os.environ.items():
+        m = re.fullmatch(r"ANSYSEM_ROOT(\d+)", key)
+        if m:
+            version = int(m.group(1))
+            if version > best_version:
+                best_version = version
+                best_dir = value
+    return best_dir
+
+
 if sys.platform != "win32":
-    _ansysem_dir = os.environ.get("ANSYSEM_EDB_EXE_DIR", "")
-    if _ansysem_dir:
+    _ansysem_dir = _resolve_install_dir()
+
+    if not _ansysem_dir:
+        _warn(
+            "No AnsysEM install directory found. The system libstdc++.so.6 will "
+            "be used, which may be incompatible with libEDB_RPC_Services.so. "
+            "Set ANSYS_EDB_CORE_INSTALL_DIR or ANSYSEM_ROOT<XYZ> to the AnsysEM "
+            " install directory (e.g. /path/to/AnsysEM) to ensure the correct library is loaded."
+        )
+    else:
         _libstdcpp = os.path.join(_ansysem_dir, "libstdc++.so.6")
         if os.path.isfile(_libstdcpp):
             # Check whether any libstdc++.so.6 is already mapped in this
@@ -46,5 +90,6 @@ if sys.platform != "win32":
             if not _already_loaded:
                 try:
                     ctypes.CDLL(_libstdcpp, mode=ctypes.RTLD_GLOBAL)
+                    _warn(f"Pre-loaded AnsysEM libstdc++.so.6 from '{_ansysem_dir}'.")
                 except OSError:
                     pass

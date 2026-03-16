@@ -222,7 +222,7 @@ class _Session:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
         self.ip_address = ip_address or DEFAULT_ADDRESS
-        self.transport_mode = "insecure"#"wnua" if (self._is_windows() or in_memory) else "uds"
+        self.transport_mode = None if in_memory else ("wnua" if self._is_windows() else "uds")
         self.port_num = (
             50051 if in_memory else (port_num or _find_available_port(check_uds=self._uses_uds()))
         )
@@ -330,8 +330,12 @@ class _Session:
             self.transport_mode = "insecure"
 
     def _create_channel(self):
+        if self.in_memory:
+            options = (("grpc.default_authority", "localhost"),)
+            address = self.server_url
+            return grpc.intercept_channel(grpc.insecure_channel(address, options=options), *self.interceptors)
         channel_params = {"transport_mode": self.transport_mode}
-        if self._uses_uds() and not self.in_memory:
+        if self._uses_uds():
             channel_params["uds_fullpath"] = self._get_uds_file()
         else:
             channel_params["host"] = "localhost"
@@ -692,7 +696,7 @@ def launch_local_session(ansys_em_root: str):
     ansys_em_root : str
         Directory where Ansys Electronics Desktop is installed.
     """
-    return launch_session(ansys_em_root, in_memory=True)
+    launch_session(ansys_em_root, in_memory=True)
 
 
 def get_layer_collection_stub() -> LayerCollectionServiceStub:

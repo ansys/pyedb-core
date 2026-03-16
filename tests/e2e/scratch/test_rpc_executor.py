@@ -26,7 +26,7 @@ import rpc_executor
 # Helpers
 # ---------------------------------------------------------------------------
 
-EDB_EXE_DIR = os.environ.get("ANSYSEM_EDB_EXE_DIR")
+EDB_EXE_DIR = os.environ.get("ANSYSEM_ROOT261")
 
 requires_install = pytest.mark.skipif(
     not EDB_EXE_DIR,
@@ -124,5 +124,56 @@ def test_load_edb():
     from ansys.edb.core.session import launch_local_session
     import os
     from ansys.edb.core.database import Database
-    launch_local_session(os.environ.get("ANSYSEM_EDB_EXE_DIR"))
-    Database.open(r"/srv/dmiller/installations/ansys_inc/v261_02_02_2026/AnsysEM/Examples/HFSS 3D Layout/Signal Integrity/Diff_Via.aedb", True)
+    launch_local_session(EDB_EXE_DIR)
+    #db = Database.open(r"/srv/dmiller/installations/ansys_inc/v261_02_02_2026/AnsysEM/Examples/HFSS 3D Layout/Signal Integrity/Diff_Via.aedb", True)
+
+
+@requires_install
+def test_coexistence_with_cpp_extension_libraries():
+    """Load numpy, scipy, pandas, grpc and protobuf (all C++-backed) alongside
+    rpc_executor and then open an EDB database to confirm that the .pth preload
+    hook correctly establishes a compatible libstdc++.so.6 before any of these
+    extensions can claim the system version.
+
+    Each library is exercised with a minimal but real operation so we can be
+    confident its own C extension initialised properly, not just that the module
+    object imported without error.
+    """
+    # --- numpy ------------------------------------------------------------------
+    import numpy as np
+    arr = np.array([1.0, 2.0, 3.0])
+    assert np.sum(arr) == 6.0, "numpy sum failed"
+    assert arr.dtype == np.float64
+
+    # --- scipy ------------------------------------------------------------------
+    import scipy
+    from scipy.special import expit  # logistic sigmoid — exercises Cython layer
+    result = expit(0.0)
+    assert abs(result - 0.5) < 1e-9, f"scipy.special.expit(0) = {result}, expected 0.5"
+
+    # --- pandas -----------------------------------------------------------------
+    import pandas as pd
+    df = pd.DataFrame({"x": [1, 2, 3], "y": [4, 5, 6]})
+    assert list(df.columns) == ["x", "y"]
+    assert df["x"].sum() == 6
+
+    # --- grpc (cygrpc Cython extension) ----------------------------------------
+    import grpc
+    channel = grpc.insecure_channel("localhost:1")  # not connected, just creates object
+    assert channel is not None
+    channel.close()
+
+    # --- protobuf (upb C extension) --------------------------------------------
+    from google.protobuf import descriptor_pool
+    pool = descriptor_pool.Default()
+    assert pool is not None
+
+    # --- EDB database open (the core integration check) -----------------------
+    from ansys.edb.core.session import launch_local_session
+    from ansys.edb.core.database import Database
+    launch_local_session(EDB_EXE_DIR)
+    db = Database.open(
+        r"/srv/dmiller/installations/ansys_inc/v261_02_02_2026/AnsysEM/Examples/HFSS 3D Layout/Signal Integrity/Diff_Via.aedb",
+        True,
+    )
+    assert db is not None, "Database.open returned None"

@@ -68,9 +68,7 @@ class ComponentDef(ObjBase):
             Component definition found. \
             If a component definition isn't found, the returned component definition is :meth:`null <.is_null>`.
         """
-        return ComponentDef(
-            cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
-        )
+        return ComponentDef(cls.__stub.FindByName(messages.edb_obj_name_message(db, comp_def_name)))
 
     @property
     def definition_type(self) -> DefinitionObjType:

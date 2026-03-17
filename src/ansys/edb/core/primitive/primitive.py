@@ -41,7 +41,10 @@ class Primitive(conn_obj.ConnObj):
         -------
         .Primitive
         """
-        return None if self.is_null else factory.create_primitive(self.msg, self.primitive_type)
+        if self.is_null:
+            return
+        prim_type = self.primitive_type
+        return factory.create_primitive(self.msg, prim_type)
 
     @property
     def primitive_type(self) -> PrimitiveType:

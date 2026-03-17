@@ -87,6 +87,7 @@ class PadstackDef(ObjBase):
     def delete(self):
         """Delete the padstack definition."""
         self.__stub.Delete(self.msg)
+        self.msg = None
 
     @staticmethod
     def _padstack_def_string_message(target, name):

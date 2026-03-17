@@ -3,6 +3,8 @@ import abc
 from collections import defaultdict
 from contextlib import contextmanager
 from enum import Enum, Flag, auto
+import math
+import sys
 from sys import modules
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
@@ -17,7 +19,7 @@ from ansys.edb.core.inner.utils import client_stream_iterator
 # The cache module singleton
 MOD = modules[__name__]
 
-_future_id = 0
+_future_id = math.ceil(sys.maxsize / 2)
 
 
 def _get_next_future_id():
@@ -74,7 +76,7 @@ class _IOOptimizer(metaclass=abc.ABCMeta):
 class _Cache(_IOOptimizer):
     def __init__(self):
         super().__init__()
-        self._response_cache = {}
+        self._response_cache = defaultdict(lambda: defaultdict(lambda: defaultdict()))
         self._msg_type_cache = {}
         self._cached_edb_objs = {}
         self._allow_invalidation = True
@@ -102,9 +104,9 @@ class _Cache(_IOOptimizer):
         return f"{service_name}-{rpc_method_name}-{str(request)}"
 
     def add(self, service_name, rpc_method_name, request_msg, response_msg):
-        self._response_cache[
-            self._generate_cache_key(service_name, rpc_method_name, request_msg)
-        ] = response_msg
+        request_str = str(request_msg)
+        self._response_cache[service_name][rpc_method_name][request_str] = response_msg
+        get_invalidation_tracker().track_cache_entries(service_name, rpc_method_name, request_msg)
 
     def add_from_cache_msg(self, edb_obj_msg):
         cache_msg = edb_obj_msg.cache
@@ -118,18 +120,47 @@ class _Cache(_IOOptimizer):
         if cache_msg.cache:
             cache_msg.ClearField("cache")
 
+    def _get_cache_entry(self, service_name, rpc_name, request):
+        if (service_cache := self._response_cache.get(service_name)) is not None:
+            if (rpc_cache := service_cache.get(rpc_name)) is not None:
+                return rpc_cache.get(str(request))
+
     def _hijack_request(self, service_name, rpc_name, request):
         if (rpc_info := get_rpc_info(service_name, rpc_name)) is None or rpc_info.invalidates_cache:
-            self.invalidate()
+            if rpc_info is None or not rpc_info.has_smart_invalidation:
+                self.invalidate()
             return
+        if (
+            rpc_info.can_cache
+            and rpc_info.has_smart_invalidation
+            and get_invalidation_tracker().is_response_invalidated(
+                service_name, request, rpc_info, rpc_name, True
+            )
+        ):
+            get_invalidation_tracker().invalidate_cache(service_name, rpc_name, request)
+            get_invalidation_tracker().untrack_invalidation(
+                service_name, request, rpc_info, rpc_name
+            )
         if not rpc_info.can_cache:
             return
-        return self._response_cache.get(self._generate_cache_key(service_name, rpc_name, request))
+        return self._get_cache_entry(service_name, rpc_name, request)
 
-    def invalidate(self):
+    def invalidate(self, *args):
         if not self._response_cache or not self.allow_invalidation:
             return
-        self._response_cache.clear()
+        if not args:
+            self._response_cache.clear()
+            get_invalidation_tracker().clear()
+        else:
+            cache_entry = self._response_cache
+            num_args = len(args)
+            for arg_idx in range(num_args):
+                arg = str(args[arg_idx])
+                if arg in cache_entry:
+                    if arg_idx == num_args - 1:
+                        del cache_entry[arg]
+                    else:
+                        cache_entry = cache_entry[arg]
         self._cached_edb_objs = self._cached_edb_objs.fromkeys(self._cached_edb_objs, False)
         get_io_manager().add_notification_for_server(ServerNotification.INVALIDATE_CACHE)
 
@@ -191,15 +222,36 @@ class _Buffer(_IOOptimizer):
         self._futures = defaultdict(list)
         self._invalidate_cache = False
         self._allow_flushing = True
+        self._force_flush_on_next_read = False
 
     def _hijack_request(self, service_name, rpc_name, request):
         if (rpc_info := get_rpc_info(service_name, rpc_name)) is None or rpc_info.is_read:
-            self.flush()
-            return
-        if not rpc_info.can_buffer:
+            if rpc_info is not None and rpc_info.read_no_buffer_flush:
+                return
+            if (
+                rpc_info is None
+                or (rpc_info is not None and not rpc_info.has_smart_invalidation)
+                or get_invalidation_tracker().is_response_invalidated(
+                    service_name, request, rpc_info, rpc_name, False
+                )
+                or self._force_flush_on_next_read
+            ):
+                # TODO: Need to clean up invalidation tracker after flushing buffer
+                self.flush()
+                get_invalidation_tracker().resolve_invalidations_after_buffer_flush()
+                self._force_flush_on_next_read = False
             return
         if rpc_info.invalidates_cache:
-            self._invalidate_cache = True
+            if rpc_info.has_smart_invalidation:
+                get_invalidation_tracker().track_invalidations_in_request(request, rpc_info)
+            else:
+                self._invalidate_cache = True
+                self._force_flush_on_next_read = True
+        if not rpc_info.can_buffer:
+            self.flush()
+            get_invalidation_tracker().resolve_invalidations_after_buffer_flush()
+            self._force_flush_on_next_read = False
+            return
         future_id = _get_next_future_id() if rpc_info.returns_future else None
         self._buffer.append(self._BufferEntry(service_name, rpc_name, request, future_id))
         return Empty if future_id is None else EDBObjMessage(id=future_id, is_future=True)
@@ -242,6 +294,9 @@ class _Buffer(_IOOptimizer):
     @allow_flushing.setter
     def allow_flushing(self, allow):
         self._allow_flushing = allow
+
+    def is_future(self, obj_id):
+        return obj_id in self._futures
 
 
 class ServerNotification(Enum):
@@ -290,6 +345,140 @@ class _ActiveRequestEdbObjMsgMgr:
         return self._active_request_edb_obj_msgs
 
 
+class SmartInvalidationLevel(Enum):
+    """Provides an enum levels of smart invalidaton."""
+
+    OBJ = auto()
+    GLOBAL = auto()
+    NONE = auto()
+
+
+class _InvalidationTracker:
+    def __init__(self):
+        self._invalidation_tracker = defaultdict(lambda: defaultdict(set))
+        self._resolved_invalidations = defaultdict(lambda: defaultdict(set))
+        self._id_to_cache_entry_map = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+
+    def track_invalidations(self, edb_obj_id, invalidations):
+        obj_invalidations = self._invalidation_tracker[edb_obj_id]
+        # is_global_invalidation = edb_obj_id == "g"
+        # cache = get_cache() if is_global_invalidation else None
+        for invalidation in invalidations:
+            obj_invalidations[invalidation.service].add(invalidation.rpc)
+            # if is_global_invalidation and cache is not None:
+            #     cache.invalidate(invalidation.service, invalidation.rpc)
+        # TODO: Need to handle class level invalidations specified by class level invalidations
+        # TODO: Handle invalidations made by derived class
+        # TODO: Additionally, invalidate cache here, not in cache hijack method.
+        #  Also, handle invalidations for entire services, not just rpcs
+        # TODO: Handle deleting objects (set all client side ids to 0)
+        # TODO: For reads with requests that take multiple args, need to make
+        #  invalidation global (map edb ids to cache entries and just invalidate at buffer flush)
+
+    def _untrack_invalidation(self, edb_obj_id, service_name, rpc):
+        if (edb_obj_invalidations := self._resolved_invalidations.get(edb_obj_id)) is not None:
+            if (service_invalidations := edb_obj_invalidations.get(service_name)) is not None:
+                if rpc in service_invalidations:
+                    service_invalidations.remove(rpc)
+
+    def untrack_invalidation(self, service_name, request, rpc_info, rpc):
+        for invalidation in rpc_info.invalidations:
+            edb_obj_id = _InvalidationTracker.extract_edb_obj_id(request, invalidation)
+            self._untrack_invalidation(edb_obj_id, service_name, rpc)
+
+    def is_response_invalidated(self, service_name, request, rpc_info, rpc_name, check_if_resolved):
+        for invalidation in rpc_info.invalidations:
+            edb_obj_id = _InvalidationTracker.extract_edb_obj_id(request, invalidation)
+            if (buffer := get_buffer()) is not None and buffer.is_future(edb_obj_id):
+                return True
+            invalidation_tracker = (
+                self._resolved_invalidations if check_if_resolved else self._invalidation_tracker
+            )
+            invalidations = invalidation_tracker.get(edb_obj_id)
+            if invalidations is not None:
+                if (service_invalidations := invalidations.get(service_name)) is not None:
+                    if rpc_name in service_invalidations:
+                        return True
+            invalidations = invalidation_tracker.get("g")
+            if invalidations is not None:
+                if (service_invalidations := invalidations.get(service_name)) is not None:
+                    if "*" in service_invalidations or rpc_name in service_invalidations:
+                        return True
+        return False
+
+    def clear(self):
+        self._invalidation_tracker.clear()
+
+    @staticmethod
+    def extract_edb_obj_id(field, accessor_list, accessor_idx=0):
+        if accessor_list is None:
+            return "g"
+        is_edb_obj_msg = accessor_idx == len(accessor_list)
+        try:
+            field_value = getattr(field, "id" if is_edb_obj_msg else accessor_list[accessor_idx])
+        except Exception as e:
+            print(e)
+        if is_edb_obj_msg:
+            return field_value
+        return _InvalidationTracker.extract_edb_obj_id(field_value, accessor_list, accessor_idx + 1)
+
+    def track_invalidations_in_request(self, request, rpc_info):
+        for invalidations in rpc_info.invalidations:
+            edb_obj_id = _InvalidationTracker.extract_edb_obj_id(request, invalidations[0])
+            self.track_invalidations(edb_obj_id, invalidations[1])
+
+    def resolve_invalidations_after_buffer_flush(self):
+        cache = get_cache()
+        if cache is None:
+            return
+        if (global_invalidations := self._invalidation_tracker.get("g")) is not None and (
+            cache := get_cache()
+        ) is not None:
+            for service, rpcs in global_invalidations.items():
+                if "*" in rpcs:
+                    cache.invalidate(service)
+                else:
+                    for rpc in rpcs:
+                        cache.invalidate(service, rpc)
+            del self._invalidation_tracker["g"]
+        # for edb_obj_id in self._invalidation_tracker.keys():
+        #     if (cache_entries := self._id_to_cache_entry_map.get(edb_obj_id)) is not None:
+        #         for cache_entry in cache_entries:
+        #             cache.invalidate(*cache_entry)
+        # self._invalidation_tracker.clear()
+
+        for edb_obj_id, invalidations in self._invalidation_tracker.items():
+            resolved_edb_obj_invalidations = self._resolved_invalidations[edb_obj_id]
+            for service, rpcs in invalidations.items():
+                resolved_service_invalidations = resolved_edb_obj_invalidations[service]
+                resolved_service_invalidations.update(rpcs)
+                rpcs.clear()
+
+    def track_cache_entries(self, service_name, rpc_name, request):
+        rpc_info = get_rpc_info(service_name, rpc_name)
+        if rpc_info is None or not rpc_info.can_cache or not rpc_info.has_smart_invalidation:
+            return
+        for invalidations in rpc_info.invalidations:
+            edb_obj_id = _InvalidationTracker.extract_edb_obj_id(request, invalidations)
+            self._id_to_cache_entry_map[edb_obj_id][service_name][rpc_name].append(request)
+            self._untrack_invalidation(edb_obj_id, service_name, rpc_name)
+
+    def invalidate_cache(self, service_name, rpc_name, request):
+        cache = get_cache()
+        if cache is None:
+            return
+        rpc_info = get_rpc_info(service_name, rpc_name)
+        if rpc_info is None or not rpc_info.can_cache or not rpc_info.has_smart_invalidation:
+            return
+        for invalidations in rpc_info.invalidations:
+            edb_obj_id = _InvalidationTracker.extract_edb_obj_id(request, invalidations)
+            for invalidated_request in self._id_to_cache_entry_map[edb_obj_id][service_name][
+                rpc_name
+            ]:
+                cache.invalidate(service_name, rpc_name, invalidated_request)
+            del self._id_to_cache_entry_map[edb_obj_id][service_name][rpc_name]
+
+
 class _IOManager:
     def __init__(self):
         self._reset()
@@ -316,6 +505,7 @@ class _IOManager:
             self._cache.allow_invalidation = False
         if IOMangementType.NO_BUFFER_FLUSHING in mode:
             self._buffer.allow_flushing = False
+        self._invalidation_tracker = _InvalidationTracker()
 
     def end_managing(self):
         if self._cache is not None:
@@ -334,6 +524,11 @@ class _IOManager:
     def buffer(self):
         """Get the active buffer."""
         return self._buffer
+
+    @property
+    def invalidation_tracker(self):
+        """Get the invalidation tracker."""
+        return self._invalidation_tracker
 
     @property
     def is_blocking(self):
@@ -403,6 +598,11 @@ def get_cache():
 def get_buffer():
     """Get the active buffer."""
     return MOD.io_manager.buffer
+
+
+def get_invalidation_tracker():
+    """Get the active buffer."""
+    return MOD.io_manager.invalidation_tracker
 
 
 def start_managing(io_type):

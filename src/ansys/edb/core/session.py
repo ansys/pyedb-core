@@ -353,7 +353,7 @@ class _Session:
             if not rpc_executor.initialize(self.ansys_em_root):
                 raise EDBSessionException(
                     ErrorCode.STARTUP_UNEXPECTED,
-                    f"Failed to initialize in-memory session with error code {success}",
+                    f"Failed to initialize in-memory session with AnsysEM root '{self.ansys_em_root}'",
                 )
         elif self.is_launch():
             self.start_server()

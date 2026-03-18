@@ -1,0 +1,6 @@
+get\_all\_variable\_names
+=========================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.get_all_variable_names

@@ -1,0 +1,6 @@
+all\_diag\_constant
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: MatrixConvergenceData.all_diag_constant

@@ -1,0 +1,6 @@
+use\_solver\_properties
+=======================
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.use_solver_properties

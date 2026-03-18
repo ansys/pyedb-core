@@ -1,0 +1,6 @@
+arc\_to\_chord\_error
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedMeshingSettings.arc_to_chord_error

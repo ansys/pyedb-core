@@ -11,16 +11,16 @@ if TYPE_CHECKING:
     from ansys.edb.core.utility.value import Value
 
     LayerListLike = Union[LayerLike, List[LayerLike]]
-    from src.ansys.edb.core.hierarchy.cell_instance import CellInstance
-    from src.ansys.edb.core.hierarchy.group import Group
-    from src.ansys.edb.core.hierarchy.pin_group import PinGroup
-    from src.ansys.edb.core.layout.voltage_regulator import VoltageRegulator
-    from src.ansys.edb.core.layout_instance.layout_instance import LayoutInstance
-    from src.ansys.edb.core.net.differential_pair import DifferentialPair
-    from src.ansys.edb.core.net.extended_net import ExtendedNet
-    from src.ansys.edb.core.net.net_class import NetClass
-    from src.ansys.edb.core.primitive.padstack_instance import PadstackInstance
-    from src.ansys.edb.core.terminal.terminal import Terminal
+    from ansys.edb.core.hierarchy.cell_instance import CellInstance
+    from ansys.edb.core.hierarchy.group import Group
+    from ansys.edb.core.hierarchy.pin_group import PinGroup
+    from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
+    from ansys.edb.core.layout_instance.layout_instance import LayoutInstance
+    from ansys.edb.core.net.differential_pair import DifferentialPair
+    from ansys.edb.core.net.extended_net import ExtendedNet
+    from ansys.edb.core.net.net_class import NetClass
+    from ansys.edb.core.primitive.padstack_instance import PadstackInstance
+    from ansys.edb.core.terminal.terminal import Terminal
 
 from enum import Enum
 

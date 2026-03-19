@@ -1,6 +1,6 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["scikit-build-core>=0.9", "pybind11>=2.11"]
+build-backend = "scikit_build_core.build"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
@@ -60,8 +60,9 @@ doc = [
     "sphinx-copybutton==0.5.2",
 ]
 
-[tool.flit.module]
-name = "ansys.edb.core"
+[tool.scikit-build]
+# Include the pure-Python source tree alongside the compiled extension.
+wheel.packages = ["src/ansys"]
 
 [tool.black]
 line-length = 100
@@ -78,3 +79,15 @@ source = ["ansys.edb"]
 
 [tool.coverage.report]
 show_missing = true
+
+[tool.cibuildwheel]
+# Build CPython wheels for all supported Python versions; skip musl (Alpine Linux).
+build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+skip = ["*-musllinux_*"]
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+# Compile inside the manylinux_2_28 (AlmaLinux 8) container so the resulting
+# .so only requires GLIBC >= 2.28, giving compatibility with RHEL 8,
+# Ubuntu 20.04+, and any enterprise Linux released after 2019.
+manylinux-x86_64-image = "manylinux_2_28"

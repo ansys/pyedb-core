@@ -395,7 +395,7 @@ class PolygonData:
         -------
         tuple of (.PointData, .PointData)
         """
-        return cls.__stub.GetStreamedBBox(PolygonData._polygon_data_request_iterator(polygons))
+        return cls.__stub.GetBBox(messages.polygon_data_list_message(polygons))
 
     @parser.to_circle
     def bounding_circle(self) -> tuple[PointData, Value]:

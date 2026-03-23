@@ -1,6 +1,6 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["scikit-build-core>=0.9", "pybind11>=2.11"]
+build-backend = "scikit_build_core.build"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
@@ -60,8 +60,9 @@ doc = [
     "sphinx-copybutton==0.5.2",
 ]
 
-[tool.flit.module]
-name = "ansys.edb.core"
+[tool.scikit-build]
+# Include the pure-Python source tree alongside the compiled extension.
+wheel.packages = ["src/ansys"]
 
 [tool.black]
 line-length = 100

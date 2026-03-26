@@ -191,10 +191,68 @@ def str_pair_message(pair):
     return StringPairMessage(first=pair[0], second=pair[1])
 
 
+def _point_data_to_value_msgs(point):
+    """Extract (x_ValueMessage, y_ValueMessage) from a PointData without lazy Value promotion.
+
+    Accesses the internal ``_x`` / ``_y`` fields directly.  If either coordinate is
+    a raw ``float`` or ``int`` (fast-path parser result), a ``ValueMessage`` is
+    constructed inline without going through :class:`.Value` ``__init__``.
+    """
+    _x = point._x
+    _y = point._y
+    if isinstance(_x, (int, float)):
+        x_vm = ValueMessage()
+        x_vm.constant.real = float(_x)
+        x_vm.constant.imag = 0
+    else:
+        x_vm = _x.msg
+    if isinstance(_y, (int, float)):
+        y_vm = ValueMessage()
+        y_vm.constant.real = float(_y)
+        y_vm.constant.imag = 0
+    else:
+        y_vm = _y.msg
+    return x_vm, y_vm
+
+
+def _try_points_to_coords(points):
+    """Try to collapse a PointData list into interleaved doubles for the coords fast path.
+
+    Returns a flat :obj:`list` of ``float`` values (interleaved x, y pairs) when every
+    point is a non-arc, non-parametric constant, or ``None`` if the fast path is
+    unavailable (arc vertex or parametric expression encountered).
+    """
+    result = []
+    for pt in points:
+        if pt._arc_h is not None:
+            return None
+        _x = pt._x
+        _y = pt._y
+        if isinstance(_x, (int, float)):
+            result.append(float(_x))
+        elif _x.is_parametric:
+            return None
+        else:
+            result.append(_x.msg.constant.real)
+        if isinstance(_y, (int, float)):
+            result.append(float(_y))
+        elif _y.is_parametric:
+            return None
+        else:
+            result.append(_y.msg.constant.real)
+    return result
+
+
 def point_message(point):
     """Convert to a ``PointMessage`` object."""
-    point = conversions.to_point(point)
-    return PointMessage(x=value_message(point.x), y=value_message(point.y))
+    # Fast path for PointData: access internal fields directly to avoid both the
+    # conversions.to_point() dispatch and any lazy float → Value promotion.
+    try:
+        x_vm, y_vm = _point_data_to_value_msgs(point)
+    except AttributeError:
+        point = conversions.to_point(point)
+        return PointMessage(x=value_message(point.x), y=value_message(point.y))
+    return PointMessage(x=x_vm, y=y_vm)
 
 
 def point_property_message(target, point):
@@ -230,11 +288,23 @@ def circle_message(center, radius):
 
 def polygon_data_message(pd):
     """Convert to a ``PolygonDataMessage`` object."""
+    points = pd.points
+    holes = pd.holes
+    coords = _try_points_to_coords(points)
+    if coords is not None:
+        # Fast path: all vertices are non-parametric constants — send as packed
+        # doubles instead of per-vertex PointMessage/ValueMessage objects.
+        return PolygonDataMessage(
+            coords=coords,
+            closed=pd.is_closed,
+            sense=pd.sense.value,
+            holes=[polygon_data_message(h) for h in holes],
+        )
     return PolygonDataMessage(
-        points=[point_message(pt) for pt in pd.points],
+        points=[point_message(pt) for pt in points],
         closed=pd.is_closed,
         sense=pd.sense.value,
-        holes=[polygon_data_message(h) for h in pd.holes],
+        holes=[polygon_data_message(h) for h in holes],
     )
 
 

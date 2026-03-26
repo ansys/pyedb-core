@@ -15,9 +15,16 @@
 .EXAMPLE
     # Pass extra arguments straight through to `python -m build`:
     .\scripts\bootstrap.ps1 --no-isolation
+
+.EXAMPLE
+    # Compile the C++ extension in Debug mode:
+    .\scripts\bootstrap.ps1 -DebugBuild
 #>
 
 param(
+    # When specified, the C++ extension is compiled in Debug mode instead of Release.
+    [switch] $DebugBuild,
+
     # Any additional arguments are forwarded verbatim to `python -m build`.
     [Parameter(ValueFromRemainingArguments)]
     [string[]] $BuildArgs
@@ -122,11 +129,12 @@ function Find-Vcvars64 {
 #            installs the file directly - no compiler needed.
 #    Miss -> run a full MSVC-activated build, then save the .pyd to cache.
 # ---------------------------------------------------------------------------
-$pythonTag = & python -c "import sys; print('cp{}{}'.format(*sys.version_info[:2]))" 2>$null
+$pythonTag  = & python -c "import sys; print('cp{}{}'.format(*sys.version_info[:2]))" 2>$null
 if (-not $pythonTag) { $pythonTag = 'cpXX' }
 
+$buildType  = if ($DebugBuild) { 'Debug' } else { 'Release' }
 $sourceHash = Get-SourceHash
-$cacheDir   = Join-Path $repoRoot ".pyd-cache\$pythonTag\$sourceHash"
+$cacheDir   = Join-Path $repoRoot ".pyd-cache\$pythonTag\$buildType\$sourceHash"
 $cachedPyd  = Get-ChildItem $cacheDir -Filter 'rpc_executor*.pyd' -ErrorAction SilentlyContinue |
               Select-Object -First 1
 
@@ -136,15 +144,15 @@ if ($cachedPyd) {
     # file directly (LANGUAGES NONE - no C++ compiler needed).
     # ------------------------------------------------------------------
     Write-Host ""
-    Write-Host "Cache hit [$sourceHash] - skipping C++ compilation." -ForegroundColor Green
+    Write-Host "Cache hit [$sourceHash] ($buildType) - skipping C++ compilation." -ForegroundColor Green
     Write-Host "Using: $($cachedPyd.FullName)" -ForegroundColor DarkGray
     Write-Host ""
 
     $env:PREBUILT_PYD = $cachedPyd.FullName
     try {
-        Write-Host "Running: python -m build $($BuildArgs -join ' ')" -ForegroundColor Cyan
+        Write-Host "Running: python -m build --config-setting cmake.build-type=$buildType $($BuildArgs -join ' ')" -ForegroundColor Cyan
         Write-Host ""
-        & python -m build @BuildArgs
+        & python -m build --config-setting "cmake.build-type=$buildType" @BuildArgs
         if ($LASTEXITCODE -ne 0) {
             Write-Error "Build failed (exit code $LASTEXITCODE)."
             exit $LASTEXITCODE
@@ -160,7 +168,7 @@ if ($cachedPyd) {
     Remove-Item Env:PREBUILT_PYD -ErrorAction SilentlyContinue
 
     Write-Host ""
-    Write-Host "Cache miss [$sourceHash] - full C++ compilation required." -ForegroundColor Yellow
+    Write-Host "Cache miss [$sourceHash] ($buildType) - full C++ compilation required." -ForegroundColor Yellow
 
     # ---------------------------------------------------------------------------
     # 2. Ensure MSVC Build Tools are installed.
@@ -207,7 +215,7 @@ if ($cachedPyd) {
     #    We write a temporary .bat file because PowerShell 5.x rejects '&&'
     #    even inside quoted strings; cmd.exe handles it natively.
     # ---------------------------------------------------------------------------
-    $buildCmd = "python -m build $($BuildArgs -join ' ')".Trim()
+    $buildCmd = "python -m build --config-setting cmake.build-type=$buildType $($BuildArgs -join ' ')".Trim()
 
     Write-Host "Running: $buildCmd" -ForegroundColor Cyan
     Write-Host ""

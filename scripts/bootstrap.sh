@@ -2,7 +2,8 @@
 # bootstrap.sh – Developer build helper for pyedb-core on Linux / macOS.
 #
 # Usage:
-#   ./scripts/bootstrap.sh               # build sdist + wheel
+#   ./scripts/bootstrap.sh               # build sdist + wheel (Release)
+#   ./scripts/bootstrap.sh debug         # build sdist + wheel (Debug)
 #   ./scripts/bootstrap.sh --wheel       # build wheel only
 #   ./scripts/bootstrap.sh --no-isolation
 #
@@ -97,7 +98,7 @@ EOF
 # ---------------------------------------------------------------------------
 SOURCE_HASH="$(get_source_hash)"
 PYTHON_TAG="$("$PYTHON3" -c "import sys; print('cp{}{}'.format(*sys.version_info[:2]))")"
-CACHE_DIR="$REPO_ROOT/.pyd-cache/$PYTHON_TAG/$SOURCE_HASH"
+CACHE_DIR="$REPO_ROOT/.pyd-cache/$PYTHON_TAG/$BUILD_TYPE/$SOURCE_HASH"
 CACHED_SO="$(find "$CACHE_DIR" -name 'rpc_executor*.so' 2>/dev/null | head -1 || true)"
 
 if [ -n "$CACHED_SO" ]; then
@@ -106,18 +107,18 @@ if [ -n "$CACHED_SO" ]; then
     # directly (LANGUAGES NONE - no C++ compiler required for this build).
     # -----------------------------------------------------------------------
     echo ""
-    echo "Cache hit [$SOURCE_HASH] - skipping C++ compilation."
+    echo "Cache hit [$SOURCE_HASH] ($BUILD_TYPE) - skipping C++ compilation."
     echo "Using: $CACHED_SO"
     echo ""
-    echo "Running: $PYTHON3 -m build $*"
+    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $*"
     echo ""
-    PREBUILT_PYD="$CACHED_SO" "$PYTHON3" -m build "$@"
+    PREBUILT_PYD="$CACHED_SO" "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" "$@"
 else
     # -----------------------------------------------------------------------
     # Cache miss: full C++ compilation required.
     # -----------------------------------------------------------------------
     echo ""
-    echo "Cache miss [$SOURCE_HASH] - full C++ compilation required."
+    echo "Cache miss [$SOURCE_HASH] ($BUILD_TYPE) - full C++ compilation required."
     echo ""
 
     # Check for a C++ compiler.
@@ -132,9 +133,9 @@ else
         exit 1
     fi
 
-    echo "Running: $PYTHON3 -m build $*"
+    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $*"
     echo ""
-    "$PYTHON3" -m build "$@"
+    "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" "$@"
 
     # Store the compiled .so for future builds.
     save_so_to_cache "$CACHE_DIR"

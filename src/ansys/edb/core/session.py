@@ -166,6 +166,7 @@ from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
 from ansys.api.edb.v1.text_pb2_grpc import TextServiceStub
 from ansys.api.edb.v1.transform_3d_pb2_grpc import Transform3DServiceStub
 from ansys.api.edb.v1.transform_pb2_grpc import TransformServiceStub
+from ansys.api.edb.v1.ui_manager_pb2_grpc import UIManagerServiceStub
 from ansys.api.edb.v1.value_pb2_grpc import ValueServiceStub
 from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
@@ -558,6 +559,7 @@ class StubType(Enum):
     q3d_dcrl_sim_settings = Q3DDCRLSettingsServiceStub
     q3d_general_sim_settings = Q3DGeneralSettingsServiceStub
     q3d_sim_settings = Q3DSettingsServiceStub
+    ui_manager = UIManagerServiceStub
 
 
 def attach_session(
@@ -650,6 +652,39 @@ def session(
     try:
         _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log)
         yield
+    except EDBSessionException:
+        raise
+    except Exception as e:  # noqa
+        raise
+    finally:
+        MOD.current_session.disconnect()
+
+
+@contextmanager
+def aedt_session(ip_address: str, port_num: int):
+    r"""Attach to an existing AEDT session in a context manager.
+
+    Parameters
+    ----------
+    ip_address : str
+        IP address of the machine that is running the server.
+    port_num : int
+        Port number that the server is listening on.
+
+    Examples
+    --------
+    Attach to an existing AEDT session that automatically synchronizes the 3D layout UI
+    and disconnects when it goes out of scope.
+
+    >>> with aedt_session("localhost", 50051) as session:
+    >>>    # program goes here
+    """
+    try:
+        attach_session(ip_address, port_num)
+        yield
+        from ansys.edb.core.inner.ui_manager import UIManager
+
+        UIManager.sync_3d_layout_ui()
     except EDBSessionException:
         raise
     except Exception as e:  # noqa

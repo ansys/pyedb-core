@@ -64,6 +64,49 @@ class PolygonData:
         session.StubType.polygon_data
     )
 
+    @classmethod
+    def _from_msg(cls, message):
+        """Fast-path constructor from a ``PolygonDataMessage`` or ``BoxMessage``.
+
+        Bypasses ``__init__`` for the common ``PolygonDataMessage`` case,
+        delegating to :meth:`.PointData._from_msg` or :meth:`.PointData._from_floats`
+        to build vertices without any ``PointMessage`` or ``ValueMessage`` overhead.
+        When the message contains a non-empty ``coords`` field (packed doubles emitted
+        by the C++ backend only for non-arc, non-parametric constant coordinates),
+        those raw floats are used directly via :meth:`.PointData._from_floats` with no
+        arc-height check needed.  When the ``points`` field is used instead,
+        :meth:`.PointData._from_msg` performs the normal arc-height sentinel check.
+
+        Parameters
+        ----------
+        message : ansys.api.edb.v1.polygon_data_pb2.PolygonDataMessage
+                  or ansys.api.edb.v1.point_data_pb2.BoxMessage
+
+        Returns
+        -------
+        PolygonData
+        """
+        from ansys.api.edb.v1.point_data_pb2 import BoxMessage
+
+        from ansys.edb.core.geometry.point_data import PointData
+
+        if isinstance(message, BoxMessage):
+            ll = PointData._from_msg(message.lower_left)
+            ur = PointData._from_msg(message.upper_right)
+            return cls(lower_left=ll, upper_right=ur)
+
+        poly = object.__new__(cls)
+        coords = message.coords
+        if coords:
+            it = iter(coords)
+            poly._points = [PointData._from_floats(x, y) for x, y in zip(it, it)]
+        else:
+            poly._points = [PointData._from_msg(m) for m in message.points]
+        poly._holes = [cls._from_msg(h) for h in message.holes]
+        poly._sense = PolygonSenseType(message.sense)
+        poly._is_closed = message.closed
+        return poly
+
     def __init__(
         self,
         points: PointLike = None,
@@ -395,7 +438,7 @@ class PolygonData:
         -------
         tuple of (.PointData, .PointData)
         """
-        return cls.__stub.GetStreamedBBox(PolygonData._polygon_data_request_iterator(polygons))
+        return cls.__stub.GetBBox(messages.polygon_data_list_message(polygons))
 
     @parser.to_circle
     def bounding_circle(self) -> tuple[PointData, Value]:

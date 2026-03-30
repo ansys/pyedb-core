@@ -50,7 +50,7 @@ class HierarchyObj(conn_obj.ConnObj):
 
     @placement_layer.setter
     def placement_layer(self, value):
-        self.__stub.SetPlacementLayer(messages.pointer_property_message(self, value))
+        self.__stub.SetPlacementLayer(messages.layer_ref_property_message(self, value))
 
     @property
     def location(self):

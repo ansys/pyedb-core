@@ -133,6 +133,19 @@ jobs:
     steps:
       - name: Install Git and checkout project
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Select manylinux image (fallback if quay is down)
+        shell: bash
+        run: |
+          set -euo pipefail
+          QUAY="quay.io/pypa/manylinux_2_28_x86_64"
+          GHCR="ghcr.io/pypa/manylinux_2_28_x86_64"
+          if docker pull "${QUAY}"; then
+            echo "CIBW_MANYLINUX_X86_64_IMAGE=${QUAY}" >> "$GITHUB_ENV"
+          else
+            echo "Quay pull failed; trying GHCR mirror..."
+            docker pull "${GHCR}"
+            echo "CIBW_MANYLINUX_X86_64_IMAGE=${GHCR}" >> "$GITHUB_ENV"
+          fi
       - name: Build manylinux wheels with cibuildwheel
         uses: pypa/cibuildwheel@v2.22.0
         env:

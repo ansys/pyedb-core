@@ -1,13 +1,13 @@
 """Layout."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Union
+from typing import TYPE_CHECKING, List, Tuple, Union
 
 if TYPE_CHECKING:
     from ansys.edb.core.geometry.polygon_data import ExtentType, PolygonData
     from ansys.edb.core.layout.cell import Cell
     from ansys.edb.core.net.net import Net
-    from ansys.edb.core.typing import LayerLike, ValueLike
+    from ansys.edb.core.typing import LayerLike, NetLike, ValueLike
     from ansys.edb.core.utility.value import Value
 
     LayerListLike = Union[LayerLike, List[LayerLike]]
@@ -579,5 +579,34 @@ class Layout(ObjBase, variable_server.VariableServer):
         self.__stub.FlattenCellInstances(
             layout_pb2.FlattenCellInstancesMessage(
                 layout=self.msg, use_net_mapping=use_net_mapping, delete_dummy_net=delete_dummy_net
+            )
+        )
+
+    def remove_holes_except_on_critical_nets(
+        self,
+        critical_net_groups: list[Tuple[list[NetLike], ValueLike]],
+        hole_area_minimum: ValueLike,
+    ):
+        """Remove holes in the geometry except for those on critical nets.
+
+        Parameters
+        ----------
+        critical_net_groups : list of tuple (list of :term:`NetLike`, :term:`ValueLike`)
+            Groups of critical nets. Each group is a tuple containing a list of nets and a tolerance value.
+        hole_area_minimum : :term:`ValueLike`
+            Minimum area of holes to remove. Holes with an area smaller than
+            this value will not be removed.
+        """
+        self.__stub.RemoveHolesExceptOnCriticalNets(
+            layout_pb2.RemoveHolesMessage(
+                layout=self.msg,
+                critical_net_groups=[
+                    layout_pb2.CriticalNetGroupMessage(
+                        nets=[n.name if not isinstance(n, str) else n for n in nets],
+                        tolerance=messages.value_message(tolerance),
+                    )
+                    for nets, tolerance in critical_net_groups
+                ],
+                hole_area_minimum=messages.value_message(hole_area_minimum),
             )
         )

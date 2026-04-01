@@ -263,6 +263,21 @@ class HFSSSettingsOptions(SettingsOptions):
         )
 
     @property
+    def solve_inside_metal_basis(self):
+        """:class:`.BasisFunctionOrder`: Basis function order."""
+        return BasisFunctionOrder(
+            self.__stub.GetSolveInsideMetalBasis(self.msg).basis_function_order
+        )
+
+    @solve_inside_metal_basis.setter
+    def solve_inside_metal_basis(self, order_basis):
+        self.__stub.SetSolveInsideMetalBasis(
+            pb.BasisFunctionOrderPropertyMessage(
+                target=self.msg, basis_function_order=order_basis.value
+            )
+        )
+
+    @property
     def solver_type(self):
         """:class:`.SolverType`: HFSS solver type."""
         return SolverType(self.__stub.GetSolverTypeOrder(self.msg).solver_type)

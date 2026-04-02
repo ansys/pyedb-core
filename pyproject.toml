@@ -1,11 +1,11 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["scikit-build-core>=0.9", "pybind11>=2.11"]
+build-backend = "scikit_build_core.build"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-edb-core"
-version = "0.3.0.dev7"
+version = "0.3.0.dev9"
 description = "A python wrapper for Ansys Edb service"
 readme = "README.rst"
 requires-python = ">=3.10"
@@ -26,8 +26,8 @@ classifiers = [
 
 
 dependencies = [
-    "ansys-api-edb==0.3.dev5",
-    "protobuf>=5.29.6,<7",
+    "ansys-api-edb==0.3.dev10",
+    "protobuf>=3.19.3,<5",
     "grpcio>=1.44.0",
     "Django>=4.2.16",
     "ansys-tools-common>=0.3.1"
@@ -61,8 +61,9 @@ doc = [
     "sphinx-copybutton==0.5.2",
 ]
 
-[tool.flit.module]
-name = "ansys.edb.core"
+[tool.scikit-build]
+# Include the pure-Python source tree alongside the compiled extension.
+wheel.packages = ["src/ansys"]
 
 [tool.black]
 line-length = 100

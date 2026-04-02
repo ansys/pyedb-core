@@ -20,7 +20,7 @@ from ansys.edb.core.inner.layout_obj import LayoutObj
 import ansys.edb.core.inner.messages as messages
 from ansys.edb.core.inner.parser import msg_to_point_data, msg_to_polygon_data, to_polygon_data
 from ansys.edb.core.inner.utils import client_stream_iterator, stream_items_from_server
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor, StubType, is_in_memory
 
 
 class PrimitiveInstanceCollection(LayoutObj):
@@ -79,6 +79,9 @@ class PrimitiveInstanceCollection(LayoutObj):
             layer=messages.layer_ref_message(layer),
             geometry=messages.polygon_data_message(geometry),
         )
+        if is_in_memory():
+            chunk.points.points.extend(messages.point_message(pt) for pt in positions)
+            return PrimitiveInstanceCollection(cls.__stub.CreateUnary(chunk))
         return PrimitiveInstanceCollection(
             cls.__stub.Create(cls._point_request_iterator(positions, chunk))
         )
@@ -103,7 +106,11 @@ class PrimitiveInstanceCollection(LayoutObj):
     @positions.setter
     def positions(self, positions: List[PointData]):
         chunk = PrimitiveInstanceCollectionDataMessage(lyt_or_prim_inst_col=self.msg)
-        self.__stub.SetPositions(self._point_request_iterator(positions, chunk))
+        if is_in_memory():
+            chunk.points.points.extend(messages.point_message(pt) for pt in positions)
+            self.__stub.SetPositionsUnary(chunk)
+        else:
+            self.__stub.SetPositions(self._point_request_iterator(positions, chunk))
 
     @property
     def instantiated_geometry(self) -> List[PolygonData]:

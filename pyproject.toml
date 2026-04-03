@@ -5,7 +5,7 @@ build-backend = "scikit_build_core.build"
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-edb-core"
-version = "0.3.0.dev9"
+version = "0.3.0.dev10"
 description = "A python wrapper for Ansys Edb service"
 readme = "README.rst"
 requires-python = ">=3.10"
@@ -26,7 +26,7 @@ classifiers = [
 
 
 dependencies = [
-    "ansys-api-edb==0.3.dev10",
+    "ansys-api-edb==0.3.dev11",
     "protobuf>=3.19.3,<5",
     "grpcio>=1.44.0",
     "ansys-tools-common>=0.3.1"

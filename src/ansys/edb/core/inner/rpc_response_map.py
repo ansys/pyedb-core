@@ -1072,6 +1072,8 @@ rpc_response_map = {
         "Decompose": Empty,
         "CreateUnary": EDBObjMessage,
         "SetPositionsUnary": Empty,
+        "GetPositionsUnary": PointsMessage,
+        "GetInstantiatedGeometryUnary": PolygonDataListMessage,
     },
     "ansys.api.edb.v1.Q3DGeneralSettingsService": {
         "GetSolutionFrequency": StringValue,

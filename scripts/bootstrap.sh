@@ -23,6 +23,27 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # ---------------------------------------------------------------------------
+# Parse optional build type argument.
+#
+# Usage:
+#   ./scripts/bootstrap.sh          -> Release build (default)
+#   ./scripts/bootstrap.sh debug    -> Debug build
+#
+# The "debug" token is consumed here and not forwarded to `python3 -m build`.
+# All other arguments are passed through verbatim.
+# ---------------------------------------------------------------------------
+BUILD_TYPE="Release"
+PASSTHROUGH_ARGS=()
+for arg in "$@"; do
+    if [ "${arg,,}" = "debug" ]; then
+        BUILD_TYPE="Debug"
+    else
+        PASSTHROUGH_ARGS+=("$arg")
+    fi
+done
+set -- "${PASSTHROUGH_ARGS[@]+"${PASSTHROUGH_ARGS[@]}"}"
+
+# ---------------------------------------------------------------------------
 # Resolve the Python interpreter to use for the build.
 #
 # The system Python may lack development headers (python3-devel not installed).

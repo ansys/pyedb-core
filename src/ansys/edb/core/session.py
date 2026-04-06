@@ -14,6 +14,7 @@ import socket
 from struct import pack, unpack
 import subprocess
 from sys import modules
+import threading
 from typing import List
 
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
@@ -238,6 +239,7 @@ class _Session:
         self.in_memory = in_memory
         self.shared_memory = shared_memory
         self._shm_transport = None
+        self._stdout_drain_thread = None
 
         if shared_memory:
             # Generate a unique shared-memory name based on PID
@@ -437,6 +439,7 @@ class _Session:
             raise EDBSessionException(ErrorCode.STARTUP_UNEXPECTED, e)
 
         self.wait_server_ready()
+        self._start_stdout_drain()
 
     def wait_server_ready(self):
         """Wait for the server to say it successfully started up."""
@@ -480,10 +483,36 @@ class _Session:
         )
         raise EDBSessionException(code)
 
+    def _start_stdout_drain(self):
+        """Start a daemon thread that reads and discards server stdout.
+
+        On Linux the pipe buffer is only 64 KB.  If the server writes
+        diagnostics (EDBKern warnings, etc.) faster than the buffer drains,
+        the server blocks on write() and can no longer process RPC requests,
+        deadlocking the client.  A background reader prevents this.
+        """
+        proc = self.local_server_proc
+        if proc is None or proc.stdout is None:
+            return
+
+        def _drain(stdout):
+            try:
+                for _ in stdout:
+                    pass  # discard
+            except Exception:
+                pass
+
+        t = threading.Thread(target=_drain, args=(proc.stdout,), daemon=True)
+        t.start()
+        self._stdout_drain_thread = t
+
     def stop_server(self):
         if self.local_server_proc and not self.local_server_proc.poll():
             self.local_server_proc.terminate()
             self.local_server_proc.wait()
+        if self._stdout_drain_thread is not None:
+            self._stdout_drain_thread.join(timeout=2)
+            self._stdout_drain_thread = None
         self.local_server_proc = None
 
     def clean_up_uds_file(self):

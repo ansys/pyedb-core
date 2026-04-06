@@ -50,15 +50,52 @@ set -- "${PASSTHROUGH_ARGS[@]+"${PASSTHROUGH_ARGS[@]}"}"
 # If uv is available in the venv, prefer the uv-managed Python which ships as
 # a self-contained build and always includes full headers.  Fall back to the
 # plain 'python3' command if uv is not present.
+#
+# IMPORTANT: when using the uv-managed Python we must pass --no-isolation to
+# `python3 -m build`.  Without it, the build frontend creates a fresh isolated
+# virtualenv that inherits the system Python and looks for Python development
+# headers at the system path (/usr/include/python3.x/patchlevel.h).  Those
+# headers come from an optional package (python3.x-dev / python3-devel) that
+# is often not installed.  The uv-managed Python is fully self-contained and
+# bundles its own headers, but cmake only finds them when invoked from *within*
+# that interpreter — i.e. with --no-isolation so no new venv is created.
 # ---------------------------------------------------------------------------
 UV="$REPO_ROOT/.venv/bin/uv"
+USING_UV_PYTHON=0
 if [ -x "$UV" ]; then
     # Install a managed Python if one isn't already present, then resolve its path.
     "$UV" python install 3.11 --quiet 2>/dev/null || true
-    PYTHON3="$("$UV" python find --system 3.11 2>/dev/null || echo "")"
+    _UV_PYTHON="$("$UV" python find --system 3.11 2>/dev/null || echo "")"
+    if [ -n "$_UV_PYTHON" ] && [ -x "$_UV_PYTHON" ]; then
+        PYTHON3="$_UV_PYTHON"
+        USING_UV_PYTHON=1
+    fi
 fi
 # Fallback: use whatever python3 is on PATH.
 PYTHON3="${PYTHON3:-python3}"
+
+# When using the system Python (not uv-managed), verify that the development
+# headers are present.  They live in python3.x-dev (Debian/Ubuntu) or
+# python3.x-devel (Fedora/RHEL) and are required by CMake's FindPython module.
+if [ "$USING_UV_PYTHON" -eq 0 ]; then
+    _PY_VERSION="$("$PYTHON3" -c 'import sys; print("{}.{}".format(*sys.version_info[:2]))')"
+    _PY_HEADER_DIR="/usr/include/python${_PY_VERSION}"
+    if [ ! -f "${_PY_HEADER_DIR}/patchlevel.h" ]; then
+        echo ""
+        echo "ERROR: Python development headers not found at ${_PY_HEADER_DIR}/patchlevel.h" >&2
+        echo "" >&2
+        echo "CMake requires the Python header files to compile the C++ extension." >&2
+        echo "Install them with one of:" >&2
+        echo "  Debian/Ubuntu:  sudo apt install python${_PY_VERSION}-dev" >&2
+        echo "  Fedora/RHEL:    sudo dnf install python${_PY_VERSION}-devel" >&2
+        echo "" >&2
+        echo "Alternatively, install 'uv' (https://docs.astral.sh/uv/) inside" >&2
+        echo "the .venv and re-run this script; it will download a self-contained" >&2
+        echo "Python that bundles its own headers." >&2
+        echo "" >&2
+        exit 1
+    fi
+fi
 
 # ---------------------------------------------------------------------------
 # Helper: compute a 16-hex-char SHA-256 fingerprint of the C++ source tree
@@ -131,9 +168,14 @@ if [ -n "$CACHED_SO" ]; then
     echo "Cache hit [$SOURCE_HASH] ($BUILD_TYPE) - skipping C++ compilation."
     echo "Using: $CACHED_SO"
     echo ""
-    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $*"
+    # --no-isolation: when using the uv-managed Python, run the build directly
+    # inside this interpreter so cmake finds its bundled headers instead of
+    # looking for the (often absent) system python3.x-dev headers.
+    NO_ISOLATION_FLAG=""
+    [ "$USING_UV_PYTHON" -eq 1 ] && NO_ISOLATION_FLAG="--no-isolation"
+    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $NO_ISOLATION_FLAG $*"
     echo ""
-    PREBUILT_PYD="$CACHED_SO" "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" "$@"
+    PREBUILT_PYD="$CACHED_SO" "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" $NO_ISOLATION_FLAG "$@"
 else
     # -----------------------------------------------------------------------
     # Cache miss: full C++ compilation required.
@@ -154,9 +196,12 @@ else
         exit 1
     fi
 
-    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $*"
+    # --no-isolation: same reason as the cache-hit branch above.
+    NO_ISOLATION_FLAG=""
+    [ "$USING_UV_PYTHON" -eq 1 ] && NO_ISOLATION_FLAG="--no-isolation"
+    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $NO_ISOLATION_FLAG $*"
     echo ""
-    "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" "$@"
+    "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" $NO_ISOLATION_FLAG "$@"
 
     # Store the compiled .so for future builds.
     save_so_to_cache "$CACHE_DIR"

@@ -168,14 +168,16 @@ if [ -n "$CACHED_SO" ]; then
     echo "Cache hit [$SOURCE_HASH] ($BUILD_TYPE) - skipping C++ compilation."
     echo "Using: $CACHED_SO"
     echo ""
-    # --no-isolation: when using the uv-managed Python, run the build directly
-    # inside this interpreter so cmake finds its bundled headers instead of
-    # looking for the (often absent) system python3.x-dev headers.
-    NO_ISOLATION_FLAG=""
-    [ "$USING_UV_PYTHON" -eq 1 ] && NO_ISOLATION_FLAG="--no-isolation"
-    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $NO_ISOLATION_FLAG $*"
+    # When using the uv-managed Python, pass its path to CMake via
+    # cmake.define.Python_EXECUTABLE.  This makes FindPython use the bundled
+    # headers that come with the managed Python instead of looking for the
+    # (often absent) system python3.x-dev headers.  Isolation is kept ON so
+    # that scikit-build-core / pybind11 are installed into the temp build env.
+    EXTRA_CMAKE_ARGS=()
+    [ "$USING_UV_PYTHON" -eq 1 ] && EXTRA_CMAKE_ARGS+=("--config-setting" "cmake.define.Python_EXECUTABLE=$PYTHON3")
+    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE${EXTRA_CMAKE_ARGS:+ ${EXTRA_CMAKE_ARGS[*]}} $*"
     echo ""
-    PREBUILT_PYD="$CACHED_SO" "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" $NO_ISOLATION_FLAG "$@"
+    PREBUILT_PYD="$CACHED_SO" "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" "${EXTRA_CMAKE_ARGS[@]}" "$@"
 else
     # -----------------------------------------------------------------------
     # Cache miss: full C++ compilation required.
@@ -196,12 +198,12 @@ else
         exit 1
     fi
 
-    # --no-isolation: same reason as the cache-hit branch above.
-    NO_ISOLATION_FLAG=""
-    [ "$USING_UV_PYTHON" -eq 1 ] && NO_ISOLATION_FLAG="--no-isolation"
-    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE $NO_ISOLATION_FLAG $*"
+    # Same cmake.define.Python_EXECUTABLE trick as the cache-hit branch above.
+    EXTRA_CMAKE_ARGS=()
+    [ "$USING_UV_PYTHON" -eq 1 ] && EXTRA_CMAKE_ARGS+=("--config-setting" "cmake.define.Python_EXECUTABLE=$PYTHON3")
+    echo "Running: $PYTHON3 -m build --config-setting cmake.build-type=$BUILD_TYPE${EXTRA_CMAKE_ARGS:+ ${EXTRA_CMAKE_ARGS[*]}} $*"
     echo ""
-    "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" $NO_ISOLATION_FLAG "$@"
+    "$PYTHON3" -m build --config-setting "cmake.build-type=$BUILD_TYPE" "${EXTRA_CMAKE_ARGS[@]}" "$@"
 
     # Store the compiled .so for future builds.
     save_so_to_cache "$CACHE_DIR"

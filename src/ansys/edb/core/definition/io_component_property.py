@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.definition.port_property import PortProperty
-    from src.ansys.edb.core.definition.solder_ball_property import SolderBallProperty
+    from ansys.edb.core.definition.solder_ball_property import SolderBallProperty
 
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2

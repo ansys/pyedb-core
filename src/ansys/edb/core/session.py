@@ -180,7 +180,9 @@ from ansys.edb.core.inner.interceptors import (
     ExceptionInterceptor,
     IOInterceptor,
     LocalHostInterceptor,
+    SharedMemoryInterceptor,
 )
+from ansys.edb.core.inner.shared_memory_transport import SharedMemoryTransport
 
 DEFAULT_ADDRESS = "localhost"
 
@@ -216,7 +218,8 @@ class _Session:
         port_num: int,
         ansys_em_root: str,
         dump_traffic_log: bool,
-        in_memory: bool,
+        in_memory: bool = False,
+        shared_memory: bool = False,
     ):
         if MOD.current_session is not None:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
@@ -233,15 +236,23 @@ class _Session:
         self.session = None
         self.rpc_counter = defaultdict(int) if dump_traffic_log else None
         self.in_memory = in_memory
-        self.interceptors = (
-            [
-                # on reversed order of interception
+        self.shared_memory = shared_memory
+        self._shm_transport = None
+
+        if shared_memory:
+            # Generate a unique shared-memory name based on PID
+            self._shm_name = f"edb_shm_{os.getpid()}"
+            self.interceptors = [
+                SharedMemoryInterceptor(LOGGER, None)
+            ]  # transport set in connect()
+        elif in_memory:
+            self.interceptors = [LocalHostInterceptor(LOGGER)]
+        else:
+            self.interceptors = [
+                # in reversed order of interception
                 IOInterceptor(LOGGER, self.rpc_counter),
                 ExceptionInterceptor(LOGGER),
             ]
-            if not in_memory
-            else [LocalHostInterceptor(LOGGER)]
-        )
 
     def __enter__(self):
         if MOD.current_session == self:
@@ -270,7 +281,15 @@ class _Session:
     def server_arguments(self) -> List[str]:
         args = []
 
-        if self.port_num is not None:
+        if self.shared_memory:
+            args.append("-shm")
+            args.append(self._shm_name)
+            # Pass custom size if set via environment variable
+            shm_size_env = os.environ.get("ANSYS_EDB_SHM_SIZE_MB")
+            if shm_size_env:
+                args.append("-shm_size")
+                args.append(shm_size_env)
+        elif self.port_num is not None:
             args.append("-p")
             args.append(str(self.port_num))
 
@@ -330,7 +349,7 @@ class _Session:
             self.transport_mode = "insecure"
 
     def _create_channel(self):
-        if self.in_memory:
+        if self.in_memory or self.shared_memory:
             options = (("grpc.default_authority", "localhost"),)
             address = self.server_url
             return grpc.intercept_channel(
@@ -360,6 +379,13 @@ class _Session:
         elif self.is_launch():
             self.start_server()
 
+        if self.shared_memory:
+            # Connect the shared-memory transport after the server is started
+            self._shm_transport = SharedMemoryTransport(self._shm_name)
+            self._shm_transport.connect()
+            # Wire the transport into the interceptor
+            self.interceptors[0]._transport = self._shm_transport
+
         self.channel = self._create_channel()
 
         self._initialize_stubs()
@@ -375,6 +401,15 @@ class _Session:
         if self.channel is not None:
             self.channel.close()
             self.channel = None
+
+        if self._shm_transport is not None:
+            # Signal the server to shut down before disconnecting
+            try:
+                self._shm_transport.shutdown()
+            except Exception:
+                pass
+            self._shm_transport.disconnect()
+            self._shm_transport = None
 
         if MOD.current_session == self:
             MOD.current_session = None
@@ -408,7 +443,16 @@ class _Session:
         local_server_proc_output = self.local_server_proc.stdout.readline()
         stdout = local_server_proc_output.decode().rstrip()
 
-        if not stdout.startswith("Server listening on 127.0.0.1:"):
+        # The server prints either:
+        #   "Server listening on 127.0.0.1:<port>"   (gRPC mode)
+        #   "Server listening on shm:<name>"          (shared-memory mode)
+        #   "Shared memory server ready on: <name>"   (shared-memory mode alt)
+        expected_prefix = (
+            "Server listening on shm:" if self.shared_memory else "Server listening on 127.0.0.1:"
+        )
+        alt_prefix = "Shared memory server ready on:"
+
+        if not stdout.startswith(expected_prefix) and not stdout.startswith(alt_prefix):
             try:
                 print("Local server failed to start properly. Trying to shut down gracefully...")
                 if self.local_server_proc.wait(10):
@@ -608,6 +652,7 @@ def launch_session(
     port_num: int | None = None,
     dump_traffic_log: bool = False,
     in_memory: bool = False,
+    shared_memory: bool = False,
 ):
     r"""Launch a local session to an EDB API server.
 
@@ -624,6 +669,10 @@ def launch_session(
         Flag indicating if the network traffic log should be dumped when the session is disconnected.
     in_memory : bool, default: False
         Flag indicating if the session should be launched in memory
+    shared_memory : bool, default: False
+        Flag indicating if the session should use shared-memory IPC with a
+        separate EDB_RPC_Server process. This provides performance close to
+        in-memory mode without loading the C++ DLL into the Python process.
 
     Examples
     --------
@@ -636,7 +685,9 @@ def launch_session(
     ip_address = None  # remote launch is not supported yet
 
     try:
-        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log, in_memory)
+        _ensure_session(
+            ansys_em_root, port_num, ip_address, dump_traffic_log, in_memory, shared_memory
+        )
         return MOD.current_session
     except Exception as e:  # noqa
         if MOD.current_session is not None:
@@ -701,6 +752,27 @@ def launch_local_session(ansys_em_root: str):
     launch_session(ansys_em_root, in_memory=True)
 
 
+def launch_shared_memory_session(ansys_em_root: str):
+    r"""Launch a shared-memory session of the EDB API.
+
+    This starts an EDB_RPC_Server process in shared-memory mode and
+    communicates with it through a shared memory region instead of gRPC
+    sockets.
+
+    Parameters
+    ----------
+    ansys_em_root : str
+        Directory where the ``EDB_RPC_Server`` executable is installed.
+
+    Examples
+    --------
+    >>> session = launch_shared_memory_session(r"C:\Program Files\AnsysEM\v231\Win64")
+    >>> # program goes here
+    >>> session.disconnect()
+    """
+    return launch_session(ansys_em_root, shared_memory=True)
+
+
 def get_layer_collection_stub() -> LayerCollectionServiceStub:
     """Get the layer collection stub.
 
@@ -749,7 +821,20 @@ def is_in_memory() -> bool:
     bool
         ``True`` if the current session is an in-memory session, ``False`` otherwise.
     """
-    return MOD.current_session is not None and MOD.current_session.in_memory
+    return MOD.current_session is not None and (
+        MOD.current_session.in_memory or MOD.current_session.shared_memory
+    )
+
+
+def is_shared_memory() -> bool:
+    """Check if the active session is using shared-memory IPC.
+
+    Returns
+    -------
+    bool
+        ``True`` if the current session uses shared-memory transport, ``False`` otherwise.
+    """
+    return MOD.current_session is not None and MOD.current_session.shared_memory
 
 
 def _ensure_session(
@@ -758,6 +843,7 @@ def _ensure_session(
     ip_address: str | None,
     dump_traffic_log: bool,
     in_memory: bool = False,
+    shared_memory: bool = False,
 ):
     """Check for a running local session and create one if it doesn't exist.
 
@@ -773,15 +859,17 @@ def _ensure_session(
         Flag indicating if the network traffic log should be dumped when the session is disconnected.
     in_memory : bool, default: False
         Flag indicating if the session should be launched in memory.
+    shared_memory : bool, default: False
+        Flag indicating if the session should use shared-memory IPC.
     """
     if MOD.current_session is not None:
-        if in_memory:
+        if in_memory or shared_memory:
             return MOD.current_session
         elif MOD.current_session.port_num != port_num:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
     else:
         MOD.current_session = _Session(
-            ip_address, port_num, ansys_em_root, dump_traffic_log, in_memory
+            ip_address, port_num, ansys_em_root, dump_traffic_log, in_memory, shared_memory
         )
         MOD.current_session.connect()
 

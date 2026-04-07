@@ -89,14 +89,8 @@ jobs:
         run: tox -e test -- --ignore=tests/e2e
 
   package:
-    name: Package library (Windows)
-    # Uses ansys/actions/build-library to produce the sdist and Windows platform
-    # wheel.  The action hardcodes the artifact name to "${library-name}-artifacts"
-    # so only one job can use it per workflow run.  The Linux wheel is produced by
-    # the separate package-linux job using explicit steps with a distinct artifact
-    # name, which the release job's pattern "${PACKAGE_NAME}-artifacts*" still
-    # matches.
-    runs-on: windows-latest
+    name: Package library
+    runs-on: ubuntu-latest
     needs: [tests, doc-build]
     permissions:
       attestations: write
@@ -110,63 +104,10 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           attest-provenance: true
 
-  package-linux:
-    name: Package library (Linux manylinux)
-    # Produces manylinux_2_28_x86_64 platform wheels for all supported Python
-    # versions using cibuildwheel.  The sdist is already produced by the Windows
-    # package job above.  Uses a distinct artifact name to avoid the 409 Conflict
-    # that ansys/actions/build-library would cause (it hardcodes the artifact name
-    # to "${library-name}-artifacts" with no override).
-    #
-    # auditwheel repair is run with --exclude libstdc++.so.6 because rpc_executor.so
-    # relies on the .pth preload hook (ansys_edb_core_preload.py) to supply the
-    # AnsysEM-bundled libstdc++.so.6 at runtime.  That library provides GLIBCXX up
-    # to 3.4.30, which covers every symbol rpc_executor.so needs.  Letting
-    # auditwheel bundle a second copy would conflict with the preload mechanism and
-    # could cause the wrong libstdc++ to be used when libEDB_RPC_Services.so loads.
-    runs-on: ubuntu-latest
-    needs: [tests, doc-build]
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
-    steps:
-      - name: Install Git and checkout project
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - name: Build manylinux wheels with cibuildwheel
-        uses: pypa/cibuildwheel@v2.22.0
-        env:
-          # Build CPython 3.10-3.13 on Linux x86_64 only.
-          CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
-          CIBW_ARCHS: "x86_64"
-          # manylinux_2_28 (AlmaLinux 8, GCC 8.5) is the oldest baseline whose
-          # system libstdc++ supports the __cxx11 ABI by default (GCC 5+).
-          # Combined with the explicit _GLIBCXX_USE_CXX11_ABI=1 flag in
-          # CMakeLists.txt this guarantees std::string layout compatibility with
-          # libEDB_RPC_Services.so, which was built with GCC 12.
-          CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_28_x86_64"
-          # Exclude libstdc++.so.6 from the repaired wheel — see job comment above.
-          CIBW_REPAIR_WHEEL_COMMAND_LINUX: >-
-            auditwheel repair --exclude libstdc++.so.6 -w {dest_dir} {wheel}
-        with:
-          output-dir: dist
-      - name: Check build health
-        run: pip install twine && python -m twine check dist/*
-      - name: Upload distribution artifacts to GitHub artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: ${{ env.PACKAGE_NAME }}-artifacts-linux
-          path: dist/
-          retention-days: 7
-      - name: Generate build provenance attestation
-        uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2.3.0
-        with:
-          subject-path: dist/
-
   release:
     name: Release project
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [package, package-linux]
+    needs: [package]
     runs-on: ubuntu-latest
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
@@ -174,14 +115,10 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - name: Download all library artifacts (Windows sdist+wheel and Linux wheel)
-        # Collects 'ansys-edb-core-artifacts' (Windows: sdist + win_amd64 wheel)
-        # and 'ansys-edb-core-artifacts-linux' (Linux: linux_x86_64 wheel only)
-        # into a single directory for PyPI upload.
+      - name: Download the library artifacts from build-library step
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
-          pattern: ${{ env.PACKAGE_NAME }}-artifacts*
-          merge-multiple: true
+          name: ${{ env.PACKAGE_NAME }}-artifacts
           path: ${{ env.PACKAGE_NAME }}-artifacts
       - name: Release to PyPI using trusted publisher
         uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
@@ -189,7 +126,7 @@ jobs:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
           packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
-          skip-existing: true
+          skip-existing: false
       - name: Release to GitHub
         uses: ansys/actions/release-github@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
         with:
@@ -202,7 +139,7 @@ jobs:
     # Deploy development only when merging or pushing to the 'main' branch
     if: github.event_name == 'push' && !contains(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
-    needs: [package, package-linux, tests, doc-build]
+    needs: [package, tests, doc-build]
     steps:
       - uses: ansys/actions/doc-deploy-dev@33399106dc8b62d83c8aad1fb2c333c8055df180 # v10.0.20
         with:

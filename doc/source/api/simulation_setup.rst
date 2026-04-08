@@ -20,7 +20,6 @@ Classes
    hfss_pi_simulation_setup.HFSSPISimulationSetup
    hfss_pi_simulation_settings.HFSSPISimulationSettings
    hfss_pi_simulation_settings.HFSSPIGeneralSettings
-   hfss_pi_simulation_settings.HFSSPISettingsOptions
    hfss_pi_simulation_settings.HFSSPISolverSettings
    hfss_pi_simulation_settings.HFSSPIAdvancedSettings
    adaptive_solutions.AdaptiveFrequency
@@ -56,12 +55,12 @@ Classes
    siwave_simulation_settings.SIWaveDCAdvancedSettings
    siwave_simulation_settings.SIWaveSParameterSettings
    siwave_simulation_setup.SIWaveSimulationSetup
-   siwave_psi_simulation_settings.SIwavePSISimulationSettings
-   siwave_psi_simulation_settings.SIwavePSIGeneralSettings
-   siwave_psi_simulation_settings.SIwavePSINetProcessingSettings
-   siwave_psi_simulation_settings.SIwavePSIPowerGroundNetsSettings
-   siwave_psi_simulation_settings.SIwavePSISignalNetsSettings
-   siwave_psi_simulation_setup.SIwavePSISimulationSetup
+   siwave_psi_simulation_settings.SIWavePSISimulationSettings
+   siwave_psi_simulation_settings.SIWavePSIGeneralSettings
+   siwave_psi_simulation_settings.SIWavePSINetProcessingSettings
+   siwave_psi_simulation_settings.SIWavePSIPowerGroundNetsSettings
+   siwave_psi_simulation_settings.SIWavePSISignalNetsSettings
+   siwave_psi_simulation_setup.SIWavePSISimulationSetup
    q3d_simulation_settings.Q3DSimulationSettings
    q3d_simulation_settings.Q3DGeneralSettings
    q3d_simulation_settings.Q3DDCRLSettings
@@ -88,8 +87,8 @@ Enums
       siwave_simulation_settings.SParamInterpolation
       siwave_simulation_settings.SParamExtrapolation
       siwave_simulation_settings.SParamDCBehavior
-      siwave_psi_simulation_settings.SIwavePSISimulationPreference
-      siwave_psi_simulation_settings.SIwavePSIModelType
+      siwave_psi_simulation_settings.SIWavePSISimulationPreference
+      siwave_psi_simulation_settings.SIWavePSIModelType
       siwave_psi_simulation_settings.SurfaceRoughnessModel
       siwave_psi_simulation_settings.ImprovedLossModel
       siwave_psi_simulation_settings.ConductorModeling

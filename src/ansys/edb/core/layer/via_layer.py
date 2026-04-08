@@ -175,7 +175,7 @@ class ViaLayer(StackupLayer):
         """Set the thickness or material of the oxide layer at the specified index.
 
         Parameters
-        ---------
+        ----------
         oxide_lyr_idx: int
             Index of the oxide layer to be retrieved
         thickness: :term:`ValueLike`, default: None

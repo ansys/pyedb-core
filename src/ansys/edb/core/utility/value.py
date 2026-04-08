@@ -89,12 +89,14 @@ class Value:
 
     def __init__(self, val: ValueLike, _owner: Union[Database, Layout, Cell, ComponentDef] = None):
         """Initialize a value object."""
-        self.msg = ValueMessage()
         if isinstance(val, ValueMessage):
             self.msg = val
-        elif isinstance(val, Value):
+            return
+        if isinstance(val, Value):
             self.msg = val.msg
-        elif isinstance(val, str):
+            return
+        self.msg = ValueMessage()
+        if isinstance(val, str):
             temp = value_pb2.ValueTextMessage(
                 text=val, variable_owner=messages.edb_obj_message(_owner)
             )

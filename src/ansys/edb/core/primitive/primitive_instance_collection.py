@@ -16,14 +16,14 @@ from ansys.api.edb.v1.primitive_instance_collection_pb2_grpc import (
     PrimitiveInstanceCollectionServiceStub,
 )
 
-from ansys.edb.core.inner.layout_obj import LayoutObj
 import ansys.edb.core.inner.messages as messages
 from ansys.edb.core.inner.parser import msg_to_point_data, msg_to_polygon_data, to_polygon_data
 from ansys.edb.core.inner.utils import client_stream_iterator, stream_items_from_server
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.primitive.primitive import Primitive
+from ansys.edb.core.session import StubAccessor, StubType, is_in_memory
 
 
-class PrimitiveInstanceCollection(LayoutObj):
+class PrimitiveInstanceCollection(Primitive):
     """Efficiently represents large quantities of geometry as \
     numerous instantiations of the same geometry at different locations."""
 
@@ -79,6 +79,9 @@ class PrimitiveInstanceCollection(LayoutObj):
             layer=messages.layer_ref_message(layer),
             geometry=messages.polygon_data_message(geometry),
         )
+        if is_in_memory():
+            chunk.points.points.extend(messages.point_message(pt) for pt in positions)
+            return PrimitiveInstanceCollection(cls.__stub.CreateUnary(chunk))
         return PrimitiveInstanceCollection(
             cls.__stub.Create(cls._point_request_iterator(positions, chunk))
         )
@@ -96,6 +99,8 @@ class PrimitiveInstanceCollection(LayoutObj):
     @property
     def positions(self) -> List[PointData]:
         """:obj:`list` of :class:`.PointData`: The positions geometry is instantiated at."""
+        if is_in_memory():
+            return [msg_to_point_data(pt) for pt in self.__stub.GetPositionsUnary(self.msg).points]
         return stream_items_from_server(
             msg_to_point_data, self.__stub.GetPositions(self.msg), "points"
         )
@@ -103,7 +108,11 @@ class PrimitiveInstanceCollection(LayoutObj):
     @positions.setter
     def positions(self, positions: List[PointData]):
         chunk = PrimitiveInstanceCollectionDataMessage(lyt_or_prim_inst_col=self.msg)
-        self.__stub.SetPositions(self._point_request_iterator(positions, chunk))
+        if is_in_memory():
+            chunk.points.points.extend(messages.point_message(pt) for pt in positions)
+            self.__stub.SetPositionsUnary(chunk)
+        else:
+            self.__stub.SetPositions(self._point_request_iterator(positions, chunk))
 
     @property
     def instantiated_geometry(self) -> List[PolygonData]:
@@ -112,6 +121,11 @@ class PrimitiveInstanceCollection(LayoutObj):
 
         This property is read-only.
         """
+        if is_in_memory():
+            return [
+                msg_to_polygon_data(poly)
+                for poly in self.__stub.GetInstantiatedGeometryUnary(self.msg).polygons
+            ]
         return stream_items_from_server(
             msg_to_polygon_data, self.__stub.GetInstantiatedGeometry(self.msg), "polygons"
         )

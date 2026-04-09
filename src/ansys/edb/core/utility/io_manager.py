@@ -346,6 +346,10 @@ class _IOManager:
         _get_io_manager_stub().EnableCache(bool_message(enable))
 
     def start_managing(self, mode):
+        from ansys.edb.core.session import is_in_memory
+
+        if is_in_memory():
+            return
         if IOMangementType.READ in mode:
             self._cache = _Cache()
             self._enable_caching(True)
@@ -357,6 +361,10 @@ class _IOManager:
             self._buffer.allow_flushing = False
 
     def end_managing(self):
+        from ansys.edb.core.session import is_in_memory
+
+        if is_in_memory():
+            return
         if self._cache is not None:
             self._enable_caching(False)
         if self._buffer is not None:

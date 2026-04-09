@@ -235,7 +235,13 @@ class _Session:
         # Shared memory is attempted automatically for local launches.
         # The flag is set here and may be cleared in connect() if the
         # server turns out to be an older version without shm support.
-        self.shared_memory = self.is_local() and ansys_em_root is not None
+        # Setting ANSYS_EDB_CORE_DISABLE_SHARED_MEMORY forces legacy gRPC
+        # mode even on localhost (e.g. when connecting to an older server).
+        self.shared_memory = (
+            self.is_local()
+            and ansys_em_root is not None
+            and os.environ.get("ANSYS_EDB_CORE_DISABLE_SHARED_MEMORY", "0") != "1"
+        )
         if self.shared_memory:
             self._shm_name = f"edb_shm_{os.getpid()}"
 

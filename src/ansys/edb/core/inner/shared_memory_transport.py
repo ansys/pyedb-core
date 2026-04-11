@@ -24,11 +24,11 @@ SHM_RPC_NAME_SIZE = 256
 SHM_DATA_OFFSET = SHM_HEADER_SIZE + SHM_SERVICE_NAME_SIZE + SHM_RPC_NAME_SIZE
 
 # Header field offsets
-OFF_STATE = 0
-OFF_REQUEST_SIZE = 4
-OFF_RESPONSE_SIZE = 8
-OFF_ERROR_SIZE = 12
-OFF_SUCCESS = 16
+OFFSET_STATE = 0
+OFFSET_REQUEST_SIZE = 4
+OFFSET_RESPONSE_SIZE = 8
+OFFSET_ERROR_SIZE = 12
+OFFSET_SUCCESS = 16
 
 # State machine values
 STATE_IDLE = 0
@@ -159,7 +159,7 @@ class SharedMemoryTransport:
 
         # Write request size and data
         req_size = len(serialized_request)
-        self._write_u32(OFF_REQUEST_SIZE, req_size)
+        self._write_u32(OFFSET_REQUEST_SIZE, req_size)
         buf[SHM_DATA_OFFSET : SHM_DATA_OFFSET + req_size] = serialized_request
 
         # Transition state to REQUEST_READY — the server spin-waits on this.
@@ -169,9 +169,9 @@ class SharedMemoryTransport:
         self._spin_wait_for_response()
 
         # Read the response
-        success = self._read_u32(OFF_SUCCESS) != 0
-        resp_size = self._read_u32(OFF_RESPONSE_SIZE)
-        err_size = self._read_u32(OFF_ERROR_SIZE)
+        success = self._read_u32(OFFSET_SUCCESS) != 0
+        resp_size = self._read_u32(OFFSET_RESPONSE_SIZE)
+        err_size = self._read_u32(OFFSET_ERROR_SIZE)
 
         if success:
             serialized_response = bytes(buf[SHM_DATA_OFFSET : SHM_DATA_OFFSET + resp_size])
@@ -198,7 +198,7 @@ class SharedMemoryTransport:
         while True:
             # Phase 1: tight spin
             for _ in range(_SPIN_ITERATIONS):
-                state = struct.unpack_from("<I", buf, OFF_STATE)[0]
+                state = struct.unpack_from("<I", buf, OFFSET_STATE)[0]
                 if state == STATE_RESPONSE_READY or state == STATE_ERROR:
                     return
                 if state == STATE_SHUTDOWN:
@@ -244,4 +244,4 @@ class SharedMemoryTransport:
         reordered w.r.t. other stores), so a plain write suffices.
         """
         assert self._buf is not None
-        struct.pack_into("<I", self._buf, OFF_STATE, state)
+        struct.pack_into("<I", self._buf, OFFSET_STATE, state)

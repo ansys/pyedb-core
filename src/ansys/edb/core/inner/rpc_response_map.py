@@ -736,7 +736,7 @@ rpc_response_map = {
         "GetLayoutObjInstanceInContext": EDBObjMessage,
         "GetConnectedObjects": EDBObjCollectionMessage,
         "StreamConnectedObjects": EDBObjCollectionMessage,
-        "StreamLayoutObjInstancesQueryUnary": LayoutObjInstancesQueryResultsMessage,
+        "BatchQueryLayoutObjInstances": LayoutObjInstancesQueryResultsMessage,
     },
     "ansys.api.edb.v1.LayoutInstanceContextService": {
         "GetLayout": EDBObjMessage,

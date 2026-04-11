@@ -113,7 +113,7 @@ class LayoutInstance(ObjBase):
             queries_msg = layout_instance_pb2.LayoutObjInstancesQueriesMessage(
                 queries=requests,
             )
-            for hit in self.__stub.StreamLayoutObjInstancesQueryUnary(queries_msg).query_results:
+            for hit in self.__stub.BatchQueryLayoutObjInstances(queries_msg).query_results:
                 all_hits.append(hit)
         else:
             for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(

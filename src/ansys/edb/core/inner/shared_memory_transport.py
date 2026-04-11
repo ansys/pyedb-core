@@ -9,10 +9,10 @@ all RPC calls through the shared-memory channel instead of the network.
 from __future__ import annotations
 
 from multiprocessing import shared_memory
-from multiprocessing.resource_tracker import unregister
 import os
 import struct
 import subprocess
+import sys
 import time
 
 # ---------------------------------------------------------------------------
@@ -108,9 +108,13 @@ class SharedMemoryTransport:
             name=self._shm_name, create=False, size=self._shm_size
         )
         # The server owns the shared memory lifecycle (creation and unlinking).
-        # Unregister from Python's resource tracker so it doesn't warn about a
-        # "leaked" object or attempt to unlink it on interpreter shutdown.
-        unregister(self._shm._name, "shared_memory")
+        # On POSIX, unregister from Python's resource tracker so it doesn't
+        # warn about a "leaked" object or attempt to unlink on shutdown.
+        # The resource tracker only exists on non-Windows platforms.
+        if sys.platform != "win32":
+            from multiprocessing.resource_tracker import unregister
+
+            unregister(self._shm._name, "shared_memory")
         self._buf = self._shm.buf
 
     def disconnect(self):

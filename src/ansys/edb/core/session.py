@@ -7,6 +7,8 @@ from enum import Enum
 import errno
 import json
 import os
+from pathlib import Path
+from platform import system
 from shutil import which
 import socket
 from struct import pack, unpack
@@ -49,10 +51,9 @@ from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalSer
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
 from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import (
+    HFSSPIAdvancedSettingsServiceStub,
     HFSSPIGeneralSettingsServiceStub,
-    HFSSPINetProcessingSettingsServiceStub,
-    HFSSPIPowerGroundNetsServiceStub,
-    HFSSPISignalNetsSettingsServiceStub,
+    HFSSPISolverSettingsServiceStub,
 )
 from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
     DCRSettingsServiceStub,
@@ -133,6 +134,12 @@ from ansys.api.edb.v1.s_parameter_model_pb2_grpc import SParameterModelServiceSt
 from ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2_grpc import (
     SIWaveDCIRSimulationSettingsServiceStub,
 )
+from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import (
+    SIWavePSIGeneralSettingsServiceStub,
+    SIWavePSINetProcessingSettingsServiceStub,
+    SIWavePSIPowerGroundNetsServiceStub,
+    SIWavePSISignalNetsSettingsServiceStub,
+)
 from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import (
     SIWaveAdvancedSettingsServiceStub,
     SIWaveDCAdvancedSettingsServiceStub,
@@ -152,6 +159,7 @@ from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertySer
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure_3d_pb2_grpc import Structure3DServiceStub
+from ansys.api.edb.v1.technology_def_pb2_grpc import TechnologyDefServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
@@ -163,6 +171,7 @@ from ansys.api.edb.v1.variable_server_pb2_grpc import VariableServerServiceStub
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 from ansys.api.edb.v1.voltage_regulator_pb2_grpc import VoltageRegulatorServiceStub
+from ansys.tools.common.cyberchannel import create_channel
 import grpc
 
 from ansys.edb.core.inner import LOGGER
@@ -202,7 +211,8 @@ class _Session:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
         self.ip_address = ip_address or DEFAULT_ADDRESS
-        self.port_num = port_num or _find_available_port()
+        self.transport_mode = "wnua" if self._is_windows() else "uds"
+        self.port_num = port_num or _find_available_port(check_uds=self._uses_uds())
         self.ansys_em_root = ansys_em_root
         self.channel = None
         self.local_server_proc = None
@@ -261,6 +271,64 @@ class _Session:
     def is_launch(self) -> bool:
         return self.ansys_em_root is not None
 
+    def _is_legacy_version(self) -> bool:
+        bad_port_num = -1
+        cmd = [self.server_executable, "-a", "bad_auth", "-p", str(bad_port_num)]
+
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        return result.stderr == f"Port number must be positive: {bad_port_num}"
+
+    @staticmethod
+    def _get_uds_folder() -> Path:
+        def _get_env(env: str) -> str:
+            return os.environ.get(env, "")
+
+        uds_path = _get_env("AnsysEM_UDS")
+        if uds_path:
+            return Path(uds_path)
+        home = _get_env("USERPROFILE")
+        if not home:
+            home = _get_env("HOME")
+        return Path(home) / ".conn"
+
+    @staticmethod
+    def _get_uds_file_from_port_num(port_num: int):
+        return str(_Session._get_uds_folder() / f"AnsysEMUDS{port_num}.sock")
+
+    def _get_uds_file(self) -> str:
+        return self._get_uds_file_from_port_num(self.port_num)
+
+    @staticmethod
+    def _is_windows():
+        return system() == "Windows"
+
+    def _check_for_legacy_server(self):
+        is_launch = self.is_launch()
+        is_launching_legacy_server = is_launch and self._is_legacy_version()
+        is_attaching_to_legacy_nx_server = (
+            not self._is_windows() and not is_launch and not os.path.exists(self._get_uds_file())
+        )
+        if is_launching_legacy_server or is_attaching_to_legacy_nx_server:
+            self.transport_mode = "insecure"
+
+    def _create_channel(self):
+        self._check_for_legacy_server()
+        if self.transport_mode == "insecure":
+            LOGGER.warn(
+                "You are currently using an outdated version of AEDT. "
+                "Please consider updating to the most recent service pack."
+            )
+        channel_params = {"transport_mode": self.transport_mode}
+        if self._uses_uds():
+            channel_params["uds_fullpath"] = self._get_uds_file()
+        else:
+            channel_params["host"] = "localhost"
+            channel_params["port"] = self.port_num
+        return grpc.intercept_channel(create_channel(**channel_params), *self.interceptors)
+
+    def _uses_uds(self):
+        return self.transport_mode == "uds"
+
     def connect(self):
         if self.is_active():
             return
@@ -268,8 +336,7 @@ class _Session:
         if self.is_launch():
             self.start_server()
 
-        self.channel = grpc.insecure_channel(self.server_url)
-        self.channel = grpc.intercept_channel(self.channel, *self.interceptors)
+        self.channel = self._create_channel()
 
         self._initialize_stubs()
 
@@ -290,6 +357,7 @@ class _Session:
 
         if self.is_launch():
             self.stop_server()
+            self.clean_up_uds_file()
 
     def start_server(self):
         if not self.is_local():
@@ -350,6 +418,16 @@ class _Session:
             self.local_server_proc.wait()
         self.local_server_proc = None
 
+    def clean_up_uds_file(self):
+        if not self._uses_uds() or not self.is_launch():
+            return
+        uds_file_path = self._get_uds_file()
+        if os.path.exists(uds_file_path):
+            try:
+                os.remove(uds_file_path)
+            except OSError as e:
+                LOGGER.warn(f"Warning: Could not remove socket file {uds_file_path}: {e}")
+
 
 class StubType(Enum):
     """Provides an enum representing available service stub types."""
@@ -370,6 +448,7 @@ class StubType(Enum):
     rectangle = RectangleServiceStub
     via_group = ViaGroupServiceStub
     circle = CircleServiceStub
+    technology = TechnologyDefServiceStub
     text = TextServiceStub
     terminal = TerminalServiceStub
     terminal_instance = TerminalInstanceServiceStub
@@ -449,9 +528,12 @@ class StubType(Enum):
     hfss_dcr_sim_settings = DCRSettingsServiceStub
     hfss_sim_setup = HfssSimulationSetupServiceStub
     hfss_pi_general_sim_settings = HFSSPIGeneralSettingsServiceStub
-    hfss_pi_net_processing_sim_settings = HFSSPINetProcessingSettingsServiceStub
-    hfss_pi_power_ground_sim_settings = HFSSPIPowerGroundNetsServiceStub
-    hfss_pi_signal_nets_sim_settings = HFSSPISignalNetsSettingsServiceStub
+    hfss_pi_advanced_sim_settings = HFSSPIAdvancedSettingsServiceStub
+    hfss_pi_solver_sim_settings = HFSSPISolverSettingsServiceStub
+    siwave_psi_general_sim_settings = SIWavePSIGeneralSettingsServiceStub
+    siwave_psi_net_processing_sim_settings = SIWavePSINetProcessingSettingsServiceStub
+    siwave_psi_power_ground_sim_settings = SIWavePSIPowerGroundNetsServiceStub
+    siwave_psi_signal_nets_sim_settings = SIWavePSISignalNetsSettingsServiceStub
     sim_setup = SimulationSetupServiceStub
     sim_settings = SimulationSettingsServiceStub
     sim_settings_options = SettingsOptionsServiceStub
@@ -641,7 +723,7 @@ def _ensure_session(
 
 
 def _find_available_port(
-    interface: str = None, start_port: int = 50051, end_port: int = 60000
+    interface: str = None, start_port: int = 50051, end_port: int = 60000, check_uds: bool = False
 ) -> int:
     """Find an available port in the given range.
 
@@ -653,6 +735,8 @@ def _find_available_port(
         First port number to check.
     end_port : int, default: ``60000``
         Last port number to check.
+    check_uds : bool, default: False
+        Check uds socket files to see if a port is in use by another server.
 
     Returns
     -------
@@ -660,6 +744,8 @@ def _find_available_port(
         First available port in the range.
     """
     for port in range(start_port, end_port):
+        if check_uds and os.path.exists(_Session._get_uds_file_from_port_num(port)):
+            continue
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             if sock.connect_ex((interface or DEFAULT_ADDRESS, port)) == errno.ECONNREFUSED:
                 return port

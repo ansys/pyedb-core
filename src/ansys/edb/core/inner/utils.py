@@ -17,6 +17,11 @@ def map_list(iterable_to_operate_on, operator=None):
     )
 
 
+def ensure_is_list(obj):
+    """If the object is a list, return it. Otherwise, return a list where the sole entry is the provided obj."""
+    return obj if isinstance(obj, list) else [obj]
+
+
 def query_lyt_object_collection(
     owner, obj_type, unary_rpc, unary_streaming_rpc, request_requires_type=True
 ):

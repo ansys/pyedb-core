@@ -1,6 +1,7 @@
 """Layout instance."""
 from __future__ import annotations
 
+from platform import system
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -75,7 +76,7 @@ class LayoutInstance(ObjBase):
                 return None
             return utils.map_list(utils.ensure_is_list(client_filter), ref_msg_type)
 
-        def spatial_filter_to_msg(_spatial_filter):
+        def spatial_filter_payload(_spatial_filter):
             is_point_filter = isinstance(_spatial_filter, PointData)
             spatial_filter_field = "point_filter" if is_point_filter else "region_filter"
             spatial_filter_msg = (
@@ -83,9 +84,7 @@ class LayoutInstance(ObjBase):
                 if is_point_filter
                 else polygon_data_message(_spatial_filter)
             )
-            return layout_instance_pb2.LayoutObjInstancesQueryMessage(
-                **{spatial_filter_field: spatial_filter_msg}
-            )
+            return {spatial_filter_field: spatial_filter_msg}
 
         # Create queries
         lyt_inst_net_filter_lyr_filter_params = {
@@ -93,22 +92,8 @@ class LayoutInstance(ObjBase):
             "layer_filter": to_msg_filter_list(layer_filter, layer_ref_message),
             "net_filter": to_msg_filter_list(net_filter, net_ref_message),
         }
-        requests = [
-            layout_instance_pb2.LayoutObjInstancesQueryMessage(
-                **lyt_inst_net_filter_lyr_filter_params
-            )
-        ]
-        has_spatial_filter = spatial_filter is not None
-        if has_spatial_filter:
-            for sf in utils.ensure_is_list(spatial_filter):
-                requests.append(spatial_filter_to_msg(sf))
 
-        all_hits = []
-        for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
-            self._query_request_iterator(requests)
-        ):
-            for hit in hits_chunk.query_results:
-                all_hits.append(hit)
+        spatial_filters = [] if spatial_filter is None else utils.ensure_is_list(spatial_filter)
 
         def process_hits(_spatial_filter, hits_iter):
             full_hits = []
@@ -125,13 +110,47 @@ class LayoutInstance(ObjBase):
                 (full_hits, partial_hits) if isinstance(_spatial_filter, PolygonData) else full_hits
             )
 
-        all_hits_iter = iter(all_hits)
-        if not has_spatial_filter:
-            return process_hits(None, all_hits_iter)
-        elif len(spatial_filter) == 1:
-            return process_hits(spatial_filter[1], all_hits_iter)
+        all_hits = []
+        if system() == "Windows":
+            requests = [
+                layout_instance_pb2.LayoutObjInstancesQueryMessage(
+                    **lyt_inst_net_filter_lyr_filter_params
+                )
+            ]
+
+            for sf in spatial_filters:
+                requests.append(
+                    layout_instance_pb2.LayoutObjInstancesQueryMessage(**spatial_filter_payload(sf))
+                )
+
+            for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
+                self._query_request_iterator(requests)
+            ):
+                all_hits.extend(hits_chunk.query_results)
+
+            all_hits_iter = iter(all_hits)
+            if not spatial_filters:
+                return process_hits(None, all_hits_iter)
+            if len(spatial_filters) == 1:
+                return process_hits(spatial_filters[0], all_hits_iter)
+            return [process_hits(sf, all_hits_iter) for sf in spatial_filters]
         else:
-            return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
+            # Temporary workaround for Linux until the streaming gRPC implementation is fixed on server side for Linux.
+            # On Linux, instead of supporting multiple filters in a single query, only the first spatial filter is used.
+            msg_params = lyt_inst_net_filter_lyr_filter_params.copy()
+            if len(spatial_filters) > 0:
+                msg_params.update(spatial_filter_payload(spatial_filters[0]))
+            all_hits.extend(
+                self.__stub.QueryLayoutObjInstances(
+                    layout_instance_pb2.LayoutObjInstancesQueryMessage(**msg_params)
+                ).query_results
+            )
+
+            all_hits_iter = iter(all_hits)
+            if len(spatial_filters) == 0:
+                return process_hits(None, all_hits_iter)
+            else:
+                return process_hits(spatial_filters[0], all_hits_iter)
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.

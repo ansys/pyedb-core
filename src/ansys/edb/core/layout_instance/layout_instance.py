@@ -11,7 +11,7 @@ import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.geometry.polygon_data import PolygonData
-from ansys.edb.core.inner import ObjBase, utils
+from ansys.edb.core.inner import LOGGER, ObjBase, utils
 from ansys.edb.core.inner.messages import (
     layer_ref_message,
     net_ref_message,
@@ -139,6 +139,10 @@ class LayoutInstance(ObjBase):
             # On Linux, instead of supporting multiple filters in a single query, only the first spatial filter is used.
             msg_params = lyt_inst_net_filter_lyr_filter_params.copy()
             if len(spatial_filters) > 0:
+                LOGGER.warn(
+                    "Warning: Multiple spatial filters provided."
+                    " Only the first spatial filter will be applied in the query on Linux."
+                )
                 msg_params.update(spatial_filter_payload(spatial_filters[0]))
             all_hits.extend(
                 self.__stub.QueryLayoutObjInstances(

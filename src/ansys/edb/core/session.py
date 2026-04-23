@@ -159,7 +159,6 @@ from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertySer
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
 from ansys.api.edb.v1.stackup_layer_pb2_grpc import StackupLayerServiceStub
 from ansys.api.edb.v1.structure_3d_pb2_grpc import Structure3DServiceStub
-from ansys.api.edb.v1.technology_def_pb2_grpc import TechnologyDefServiceStub
 from ansys.api.edb.v1.term_inst_pb2_grpc import TerminalInstanceServiceStub
 from ansys.api.edb.v1.term_inst_term_pb2_grpc import TerminalInstanceTerminalServiceStub
 from ansys.api.edb.v1.term_pb2_grpc import TerminalServiceStub
@@ -173,10 +172,15 @@ from ansys.api.edb.v1.via_layer_pb2_grpc import ViaLayerServiceStub
 from ansys.api.edb.v1.voltage_regulator_pb2_grpc import VoltageRegulatorServiceStub
 from ansys.tools.common.cyberchannel import create_channel
 import grpc
+import rpc_executor
 
 from ansys.edb.core.inner import LOGGER
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
-from ansys.edb.core.inner.interceptors import ExceptionInterceptor, IOInterceptor
+from ansys.edb.core.inner.interceptors import (
+    ExceptionInterceptor,
+    IOInterceptor,
+    LocalHostInterceptor,
+)
 
 DEFAULT_ADDRESS = "localhost"
 
@@ -206,24 +210,38 @@ class StubAccessor(object):
 
 # Helper class for storing data used by the session
 class _Session:
-    def __init__(self, ip_address: str, port_num: int, ansys_em_root: str, dump_traffic_log: bool):
+    def __init__(
+        self,
+        ip_address: str,
+        port_num: int,
+        ansys_em_root: str,
+        dump_traffic_log: bool,
+        in_memory: bool,
+    ):
         if MOD.current_session is not None:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
 
         self.ip_address = ip_address or DEFAULT_ADDRESS
         self.transport_mode = "wnua" if self._is_windows() else "uds"
-        self.port_num = port_num or _find_available_port(check_uds=self._uses_uds())
+        self.port_num = (
+            50051 if in_memory else (port_num or _find_available_port(check_uds=self._uses_uds()))
+        )
         self.ansys_em_root = ansys_em_root
         self.channel = None
         self.local_server_proc = None
         self.stubs = None
         self.session = None
         self.rpc_counter = defaultdict(int) if dump_traffic_log else None
-        self.interceptors = [
-            # on reversed order of interception
-            IOInterceptor(LOGGER, self.rpc_counter),
-            ExceptionInterceptor(LOGGER),
-        ]
+        self.in_memory = in_memory
+        self.interceptors = (
+            [
+                # on reversed order of interception
+                IOInterceptor(LOGGER, self.rpc_counter),
+                ExceptionInterceptor(LOGGER),
+            ]
+            if not in_memory
+            else [LocalHostInterceptor(LOGGER)]
+        )
 
     def __enter__(self):
         if MOD.current_session == self:
@@ -312,14 +330,8 @@ class _Session:
             self.transport_mode = "insecure"
 
     def _create_channel(self):
-        self._check_for_legacy_server()
-        if self.transport_mode == "insecure":
-            LOGGER.warn(
-                "You are currently using an outdated version of AEDT. "
-                "Please consider updating to the most recent service pack."
-            )
         channel_params = {"transport_mode": self.transport_mode}
-        if self._uses_uds():
+        if self._uses_uds() and not self.in_memory:
             channel_params["uds_fullpath"] = self._get_uds_file()
         else:
             channel_params["host"] = "localhost"
@@ -333,7 +345,13 @@ class _Session:
         if self.is_active():
             return
 
-        if self.is_launch():
+        if self.in_memory:
+            if not rpc_executor.initialize(self.ansys_em_root):
+                raise EDBSessionException(
+                    ErrorCode.STARTUP_UNEXPECTED,
+                    f"Failed to initialize in-memory session with error code {success}",
+                )
+        elif self.is_launch():
             self.start_server()
 
         self.channel = self._create_channel()
@@ -448,7 +466,6 @@ class StubType(Enum):
     rectangle = RectangleServiceStub
     via_group = ViaGroupServiceStub
     circle = CircleServiceStub
-    technology = TechnologyDefServiceStub
     text = TextServiceStub
     terminal = TerminalServiceStub
     terminal_instance = TerminalInstanceServiceStub
@@ -580,7 +597,12 @@ def attach_session(
     return MOD.current_session
 
 
-def launch_session(ansys_em_root: str, port_num: int | None = None, dump_traffic_log: bool = False):
+def launch_session(
+    ansys_em_root: str,
+    port_num: int | None = None,
+    dump_traffic_log: bool = False,
+    in_memory: bool = False,
+):
     r"""Launch a local session to an EDB API server.
 
     The session must be manually disconnected after use by calling session.disconnect()
@@ -594,6 +616,8 @@ def launch_session(ansys_em_root: str, port_num: int | None = None, dump_traffic
         is selected.
     dump_traffic_log : bool, default: False
         Flag indicating if the network traffic log should be dumped when the session is disconnected.
+    in_memory : bool, default: False
+        Flag indicating if the session should be launched in memory
 
     Examples
     --------
@@ -606,7 +630,7 @@ def launch_session(ansys_em_root: str, port_num: int | None = None, dump_traffic
     ip_address = None  # remote launch is not supported yet
 
     try:
-        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log)
+        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log, in_memory)
         return MOD.current_session
     except Exception as e:  # noqa
         if MOD.current_session is not None:
@@ -658,6 +682,19 @@ def session(
         MOD.current_session.disconnect()
 
 
+def launch_local_session(ansys_em_root: str):
+    """Launch a local session of the EDB API. Instead of launching an instance of \
+    the EDB_RPC_Server and connecting to it, this will instead perform all operations \
+    locally within the current process.
+
+    Parameters
+    ----------
+    ansys_em_root : str
+        Directory where Ansys Electronics Desktop is installed.
+    """
+    return launch_session(ansys_em_root, in_memory=True)
+
+
 def get_layer_collection_stub() -> LayerCollectionServiceStub:
     """Get the layer collection stub.
 
@@ -699,7 +736,11 @@ def get_variable_server_stub() -> VariableServerServiceStub:
 
 
 def _ensure_session(
-    ansys_em_root: str, port_num: int, ip_address: str | None, dump_traffic_log: bool
+    ansys_em_root: str,
+    port_num: int,
+    ip_address: str | None,
+    dump_traffic_log: bool,
+    in_memory: bool = False,
 ):
     """Check for a running local session and create one if it doesn't exist.
 
@@ -713,12 +754,18 @@ def _ensure_session(
         IP address where the server executable file is running.
     dump_traffic_log : bool
         Flag indicating if the network traffic log should be dumped when the session is disconnected.
+    in_memory : bool, default: False
+        Flag indicating if the session should be launched in memory.
     """
     if MOD.current_session is not None:
-        if MOD.current_session.port_num != port_num:
+        if in_memory:
+            return MOD.current_session
+        elif MOD.current_session.port_num != port_num:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
     else:
-        MOD.current_session = _Session(ip_address, port_num, ansys_em_root, dump_traffic_log)
+        MOD.current_session = _Session(
+            ip_address, port_num, ansys_em_root, dump_traffic_log, in_memory
+        )
         MOD.current_session.connect()
 
 

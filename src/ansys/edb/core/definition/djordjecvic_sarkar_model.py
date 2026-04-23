@@ -65,6 +65,15 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
         self.__stub.SetLossTangentAtFrequency(messages.double_property_message(self, frequency))
 
     @property
+    def high_frequency_corner(self) -> float:
+        """:obj:`float`: High frequency corner value for the model."""
+        return self.__stub.GetHighFrequencyCorner(self.msg).value
+
+    @high_frequency_corner.setter
+    def high_frequency_corner(self, corner: float):
+        self.__stub.SetHighFrequencyCorner(messages.double_property_message(self, corner))
+
+    @property
     def dc_relative_permittivity(self) -> float:
         """:obj:`float`: DC relative permittivity value."""
         return self.__stub.GetDCRelativePermitivity(self.msg).value

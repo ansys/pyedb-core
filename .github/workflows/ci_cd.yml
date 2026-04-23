@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           source .venv/bin/activate
-          uv pip install .ci/dist/ansys_api_edb-0.3.1.261.0-py3-none-any.whl
+          uv pip install .ci/ansys-api-edb/ansys_api_edb-0.3.1.261.0-py3-none-any.whl
           uv pip install .
 
       - name: Install build

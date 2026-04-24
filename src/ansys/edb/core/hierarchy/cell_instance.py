@@ -164,3 +164,13 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         self.__stub.SetParameterOverride(
             messages.cell_instance_parameter_override_message(self, param_name, param_value)
         )
+
+    def set_net_mapping(self, net_map):
+        """Set the net mapping for the cell instance.
+
+        Parameters
+        ----------
+        net_map : dict[str, str]
+            Dictionary mapping source net IDs to target net IDs.
+        """
+        self.__stub.SetNetMapping(messages.set_net_mapping_message(self, net_map))

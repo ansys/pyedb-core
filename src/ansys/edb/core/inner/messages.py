@@ -4,6 +4,7 @@ from ansys.api.edb.v1 import arc_data_pb2
 from ansys.api.edb.v1.cell_instance_pb2 import (
     CellInstanceCreationMessage,
     CellInstanceParameterOverride,
+    SetNetMappingMessage,
 )
 from ansys.api.edb.v1.cell_pb2 import (
     CellCutOutMessage,
@@ -47,6 +48,7 @@ from ansys.api.edb.v1.edb_messages_pb2 import (
     PointerPropertyMessage,
     ProductPropertyIdMessage,
     SetProductPropertyMessage,
+    StringMapMessage,
     StringPairMessage,
     StringPairPropertyMessage,
     StringPropertyMessage,
@@ -453,6 +455,14 @@ def cell_instance_parameter_override_message(target, param_name, param_value):
         target=edb_obj_message(target),
         pname=param_name,
         pval=value_message(param_value),
+    )
+
+
+def set_net_mapping_message(target, net_map):
+    """Convert to a ``SetNetMappingMessage`` object."""
+    return SetNetMappingMessage(
+        target=edb_obj_message(target),
+        net_map=StringMapMessage(string_map=net_map),
     )
 
 

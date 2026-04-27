@@ -35,6 +35,9 @@ html_context = {
     "github_repo": "pyedb-core",
     "github_version": "develop",
     "doc_path": "doc/source",
+    "pyansys_tags": [
+        "Electronics"
+    ]
 }
 
 html_theme_options = {

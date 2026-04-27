@@ -105,3 +105,26 @@ Glossary
 		- ``0`` -> ``T[1,1]``
 		- ``1`` -> ``T[2,2]``
 		- ``2`` -> ``T[3,3]``
+
+	Pad Geometry Parameters
+
+		Non-polygonal hole and pad geometry parameters of padstacks are represented as a list of values. These represent different pad geometry types as follows:
+
+		- ``Circle`` -> [``diameter``]
+		- ``Rectangle`` -> [``width``, ``height``]
+		- ``Square`` -> [``side length``]
+		- ``Oval`` -> [``x-size``, ``y-size``, ``corner radius``]
+		- ``Bullet`` -> [``x-size``, ``y-size``, ``corner radius``]
+		- ``Round45`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``Round90`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``Square45`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``Square90`` -> [``inner size``, ``channel width``, ``isolation gap``]
+		- ``N-Sided Polygon`` -> [``side length``, ``number of sides``]
+
+	LayoutInstanceQueryResult
+
+		If a polygonal spatial filter is specified, a tuple of lists of hits is returned in this
+		format: ``[<hits_completely_enclosed_in_polygon_region>, <hits_partially_enclosed_in_polygon_region>]``.
+		Otherwise, a list containing all hits is returned.
+
+		:obj:`list` of :class:`.LayoutObjInstance` or :obj:`tuple` of (:obj:`list` of :class:`.LayoutObjInstance`, :obj:`list` of :class:`.LayoutObjInstance`)

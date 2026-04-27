@@ -301,7 +301,7 @@ class PolygonData:
         -------
         list of .PointData
         """
-        return self.__stub.GetNormalizedPoints(messages.polygon_data_message(self))
+        return self.__stub.GetNormalizedPoints(messages.polygon_data_message(self)).points
 
     @parser.to_polygon_data
     def move(self, vector: PointLike) -> PolygonData:

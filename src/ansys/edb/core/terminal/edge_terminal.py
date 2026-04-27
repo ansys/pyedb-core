@@ -52,7 +52,7 @@ class Edge(ObjBase):
     def _params(self):
         res = self.__stub.GetParameters(self.msg)
         if self.type == EdgeType.PRIMITIVE:
-            return res.primitive_params
+            return res.primitve_params
         elif self.type == EdgeType.PADSTACK:
             return res.pad_params
 
@@ -167,4 +167,4 @@ class EdgeTerminal(Terminal):
 
     @edges.setter
     def edges(self, edges):
-        self.__stub.GetEdges(messages.edge_term_set_edges_message(self, edges))
+        self.__stub.SetEdges(messages.edge_term_set_edges_message(self, edges))

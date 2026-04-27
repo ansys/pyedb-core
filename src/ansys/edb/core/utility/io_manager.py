@@ -2,12 +2,14 @@
 import abc
 from collections import defaultdict
 from contextlib import contextmanager
-from enum import Enum, auto
+from enum import Enum, Flag, auto
+from importlib import import_module
+import re
 from sys import modules
+from typing import Any as AnyType
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
 from ansys.api.edb.v1.io_manager_pb2 import BufferEntryMessage, BufferMessage
-from django.utils.module_loading import import_string
 from google.protobuf.any_pb2 import Any
 from google.protobuf.empty_pb2 import Empty
 
@@ -30,6 +32,43 @@ def _get_io_manager_stub():
     from ansys.edb.core.session import StubAccessor, StubType
 
     return StubAccessor(StubType.io_manager).__get__()
+
+
+_DOTTED_NAME_PATTERN = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*(\.([a-zA-Z_][a-zA-Z0-9_]*))+$")
+
+
+def _import_attribute_from_module(dotted_path: str) -> AnyType:
+    """
+    Import a module attribute given its dotted path.
+
+    Modeled after Django's import_string function.
+
+    Parameters
+    ----------
+    dotted_path : str
+        The dotted path to the attribute to import.
+
+    Returns
+    -------
+    AnyType
+        The imported attribute.
+
+    Raises
+    ------
+    ImportError
+        If the module cannot be imported or the attribute does not exist.
+    """
+    if not _DOTTED_NAME_PATTERN.fullmatch(dotted_path):
+        raise ImportError(
+            f"Invalid dotted path: {dotted_path}: must be in the form "
+            "module[.submodules...].attribute with valid Python identifiers"
+        )
+    module_path, attribute_name = dotted_path.rsplit(".", 1)
+    module = import_module(module_path)
+    try:
+        return getattr(module, attribute_name)
+    except AttributeError as ex:
+        raise ImportError(f"Module '{module_path}' does not define '{attribute_name}'") from ex
 
 
 class _HijackedOutcome:
@@ -77,6 +116,7 @@ class _Cache(_IOOptimizer):
         self._response_cache = {}
         self._msg_type_cache = {}
         self._cached_edb_objs = {}
+        self._allow_invalidation = True
 
     def _extract_msg_from_any_module_msg(self, any_module_msg):
         msg_type_name = any_module_msg.any.TypeName()
@@ -89,7 +129,7 @@ class _Cache(_IOOptimizer):
                 + "_pb2"
                 + msg_type_name[insertion_idx:]
             )
-            msg_type = import_string(msg_class_path)
+            msg_type = _import_attribute_from_module(msg_class_path)
             self._msg_type_cache[msg_type_name] = msg_type
         msg = msg_type()
         any_module_msg.any.Unpack(msg)
@@ -126,7 +166,7 @@ class _Cache(_IOOptimizer):
         return self._response_cache.get(self._generate_cache_key(service_name, rpc_name, request))
 
     def invalidate(self):
-        if not self._response_cache:
+        if not self._response_cache or not self.allow_invalidation:
             return
         self._response_cache.clear()
         self._cached_edb_objs = self._cached_edb_objs.fromkeys(self._cached_edb_objs, False)
@@ -152,6 +192,14 @@ class _Cache(_IOOptimizer):
             )
             for msg in response.items:
                 self.add_from_cache_msg(msg)
+
+    @property
+    def allow_invalidation(self):
+        return self._allow_invalidation
+
+    @allow_invalidation.setter
+    def allow_invalidation(self, allow):
+        self._allow_invalidation = allow
 
 
 class _Buffer(_IOOptimizer):
@@ -181,6 +229,7 @@ class _Buffer(_IOOptimizer):
         self._buffer = []
         self._futures = defaultdict(list)
         self._invalidate_cache = False
+        self._allow_flushing = True
 
     def _hijack_request(self, service_name, rpc_name, request):
         if (rpc_info := get_rpc_info(service_name, rpc_name)) is None or rpc_info.is_read:
@@ -203,7 +252,7 @@ class _Buffer(_IOOptimizer):
         )
 
     def flush(self):
-        if not self._buffer:
+        if not self._buffer or not self.allow_flushing:
             return
         with self.block():
             if (cache := get_cache()) is not None and self._invalidate_cache:
@@ -225,6 +274,14 @@ class _Buffer(_IOOptimizer):
     def _reset_after_block(self):
         self._reset()
 
+    @property
+    def allow_flushing(self):
+        return self._allow_flushing
+
+    @allow_flushing.setter
+    def allow_flushing(self, allow):
+        self._allow_flushing = allow
+
 
 class ServerNotification(Enum):
     """Provides an enum representing the types of server notifications."""
@@ -234,12 +291,15 @@ class ServerNotification(Enum):
     RESET_FUTURE_TRACKING = auto()
 
 
-class IOMangementType(Enum):
+class IOMangementType(Flag):
     """Provides an enum representing the types of IO management modes."""
 
     READ = auto()
     WRITE = auto()
-    READ_AND_WRITE = auto()
+    READ_AND_WRITE = READ | WRITE
+    NO_CACHE_INVALIDATION = auto()
+    NO_BUFFER_FLUSHING = auto()
+    NO_CACHE_INVALIDATION_NO_BUFFER_FLUSHING = NO_CACHE_INVALIDATION | NO_BUFFER_FLUSHING
 
 
 class _ActiveRequestEdbObjMsgMgr:
@@ -286,16 +346,21 @@ class _IOManager:
         _get_io_manager_stub().EnableCache(bool_message(enable))
 
     def start_managing(self, mode):
-        if mode == IOMangementType.READ or mode == IOMangementType.READ_AND_WRITE:
+        if IOMangementType.READ in mode:
             self._cache = _Cache()
             self._enable_caching(True)
-        if mode == IOMangementType.WRITE or mode == IOMangementType.READ_AND_WRITE:
+        if IOMangementType.WRITE in mode:
             self._buffer = _Buffer()
+        if IOMangementType.NO_CACHE_INVALIDATION in mode:
+            self._cache.allow_invalidation = False
+        if IOMangementType.NO_BUFFER_FLUSHING in mode:
+            self._buffer.allow_flushing = False
 
     def end_managing(self):
         if self._cache is not None:
             self._enable_caching(False)
         if self._buffer is not None:
+            self._buffer.allow_flushing = True
             self._buffer.flush()
         self._reset()
 

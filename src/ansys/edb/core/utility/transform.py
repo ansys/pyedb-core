@@ -110,7 +110,7 @@ class Transform(ObjBase):
         self.__stub.SetOffsetY(messages.value_property_message(target=self, value=value))
 
     @property
-    def mirror(self) -> Value:
+    def mirror(self) -> bool:
         """:obj:`bool`: Mirror property. If ``True``, mirror about y axis."""
         return self.__stub.GetMirror(messages.edb_obj_message(self)).value
 
@@ -145,6 +145,7 @@ class Transform(ObjBase):
             )
         )
 
+    @parser.to_point_data
     def transform_point(self, point: PointData):
         """Transform a point.
 
@@ -158,8 +159,7 @@ class Transform(ObjBase):
         .PointData
             Transformed point.
         """
-        pnt_msg = self.__stub.TransformPoint(messages.point_property_message(self, point))
-        return Value(pnt_msg.x), Value(pnt_msg.y)
+        return self.__stub.TransformPoint(messages.point_property_message(self, point))
 
     @parser.to_polygon_data
     def transform_polygon(self, polygon: PolygonData) -> PolygonData:

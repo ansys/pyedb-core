@@ -1,4 +1,11 @@
 """Component model definition."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.definition.component_def import ComponentDef
+
 from enum import Enum
 
 from ansys.api.edb.v1.component_model_pb2 import ComponentModelType as pb_comp_model_Type
@@ -22,54 +29,54 @@ class ComponentModelType(Enum):
 
 
 class ComponentModel(ObjBase):
-    """Represents a component model."""
+    """Represents the model of a :class:`.ComponentDef`."""
 
     __stub: ComponentModelServiceStub = StubAccessor(StubType.component_model)
 
     @property
-    def reference_file(self):
+    def reference_file(self) -> str:
         """:obj:`str`: Name of the reference file associated with the component model."""
         return self.__stub.GetReferenceFile(self.msg).value
 
     @reference_file.setter
-    def reference_file(self, value):
+    def reference_file(self, value: str):
         self.__stub.SetReferenceFile(messages.string_property_message(self, value))
 
     @classmethod
-    def find_by_name(cls, comp_def, value):
+    def find_by_name(cls, comp_def: ComponentDef, value: str) -> ComponentModel:
         """Find a component model by name in a given component def.
 
         Parameters
         ----------
-        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+        comp_def : .ComponentDef
             Component def to search for the component model.
         value : str
             Name of the component model.
 
         Returns
         -------
-        ComponentModel
-            Component model that is found, ``None`` otherwise.
+        .ComponentModel
         """
         return ComponentModel(
             cls.__stub.FindByName(messages.string_property_message(comp_def, value))
         ).cast()
 
     @classmethod
-    def find_by_id(cls, comp_def, value):
+    def find_by_id(cls, comp_def: ComponentDef, value: int) -> ComponentModel:
         """Find a component model by ID in a given component def.
 
         Parameters
         ----------
-        comp_def : :class:`ComponentDef <ansys.edb.core.definition.ComponentDef>`
+        comp_def : .ComponentDef
             Component def to search for the component model.
         value : int
             ID of the component model.
 
         Returns
         -------
-        ComponentModel
-            Component model that is found, ``None`` otherwise.
+        .ComponentModel
+            Component model found. \
+            If a component model isn't found, the returned component model is :meth:`null <.is_null>`.
         """
         return ComponentModel(
             cls.__stub.FindById(messages.int_property_message(comp_def, value))
@@ -99,7 +106,7 @@ class ComponentModel(ObjBase):
         """
         return self.__stub.GetId(self.msg).value
 
-    def cast(self) -> "ComponentModel":
+    def cast(self) -> ComponentModel:
         """Cast the component model object to the correct concrete type.
 
         Returns
@@ -124,18 +131,17 @@ class NPortComponentModel(ComponentModel):
     __stub: NPortComponentModelServiceStub = StubAccessor(StubType.nport_component_model)
 
     @classmethod
-    def create(cls, name):
+    def create(cls, name: str) -> NPortComponentModel:
         """Create an NPort component model.
 
         Parameters
         ----------
         name : str
-            Name of the NPport component model.
+            Name of the NPort component model.
 
         Returns
         -------
-        NPortComponentModel
-            NPort component model created.
+        .NPortComponentModel
 
         Notes
         -----
@@ -151,7 +157,7 @@ class DynamicLinkComponentModel(ComponentModel):
     __stub: DynamicLinkComponentModelServiceStub = StubAccessor(StubType.dyn_link_component_model)
 
     @classmethod
-    def create(cls, name):
+    def create(cls, name: str) -> DynamicLinkComponentModel:
         """Create a dynamic link component model.
 
         Parameters
@@ -161,8 +167,7 @@ class DynamicLinkComponentModel(ComponentModel):
 
         Returns
         -------
-        DynamicLinkComponentModel
-            Dynamic link component model created.
+        .DynamicLinkComponentModel
 
         Notes
         -----
@@ -172,10 +177,10 @@ class DynamicLinkComponentModel(ComponentModel):
         return DynamicLinkComponentModel(cls.__stub.Create(proto_wrappers.StringValue(value=name)))
 
     @property
-    def design_name(self):
+    def design_name(self) -> str:
         """:obj:`str`: Name of the design associated with the dynamic link component model."""
         return self.__stub.GetDesignName(self.msg).value
 
     @design_name.setter
-    def design_name(self, value):
+    def design_name(self, value: str):
         self.__stub.SetDesignName(messages.string_property_message(self, value))

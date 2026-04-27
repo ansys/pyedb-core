@@ -1,4 +1,11 @@
 """Bondwire definition."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.edb.core.database import Database
+    from ansys.edb.core.typing import ValueLike
 
 from enum import Enum
 
@@ -12,7 +19,7 @@ from ansys.edb.core.utility.value import Value
 
 
 class BondwireDefType(Enum):
-    """Enum representing different types of bondwires."""
+    """Enum representing different types of bondwire definitions."""
 
     APD_BONDWIRE_DEF = pb.APD_BONDWIRE_DEF
     JEDEC4_BONDWIRE_DEF = pb.JEDEC4_BONDWIRE_DEF
@@ -25,12 +32,12 @@ class BondwireDef(ObjBase):
     __stub: bondwire_def_pb2_grpc.BondwireDefServiceStub = StubAccessor(StubType.bondwire_def)
 
     @property
-    def definition_type(self):
-        """:class:`.DefinitionObjType`: Object type of the bondwire definition."""
+    def definition_type(self) -> DefinitionObjType:
+        """:class:`.DefinitionObjType`: Definition object type of the bondwire definition."""
         return DefinitionObjType.BONDWIRE_DEF
 
     @property
-    def name(self):
+    def name(self) -> str:
         """:obj:`str`: Name of the bondwire definition.
 
         This property is read-only.
@@ -65,58 +72,58 @@ class ApdBondwireDef(BondwireDef):
     )
 
     @classmethod
-    def create(cls, database, name):
+    def create(cls, database: Database, name: str) -> ApdBondwireDef:
         """Create an APD bondwire definition in a given database.
 
         Parameters
         ----------
-        database : :class:`.Database`
+        database : .Database
             Database to create the APD bondwire definition in.
         name : str
             Name of the APD bondwire definition.
 
         Returns
         -------
-        ApdBondwireDef
-            APD bondwire definition created.
+        .ApdBondwireDef
         """
         bw_msg = cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name))
         return ApdBondwireDef(bw_msg)
 
     @classmethod
-    def load_definitions_from_file(cls, database, name):
-        """Load an APD bondwire definition into a given database.
+    def load_definitions_from_file(cls, database: Database, name: str):
+        """Load APD bondwire definitions into a given database from the provided XML file.
 
         Parameters
         ----------
-        database : :class:`.Database`
-            Database to load the APD bondwire into.
+        database : .Database
+            Database to load the APD bondwire definitions into.
         name : str
-            Name of the APD bondwire definition.
+            File path of the XML file to be imported.
         """
         cls.__stub.LoadDefinitionsFromFile(BondwireDef._bondwire_def_str_message(database, name))
 
     @classmethod
-    def find_by_name(cls, database, name):
+    def find_by_name(cls, database: Database, name: str) -> ApdBondwireDef:
         """Find an APD bondwire definition by name in a given database.
 
         Parameters
         ----------
-        database : :class:`.Database`
-            Database to search for the APD bondwire definition.
+        database : .Database
+            Database to search for the APD bondwire definition in.
         name : str
             Name of the APD bondwire definition.
 
         Returns
         -------
-        ApdBondwireDef
-            APD bondwire definition found.
+        .ApdBondwireDef
+            APD bondwire definition found. \
+            If an APD bondwire definition isn't found, the returned APD bondwire definition is :meth:`null <.is_null>`.
         """
         return ApdBondwireDef(
             cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
         )
 
-    def get_parameters(self):
+    def get_parameters(self) -> str:
         """Get the parameters of the APD bondwire definition.
 
         Returns
@@ -126,8 +133,8 @@ class ApdBondwireDef(BondwireDef):
         """
         return self.__stub.GetParameters(self.msg)
 
-    def set_parameters(self, name):
-        """Set parameters of the APD bondwire definition.
+    def set_parameters(self, name: str):
+        """Set the parameters of the APD bondwire definition.
 
         Parameters
         ----------
@@ -137,8 +144,8 @@ class ApdBondwireDef(BondwireDef):
         self.__stub.SetParameters(BondwireDef._bondwire_def_str_message(self, name))
 
     @property
-    def bondwire_type(self):
-        """:class:`BondwireDefType`: Type of the APD bondwire.
+    def bondwire_type(self) -> BondwireDefType:
+        """:class:`.BondwireDefType`: Type of the APD bondwire.
 
         This property is read-only.
         """
@@ -153,61 +160,62 @@ class Jedec4BondwireDef(BondwireDef):
     )
 
     @classmethod
-    def create(cls, database, name):
+    def create(cls, database: Database, name: str) -> Jedec4BondwireDef:
         """Create a JEDEC4 bondwire definition.
 
         Parameters
         ----------
-        database : :class:`.Database`
+        database : .Database
             Database to create the JEDEC4 bondwire definition in.
         name : str
             Name of the JEDEC4 bondwire definition.
 
         Returns
         -------
-        Jedec4BondwireDef
-            JEDEC4 bondwire definition created.
+        .Jedec4BondwireDef
         """
         return Jedec4BondwireDef(
             cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name))
         )
 
     @classmethod
-    def find_by_name(cls, database, name):
+    def find_by_name(cls, database: Database, name: str) -> Jedec4BondwireDef:
         """Find a JEDEC4 bondwire definition by name in a given database.
 
         Parameters
         ----------
-        database : :class:`.Database`
+        database : .Database
             Database to search for the JEDEC4 bondwire definition.
         name : str
             Name of the JEDEC4 bondwire definition.
 
         Returns
         -------
-        Jedec4BondwireDef
-            JEDEC4 bondwire definition found.
+        .Jedec4BondwireDef
+            JEDEC4 bondwire definition found. \
+            If an JEDEC4 bondwire definition isn't found, the returned JEDEC4 bondwire definition \
+            is :meth:`null <.is_null>`.
         """
         return Jedec4BondwireDef(
             cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
         )
 
-    def get_parameters(self):
-        """Get parameters of the JEDEC4 bondwire definition.
+    def get_parameters(self) -> Value:
+        """Get the parameters of the JEDEC4 bondwire definition.
 
         Returns
         -------
-        :class:`.Value`
+        .Value
             Bondwire top-to-die distance.
         """
         return Value(self.__stub.GetParameters(self.msg))
 
-    def set_parameters(self, top_to_die_distance):
-        """Set parameters of the JEDEC4 bondwire definition.
+    def set_parameters(self, top_to_die_distance: ValueLike):
+        """Set the parameters of the JEDEC4 bondwire definition.
 
         Parameters
         ----------
-        top_to_die_distance : :class:`.Value`
+        top_to_die_distance : :term:`ValueLike`
             Bondwire top-to-die distance.
         """
         self.__stub.SetParameters(
@@ -217,7 +225,7 @@ class Jedec4BondwireDef(BondwireDef):
         )
 
     @property
-    def bondwire_type(self):
+    def bondwire_type(self) -> BondwireDefType:
         """:class:`BondwireDefType`: Type of the JEDEC4 bondwire.
 
         This property is read-only.
@@ -233,19 +241,19 @@ class Jedec5BondwireDef(BondwireDef):
     )
 
     @classmethod
-    def create(cls, database, name):
+    def create(cls, database: Database, name: str) -> Jedec5BondwireDef:
         """Create a JEDEC5 bondwire definition.
 
         Parameters
         ----------
-        database : :class:`.Database`
+        database : .Database
             Database to create the JEDEC5 bondwire definition in.
         name : str
             Name of the JEDEC5 bondwire definition.
 
         Returns
         -------
-        Jedec5BondwireDef
+        .Jedec5BondwireDef
             JEDEC5 bondwire definition created.
         """
         return Jedec5BondwireDef(
@@ -253,32 +261,34 @@ class Jedec5BondwireDef(BondwireDef):
         )
 
     @classmethod
-    def find_by_name(cls, database, name):
+    def find_by_name(cls, database: Database, name: str) -> Jedec5BondwireDef:
         """Find a JEDEC5 bondwire definition by name in a given database.
 
         Parameters
         ----------
-        database : :class:`.Database`
+        database : .Database
             Database to search for the JEDEC5 bondwire definition.
         name : str
             Name of the JEDEC5 bondwire definition.
 
         Returns
         -------
-        Jedec5BondwireDef
-            JEDEC5 bondwire definition found.
+        .Jedec5BondwireDef
+            JEDEC5 bondwire definition found. \
+            If an JEDEC5 bondwire definition isn't found, the returned JEDEC5 bondwire definition is \
+            :meth:`null <.is_null>`.
         """
         return Jedec5BondwireDef(
             cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
         )
 
-    def get_parameters(self):
+    def get_parameters(self) -> tuple[Value, Value, Value]:
         """Get parameters of the JEDEC5 bondwire definition.
 
         Returns
         -------
-        tuple[:class:`.Value`, :class:`.Value`, :class:`.Value`]
-            The tuple is in this format: ``(top_to_die_distance,die_pad_angle,lead_pad_angle)``
+        tuple of (.Value, .Value, .Value)
+            The tuple is in this format: ``(top_to_die_distance, die_pad_angle, lead_pad_angle)``
 
             - ``top_to_die_distance``: Bondwire top-to-die distance.
             - ``die_pad_angle``: Bondwire die pad angle.
@@ -291,16 +301,18 @@ class Jedec5BondwireDef(BondwireDef):
             Value(get_parameters_msg.lead_pad_angle),
         )
 
-    def set_parameters(self, top_to_die_distance, die_pad_angle, lead_pad_angle):
+    def set_parameters(
+        self, top_to_die_distance: ValueLike, die_pad_angle: ValueLike, lead_pad_angle: ValueLike
+    ):
         """Set parameters of the JEDEC5 bondwire definition.
 
         Parameters
         ----------
-        top_to_die_distance : :class:`.Value`
+        top_to_die_distance : :term:`ValueLike`
             Bondwire top-to-die distance.
-        die_pad_angle : :class:`.Value`
+        die_pad_angle : :term:`ValueLike`
             Bondwire die pad angle.
-        lead_pad_angle : :class:`.Value`
+        lead_pad_angle : :term:`ValueLike`
             Bondwire lead pad angle.
         """
         self.__stub.SetParameters(
@@ -315,7 +327,7 @@ class Jedec5BondwireDef(BondwireDef):
         )
 
     @property
-    def bondwire_type(self):
+    def bondwire_type(self) -> BondwireDefType:
         """:class:`BondwireDefType`: Type of the JEDEC5 bondwire.
 
         This property is read-only.

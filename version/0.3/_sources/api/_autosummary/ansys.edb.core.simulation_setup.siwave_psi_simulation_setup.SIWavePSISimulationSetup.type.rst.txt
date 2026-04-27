@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_setup
+
+.. autoproperty:: SIWavePSISimulationSetup.type

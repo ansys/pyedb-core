@@ -1,0 +1,6 @@
+INVALID\_TYPE
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PrimitiveType.INVALID_TYPE

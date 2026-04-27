@@ -1,0 +1,6 @@
+get\_variable\_desc
+===================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.get_variable_desc

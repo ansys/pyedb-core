@@ -1,0 +1,6 @@
+include\_enhanced\_bondwire\_modeling
+=====================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSIGeneralSettings.include_enhanced_bondwire_modeling

@@ -1,0 +1,38 @@
+﻿SIWavePSIGeneralSettings
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoclass:: SIWavePSIGeneralSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSIGeneralSettings.include_enhanced_bondwire_modeling
+      SIWavePSIGeneralSettings.min_plane_area_to_mesh
+      SIWavePSIGeneralSettings.min_void_area_to_mesh
+      SIWavePSIGeneralSettings.model_type
+      SIWavePSIGeneralSettings.msg
+      SIWavePSIGeneralSettings.perform_erc
+      SIWavePSIGeneralSettings.rms_surface_roughness
+      SIWavePSIGeneralSettings.simulation_preference
+      SIWavePSIGeneralSettings.snap_length_threshold
+      SIWavePSIGeneralSettings.surface_roughness_model
+   
+   

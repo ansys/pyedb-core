@@ -248,6 +248,17 @@ class AdvancedSettings(SimulationSettingsBase):
             )
         )
 
+    @property
+    def zero_metal_layer_thickness(self) -> str:
+        """:obj:`str`: Pwr/Gnd layers with a thickness smaller than this value are simplified during simulation."""
+        return self.__stub.GetZeroMetalLayerThickness(self.msg).value
+
+    @zero_metal_layer_thickness.setter
+    def zero_metal_layer_thickness(self, zero_metal_layer_thickness):
+        self.__stub.SetZeroMetalLayerThickness(
+            messages.string_property_message(self, zero_metal_layer_thickness)
+        )
+
 
 class AdvancedMeshingSettings(SimulationSettingsBase):
     """Class representing base advanced meshing simulation settings."""

@@ -1,7 +1,7 @@
 """Primitive classes."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, overload
 
 if TYPE_CHECKING:
     from ansys.edb.core.layout.layout import Layout
@@ -307,41 +307,66 @@ class PadstackInstance(conn_obj.ConnObj):
             ).type
         )
 
-    def get_back_drill_by_layer(self, from_bottom: bool) -> tuple[Layer, Value, Value]:
+
+    @overload
+    def get_back_drill_by_layer(
+        self, 
+        from_bottom: bool, 
+        include_fill_material: Literal[False] = False
+    ) -> tuple[Layer, Value, Value]: ...
+
+    @overload
+    def get_back_drill_by_layer(
+        self, 
+        from_bottom: bool, 
+        include_fill_material: Literal[True]
+    ) -> tuple[Layer, Value, Value, str]: ...
+
+    def get_back_drill_by_layer(
+        self, 
+        from_bottom: bool, 
+        include_fill_material: bool = False
+    ) -> tuple[Layer, Value, Value] | tuple[Layer, Value, Value, str]:
         """Get the back drill type by the layer.
 
         Parameters
         ----------
         from_bottom : bool
             Whether to get the back drill type from the bottom.
+        include_fill_material : bool, optional
+            Input flag to obtain fill material as well as other parameters. If false, the return tuple does not include fill material and is backward compatible with previous versions.
 
         Returns
         -------
-        tuple of (.Layer, .Value, .Value)
-
+        tuple of (.Layer, .Value, .Value, str)
             Returns a tuple in this format:
 
-            **(drill_to_layer, offset, diameter)**
+            **(drill_to_layer, offset, diameter, fill_material)**
 
-            **drill_to_layer** : Layer drills to. If drill from top, drill stops at the upper elevation of the layer.\
-            If from bottom, drill stops at the lower elevation of the layer.
-
-            **offset** : Layer offset (or depth if layer is empty).
-
-            **diameter** : Drilling diameter.
+            - **drill_to_layer** : Layer drills to. If drill from top, drill stops at the upper elevation of the layer. If from bottom, drill stops at the lower elevation of the layer.
+            - **offset** : Layer offset (or depth if layer is empty).
+            - **diameter** : Drilling diameter.
+            - **fill_material** : Fill material name (empty string if no fill). Returned only when include_fill_material is true.
         """
         params = self.__stub.GetBackDrillByLayer(
             PadstackInstance._get_back_drill_message(self, from_bottom)
         )
-
-        return (
-            Layer(params.drill_to_layer).cast(),
+                
+        if include_fill_material:
+            fill_material = params.fill_material if hasattr(params, 'fill_material') else ""
+            return (Layer(params.drill_to_layer).cast(),
             Value(params.offset),
             Value(params.diameter),
-        )
+            fill_material)
+        else:
+            # Backward compatible: return only 3 values
+            return (Layer(params.drill_to_layer).cast(),
+                Value(params.offset),
+                Value(params.diameter))
 
     def set_back_drill_by_layer(
-        self, drill_to_layer: Layer, offset: ValueLike, diameter: ValueLike, from_bottom: bool
+        self, drill_to_layer: Layer, offset: ValueLike, diameter: ValueLike, from_bottom: bool, 
+        fill_material: str = ""
     ):
         """Set the back drill by the layer.
 
@@ -357,6 +382,8 @@ class PadstackInstance(conn_obj.ConnObj):
             Drilling diameter.
         from_bottom : bool
             Whether to set the back drill type from the bottom.
+        fill_material: str, optional
+            Fill material name. The default is ``""``, which means no fill.
         """
         self.__stub.SetBackDrillByLayer(
             padstack_instance_pb2.PadstackInstSetBackDrillByLayerMessage(
@@ -365,35 +392,65 @@ class PadstackInstance(conn_obj.ConnObj):
                 offset=messages.value_message(offset),
                 diameter=messages.value_message(diameter),
                 from_bottom=from_bottom,
+                fill_material=fill_material,
             )
         )
 
-    def get_back_drill_by_depth(self, from_bottom: bool) -> tuple[Value, Value]:
+    @overload
+    def get_back_drill_by_depth(
+        self, 
+        from_bottom: bool, 
+        include_fill_material: Literal[False] = False
+    ) -> tuple[Value, Value]: ...
+
+    @overload
+    def get_back_drill_by_depth(
+        self, 
+        from_bottom: bool, 
+        include_fill_material: Literal[True]
+    ) -> tuple[Value, Value, str]: ...
+
+    def get_back_drill_by_depth(
+        self, 
+        from_bottom: bool, 
+        include_fill_material: bool = False
+    ) -> tuple[Value, Value] | tuple[Value, Value, str]:    
         """Get the back drill type by depth.
 
         Parameters
         ----------
         from_bottom : bool
             Whether to get the back drill type from the bottom.
-
+        include_fill_material : bool, optional
+            Input flag to obtain fill material as well as other parameters. If false, the return tuple does not include fill material and is backward compatible with previous versions.
         Returns
         -------
-        tuple of (.Value, .Value)
-            Returns a tuple in this format:
+        tuple of (.Value, .Value, str)
+            Tuple containing:
 
-            **(drill_depth, diameter)**
+            - **drill_depth** : Drilling depth, may not align with layer.
+            - **diameter** : Drilling diameter.
+            - **fill_material** : Fill material name (empty string if no fill),
+              only included when ``include_fill_material`` is True.
 
-            **drill_depth** : Drilling depth, may not align with layer.
-
-            **diameter** : Drilling diameter.
         """
+        
         params = self.__stub.GetBackDrillByDepth(
             PadstackInstance._get_back_drill_message(self, from_bottom)
         )
-        return Value(params.drill_depth), Value(params.diameter)
+        if include_fill_material:
+            fill_material = params.fill_material if hasattr(params, 'fill_material') else ""
+            return (Value(params.drill_depth), 
+            Value(params.diameter),
+            fill_material)
+        else:
+            # Backward compatible: return only 2 values
+            return (Value(params.drill_depth), 
+                Value(params.diameter))
+        
 
     def set_back_drill_by_depth(
-        self, drill_depth: ValueLike, diameter: ValueLike, from_bottom: bool
+        self, drill_depth: ValueLike, diameter: ValueLike, from_bottom: bool, fill_material: str = ""
     ):
         """Set the back drill type by depth.
 
@@ -405,6 +462,8 @@ class PadstackInstance(conn_obj.ConnObj):
             Drilling diameter.
         from_bottom : bool
             Whether to set the back drill type from the bottom.
+        fill_material : str, optional
+            Fill material name. The default is ``""``, which means no fill.
         """
         self.__stub.SetBackDrillByDepth(
             padstack_instance_pb2.PadstackInstSetBackDrillByDepthMessage(
@@ -412,6 +471,7 @@ class PadstackInstance(conn_obj.ConnObj):
                 drill_depth=messages.value_message(drill_depth),
                 diameter=messages.value_message(diameter),
                 from_bottom=from_bottom,
+                fill_material=fill_material,
             )
         )
 

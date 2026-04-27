@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
     from ansys.edb.core.typing import ValueLike
     from ansys.edb.core.database import Database
-    from src.ansys.edb.core.geometry.polygon_data import PolygonData
-    from src.ansys.edb.core.database import ProductIdType
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.database import ProductIdType
 
 from ansys.api.edb.v1 import package_def_pb2_grpc
 

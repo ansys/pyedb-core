@@ -1,130 +1,64 @@
-"""HFSSPI simulation settings."""
-from __future__ import annotations
+"""HFSS simulation settings."""
 
 from enum import Enum
-from typing import List
 
 import ansys.api.edb.v1.hfss_pi_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
 from ansys.edb.core.session import (
+    HFSSPIAdvancedSettingsServiceStub,
     HFSSPIGeneralSettingsServiceStub,
-    HFSSPINetProcessingSettingsServiceStub,
-    HFSSPIPowerGroundNetsServiceStub,
-    HFSSPISignalNetsSettingsServiceStub,
+    HFSSPISolverSettingsServiceStub,
     StubAccessor,
     StubType,
 )
 from ansys.edb.core.simulation_setup.simulation_settings import (
+    AdvancedMeshingSettingsServiceStub,
+    AdvancedSettingsServiceStub,
     SimulationSettings,
     SimulationSettingsBase,
 )
 
 
-class HFSSPISimulationPreference(Enum):
-    """Provides an enum representing HFSSPI simulation preferences."""
-
-    BALANCED = pb.BALANCED
-    ACCURACY = pb.ACCURACY
-
-
 class HFSSPIModelType(Enum):
-    """Provides an enum representing HFSSPI model types."""
+    """Provides an enum representing HFSS adaptive solution types."""
 
-    RDL = pb.RDL
-    PACKAGE = pb.PACKAGE
-    PCB = pb.PCB
-
-
-class SurfaceRoughnessModel(Enum):
-    """Provides an enum representing HFSSPI surface roughness models."""
-
-    NONE = pb.NONE
-    EXPONENTIAL = pb.EXPONENTIAL
-    HAMMERSTAD = pb.HAMMERSTAD
-
-
-class ImprovedLossModel(Enum):
-    """Provides an enum representing HFSSPI improved loss models."""
-
-    LEVEL_1 = pb.LEVEL_1
-    LEVEL_2 = pb.LEVEL_2
-    LEVEL_3 = pb.LEVEL_3
-
-
-class ConductorModeling(Enum):
-    """Provides an enum representing HFSSPI conductor modeling options."""
-
-    MESH_INSIDE = pb.MESH_INSIDE
-    IMPEDANCE_BOUNDARY = pb.IMPEDANCE_BOUNDARY
-
-
-class ErrorTolerance(Enum):
-    """Provides an enum representing HFSSPI error tolerance values."""
-
-    ET_0_0 = pb.ET_0_0
-    ET_0_02 = pb.ET_0_02
-    ET_0_04 = pb.ET_0_04
-    ET_0_06 = pb.ET_0_06
-    ET_0_08 = pb.ET_0_08
-    ET_0_1 = pb.ET_0_1
-    ET_0_2 = pb.ET_0_2
-    ET_0_5 = pb.ET_0_5
-    ET_1_0 = pb.ET_1_0
+    PCB = pb.HFSSPI_PCB
+    PACKAGE = pb.HFSSPI_PACKAGE
+    RDL = pb.HFSSPI_RDL
 
 
 class HFSSPISimulationSettings(SimulationSettings):
     """Represents HFSSPI simulation settings."""
 
     @property
-    def general(self) -> HFSSPIGeneralSettings:
+    def general(self):
         """:class:`.HFSSPIGeneralSettings`: General settings for HFSSPI simulations."""
         return HFSSPIGeneralSettings(self)
 
     @property
-    def net_processing(self) -> HFSSPINetProcessingSettings:
-        """:class:`.HFSSPINetProcessingSettings`: Net processing settings for HFSSPI simulations."""
-        return HFSSPINetProcessingSettings(self)
+    def advanced(self):
+        """:class:`.HFSSPIAdvancedSettings`: Advanced settings for HFSSPI simulations."""
+        return HFSSPIAdvancedSettings(self)
 
     @property
-    def power_ground_nets(self) -> HFSSPIPowerGroundNetsSettings:
-        """:class:`.HFSSPIPowerGroundNetsSettings`: Power/ground nets settings for HFSSPI simulations."""
-        return HFSSPIPowerGroundNetsSettings(self)
-
-    @property
-    def signal_nets(self) -> HFSSPISignalNetsSettings:
-        """:class:`.HFSSPISignalNetsSettings`: Signal nets settings for HFSSPI simulations."""
-        return HFSSPISignalNetsSettings(self)
+    def solver(self):
+        """:class:`.HFSSPISolverSettings`: Solver settings for HFSSPI simulations."""
+        return HFSSPISolverSettings(self)
 
 
 class HFSSPIGeneralSettings(SimulationSettingsBase):
-    """Represents HFSSPI general settings."""
+    """Represents general settings for HFSSPI simulations."""
 
     __stub: HFSSPIGeneralSettingsServiceStub = StubAccessor(StubType.hfss_pi_general_sim_settings)
 
     @property
-    def simulation_preference(self) -> HFSSPISimulationPreference:
-        """:class:`.HFSSPISimulationPreference`: Simulation preference. \
-            Balanced (i.e., use less memory) or Accuracy (i.e., use more memory)."""
-        return HFSSPISimulationPreference(
-            self.__stub.GetPISliderPos(self.msg).hfss_pi_simulation_preference
-        )
-
-    @simulation_preference.setter
-    def simulation_preference(self, simulation_preference: HFSSPISimulationPreference):
-        self.__stub.SetPISliderPos(
-            pb.HFSSPISimulationPreferencePropertyMessage(
-                target=self.msg, hfss_pi_simulation_preference=simulation_preference.value
-            )
-        )
-
-    @property
-    def model_type(self) -> HFSSPIModelType:
-        """:class:`.HFSSPIModelType`: (General Mode Only) Model type."""
+    def model_type(self):
+        """:class:`.HFSSPIModelType`: Model type."""
         return HFSSPIModelType(self.__stub.GetHFSSPIModelType(self.msg).hfss_pi_model_type)
 
     @model_type.setter
-    def model_type(self, hfss_pi_model_type: HFSSPIModelType):
+    def model_type(self, hfss_pi_model_type):
         self.__stub.SetHFSSPIModelType(
             pb.HFSSPIModelTypePropertyMessage(
                 target=self.msg, hfss_pi_model_type=hfss_pi_model_type.value
@@ -132,229 +66,196 @@ class HFSSPIGeneralSettings(SimulationSettingsBase):
         )
 
     @property
-    def min_plane_area_to_mesh(self) -> str:
-        """:obj:`str`: (General Mode Only) The minimum plane area to mesh. \
-            Ignore geometry smaller than this value."""
-        return self.__stub.GetMinPlaneAreaToMesh(self.msg).value
+    def use_auto_mesh_region(self):
+        """:obj:`bool`: Flag indicating if auto mesh regions are used."""
+        return self.__stub.GetUseAutoMeshRegion(self.msg).value
 
-    @min_plane_area_to_mesh.setter
-    def min_plane_area_to_mesh(self, min_plane_area_to_mesh: str):
-        self.__stub.SetMinPlaneAreaToMesh(
-            messages.string_property_message(self, min_plane_area_to_mesh)
+    @use_auto_mesh_region.setter
+    def use_auto_mesh_region(self, use_auto_mesh_region):
+        self.__stub.SetUseAutoMeshRegion(messages.bool_property_message(self, use_auto_mesh_region))
+
+    @property
+    def use_mesh_region(self):
+        """:obj:`bool`: Flag indicating if mesh regions are used."""
+        return self.__stub.GetUseMeshRegion(self.msg).value
+
+    @use_mesh_region.setter
+    def use_mesh_region(self, use_mesh_region):
+        self.__stub.SetUseMeshRegion(messages.bool_property_message(self, use_mesh_region))
+
+    @property
+    def mesh_region_name(self):
+        """:obj:`str`: Name of the mesh region to use."""
+        return self.__stub.GetMeshRegionName(self.msg).value
+
+    @mesh_region_name.setter
+    def mesh_region_name(self, mesh_region_name):
+        self.__stub.SetMeshRegionName(messages.string_property_message(self, mesh_region_name))
+
+
+class HFSSPISolverSettings(SimulationSettingsBase):
+    """Representis solver settings for HFSSPI simulations."""
+
+    __stub: HFSSPISolverSettingsServiceStub = StubAccessor(StubType.hfss_pi_solver_sim_settings)
+
+    @property
+    def enhanced_low_frequency_accuracy(self):
+        """:obj:`bool`: Flag indicating if enhanced low-frequency accuracy is enabled during simulation."""
+        return self.__stub.GetEnhancedLowFrequencyAccuracy(self.msg).value
+
+    @enhanced_low_frequency_accuracy.setter
+    def enhanced_low_frequency_accuracy(self, enhanced_low_frequency_accuracy):
+        self.__stub.SetEnhancedLowFrequencyAccuracy(
+            messages.bool_property_message(self, enhanced_low_frequency_accuracy)
         )
 
     @property
-    def min_void_area_to_mesh(self) -> str:
-        """:obj:`str`: (General Mode Only) The minimum void area to mesh. Ignore voids smaller than this value."""
-        return self.__stub.GetMinVoidAreaToMesh(self.msg).value
+    def via_area_cutoff_circ_elems(self) -> str:
+        """:obj:`str`: Pwr/Gnd vias with an area smaller than this value are simplified during simulation."""
+        return self.__stub.GetViaAreaCutoffCircElems(self.msg).value
 
-    @min_void_area_to_mesh.setter
-    def min_void_area_to_mesh(self, min_void_area_to_mesh: str):
-        self.__stub.SetMinVoidAreaToMesh(
-            messages.string_property_message(self, min_void_area_to_mesh)
+    @via_area_cutoff_circ_elems.setter
+    def via_area_cutoff_circ_elems(self, via_area_cutoff_circ_elems):
+        self.__stub.SetViaAreaCutoffCircElems(
+            messages.string_property_message(self, via_area_cutoff_circ_elems)
         )
 
-    @property
-    def snap_length_threshold(self) -> str:
-        """:obj:`str`: (General Mode Only) The snap length threshold. \
-            Snap vertices separated by less than this value."""
-        return self.__stub.GetSnapLengthThreshold(self.msg).value
 
-    @snap_length_threshold.setter
-    def snap_length_threshold(self, snap_length_threshold: str):
-        self.__stub.SetSnapLengthThreshold(
-            messages.string_property_message(self, snap_length_threshold)
-        )
+class HFSSPIAdvancedSettings(SimulationSettingsBase):
+    """Represents advanced settings for HFSSPI simulations."""
 
-    @property
-    def include_enhanced_bondwire_modeling(self) -> bool:
-        """:obj:`bool`: Flag indicating whether to include enhanced bondwire modeling. This can slow simulation."""
-        return self.__stub.GetIncludeEnhancedBondWireModeling(self.msg).value
-
-    @include_enhanced_bondwire_modeling.setter
-    def include_enhanced_bondwire_modeling(self, include_enhanced_bondwire_modeling: bool):
-        self.__stub.SetIncludeEnhancedBondWireModeling(
-            messages.bool_property_message(self, include_enhanced_bondwire_modeling)
-        )
-
-    @property
-    def surface_roughness_model(self) -> SurfaceRoughnessModel:
-        """:class:`.SurfaceRoughnessModel`: Surface roughness model."""
-        return SurfaceRoughnessModel(
-            self.__stub.GetSurfaceRoughnessModel(self.msg).surface_roughness_model
-        )
-
-    @surface_roughness_model.setter
-    def surface_roughness_model(self, surface_roughness_model: SurfaceRoughnessModel):
-        self.__stub.SetSurfaceRoughnessModel(
-            pb.SurfaceRoughnessModelPropertyMessage(
-                target=self.msg, surface_roughness_model=surface_roughness_model.value
-            )
-        )
-
-    @property
-    def rms_surface_roughness(self) -> str:
-        """:obj:`str`: RMS surface roughness."""
-        return self.__stub.GetRMSSurfaceRoughness(self.msg).value
-
-    @rms_surface_roughness.setter
-    def rms_surface_roughness(self, rms_surface_roughness: str):
-        self.__stub.SetRMSSurfaceRoughness(
-            messages.string_property_message(self, rms_surface_roughness)
-        )
-
-    @property
-    def perform_erc(self) -> bool:
-        """:obj:`bool`: (General Mode Only) Flag indicating whether to \
-            perform error checking while generating the solver input file."""
-        return self.__stub.GetPerformERC(self.msg).value
-
-    @perform_erc.setter
-    def perform_erc(self, perform_erc: bool):
-        self.__stub.SetPerformERC(messages.bool_property_message(self, perform_erc))
-
-
-class HFSSPINetProcessingSettings(SimulationSettingsBase):
-    """Represents HFSSPI net processing settings."""
-
-    __stub: HFSSPINetProcessingSettingsServiceStub = StubAccessor(
-        StubType.hfss_pi_net_processing_sim_settings
+    __hfss_pi_stub: HFSSPIAdvancedSettingsServiceStub = StubAccessor(
+        StubType.hfss_pi_advanced_sim_settings
+    )
+    __advanced_sim_settings_stub: AdvancedSettingsServiceStub = StubAccessor(
+        StubType.advanced_sim_settings
+    )
+    __advanced_mesh_sim_settings_stub: AdvancedMeshingSettingsServiceStub = StubAccessor(
+        StubType.advanced_mesh_sim_settings
     )
 
     @property
-    def auto_select_nets_for_simulation(self) -> bool:
-        """:obj:`bool`: Flag indicating whether to automatically select nets for simulation."""
-        return self.__stub.GetAutoSelectNetsForSimulation(self.msg).value
+    def small_void_area(self):
+        """:obj:`float`: Voids with an area smaller than this value are ignored during simulation."""
+        return self.__advanced_sim_settings_stub.GetSmallVoidArea(self.msg).value
 
-    @auto_select_nets_for_simulation.setter
-    def auto_select_nets_for_simulation(self, auto_select_nets_for_simulation: bool):
-        self.__stub.SetAutoSelectNetsForSimulation(
-            messages.bool_property_message(self, auto_select_nets_for_simulation)
+    @small_void_area.setter
+    def small_void_area(self, small_void_area):
+        self.__advanced_sim_settings_stub.SetSmallVoidArea(
+            messages.double_property_message(self, small_void_area)
         )
 
     @property
-    def ignore_dummy_nets_for_selected_nets(self) -> bool:
-        """:obj:`bool`: Flag indicating whether to ignore dummy nets for selected nets."""
-        return self.__stub.GetIgnoreDummyNetsForSelectedNets(self.msg).value
+    def small_plane_area(self) -> str:
+        """:obj:`str`: Planes with an area smaller than this value are ignored during simulation."""
+        return self.__hfss_pi_stub.GetSmallPlaneArea(self.msg).value
 
-    @ignore_dummy_nets_for_selected_nets.setter
-    def ignore_dummy_nets_for_selected_nets(self, ignore_dummy_nets_for_selected_nets: bool):
-        self.__stub.SetIgnoreDummyNetsForSelectedNets(
-            messages.bool_property_message(self, ignore_dummy_nets_for_selected_nets)
+    @small_plane_area.setter
+    def small_plane_area(self, small_plane_area: str):
+        self.__hfss_pi_stub.SetSmallPlaneArea(
+            messages.string_property_message(self, small_plane_area)
         )
 
     @property
-    def include_nets(self) -> List[str]:
-        """:obj:`list` of :obj:`str`: Nets to include in HFSSPI simulation."""
-        return self.__stub.GetIncludeNets(self.msg).strings
+    def remove_floating_geometry(self):
+        """:obj:`bool`: Flag indicating if a geometry not connected to any other geometry is removed."""
+        return self.__advanced_sim_settings_stub.GetRemoveFloatingGeometry(self.msg).value
 
-    @include_nets.setter
-    def include_nets(self, value: List[str]):
-        self.__stub.SetIncludeNets(messages.strings_property_message(self, value))
-
-
-class HFSSPIPowerGroundNetsSettings(SimulationSettingsBase):
-    """Represents HFSSPI power/ground nets settings."""
-
-    __stub: HFSSPIPowerGroundNetsServiceStub = StubAccessor(
-        StubType.hfss_pi_power_ground_sim_settings
-    )
-
-    @property
-    def improved_loss_model(self):
-        """:class:`.ImprovedLossModel`: Improved loss model."""
-        return ImprovedLossModel(self.__stub.GetImprovedLossModel(self.msg).improved_loss_model)
-
-    @improved_loss_model.setter
-    def improved_loss_model(self, improved_loss_model: ImprovedLossModel):
-        self.__stub.SetImprovedLossModel(
-            pb.ImprovedLossModelPropertyMessage(
-                target=self.msg, improved_loss_model=improved_loss_model.value
-            )
+    @remove_floating_geometry.setter
+    def remove_floating_geometry(self, remove_floating_geometry):
+        self.__advanced_sim_settings_stub.SetRemoveFloatingGeometry(
+            messages.bool_property_message(self, remove_floating_geometry)
         )
 
     @property
-    def auto_detect_ignore_small_holes_min_diameter(self) -> bool:
-        """:obj:`bool`: Flag indicating whether to automatically detect a diameter \
-            that holes smaller than the diameter will be ignored."""
-        return self.__stub.GetAutoDetectIgnoreSmallHolesMinDiameter(self.msg).value
+    def zero_metal_layer_thickness(self) -> str:
+        """:obj:`str`: Pwr/Gnd layers with a thickness smaller than this value are simplified during simulation."""
+        return self.__hfss_pi_stub.GetZeroMetalLayerThickness(self.msg).value
 
-    @auto_detect_ignore_small_holes_min_diameter.setter
-    def auto_detect_ignore_small_holes_min_diameter(
-        self, auto_detect_ignore_small_holes_min_diameter: bool
-    ):
-        self.__stub.SetAutoDetectIgnoreSmallHolesMinDiameter(
-            messages.bool_property_message(self, auto_detect_ignore_small_holes_min_diameter)
+    @zero_metal_layer_thickness.setter
+    def zero_metal_layer_thickness(self, zero_metal_layer_thickness):
+        self.__hfss_pi_stub.SetZeroMetalLayerThickness(
+            messages.string_property_message(self, zero_metal_layer_thickness)
         )
 
     @property
-    def ignore_small_holes_min_diameter(self) -> str:
-        """:obj:`str`: Diameter that holes smaller than the diameter will be ignored."""
-        return self.__stub.GetIgnoreSmallHolesMinDiameter(self.msg).value
+    def auto_model_resolution(self):
+        """:obj:`bool`: Flag indicating if model resolution is automatically calculated."""
+        return self.__hfss_pi_stub.GetICModeAutoResolution(self.msg).value
 
-    @ignore_small_holes_min_diameter.setter
-    def ignore_small_holes_min_diameter(self, ignore_small_holes_min_diameter: str):
-        self.__stub.SetIgnoreSmallHolesMinDiameter(
-            messages.string_property_message(self, ignore_small_holes_min_diameter)
-        )
-
-
-class HFSSPISignalNetsSettings(SimulationSettingsBase):
-    """Represents HFSSPI signal nets settings."""
-
-    __stub: HFSSPISignalNetsSettingsServiceStub = StubAccessor(
-        StubType.hfss_pi_signal_nets_sim_settings
-    )
-
-    @property
-    def error_tolerance(self) -> ErrorTolerance:
-        """:class:`.ErrorTolerance`: Error tolerance."""
-        return ErrorTolerance(self.__stub.GetSignalNetsErrorTolerance(self.msg).error_tolerance)
-
-    @error_tolerance.setter
-    def error_tolerance(self, error_tolerance: ErrorTolerance):
-        self.__stub.SetSignalNetsErrorTolerance(
-            pb.ErrorTolerancePropertyMessage(target=self.msg, error_tolerance=error_tolerance.value)
+    @auto_model_resolution.setter
+    def auto_model_resolution(self, auto_model_resolution):
+        self.__hfss_pi_stub.SetICModeAutoResolution(
+            messages.bool_property_message(self, auto_model_resolution)
         )
 
     @property
-    def conductor_modeling(self) -> ConductorModeling:
-        """:class:`.ConductorModeling`: Conductor modeling. \
-            When using surface roughness, users must use IMPEDANCE_BOUNDARY."""
-        return ConductorModeling(
-            self.__stub.GetSignalNetsConductorModeling(self.msg).conductor_modeling
-        )
+    def model_resolution_length(self):
+        """:obj:`str`: Model resolution to use when manually setting the model resolution."""
+        return self.__hfss_pi_stub.GetICModeLength(self.msg).value
 
-    @conductor_modeling.setter
-    def conductor_modeling(self, conductor_modeling: ConductorModeling):
-        self.__stub.SetSignalNetsConductorModeling(
-            pb.ConductorModelingPropertyMessage(
-                target=self.msg, conductor_modeling=conductor_modeling.value
-            )
+    @model_resolution_length.setter
+    def model_resolution_length(self, model_resolution_length):
+        self.__hfss_pi_stub.SetICModeLength(
+            messages.string_property_message(self, model_resolution_length)
         )
 
     @property
-    def include_improved_loss_handling(self) -> bool:
-        """:obj:`bool`: Flag indicating whether to include improved metal loss handling. \
-            Enabling this option can significantly slow simulation time."""
-        return self.__stub.GetSignalNetsIncludeImprovedLossHandling(self.msg).value
+    def max_num_arc_points(self):
+        """:obj:`str`: Maximum number of points used to approximate arcs."""
+        return self.__advanced_mesh_sim_settings_stub.GetMaxNumArcPoints(self.msg).value
 
-    @include_improved_loss_handling.setter
-    def include_improved_loss_handling(self, include_improved_loss_handling: bool):
-        self.__stub.SetSignalNetsIncludeImprovedLossHandling(
-            messages.bool_property_message(self, include_improved_loss_handling)
+    @max_num_arc_points.setter
+    def max_num_arc_points(self, max_num_arc_points):
+        self.__advanced_mesh_sim_settings_stub.SetMaxNumArcPoints(
+            messages.uint64_property_message(self, max_num_arc_points)
         )
 
     @property
-    def include_improved_dielectric_fill_refinement(self) -> bool:
-        """:obj:`bool`: Flag indicating whether to include improved dielectric fill refinement. \
-            Activating Improved Dielectric Fill Refinement in Metal Layers can significantly slow simulation time."""
-        return self.__stub.GetSignalNetsIncludeImprovedDielectricFillRefinement(self.msg).value
+    def use_arc_chord_error_approx(self):
+        """:obj:`bool`: Flag indicating if arc chord error approximation is used."""
+        return self.__advanced_mesh_sim_settings_stub.GetUseArcChordErrorApprox(self.msg).value
 
-    @include_improved_dielectric_fill_refinement.setter
-    def include_improved_dielectric_fill_refinement(
-        self, include_improved_dielectric_fill_refinement: bool
-    ):
-        self.__stub.SetSignalNetsIncludeImprovedDielectricFillRefinement(
-            messages.bool_property_message(self, include_improved_dielectric_fill_refinement)
+    @use_arc_chord_error_approx.setter
+    def use_arc_chord_error_approx(self, use_arc_chord_error_approx):
+        self.__advanced_mesh_sim_settings_stub.SetUseArcChordErrorApprox(
+            messages.bool_property_message(self, use_arc_chord_error_approx)
         )
+
+    @property
+    def arc_to_chord_error(self):
+        """:obj:`str`: Maximum allowable arc to chord error."""
+        return self.__advanced_mesh_sim_settings_stub.GetArcChordErrorApprox(self.msg).value
+
+    @arc_to_chord_error.setter
+    def arc_to_chord_error(self, arc_to_chord_error):
+        self.__advanced_mesh_sim_settings_stub.SetArcChordErrorApprox(
+            messages.string_property_message(self, arc_to_chord_error)
+        )
+
+    @property
+    def num_via_sides(self):
+        """:obj:`int`: Number of sides a via is considered to have."""
+        return self.__stub.GetNumViaSides(self.msg).value
+
+    @num_via_sides.setter
+    def num_via_sides(self, num_via_sides):
+        self.__stub.SetNumViaSides(messages.uint64_property_message(self, num_via_sides))
+
+    @property
+    def mesh_for_via_plating(self):
+        """:obj:`bool`: Flag indicating if meshing for via plating is enabled."""
+        return self.__stub.GetMeshForViaPlating(self.msg).value
+
+    @mesh_for_via_plating.setter
+    def mesh_for_via_plating(self, mesh_for_via_plating):
+        self.__stub.SetMeshForViaPlating(messages.bool_property_message(self, mesh_for_via_plating))
+
+    @property
+    def via_material(self):
+        """:obj:`str`: Default via material."""
+        return self.__stub.GetViaMaterial(self.msg).value
+
+    @via_material.setter
+    def via_material(self, via_material):
+        self.__stub.SetViaMaterial(messages.string_property_message(self, via_material))

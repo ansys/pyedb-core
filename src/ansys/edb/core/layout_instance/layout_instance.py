@@ -21,7 +21,7 @@ from ansys.edb.core.inner.messages import (
 )
 from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.layout_instance import layout_obj_instance
-from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType, is_in_memory
 
 
 class LayoutInstance(ObjBase):
@@ -86,15 +86,23 @@ class LayoutInstance(ObjBase):
             )
             return {spatial_filter_field: spatial_filter_msg}
 
-        # Create queries
-        lyt_inst_net_filter_lyr_filter_params = {
-            "layout_inst": self.msg,
-            "layer_filter": to_msg_filter_list(layer_filter, layer_ref_message),
-            "net_filter": to_msg_filter_list(net_filter, net_ref_message),
-        }
+        def get_spatial_filter_msg_params(_spatial_filter):
+            if isinstance(_spatial_filter, PointData):
+                return "point_filter", point_message(_spatial_filter)
+            elif isinstance(_spatial_filter, PolygonData):
+                return "region_filter", polygon_data_message(_spatial_filter)
+            else:
+                raise ValueError(
+                    f"""Spatial filter of type {_spatial_filter.__class__.__name__} is not supported. """
+                    """Only PointData and PolygonData are supported."""
+                )
 
-        spatial_filters = [] if spatial_filter is None else utils.ensure_is_list(spatial_filter)
-
+        def spatial_filter_to_msg(_spatial_filter):
+            spatial_filter_msg_params = get_spatial_filter_msg_params(_spatial_filter)
+            return layout_instance_pb2.LayoutObjInstancesQueryMessage(
+                **{spatial_filter_msg_params[0]: spatial_filter_msg_params[1]}
+            )
+    
         def process_hits(_spatial_filter, hits_iter):
             full_hits = []
             partial_hits = []
@@ -110,8 +118,40 @@ class LayoutInstance(ObjBase):
                 (full_hits, partial_hits) if isinstance(_spatial_filter, PolygonData) else full_hits
             )
 
+        # Create queries
+        lyt_inst_net_filter_lyr_filter_params = {
+            "layout_inst": self.msg,
+            "layer_filter": to_msg_filter_list(layer_filter, layer_ref_message),
+            "net_filter": to_msg_filter_list(net_filter, net_ref_message),
+        }
+        requests = [
+            layout_instance_pb2.LayoutObjInstancesQueryMessage(
+                **lyt_inst_net_filter_lyr_filter_params
+            )
+        ]
+        if spatial_filter is not None:
+            for sf in utils.ensure_is_list(spatial_filter):
+                requests.append(spatial_filter_to_msg(sf))
+
+        # Run queries and gather hits
         all_hits = []
-        if system() == "Windows":
+        if is_in_memory():
+            queries_msg = layout_instance_pb2.LayoutObjInstancesQueriesMessage(
+                queries=requests,
+            )
+            for hit in self.__stub.BatchQueryLayoutObjInstances(queries_msg).query_results:
+                all_hits.append(hit)
+
+            # Process hits and return results
+            all_hits_iter = iter(all_hits)
+
+            if not isinstance(spatial_filter, list):
+                return process_hits(spatial_filter, all_hits_iter)
+
+            # spatial_filter is a list
+            return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
+        elif system() == "Windows":
+            spatial_filters = [] if spatial_filter is None else utils.ensure_is_list(spatial_filter)
             requests = [
                 layout_instance_pb2.LayoutObjInstancesQueryMessage(
                     **lyt_inst_net_filter_lyr_filter_params

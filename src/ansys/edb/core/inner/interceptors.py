@@ -14,6 +14,7 @@ from grpc import (
 
 from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode, InvalidArgumentException
 from ansys.edb.core.inner.rpc_info_utils import can_cache
+from ansys.edb.core.inner.rpc_response_map import get_rpc_response_type
 from ansys.edb.core.utility.io_manager import ServerNotification, get_io_manager
 
 
@@ -215,3 +216,43 @@ class IOInterceptor(Interceptor):
             self._get_client_call_details_with_caching_options(client_call_details),
             request_iterator,
         )
+
+
+class _SharedMemoryResult:
+    def __init__(self, result):
+        self._result = result
+
+    def result(self):
+        return self._result
+
+
+class SharedMemoryInterceptor(Interceptor):
+    """Routes RPC calls through a shared-memory transport to EDB_RPC_Server."""
+
+    def __init__(self, logger, transport):
+        """Initialize a shared-memory interceptor.
+
+        Parameters
+        ----------
+        logger : logging.Logger
+        transport : SharedMemoryTransport
+            An already-connected shared-memory transport instance.
+        """
+        super().__init__(logger)
+        self._transport = transport
+
+    def _continue_unary_unary(self, continuation, client_call_details, request):
+        method_tokens = client_call_details.method.strip("/").split("/")
+        response_type = get_rpc_response_type(method_tokens[0], method_tokens[1])
+        success, serialized_response, error_message = self._transport.execute_rpc(
+            method_tokens[0], method_tokens[1], request.SerializeToString()
+        )
+        if success:
+            response = response_type()
+            response.ParseFromString(serialized_response)
+            return _SharedMemoryResult(response)
+        else:
+            raise RuntimeError(f"RPC execution failed: {error_message}")
+
+    def _post_process(self, response):
+        pass

@@ -100,6 +100,7 @@ class LayoutInstance(ObjBase):
             partial_hits = []
             for hit in hits_iter:
                 if hit.is_end_of_query_results_group:
+                    LOGGER.debug(f"Hit at end of query results group: {hit}")
                     break
                 lyt_obj_inst = layout_obj_instance.LayoutObjInstance(hit.edb_obj)
                 if hit.is_partial:

@@ -581,3 +581,7 @@ class Layout(ObjBase, variable_server.VariableServer):
                 layout=self.msg, use_net_mapping=use_net_mapping, delete_dummy_net=delete_dummy_net
             )
         )
+
+    def remove_unused_conducting_layers(self):
+        """Remove conducting layers that do not contain any primitives."""
+        self.__stub.RemoveUnusedConductingLayers(self.msg)

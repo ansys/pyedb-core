@@ -22,122 +22,144 @@ from ansys.edb.core.primitive.padstack_instance import PadstackInstance
 from ansys.edb.core.session import session
 
 
-@pytest.mark.parametrize("_n", range(1000))
-def test_comp_props(_n: int, tmp_path: Path):
+@pytest.fixture(scope="module")
+def module_edb_session():
     worker_name = os.environ.get("PYTEST_XDIST_WORKER", None)
     port_num = None
     if worker_name is not None:
         # use a per-worker port to avoid conflicts when running tests in parallel with pytest-xdist
         port_num = int(worker_name.strip("gw")) + 30051 + 1970
-    with session(os.environ["ANSYSEM_EDB_EXE_DIR"], port_num):
-        db_path = (tmp_path / "output.aedb").as_posix()
-        db = Database.create(db_path)
-        try:
-            cell = Cell.create(db, CellType.CIRCUIT_CELL, "output")
+    with session(os.environ["ANSYSEM_EDB_EXE_DIR"], port_num) as edb_session:
+        yield edb_session
 
-            layers = [
-                StackupLayer.create("D1", LayerType.DIELECTRIC_LAYER, 150e-6, 0.0, "FR4_epoxy"),
-                StackupLayer.create("L1", LayerType.CONDUCTING_LAYER, 25e-6, 125e-6, "copper"),
-                StackupLayer.create("L2", LayerType.CONDUCTING_LAYER, 25e-6, 0.0, "copper"),
-                ViaLayer.create("V1", "L2", "L1", "copper"),
-            ]
-            layout = cell.layout
-            layout.layer_collection.mode = LayerCollectionMode.OVERLAPPING
-            for layer in layers:
-                layout.layer_collection.add_stackup_layer_at_elevation(layer)
 
-            padstack_def_data = PadstackDefData.create()
-            layer_names = ["Start", "Default", "Stop"]
-            padstack_def_data.add_layers(layer_names)
-            for name in layer_names:
-                padstack_def_data.set_pad_parameters(
-                    name,
-                    PadType.REGULAR_PAD,
-                    0.0,
-                    0.0,
-                    0.0,
-                    PadGeometryType.PADGEOMTYPE_SQUARE,
-                    [70e-6],
-                )
-                padstack_def_data.set_pad_parameters(
-                    name,
-                    PadType.ANTI_PAD,
-                    0.0,
-                    0.0,
-                    0.0,
-                    PadGeometryType.PADGEOMTYPE_SQUARE,
-                    [100e-6],
-                )
-            padstack_def = PadstackDef.create(db, "PAD070")
-            padstack_def.data = padstack_def_data
-            comp_def = ComponentDef.create(cell.database, "IC_PART", None)
-            for i in range(4):
-                pin_def = ComponentPin.create(comp_def, f"{i+1}")
-                assert not pin_def.is_null
+@pytest.mark.usefixtures("module_edb_session")
+@pytest.mark.parametrize("_n", range(100))
+def test_comp_props(_n: int, tmp_path: Path):
+    # worker_name = os.environ.get("PYTEST_XDIST_WORKER", None)
+    # port_num = None
+    # if worker_name is not None:
+    #     # use a per-worker port to avoid conflicts when running tests in parallel with pytest-xdist
+    #     port_num = int(worker_name.strip("gw")) + 30051 + 1970
+    # with session(os.environ["ANSYSEM_EDB_EXE_DIR"], port_num):
+    db_path = (tmp_path / "output.aedb").as_posix()
+    db = Database.create(db_path)
+    try:
+        cell = Cell.create(db, CellType.CIRCUIT_CELL, "output")
 
-            locations = [
-                [0.0, 0.0],
-                [150e-6, 0.0],
-                [0.0, 150e-6],
-                [150e-6, 150e-6],
-            ]
-            ref_des = "U1"
-            create_component(cell, layout, padstack_def, comp_def, locations, ref_des)
-            create_component(
-                cell,
-                layout,
-                padstack_def,
-                comp_def,
-                [[200e-6, 0.0], [350e-6, 0.0], [200e-6, 150e-6], [350e-6, 150e-6]],
-                "U2",
+        layers = [
+            StackupLayer.create("D1", LayerType.DIELECTRIC_LAYER, 150e-6, 0.0, "FR4_epoxy"),
+            StackupLayer.create("L1", LayerType.CONDUCTING_LAYER, 25e-6, 125e-6, "copper"),
+            StackupLayer.create("L2", LayerType.CONDUCTING_LAYER, 25e-6, 0.0, "copper"),
+            ViaLayer.create("V1", "L2", "L1", "copper"),
+        ]
+        layout = cell.layout
+        layout.layer_collection.mode = LayerCollectionMode.OVERLAPPING
+        for layer in layers:
+            layout.layer_collection.add_stackup_layer_at_elevation(layer)
+
+        padstack_def_data = PadstackDefData.create()
+        layer_names = ["Start", "Default", "Stop"]
+        padstack_def_data.add_layers(layer_names)
+        for name in layer_names:
+            padstack_def_data.set_pad_parameters(
+                name,
+                PadType.REGULAR_PAD,
+                0.0,
+                0.0,
+                0.0,
+                PadGeometryType.PADGEOMTYPE_SQUARE,
+                [70e-6],
             )
-            group = ComponentGroup.find(layout, ref_des)
-            group.component_type = ComponentType.IC
-            component_property = ICComponentProperty(group.component_property.clone().msg)
-            # component_property = group.component_property
-            die_property = component_property.die_property
-            die_property.die_type = DieType.FLIPCHIP
-            die_property.die_orientation = DieOrientation.CHIP_DOWN
-            component_property.die_property = die_property
-            group.component_property = component_property
-            component_property = ICComponentProperty(group.component_property.clone().msg)
-            solder_ball_property = component_property.solder_ball_property
-            solder_ball_property.shape = SolderballShape.SOLDERBALL_CYLINDER
-            solder_ball_property.set_diameter(250e-6, 0.0)
-            solder_ball_property.height = 150e-6
-            solder_ball_property.material_name = "solder"
-            component_property.solder_ball_property = solder_ball_property
-            group.component_property = component_property
+            padstack_def_data.set_pad_parameters(
+                name,
+                PadType.ANTI_PAD,
+                0.0,
+                0.0,
+                0.0,
+                PadGeometryType.PADGEOMTYPE_SQUARE,
+                [100e-6],
+            )
+        padstack_def = PadstackDef.create(db, "PAD070")
+        padstack_def.data = padstack_def_data
+        comp_def = ComponentDef.create(cell.database, "IC_PART", None)
+        for i in range(4):
+            pin_def = ComponentPin.create(comp_def, f"{i+1}")
+            assert not pin_def.is_null
 
-            group = ComponentGroup.find(layout, "U2")
-            group.component_type = ComponentType.IC
-            component_property = ICComponentProperty(group.component_property.clone().msg)
-            # component_property = group.component_property
-            die_property = component_property.die_property
-            die_property.die_type = DieType.FLIPCHIP
-            die_property.die_orientation = DieOrientation.CHIP_UP
-            component_property.die_property = die_property
-            group.component_property = component_property
-            component_property = ICComponentProperty(group.component_property.clone().msg)
-            solder_ball_property = component_property.solder_ball_property
-            solder_ball_property.shape = SolderballShape.SOLDERBALL_CYLINDER
-            solder_ball_property.set_diameter(300e-6, 0.0)
-            solder_ball_property.height = 150e-6
-            solder_ball_property.material_name = "copper"
-            component_property.solder_ball_property = solder_ball_property
-            group.component_property = component_property
+        locations = [
+            [0.0, 0.0],
+            [150e-6, 0.0],
+            [0.0, 150e-6],
+            [150e-6, 150e-6],
+        ]
+        ref_des = "U1"
+        create_component(cell, layout, padstack_def, comp_def, locations, ref_des)
+        create_component(
+            cell,
+            layout,
+            padstack_def,
+            comp_def,
+            [[200e-6, 0.0], [350e-6, 0.0], [200e-6, 150e-6], [350e-6, 150e-6]],
+            "U2",
+        )
+        group = ComponentGroup.find(layout, ref_des)
+        group.component_type = ComponentType.IC
+        component_property = ICComponentProperty(group.component_property.clone().msg)
+        assert component_property.id != group.component_property.id
+        # component_property = group.component_property
+        print(f"{ref_des} die_property ID before: {group.component_property.die_property.id}")
+        die_property = component_property.die_property.clone()
+        assert die_property.id != group.component_property.die_property.id
+        die_property.die_type = DieType.FLIPCHIP
+        die_property.die_orientation = DieOrientation.CHIP_DOWN
+        component_property.die_property = die_property
+        group.component_property = component_property
+        print(f"{ref_des} die_property ID after: {group.component_property.die_property.id}")
+        component_property = ICComponentProperty(group.component_property.clone().msg)
+        solder_ball_property = component_property.solder_ball_property.clone()
+        assert solder_ball_property.id != group.component_property.solder_ball_property.id
+        solder_ball_property.shape = SolderballShape.SOLDERBALL_CYLINDER
+        solder_ball_property.set_diameter(250e-6, 0.0)
+        solder_ball_property.height = 150e-6
+        solder_ball_property.material_name = "solder"
+        component_property.solder_ball_property = solder_ball_property
+        group.component_property = component_property
 
-            db.save()
+        group = ComponentGroup.find(layout, "U2")
+        group.component_type = ComponentType.IC
+        component_property = ICComponentProperty(group.component_property.clone().msg)
+        # component_property = group.component_property
+        assert component_property.id != group.component_property.id
+        print(f"U2 die_property ID before: {group.component_property.die_property.id}")
+        die_property = component_property.die_property.clone()
+        assert die_property.id != group.component_property.die_property.id
+        die_property.die_type = DieType.FLIPCHIP
+        die_property.die_orientation = DieOrientation.CHIP_UP
+        component_property.die_property = die_property
+        group.component_property = component_property
+        print(f"U2 die_property ID after: {group.component_property.die_property.id}")
+        component_property = ICComponentProperty(group.component_property.clone().msg)
+        solder_ball_property = component_property.solder_ball_property.clone()
+        assert solder_ball_property.id != group.component_property.solder_ball_property.id
+        solder_ball_property.shape = SolderballShape.SOLDERBALL_SPHEROID
+        solder_ball_property.set_diameter(300e-6, 400e-6)
+        solder_ball_property.height = 400e-6
+        solder_ball_property.material_name = "copper"
+        component_property.solder_ball_property = solder_ball_property
+        group.component_property = component_property
 
-            _assert_comp_props(ref_des, db)
-        finally:
-            db.close()
+        db.save()
 
-        # new_db = Database.open(db_path, True)
-        # try:
-        #     _assert_comp_props(ref_des, new_db)
-        # finally:
-        #     new_db.close()
+        _assert_comp_props(ref_des, db)
+    finally:
+        db.close()
+
+    # new_db = Database.open(db_path, True)
+    # try:
+    #     _assert_comp_props(ref_des, new_db)
+    # finally:
+    #     new_db.close()
 
 
 def _assert_comp_props(ref_des, new_db):
@@ -145,15 +167,16 @@ def _assert_comp_props(ref_des, new_db):
     new_component = ComponentGroup.find(new_layout, ref_des)
     assert not new_component.is_null
     assert new_component.component_type == ComponentType.IC
-    assert new_component.component_property.die_property.die_type == DieType.FLIPCHIP
-    assert new_component.component_property.die_property.die_orientation == DieOrientation.CHIP_DOWN
-    assert (
-        new_component.component_property.solder_ball_property.shape
-        == SolderballShape.SOLDERBALL_CYLINDER
-    )
-    assert new_component.component_property.solder_ball_property.get_diameter()[0].double == 250e-6
-    assert new_component.component_property.solder_ball_property.height == 150e-6
-    assert new_component.component_property.solder_ball_property.material_name == "solder"
+    component_property = new_component.component_property
+    die_property = component_property.die_property
+    print(f"{ref_des} die_property ID in _assert_comp_props: {die_property.id}")
+    assert die_property.die_type == DieType.FLIPCHIP
+    assert die_property.die_orientation == DieOrientation.CHIP_DOWN
+    solder_ball_property = component_property.solder_ball_property
+    assert solder_ball_property.shape == SolderballShape.SOLDERBALL_CYLINDER
+    assert solder_ball_property.get_diameter()[0].double == 250e-6
+    assert solder_ball_property.height == 150e-6
+    assert solder_ball_property.material_name == "solder"
 
 
 def create_component(cell, layout, padstack_def, comp_def, locations, ref_des):

@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. automethod:: Structure3D.delete

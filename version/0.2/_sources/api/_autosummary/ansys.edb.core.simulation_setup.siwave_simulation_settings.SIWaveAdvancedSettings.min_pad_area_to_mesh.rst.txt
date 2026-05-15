@@ -1,0 +1,6 @@
+min\_pad\_area\_to\_mesh
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.min_pad_area_to_mesh

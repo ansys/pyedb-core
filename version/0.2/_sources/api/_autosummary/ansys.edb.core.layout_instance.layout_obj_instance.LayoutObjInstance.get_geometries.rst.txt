@@ -1,0 +1,6 @@
+get\_geometries
+===============
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_obj_instance
+
+.. automethod:: LayoutObjInstance.get_geometries

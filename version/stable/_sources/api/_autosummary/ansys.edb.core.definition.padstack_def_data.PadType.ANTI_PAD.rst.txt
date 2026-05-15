@@ -1,0 +1,6 @@
+ANTI\_PAD
+=========
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadType.ANTI_PAD

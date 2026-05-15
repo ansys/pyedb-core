@@ -1,0 +1,6 @@
+move
+====
+
+.. currentmodule:: ansys.edb.core.geometry.point_data
+
+.. automethod:: PointData.move

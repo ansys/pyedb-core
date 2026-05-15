@@ -1,0 +1,6 @@
+get\_product\_property\_ids
+===========================
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. automethod:: TerminalInstance.get_product_property_ids

@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. automethod:: BoardBendDef.delete

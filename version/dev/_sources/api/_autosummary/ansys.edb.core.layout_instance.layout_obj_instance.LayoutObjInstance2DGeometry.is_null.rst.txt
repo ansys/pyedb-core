@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_obj_instance
+
+.. autoproperty:: LayoutObjInstance2DGeometry.is_null

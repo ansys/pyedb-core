@@ -1,0 +1,39 @@
+﻿SParameterModel
+===============
+
+.. currentmodule:: ansys.edb.core.hierarchy.sparameter_model
+
+.. autoclass:: SParameterModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SParameterModel.clone
+      
+      
+      SParameterModel.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SParameterModel.component_model
+      SParameterModel.id
+      SParameterModel.is_null
+      SParameterModel.msg
+      SParameterModel.reference_net
+   
+   

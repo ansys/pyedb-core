@@ -1,0 +1,6 @@
+solve\_independent\_preference
+==============================
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. autoproperty:: ComponentGroup.solve_independent_preference

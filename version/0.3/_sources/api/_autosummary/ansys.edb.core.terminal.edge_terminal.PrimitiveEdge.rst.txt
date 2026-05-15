@@ -1,0 +1,40 @@
+﻿PrimitiveEdge
+=============
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoclass:: PrimitiveEdge
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PrimitiveEdge.cast
+      
+      
+      PrimitiveEdge.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PrimitiveEdge.id
+      PrimitiveEdge.is_null
+      PrimitiveEdge.msg
+      PrimitiveEdge.point
+      PrimitiveEdge.primitive
+      PrimitiveEdge.type
+   
+   

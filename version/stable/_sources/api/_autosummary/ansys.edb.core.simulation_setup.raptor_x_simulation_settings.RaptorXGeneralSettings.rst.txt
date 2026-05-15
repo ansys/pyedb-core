@@ -1,0 +1,35 @@
+﻿RaptorXGeneralSettings
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.raptor_x_simulation_settings
+
+.. autoclass:: RaptorXGeneralSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RaptorXGeneralSettings.global_temperature
+      RaptorXGeneralSettings.max_frequency
+      RaptorXGeneralSettings.msg
+      RaptorXGeneralSettings.netlist_export_spectre
+      RaptorXGeneralSettings.save_netlist
+      RaptorXGeneralSettings.save_rfm
+      RaptorXGeneralSettings.use_gold_em_solver
+   
+   

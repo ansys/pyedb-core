@@ -1,0 +1,34 @@
+﻿AdvancedMeshingSettings
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoclass:: AdvancedMeshingSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      AdvancedMeshingSettings.arc_step_size
+      AdvancedMeshingSettings.arc_to_chord_error
+      AdvancedMeshingSettings.circle_start_azimuth
+      AdvancedMeshingSettings.max_num_arc_points
+      AdvancedMeshingSettings.msg
+      AdvancedMeshingSettings.use_arc_chord_error_approx
+   
+   

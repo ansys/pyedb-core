@@ -1,0 +1,6 @@
+solve\_independent\_preference
+==============================
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. autoproperty:: ViaGroup.solve_independent_preference

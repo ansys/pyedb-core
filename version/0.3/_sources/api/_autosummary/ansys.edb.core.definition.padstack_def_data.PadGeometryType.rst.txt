@@ -1,0 +1,34 @@
+﻿PadGeometryType
+===============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoclass:: PadGeometryType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PadGeometryType.PADGEOMTYPE_NO_GEOMETRY
+      PadGeometryType.PADGEOMTYPE_CIRCLE
+      PadGeometryType.PADGEOMTYPE_SQUARE
+      PadGeometryType.PADGEOMTYPE_RECTANGLE
+      PadGeometryType.PADGEOMTYPE_OVAL
+      PadGeometryType.PADGEOMTYPE_BULLET
+      PadGeometryType.PADGEOMTYPE_NSIDED_POLYGON
+      PadGeometryType.PADGEOMTYPE_POLYGON
+      PadGeometryType.PADGEOMTYPE_ROUND45
+      PadGeometryType.PADGEOMTYPE_ROUND90
+      PadGeometryType.PADGEOMTYPE_SQUARE45
+      PadGeometryType.PADGEOMTYPE_SQUARE90
+      PadGeometryType.PADGEOMTYPE_INVALID_GEOMETRY
+   
+   

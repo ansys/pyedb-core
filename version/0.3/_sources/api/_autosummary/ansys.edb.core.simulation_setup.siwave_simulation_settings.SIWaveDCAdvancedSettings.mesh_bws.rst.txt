@@ -1,0 +1,6 @@
+mesh\_bws
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCAdvancedSettings.mesh_bws

@@ -1,0 +1,6 @@
+include\_split\_plane\_coupling
+===============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.include_split_plane_coupling

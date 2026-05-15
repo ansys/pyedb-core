@@ -1,0 +1,6 @@
+obj\_type
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. autoproperty:: InstArray.obj_type

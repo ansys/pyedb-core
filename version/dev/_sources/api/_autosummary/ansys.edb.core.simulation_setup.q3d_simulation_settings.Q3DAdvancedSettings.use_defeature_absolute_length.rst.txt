@@ -1,0 +1,6 @@
+use\_defeature\_absolute\_length
+================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedSettings.use_defeature_absolute_length

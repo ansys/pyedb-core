@@ -1,0 +1,32 @@
+﻿SIWavePSIPowerGroundNetsSettings
+================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoclass:: SIWavePSIPowerGroundNetsSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSIPowerGroundNetsSettings.auto_detect_ignore_small_holes_min_diameter
+      SIWavePSIPowerGroundNetsSettings.ignore_small_holes_min_diameter
+      SIWavePSIPowerGroundNetsSettings.improved_loss_model
+      SIWavePSIPowerGroundNetsSettings.msg
+   
+   

@@ -1,0 +1,6 @@
+set\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. automethod:: Bondwire.set_product_property

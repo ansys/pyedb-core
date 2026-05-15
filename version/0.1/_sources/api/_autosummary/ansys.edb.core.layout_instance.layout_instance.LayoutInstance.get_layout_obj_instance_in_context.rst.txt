@@ -1,0 +1,6 @@
+get\_layout\_obj\_instance\_in\_context
+=======================================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance
+
+.. automethod:: LayoutInstance.get_layout_obj_instance_in_context

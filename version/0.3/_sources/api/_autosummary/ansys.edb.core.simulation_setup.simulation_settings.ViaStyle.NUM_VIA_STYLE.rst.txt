@@ -1,0 +1,6 @@
+NUM\_VIA\_STYLE
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoattribute:: ViaStyle.NUM_VIA_STYLE

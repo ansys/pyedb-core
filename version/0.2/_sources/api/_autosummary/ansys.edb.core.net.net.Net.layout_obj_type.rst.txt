@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.net.net
+
+.. autoattribute:: Net.layout_obj_type

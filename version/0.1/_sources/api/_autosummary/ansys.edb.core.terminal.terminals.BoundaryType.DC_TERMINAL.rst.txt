@@ -1,0 +1,6 @@
+DC\_TERMINAL
+============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoattribute:: BoundaryType.DC_TERMINAL

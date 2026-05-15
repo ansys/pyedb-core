@@ -1,0 +1,6 @@
+get\_back\_drill\_by\_layer
+===========================
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. automethod:: PadstackInstance.get_back_drill_by_layer

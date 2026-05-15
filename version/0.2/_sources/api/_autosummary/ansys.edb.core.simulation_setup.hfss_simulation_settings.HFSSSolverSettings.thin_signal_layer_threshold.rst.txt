@@ -1,0 +1,6 @@
+thin\_signal\_layer\_threshold
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSolverSettings.thin_signal_layer_threshold

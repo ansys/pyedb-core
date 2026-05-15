@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.solder_ball_property
+
+.. autoproperty:: SolderBallProperty.is_null

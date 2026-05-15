@@ -1,0 +1,6 @@
+is\_stackup\_layer
+==================
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoproperty:: Layer.is_stackup_layer

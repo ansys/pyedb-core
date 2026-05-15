@@ -1,0 +1,6 @@
+﻿session
+=======
+
+.. currentmodule:: ansys.edb.core.session
+
+.. autofunction:: session

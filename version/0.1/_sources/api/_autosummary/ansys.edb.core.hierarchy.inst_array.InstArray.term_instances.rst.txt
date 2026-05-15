@@ -1,0 +1,6 @@
+term\_instances
+===============
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. autoproperty:: InstArray.term_instances

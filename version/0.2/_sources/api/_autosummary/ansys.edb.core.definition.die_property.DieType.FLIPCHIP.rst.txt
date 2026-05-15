@@ -1,0 +1,6 @@
+FLIPCHIP
+========
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoattribute:: DieType.FLIPCHIP

@@ -1,0 +1,6 @@
+solve\_independent\_preference
+==============================
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. autoproperty:: InstArray.solve_independent_preference

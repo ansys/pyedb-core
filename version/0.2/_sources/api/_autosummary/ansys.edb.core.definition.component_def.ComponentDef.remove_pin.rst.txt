@@ -1,0 +1,6 @@
+remove\_pin
+===========
+
+.. currentmodule:: ansys.edb.core.definition.component_def
+
+.. automethod:: ComponentDef.remove_pin

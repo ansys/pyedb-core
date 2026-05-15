@@ -1,0 +1,6 @@
+use\_solver\_properties
+=======================
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. autoproperty:: ViaLayer.use_solver_properties

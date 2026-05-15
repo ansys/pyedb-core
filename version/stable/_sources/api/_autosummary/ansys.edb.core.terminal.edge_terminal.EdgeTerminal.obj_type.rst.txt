@@ -1,0 +1,6 @@
+obj\_type
+=========
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoproperty:: EdgeTerminal.obj_type

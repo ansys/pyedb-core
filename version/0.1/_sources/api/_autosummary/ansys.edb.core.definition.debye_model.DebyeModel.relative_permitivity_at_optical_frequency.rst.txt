@@ -1,0 +1,6 @@
+relative\_permitivity\_at\_optical\_frequency
+=============================================
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. autoproperty:: DebyeModel.relative_permitivity_at_optical_frequency

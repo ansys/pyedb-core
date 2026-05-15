@@ -1,0 +1,24 @@
+﻿DCThicknessType
+===============
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoclass:: DCThicknessType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DCThicknessType.EFFECTIVE
+      DCThicknessType.LAYER
+      DCThicknessType.MANUAL
+   
+   

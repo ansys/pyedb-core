@@ -1,0 +1,6 @@
+create\_stride
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. automethod:: Group.create_stride

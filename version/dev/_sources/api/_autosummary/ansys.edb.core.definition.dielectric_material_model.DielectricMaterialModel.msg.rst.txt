@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.definition.dielectric_material_model
+
+.. autoproperty:: DielectricMaterialModel.msg

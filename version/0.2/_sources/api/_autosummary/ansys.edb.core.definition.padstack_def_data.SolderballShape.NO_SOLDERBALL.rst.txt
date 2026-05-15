@@ -1,0 +1,6 @@
+NO\_SOLDERBALL
+==============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: SolderballShape.NO_SOLDERBALL

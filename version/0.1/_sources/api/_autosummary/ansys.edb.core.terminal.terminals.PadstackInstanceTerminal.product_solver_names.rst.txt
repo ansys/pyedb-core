@@ -1,0 +1,6 @@
+product\_solver\_names
+======================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. automethod:: PadstackInstanceTerminal.product_solver_names

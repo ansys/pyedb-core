@@ -1,0 +1,6 @@
+N\_PORT
+=======
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. autoattribute:: ComponentModelType.N_PORT

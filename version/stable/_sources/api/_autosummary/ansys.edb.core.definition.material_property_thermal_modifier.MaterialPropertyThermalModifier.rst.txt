@@ -1,0 +1,36 @@
+﻿MaterialPropertyThermalModifier
+===============================
+
+.. currentmodule:: ansys.edb.core.definition.material_property_thermal_modifier
+
+.. autoclass:: MaterialPropertyThermalModifier
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      MaterialPropertyThermalModifier.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MaterialPropertyThermalModifier.expression
+      MaterialPropertyThermalModifier.id
+      MaterialPropertyThermalModifier.is_null
+      MaterialPropertyThermalModifier.msg
+      MaterialPropertyThermalModifier.quadratic_model_params
+   
+   

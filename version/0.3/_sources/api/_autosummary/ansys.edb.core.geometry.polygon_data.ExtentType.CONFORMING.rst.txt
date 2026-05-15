@@ -1,0 +1,6 @@
+CONFORMING
+==========
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoattribute:: ExtentType.CONFORMING

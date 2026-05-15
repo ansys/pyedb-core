@@ -1,0 +1,6 @@
+DEFINITION\_TYPE\_COUNT
+=======================
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: DefinitionObjType.DEFINITION_TYPE_COUNT

@@ -1,0 +1,6 @@
+visibility\_mask
+================
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.visibility_mask

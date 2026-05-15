@@ -1,0 +1,6 @@
+surface\_roughness\_model
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSIGeneralSettings.surface_roughness_model

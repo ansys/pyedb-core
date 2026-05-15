@@ -1,0 +1,6 @@
+add\_menu\_variable
+===================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.add_menu_variable

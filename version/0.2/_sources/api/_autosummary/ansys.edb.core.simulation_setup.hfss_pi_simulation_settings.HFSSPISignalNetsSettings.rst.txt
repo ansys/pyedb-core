@@ -1,0 +1,33 @@
+﻿HFSSPISignalNetsSettings
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPISignalNetsSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPISignalNetsSettings.conductor_modeling
+      HFSSPISignalNetsSettings.error_tolerance
+      HFSSPISignalNetsSettings.include_improved_dielectric_fill_refinement
+      HFSSPISignalNetsSettings.include_improved_loss_handling
+      HFSSPISignalNetsSettings.msg
+   
+   

@@ -1,0 +1,6 @@
+is\_mcad
+========
+
+.. currentmodule:: ansys.edb.core.terminal.bundle_terminal
+
+.. autoproperty:: BundleTerminal.is_mcad

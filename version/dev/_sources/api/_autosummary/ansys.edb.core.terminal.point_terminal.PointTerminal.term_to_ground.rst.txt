@@ -1,0 +1,6 @@
+term\_to\_ground
+================
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. autoproperty:: PointTerminal.term_to_ground

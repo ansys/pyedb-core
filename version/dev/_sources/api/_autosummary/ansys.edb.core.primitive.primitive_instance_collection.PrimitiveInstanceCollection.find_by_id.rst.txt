@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive_instance_collection
+
+.. automethod:: PrimitiveInstanceCollection.find_by_id

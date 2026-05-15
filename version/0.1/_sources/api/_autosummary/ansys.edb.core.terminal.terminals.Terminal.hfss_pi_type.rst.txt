@@ -1,0 +1,6 @@
+hfss\_pi\_type
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: Terminal.hfss_pi_type

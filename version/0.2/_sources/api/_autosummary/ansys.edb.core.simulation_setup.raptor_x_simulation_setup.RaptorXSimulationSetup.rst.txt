@@ -1,0 +1,42 @@
+﻿RaptorXSimulationSetup
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.raptor_x_simulation_setup
+
+.. autoclass:: RaptorXSimulationSetup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      RaptorXSimulationSetup.cast
+      
+      
+      RaptorXSimulationSetup.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RaptorXSimulationSetup.id
+      RaptorXSimulationSetup.is_null
+      RaptorXSimulationSetup.msg
+      RaptorXSimulationSetup.name
+      RaptorXSimulationSetup.position
+      RaptorXSimulationSetup.settings
+      RaptorXSimulationSetup.sweep_data
+      RaptorXSimulationSetup.type
+   
+   

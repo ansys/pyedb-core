@@ -1,0 +1,6 @@
+term\_to\_ground
+================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: PinGroupTerminal.term_to_ground

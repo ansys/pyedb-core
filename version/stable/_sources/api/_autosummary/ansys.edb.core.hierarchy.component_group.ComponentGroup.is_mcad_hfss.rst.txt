@@ -1,0 +1,6 @@
+is\_mcad\_hfss
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. autoproperty:: ComponentGroup.is_mcad_hfss

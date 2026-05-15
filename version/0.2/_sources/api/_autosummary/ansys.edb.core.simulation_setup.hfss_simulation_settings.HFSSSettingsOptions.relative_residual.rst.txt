@@ -1,0 +1,6 @@
+relative\_residual
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSettingsOptions.relative_residual

@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. automethod:: EdgeTerminal.create_hfss

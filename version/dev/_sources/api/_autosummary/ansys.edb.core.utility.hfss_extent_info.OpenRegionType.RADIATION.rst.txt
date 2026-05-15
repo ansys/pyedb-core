@@ -1,0 +1,6 @@
+RADIATION
+=========
+
+.. currentmodule:: ansys.edb.core.utility.hfss_extent_info
+
+.. autoattribute:: OpenRegionType.RADIATION

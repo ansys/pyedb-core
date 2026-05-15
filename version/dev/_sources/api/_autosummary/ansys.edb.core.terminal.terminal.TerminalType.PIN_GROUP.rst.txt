@@ -1,0 +1,6 @@
+PIN\_GROUP
+==========
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: TerminalType.PIN_GROUP

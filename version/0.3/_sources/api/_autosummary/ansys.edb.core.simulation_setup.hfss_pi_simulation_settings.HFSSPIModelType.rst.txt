@@ -1,0 +1,24 @@
+﻿HFSSPIModelType
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPIModelType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPIModelType.PCB
+      HFSSPIModelType.PACKAGE
+      HFSSPIModelType.RDL
+   
+   

@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance
+
+.. autoproperty:: LayoutInstance.msg

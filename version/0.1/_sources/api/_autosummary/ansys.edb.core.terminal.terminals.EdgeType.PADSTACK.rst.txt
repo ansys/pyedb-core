@@ -1,0 +1,6 @@
+PADSTACK
+========
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoattribute:: EdgeType.PADSTACK

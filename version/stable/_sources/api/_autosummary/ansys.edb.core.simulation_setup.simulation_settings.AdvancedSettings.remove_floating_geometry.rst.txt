@@ -1,0 +1,6 @@
+remove\_floating\_geometry
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedSettings.remove_floating_geometry

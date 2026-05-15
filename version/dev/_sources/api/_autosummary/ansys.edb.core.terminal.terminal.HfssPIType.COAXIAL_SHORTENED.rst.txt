@@ -1,0 +1,6 @@
+COAXIAL\_SHORTENED
+==================
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: HfssPIType.COAXIAL_SHORTENED

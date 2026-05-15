@@ -1,0 +1,33 @@
+﻿SingleFrequencyAdaptiveSolution
+===============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoclass:: SingleFrequencyAdaptiveSolution
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SingleFrequencyAdaptiveSolution.adaptive_frequency
+      SingleFrequencyAdaptiveSolution.max_delta
+      SingleFrequencyAdaptiveSolution.max_passes
+      SingleFrequencyAdaptiveSolution.mx_conv_data
+      SingleFrequencyAdaptiveSolution.use_mx_conv_data
+   
+   

@@ -1,0 +1,6 @@
+use\_reference\_from\_hierarchy
+===============================
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. autoproperty:: PadstackInstanceTerminal.use_reference_from_hierarchy

@@ -1,0 +1,6 @@
+reference\_terminal
+===================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: PinGroupTerminal.reference_terminal

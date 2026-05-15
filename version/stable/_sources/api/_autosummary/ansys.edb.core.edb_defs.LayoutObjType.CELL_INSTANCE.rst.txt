@@ -1,0 +1,6 @@
+CELL\_INSTANCE
+==============
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.CELL_INSTANCE

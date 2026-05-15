@@ -1,0 +1,6 @@
+unique\_name
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. automethod:: PinGroup.unique_name

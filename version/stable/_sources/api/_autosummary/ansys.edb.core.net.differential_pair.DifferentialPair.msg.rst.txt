@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. autoproperty:: DifferentialPair.msg

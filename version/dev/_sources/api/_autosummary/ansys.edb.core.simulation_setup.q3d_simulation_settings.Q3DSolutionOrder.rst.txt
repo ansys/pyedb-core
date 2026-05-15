@@ -1,0 +1,26 @@
+﻿Q3DSolutionOrder
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DSolutionOrder
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DSolutionOrder.NORMAL
+      Q3DSolutionOrder.HIGH
+      Q3DSolutionOrder.HIGHER
+      Q3DSolutionOrder.HIGHEST
+      Q3DSolutionOrder.NUM_SOLUTION_ORDER
+   
+   

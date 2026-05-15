@@ -1,0 +1,24 @@
+﻿PathCornerType
+==============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoclass:: PathCornerType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PathCornerType.ROUND
+      PathCornerType.SHARP
+      PathCornerType.MITER
+   
+   

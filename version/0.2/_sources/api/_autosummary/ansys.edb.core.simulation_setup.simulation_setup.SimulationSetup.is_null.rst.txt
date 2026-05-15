@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoproperty:: SimulationSetup.is_null

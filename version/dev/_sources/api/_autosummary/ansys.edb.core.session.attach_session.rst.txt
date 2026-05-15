@@ -1,0 +1,6 @@
+﻿attach\_session
+===============
+
+.. currentmodule:: ansys.edb.core.session
+
+.. autofunction:: attach_session

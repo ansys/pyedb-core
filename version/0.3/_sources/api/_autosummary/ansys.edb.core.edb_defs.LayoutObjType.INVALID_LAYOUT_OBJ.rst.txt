@@ -1,0 +1,6 @@
+INVALID\_LAYOUT\_OBJ
+====================
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.INVALID_LAYOUT_OBJ

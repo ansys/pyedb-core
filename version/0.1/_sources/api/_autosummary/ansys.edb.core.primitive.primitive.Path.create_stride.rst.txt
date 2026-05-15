@@ -1,0 +1,6 @@
+create\_stride
+==============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Path.create_stride

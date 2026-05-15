@@ -1,0 +1,6 @@
+width
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Bondwire.width

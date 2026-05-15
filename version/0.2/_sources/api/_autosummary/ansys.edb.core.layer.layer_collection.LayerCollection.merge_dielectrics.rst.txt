@@ -1,0 +1,6 @@
+merge\_dielectrics
+==================
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.merge_dielectrics

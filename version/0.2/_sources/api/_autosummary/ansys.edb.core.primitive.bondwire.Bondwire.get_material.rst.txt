@@ -1,0 +1,6 @@
+get\_material
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. automethod:: Bondwire.get_material

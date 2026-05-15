@@ -1,0 +1,6 @@
+simplify\_dielectrics\_for\_phi
+===============================
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.simplify_dielectrics_for_phi

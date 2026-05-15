@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. autoproperty:: PointTerminal.is_null

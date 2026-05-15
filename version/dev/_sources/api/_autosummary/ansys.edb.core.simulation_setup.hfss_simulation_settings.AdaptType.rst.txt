@@ -1,0 +1,25 @@
+﻿AdaptType
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoclass:: AdaptType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      AdaptType.SINGLE
+      AdaptType.MULTI_FREQUENCIES
+      AdaptType.BROADBAND
+      AdaptType.NUM_ADAPT_TYPE
+   
+   

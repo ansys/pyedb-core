@@ -1,0 +1,6 @@
+power\_ground\_nets
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPISimulationSettings.power_ground_nets

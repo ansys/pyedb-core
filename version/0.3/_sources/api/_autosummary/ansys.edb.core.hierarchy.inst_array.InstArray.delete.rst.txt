@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. automethod:: InstArray.delete

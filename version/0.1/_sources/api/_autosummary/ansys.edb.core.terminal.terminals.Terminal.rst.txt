@@ -1,0 +1,100 @@
+﻿Terminal
+========
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoclass:: Terminal
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Terminal.cast
+      
+      
+      Terminal.create_3d_comp
+      
+      
+      Terminal.create_hfss
+      
+      
+      Terminal.create_stride
+      
+      
+      Terminal.delete
+      
+      
+      Terminal.find
+      
+      
+      Terminal.find_by_id
+      
+      
+      Terminal.get_product_property
+      
+      
+      Terminal.get_product_property_ids
+      
+      
+      Terminal.product_solver_names
+      
+      
+      Terminal.product_solver_option
+      
+      
+      Terminal.set_product_property
+      
+      
+      Terminal.set_product_solver_option
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Terminal.boundary_type
+      Terminal.bundle_terminal
+      Terminal.component
+      Terminal.edb_uid
+      Terminal.group
+      Terminal.hfss_pi_type
+      Terminal.id
+      Terminal.impedance
+      Terminal.is_auto_port
+      Terminal.is_circuit_port
+      Terminal.is_interface_terminal
+      Terminal.is_mcad
+      Terminal.is_mcad_3d_comp
+      Terminal.is_mcad_hfss
+      Terminal.is_mcad_stride
+      Terminal.is_null
+      Terminal.is_reference_terminal
+      Terminal.layout
+      Terminal.layout_obj_type
+      Terminal.model
+      Terminal.msg
+      Terminal.name
+      Terminal.net
+      Terminal.obj_type
+      Terminal.port_post_processing_prop
+      Terminal.reference_layer
+      Terminal.reference_terminal
+      Terminal.rlc_boundary_parameters
+      Terminal.source_amplitude
+      Terminal.source_phase
+      Terminal.term_to_ground
+      Terminal.type
+      Terminal.use_reference_from_hierarchy
+   
+   

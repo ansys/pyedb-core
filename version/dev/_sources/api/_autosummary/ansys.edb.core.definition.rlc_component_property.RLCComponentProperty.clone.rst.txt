@@ -1,0 +1,6 @@
+clone
+=====
+
+.. currentmodule:: ansys.edb.core.definition.rlc_component_property
+
+.. automethod:: RLCComponentProperty.clone

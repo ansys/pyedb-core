@@ -1,0 +1,23 @@
+﻿SIWavePSISimulationPreference
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoclass:: SIWavePSISimulationPreference
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSISimulationPreference.BALANCED
+      SIWavePSISimulationPreference.ACCURACY
+   
+   

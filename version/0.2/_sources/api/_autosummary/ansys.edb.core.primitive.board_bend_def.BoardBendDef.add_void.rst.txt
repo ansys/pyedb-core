@@ -1,0 +1,6 @@
+add\_void
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. automethod:: BoardBendDef.add_void

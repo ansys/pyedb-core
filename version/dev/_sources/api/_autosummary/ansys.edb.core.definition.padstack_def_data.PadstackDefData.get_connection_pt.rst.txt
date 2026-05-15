@@ -1,0 +1,6 @@
+get\_connection\_pt
+===================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. automethod:: PadstackDefData.get_connection_pt

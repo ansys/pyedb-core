@@ -1,0 +1,6 @@
+TOP\_BOTTOM\_ASSOCIATION\_COUNT
+===============================
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: TopBottomAssociation.TOP_BOTTOM_ASSOCIATION_COUNT

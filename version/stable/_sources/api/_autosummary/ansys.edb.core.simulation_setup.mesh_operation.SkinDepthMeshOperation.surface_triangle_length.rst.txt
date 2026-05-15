@@ -1,0 +1,6 @@
+surface\_triangle\_length
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoproperty:: SkinDepthMeshOperation.surface_triangle_length

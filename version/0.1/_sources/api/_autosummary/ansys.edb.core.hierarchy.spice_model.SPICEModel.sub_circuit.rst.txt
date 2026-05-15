@@ -1,0 +1,6 @@
+sub\_circuit
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.spice_model
+
+.. autoproperty:: SPICEModel.sub_circuit

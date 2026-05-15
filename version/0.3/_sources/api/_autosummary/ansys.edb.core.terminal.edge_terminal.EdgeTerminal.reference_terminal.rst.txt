@@ -1,0 +1,6 @@
+reference\_terminal
+===================
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoproperty:: EdgeTerminal.reference_terminal

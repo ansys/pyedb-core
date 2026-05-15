@@ -1,0 +1,6 @@
+DEFAULT
+=======
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: HfssPIType.DEFAULT

@@ -1,0 +1,6 @@
+net
+===
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: Terminal.net

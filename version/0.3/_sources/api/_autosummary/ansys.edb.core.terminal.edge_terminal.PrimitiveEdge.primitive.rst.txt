@@ -1,0 +1,6 @@
+primitive
+=========
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoproperty:: PrimitiveEdge.primitive

@@ -1,0 +1,6 @@
+layout
+======
+
+.. currentmodule:: ansys.edb.core.primitive.text
+
+.. autoproperty:: Text.layout

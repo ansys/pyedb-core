@@ -1,0 +1,6 @@
+UNKNOWN\_GEOM\_TYPE
+===================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadType.UNKNOWN_GEOM_TYPE

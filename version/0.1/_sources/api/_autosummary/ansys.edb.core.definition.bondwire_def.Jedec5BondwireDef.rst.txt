@@ -1,0 +1,49 @@
+﻿Jedec5BondwireDef
+=================
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. autoclass:: Jedec5BondwireDef
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Jedec5BondwireDef.create
+      
+      
+      Jedec5BondwireDef.delete
+      
+      
+      Jedec5BondwireDef.find_by_name
+      
+      
+      Jedec5BondwireDef.get_parameters
+      
+      
+      Jedec5BondwireDef.set_parameters
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Jedec5BondwireDef.bondwire_type
+      Jedec5BondwireDef.definition_type
+      Jedec5BondwireDef.id
+      Jedec5BondwireDef.is_null
+      Jedec5BondwireDef.msg
+      Jedec5BondwireDef.name
+   
+   

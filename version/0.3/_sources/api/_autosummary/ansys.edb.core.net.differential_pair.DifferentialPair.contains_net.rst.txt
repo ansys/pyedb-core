@@ -1,0 +1,6 @@
+contains\_net
+=============
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. automethod:: DifferentialPair.contains_net

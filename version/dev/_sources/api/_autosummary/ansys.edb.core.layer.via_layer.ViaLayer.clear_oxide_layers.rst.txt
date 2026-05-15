@@ -1,0 +1,6 @@
+clear\_oxide\_layers
+====================
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. automethod:: ViaLayer.clear_oxide_layers

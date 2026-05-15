@@ -1,0 +1,6 @@
+NO\_TOP\_BOTTOM\_ASSOCIATED
+===========================
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: TopBottomAssociation.NO_TOP_BOTTOM_ASSOCIATED

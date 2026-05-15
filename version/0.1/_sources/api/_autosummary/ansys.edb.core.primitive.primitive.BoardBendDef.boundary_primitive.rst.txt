@@ -1,0 +1,6 @@
+boundary\_primitive
+===================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: BoardBendDef.boundary_primitive

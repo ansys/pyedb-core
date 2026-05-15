@@ -1,0 +1,6 @@
+﻿get\_error\_messages
+====================
+
+.. currentmodule:: ansys.edb.core.utility.edb_error_manager
+
+.. autofunction:: get_error_messages

@@ -1,0 +1,23 @@
+﻿DieOrientation
+==============
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoclass:: DieOrientation
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DieOrientation.CHIP_UP
+      DieOrientation.CHIP_DOWN
+   
+   

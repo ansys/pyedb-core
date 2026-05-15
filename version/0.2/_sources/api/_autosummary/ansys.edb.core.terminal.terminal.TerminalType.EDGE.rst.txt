@@ -1,0 +1,6 @@
+EDGE
+====
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: TerminalType.EDGE

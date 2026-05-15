@@ -1,0 +1,6 @@
+NUM\_ADAPT\_TYPE
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoattribute:: AdaptType.NUM_ADAPT_TYPE

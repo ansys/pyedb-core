@@ -1,0 +1,6 @@
+ERROR
+=====
+
+.. currentmodule:: ansys.edb.core.utility.edb_error_manager
+
+.. autoattribute:: EDBErrorSeverity.ERROR

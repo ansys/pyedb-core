@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: VoltageRegulator.msg

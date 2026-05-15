@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.simulation_setup.raptor_x_simulation_setup
+
+.. autoproperty:: RaptorXSimulationSetup.id

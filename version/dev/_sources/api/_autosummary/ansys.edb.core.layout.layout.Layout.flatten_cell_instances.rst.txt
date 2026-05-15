@@ -1,0 +1,6 @@
+flatten\_cell\_instances
+========================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.flatten_cell_instances

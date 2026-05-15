@@ -1,0 +1,22 @@
+﻿RTreeObj
+========
+
+.. currentmodule:: ansys.edb.core.geometry.r_tree
+
+.. autoclass:: RTreeObj
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

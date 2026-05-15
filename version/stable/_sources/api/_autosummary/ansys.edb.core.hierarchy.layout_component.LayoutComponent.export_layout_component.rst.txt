@@ -1,0 +1,6 @@
+export\_layout\_component
+=========================
+
+.. currentmodule:: ansys.edb.core.hierarchy.layout_component
+
+.. automethod:: LayoutComponent.export_layout_component

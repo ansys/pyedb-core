@@ -1,0 +1,32 @@
+﻿SIWavePSINetProcessingSettings
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoclass:: SIWavePSINetProcessingSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSINetProcessingSettings.auto_select_nets_for_simulation
+      SIWavePSINetProcessingSettings.ignore_dummy_nets_for_selected_nets
+      SIWavePSINetProcessingSettings.include_nets
+      SIWavePSINetProcessingSettings.msg
+   
+   

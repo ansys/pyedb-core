@@ -1,0 +1,6 @@
+use\_max\_refinement
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSettingsOptions.use_max_refinement

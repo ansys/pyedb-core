@@ -1,0 +1,6 @@
+defeature\_absolute\_length
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSAdvancedSettings.defeature_absolute_length

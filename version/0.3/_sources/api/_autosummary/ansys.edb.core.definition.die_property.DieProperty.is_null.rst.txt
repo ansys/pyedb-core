@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoproperty:: DieProperty.is_null

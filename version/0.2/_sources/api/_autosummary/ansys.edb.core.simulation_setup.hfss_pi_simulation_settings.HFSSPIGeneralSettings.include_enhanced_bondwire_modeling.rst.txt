@@ -1,0 +1,6 @@
+include\_enhanced\_bondwire\_modeling
+=====================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIGeneralSettings.include_enhanced_bondwire_modeling

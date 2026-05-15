@@ -1,0 +1,6 @@
+obj\_type
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.text
+
+.. autoproperty:: Text.obj_type

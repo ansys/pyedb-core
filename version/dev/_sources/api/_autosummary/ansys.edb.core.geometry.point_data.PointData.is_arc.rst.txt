@@ -1,0 +1,6 @@
+is\_arc
+=======
+
+.. currentmodule:: ansys.edb.core.geometry.point_data
+
+.. autoproperty:: PointData.is_arc

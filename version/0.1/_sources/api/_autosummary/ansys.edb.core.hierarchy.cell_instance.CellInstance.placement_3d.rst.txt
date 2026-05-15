@@ -1,0 +1,6 @@
+placement\_3d
+=============
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.placement_3d

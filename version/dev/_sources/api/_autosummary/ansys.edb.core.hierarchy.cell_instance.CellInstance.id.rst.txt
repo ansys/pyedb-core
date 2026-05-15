@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.id

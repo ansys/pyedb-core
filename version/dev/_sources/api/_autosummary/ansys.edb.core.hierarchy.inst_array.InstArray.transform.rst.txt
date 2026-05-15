@@ -1,0 +1,6 @@
+transform
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. autoproperty:: InstArray.transform

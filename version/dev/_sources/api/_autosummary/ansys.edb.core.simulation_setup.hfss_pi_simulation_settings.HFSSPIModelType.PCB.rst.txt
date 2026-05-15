@@ -1,0 +1,6 @@
+PCB
+===
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoattribute:: HFSSPIModelType.PCB

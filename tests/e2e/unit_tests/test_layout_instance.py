@@ -6,14 +6,10 @@ from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.layout_instance.layout_obj_instance import LayoutObjInstance
 
 
-def test_query_layout_obj_instances(circuit_cell_with_edge_terminals: Cell):
-    loi_list = circuit_cell_with_edge_terminals.layout.layout_instance.query_layout_obj_instances()
-    assert len(loi_list) == 4
-
-
 @pytest.mark.parametrize(
     ["spatial_filter", "expected_lengths"],
     [
+        (None, 4),
         (PointData([0.0, 0.0]), 2),
         ([PointData([0.0, 0.0])], [2]),
         ([PointData([-0.1e-3, 0.0]), PointData([0.1e-3, 0.0])], [2, 2]),

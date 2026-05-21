@@ -105,7 +105,8 @@ class LayoutInstance(ObjBase):
         ]
         has_spatial_filter = spatial_filter is not None
         if has_spatial_filter:
-            for sf in utils.ensure_is_list(spatial_filter):
+            spatial_filter = utils.ensure_is_list(spatial_filter)
+            for sf in spatial_filter:
                 requests.append(spatial_filter_to_msg(sf))
 
         all_hits = []
@@ -140,8 +141,6 @@ class LayoutInstance(ObjBase):
         all_hits_iter = iter(all_hits)
         if not has_spatial_filter:
             return process_hits(None, all_hits_iter)
-        elif has_single_spatial_filter:
-            return process_hits(spatial_filter, all_hits_iter)
         elif len(spatial_filter) == 1:
             return process_hits(spatial_filter[0], all_hits_iter)
         else:

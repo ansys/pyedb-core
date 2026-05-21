@@ -15,7 +15,7 @@ from ansys.edb.core.layout_instance.layout_obj_instance import LayoutObjInstance
         ([PointData([-0.1e-3, 0.0]), PointData([0.1e-3, 0.0])], [2, 2]),
     ],
 )
-def test_query_layout_obj_instances_spatial_filter(
+def test_query_layout_obj_instances(
     circuit_cell_with_edge_terminals: Cell,
     expected_lengths: int | list[int],
     spatial_filter: PolygonData | PointData | None | list[PolygonData | PointData],

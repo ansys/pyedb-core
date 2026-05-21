@@ -104,6 +104,7 @@ class LayoutInstance(ObjBase):
             )
         ]
         has_spatial_filter = spatial_filter is not None
+        spatial_filter_was_list = isinstance(spatial_filter, list)
         if has_spatial_filter:
             spatial_filter = utils.ensure_is_list(spatial_filter)
             for sf in spatial_filter:
@@ -141,10 +142,12 @@ class LayoutInstance(ObjBase):
         all_hits_iter = iter(all_hits)
         if not has_spatial_filter:
             return process_hits(None, all_hits_iter)
-        elif len(spatial_filter) == 1:
-            return process_hits(spatial_filter[0], all_hits_iter)
         else:
-            return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
+            result = [process_hits(sf, all_hits_iter) for sf in spatial_filter]
+            if spatial_filter_was_list:
+                return result
+            else:
+                return result[0]
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.

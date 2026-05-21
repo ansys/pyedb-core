@@ -103,7 +103,6 @@ class LayoutInstance(ObjBase):
                 **lyt_inst_net_filter_lyr_filter_params
             )
         ]
-        spatial_filter_was_list = isinstance(spatial_filter, list)
         if spatial_filter is not None:
             for sf in utils.ensure_is_list(spatial_filter):
                 requests.append(spatial_filter_to_msg(sf))

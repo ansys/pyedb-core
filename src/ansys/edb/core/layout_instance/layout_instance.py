@@ -20,7 +20,7 @@ from ansys.edb.core.inner.messages import (
 )
 from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.layout_instance import layout_obj_instance
-from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType, is_in_memory
 
 
 class LayoutInstance(ObjBase):
@@ -75,16 +75,21 @@ class LayoutInstance(ObjBase):
                 return None
             return utils.map_list(utils.ensure_is_list(client_filter), ref_msg_type)
 
+        def get_spatial_filter_msg_params(_spatial_filter):
+            if isinstance(_spatial_filter, PointData):
+                return "point_filter", point_message(_spatial_filter)
+            elif isinstance(_spatial_filter, PolygonData):
+                return "region_filter", polygon_data_message(_spatial_filter)
+            else:
+                raise ValueError(
+                    f"""Spatial filter of type {_spatial_filter.__class__.__name__} is not supported. """
+                    """Only PointData and PolygonData are supported."""
+                )
+
         def spatial_filter_to_msg(_spatial_filter):
-            is_point_filter = isinstance(_spatial_filter, PointData)
-            spatial_filter_field = "point_filter" if is_point_filter else "region_filter"
-            spatial_filter_msg = (
-                point_message(_spatial_filter)
-                if is_point_filter
-                else polygon_data_message(_spatial_filter)
-            )
+            spatial_filter_msg_params = get_spatial_filter_msg_params(_spatial_filter)
             return layout_instance_pb2.LayoutObjInstancesQueryMessage(
-                **{spatial_filter_field: spatial_filter_msg}
+                **{spatial_filter_msg_params[0]: spatial_filter_msg_params[1]}
             )
 
         # Create queries
@@ -98,17 +103,24 @@ class LayoutInstance(ObjBase):
                 **lyt_inst_net_filter_lyr_filter_params
             )
         ]
-        has_spatial_filter = spatial_filter is not None
-        if has_spatial_filter:
+        if spatial_filter is not None:
             for sf in utils.ensure_is_list(spatial_filter):
                 requests.append(spatial_filter_to_msg(sf))
 
+        # Run queries and gather hits
         all_hits = []
-        for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
-            self._query_request_iterator(requests)
-        ):
-            for hit in hits_chunk.query_results:
+        if is_in_memory():
+            queries_msg = layout_instance_pb2.LayoutObjInstancesQueriesMessage(
+                queries=requests,
+            )
+            for hit in self.__stub.BatchQueryLayoutObjInstances(queries_msg).query_results:
                 all_hits.append(hit)
+        else:
+            for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
+                self._query_request_iterator(requests)
+            ):
+                for hit in hits_chunk.query_results:
+                    all_hits.append(hit)
 
         def process_hits(_spatial_filter, hits_iter):
             full_hits = []
@@ -125,13 +137,14 @@ class LayoutInstance(ObjBase):
                 (full_hits, partial_hits) if isinstance(_spatial_filter, PolygonData) else full_hits
             )
 
+        # Process hits and return results
         all_hits_iter = iter(all_hits)
-        if not has_spatial_filter:
-            return process_hits(None, all_hits_iter)
-        elif len(spatial_filter) == 1:
-            return process_hits(spatial_filter[1], all_hits_iter)
-        else:
-            return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
+
+        if not isinstance(spatial_filter, list):
+            return process_hits(spatial_filter, all_hits_iter)
+
+        # spatial_filter is a list
+        return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.

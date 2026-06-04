@@ -50,13 +50,70 @@ class PointData:
         elif len(data) == 2:
             self._x = conversions.to_value(data[0])
             self._y = conversions.to_value(data[1])
-            if not self._y.is_parametric and self._y == sys.float_info.max:
+            # Use a direct attribute read rather than Value.__eq__ (which allocates a
+            # temporary Value and calls .value on both sides via Value.equals).
+            if not self._y.is_parametric and self._y.msg.constant.real == sys.float_info.max:
                 self._arc_h = self._x
         else:
             raise TypeError(
                 "`PointData` must receive either one value representing arc height or "
                 f"two values representing x and y coordinates. - Received '{data}'"
             )
+
+    @classmethod
+    def _from_msg(cls, message):
+        """Fast-path constructor from a ``PointMessage``.
+
+        Bypasses ``__init__`` entirely: allocates the object with ``object.__new__``,
+        wraps each ``ValueMessage`` field in an uninitialized :class:`.Value` shell,
+        and sets the arc-height attribute using the same sentinel check as ``__init__``
+        (``y == sys.float_info.max``).
+
+        Parameters
+        ----------
+        message : ansys.api.edb.v1.point_data_pb2.PointMessage
+
+        Returns
+        -------
+        PointData
+        """
+        pt = object.__new__(cls)
+        x_val = object.__new__(value.Value)
+        x_val.msg = message.x
+        y_val = object.__new__(value.Value)
+        y_val.msg = message.y
+        pt._x = x_val
+        pt._y = y_val
+        pt._arc_h = (
+            x_val
+            if not y_val.is_parametric and y_val.msg.constant.real == sys.float_info.max
+            else None
+        )
+        return pt
+
+    @classmethod
+    def _from_floats(cls, x, y):
+        """Fast-path constructor from raw ``float`` coordinates.
+
+        Stores the floats directly in ``_x`` / ``_y`` without allocating any
+        :class:`.Value` or ``ValueMessage`` objects.  The :attr:`x` and :attr:`y`
+        properties will lazily promote these to :class:`.Value` objects on first
+        access.
+
+        Parameters
+        ----------
+        x : float
+        y : float
+
+        Returns
+        -------
+        PointData
+        """
+        pt = object.__new__(cls)
+        pt._x = x
+        pt._y = y
+        pt._arc_h = x if y == sys.float_info.max else None
+        return pt
 
     def __eq__(self, other: PointData) -> bool:
         """Determine if two objects represent the same coordinates.
@@ -168,7 +225,11 @@ class PointData:
 
         This property is read-only.
         """
-        return self._arc_h
+        _h = self._arc_h
+        if isinstance(_h, (int, float)):
+            _h = value.Value(_h)
+            self._arc_h = _h
+        return _h
 
     @property
     def x(self) -> Value:
@@ -177,7 +238,11 @@ class PointData:
 
         This property is read-only.
         """
-        return self._x
+        _x = self._x
+        if isinstance(_x, (int, float)):
+            _x = value.Value(_x)
+            self._x = _x
+        return _x
 
     @property
     def y(self) -> Value:
@@ -186,7 +251,11 @@ class PointData:
 
         This property is read-only.
         """
-        return self._y
+        _y = self._y
+        if isinstance(_y, (int, float)):
+            _y = value.Value(_y)
+            self._y = _y
+        return _y
 
     @property
     def is_parametric(self) -> bool:

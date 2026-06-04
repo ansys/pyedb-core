@@ -124,9 +124,8 @@ def msg_to_point_data(message):
     :class:`.PointData`
     """
     from ansys.edb.core.geometry.point_data import PointData
-    from ansys.edb.core.utility.value import Value
 
-    return PointData([Value(message.x), Value(message.y)])
+    return PointData._from_msg(message)
 
 
 def _to_point_data_pair(message):
@@ -199,20 +198,26 @@ def msg_to_polygon_data(message):
     -------
     :class:`.PolygonData`
     """
-    from ansys.api.edb.v1.point_data_pb2 import BoxMessage
-
     from ansys.edb.core.geometry.polygon_data import PolygonData
 
-    if isinstance(message, BoxMessage):
-        b = _to_box(message)
-        return PolygonData(lower_left=b[0], upper_right=b[1])
-    else:
-        return PolygonData(
-            points=_to_point_data_list(message.points),
-            holes=_to_polygon_data_list(message.holes),
-            sense=message.sense,
-            closed=message.closed,
-        )
+    return PolygonData._from_msg(message)
+
+
+def _coords_to_point_data_list(coords):
+    """Convert a flat packed-double sequence (interleaved x, y) to ``PointData`` objects.
+
+    Parameters
+    ----------
+    coords : repeated double (packed) — produced by the C++ fast-path in PolygonToMsg.
+
+    Returns
+    -------
+    list[:class:`.PointData`]
+    """
+    from ansys.edb.core.geometry.point_data import PointData
+
+    it = iter(coords)
+    return [PointData._from_floats(x, y) for x, y in zip(it, it)]
 
 
 def _to_polygon_data_list(message):

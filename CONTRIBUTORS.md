@@ -7,6 +7,7 @@
 ## Individual Contributors
 
 * [amruta3991](https://github.com/amruta3991)
+* [ansahershen](https://github.com/ansahershen)
 * [apasarka](https://github.com/apasarka)
 * [asamaiya](https://github.com/asamaiya)
 * [chenchienjacklin](https://github.com/chenchienjacklin)
@@ -15,6 +16,7 @@
 * [Isaac Waldron](https://github.com/isaacwaldron)
 * [Karan Bhagat](https://github.com/kbhagat-ansys)
 * [Kathy Pippert](https://github.com/PipKat)
+* [Krishna Prasad](https://github.com/anskprasad)
 * [Maxime Rey](https://github.com/MaxJPRey)
 * [Minsi Sung](https://github.com/ansminsisung)
 * [Roberto Pastor Muela](https://github.com/RobPasMue)

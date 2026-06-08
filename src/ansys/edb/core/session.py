@@ -147,6 +147,20 @@ from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import (
     SIWaveGeneralSettingsServiceStub,
     SIWaveSParameterSettingsServiceStub,
 )
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import (
+    SIWaveCPASimulationSettingsServiceStub,
+    SIWaveCPASettingsServiceStub,
+    SIWaveCPAAdvancedSettingsServiceStub,
+    SIWaveCPAQ3DSettingsServiceStub,
+    SIWaveCPANetSettingsServiceStub,
+    SIWaveCPAExternalEnvSettingsServiceStub,
+    SIWaveCPADieConfigSettingsServiceStub,
+    SIWaveCPAChannelComponentSettingsServiceStub,
+    SIWaveCPAVRMSettingsServiceStub,
+    SIWaveCPAUnconnectedDiePinSettingsServiceStub,
+    SIWaveCPAHotSpotComponentSettingsServiceStub,
+
+)
 from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
     AdvancedMeshingSettingsServiceStub,
     AdvancedSettingsServiceStub,
@@ -644,6 +658,17 @@ class StubType(Enum):
     q3d_dcrl_sim_settings = Q3DDCRLSettingsServiceStub
     q3d_general_sim_settings = Q3DGeneralSettingsServiceStub
     q3d_sim_settings = Q3DSettingsServiceStub
+    siwave_cpa_sim_settings = SIWaveCPASimulationSettingsServiceStub
+    siwave_cpa_settings = SIWaveCPASettingsServiceStub
+    siwave_cpa_advanced_settings = SIWaveCPAAdvancedSettingsServiceStub
+    siwave_cpa_q3d_settings = SIWaveCPAQ3DSettingsServiceStub
+    siwave_cpa_net_settings = SIWaveCPANetSettingsServiceStub
+    siwave_cpa_external_env_settings = SIWaveCPAExternalEnvSettingsServiceStub
+    siwave_cpa_die_config_settings = SIWaveCPADieConfigSettingsServiceStub
+    siwave_cpa_channel_component_settings = SIWaveCPAChannelComponentSettingsServiceStub
+    siwave_cpa_vrm_settings = SIWaveCPAVRMSettingsServiceStub
+    siwave_cpa_unconnected_die_pin_settings = SIWaveCPAUnconnectedDiePinSettingsServiceStub
+    siwave_cpa_hot_spot_component_settings = SIWaveCPAHotSpotComponentSettingsServiceStub
 
 
 def attach_session(

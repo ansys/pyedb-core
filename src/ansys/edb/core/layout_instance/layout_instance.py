@@ -129,73 +129,56 @@ class LayoutInstance(ObjBase):
                 **lyt_inst_net_filter_lyr_filter_params
             )
         ]
-        if spatial_filter is not None:
-            for sf in utils.ensure_is_list(spatial_filter):
-                requests.append(spatial_filter_to_msg(sf))
+
+        spatial_filters = [] if spatial_filter is None else utils.ensure_is_list(spatial_filter)
 
         # Run queries and gather hits
         all_hits = []
         if is_in_memory():
+            for sf in spatial_filters:
+                requests.append(spatial_filter_to_msg(sf))
+
             queries_msg = layout_instance_pb2.LayoutObjInstancesQueriesMessage(
                 queries=requests,
             )
             for hit in self.__stub.BatchQueryLayoutObjInstances(queries_msg).query_results:
                 all_hits.append(hit)
-
-            # Process hits and return results
-            all_hits_iter = iter(all_hits)
-
-            if not isinstance(spatial_filter, list):
-                return process_hits(spatial_filter, all_hits_iter)
-
-            # spatial_filter is a list
-            return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
-        elif system() == "Windows":
-            spatial_filters = [] if spatial_filter is None else utils.ensure_is_list(spatial_filter)
-            requests = [
-                layout_instance_pb2.LayoutObjInstancesQueryMessage(
-                    **lyt_inst_net_filter_lyr_filter_params
-                )
-            ]
-
-            for sf in spatial_filters:
-                requests.append(
-                    layout_instance_pb2.LayoutObjInstancesQueryMessage(**spatial_filter_payload(sf))
-                )
-
-            for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
-                self._query_request_iterator(requests)
-            ):
-                all_hits.extend(hits_chunk.query_results)
-
-            all_hits_iter = iter(all_hits)
-            if not spatial_filters:
-                return process_hits(None, all_hits_iter)
-            if len(spatial_filters) == 1:
-                return process_hits(spatial_filters[0], all_hits_iter)
-            return [process_hits(sf, all_hits_iter) for sf in spatial_filters]
         else:
-            spatial_filters = [] if spatial_filter is None else utils.ensure_is_list(spatial_filter)
-            # Temporary workaround for Linux until the streaming gRPC implementation is fixed on server side for Linux.
-            # On Linux, instead of supporting multiple filters in a single query, only the first spatial filter is used.
-            msg_params = lyt_inst_net_filter_lyr_filter_params.copy()
-            if len(spatial_filters) > 0:
-                LOGGER.warn(
-                    "Warning: Multiple spatial filters provided."
-                    " Only the first spatial filter will be applied in the query on Linux."
-                )
-                msg_params.update(spatial_filter_payload(spatial_filters[0]))
-            all_hits.extend(
-                self.__stub.QueryLayoutObjInstances(
-                    layout_instance_pb2.LayoutObjInstancesQueryMessage(**msg_params)
-                ).query_results
-            )
+            if system() == "Windows":
+                for sf in spatial_filters:
+                    requests.append(
+                        layout_instance_pb2.LayoutObjInstancesQueryMessage(**spatial_filter_payload(sf))
+                    )
 
-            all_hits_iter = iter(all_hits)
-            if len(spatial_filters) == 0:
-                return process_hits(None, all_hits_iter)
+                for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
+                    self._query_request_iterator(requests)
+                ):
+                    all_hits.extend(hits_chunk.query_results)
             else:
-                return process_hits(spatial_filters[0], all_hits_iter)
+                # Temporary workaround for Linux until the streaming gRPC implementation is fixed on server side for Linux.
+                # On Linux, instead of supporting multiple filters in a single query, only the first spatial filter is used.
+                msg_params = lyt_inst_net_filter_lyr_filter_params.copy()
+                if len(spatial_filters) > 0:
+                    # Drop all spatial filters except the first one if multiple spatial filters are provided.
+                    spatial_filters = spatial_filters[:1]
+                    LOGGER.warn(
+                        "Warning: Multiple spatial filters provided."
+                        " Only the first spatial filter will be applied in the query on Linux."
+                    )
+                    msg_params.update(spatial_filter_payload(spatial_filters[0]))
+                all_hits.extend(
+                    self.__stub.QueryLayoutObjInstances(
+                        layout_instance_pb2.LayoutObjInstancesQueryMessage(**msg_params)
+                    ).query_results
+                )
+
+        # Process hits and return results
+        all_hits_iter = iter(all_hits)
+        if not spatial_filters:
+            return process_hits(None, all_hits_iter)
+        if len(spatial_filters) == 1:
+            return process_hits(spatial_filters[0], all_hits_iter)
+        return [process_hits(sf, all_hits_iter) for sf in spatial_filters]
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.

@@ -175,6 +175,7 @@ class LayoutInstance(ObjBase):
                 return process_hits(spatial_filters[0], all_hits_iter)
             return [process_hits(sf, all_hits_iter) for sf in spatial_filters]
         else:
+            spatial_filters = [] if spatial_filter is None else utils.ensure_is_list(spatial_filter)
             # Temporary workaround for Linux until the streaming gRPC implementation is fixed on server side for Linux.
             # On Linux, instead of supporting multiple filters in a single query, only the first spatial filter is used.
             msg_params = lyt_inst_net_filter_lyr_filter_params.copy()

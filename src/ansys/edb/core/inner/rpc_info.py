@@ -137,6 +137,8 @@ rpc_information = {
         "SetHfssExtentInfo": _RpcInfo(buffer=True),
         "GetTemperatureSettings": _RpcInfo(cache=True),
         "SetTemperatureSettings": _RpcInfo(buffer=True),
+        "GetTouchstoneExportSettings": _RpcInfo(cache=True),
+        "SetTouchstoneExportSettings": _RpcInfo(buffer=True),
         "GetProductPropertyIds": _RpcInfo(cache=True),
         "GetProductProperty": _RpcInfo(cache=True),
         "SetProductProperty": _RpcInfo(buffer=True),
@@ -145,6 +147,7 @@ rpc_information = {
         "StreamSimulationSetups": _RpcInfo(read_no_cache=True),
         "GenerateAutoHFSSRegions": _RpcInfo(buffer=True),
         "GenerateViaSmartBox": _RpcInfo(cache=True),
+        "ApplyTechnology": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.CellInstanceService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),
@@ -402,6 +405,8 @@ rpc_information = {
         "SetUseMaxRefinement": _RpcInfo(buffer=True),
         "GetBasisFunctionOrder": _RpcInfo(cache=True),
         "SetBasisFunctionOrder": _RpcInfo(buffer=True),
+        "GetSolveInsideMetalBasis": _RpcInfo(cache=True),
+        "SetSolveInsideMetalBasis": _RpcInfo(buffer=True),
         "GetSolverTypeOrder": _RpcInfo(cache=True),
         "SetSolverTypeOrder": _RpcInfo(buffer=True),
         "GetRelativeResidual": _RpcInfo(cache=True),
@@ -1147,11 +1152,11 @@ rpc_information = {
         "GetUseLoopResForPerPin": _RpcInfo(cache=True),
         "SetUseLoopResForPerPin": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSIGeneralSettingsService": {
+    "ansys.api.edb.v1.SIWavePSIGeneralSettingsService": {
         "GetPISliderPos": _RpcInfo(cache=True),
         "SetPISliderPos": _RpcInfo(buffer=True),
-        "GetSIwavePSIModelType": _RpcInfo(cache=True),
-        "SetSIwavePSIModelType": _RpcInfo(buffer=True),
+        "GetSIWavePSIModelType": _RpcInfo(cache=True),
+        "SetSIWavePSIModelType": _RpcInfo(buffer=True),
         "GetMinPlaneAreaToMesh": _RpcInfo(cache=True),
         "SetMinPlaneAreaToMesh": _RpcInfo(buffer=True),
         "GetMinVoidAreaToMesh": _RpcInfo(cache=True),
@@ -1167,7 +1172,7 @@ rpc_information = {
         "GetPerformERC": _RpcInfo(cache=True),
         "SetPerformERC": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSINetProcessingSettingsService": {
+    "ansys.api.edb.v1.SIWavePSINetProcessingSettingsService": {
         "GetAutoSelectNetsForSimulation": _RpcInfo(cache=True),
         "SetAutoSelectNetsForSimulation": _RpcInfo(buffer=True),
         "GetIgnoreDummyNetsForSelectedNets": _RpcInfo(cache=True),
@@ -1175,7 +1180,7 @@ rpc_information = {
         "GetIncludeNets": _RpcInfo(cache=True),
         "SetIncludeNets": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSIPowerGroundNetsService": {
+    "ansys.api.edb.v1.SIWavePSIPowerGroundNetsService": {
         "GetImprovedLossModel": _RpcInfo(cache=True),
         "SetImprovedLossModel": _RpcInfo(buffer=True),
         "GetAutoDetectIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True),
@@ -1183,7 +1188,7 @@ rpc_information = {
         "GetIgnoreSmallHolesMinDiameter": _RpcInfo(cache=True),
         "SetIgnoreSmallHolesMinDiameter": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.SIwavePSISignalNetsSettingsService": {
+    "ansys.api.edb.v1.SIWavePSISignalNetsSettingsService": {
         "GetSignalNetsErrorTolerance": _RpcInfo(cache=True),
         "SetSignalNetsErrorTolerance": _RpcInfo(buffer=True),
         "GetSignalNetsConductorModeling": _RpcInfo(cache=True),
@@ -1365,6 +1370,16 @@ rpc_information = {
         "GetProperties": _RpcInfo(cache=True),
         "SetComponentModelName": _RpcInfo(buffer=True),
         "SetReferenceNet": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.TechnologyDefService": {
+        "Create": _RpcInfo(buffer=True, returns_future=True),
+        "FindByName": _RpcInfo(cache=True),
+        "Delete": _RpcInfo(buffer=True),
+        "GetTechFile": _RpcInfo(cache=True),
+        "GetGFDFile": _RpcInfo(cache=True),
+        "GetLayerFile": _RpcInfo(cache=True),
+        "GetName": _RpcInfo(cache=True),
+        "GetIsCreateBackplane": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.TerminalService": {
         "FindByName": _RpcInfo(buffer=True, returns_future=True),

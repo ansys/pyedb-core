@@ -10,8 +10,12 @@ updates:
         - "*"  # Include all dependencies in cooldown
       exclude:
         - "ansys-sphinx-theme"
+        - "ansys-tools-common"
     assignees:
-      - "pyansys-ci-bot"
+      - "drewm102"
+      - "chenchienjacklin"
+      - "SMoraisAnsys"
+      - "ecoussoux-ansys"
     labels:
       - "maintenance"
       - "dependencies"
@@ -29,7 +33,10 @@ updates:
       exclude:
         - "ansys/actions"
     assignees:
-      - "pyansys-ci-bot"
+      - "drewm102"
+      - "chenchienjacklin"
+      - "SMoraisAnsys"
+      - "ecoussoux-ansys"
     labels:
       - "maintenance"
       - "dependencies"

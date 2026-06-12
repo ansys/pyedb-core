@@ -1,4 +1,6 @@
-# Global owners
-* @drewm102
-* @ansahershen
-* @chenchienjacklin
+# These owners will be defined only for CI and general maintenance.
+.github/* @SMoraisAnsys @ecoussoux-ansys
+pyproject.toml @SMoraisAnsys @ecoussoux-ansys
+
+# These owners will be the default owners for everything in the repo.
+* @drewm102 @chenchienjacklin @ansahershen

@@ -30,6 +30,7 @@ class SimulationSetupType(Enum):
     SI_WAVE_PSI = edb_defs_pb2.SI_WAVE_PSI_SIM
     RAPTOR_X = edb_defs_pb2.RAPTOR_X_SIM
     Q3D_SIM = edb_defs_pb2.Q3D_SIM
+    SI_WAVE_CPA = edb_defs_pb2.SI_WAVE_CPA_SIM
 
 
 class FreqSweepType(Enum):

@@ -103,11 +103,11 @@ class LayoutInstance(ObjBase):
                 **lyt_inst_net_filter_lyr_filter_params
             )
         ]
-        has_spatial_filter = spatial_filter is not None
-        if has_spatial_filter:
+        if spatial_filter is not None:
             for sf in utils.ensure_is_list(spatial_filter):
                 requests.append(spatial_filter_to_msg(sf))
 
+        # Run queries and gather hits
         all_hits = []
         if is_in_memory():
             queries_msg = layout_instance_pb2.LayoutObjInstancesQueriesMessage(
@@ -137,15 +137,14 @@ class LayoutInstance(ObjBase):
                 (full_hits, partial_hits) if isinstance(_spatial_filter, PolygonData) else full_hits
             )
 
+        # Process hits and return results
         all_hits_iter = iter(all_hits)
-        if not has_spatial_filter:
-            return process_hits(None, all_hits_iter)
-        elif has_single_spatial_filter:
+
+        if not isinstance(spatial_filter, list):
             return process_hits(spatial_filter, all_hits_iter)
-        elif len(spatial_filter) == 1:
-            return process_hits(spatial_filter[0], all_hits_iter)
-        else:
-            return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
+
+        # spatial_filter is a list
+        return [process_hits(sf, all_hits_iter) for sf in spatial_filter]
 
     def get_layout_obj_instance_in_context(self, layout_obj, context):
         """Get the layout object instance of the given :term:`connectable <Connectable>` in the provided context.

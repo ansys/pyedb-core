@@ -1,32 +1,30 @@
 """Write out the rpc_info.py file."""
+
 from collections import defaultdict
 from os import environ
-from typing import List
 
-from proto_parsing_utils import ProtoParserException, RpcData, parse_all_protos_in_dir
+from proto_parsing_utils import ProtoParserException
+from proto_parsing_utils import RpcData
+from proto_parsing_utils import parse_all_protos_in_dir
 
 tab = "    "
 ansys_api_edb_repo_env_str = "ANSYS_API_EDB_REPO_PATH"
 
 
 def _get_rpc_info_object_str(data: RpcData):
-    io_flag_params = ", ".join(
-        [f"{io_flag}={True}" for io_flag in sorted(data.io_flags, key=str.lower)]
-    )
+    io_flag_params = ", ".join([f"{io_flag}={True}" for io_flag in sorted(data.io_flags, key=str.lower)])
     return f"_RpcInfo({io_flag_params})"
 
 
-def _rpc_info_to_str_entries(rpc_datas: List[RpcData]):
+def _rpc_info_to_str_entries(rpc_datas: list[RpcData]):
     rpc_info_str_entries = []
     for data in rpc_datas:
-        rpc_info_str_entries.append(
-            f"""{tab}\"{data.rpc_name}\": {_get_rpc_info_object_str(data)}"""
-        )
+        rpc_info_str_entries.append(f"""{tab}\"{data.rpc_name}\": {_get_rpc_info_object_str(data)}""")
     rpc_info_str_entries = ",\n".join(rpc_info_str_entries)
     return f"{{{rpc_info_str_entries}}}"
 
 
-def _rpc_info_to_str(rpc_datas: List[RpcData]):
+def _rpc_info_to_str(rpc_datas: list[RpcData]):
     service_to_rpc_map = defaultdict(list)
     for data in rpc_datas:
         service_to_rpc_map[data.full_service_name].append(data)
@@ -34,10 +32,10 @@ def _rpc_info_to_str(rpc_datas: List[RpcData]):
     for service_name, data in service_to_rpc_map.items():
         service_info_str = f"""{tab}\"{service_name}\": {_rpc_info_to_str_entries(data)}"""
         rpc_info_str.append(service_info_str)
-    return f",\n".join(rpc_info_str)
+    return ",\n".join(rpc_info_str)
 
 
-def _get_rpc_info_file_str(rpc_datas: List[RpcData]):
+def _get_rpc_info_file_str(rpc_datas: list[RpcData]):
     return f"""\"\"\"Defines container which gives additional information for RPC methods.\"\"\"
 
 
@@ -90,7 +88,7 @@ rpc_information = {{
 """
 
 
-def _write_rpc_info_file(rpc_datas: List[RpcData], path: str):
+def _write_rpc_info_file(rpc_datas: list[RpcData], path: str):
     with open(path, "w") as f:
         f.write(_get_rpc_info_file_str(rpc_datas))
 

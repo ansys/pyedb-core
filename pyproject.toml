@@ -65,7 +65,7 @@ name = "ansys.edb.core"
 line-length = 120
 fix = true
 # TODO: Add back notebooks and test files
-exclude = ["*.def", "*.aedt", "*.aedtz", "*.ipynb", "tests"] # Do not check AEDT/EDB binary files, notebooks, or tests
+exclude = ["*.def", "*.aedt", "*.aedtz", "*.ipynb"] # Do not check AEDT/EDB binary files, notebooks
 
 [tool.ruff.format]
 quote-style = "double"
@@ -113,7 +113,9 @@ ignore = [
     # "F" - pyflakes, see https://docs.astral.sh/ruff/rules/#pyflakes-f
     "F401", # unused-import
     "F405", # undefined-local-with-import-star-usage
+    "F811", # redefined-while-unused
     "F821", # undefined-name
+    "F841", # unused-variable
 
     # "N" - pep8-naming, see https://docs.astral.sh/ruff/rules/#pep8-naming-n
     "N802", # invalid-function-name

@@ -45,9 +45,7 @@ def _clean_notebook(path: Path, leave_outputs: bool):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--leave-outputs", action="store_true", default=False, help="leave cell outputs as-is"
-    )
+    parser.add_argument("--leave-outputs", action="store_true", default=False, help="leave cell outputs as-is")
     parser.add_argument("files", help="ipynb files to process", nargs=argparse.REMAINDER)
     arguments = parser.parse_args()
     files_modified = False

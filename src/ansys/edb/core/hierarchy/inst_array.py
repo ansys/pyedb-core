@@ -4,8 +4,10 @@ from ansys.api.edb.v1.inst_array_pb2_grpc import InstArrayServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import cell_instance
-from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -45,9 +47,7 @@ class InstArray(cell_instance.CellInstance):
         """
         return InstArray(
             cls.__stub.Create(
-                messages.inst_array_creation_message(
-                    layout, name, ref, orig, xaxis, yaxis, xcount, ycount
-                )
+                messages.inst_array_creation_message(layout, name, ref, orig, xaxis, yaxis, xcount, ycount)
             )
         )
 

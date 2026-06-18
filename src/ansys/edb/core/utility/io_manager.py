@@ -1,15 +1,20 @@
 """Cache."""
+
 import abc
 from collections import defaultdict
 from contextlib import contextmanager
-from enum import Enum, Flag, auto
+from enum import Enum
+from enum import Flag
+from enum import auto
 from importlib import import_module
 import re
 from sys import modules
 from typing import Any as AnyType
 
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
-from ansys.api.edb.v1.io_manager_pb2 import BufferEntryMessage, BufferMessage
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
+from ansys.api.edb.v1.io_manager_pb2 import BufferEntryMessage
+from ansys.api.edb.v1.io_manager_pb2 import BufferMessage
 from google.protobuf.any_pb2 import Any
 from google.protobuf.empty_pb2 import Empty
 
@@ -29,7 +34,8 @@ def _get_next_future_id():
 
 
 def _get_io_manager_stub():
-    from ansys.edb.core.session import StubAccessor, StubType
+    from ansys.edb.core.session import StubAccessor
+    from ansys.edb.core.session import StubType
 
     return StubAccessor(StubType.io_manager).__get__()
 
@@ -124,10 +130,7 @@ class _Cache(_IOOptimizer):
         if msg_type is None:
             insertion_idx = msg_type_name.rindex(".")
             msg_class_path = (
-                msg_type_name[: insertion_idx + 1]
-                + any_module_msg.module
-                + "_pb2"
-                + msg_type_name[insertion_idx:]
+                msg_type_name[: insertion_idx + 1] + any_module_msg.module + "_pb2" + msg_type_name[insertion_idx:]
             )
             msg_type = _import_attribute_from_module(msg_class_path)
             self._msg_type_cache[msg_type_name] = msg_type
@@ -141,18 +144,14 @@ class _Cache(_IOOptimizer):
         return f"{service_name}-{rpc_method_name}-{str(request)}"
 
     def add(self, service_name, rpc_method_name, request_msg, response_msg):
-        self._response_cache[
-            self._generate_cache_key(service_name, rpc_method_name, request_msg)
-        ] = response_msg
+        self._response_cache[self._generate_cache_key(service_name, rpc_method_name, request_msg)] = response_msg
 
     def add_from_cache_msg(self, edb_obj_msg):
         cache_msg = edb_obj_msg.cache
         for cache_entry in cache_msg.cache:
             request_msg = self._extract_msg_from_any_module_msg(cache_entry.request)
             response_msg = self._extract_msg_from_any_module_msg(cache_entry.response)
-            self.add(
-                cache_entry.service_name, cache_entry.rpc_method_name, request_msg, response_msg
-            )
+            self.add(cache_entry.service_name, cache_entry.rpc_method_name, request_msg, response_msg)
             self._cached_edb_objs[edb_obj_msg.id] = True
         if cache_msg.cache:
             cache_msg.ClearField("cache")
@@ -173,9 +172,7 @@ class _Cache(_IOOptimizer):
         get_io_manager().add_notification_for_server(ServerNotification.INVALIDATE_CACHE)
 
     def refresh_for_request(self):
-        active_request_edb_obj_msgs = (
-            get_io_manager().active_request_edb_obj_msg_mgr.active_request_edb_obj_msgs
-        )
+        active_request_edb_obj_msgs = get_io_manager().active_request_edb_obj_msg_mgr.active_request_edb_obj_msgs
         if not active_request_edb_obj_msgs:
             return
         edb_objs_to_refresh = [
@@ -187,9 +184,7 @@ class _Cache(_IOOptimizer):
         if not edb_objs_to_refresh:
             return
         with self.block():
-            response = _get_io_manager_stub().RefreshCache(
-                EDBObjCollectionMessage(items=edb_objs_to_refresh)
-            )
+            response = _get_io_manager_stub().RefreshCache(EDBObjCollectionMessage(items=edb_objs_to_refresh))
             for msg in response.items:
                 self.add_from_cache_msg(msg)
 
@@ -247,9 +242,7 @@ class _Buffer(_IOOptimizer):
     def _buffer_request_iterator(buffer):
         chunk_entry_creator = lambda buffer_entry: buffer_entry.msg()
         chunk_entries_getter = lambda chunk: chunk.buffer
-        return client_stream_iterator(
-            buffer, BufferMessage, chunk_entry_creator, chunk_entries_getter
-        )
+        return client_stream_iterator(buffer, BufferMessage, chunk_entry_creator, chunk_entries_getter)
 
     def flush(self):
         if not self._buffer or not self.allow_flushing:
@@ -258,13 +251,9 @@ class _Buffer(_IOOptimizer):
             if (cache := get_cache()) is not None and self._invalidate_cache:
                 cache.invalidate()
             get_io_manager().add_notification_for_server(ServerNotification.FLUSH_BUFFER)
-            for response in _get_io_manager_stub().FlushBufferStream(
-                self._buffer_request_iterator(self._buffer)
-            ):
+            for response in _get_io_manager_stub().FlushBufferStream(self._buffer_request_iterator(self._buffer)):
                 for updated_edb_obj in response.resolved_futures:
-                    if (
-                        future_edb_objs := self._futures.get(updated_edb_obj.future_id)
-                    ) is not None:
+                    if (future_edb_objs := self._futures.get(updated_edb_obj.future_id)) is not None:
                         for future_edb_obj in future_edb_objs:
                             future_edb_obj.msg = updated_edb_obj.edb_obj
 
@@ -385,12 +374,7 @@ class _IOManager:
     @property
     def is_blocking(self):
         """Check if the io manager is currently blocking caching and buffering operations."""
-        return (
-            self.cache is not None
-            and self.cache.is_blocking
-            or self.buffer is not None
-            and self.buffer.is_blocking
-        )
+        return self.cache is not None and self.cache.is_blocking or self.buffer is not None and self.buffer.is_blocking
 
     def add_notification_for_server(self, notification):
         self._server_notifications.add(notification)

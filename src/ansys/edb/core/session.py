@@ -1,4 +1,5 @@
 """Session manager for gRPC."""
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -11,19 +12,17 @@ from pathlib import Path
 from platform import system
 from shutil import which
 import socket
-from struct import pack, unpack
+from struct import pack
+from struct import unpack
 import subprocess
 from sys import modules
-from typing import List
 
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
 from ansys.api.edb.v1.board_bend_def_pb2_grpc import BoardBendDefServiceStub
-from ansys.api.edb.v1.bondwire_def_pb2_grpc import (
-    ApdBondwireDefServiceStub,
-    BondwireDefServiceStub,
-    Jedec4BondwireDefServiceStub,
-    Jedec5BondwireDefServiceStub,
-)
+from ansys.api.edb.v1.bondwire_def_pb2_grpc import ApdBondwireDefServiceStub
+from ansys.api.edb.v1.bondwire_def_pb2_grpc import BondwireDefServiceStub
+from ansys.api.edb.v1.bondwire_def_pb2_grpc import Jedec4BondwireDefServiceStub
+from ansys.api.edb.v1.bondwire_def_pb2_grpc import Jedec5BondwireDefServiceStub
 from ansys.api.edb.v1.bondwire_pb2_grpc import BondwireServiceStub
 from ansys.api.edb.v1.bundle_term_pb2_grpc import BundleTerminalServiceStub
 from ansys.api.edb.v1.cell_instance_pb2_grpc import CellInstanceServiceStub
@@ -31,11 +30,9 @@ from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 from ansys.api.edb.v1.circle_pb2_grpc import CircleServiceStub
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 from ansys.api.edb.v1.component_group_pb2_grpc import ComponentGroupServiceStub
-from ansys.api.edb.v1.component_model_pb2_grpc import (
-    ComponentModelServiceStub,
-    DynamicLinkComponentModelServiceStub,
-    NPortComponentModelServiceStub,
-)
+from ansys.api.edb.v1.component_model_pb2_grpc import ComponentModelServiceStub
+from ansys.api.edb.v1.component_model_pb2_grpc import DynamicLinkComponentModelServiceStub
+from ansys.api.edb.v1.component_model_pb2_grpc import NPortComponentModelServiceStub
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 from ansys.api.edb.v1.connectable_pb2_grpc import ConnectableServiceStub
@@ -47,22 +44,19 @@ from ansys.api.edb.v1.dielectric_material_model_pb2_grpc import DielectricMateri
 from ansys.api.edb.v1.differential_pair_pb2_grpc import DifferentialPairServiceStub
 from ansys.api.edb.v1.djordjecvic_sarkar_model_pb2_grpc import DjordjecvicSarkarModelServiceStub
 from ansys.api.edb.v1.edb_error_manager_pb2_grpc import EDBErrorManagerServiceStub
-from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub, EdgeTerminalServiceStub
+from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeServiceStub
+from ansys.api.edb.v1.edge_term_pb2_grpc import EdgeTerminalServiceStub
 from ansys.api.edb.v1.extended_net_pb2_grpc import ExtendedNetServiceStub
 from ansys.api.edb.v1.group_pb2_grpc import GroupServiceStub
-from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import (
-    HFSSPIAdvancedSettingsServiceStub,
-    HFSSPIGeneralSettingsServiceStub,
-    HFSSPISolverSettingsServiceStub,
-)
-from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import (
-    DCRSettingsServiceStub,
-    HFSSAdvancedMeshingSettingsServiceStub,
-    HFSSAdvancedSettingsServiceStub,
-    HFSSGeneralSettingsServiceStub,
-    HFSSOptionsSettingsServiceStub,
-    HFSSSolverSettingsServiceStub,
-)
+from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import HFSSPIAdvancedSettingsServiceStub
+from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import HFSSPIGeneralSettingsServiceStub
+from ansys.api.edb.v1.hfss_pi_simulation_settings_pb2_grpc import HFSSPISolverSettingsServiceStub
+from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import DCRSettingsServiceStub
+from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import HFSSAdvancedMeshingSettingsServiceStub
+from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import HFSSAdvancedSettingsServiceStub
+from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import HFSSGeneralSettingsServiceStub
+from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import HFSSOptionsSettingsServiceStub
+from ansys.api.edb.v1.hfss_simulation_settings_pb2_grpc import HFSSSolverSettingsServiceStub
 from ansys.api.edb.v1.hfss_simulation_setup_pb2_grpc import HfssSimulationSetupServiceStub
 from ansys.api.edb.v1.hierarchy_obj_pb2_grpc import HierarchyObjectServiceStub
 from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
@@ -75,22 +69,14 @@ from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 from ansys.api.edb.v1.layout_component_pb2_grpc import LayoutComponentServiceStub
 from ansys.api.edb.v1.layout_instance_context_pb2_grpc import LayoutInstanceContextServiceStub
 from ansys.api.edb.v1.layout_instance_pb2_grpc import LayoutInstanceServiceStub
-from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2_grpc import (
-    LayoutObjInstance2DGeometryServiceStub,
-)
-from ansys.api.edb.v1.layout_obj_instance_3d_geometry_pb2_grpc import (
-    LayoutObjInstance3DGeometryServiceStub,
-)
-from ansys.api.edb.v1.layout_obj_instance_geometry_pb2_grpc import (
-    LayoutObjInstanceGeometryServiceStub,
-)
+from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2_grpc import LayoutObjInstance2DGeometryServiceStub
+from ansys.api.edb.v1.layout_obj_instance_3d_geometry_pb2_grpc import LayoutObjInstance3DGeometryServiceStub
+from ansys.api.edb.v1.layout_obj_instance_geometry_pb2_grpc import LayoutObjInstanceGeometryServiceStub
 from ansys.api.edb.v1.layout_obj_instance_pb2_grpc import LayoutObjInstanceServiceStub
 from ansys.api.edb.v1.layout_obj_pb2_grpc import LayoutObjServiceStub
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 from ansys.api.edb.v1.material_def_pb2_grpc import MaterialDefServiceStub
-from ansys.api.edb.v1.material_property_thermal_modifier_pb2_grpc import (
-    MaterialPropertyThermalModifierServiceStub,
-)
+from ansys.api.edb.v1.material_property_thermal_modifier_pb2_grpc import MaterialPropertyThermalModifierServiceStub
 from ansys.api.edb.v1.mcad_model_pb2_grpc import McadModelServiceStub
 from ansys.api.edb.v1.model_pb2_grpc import ModelServiceStub
 from ansys.api.edb.v1.multipole_debye_model_pb2_grpc import MultipoleDebyeModelServiceStub
@@ -111,62 +97,46 @@ from ansys.api.edb.v1.point_term_pb2_grpc import PointTerminalServiceStub
 from ansys.api.edb.v1.polygon_data_pb2_grpc import PolygonDataServiceStub
 from ansys.api.edb.v1.polygon_pb2_grpc import PolygonServiceStub
 from ansys.api.edb.v1.port_property_pb2_grpc import PortPropertyServiceStub
-from ansys.api.edb.v1.primitive_instance_collection_pb2_grpc import (
-    PrimitiveInstanceCollectionServiceStub,
-)
+from ansys.api.edb.v1.primitive_instance_collection_pb2_grpc import PrimitiveInstanceCollectionServiceStub
 from ansys.api.edb.v1.primitive_pb2_grpc import PrimitiveServiceStub
-from ansys.api.edb.v1.q3d_simulation_settings_pb2_grpc import (
-    Q3DAdvancedMeshingSettingsServiceStub,
-    Q3DAdvancedSettingsServiceStub,
-    Q3DCGSettingsServiceStub,
-    Q3DDCRLSettingsServiceStub,
-    Q3DGeneralSettingsServiceStub,
-    Q3DSettingsServiceStub,
-)
+from ansys.api.edb.v1.q3d_simulation_settings_pb2_grpc import Q3DAdvancedMeshingSettingsServiceStub
+from ansys.api.edb.v1.q3d_simulation_settings_pb2_grpc import Q3DAdvancedSettingsServiceStub
+from ansys.api.edb.v1.q3d_simulation_settings_pb2_grpc import Q3DCGSettingsServiceStub
+from ansys.api.edb.v1.q3d_simulation_settings_pb2_grpc import Q3DDCRLSettingsServiceStub
+from ansys.api.edb.v1.q3d_simulation_settings_pb2_grpc import Q3DGeneralSettingsServiceStub
+from ansys.api.edb.v1.q3d_simulation_settings_pb2_grpc import Q3DSettingsServiceStub
 from ansys.api.edb.v1.r_tree_pb2_grpc import RTreeServiceStub
-from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import (
-    RaptorXAdvancedSettingsServiceStub,
-    RaptorXGeneralSettingsServiceStub,
-)
+from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import RaptorXAdvancedSettingsServiceStub
+from ansys.api.edb.v1.raptor_x_simulation_settings_pb2_grpc import RaptorXGeneralSettingsServiceStub
 from ansys.api.edb.v1.rectangle_pb2_grpc import RectangleServiceStub
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
 from ansys.api.edb.v1.s_parameter_model_pb2_grpc import SParameterModelServiceStub
-from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import (
-    SIWaveCPAAdvancedSettingsServiceStub,
-    SIWaveCPAChannelComponentSettingsServiceStub,
-    SIWaveCPADieConfigSettingsServiceStub,
-    SIWaveCPAExternalEnvSettingsServiceStub,
-    SIWaveCPAHotSpotComponentSettingsServiceStub,
-    SIWaveCPANetSettingsServiceStub,
-    SIWaveCPAQ3DSettingsServiceStub,
-    SIWaveCPASettingsServiceStub,
-    SIWaveCPASimulationSettingsServiceStub,
-    SIWaveCPAUnconnectedDiePinSettingsServiceStub,
-    SIWaveCPAVRMSettingsServiceStub,
-)
-from ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2_grpc import (
-    SIWaveDCIRSimulationSettingsServiceStub,
-)
-from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import (
-    SIWavePSIGeneralSettingsServiceStub,
-    SIWavePSINetProcessingSettingsServiceStub,
-    SIWavePSIPowerGroundNetsServiceStub,
-    SIWavePSISignalNetsSettingsServiceStub,
-)
-from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import (
-    SIWaveAdvancedSettingsServiceStub,
-    SIWaveDCAdvancedSettingsServiceStub,
-    SIWaveDCSettingsServiceStub,
-    SIWaveGeneralSettingsServiceStub,
-    SIWaveSParameterSettingsServiceStub,
-)
-from ansys.api.edb.v1.simulation_settings_pb2_grpc import (
-    AdvancedMeshingSettingsServiceStub,
-    AdvancedSettingsServiceStub,
-    SettingsOptionsServiceStub,
-    SimulationSettingsServiceStub,
-    SolverSettingsServiceStub,
-)
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPAAdvancedSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPAChannelComponentSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPADieConfigSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPAExternalEnvSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPAHotSpotComponentSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPANetSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPAQ3DSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPASettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPASimulationSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPAUnconnectedDiePinSettingsServiceStub
+from ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2_grpc import SIWaveCPAVRMSettingsServiceStub
+from ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2_grpc import SIWaveDCIRSimulationSettingsServiceStub
+from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import SIWavePSIGeneralSettingsServiceStub
+from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import SIWavePSINetProcessingSettingsServiceStub
+from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import SIWavePSIPowerGroundNetsServiceStub
+from ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2_grpc import SIWavePSISignalNetsSettingsServiceStub
+from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import SIWaveAdvancedSettingsServiceStub
+from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import SIWaveDCAdvancedSettingsServiceStub
+from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import SIWaveDCSettingsServiceStub
+from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import SIWaveGeneralSettingsServiceStub
+from ansys.api.edb.v1.si_wave_simulation_settings_pb2_grpc import SIWaveSParameterSettingsServiceStub
+from ansys.api.edb.v1.simulation_settings_pb2_grpc import AdvancedMeshingSettingsServiceStub
+from ansys.api.edb.v1.simulation_settings_pb2_grpc import AdvancedSettingsServiceStub
+from ansys.api.edb.v1.simulation_settings_pb2_grpc import SettingsOptionsServiceStub
+from ansys.api.edb.v1.simulation_settings_pb2_grpc import SimulationSettingsServiceStub
+from ansys.api.edb.v1.simulation_settings_pb2_grpc import SolverSettingsServiceStub
 from ansys.api.edb.v1.simulation_setup_pb2_grpc import SimulationSetupServiceStub
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 from ansys.api.edb.v1.spice_model_pb2_grpc import SpiceModelServiceStub
@@ -188,12 +158,11 @@ from ansys.tools.common.cyberchannel import create_channel
 import grpc
 
 from ansys.edb.core.inner import LOGGER
-from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode
-from ansys.edb.core.inner.interceptors import (
-    ExceptionInterceptor,
-    IOInterceptor,
-    SharedMemoryInterceptor,
-)
+from ansys.edb.core.inner.exceptions import EDBSessionException
+from ansys.edb.core.inner.exceptions import ErrorCode
+from ansys.edb.core.inner.interceptors import ExceptionInterceptor
+from ansys.edb.core.inner.interceptors import IOInterceptor
+from ansys.edb.core.inner.interceptors import SharedMemoryInterceptor
 from ansys.edb.core.inner.shared_memory_transport import SharedMemoryTransport
 
 DEFAULT_ADDRESS = "localhost"
@@ -280,7 +249,7 @@ class _Session:
         else:
             return None
 
-    def server_arguments(self) -> List[str]:
+    def server_arguments(self) -> list[str]:
         args = []
 
         if self.shared_memory:
@@ -355,9 +324,7 @@ class _Session:
         if self.shared_memory:
             options = (("grpc.default_authority", "localhost"),)
             address = self.server_url
-            return grpc.intercept_channel(
-                grpc.insecure_channel(address, options=options), *self.interceptors
-            )
+            return grpc.intercept_channel(grpc.insecure_channel(address, options=options), *self.interceptors)
         channel_params = {"transport_mode": self.transport_mode}
         if self._uses_uds():
             channel_params["uds_fullpath"] = self._get_uds_file()
@@ -403,9 +370,7 @@ class _Session:
         (indicating an older server without shared-memory support).
         """
         try:
-            self._shm_transport = SharedMemoryTransport(
-                self._shm_name, server_process=self.local_server_proc
-            )
+            self._shm_transport = SharedMemoryTransport(self._shm_name, server_process=self.local_server_proc)
             self._shm_transport.connect()
             return True
         except FileNotFoundError:
@@ -425,9 +390,7 @@ class _Session:
 
     def disconnect(self):
         if self.rpc_counter is not None:
-            print(
-                "pyedb-core session traffic:" + os.linesep + json.dumps(self.rpc_counter, indent=4)
-            )
+            print("pyedb-core session traffic:" + os.linesep + json.dumps(self.rpc_counter, indent=4))
         if self.stubs is not None:
             self.stubs = None
 
@@ -664,9 +627,7 @@ class StubType(Enum):
     siwave_cpa_hot_spot_component_settings = SIWaveCPAHotSpotComponentSettingsServiceStub
 
 
-def attach_session(
-    ip_address: str | None = None, port_num: int = 50051, dump_traffic_log: bool = False
-):
+def attach_session(ip_address: str | None = None, port_num: int = 50051, dump_traffic_log: bool = False):
     """Attach a session to a port running the EDB API server.
 
     Parameters
@@ -721,9 +682,7 @@ def launch_session(
     ip_address = None  # remote launch is not supported yet
 
     try:
-        _ensure_session(
-            ansys_em_root, port_num, ip_address, dump_traffic_log, use_shared_memory_ipc
-        )
+        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log, use_shared_memory_ipc)
         return MOD.current_session
     except Exception as e:  # noqa
         if MOD.current_session is not None:
@@ -769,12 +728,10 @@ def session(
     Create a session that automatically disconnects when it goes out of scope.
 
     >>> with session("C:\\Program Files\\AnsysEM\\v231\\Win64", 50051):
-    >>>    # program goes here
+    >>> # program goes here
     """
     try:
-        _ensure_session(
-            ansys_em_root, port_num, ip_address, dump_traffic_log, use_shared_memory_ipc
-        )
+        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log, use_shared_memory_ipc)
         yield
     except EDBSessionException:
         raise
@@ -861,9 +818,7 @@ def _ensure_session(
         if (MOD.current_session.port_num) != port_num:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
     else:
-        MOD.current_session = _Session(
-            ip_address, port_num, ansys_em_root, dump_traffic_log, use_shared_memory_ipc
-        )
+        MOD.current_session = _Session(ip_address, port_num, ansys_em_root, dump_traffic_log, use_shared_memory_ipc)
         MOD.current_session.connect()
 
 

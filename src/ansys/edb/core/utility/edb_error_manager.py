@@ -1,14 +1,14 @@
 """EDB Error Manager."""
 
 from enum import Enum
-from typing import List
 
 import ansys.api.edb.v1.edb_error_manager_pb2 as pb2
 from ansys.api.edb.v1.edb_error_manager_pb2_grpc import EDBErrorManagerServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
 from ansys.edb.core.inner.utils import stream_items_from_server
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 __stub_accessor = StubAccessor(StubType.edb_error_manager)
 
@@ -55,7 +55,7 @@ def _msg_to_edb_error(msg):
     return EDBError(msg.message, EDBErrorSeverity(msg.severity))
 
 
-def get_error_messages() -> List[EDBError]:
+def get_error_messages() -> list[EDBError]:
     """Get all the error messages stored in the EDB error manager. All existing \
     messages in the EDB error manager are cleared.
 
@@ -63,6 +63,4 @@ def get_error_messages() -> List[EDBError]:
     -------
     list of .EDBError
     """
-    return stream_items_from_server(
-        _msg_to_edb_error, _get_stub().GetErrors(empty_pb2.Empty()), "messages"
-    )
+    return stream_items_from_server(_msg_to_edb_error, _get_stub().GetErrors(empty_pb2.Empty()), "messages")

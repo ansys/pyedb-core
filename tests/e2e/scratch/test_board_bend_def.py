@@ -1,14 +1,15 @@
 import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.layer.layer import Layer, LayerType
-from ansys.edb.core.layer.layer_collection import LayerCollection, LayerCollectionMode
-from ansys.edb.core.layout.cell import Cell, CellType
-from ansys.edb.core.primitive.board_bend_def import (
-    BoardBendDef,
-    Rectangle,
-    RectangleRepresentationType,
-)
+from ansys.edb.core.layer.layer import Layer
+from ansys.edb.core.layer.layer import LayerType
+from ansys.edb.core.layer.layer_collection import LayerCollection
+from ansys.edb.core.layer.layer_collection import LayerCollectionMode
+from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout.cell import CellType
+from ansys.edb.core.primitive.board_bend_def import BoardBendDef
+from ansys.edb.core.primitive.board_bend_def import Rectangle
+from ansys.edb.core.primitive.board_bend_def import RectangleRepresentationType
 from ansys.edb.core.session import session
 from ansys.edb.core.utility.value import Value
 

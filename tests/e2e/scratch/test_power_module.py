@@ -1,8 +1,10 @@
 import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.layout.cell import Cell, CellType
-from ansys.edb.core.layout.voltage_regulator import PowerModule, VoltageRegulator
+from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout.cell import CellType
+from ansys.edb.core.layout.voltage_regulator import PowerModule
+from ansys.edb.core.layout.voltage_regulator import VoltageRegulator
 from ansys.edb.core.session import launch_session
 
 

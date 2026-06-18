@@ -1,11 +1,13 @@
 import math
 
-from ansys.api.edb.v1 import edb_messages_pb2, point_data_pb2
+from ansys.api.edb.v1 import edb_messages_pb2
+from ansys.api.edb.v1 import point_data_pb2
 from google.protobuf import wrappers_pb2
 import pytest
 from utils.fixtures import *  # noqa
 
-from ansys.edb.core.geometry import arc_data, polygon_data
+from ansys.edb.core.geometry import arc_data
+from ansys.edb.core.geometry import polygon_data
 from ansys.edb.core.utility import value
 
 
@@ -39,16 +41,12 @@ test_arcs = [
 ]
 
 
-@pytest.mark.parametrize(
-    "arc, tol, is_segment", zip(test_arcs, [0, 1e-9, 1e-9, 1e-9], [True, True, False, True])
-)
+@pytest.mark.parametrize("arc, tol, is_segment", zip(test_arcs, [0, 1e-9, 1e-9, 1e-9], [True, True, False, True]))
 def test_is_segment(arc, tol, is_segment):
     assert arc.is_segment(tol) == is_segment
 
 
-@pytest.mark.parametrize(
-    "arc, tol, is_point", zip(test_arcs, [0, 1e-9, 1e-9, 1e-9], [False, True, False, False])
-)
+@pytest.mark.parametrize("arc, tol, is_point", zip(test_arcs, [0, 1e-9, 1e-9, 1e-9], [False, True, False, False]))
 def test_is_point(arc, tol, is_point):
     assert arc.is_point(tol) == is_point
 
@@ -84,9 +82,7 @@ def test_bbox(mocked_stub):
     assert bbox.points == polygon_data.PolygonData(lower_left=(0, 0), upper_right=(3, 4)).points
 
 
-@pytest.mark.parametrize(
-    "height, is_big", [[0, False], [2.4, False], [2.6, True], [-2.4, False], [-2.6, True]]
-)
+@pytest.mark.parametrize("height, is_big", [[0, False], [2.4, False], [2.6, True], [-2.4, False], [-2.6, True]])
 def test_is_big(height, is_big):
     arc = arc_data.ArcData(start=(0, 0), end=(3, 4), height=height)
     assert value.Value(arc.start.distance(arc.end)).equals(5, 1e-6)

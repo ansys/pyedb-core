@@ -3,19 +3,25 @@ import settings
 
 from ansys.edb.core.database import Database
 from ansys.edb.core.definition.padstack_def import PadstackDef
-from ansys.edb.core.definition.padstack_def_data import PadGeometryType, PadstackDefData, PadType
+from ansys.edb.core.definition.padstack_def_data import PadGeometryType
+from ansys.edb.core.definition.padstack_def_data import PadstackDefData
+from ansys.edb.core.definition.padstack_def_data import PadType
 from ansys.edb.core.geometry.polygon_data import PolygonData
 from ansys.edb.core.layer.layer import LayerType
 from ansys.edb.core.layer.layer_collection import LayerCollectionMode
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.layer.via_layer import ViaLayer
-from ansys.edb.core.layout.cell import Cell, CellType
+from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout.cell import CellType
 from ansys.edb.core.net.net import Net
 from ansys.edb.core.primitive.path import Path as Line
-from ansys.edb.core.primitive.path import PathCornerType, PathEndCapType
-from ansys.edb.core.primitive.rectangle import Rectangle, RectangleRepresentationType
+from ansys.edb.core.primitive.path import PathCornerType
+from ansys.edb.core.primitive.path import PathEndCapType
+from ansys.edb.core.primitive.rectangle import Rectangle
+from ansys.edb.core.primitive.rectangle import RectangleRepresentationType
 from ansys.edb.core.session import session
-from ansys.edb.core.terminal.edge_terminal import EdgeTerminal, PrimitiveEdge
+from ansys.edb.core.terminal.edge_terminal import EdgeTerminal
+from ansys.edb.core.terminal.edge_terminal import PrimitiveEdge
 
 
 @pytest.fixture
@@ -92,9 +98,7 @@ def circuit_cell_with_padstack_def(circuit_cell_with_stackup: Cell):
             PadGeometryType.PADGEOMTYPE_CIRCLE,
             [100e-6],
         )
-    padstack_def_data.set_hole_parameters(
-        0.0, 0.0, 0.0, PadGeometryType.PADGEOMTYPE_CIRCLE, [50e-6]
-    )
+    padstack_def_data.set_hole_parameters(0.0, 0.0, 0.0, PadGeometryType.PADGEOMTYPE_CIRCLE, [50e-6])
     padstack_def = PadstackDef.create(db, "VIA050070100")
     padstack_def.data = padstack_def_data
     yield circuit_cell_with_stackup

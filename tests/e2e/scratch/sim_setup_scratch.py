@@ -1,30 +1,25 @@
 import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.layout.cell import Cell, CellType
+from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout.cell import CellType
 from ansys.edb.core.session import session
-from ansys.edb.core.simulation_setup.adaptive_solutions import (
-    BroadbandAdaptiveSolution,
-    MultiFrequencyAdaptiveSolution,
-    SingleFrequencyAdaptiveSolution,
-)
-from ansys.edb.core.simulation_setup.hfss_simulation_settings import (
-    AdaptType,
-    BasisFunctionOrder,
-    HFSSAdvancedMeshingSettings,
-    HFSSAdvancedSettings,
-    HFSSDCRSettings,
-    HFSSGeneralSettings,
-    HFSSSettingsOptions,
-    HFSSSimulationSettings,
-    HFSSSolverSettings,
-    SolverType,
-)
+from ansys.edb.core.simulation_setup.adaptive_solutions import BroadbandAdaptiveSolution
+from ansys.edb.core.simulation_setup.adaptive_solutions import MultiFrequencyAdaptiveSolution
+from ansys.edb.core.simulation_setup.adaptive_solutions import SingleFrequencyAdaptiveSolution
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import AdaptType
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import BasisFunctionOrder
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSAdvancedMeshingSettings
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSAdvancedSettings
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSDCRSettings
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSGeneralSettings
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSSettingsOptions
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSSimulationSettings
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSSolverSettings
+from ansys.edb.core.simulation_setup.hfss_simulation_settings import SolverType
 from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
-from ansys.edb.core.simulation_setup.mesh_operation import (
-    LengthMeshOperation,
-    SkinDepthMeshOperation,
-)
+from ansys.edb.core.simulation_setup.mesh_operation import LengthMeshOperation
+from ansys.edb.core.simulation_setup.mesh_operation import SkinDepthMeshOperation
 from ansys.edb.core.simulation_setup.simulation_settings import ViaStyle
 from ansys.edb.core.simulation_setup.simulation_setup import SweepData
 
@@ -43,12 +38,8 @@ def do_hfss_sim_setup_test(hfss_sim_setup):
     new_sweep_data = hfss_sim_setup.sweep_data
 
     og_mesh_ops = hfss_sim_setup.mesh_operations
-    sk_op = SkinDepthMeshOperation(
-        name="sk_op", mesh_region="mes_region", net_layer_info=[("net", "lyr", True)]
-    )
-    l_op = LengthMeshOperation(
-        name="l_op", mesh_region="mes_region", net_layer_info=[("net", "lyr", True)]
-    )
+    sk_op = SkinDepthMeshOperation(name="sk_op", mesh_region="mes_region", net_layer_info=[("net", "lyr", True)])
+    l_op = LengthMeshOperation(name="l_op", mesh_region="mes_region", net_layer_info=[("net", "lyr", True)])
     hfss_sim_setup.mesh_operations = [sk_op, l_op]
     new_mesh_ops = hfss_sim_setup.mesh_operations
 

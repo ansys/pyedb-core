@@ -1,7 +1,11 @@
 """MCAD model."""
 
-from ansys.edb.core.inner import ObjBase, messages, parser
-from ansys.edb.core.session import McadModelServiceStub, StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.session import McadModelServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class McadModel(ObjBase):
@@ -16,11 +20,7 @@ class McadModel(ObjBase):
         This method makes a call directly on a :term:`Connectable` or
         :func:`Layout <ansys.edb.core.layout.layout.Layout.create_stride>`.
         """
-        return cls(
-            cls.__stub.CreateStride(
-                messages.mcad_model_creation_message(connectable, layout, filename)
-            )
-        )
+        return cls(cls.__stub.CreateStride(messages.mcad_model_creation_message(connectable, layout, filename)))
 
     @classmethod
     def create_hfss(cls, connectable=None, layout=None, filename=None, design=None):
@@ -30,9 +30,7 @@ class McadModel(ObjBase):
         :func:`Layout <ansys.edb.core.layout.layout.Layout.create_hfss>`.
         """
         return cls(
-            cls.__stub.CreateHfss(
-                messages.mcad_model_hfss_creation_message(connectable, layout, filename, design)
-            )
+            cls.__stub.CreateHfss(messages.mcad_model_hfss_creation_message(connectable, layout, filename, design))
         )
 
     @classmethod
@@ -42,11 +40,7 @@ class McadModel(ObjBase):
         This method makes a call directly on a :term:`Connectable` or
         :func:`Layout <ansys.edb.core.layout.Layout.create_3d_comp>`.
         """
-        return cls(
-            cls.__stub.Create3dComp(
-                messages.mcad_model_creation_message(connectable, layout, filename)
-            )
-        )
+        return cls(cls.__stub.Create3dComp(messages.mcad_model_creation_message(connectable, layout, filename)))
 
     @classmethod
     def is_mcad(cls, connectable):
@@ -111,7 +105,8 @@ class McadModel(ObjBase):
     @parser.to_point3d_data
     def origin(self):
         """:class:`.Point3DData`: \
-        Origin 3D point of the MCAD model."""
+        Origin 3D point of the MCAD model.
+        """
         return self.__stub.GetOrigin(messages.edb_obj_message(self))
 
     @origin.setter
@@ -142,9 +137,7 @@ class McadModel(ObjBase):
         angle : float
             Angle in radians.
         """
-        self.__stub.SetRotation(
-            messages.mcad_model_set_rotation_message(self, axis_from, axis_to, angle)
-        )
+        self.__stub.SetRotation(messages.mcad_model_set_rotation_message(self, axis_from, axis_to, angle))
 
     @property
     def scale(self):

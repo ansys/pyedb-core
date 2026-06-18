@@ -7,12 +7,11 @@ from ansys.api.edb.v1.layer_pb2_grpc import LayerServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import ObjBase
-from ansys.edb.core.inner.messages import (
-    get_product_property_ids_message,
-    get_product_property_message,
-    set_product_property_message,
-)
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner.messages import get_product_property_ids_message
+from ansys.edb.core.inner.messages import get_product_property_message
+from ansys.edb.core.inner.messages import set_product_property_message
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 # Message creation helper method
@@ -114,9 +113,7 @@ class Layer(ObjBase):
         -------
         Layer
         """
-        return Layer(
-            Layer.__stub.Create(layer_pb2.LayerCreationMessage(name=name, type=lyr_type.value))
-        )
+        return Layer(Layer.__stub.Create(layer_pb2.LayerCreationMessage(name=name, type=lyr_type.value)))
 
     @property
     def type(self):
@@ -180,9 +177,7 @@ class Layer(ObjBase):
     @property
     def top_bottom_association(self):
         """:class:`TopBottomAssociation`: Top-bottom association of the layer."""
-        return TopBottomAssociation(
-            self.__stub.GetTopBottomAssociation(self.msg).top_bottom_association
-        )
+        return TopBottomAssociation(self.__stub.GetTopBottomAssociation(self.msg).top_bottom_association)
 
     @top_bottom_association.setter
     def top_bottom_association(self, top_bottom_association):
@@ -221,14 +216,8 @@ class Layer(ObjBase):
 
     @visibility_mask.setter
     def visibility_mask(self, visibility_mask):
-        vis_mask_int = (
-            visibility_mask.value
-            if isinstance(visibility_mask, LayerVisibility)
-            else visibility_mask
-        )
-        self.__stub.SetVisibilityMask(
-            layer_pb2.SetVisibilityMaskMessage(layer=self.msg, visibility_mask=vis_mask_int)
-        )
+        vis_mask_int = visibility_mask.value if isinstance(visibility_mask, LayerVisibility) else visibility_mask
+        self.__stub.SetVisibilityMask(layer_pb2.SetVisibilityMaskMessage(layer=self.msg, visibility_mask=vis_mask_int))
 
     @property
     def locked(self):
@@ -250,9 +239,7 @@ class Layer(ObjBase):
 
     @transparency.setter
     def transparency(self, transparency):
-        self.__stub.SetTransparency(
-            layer_pb2.SetTransparencyMessage(layer=self.msg, transparency=transparency)
-        )
+        self.__stub.SetTransparency(layer_pb2.SetTransparencyMessage(layer=self.msg, transparency=transparency))
 
     @property
     def draw_override(self):
@@ -261,9 +248,7 @@ class Layer(ObjBase):
 
     @draw_override.setter
     def draw_override(self, draw_override):
-        self.__stub.SetDrawOverride(
-            layer_pb2.SetDrawOverrideMessage(layer=self.msg, draw_override=draw_override.value)
-        )
+        self.__stub.SetDrawOverride(layer_pb2.SetDrawOverrideMessage(layer=self.msg, draw_override=draw_override.value))
 
     def get_product_property(self, prod_id, attr_it):
         """Get the product property of the layer for a given product ID and attribute ID.
@@ -280,9 +265,7 @@ class Layer(ObjBase):
         str
             Product property.
         """
-        return self.__stub.GetProductProperty(
-            get_product_property_message(self, prod_id, attr_it)
-        ).value
+        return self.__stub.GetProductProperty(get_product_property_message(self, prod_id, attr_it)).value
 
     def set_product_property(self, prod_id, attr_it, prop_value):
         """Set the product property of the layer for a given product ID and attribute ID.
@@ -296,9 +279,7 @@ class Layer(ObjBase):
         prop_value : str
             New product property value.
         """
-        self.__stub.SetProductProperty(
-            set_product_property_message(self, prod_id, attr_it, prop_value)
-        )
+        self.__stub.SetProductProperty(set_product_property_message(self, prod_id, attr_it, prop_value))
 
     def get_product_property_ids(self, prod_id):
         """Get a list of attribute IDs for a given product ID for the layer.
@@ -313,9 +294,7 @@ class Layer(ObjBase):
         list[int]
             List of attribute IDs.
         """
-        attr_ids = self.__stub.GetProductPropertyIds(
-            get_product_property_ids_message(self, prod_id)
-        ).ids
+        attr_ids = self.__stub.GetProductPropertyIds(get_product_property_ids_message(self, prod_id)).ids
         return [attr_id for attr_id in attr_ids]
 
     def is_in_zone(self, zone):

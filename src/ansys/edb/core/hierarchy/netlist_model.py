@@ -1,7 +1,10 @@
 """Netlist model."""
+
 from ansys.edb.core.hierarchy.model import Model
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import NetlistModelServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import NetlistModelServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class NetlistModel(Model):

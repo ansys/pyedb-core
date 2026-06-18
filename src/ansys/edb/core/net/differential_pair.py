@@ -4,7 +4,9 @@ from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.layout_obj import LayoutObjType
 from ansys.edb.core.net.net import Net
 from ansys.edb.core.net.net_class import NetClass
-from ansys.edb.core.session import DifferentialPairServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import DifferentialPairServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class DifferentialPair(NetClass):
@@ -35,11 +37,7 @@ class DifferentialPair(NetClass):
         DifferentialPair
             Differential pair created.
         """
-        return cls(
-            cls.__stub.Create(
-                messages.differential_pair_creation_message(layout, name, pos_net, neg_net)
-            )
-        )
+        return cls(cls.__stub.Create(messages.differential_pair_creation_message(layout, name, pos_net, neg_net)))
 
     @classmethod
     def find_by_name(cls, layout, name):
@@ -69,9 +67,7 @@ class DifferentialPair(NetClass):
 
     @differential_pair.setter
     def differential_pair(self, value):
-        self.__stub.SetDifferentialPair(
-            messages.differential_pair_net_refs_message(self, value[0], value[1])
-        )
+        self.__stub.SetDifferentialPair(messages.differential_pair_net_refs_message(self, value[0], value[1]))
 
     @property
     def positive_net(self):

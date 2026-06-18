@@ -2,17 +2,13 @@
 
 import functools
 
-from ansys.edb.core.simulation_setup.adaptive_solutions import (
-    AdaptiveFrequency,
-    BroadbandAdaptiveSolution,
-    MatrixConvergenceData,
-    MultiFrequencyAdaptiveSolution,
-    SingleFrequencyAdaptiveSolution,
-)
-from ansys.edb.core.simulation_setup.mesh_operation import (
-    LengthMeshOperation,
-    SkinDepthMeshOperation,
-)
+from ansys.edb.core.simulation_setup.adaptive_solutions import AdaptiveFrequency
+from ansys.edb.core.simulation_setup.adaptive_solutions import BroadbandAdaptiveSolution
+from ansys.edb.core.simulation_setup.adaptive_solutions import MatrixConvergenceData
+from ansys.edb.core.simulation_setup.adaptive_solutions import MultiFrequencyAdaptiveSolution
+from ansys.edb.core.simulation_setup.adaptive_solutions import SingleFrequencyAdaptiveSolution
+from ansys.edb.core.simulation_setup.mesh_operation import LengthMeshOperation
+from ansys.edb.core.simulation_setup.mesh_operation import SkinDepthMeshOperation
 
 
 def to_point_data(fn):
@@ -308,11 +304,7 @@ def _to_mx_convergence_data(message):
         return
 
     mx_conv_data = MatrixConvergenceData()
-    if (
-        message.all_are_constant
-        or message.all_diag_are_constant
-        or message.all_off_diag_are_constant
-    ):
+    if message.all_are_constant or message.all_diag_are_constant or message.all_off_diag_are_constant:
         port_name_set = set()
         port_name_list = []
 
@@ -327,9 +319,7 @@ def _to_mx_convergence_data(message):
 
         if message.all_are_constant:
             first_msg = mx_entry_msgs[0]
-            mx_conv_data.set_all_constant(
-                first_msg.mag_limit, first_msg.phase_limit, port_name_list
-            )
+            mx_conv_data.set_all_constant(first_msg.mag_limit, first_msg.phase_limit, port_name_list)
 
         if message.all_diag_are_constant:
             for mx_entry_msg in mx_entry_msgs:

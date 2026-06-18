@@ -1,4 +1,5 @@
 """Via layer."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -8,7 +9,9 @@ if TYPE_CHECKING:
 
 import ansys.api.edb.v1.via_layer_pb2 as via_layer_pb2
 
-from ansys.edb.core.inner.messages import bool_property_message, int_property_message, value_message
+from ansys.edb.core.inner.messages import bool_property_message
+from ansys.edb.core.inner.messages import int_property_message
+from ansys.edb.core.inner.messages import value_message
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.session import get_via_layer_stub
 from ansys.edb.core.utility.value import Value
@@ -45,9 +48,7 @@ class ViaLayer(StackupLayer):
             "upper_ref_layer_name": ur_layer,
             "material_name": material,
         }
-        via_layer = ViaLayer(
-            get_via_layer_stub().Create(via_layer_pb2.ViaLayerCreationMessage(**params))
-        )
+        via_layer = ViaLayer(get_via_layer_stub().Create(via_layer_pb2.ViaLayerCreationMessage(**params)))
         return via_layer
 
     def get_ref_layer_name(self, upper_ref):
@@ -106,9 +107,7 @@ class ViaLayer(StackupLayer):
         oxide_layer_msgs = []
         for oxide_layer in _oxide_layers:
             oxide_layer_msgs.append(
-                via_layer_pb2.OxideLayerMessage(
-                    thickness=value_message(oxide_layer[0]), material=oxide_layer[1]
-                )
+                via_layer_pb2.OxideLayerMessage(thickness=value_message(oxide_layer[0]), material=oxide_layer[1])
             )
         get_via_layer_stub().AddOxideLayers(
             via_layer_pb2.OxideLayersPropertyMessage(target=self.msg, oxide_layers=oxide_layer_msgs)
@@ -147,9 +146,7 @@ class ViaLayer(StackupLayer):
         This property is read-only.
         """
         response = get_via_layer_stub().GetOxideLayers(int_property_message(self, -1))
-        return [
-            self._msg_to_oxide_layer(oxide_layer_msg) for oxide_layer_msg in response.oxide_layers
-        ]
+        return [self._msg_to_oxide_layer(oxide_layer_msg) for oxide_layer_msg in response.oxide_layers]
 
     def get_oxide_layer(self, oxide_lyr_idx: int):
         """Get the oxide layer at the specified index.
@@ -164,18 +161,14 @@ class ViaLayer(StackupLayer):
         tuple of (:term:`ValueLike`, str)
         """
         return self._msg_to_oxide_layer(
-            get_via_layer_stub()
-            .GetOxideLayers(int_property_message(self, oxide_lyr_idx))
-            .oxide_layers[0]
+            get_via_layer_stub().GetOxideLayers(int_property_message(self, oxide_lyr_idx)).oxide_layers[0]
         )
 
-    def set_oxide_layer_data(
-        self, oxide_lyr_idx: int, thickness: ValueLike | None = None, material: str | None = None
-    ):
+    def set_oxide_layer_data(self, oxide_lyr_idx: int, thickness: ValueLike | None = None, material: str | None = None):
         """Set the thickness or material of the oxide layer at the specified index.
 
         Parameters
-        ---------
+        ----------
         oxide_lyr_idx: int
             Index of the oxide layer to be retrieved
         thickness: :term:`ValueLike`, default: None

@@ -1,9 +1,12 @@
 """Layout instance context."""
 
-from ansys.edb.core.inner import ObjBase, parser
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import parser
 from ansys.edb.core.inner.messages import bool_property_message
 from ansys.edb.core.layout import layout
-from ansys.edb.core.session import LayoutInstanceContextServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutInstanceContextServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class LayoutInstanceContext(ObjBase):
@@ -63,11 +66,7 @@ class LayoutInstanceContext(ObjBase):
 
         This property is read-only.
         """
-        return (
-            self.__stub.GetPlacementElevation(self.msg).value
-            if not self.get_is_3d_placement(False)
-            else None
-        )
+        return self.__stub.GetPlacementElevation(self.msg).value if not self.get_is_3d_placement(False) else None
 
     def get_is_3d_placement(self, local):
         """Determine if the context has 3D placement enabled.

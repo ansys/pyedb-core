@@ -1,8 +1,11 @@
 """Bundle Terminal."""
 
-from ansys.edb.core.inner import TypeField, messages
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminal import Terminal, TerminalType
+from ansys.edb.core.inner import TypeField
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.terminal.terminal import Terminal
+from ansys.edb.core.terminal.terminal import TerminalType
 
 
 class BundleTerminal(Terminal):

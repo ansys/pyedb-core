@@ -3,16 +3,16 @@
 import ansys.api.edb.v1.si_wave_dcir_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import SIWaveDCIRSimulationSettingsServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import SIWaveDCIRSimulationSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.simulation_setup.siwave_simulation_settings import SIWaveSimulationSettings
 
 
 class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
     """Represents SIWave DCIR simulation settings."""
 
-    __stub: SIWaveDCIRSimulationSettingsServiceStub = StubAccessor(
-        StubType.siwave_dcir_sim_settings
-    )
+    __stub: SIWaveDCIRSimulationSettingsServiceStub = StubAccessor(StubType.siwave_dcir_sim_settings)
 
     @property
     def icepak_temp_file(self):
@@ -31,9 +31,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
         """
         return {
             source: t_to_g
-            for (source, t_to_g) in self.__stub.GetSourceTermsToGround(
-                self.msg
-            ).source_terms_to_ground.items()
+            for (source, t_to_g) in self.__stub.GetSourceTermsToGround(self.msg).source_terms_to_ground.items()
         }
 
     @source_terms_to_ground.setter
@@ -52,9 +50,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @export_dc_thermal_data.setter
     def export_dc_thermal_data(self, export_dc_thermal_data):
-        self.__stub.SetExportDCThermalData(
-            messages.bool_property_message(self, export_dc_thermal_data)
-        )
+        self.__stub.SetExportDCThermalData(messages.bool_property_message(self, export_dc_thermal_data))
 
     @property
     def import_thermal_data(self):
@@ -99,9 +95,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @dc_report_config_file.setter
     def dc_report_config_file(self, dc_report_config_file):
-        self.__stub.SetDCReportConfigFile(
-            messages.string_property_message(self, dc_report_config_file)
-        )
+        self.__stub.SetDCReportConfigFile(messages.string_property_message(self, dc_report_config_file))
 
     @property
     def dc_report_show_active_devices(self):
@@ -110,9 +104,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @dc_report_show_active_devices.setter
     def dc_report_show_active_devices(self, dc_report_show_active_devices):
-        self.__stub.SetDCReportShowActiveDevices(
-            messages.bool_property_message(self, dc_report_show_active_devices)
-        )
+        self.__stub.SetDCReportShowActiveDevices(messages.bool_property_message(self, dc_report_show_active_devices))
 
     @property
     def per_pin_use_pin_format(self):
@@ -121,9 +113,7 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @per_pin_use_pin_format.setter
     def per_pin_use_pin_format(self, per_pin_use_pin_format):
-        self.__stub.SetPerPinUsePinFormat(
-            messages.bool_property_message(self, per_pin_use_pin_format)
-        )
+        self.__stub.SetPerPinUsePinFormat(messages.bool_property_message(self, per_pin_use_pin_format))
 
     @property
     def use_loop_res_for_per_pin(self):
@@ -132,6 +122,4 @@ class SIWaveDCIRSimulationSettings(SIWaveSimulationSettings):
 
     @use_loop_res_for_per_pin.setter
     def use_loop_res_for_per_pin(self, use_loop_res_for_per_pin):
-        self.__stub.SetUseLoopResForPerPin(
-            messages.bool_property_message(self, use_loop_res_for_per_pin)
-        )
+        self.__stub.SetUseLoopResForPerPin(messages.bool_property_message(self, use_loop_res_for_per_pin))

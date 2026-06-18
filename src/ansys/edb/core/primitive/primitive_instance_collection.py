@@ -1,35 +1,38 @@
 """Primitive Instance Collection."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.geometry.polygon_data import PolygonData
     from ansys.edb.core.geometry.point_data import PointData
-    from ansys.edb.core.typing import PointLike, LayerLike, NetLike
+    from ansys.edb.core.geometry.polygon_data import PolygonData
     from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import NetLike
+    from ansys.edb.core.typing import PointLike
 
-from ansys.api.edb.v1.primitive_instance_collection_pb2 import (
-    PrimitiveInstanceCollectionDataMessage,
-)
-from ansys.api.edb.v1.primitive_instance_collection_pb2_grpc import (
-    PrimitiveInstanceCollectionServiceStub,
-)
+from ansys.api.edb.v1.primitive_instance_collection_pb2 import PrimitiveInstanceCollectionDataMessage
+from ansys.api.edb.v1.primitive_instance_collection_pb2_grpc import PrimitiveInstanceCollectionServiceStub
 
 import ansys.edb.core.inner.messages as messages
-from ansys.edb.core.inner.parser import msg_to_point_data, msg_to_polygon_data, to_polygon_data
-from ansys.edb.core.inner.utils import client_stream_iterator, stream_items_from_server
+from ansys.edb.core.inner.parser import msg_to_point_data
+from ansys.edb.core.inner.parser import msg_to_polygon_data
+from ansys.edb.core.inner.parser import to_polygon_data
+from ansys.edb.core.inner.utils import client_stream_iterator
+from ansys.edb.core.inner.utils import stream_items_from_server
 from ansys.edb.core.primitive.primitive import Primitive
-from ansys.edb.core.session import StubAccessor, StubType, is_in_memory
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.session import is_in_memory
 
 
 class PrimitiveInstanceCollection(Primitive):
     """Efficiently represents large quantities of geometry as \
-    numerous instantiations of the same geometry at different locations."""
+    numerous instantiations of the same geometry at different locations.
+    """
 
-    __stub: PrimitiveInstanceCollectionServiceStub = StubAccessor(
-        StubType.primitive_instance_collection
-    )
+    __stub: PrimitiveInstanceCollectionServiceStub = StubAccessor(StubType.primitive_instance_collection)
 
     @staticmethod
     def _point_request_iterator(points, starting_chunk):
@@ -51,7 +54,7 @@ class PrimitiveInstanceCollection(Primitive):
         net: NetLike,
         layer: LayerLike,
         geometry: PolygonData,
-        positions: List[PointLike],
+        positions: list[PointLike],
     ) -> PrimitiveInstanceCollection:
         """Create a primitive instance collection containing the specified geometry instantiated \
         at the provided locations. All geometry will be created on the specified layer and net.
@@ -82,9 +85,7 @@ class PrimitiveInstanceCollection(Primitive):
         if is_in_memory():
             chunk.points.points.extend(messages.point_message(pt) for pt in positions)
             return PrimitiveInstanceCollection(cls.__stub.CreateUnary(chunk))
-        return PrimitiveInstanceCollection(
-            cls.__stub.Create(cls._point_request_iterator(positions, chunk))
-        )
+        return PrimitiveInstanceCollection(cls.__stub.Create(cls._point_request_iterator(positions, chunk)))
 
     @property
     @to_polygon_data
@@ -97,16 +98,14 @@ class PrimitiveInstanceCollection(Primitive):
         self.__stub.SetGeometry(messages.polygon_data_property_message(self, geometry))
 
     @property
-    def positions(self) -> List[PointData]:
+    def positions(self) -> list[PointData]:
         """:obj:`list` of :class:`.PointData`: The positions geometry is instantiated at."""
         if is_in_memory():
             return [msg_to_point_data(pt) for pt in self.__stub.GetPositionsUnary(self.msg).points]
-        return stream_items_from_server(
-            msg_to_point_data, self.__stub.GetPositions(self.msg), "points"
-        )
+        return stream_items_from_server(msg_to_point_data, self.__stub.GetPositions(self.msg), "points")
 
     @positions.setter
-    def positions(self, positions: List[PointData]):
+    def positions(self, positions: list[PointData]):
         chunk = PrimitiveInstanceCollectionDataMessage(lyt_or_prim_inst_col=self.msg)
         if is_in_memory():
             chunk.points.points.extend(messages.point_message(pt) for pt in positions)
@@ -115,22 +114,18 @@ class PrimitiveInstanceCollection(Primitive):
             self.__stub.SetPositions(self._point_request_iterator(positions, chunk))
 
     @property
-    def instantiated_geometry(self) -> List[PolygonData]:
+    def instantiated_geometry(self) -> list[PolygonData]:
         """:obj:`list` of :class:`.PolygonData`: The geometry instantiated at each location in \
         the primitive instance collection.
 
         This property is read-only.
         """
         if is_in_memory():
-            return [
-                msg_to_polygon_data(poly)
-                for poly in self.__stub.GetInstantiatedGeometryUnary(self.msg).polygons
-            ]
-        return stream_items_from_server(
-            msg_to_polygon_data, self.__stub.GetInstantiatedGeometry(self.msg), "polygons"
-        )
+            return [msg_to_polygon_data(poly) for poly in self.__stub.GetInstantiatedGeometryUnary(self.msg).polygons]
+        return stream_items_from_server(msg_to_polygon_data, self.__stub.GetInstantiatedGeometry(self.msg), "polygons")
 
     def decompose(self):
         """Decompose into individual :class:`primitives <.Primitive>`. A \
-        :class:`primitive <.Primitive>` will be created for each geometry instantiation."""
+        :class:`primitive <.Primitive>` will be created for each geometry instantiation.
+        """
         return self.__stub.Decompose(self.msg)

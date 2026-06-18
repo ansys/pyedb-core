@@ -1,22 +1,21 @@
 """Simulation Setup."""
 
 from enum import Enum
-from typing import List, Union
 
 from ansys.api.edb.v1 import edb_defs_pb2
-from ansys.api.edb.v1.simulation_setup_pb2 import (
-    HFSSRegionComputeResourceMessage,
-    InterpolatingSweepDataMessage,
-    SimulationSetupCreationMessage,
-    SweepDataListMessage,
-    SweepDataListPropertyMessage,
-    SweepDataMessage,
-)
+from ansys.api.edb.v1.simulation_setup_pb2 import HFSSRegionComputeResourceMessage
+from ansys.api.edb.v1.simulation_setup_pb2 import InterpolatingSweepDataMessage
+from ansys.api.edb.v1.simulation_setup_pb2 import SimulationSetupCreationMessage
+from ansys.api.edb.v1.simulation_setup_pb2 import SweepDataListMessage
+from ansys.api.edb.v1.simulation_setup_pb2 import SweepDataListPropertyMessage
+from ansys.api.edb.v1.simulation_setup_pb2 import SweepDataMessage
 
 from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.base import ObjBase
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.session import SimulationSetupServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import SimulationSetupServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.simulation_setup.adaptive_solutions import MatrixConvergenceDataEntry
 
 
@@ -232,7 +231,7 @@ class SweepData:
 
     """
 
-    def __init__(self, name: str, frequency_data: Union[FrequencyData, List[FrequencyData]]):
+    def __init__(self, name: str, frequency_data: FrequencyData | list[FrequencyData]):
         """Initialize a sweep data setting."""
         self.name = name
         self.enabled = True
@@ -297,9 +296,7 @@ def _interpolating_sweep_data_msg(interp_sweep_data):
         interp_use_full_basis=interp_sweep_data.use_full_basis,
         fast_sweep=interp_sweep_data.fast_sweep,
         adaptive_sampling=interp_sweep_data.adaptive_sampling,
-        matrix_conv_entry_list=messages.mx_convergence_entry_msg_list(
-            interp_sweep_data.matrix_conv_entry_list
-        ),
+        matrix_conv_entry_list=messages.mx_convergence_entry_msg_list(interp_sweep_data.matrix_conv_entry_list),
         interp_min_solutions=interp_sweep_data.min_solutions,
         interp_min_subranges=interp_sweep_data.min_subranges,
     )
@@ -360,9 +357,7 @@ def _msg_to_interpolating_sweep_data(msg):
     interp_sweep_data.use_full_basis = msg.interp_use_full_basis
     interp_sweep_data.fast_sweep = msg.fast_sweep
     interp_sweep_data.adaptive_sampling = msg.adaptive_sampling
-    interp_sweep_data.matrix_conv_entry_list = map_list(
-        msg.matrix_conv_entry_list, _msg_to_matrix_convergence_entry
-    )
+    interp_sweep_data.matrix_conv_entry_list = map_list(msg.matrix_conv_entry_list, _msg_to_matrix_convergence_entry)
     interp_sweep_data.min_subranges = msg.interp_min_subranges
     interp_sweep_data.min_solutions = msg.interp_min_solutions
     return interp_sweep_data
@@ -413,9 +408,7 @@ class SimulationSetup(ObjBase):
     def _create(cls, cell, sim_setup_name, sim_setup_type):
         return cls(
             SimulationSetup.__stub.Create(
-                SimulationSetupCreationMessage(
-                    cell=cell.msg, name=sim_setup_name, type=sim_setup_type.value
-                )
+                SimulationSetupCreationMessage(cell=cell.msg, name=sim_setup_name, type=sim_setup_type.value)
             )
         )
 
@@ -451,9 +444,7 @@ class SimulationSetup(ObjBase):
         for sweep in sweep_data:
             sweep_data_msgs.append(_sweep_data_msg(sweep))
         self.__stub.SetSweepData(
-            SweepDataListPropertyMessage(
-                target=self.msg, sweeps=SweepDataListMessage(sweep_data=sweep_data_msgs)
-            )
+            SweepDataListPropertyMessage(target=self.msg, sweeps=SweepDataListMessage(sweep_data=sweep_data_msgs))
         )
 
     @property
@@ -470,9 +461,7 @@ class SimulationSetup(ObjBase):
         """
         from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
         from ansys.edb.core.simulation_setup.raptor_x_simulation_setup import RaptorXSimulationSetup
-        from ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup import (
-            SIWaveDCIRSimulationSetup,
-        )
+        from ansys.edb.core.simulation_setup.siwave_dcir_simulation_setup import SIWaveDCIRSimulationSetup
         from ansys.edb.core.simulation_setup.siwave_simulation_setup import SIWaveSimulationSetup
 
         if self.is_null:

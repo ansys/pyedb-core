@@ -1,4 +1,5 @@
 """Bondwire."""
+
 from __future__ import annotations
 
 from enum import Enum
@@ -6,15 +7,19 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.typing import NetLike, ValueLike, LayerLike
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import NetLike
+    from ansys.edb.core.typing import ValueLike
 
-from ansys.api.edb.v1 import bondwire_pb2, bondwire_pb2_grpc
+from ansys.api.edb.v1 import bondwire_pb2
+from ansys.api.edb.v1 import bondwire_pb2_grpc
 
 from ansys.edb.core.hierarchy.cell_instance import CellInstance
 from ansys.edb.core.inner import messages
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.primitive.primitive import Primitive
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -155,9 +160,7 @@ class Bondwire(Primitive):
 
     @type.setter
     def type(self, bondwire_type: BondwireType):
-        self.__stub.SetType(
-            bondwire_pb2.SetBondwireTypeMessage(target=self.msg, type=bondwire_type.value)
-        )
+        self.__stub.SetType(bondwire_pb2.SetBondwireTypeMessage(target=self.msg, type=bondwire_type.value))
 
     @property
     def cross_section_type(self) -> BondwireCrossSectionType:
@@ -178,9 +181,7 @@ class Bondwire(Primitive):
     @cross_section_height.setter
     def cross_section_height(self, height: ValueLike):
         self.__stub.SetCrossSectionHeight(
-            bondwire_pb2.SetCrossSectionHeightMessage(
-                target=self.msg, height=messages.value_message(height)
-            )
+            bondwire_pb2.SetCrossSectionHeightMessage(target=self.msg, height=messages.value_message(height))
         )
 
     def get_definition_name(self, evaluated: bool = True) -> str:
@@ -340,9 +341,7 @@ class Bondwire(Primitive):
 
     @staticmethod
     def _get_elevation_message(b, cell_instance):
-        return bondwire_pb2.GetElevationMessage(
-            bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance)
-        )
+        return bondwire_pb2.GetElevationMessage(bw=b.msg, cell_instance=messages.edb_obj_message(cell_instance))
 
     @staticmethod
     def _set_elevation_message(b, cell_instance, lyrname):

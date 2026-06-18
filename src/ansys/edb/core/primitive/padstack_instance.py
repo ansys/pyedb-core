@@ -1,23 +1,31 @@
 """Primitive classes."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, overload
+from typing import TYPE_CHECKING
+from typing import Literal
+from typing import overload
 
 if TYPE_CHECKING:
-    from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.typing import ValueLike, LayerLike, NetLike
     from ansys.edb.core.hierarchy.pin_group import PinGroup
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import NetLike
+    from ansys.edb.core.typing import ValueLike
 
 
 from enum import Enum
 
-from ansys.api.edb.v1 import padstack_instance_pb2, padstack_instance_pb2_grpc
+from ansys.api.edb.v1 import padstack_instance_pb2
+from ansys.api.edb.v1 import padstack_instance_pb2_grpc
 
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import conn_obj, messages
+from ansys.edb.core.inner import conn_obj
+from ansys.edb.core.inner import messages
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.terminal import padstack_instance_terminal
 from ansys.edb.core.utility.layer_map import LayerMap
 from ansys.edb.core.utility.value import Value
@@ -34,9 +42,7 @@ class BackDrillType(Enum):
 class PadstackInstance(conn_obj.ConnObj):
     """Represents a padstack instance object."""
 
-    __stub: padstack_instance_pb2_grpc.PadstackInstanceServiceStub = StubAccessor(
-        StubType.padstack_instance
-    )
+    __stub: padstack_instance_pb2_grpc.PadstackInstanceServiceStub = StubAccessor(StubType.padstack_instance)
     layout_obj_type = LayoutObjType.PADSTACK_INSTANCE
     """:class:`.LayoutObjType`: Layout object type of the PadstackInstance class."""
 
@@ -302,30 +308,21 @@ class PadstackInstance(conn_obj.ConnObj):
             Back drill type of the padastack instance.
         """
         return BackDrillType(
-            self.__stub.GetBackDrillType(
-                PadstackInstance._get_back_drill_message(self, from_bottom)
-            ).type
+            self.__stub.GetBackDrillType(PadstackInstance._get_back_drill_message(self, from_bottom)).type
         )
-
 
     @overload
     def get_back_drill_by_layer(
-        self, 
-        from_bottom: bool, 
-        include_fill_material: Literal[False] = False
+        self, from_bottom: bool, include_fill_material: Literal[False] = False
     ) -> tuple[Layer, Value, Value]: ...
 
     @overload
     def get_back_drill_by_layer(
-        self, 
-        from_bottom: bool, 
-        include_fill_material: Literal[True]
+        self, from_bottom: bool, include_fill_material: Literal[True]
     ) -> tuple[Layer, Value, Value, str]: ...
 
     def get_back_drill_by_layer(
-        self, 
-        from_bottom: bool, 
-        include_fill_material: bool = False
+        self, from_bottom: bool, include_fill_material: bool = False
     ) -> tuple[Layer, Value, Value] | tuple[Layer, Value, Value, str]:
         """Get the back drill type by the layer.
 
@@ -348,25 +345,17 @@ class PadstackInstance(conn_obj.ConnObj):
             - **diameter** : Drilling diameter.
             - **fill_material** : Fill material name (empty string if no fill). Returned only when include_fill_material is true.
         """
-        params = self.__stub.GetBackDrillByLayer(
-            PadstackInstance._get_back_drill_message(self, from_bottom)
-        )
-                
+        params = self.__stub.GetBackDrillByLayer(PadstackInstance._get_back_drill_message(self, from_bottom))
+
         if include_fill_material:
-            fill_material = params.fill_material if hasattr(params, 'fill_material') else ""
-            return (Layer(params.drill_to_layer).cast(),
-            Value(params.offset),
-            Value(params.diameter),
-            fill_material)
+            fill_material = params.fill_material if hasattr(params, "fill_material") else ""
+            return (Layer(params.drill_to_layer).cast(), Value(params.offset), Value(params.diameter), fill_material)
         else:
             # Backward compatible: return only 3 values
-            return (Layer(params.drill_to_layer).cast(),
-                Value(params.offset),
-                Value(params.diameter))
+            return (Layer(params.drill_to_layer).cast(), Value(params.offset), Value(params.diameter))
 
     def set_back_drill_by_layer(
-        self, drill_to_layer: Layer, offset: ValueLike, diameter: ValueLike, from_bottom: bool, 
-        fill_material: str = ""
+        self, drill_to_layer: Layer, offset: ValueLike, diameter: ValueLike, from_bottom: bool, fill_material: str = ""
     ):
         """Set the back drill by the layer.
 
@@ -398,23 +387,17 @@ class PadstackInstance(conn_obj.ConnObj):
 
     @overload
     def get_back_drill_by_depth(
-        self, 
-        from_bottom: bool, 
-        include_fill_material: Literal[False] = False
+        self, from_bottom: bool, include_fill_material: Literal[False] = False
     ) -> tuple[Value, Value]: ...
 
     @overload
     def get_back_drill_by_depth(
-        self, 
-        from_bottom: bool, 
-        include_fill_material: Literal[True]
+        self, from_bottom: bool, include_fill_material: Literal[True]
     ) -> tuple[Value, Value, str]: ...
 
     def get_back_drill_by_depth(
-        self, 
-        from_bottom: bool, 
-        include_fill_material: bool = False
-    ) -> tuple[Value, Value] | tuple[Value, Value, str]:    
+        self, from_bottom: bool, include_fill_material: bool = False
+    ) -> tuple[Value, Value] | tuple[Value, Value, str]:
         """Get the back drill type by depth.
 
         Parameters
@@ -423,6 +406,7 @@ class PadstackInstance(conn_obj.ConnObj):
             Whether to get the back drill type from the bottom.
         include_fill_material : bool, optional
             Input flag to obtain fill material as well as other parameters. If false, the return tuple does not include fill material and is backward compatible with previous versions.
+
         Returns
         -------
         tuple of (.Value, .Value, str)
@@ -434,20 +418,13 @@ class PadstackInstance(conn_obj.ConnObj):
               only included when ``include_fill_material`` is True.
 
         """
-        
-        params = self.__stub.GetBackDrillByDepth(
-            PadstackInstance._get_back_drill_message(self, from_bottom)
-        )
+        params = self.__stub.GetBackDrillByDepth(PadstackInstance._get_back_drill_message(self, from_bottom))
         if include_fill_material:
-            fill_material = params.fill_material if hasattr(params, 'fill_material') else ""
-            return (Value(params.drill_depth), 
-            Value(params.diameter),
-            fill_material)
+            fill_material = params.fill_material if hasattr(params, "fill_material") else ""
+            return (Value(params.drill_depth), Value(params.diameter), fill_material)
         else:
             # Backward compatible: return only 2 values
-            return (Value(params.drill_depth), 
-                Value(params.diameter))
-        
+            return (Value(params.drill_depth), Value(params.diameter))
 
     def set_back_drill_by_depth(
         self, drill_depth: ValueLike, diameter: ValueLike, from_bottom: bool, fill_material: str = ""
@@ -477,10 +454,9 @@ class PadstackInstance(conn_obj.ConnObj):
 
     def get_padstack_instance_terminal(self) -> padstack_instance_terminal.PadstackInstanceTerminal:
         """:class:`.PadstackInstanceTerminal`: \
-        Terminal of the padstack instance."""
-        return padstack_instance_terminal.PadstackInstanceTerminal(
-            self.__stub.GetPadstackInstanceTerminal(self.msg)
-        )
+        Terminal of the padstack instance.
+        """
+        return padstack_instance_terminal.PadstackInstanceTerminal(self.__stub.GetPadstackInstanceTerminal(self.msg))
 
     def is_in_pin_group(self, pin_group: PinGroup) -> bool:
         """Determine if the padstack instance is in a given pin group.

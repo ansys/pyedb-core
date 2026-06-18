@@ -1,11 +1,13 @@
 """Point3D data."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike
     from builtins import NotImplementedType
+
+    from ansys.edb.core.typing import ValueLike
     from ansys.edb.core.utility.value import Value
 
 from ansys.edb.core.utility import conversions

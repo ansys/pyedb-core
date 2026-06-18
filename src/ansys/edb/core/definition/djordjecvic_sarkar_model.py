@@ -1,4 +1,5 @@
 """Dielectric material definition."""
+
 from __future__ import annotations
 
 from ansys.api.edb.v1 import djordjecvic_sarkar_model_pb2_grpc
@@ -12,8 +13,8 @@ from ansys.edb.core.inner import messages
 class DjordjecvicSarkarModel(DielectricMaterialModel):
     """Represents a Djordjecvic-Sarkar dielectric material model."""
 
-    __stub: djordjecvic_sarkar_model_pb2_grpc.DjordjecvicSarkarModelServiceStub = (
-        session.StubAccessor(session.StubType.djordecvic_sarkar_model)
+    __stub: djordjecvic_sarkar_model_pb2_grpc.DjordjecvicSarkarModelServiceStub = session.StubAccessor(
+        session.StubType.djordecvic_sarkar_model
     )
 
     @classmethod
@@ -51,9 +52,7 @@ class DjordjecvicSarkarModel(DielectricMaterialModel):
 
     @relative_permittivity_at_frequency.setter
     def relative_permittivity_at_frequency(self, frequency: float):
-        self.__stub.SetRelativePermitivityAtFrequency(
-            messages.double_property_message(self, frequency)
-        )
+        self.__stub.SetRelativePermitivityAtFrequency(messages.double_property_message(self, frequency))
 
     @property
     def loss_tangent_at_frequency(self) -> float:

@@ -1,11 +1,12 @@
 """HFSS extent information."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike
     from ansys.edb.core.primitive.primitive import Primitive
+    from ansys.edb.core.typing import ValueLike
 
 from enum import Enum
 
@@ -87,12 +88,12 @@ class HfssExtentInfo:
         base_polygon: Primitive = None,
         dielectric_extent_type: HFSSExtentInfoType = HFSSExtentInfoType.BOUNDING_BOX,
         dielectric_base_polygon: Primitive = None,
-        dielectric: Tuple[float, bool] = (0, True),
+        dielectric: tuple[float, bool] = (0, True),
         honor_user_dielectric: bool = True,
         airbox_truncate_at_ground: bool = False,
-        airbox_horizontal: Tuple[float, bool] = (0.15, True),
-        airbox_vertical_positive: Tuple[float, bool] = (0.15, True),
-        airbox_vertical_negative: Tuple[float, bool] = (0.15, True),
+        airbox_horizontal: tuple[float, bool] = (0.15, True),
+        airbox_vertical_positive: tuple[float, bool] = (0.15, True),
+        airbox_vertical_negative: tuple[float, bool] = (0.15, True),
         sync_airbox_vertical_extent: bool = True,
         is_pml_visible: bool = False,
         operating_frequency: ValueLike = "5GHz",

@@ -1,10 +1,12 @@
-from typing import List
-
 from utils.fixtures import *  # noqa
-from utils.test_utils import create_edb_obj_collection_msg, equals
+from utils.test_utils import create_edb_obj_collection_msg
+from utils.test_utils import equals
 
 from ansys.edb.core import database as database
-from ansys.edb.core.inner.messages import bool_message, empty_message, int64_message, str_message
+from ansys.edb.core.inner.messages import bool_message
+from ansys.edb.core.inner.messages import empty_message
+from ansys.edb.core.inner.messages import int64_message
+from ansys.edb.core.inner.messages import str_message
 from ansys.edb.core.layout.cell import Cell
 
 # Helper fixtures and functions
@@ -177,7 +179,7 @@ def test_top_circuit_cells(db_obj, expected_num_top_cells, mocked_stub):
 
     mock_server.assert_called_once_with(db_obj.msg)
 
-    assert isinstance(top_cells, List)
+    assert isinstance(top_cells, list)
     assert len(top_cells) == expected_num_top_cells
     for top_cell_idx in range(expected_num_top_cells):
         top_cell = top_cells[top_cell_idx]

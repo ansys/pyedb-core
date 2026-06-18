@@ -1,4 +1,5 @@
 """Padstack definition."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -12,7 +13,8 @@ import ansys.api.edb.v1.padstack_def_pb2 as pb
 from ansys.edb.core.definition.padstack_def_data import PadstackDefData
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class PadstackDef(ObjBase):
@@ -54,9 +56,7 @@ class PadstackDef(ObjBase):
             Padstack definition object found. \
             If a Padstack definition isn't found, the returned padstack definition is :meth:`null <.is_null>`.
         """
-        return PadstackDef(
-            cls.__stub.FindByName(PadstackDef._padstack_def_string_message(db, name))
-        )
+        return PadstackDef(cls.__stub.FindByName(PadstackDef._padstack_def_string_message(db, name)))
 
     @property
     def definition_type(self) -> DefinitionObjType:
@@ -77,7 +77,8 @@ class PadstackDef(ObjBase):
     @property
     def data(self) -> PadstackDefData:
         """:class:`.PadstackDefData`: \
-        Object containing all the padstack specific data of a padstack definition."""
+        Object containing all the padstack specific data of a padstack definition.
+        """
         return PadstackDefData(self.__stub.GetData(self.msg))
 
     @data.setter

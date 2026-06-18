@@ -7,7 +7,8 @@ from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy.hierarchy_obj import HierarchyObj
 from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.utils import query_lyt_object_collection
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class Group(HierarchyObj):
@@ -74,9 +75,7 @@ class Group(HierarchyObj):
         Group
             Group that is found, ``None`` otherwise.
         """
-        return Group(
-            cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name))
-        ).cast()
+        return Group(cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name))).cast()
 
     def add_member(self, member):
         """Add an object to the group.

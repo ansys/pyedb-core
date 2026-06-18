@@ -1,4 +1,5 @@
 """IO component property."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -10,9 +11,12 @@ if TYPE_CHECKING:
 from ansys.api.edb.v1.io_component_property_pb2_grpc import IOComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.definition import component_property, port_property, solder_ball_property
+from ansys.edb.core.definition import component_property
+from ansys.edb.core.definition import port_property
+from ansys.edb.core.definition import solder_ball_property
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class IOComponentProperty(component_property.ComponentProperty):
@@ -43,9 +47,7 @@ class IOComponentProperty(component_property.ComponentProperty):
 
     @solder_ball_property.setter
     def solder_ball_property(self, value: SolderBallProperty):
-        self.__stub.SetSolderBallProperty(
-            messages.pointer_property_message(target=self, value=value)
-        )
+        self.__stub.SetSolderBallProperty(messages.pointer_property_message(target=self, value=value))
 
     @property
     def port_property(self) -> PortProperty:
@@ -53,9 +55,7 @@ class IOComponentProperty(component_property.ComponentProperty):
 
         A copy is returned. Use the setter for any modifications to be reflected.
         """
-        return port_property.PortProperty(
-            self.__stub.GetPortProperty(messages.edb_obj_message(self))
-        )
+        return port_property.PortProperty(self.__stub.GetPortProperty(messages.edb_obj_message(self)))
 
     @port_property.setter
     def port_property(self, value: PortProperty):

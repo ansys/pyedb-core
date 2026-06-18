@@ -1,9 +1,13 @@
 """Point Terminal."""
 
-from ansys.edb.core.inner import TypeField, messages, parser
+from ansys.edb.core.inner import TypeField
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminal import Terminal, TerminalType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.terminal.terminal import Terminal
+from ansys.edb.core.terminal.terminal import TerminalType
 
 
 class PointTerminal(Terminal):
@@ -33,14 +37,13 @@ class PointTerminal(Terminal):
         -------
         PointTerminal
         """
-        return PointTerminal(
-            cls.__stub.Create(messages.point_term_creation_message(layout, net, layer, name, point))
-        )
+        return PointTerminal(cls.__stub.Create(messages.point_term_creation_message(layout, net, layer, name, point)))
 
     @property
     def params(self):
         """:class:`.Layer`, :class:`.PointData`: Layer that the point terminal is placed on and \
-        the (x, y) coordinates."""
+        the (x, y) coordinates.
+        """
         res = self.__stub.GetParameters(self.msg)
         point = parser.to_point_data(res.point)
         layer = Layer(res.layer.id).cast()

@@ -2,7 +2,9 @@
 
 from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 
-from ansys.edb.core.utility.io_manager import get_buffer, get_cache, get_io_manager
+from ansys.edb.core.utility.io_manager import get_buffer
+from ansys.edb.core.utility.io_manager import get_cache
+from ansys.edb.core.utility.io_manager import get_io_manager
 
 
 class ObjBase:

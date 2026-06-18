@@ -2,11 +2,15 @@
 
 import ansys.api.edb.v1.hfss_simulation_setup_pb2 as pb
 
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.session import HfssSimulationSetupServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import HfssSimulationSetupServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.simulation_setup.hfss_simulation_settings import HFSSSimulationSettings
-from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetupType
 
 
 class HfssSimulationSetup(SimulationSetup):
@@ -42,9 +46,7 @@ class HfssSimulationSetup(SimulationSetup):
         self.__stub.SetMeshOperations(
             pb.MeshOperationsPropertyMessage(
                 target=self.msg,
-                mesh_ops=pb.MeshOperationsMessage(
-                    mesh_ops=map_list(new_mesh_ops, messages.mesh_operation_message)
-                ),
+                mesh_ops=pb.MeshOperationsMessage(mesh_ops=map_list(new_mesh_ops, messages.mesh_operation_message)),
             )
         )
 

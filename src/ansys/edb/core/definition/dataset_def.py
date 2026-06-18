@@ -1,7 +1,8 @@
 """Dataset definition."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.database import Database
@@ -11,14 +12,13 @@ from ansys.api.edb.v1.dataset_def_pb2_grpc import DatasetDefServiceStub
 
 from ansys.edb.core.edb_defs import DefinitionObjType
 from ansys.edb.core.inner import ObjBase
-from ansys.edb.core.inner.messages import (
-    edb_obj_message,
-    edb_obj_name_message,
-    points_property_message,
-    string_property_message,
-)
+from ansys.edb.core.inner.messages import edb_obj_message
+from ansys.edb.core.inner.messages import edb_obj_name_message
+from ansys.edb.core.inner.messages import points_property_message
+from ansys.edb.core.inner.messages import string_property_message
 from ansys.edb.core.inner.parser import to_point_data_list
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class DatasetDef(ObjBase):
@@ -80,7 +80,7 @@ class DatasetDef(ObjBase):
         self.__stub.SetName(string_property_message(self, name))
 
     @to_point_data_list
-    def get_data(self) -> List[PointData]:
+    def get_data(self) -> list[PointData]:
         """Get the collection of data points the dataset definition represents.
 
         Returns
@@ -90,7 +90,7 @@ class DatasetDef(ObjBase):
         msg = self.__stub.GetData(edb_obj_message(self))
         return msg.points
 
-    def set_data(self, points: List[PointData]):
+    def set_data(self, points: list[PointData]):
         """Set the collection of data points the dataset definition represents.
 
         Parameters

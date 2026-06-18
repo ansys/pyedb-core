@@ -1,7 +1,8 @@
 """RaptorX simulation setup."""
 
 from ansys.edb.core.simulation_setup.raptor_x_simulation_settings import RaptorXSimulationSettings
-from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetupType
 
 
 class RaptorXSimulationSetup(SimulationSetup):

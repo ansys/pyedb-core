@@ -1,7 +1,8 @@
 """Solder ball property."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.typing import ValueLike
@@ -11,15 +12,15 @@ import ansys.api.edb.v1.solder_ball_property_pb2 as solder_ball_property_pb2
 from ansys.api.edb.v1.solder_ball_property_pb2_grpc import SolderBallPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.definition.padstack_def_data import SolderballPlacement, SolderballShape
+from ansys.edb.core.definition.padstack_def_data import SolderballPlacement
+from ansys.edb.core.definition.padstack_def_data import SolderballShape
 from ansys.edb.core.inner import ObjBase
-from ansys.edb.core.inner.messages import (
-    edb_obj_message,
-    string_property_message,
-    value_message,
-    value_property_message,
-)
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner.messages import edb_obj_message
+from ansys.edb.core.inner.messages import string_property_message
+from ansys.edb.core.inner.messages import value_message
+from ansys.edb.core.inner.messages import value_property_message
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -58,7 +59,7 @@ class SolderBallProperty(ObjBase):
     def height(self, height: ValueLike):
         self.__stub.SetHeight(value_property_message(self, value_message(height)))
 
-    def get_diameter(self) -> Tuple[Value, Value]:
+    def get_diameter(self) -> tuple[Value, Value]:
         """Get the diameter parameters of the solder ball property.
 
         Returns

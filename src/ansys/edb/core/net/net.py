@@ -1,8 +1,12 @@
 """Net."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import layout_obj, messages, utils
-from ansys.edb.core.session import NetServiceStub, StubAccessor, StubType
+from ansys.edb.core.inner import layout_obj
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import utils
+from ansys.edb.core.session import NetServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class Net(layout_obj.LayoutObj):
@@ -87,13 +91,15 @@ class Net(layout_obj.LayoutObj):
     @property
     def padstack_instances(self):
         """:obj:`list` of :class:`.PadstackInstance`: All padstack instances on the net \
-        object instance."""
+        object instance.
+        """
         return self._layout_objs(LayoutObjType.PADSTACK_INSTANCE)
 
     @property
     def terminals(self):
         """:obj:`list` of :class:`.Terminal`: All terminal instances on the \
-            net object instance."""
+            net object instance.
+        """
         return self._layout_objs(LayoutObjType.TERMINAL)
 
     @property

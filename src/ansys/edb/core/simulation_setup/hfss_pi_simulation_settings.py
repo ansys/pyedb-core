@@ -5,19 +5,15 @@ from enum import Enum
 import ansys.api.edb.v1.hfss_pi_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import (
-    HFSSPIAdvancedSettingsServiceStub,
-    HFSSPIGeneralSettingsServiceStub,
-    HFSSPISolverSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
-from ansys.edb.core.simulation_setup.simulation_settings import (
-    AdvancedMeshingSettingsServiceStub,
-    AdvancedSettingsServiceStub,
-    SimulationSettings,
-    SimulationSettingsBase,
-)
+from ansys.edb.core.session import HFSSPIAdvancedSettingsServiceStub
+from ansys.edb.core.session import HFSSPIGeneralSettingsServiceStub
+from ansys.edb.core.session import HFSSPISolverSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.simulation_setup.simulation_settings import AdvancedMeshingSettingsServiceStub
+from ansys.edb.core.simulation_setup.simulation_settings import AdvancedSettingsServiceStub
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettingsBase
 
 
 class HFSSPIModelType(Enum):
@@ -60,9 +56,7 @@ class HFSSPIGeneralSettings(SimulationSettingsBase):
     @model_type.setter
     def model_type(self, hfss_pi_model_type):
         self.__stub.SetHFSSPIModelType(
-            pb.HFSSPIModelTypePropertyMessage(
-                target=self.msg, hfss_pi_model_type=hfss_pi_model_type.value
-            )
+            pb.HFSSPIModelTypePropertyMessage(target=self.msg, hfss_pi_model_type=hfss_pi_model_type.value)
         )
 
     @property
@@ -116,20 +110,14 @@ class HFSSPISolverSettings(SimulationSettingsBase):
 
     @via_area_cutoff_circ_elems.setter
     def via_area_cutoff_circ_elems(self, via_area_cutoff_circ_elems):
-        self.__stub.SetViaAreaCutoffCircElems(
-            messages.string_property_message(self, via_area_cutoff_circ_elems)
-        )
+        self.__stub.SetViaAreaCutoffCircElems(messages.string_property_message(self, via_area_cutoff_circ_elems))
 
 
 class HFSSPIAdvancedSettings(SimulationSettingsBase):
     """Represents advanced settings for HFSSPI simulations."""
 
-    __hfss_pi_stub: HFSSPIAdvancedSettingsServiceStub = StubAccessor(
-        StubType.hfss_pi_advanced_sim_settings
-    )
-    __advanced_sim_settings_stub: AdvancedSettingsServiceStub = StubAccessor(
-        StubType.advanced_sim_settings
-    )
+    __hfss_pi_stub: HFSSPIAdvancedSettingsServiceStub = StubAccessor(StubType.hfss_pi_advanced_sim_settings)
+    __advanced_sim_settings_stub: AdvancedSettingsServiceStub = StubAccessor(StubType.advanced_sim_settings)
     __advanced_mesh_sim_settings_stub: AdvancedMeshingSettingsServiceStub = StubAccessor(
         StubType.advanced_mesh_sim_settings
     )
@@ -141,9 +129,7 @@ class HFSSPIAdvancedSettings(SimulationSettingsBase):
 
     @small_void_area.setter
     def small_void_area(self, small_void_area):
-        self.__advanced_sim_settings_stub.SetSmallVoidArea(
-            messages.double_property_message(self, small_void_area)
-        )
+        self.__advanced_sim_settings_stub.SetSmallVoidArea(messages.double_property_message(self, small_void_area))
 
     @property
     def small_plane_area(self) -> str:
@@ -152,9 +138,7 @@ class HFSSPIAdvancedSettings(SimulationSettingsBase):
 
     @small_plane_area.setter
     def small_plane_area(self, small_plane_area: str):
-        self.__hfss_pi_stub.SetSmallPlaneArea(
-            messages.string_property_message(self, small_plane_area)
-        )
+        self.__hfss_pi_stub.SetSmallPlaneArea(messages.string_property_message(self, small_plane_area))
 
     @property
     def remove_floating_geometry(self):
@@ -185,9 +169,7 @@ class HFSSPIAdvancedSettings(SimulationSettingsBase):
 
     @auto_model_resolution.setter
     def auto_model_resolution(self, auto_model_resolution):
-        self.__hfss_pi_stub.SetICModeAutoResolution(
-            messages.bool_property_message(self, auto_model_resolution)
-        )
+        self.__hfss_pi_stub.SetICModeAutoResolution(messages.bool_property_message(self, auto_model_resolution))
 
     @property
     def model_resolution_length(self):
@@ -196,9 +178,7 @@ class HFSSPIAdvancedSettings(SimulationSettingsBase):
 
     @model_resolution_length.setter
     def model_resolution_length(self, model_resolution_length):
-        self.__hfss_pi_stub.SetICModeLength(
-            messages.string_property_message(self, model_resolution_length)
-        )
+        self.__hfss_pi_stub.SetICModeLength(messages.string_property_message(self, model_resolution_length))
 
     @property
     def max_num_arc_points(self):

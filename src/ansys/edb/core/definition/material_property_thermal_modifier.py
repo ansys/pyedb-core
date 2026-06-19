@@ -1,17 +1,16 @@
 """Material property thermal modifier."""
-from __future__ import annotations
 
-from typing import Tuple
+from __future__ import annotations
 
 from ansys.api.edb.v1 import material_property_thermal_modifier_pb2_grpc
 import ansys.api.edb.v1.material_property_thermal_modifier_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility.material_property_thermal_modifier_params import (
-    AdvancedQuadraticParams,
-    BasicQuadraticParams,
-)
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.utility.material_property_thermal_modifier_params import AdvancedQuadraticParams
+from ansys.edb.core.utility.material_property_thermal_modifier_params import BasicQuadraticParams
 from ansys.edb.core.utility.value import Value
 
 
@@ -51,12 +50,8 @@ class MaterialPropertyThermalModifier(ObjBase):
                     temp_ref=messages.value_message(basic_quadratic_params.temp_ref_val),
                     c1=messages.value_message(basic_quadratic_params.c1_val),
                     c2=messages.value_message(basic_quadratic_params.c2_val),
-                    temp_lower_limit=messages.value_message(
-                        advanced_quadratic_params.temp_lower_limit_val
-                    ),
-                    temp_upper_limit=messages.value_message(
-                        advanced_quadratic_params.temp_upper_limit_val
-                    ),
+                    temp_lower_limit=messages.value_message(advanced_quadratic_params.temp_lower_limit_val),
+                    temp_upper_limit=messages.value_message(advanced_quadratic_params.temp_upper_limit_val),
                     auto_calc_constant_thermal_modifier=(
                         advanced_quadratic_params.auto_calc_constant_thermal_modifier_vals
                     ),
@@ -71,7 +66,7 @@ class MaterialPropertyThermalModifier(ObjBase):
         )
 
     @property
-    def quadratic_model_params(self) -> Tuple[BasicQuadraticParams, AdvancedQuadraticParams]:
+    def quadratic_model_params(self) -> tuple[BasicQuadraticParams, AdvancedQuadraticParams]:
         """:obj:`tuple` of (:class:`.BasicQuadraticParams`, :class:`.AdvancedQuadraticParams`): \
         Quadratic model parameters of the thermal modifier.
 

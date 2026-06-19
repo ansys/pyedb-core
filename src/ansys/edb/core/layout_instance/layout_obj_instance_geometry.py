@@ -4,15 +4,15 @@ from ansys.api.edb.v1.layout_obj_instance_geometry_pb2 import LayoutObjInstanceG
 
 from ansys.edb.core.inner import ObjBase
 from ansys.edb.core.inner.messages import edb_obj_message
-from ansys.edb.core.session import LayoutObjInstanceGeometryServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutObjInstanceGeometryServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class LayoutObjInstanceGeometry(ObjBase):
     """Represents layout object instance geometry."""
 
-    __stub: LayoutObjInstanceGeometryServiceStub = StubAccessor(
-        StubType.layout_obj_instance_geometry
-    )
+    __stub: LayoutObjInstanceGeometryServiceStub = StubAccessor(StubType.layout_obj_instance_geometry)
 
     def __init__(self, geometry, owning_drawing, placement_lyr):
         """Initialize the layout object instance geometry object.

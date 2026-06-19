@@ -1,18 +1,17 @@
 """Simulation Settings."""
+
 from enum import Enum
 
 import ansys.api.edb.v1.simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import (
-    AdvancedMeshingSettingsServiceStub,
-    AdvancedSettingsServiceStub,
-    SettingsOptionsServiceStub,
-    SimulationSettingsServiceStub,
-    SolverSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
+from ansys.edb.core.session import AdvancedMeshingSettingsServiceStub
+from ansys.edb.core.session import AdvancedSettingsServiceStub
+from ansys.edb.core.session import SettingsOptionsServiceStub
+from ansys.edb.core.session import SimulationSettingsServiceStub
+from ansys.edb.core.session import SolverSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ViaStyle(Enum):
@@ -135,9 +134,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @use_defeature_absolute_length.setter
     def use_defeature_absolute_length(self, use_defeature_absolute_length):
-        self.__stub.SetUseDefeatureAbsoluteLength(
-            messages.bool_property_message(self, use_defeature_absolute_length)
-        )
+        self.__stub.SetUseDefeatureAbsoluteLength(messages.bool_property_message(self, use_defeature_absolute_length))
 
     @property
     def remove_floating_geometry(self):
@@ -146,9 +143,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @remove_floating_geometry.setter
     def remove_floating_geometry(self, remove_floating_geometry):
-        self.__stub.SetRemoveFloatingGeometry(
-            messages.bool_property_message(self, remove_floating_geometry)
-        )
+        self.__stub.SetRemoveFloatingGeometry(messages.bool_property_message(self, remove_floating_geometry))
 
     @property
     def healing_option(self):
@@ -166,9 +161,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @defeature_absolute_length.setter
     def defeature_absolute_length(self, defeature_absolute_length):
-        self.__stub.SetDefeatureAbsoluteLength(
-            messages.string_property_message(self, defeature_absolute_length)
-        )
+        self.__stub.SetDefeatureAbsoluteLength(messages.string_property_message(self, defeature_absolute_length))
 
     @property
     def defeature_ratio(self):
@@ -243,9 +236,7 @@ class AdvancedSettings(SimulationSettingsBase):
     @model_type.setter
     def model_type(self, model_type):
         self.__stub.SetModelType(
-            pb.DefeatureModelTypePropertyMessage(
-                target=self.msg, defeature_model_type=model_type.value
-            )
+            pb.DefeatureModelTypePropertyMessage(target=self.msg, defeature_model_type=model_type.value)
         )
 
     @property
@@ -255,9 +246,7 @@ class AdvancedSettings(SimulationSettingsBase):
 
     @zero_metal_layer_thickness.setter
     def zero_metal_layer_thickness(self, zero_metal_layer_thickness):
-        self.__stub.SetZeroMetalLayerThickness(
-            messages.string_property_message(self, zero_metal_layer_thickness)
-        )
+        self.__stub.SetZeroMetalLayerThickness(messages.string_property_message(self, zero_metal_layer_thickness))
 
 
 class AdvancedMeshingSettings(SimulationSettingsBase):
@@ -281,9 +270,7 @@ class AdvancedMeshingSettings(SimulationSettingsBase):
 
     @circle_start_azimuth.setter
     def circle_start_azimuth(self, circle_start_azimuth):
-        self.__stub.SetCircleStartAzimuth(
-            messages.string_property_message(self, circle_start_azimuth)
-        )
+        self.__stub.SetCircleStartAzimuth(messages.string_property_message(self, circle_start_azimuth))
 
     @property
     def max_num_arc_points(self):
@@ -301,9 +288,7 @@ class AdvancedMeshingSettings(SimulationSettingsBase):
 
     @use_arc_chord_error_approx.setter
     def use_arc_chord_error_approx(self, use_arc_chord_error_approx):
-        self.__stub.SetUseArcChordErrorApprox(
-            messages.bool_property_message(self, use_arc_chord_error_approx)
-        )
+        self.__stub.SetUseArcChordErrorApprox(messages.bool_property_message(self, use_arc_chord_error_approx))
 
     @property
     def arc_to_chord_error(self):
@@ -312,9 +297,7 @@ class AdvancedMeshingSettings(SimulationSettingsBase):
 
     @arc_to_chord_error.setter
     def arc_to_chord_error(self, arc_to_chord_error):
-        self.__stub.SetArcChordErrorApprox(
-            messages.string_property_message(self, arc_to_chord_error)
-        )
+        self.__stub.SetArcChordErrorApprox(messages.string_property_message(self, arc_to_chord_error))
 
 
 class SolverSettings(SimulationSettingsBase):
@@ -329,9 +312,7 @@ class SolverSettings(SimulationSettingsBase):
 
     @thin_signal_layer_threshold.setter
     def thin_signal_layer_threshold(self, thin_signal_layer_threshold):
-        self.__stub.SetThinSignalLayerThreshold(
-            messages.string_property_message(self, thin_signal_layer_threshold)
-        )
+        self.__stub.SetThinSignalLayerThreshold(messages.string_property_message(self, thin_signal_layer_threshold))
 
     @property
     def thin_dielectric_layer_threshold(self):

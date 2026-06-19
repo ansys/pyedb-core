@@ -5,10 +5,15 @@ from enum import Enum
 import ansys.api.edb.v1.edge_term_pb2 as edge_term_pb2
 
 from ansys.edb.core.geometry.arc_data import ArcData
-from ansys.edb.core.inner import ObjBase, TypeField, messages, parser
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import TypeField
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminal import Terminal, TerminalType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.terminal.terminal import Terminal
+from ansys.edb.core.terminal.terminal import TerminalType
 
 
 class EdgeType(Enum):
@@ -156,9 +161,7 @@ class EdgeTerminal(Terminal):
         -------
         EdgeTerminal
         """
-        return EdgeTerminal(
-            cls.__stub.Create(messages.edge_term_creation_message(layout, net, name, edges, is_ref))
-        )
+        return EdgeTerminal(cls.__stub.Create(messages.edge_term_creation_message(layout, net, name, edges, is_ref)))
 
     @property
     def edges(self):

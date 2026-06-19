@@ -4,15 +4,15 @@ from ansys.api.edb.v1.layout_obj_instance_2d_geometry_pb2 import GetPolygonDataM
 
 from ansys.edb.core.inner.parser import to_polygon_data
 from ansys.edb.core.layout_instance.layout_obj_instance_geometry import LayoutObjInstanceGeometry
-from ansys.edb.core.session import LayoutObjInstance2DGeometryServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutObjInstance2DGeometryServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class LayoutObjInstance2DGeometry(LayoutObjInstanceGeometry):
     """Represents a layout object instance 2D geometry."""
 
-    __stub: LayoutObjInstance2DGeometryServiceStub = StubAccessor(
-        StubType.layout_obj_instance_2d_geometry
-    )
+    __stub: LayoutObjInstance2DGeometryServiceStub = StubAccessor(StubType.layout_obj_instance_2d_geometry)
 
     @property
     def is_negative(self):

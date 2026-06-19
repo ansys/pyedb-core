@@ -614,9 +614,7 @@ rpc_information = {
         "IsNegative": _RpcInfo(cache=True),
         "GetPolygonData": _RpcInfo(cache=True),
     },
-    "ansys.api.edb.v1.LayoutObjInstance3DGeometryService": {
-        "GetTesselationData": _RpcInfo(cache=True)
-    },
+    "ansys.api.edb.v1.LayoutObjInstance3DGeometryService": {"GetTesselationData": _RpcInfo(cache=True)},
     "ansys.api.edb.v1.LayoutObjInstanceGeometryService": {
         "GetMaterial": _RpcInfo(cache=True),
         "GetColor": _RpcInfo(cache=True),
@@ -1423,34 +1421,16 @@ rpc_information = {
         "TransformPolygon": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.Transform3DService": {
-        "CreateIdentity": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
+        "CreateIdentity": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
         "CreateCopy": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
-        "CreateOffset": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
-        "CreateCenterScale": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
-        "CreateRotationFromAngle": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
-        "CreateRotationFromAxis": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
-        "CreateRotationFromAxisAndAngle": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
-        "CreateRotationFromToAxis": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
-        "CreateTransform2D": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
-        "OperatorPlus": _RpcInfo(
-            buffer=True, returns_future=True, write_no_cache_invalidation=True
-        ),
+        "CreateOffset": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "CreateCenterScale": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "CreateRotationFromAngle": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "CreateRotationFromAxis": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "CreateRotationFromAxisAndAngle": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "CreateRotationFromToAxis": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "CreateTransform2D": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
+        "OperatorPlus": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
         "TransformPoint": _RpcInfo(cache=True),
         "GetZYXRotation": _RpcInfo(cache=True),
         "GetAxis": _RpcInfo(cache=True),

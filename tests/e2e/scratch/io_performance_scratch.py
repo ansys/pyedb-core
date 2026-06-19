@@ -5,12 +5,15 @@ import settings
 from ansys.edb.core.database import Database
 from ansys.edb.core.layer.layer import LayerType
 from ansys.edb.core.layer.stackup_layer import StackupLayer
-from ansys.edb.core.layout.cell import Cell, CellType
+from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout.cell import CellType
 from ansys.edb.core.layout.layout import Layout
 from ansys.edb.core.net.net import Net
-from ansys.edb.core.primitive.rectangle import Rectangle, RectangleRepresentationType
+from ansys.edb.core.primitive.rectangle import Rectangle
+from ansys.edb.core.primitive.rectangle import RectangleRepresentationType
 from ansys.edb.core.session import session
-from ansys.edb.core.utility.io_manager import IOMangementType, enable_io_manager
+from ansys.edb.core.utility.io_manager import IOMangementType
+from ansys.edb.core.utility.io_manager import enable_io_manager
 import tests.e2e.settings as settings
 
 db_name = "io_performance_test.aedb"
@@ -94,9 +97,7 @@ def setup():
     db = Database.create(db_name)
     cell = Cell.create(db, CellType.CIRCUIT_CELL, "EMDesign1")
     lyt = cell.layout
-    lyt.layer_collection.add_layers(
-        [StackupLayer.create(lyr_name, LayerType.SIGNAL_LAYER, 1e-3, 0, "copper")]
-    )
+    lyt.layer_collection.add_layers([StackupLayer.create(lyr_name, LayerType.SIGNAL_LAYER, 1e-3, 0, "copper")])
     Net.create(lyt, net_name)
 
 
@@ -107,9 +108,7 @@ def teardown():
 
 def caching_flushing_blocking_test():
     blocking_start = time()
-    with enable_io_manager(
-        IOMangementType.READ_AND_WRITE | IOMangementType.NO_CACHE_INVALIDATION_NO_BUFFER_FLUSHING
-    ):
+    with enable_io_manager(IOMangementType.READ_AND_WRITE | IOMangementType.NO_CACHE_INVALIDATION_NO_BUFFER_FLUSHING):
         for prim in lyt.primitives:
             rect: Rectangle = prim
             geom = rect.polygon_data

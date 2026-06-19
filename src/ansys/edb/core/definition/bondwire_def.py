@@ -1,4 +1,5 @@
 """Bondwire definition."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -13,8 +14,10 @@ from ansys.api.edb.v1 import bondwire_def_pb2_grpc
 import ansys.api.edb.v1.bondwire_def_pb2 as pb
 
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -67,9 +70,7 @@ class BondwireDef(ObjBase):
 class ApdBondwireDef(BondwireDef):
     """Represents an APD bondwire definition."""
 
-    __stub: bondwire_def_pb2_grpc.ApdBondwireDefServiceStub = StubAccessor(
-        StubType.apd_bondwire_def
-    )
+    __stub: bondwire_def_pb2_grpc.ApdBondwireDefServiceStub = StubAccessor(StubType.apd_bondwire_def)
 
     @classmethod
     def create(cls, database: Database, name: str) -> ApdBondwireDef:
@@ -119,9 +120,7 @@ class ApdBondwireDef(BondwireDef):
             APD bondwire definition found. \
             If an APD bondwire definition isn't found, the returned APD bondwire definition is :meth:`null <.is_null>`.
         """
-        return ApdBondwireDef(
-            cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
-        )
+        return ApdBondwireDef(cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name)))
 
     def get_parameters(self) -> str:
         """Get the parameters of the APD bondwire definition.
@@ -155,9 +154,7 @@ class ApdBondwireDef(BondwireDef):
 class Jedec4BondwireDef(BondwireDef):
     """Represents a JEDEC4 bondwire definition."""
 
-    __stub: bondwire_def_pb2_grpc.Jedec4BondwireDefServiceStub = StubAccessor(
-        StubType.jedec4_bondwire_def
-    )
+    __stub: bondwire_def_pb2_grpc.Jedec4BondwireDefServiceStub = StubAccessor(StubType.jedec4_bondwire_def)
 
     @classmethod
     def create(cls, database: Database, name: str) -> Jedec4BondwireDef:
@@ -174,9 +171,7 @@ class Jedec4BondwireDef(BondwireDef):
         -------
         .Jedec4BondwireDef
         """
-        return Jedec4BondwireDef(
-            cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name))
-        )
+        return Jedec4BondwireDef(cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name)))
 
     @classmethod
     def find_by_name(cls, database: Database, name: str) -> Jedec4BondwireDef:
@@ -196,9 +191,7 @@ class Jedec4BondwireDef(BondwireDef):
             If an JEDEC4 bondwire definition isn't found, the returned JEDEC4 bondwire definition \
             is :meth:`null <.is_null>`.
         """
-        return Jedec4BondwireDef(
-            cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
-        )
+        return Jedec4BondwireDef(cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name)))
 
     def get_parameters(self) -> Value:
         """Get the parameters of the JEDEC4 bondwire definition.
@@ -236,9 +229,7 @@ class Jedec4BondwireDef(BondwireDef):
 class Jedec5BondwireDef(BondwireDef):
     """Represents a JEDEC5 bondwire definition."""
 
-    __stub: bondwire_def_pb2_grpc.Jedec5BondwireDefServiceStub = StubAccessor(
-        StubType.jedec5_bondwire_def
-    )
+    __stub: bondwire_def_pb2_grpc.Jedec5BondwireDefServiceStub = StubAccessor(StubType.jedec5_bondwire_def)
 
     @classmethod
     def create(cls, database: Database, name: str) -> Jedec5BondwireDef:
@@ -256,9 +247,7 @@ class Jedec5BondwireDef(BondwireDef):
         .Jedec5BondwireDef
             JEDEC5 bondwire definition created.
         """
-        return Jedec5BondwireDef(
-            cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name))
-        )
+        return Jedec5BondwireDef(cls.__stub.Create(BondwireDef._bondwire_def_str_message(database, name)))
 
     @classmethod
     def find_by_name(cls, database: Database, name: str) -> Jedec5BondwireDef:
@@ -278,9 +267,7 @@ class Jedec5BondwireDef(BondwireDef):
             If an JEDEC5 bondwire definition isn't found, the returned JEDEC5 bondwire definition is \
             :meth:`null <.is_null>`.
         """
-        return Jedec5BondwireDef(
-            cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name))
-        )
+        return Jedec5BondwireDef(cls.__stub.FindByName(BondwireDef._bondwire_def_str_message(database, name)))
 
     def get_parameters(self) -> tuple[Value, Value, Value]:
         """Get parameters of the JEDEC5 bondwire definition.
@@ -301,9 +288,7 @@ class Jedec5BondwireDef(BondwireDef):
             Value(get_parameters_msg.lead_pad_angle),
         )
 
-    def set_parameters(
-        self, top_to_die_distance: ValueLike, die_pad_angle: ValueLike, lead_pad_angle: ValueLike
-    ):
+    def set_parameters(self, top_to_die_distance: ValueLike, die_pad_angle: ValueLike, lead_pad_angle: ValueLike):
         """Set parameters of the JEDEC5 bondwire definition.
 
         Parameters

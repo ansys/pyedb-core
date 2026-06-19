@@ -1,12 +1,12 @@
 """SIWavePSI simulation setup."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
-from ansys.edb.core.simulation_setup.siwave_psi_simulation_settings import (
-    SIWavePSISimulationSettings,
-)
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetupType
+from ansys.edb.core.simulation_setup.siwave_psi_simulation_settings import SIWavePSISimulationSettings
 
 if TYPE_CHECKING:
     from ansys.edb.core.layout.cell import Cell

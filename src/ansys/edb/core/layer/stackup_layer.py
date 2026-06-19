@@ -45,16 +45,12 @@ def _get_layer_material_name_message(layer, evaluated):
 
 def _stackup_layer_value_message(layer, value):
     """Convert to a ``StackupLayerValueMessage`` object."""
-    return stackup_layer_pb2.StackupLayerValueMessage(
-        layer=layer.msg, value=messages.value_message(value)
-    )
+    return stackup_layer_pb2.StackupLayerValueMessage(layer=layer.msg, value=messages.value_message(value))
 
 
 def _layer_roughness_region_message(layer, region):
     """Convert to a ``LayerRoughnessRegionMessage`` object."""
-    return stackup_layer_pb2.LayerRoughnessRegionMessage(
-        layer=layer.msg, roughness_region=region.value
-    )
+    return stackup_layer_pb2.LayerRoughnessRegionMessage(layer=layer.msg, roughness_region=region.value)
 
 
 class StackupLayer(Layer):
@@ -128,9 +124,7 @@ class StackupLayer(Layer):
 
     @lower_elevation.setter
     def lower_elevation(self, lower_elevation):
-        get_stackup_layer_stub().SetLowerElevation(
-            _stackup_layer_value_message(self, lower_elevation)
-        )
+        get_stackup_layer_stub().SetLowerElevation(_stackup_layer_value_message(self, lower_elevation))
 
     @property
     def upper_elevation(self):
@@ -153,11 +147,7 @@ class StackupLayer(Layer):
         str
             Material name.
         """
-        return (
-            get_stackup_layer_stub()
-            .GetMaterial(_get_layer_material_name_message(self, evaluated))
-            .value
-        )
+        return get_stackup_layer_stub().GetMaterial(_get_layer_material_name_message(self, evaluated)).value
 
     def set_material(self, material_name):
         """Set the name of the material of the layer.
@@ -182,11 +172,7 @@ class StackupLayer(Layer):
         str
             Name of the fill material.
         """
-        return (
-            get_stackup_layer_stub()
-            .GetFillMaterial(_get_layer_material_name_message(self, evaluated))
-            .value
-        )
+        return get_stackup_layer_stub().GetFillMaterial(_get_layer_material_name_message(self, evaluated)).value
 
     def set_fill_material(self, fill_material_name):
         """Set the name of the fill material of the layer.
@@ -196,9 +182,7 @@ class StackupLayer(Layer):
         fill_material_name : str
             New name of the fill material.
         """
-        get_stackup_layer_stub().SetFillMaterial(
-            _set_layer_material_name_message(self, fill_material_name)
-        )
+        get_stackup_layer_stub().SetFillMaterial(_set_layer_material_name_message(self, fill_material_name))
 
     @property
     def roughness_enabled(self):
@@ -225,11 +209,7 @@ class StackupLayer(Layer):
         request = _layer_roughness_region_message(self, region)
         response = get_stackup_layer_stub().GetRoughnessModel(request)
         roughness = Value(response.roughness)
-        return (
-            roughness
-            if not response.HasField("huray_surface_ratio")
-            else (roughness, Value(response.surface_ratio))
-        )
+        return roughness if not response.HasField("huray_surface_ratio") else (roughness, Value(response.surface_ratio))
 
     def set_roughness_model(self, roughness_model, region):
         """Set the roughness model used by the layer.
@@ -283,9 +263,7 @@ class StackupLayer(Layer):
     @etch_net_class.setter
     def etch_net_class(self, etch_net_class: EtchNetClass):
         get_stackup_layer_stub().SetEtchNetClass(
-            stackup_layer_pb2.StackupLayerEtchNetClassMessage(
-                layer=self.msg, etch_net_class=etch_net_class.value
-            )
+            stackup_layer_pb2.StackupLayerEtchNetClassMessage(layer=self.msg, etch_net_class=etch_net_class.value)
         )
 
     @property
@@ -296,9 +274,7 @@ class StackupLayer(Layer):
     @use_solver_properties.setter
     def use_solver_properties(self, use_solver_properties):
         get_stackup_layer_stub().SetUseSolverProperties(
-            stackup_layer_pb2.SetLayerPropEnabledMessage(
-                layer=self.msg, enabled=use_solver_properties
-            )
+            stackup_layer_pb2.SetLayerPropEnabledMessage(layer=self.msg, enabled=use_solver_properties)
         )
 
     @property
@@ -330,9 +306,4 @@ class StackupLayer(Layer):
 
         This property is read-only.
         """
-        return [
-            via_lyr_id
-            for via_lyr_id in get_stackup_layer_stub()
-            .GetReferencingViaLayerIds(self.msg)
-            .ref_layer_ids
-        ]
+        return [via_lyr_id for via_lyr_id in get_stackup_layer_stub().GetReferencingViaLayerIds(self.msg).ref_layer_ids]

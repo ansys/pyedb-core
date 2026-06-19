@@ -1,4 +1,5 @@
 """Die property."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -12,8 +13,10 @@ import ansys.api.edb.v1.die_property_pb2 as die_property_pb2
 from ansys.api.edb.v1.die_property_pb2_grpc import DiePropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 

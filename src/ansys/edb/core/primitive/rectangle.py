@@ -1,20 +1,26 @@
 """Rectangle."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.layout.layout import Layout
     from ansys.edb.core.geometry.polygon_data import PolygonData
-    from ansys.edb.core.typing import NetLike, LayerLike, ValueLike
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import NetLike
+    from ansys.edb.core.typing import ValueLike
 
 from enum import Enum
 
-from ansys.api.edb.v1 import rectangle_pb2, rectangle_pb2_grpc
+from ansys.api.edb.v1 import rectangle_pb2
+from ansys.api.edb.v1 import rectangle_pb2_grpc
 
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.primitive.primitive import Primitive
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 

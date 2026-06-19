@@ -1,4 +1,5 @@
 """RLC component property."""
+
 from __future__ import annotations
 
 from ansys.api.edb.v1.rlc_component_property_pb2_grpc import RLCComponentPropertyServiceStub
@@ -6,7 +7,8 @@ import google.protobuf.empty_pb2 as empty_pb2
 
 from ansys.edb.core.definition.component_property import ComponentProperty
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class RLCComponentProperty(ComponentProperty):

@@ -1,18 +1,23 @@
 """Polygon."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.layout.layout import Layout
     from ansys.edb.core.geometry.polygon_data import PolygonData
-    from ansys.edb.core.typing import NetLike, LayerLike
+    from ansys.edb.core.layout.layout import Layout
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import NetLike
 
-from ansys.api.edb.v1 import polygon_pb2, polygon_pb2_grpc
+from ansys.api.edb.v1 import polygon_pb2
+from ansys.api.edb.v1 import polygon_pb2_grpc
 
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.primitive.primitive import Primitive
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class Polygon(Primitive):
@@ -21,9 +26,7 @@ class Polygon(Primitive):
     __stub: polygon_pb2_grpc.PolygonServiceStub = StubAccessor(StubType.polygon)
 
     @classmethod
-    def create(
-        cls, layout: Layout, layer: LayerLike, net: NetLike | None, polygon_data: PolygonData
-    ) -> Polygon:
+    def create(cls, layout: Layout, layer: LayerLike, net: NetLike | None, polygon_data: PolygonData) -> Polygon:
         """Create a polygon.
 
         Parameters
@@ -62,9 +65,7 @@ class Polygon(Primitive):
     @polygon_data.setter
     def polygon_data(self, poly: PolygonData):
         self.__stub.SetPolygonData(
-            polygon_pb2.SetPolygonDataMessage(
-                target=self.msg, poly=messages.polygon_data_message(poly)
-            )
+            polygon_pb2.SetPolygonDataMessage(target=self.msg, poly=messages.polygon_data_message(poly))
         )
 
     @property

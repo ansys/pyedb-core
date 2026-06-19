@@ -1,7 +1,6 @@
 """Dielectric material definition."""
-from __future__ import annotations
 
-from typing import List, Tuple
+from __future__ import annotations
 
 from ansys.api.edb.v1 import multipole_debye_model_pb2_grpc
 import ansys.api.edb.v1.multipole_debye_model_pb2 as pb
@@ -30,7 +29,7 @@ class MultipoleDebyeModel(DielectricMaterialModel):
         return MultipoleDebyeModel(cls.__stub.Create(empty_pb2.Empty()))
 
     @property
-    def parameters(self) -> Tuple[List[float], List[float], List[float]]:
+    def parameters(self) -> tuple[list[float], list[float], list[float]]:
         """:obj:`tuple` of (:obj:`list` of :obj:`float`, :obj:`list` of :obj:`float`, :obj:`list` of :obj:`float`): \
         Parameters used to define the model.
 
@@ -46,7 +45,7 @@ class MultipoleDebyeModel(DielectricMaterialModel):
         )
 
     @parameters.setter
-    def parameters(self, params: Tuple[List[float], List[float], List[float]]):
+    def parameters(self, params: tuple[list[float], list[float], list[float]]):
         frequencies_msg = [messages.double_message(i) for i in params[0]]
         permitivities_msg = [messages.double_message(i) for i in params[1]]
         loss_tangents_msg = [messages.double_message(i) for i in params[2]]

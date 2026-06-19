@@ -1,9 +1,12 @@
 """PadstackInstance Terminal."""
 
-from ansys.edb.core.inner import TypeField, messages
+from ansys.edb.core.inner import TypeField
+from ansys.edb.core.inner import messages
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminal import Terminal, TerminalType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.terminal.terminal import Terminal
+from ansys.edb.core.terminal.terminal import TerminalType
 
 
 class PadstackInstanceTerminal(Terminal):
@@ -37,9 +40,7 @@ class PadstackInstanceTerminal(Terminal):
         """
         return PadstackInstanceTerminal(
             cls.__stub.Create(
-                messages.padstack_inst_term_creation_message(
-                    layout, name, padstack_instance, layer, net, is_ref
-                )
+                messages.padstack_inst_term_creation_message(layout, name, padstack_instance, layer, net, is_ref)
             )
         )
 
@@ -56,9 +57,7 @@ class PadstackInstanceTerminal(Terminal):
     @params.setter
     def params(self, params):
         (padstack_instance, layer) = params
-        self.__stub.SetParameters(
-            messages.padstack_inst_term_set_params_message(self, padstack_instance, layer)
-        )
+        self.__stub.SetParameters(messages.padstack_inst_term_set_params_message(self, padstack_instance, layer))
 
     @property
     def padstack_instance(self):

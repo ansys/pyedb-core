@@ -7,24 +7,23 @@ from ansys.api.edb.v1.cell_pb2_grpc import CellServiceStub
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import ObjBase, messages, variable_server
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import variable_server
 from ansys.edb.core.layout import layout
 from ansys.edb.core.primitive.primitive import Primitive
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
-from ansys.edb.core.utility.hfss_extent_info import (
-    HfssExtentInfo,
-    HFSSExtentInfoType,
-    OpenRegionType,
-)
+from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
+from ansys.edb.core.utility.hfss_extent_info import HFSSExtentInfoType
+from ansys.edb.core.utility.hfss_extent_info import OpenRegionType
 from ansys.edb.core.utility.temperature_settings import TemperatureSettings
-from ansys.edb.core.utility.touchstone_export_settings import (
-    ColumnFittingAlgorithm,
-    ExportType,
-    PassivityAlgorithm,
-    SSFittingAlgorithm,
-    TouchstoneExportSettings,
-)
+from ansys.edb.core.utility.touchstone_export_settings import ColumnFittingAlgorithm
+from ansys.edb.core.utility.touchstone_export_settings import ExportType
+from ansys.edb.core.utility.touchstone_export_settings import PassivityAlgorithm
+from ansys.edb.core.utility.touchstone_export_settings import SSFittingAlgorithm
+from ansys.edb.core.utility.touchstone_export_settings import TouchstoneExportSettings
 from ansys.edb.core.utility.value import Value
 
 
@@ -168,9 +167,7 @@ class Cell(ObjBase, variable_server.VariableServer):
             Cell created.
         """
         return Cell(
-            cls.__stub.Create(
-                cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=cell_name)
-            )
+            cls.__stub.Create(cell_pb2.CellCreationMessage(database=db.msg, type=cell_type.value, name=cell_name))
         )
 
     @property
@@ -311,7 +308,8 @@ class Cell(ObjBase, variable_server.VariableServer):
     @property
     def hfss_extent_info(self):
         """:class:`.HfssExtentInfo`: \
-        HFSS extents for the cell."""
+        HFSS extents for the cell.
+        """
         msg = self.__stub.GetHfssExtentInfo(self.msg)
         return HfssExtentInfo(**parse_args(msg))
 
@@ -323,29 +321,22 @@ class Cell(ObjBase, variable_server.VariableServer):
         extents : :class:`.HfssExtentInfo`
         """
         self.__stub.SetHfssExtentInfo(
-            cell_pb2.CellSetHfssExtentsMessage(
-                cell=self.msg, info=messages.hfss_extent_info_message(extents)
-            )
+            cell_pb2.CellSetHfssExtentsMessage(cell=self.msg, info=messages.hfss_extent_info_message(extents))
         )
 
     @property
     def temperature_settings(self):
         """:class:`.TemperatureSettings`: \
-        Temperature settings."""
+        Temperature settings.
+        """
         msg = self.__stub.GetTemperatureSettings(self.msg)
-        return TemperatureSettings(
-            msg.include_temp_dependence, msg.enable_thermal_feedback, Value(msg.temperature)
-        )
+        return TemperatureSettings(msg.include_temp_dependence, msg.enable_thermal_feedback, Value(msg.temperature))
 
     @temperature_settings.setter
     def temperature_settings(self, value):
-        self.__stub.SetTemperatureSettings(
-            messages.cell_set_temperature_settings_message(self, value)
-        )
+        self.__stub.SetTemperatureSettings(messages.cell_set_temperature_settings_message(self, value))
 
-    def cutout(
-        self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True, in_place=False
-    ):
+    def cutout(self, included_nets, clipped_nets, clipping_polygon, clean_clipping=True, in_place=False):
         """Cut out an existing cell into a new cell.
 
         Parameters
@@ -387,9 +378,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         list[int]
             List of user-defined attribute IDs for properties stored in this object.
         """
-        ids = self.__stub.GetProductPropertyIds(
-            messages.get_product_property_ids_message(self, prod_id)
-        ).ids
+        ids = self.__stub.GetProductPropertyIds(messages.get_product_property_ids_message(self, prod_id)).ids
         return [prop_id for prop_id in ids]
 
     def get_product_property(self, prod_id, attr_id):
@@ -407,9 +396,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         str
             String stored in the product-specific property.
         """
-        return self.__stub.GetProductProperty(
-            messages.get_product_property_message(self, prod_id, attr_id)
-        )
+        return self.__stub.GetProductProperty(messages.get_product_property_message(self, prod_id, attr_id))
 
     def set_product_property(self, prod_id, attr_id, prop_value):
         """Set the product property of the cell for a given product ID and attribute ID.
@@ -423,9 +410,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         prop_value : str
             New string to store in this property.
         """
-        self.__stub.SetProductProperty(
-            messages.set_product_property_message(self, prod_id, attr_id, prop_value)
-        )
+        self.__stub.SetProductProperty(messages.set_product_property_message(self, prod_id, attr_id, prop_value))
 
     def delete_simulation_setup(self, name):
         """Delete a simulation setup by name.
@@ -445,9 +430,7 @@ class Cell(ObjBase, variable_server.VariableServer):
 
         .. seealso:: :obj:`add_simulation_setup`, :obj:`delete_simulation_setup`
         """
-        return [
-            SimulationSetup(msg).cast() for msg in self.__stub.GetSimulationSetups(self.msg).items
-        ]
+        return [SimulationSetup(msg).cast() for msg in self.__stub.GetSimulationSetups(self.msg).items]
 
     def generate_auto_hfss_regions(self):
         """Generate auto HFSS regions.
@@ -481,9 +464,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         definition_name : str
             Name of the technology definition.
         """
-        self.__stub.ApplyTechnology(
-            cell_pb2.CellApplyTechnologyMessage(cell=self.msg, definition_name=definition_name)
-        )
+        self.__stub.ApplyTechnology(cell_pb2.CellApplyTechnologyMessage(cell=self.msg, definition_name=definition_name))
 
     @property
     def touchstone_export_settings(self):

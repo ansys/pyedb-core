@@ -1,4 +1,5 @@
 """Arc data."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -14,7 +15,8 @@ from ansys.api.edb.v1 import arc_data_pb2_grpc
 
 from ansys.edb.core import session
 from ansys.edb.core.geometry.point_data import PointData
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.utility import conversions
 
 

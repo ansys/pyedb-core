@@ -1,7 +1,11 @@
 """SPICE Model."""
+
 from ansys.edb.core.hierarchy.model import Model
-from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.session import SpiceModelServiceStub, StubAccessor, StubType
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.session import SpiceModelServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class SPICEModel(Model):
@@ -65,9 +69,7 @@ class SPICEModel(Model):
         pin : str
             Pin number.
         """
-        self.__stub.AddTerminalPinPair(
-            messages.spice_model_net_terminal_pin_message(self, terminal, pin)
-        )
+        self.__stub.AddTerminalPinPair(messages.spice_model_net_terminal_pin_message(self, terminal, pin))
 
     def remove_terminal(self, terminal):
         """Remove a terminal.
@@ -83,5 +85,6 @@ class SPICEModel(Model):
     @parser.to_string_dict
     def terminal_pin_pairs(self):
         """:obj:`dict` of {:obj:`str` : :obj:`str`}: A dictionary showing the mapping of terminals in the layout to \
-        pins in the spice model by name."""
+        pins in the spice model by name.
+        """
         return self.__stub.GetTerminalPinPairs(self.msg)

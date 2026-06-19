@@ -1,4 +1,5 @@
 """IC component property."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -10,10 +11,13 @@ if TYPE_CHECKING:
 from ansys.api.edb.v1.ic_component_property_pb2_grpc import ICComponentPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.definition import component_property, die_property, solder_ball_property
+from ansys.edb.core.definition import component_property
+from ansys.edb.core.definition import die_property
+from ansys.edb.core.definition import solder_ball_property
 from ansys.edb.core.definition.port_property import PortProperty
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ICComponentProperty(component_property.ComponentProperty):
@@ -43,9 +47,7 @@ class ICComponentProperty(component_property.ComponentProperty):
 
     @solder_ball_property.setter
     def solder_ball_property(self, value: SolderBallProperty):
-        self.__stub.SetSolderBallProperty(
-            messages.pointer_property_message(target=self, value=value)
-        )
+        self.__stub.SetSolderBallProperty(messages.pointer_property_message(target=self, value=value))
 
     @property
     def die_property(self) -> DieProperty:

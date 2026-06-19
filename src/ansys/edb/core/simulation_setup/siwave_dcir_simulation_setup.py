@@ -1,9 +1,8 @@
 """SIWave simulation setup."""
 
-from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
-from ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings import (
-    SIWaveDCIRSimulationSettings,
-)
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetupType
+from ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings import SIWaveDCIRSimulationSettings
 
 
 class SIWaveDCIRSimulationSetup(SimulationSetup):

@@ -2,16 +2,21 @@ import settings
 
 from ansys.edb.core.database import Database
 from ansys.edb.core.definition.component_def import ComponentDef
-from ansys.edb.core.definition.die_property import DieOrientation, DieProperty, DieType
+from ansys.edb.core.definition.die_property import DieOrientation
+from ansys.edb.core.definition.die_property import DieProperty
+from ansys.edb.core.definition.die_property import DieType
 from ansys.edb.core.definition.ic_component_property import ICComponentProperty
 from ansys.edb.core.definition.io_component_property import IOComponentProperty
 from ansys.edb.core.definition.package_def import PackageDef
 from ansys.edb.core.definition.port_property import PortProperty
 from ansys.edb.core.definition.rlc_component_property import RLCComponentProperty
-from ansys.edb.core.definition.solder_ball_property import SolderBallProperty, SolderballShape
-from ansys.edb.core.hierarchy.component_group import ComponentGroup, ComponentType
+from ansys.edb.core.definition.solder_ball_property import SolderBallProperty
+from ansys.edb.core.definition.solder_ball_property import SolderballShape
+from ansys.edb.core.hierarchy.component_group import ComponentGroup
+from ansys.edb.core.hierarchy.component_group import ComponentType
 from ansys.edb.core.hierarchy.pin_pair_model import PinPairModel
-from ansys.edb.core.layout.cell import Cell, CellType
+from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout.cell import CellType
 from ansys.edb.core.session import session
 from ansys.edb.core.utility.rlc import Rlc
 
@@ -81,17 +86,9 @@ def do_test():
     print("Previous component type was: " + str(old_type))
     print("New component type is: " + str(comp_grp.component_type))
     print("Package mounting offset is: " + str(comp_grp.component_property.package_mounting_offset))
-    print(
-        "Solder Property shape is: " + str(comp_grp.component_property.solder_ball_property.shape)
-    )
-    print(
-        "Port Property height is: "
-        + str(comp_grp.component_property.port_property.reference_height)
-    )
-    print(
-        "Die Property orientation is: "
-        + str(comp_grp.component_property.die_property.die_orientation)
-    )
+    print("Solder Property shape is: " + str(comp_grp.component_property.solder_ball_property.shape))
+    print("Port Property height is: " + str(comp_grp.component_property.port_property.reference_height))
+    print("Die Property orientation is: " + str(comp_grp.component_property.die_property.die_orientation))
     print("---------------------------------\n")
 
     print("Create io component property")
@@ -113,13 +110,8 @@ def do_test():
     print("Previous component type was: " + str(old_type))
     print("New component type is: " + str(comp_grp.component_type))
     print("Package mounting offset is: " + str(comp_grp.component_property.package_mounting_offset))
-    print(
-        "Solder Property shape is: " + str(comp_grp.component_property.solder_ball_property.shape)
-    )
-    print(
-        "Port Property height is: "
-        + str(comp_grp.component_property.port_property.reference_height)
-    )
+    print("Solder Property shape is: " + str(comp_grp.component_property.solder_ball_property.shape))
+    print("Port Property height is: " + str(comp_grp.component_property.port_property.reference_height))
     print("---------------------------------\n")
 
     comp_grp.delete()

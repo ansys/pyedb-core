@@ -1,7 +1,8 @@
 """Database."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.inner.messages import EDBObjMessage
@@ -12,31 +13,30 @@ import ansys.api.edb.v1.database_pb2 as database_pb2
 import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.definition.bondwire_def import (
-    ApdBondwireDef,
-    BondwireDefType,
-    Jedec4BondwireDef,
-    Jedec5BondwireDef,
-)
+from ansys.edb.core.definition.bondwire_def import ApdBondwireDef
+from ansys.edb.core.definition.bondwire_def import BondwireDefType
+from ansys.edb.core.definition.bondwire_def import Jedec4BondwireDef
+from ansys.edb.core.definition.bondwire_def import Jedec5BondwireDef
 from ansys.edb.core.definition.component_def import ComponentDef
 from ansys.edb.core.definition.dataset_def import DatasetDef
 from ansys.edb.core.definition.material_def import MaterialDef
 from ansys.edb.core.definition.package_def import PackageDef
 from ansys.edb.core.definition.padstack_def import PadstackDef
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, variable_server
-from ansys.edb.core.inner.messages import (
-    double_property_message,
-    edb_obj_collection_message,
-    edb_obj_name_message,
-    get_product_property_ids_message,
-    get_product_property_message,
-    set_product_property_message,
-    str_message,
-)
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import variable_server
+from ansys.edb.core.inner.messages import double_property_message
+from ansys.edb.core.inner.messages import edb_obj_collection_message
+from ansys.edb.core.inner.messages import edb_obj_name_message
+from ansys.edb.core.inner.messages import get_product_property_ids_message
+from ansys.edb.core.inner.messages import get_product_property_message
+from ansys.edb.core.inner.messages import set_product_property_message
+from ansys.edb.core.inner.messages import str_message
 from ansys.edb.core.inner.utils import map_list
 from ansys.edb.core.layout.cell import Cell
-from ansys.edb.core.session import DatabaseServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import DatabaseServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ProductIdType(Enum):
@@ -129,22 +129,22 @@ class Database(ObjBase, variable_server.VariableServer):
         self.msg = None
 
     @staticmethod
-    def _map_cell_edb_obj_collection(cells_msg: EDBObjMessage) -> List[Cell]:
+    def _map_cell_edb_obj_collection(cells_msg: EDBObjMessage) -> list[Cell]:
         """Get a list of cell objects from the :class:`.EDBObjCollection` message."""
         return map_list(cells_msg.items, Cell)
 
     @property
-    def top_circuit_cells(self) -> List[Cell]:
+    def top_circuit_cells(self) -> list[Cell]:
         """:obj:`list` of :class:`.Cell`: Top circuit cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetTopCircuits(self.msg))
 
     @property
-    def circuit_cells(self) -> List[Cell]:
+    def circuit_cells(self) -> list[Cell]:
         """:obj:`list` of :class:`.Cell`: All circuit cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetCircuits(self.msg))
 
     @property
-    def footprint_cells(self) -> List[Cell]:
+    def footprint_cells(self) -> list[Cell]:
         """:obj:`list` of :class:`.Cell`: All footprint cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetFootprints(self.msg))
 
@@ -184,9 +184,7 @@ class Database(ObjBase, variable_server.VariableServer):
             EDB version for the new database file. The default is ``""``, in which case
             the new database file is saved for the current version.
         """
-        self.__stub.SaveAs(
-            database_pb2.SaveAsDatabaseMessage(db=self.msg, new_location=path, version=version)
-        )
+        self.__stub.SaveAs(database_pb2.SaveAsDatabaseMessage(db=self.msg, new_location=path, version=version))
 
     @classmethod
     def get_version_by_release(cls, release: str) -> str:
@@ -224,9 +222,7 @@ class Database(ObjBase, variable_server.VariableServer):
         str
             Property value.
         """
-        return self.__stub.GetProductProperty(
-            get_product_property_message(self, prod_id, attr_it)
-        ).value
+        return self.__stub.GetProductProperty(get_product_property_message(self, prod_id, attr_it)).value
 
     def set_product_property(self, prod_id: ProductIdType, attr_it: int, prop_value: str):
         """Set the product property associated with the given product ID and attribute ID.
@@ -240,11 +236,9 @@ class Database(ObjBase, variable_server.VariableServer):
         prop_value : str
             New value for the product property.
         """
-        self.__stub.SetProductProperty(
-            set_product_property_message(self, prod_id, attr_it, prop_value)
-        )
+        self.__stub.SetProductProperty(set_product_property_message(self, prod_id, attr_it, prop_value))
 
-    def get_product_property_ids(self, prod_id: ProductIdType) -> List[int]:
+    def get_product_property_ids(self, prod_id: ProductIdType) -> list[int]:
         """Get a list of attribute IDs for a given product property ID.
 
         Parameters
@@ -257,14 +251,10 @@ class Database(ObjBase, variable_server.VariableServer):
         list[int]
             Attribute IDs associated with the product property.
         """
-        attr_ids = self.__stub.GetProductPropertyIds(
-            get_product_property_ids_message(self, prod_id)
-        ).ids
+        attr_ids = self.__stub.GetProductPropertyIds(get_product_property_ids_message(self, prod_id)).ids
         return [attr_id for attr_id in attr_ids]
 
-    def import_material_from_control_file(
-        self, control_file: str, schema_dir: str | None = None, append: bool = True
-    ):
+    def import_material_from_control_file(self, control_file: str, schema_dir: str | None = None, append: bool = True):
         """Import materials from a control file.
 
         Parameters
@@ -287,7 +277,7 @@ class Database(ObjBase, variable_server.VariableServer):
         )
 
     @property
-    def version(self) -> Tuple[int, int]:
+    def version(self) -> tuple[int, int]:
         """:obj:`tuple` of (:obj:`int`, :obj:`int`): Version [major, minor] of the database."""
         version_msg = self.__stub.GetVersion(self.msg)
         return version_msg.major.id, version_msg.minor.id
@@ -320,7 +310,7 @@ class Database(ObjBase, variable_server.VariableServer):
     def source_version(self, source_version: str):
         self.__stub.SetSourceVersion(edb_obj_name_message(self, source_version))
 
-    def copy_cells(self, cells_to_copy: List[Cell]) -> List[Cell]:
+    def copy_cells(self, cells_to_copy: list[Cell]) -> list[Cell]:
         """Copy cells from other databases or this database into this database.
 
         Parameters
@@ -335,15 +325,13 @@ class Database(ObjBase, variable_server.VariableServer):
         """
         return Database._map_cell_edb_obj_collection(
             self.__stub.CopyCells(
-                database_pb2.CopyCellsMessage(
-                    target=self.msg, cells=edb_obj_collection_message(cells_to_copy)
-                )
+                database_pb2.CopyCellsMessage(target=self.msg, cells=edb_obj_collection_message(cells_to_copy))
             )
         )
 
     def _get_definition_objs(
         self, def_class, def_type_enum: DefinitionObjType, bw_def_type_enum: BondwireDefType = None
-    ) -> List:
+    ) -> list:
         """Get the definition objects of a given type."""
         def_objs = self.__stub.GetDefinitionObjs(
             database_pb2.GetDefinitionObjsMessage(
@@ -354,52 +342,46 @@ class Database(ObjBase, variable_server.VariableServer):
         )
         return map_list(def_objs.items, def_class)
 
-    def _get_bondwire_definition_objs(self, def_class, bw_def_type_enum: BondwireDefType) -> List:
+    def _get_bondwire_definition_objs(self, def_class, bw_def_type_enum: BondwireDefType) -> list:
         """Get the bondwire definition objects of a given type."""
-        return self._get_definition_objs(
-            def_class, DefinitionObjType.BONDWIRE_DEF, bw_def_type_enum
-        )
+        return self._get_definition_objs(def_class, DefinitionObjType.BONDWIRE_DEF, bw_def_type_enum)
 
     @property
-    def apd_bondwire_defs(self) -> List[ApdBondwireDef]:
+    def apd_bondwire_defs(self) -> list[ApdBondwireDef]:
         """:obj:`list` of :class:`.ApdBondwireDef`: All APD bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(ApdBondwireDef, BondwireDefType.APD_BONDWIRE_DEF)
 
     @property
-    def jedec4_bondwire_defs(self) -> List[Jedec4BondwireDef]:
+    def jedec4_bondwire_defs(self) -> list[Jedec4BondwireDef]:
         """:obj:`list` of :class:`.Jedec4BondwireDef`: All JEDEC4 bondwire definitions in the database."""
-        return self._get_bondwire_definition_objs(
-            Jedec4BondwireDef, BondwireDefType.JEDEC4_BONDWIRE_DEF
-        )
+        return self._get_bondwire_definition_objs(Jedec4BondwireDef, BondwireDefType.JEDEC4_BONDWIRE_DEF)
 
     @property
-    def jedec5_bondwire_defs(self) -> List[Jedec5BondwireDef]:
+    def jedec5_bondwire_defs(self) -> list[Jedec5BondwireDef]:
         """:obj:`list` of:class:`.Jedec5BondwireDef`: All JEDEC5 bondwire definitions in the database."""
-        return self._get_bondwire_definition_objs(
-            Jedec5BondwireDef, BondwireDefType.JEDEC5_BONDWIRE_DEF
-        )
+        return self._get_bondwire_definition_objs(Jedec5BondwireDef, BondwireDefType.JEDEC5_BONDWIRE_DEF)
 
     @property
-    def padstack_defs(self) -> List[PadstackDef]:
+    def padstack_defs(self) -> list[PadstackDef]:
         """:obj:`list` of :class:`.PadstackDef`: All padstack definitions in the database."""
         return self._get_definition_objs(PadstackDef, DefinitionObjType.PADSTACK_DEF)
 
     @property
-    def package_defs(self) -> List[PackageDef]:
+    def package_defs(self) -> list[PackageDef]:
         """:obj:`list` of :class:`.PackageDef`: All package definitions in the database."""
         return self._get_definition_objs(PackageDef, DefinitionObjType.PACKAGE_DEF)
 
     @property
-    def component_defs(self) -> List[ComponentDef]:
+    def component_defs(self) -> list[ComponentDef]:
         """:obj:`list` of :class:`.ComponentDef`: All component definitions in the database."""
         return self._get_definition_objs(ComponentDef, DefinitionObjType.COMPONENT_DEF)
 
     @property
-    def material_defs(self) -> List[MaterialDef]:
+    def material_defs(self) -> list[MaterialDef]:
         """:obj:`list` of :class:`.MaterialDef`: All material definitions in the database."""
         return self._get_definition_objs(MaterialDef, DefinitionObjType.MATERIAL_DEF)
 
     @property
-    def dataset_defs(self) -> List[DatasetDef]:
+    def dataset_defs(self) -> list[DatasetDef]:
         """:obj:`list` of :class:`.DatasetDef`: All dataset definitions in the database."""
         return self._get_definition_objs(DatasetDef, DefinitionObjType.DATASET_DEF)

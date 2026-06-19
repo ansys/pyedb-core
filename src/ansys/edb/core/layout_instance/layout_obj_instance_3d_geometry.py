@@ -4,15 +4,15 @@ from ansys.edb.core.geometry.triangle3d_data import Triangle3DData
 from ansys.edb.core.inner import utils
 from ansys.edb.core.inner.parser import to_point3d_data
 from ansys.edb.core.layout_instance.layout_obj_instance_geometry import LayoutObjInstanceGeometry
-from ansys.edb.core.session import LayoutObjInstance3DGeometryServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutObjInstance3DGeometryServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class LayoutObjInstance3DGeometry(LayoutObjInstanceGeometry):
     """Represents a layout object instance 3D geometry."""
 
-    __stub: LayoutObjInstance3DGeometryServiceStub = StubAccessor(
-        StubType.layout_obj_instance_3d_geometry
-    )
+    __stub: LayoutObjInstance3DGeometryServiceStub = StubAccessor(StubType.layout_obj_instance_3d_geometry)
 
     @property
     def tesselation_data(self):

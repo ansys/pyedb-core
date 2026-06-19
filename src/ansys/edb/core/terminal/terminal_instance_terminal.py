@@ -1,8 +1,11 @@
 """Terminal Instance Terminal."""
 
-from ansys.edb.core.inner import TypeField, messages
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminal import Terminal, TerminalType
+from ansys.edb.core.inner import TypeField
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.terminal.terminal import Terminal
+from ansys.edb.core.terminal.terminal import TerminalType
 from ansys.edb.core.terminal.terminal_instance import TerminalInstance
 
 
@@ -34,11 +37,7 @@ class TerminalInstanceTerminal(Terminal):
         TerminalInstanceTerminal
         """
         return TerminalInstanceTerminal(
-            cls.__stub.Create(
-                messages.term_inst_term_creation_message(
-                    layout, net_ref, name, term_instance, is_ref
-                )
-            )
+            cls.__stub.Create(messages.term_inst_term_creation_message(layout, net_ref, name, term_instance, is_ref))
         )
 
     @property

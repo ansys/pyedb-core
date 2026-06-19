@@ -1,9 +1,12 @@
 """Pin Group Terminal."""
 
-from ansys.edb.core.inner import TypeField, messages
+from ansys.edb.core.inner import TypeField
+from ansys.edb.core.inner import messages
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.terminal.terminal import Terminal, TerminalType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.terminal.terminal import Terminal
+from ansys.edb.core.terminal.terminal import TerminalType
 
 
 class PinGroupTerminal(Terminal):
@@ -34,9 +37,7 @@ class PinGroupTerminal(Terminal):
         PinGroupTerminal
         """
         return PinGroupTerminal(
-            cls.__stub.Create(
-                messages.pin_group_term_creation_message(layout, net, name, pin_group, is_ref)
-            )
+            cls.__stub.Create(messages.pin_group_term_creation_message(layout, net, name, pin_group, is_ref))
         )
 
     @property

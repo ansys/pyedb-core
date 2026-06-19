@@ -1,14 +1,20 @@
 """Primitive classes."""
+
 from __future__ import annotations
 
 from enum import Enum
 
-from ansys.api.edb.v1 import primitive_pb2, primitive_pb2_grpc
+from ansys.api.edb.v1 import primitive_pb2
+from ansys.api.edb.v1 import primitive_pb2_grpc
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import conn_obj, factory, messages, utils
+from ansys.edb.core.inner import conn_obj
+from ansys.edb.core.inner import factory
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import utils
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class PrimitiveType(Enum):
@@ -59,9 +65,7 @@ class Primitive(conn_obj.ConnObj):
         hole : .Primitive
             Void to add.
         """
-        self.__stub.AddVoid(
-            primitive_pb2.PrimitiveVoidCreationMessage(target=self.msg, hole=hole.msg)
-        )
+        self.__stub.AddVoid(primitive_pb2.PrimitiveVoidCreationMessage(target=self.msg, hole=hole.msg))
 
     def set_hfss_prop(self, material: str, solve_inside: bool):
         """Set HFSS properties.
@@ -74,9 +78,7 @@ class Primitive(conn_obj.ConnObj):
             Whether to solve inside.
         """
         self.__stub.SetHfssProp(
-            primitive_pb2.PrimitiveHfssPropMessage(
-                target=self.msg, material_name=material, solve_inside=solve_inside
-            )
+            primitive_pb2.PrimitiveHfssPropMessage(target=self.msg, material_name=material, solve_inside=solve_inside)
         )
 
     @property
@@ -87,9 +89,7 @@ class Primitive(conn_obj.ConnObj):
 
     @layer.setter
     def layer(self, layer: Layer):
-        self.__stub.SetLayer(
-            primitive_pb2.SetLayerMessage(target=self.msg, layer=messages.layer_ref_message(layer))
-        )
+        self.__stub.SetLayer(primitive_pb2.SetLayerMessage(target=self.msg, layer=messages.layer_ref_message(layer)))
 
     @property
     def is_negative(self) -> bool:
@@ -98,9 +98,7 @@ class Primitive(conn_obj.ConnObj):
 
     @is_negative.setter
     def is_negative(self, is_negative: bool):
-        self.__stub.SetIsNegative(
-            primitive_pb2.SetIsNegativeMessage(target=self.msg, is_negative=is_negative)
-        )
+        self.__stub.SetIsNegative(primitive_pb2.SetIsNegativeMessage(target=self.msg, is_negative=is_negative))
 
     @property
     def is_void(self) -> bool:

@@ -137,9 +137,7 @@ class MatrixConvergenceData:
 
         for port_name_1 in port_names:
             for port_name_2 in port_names:
-                self._entry_list.append(
-                    MatrixConvergenceDataEntry(port_name_1, port_name_2, mag_limit, phase_limit)
-                )
+                self._entry_list.append(MatrixConvergenceDataEntry(port_name_1, port_name_2, mag_limit, phase_limit))
 
         self._all_constant = True
         self._all_diag_constant = False
@@ -163,9 +161,7 @@ class MatrixConvergenceData:
             self._entry_list.clear()
 
         for port_name in port_names:
-            self._entry_list.append(
-                MatrixConvergenceDataEntry(port_name, port_name, mag_limit, phase_limit)
-            )
+            self._entry_list.append(MatrixConvergenceDataEntry(port_name, port_name, mag_limit, phase_limit))
 
         self._all_constant = False
         self._all_diag_constant = True
@@ -217,10 +213,7 @@ class MatrixConvergenceData:
         """
         new_entry = MatrixConvergenceDataEntry(port_name_1, port_name_2, mag_limit, phase_limit)
         for idx, entry in enumerate(self._entry_list):
-            if (
-                entry.port_1_name == new_entry.port_1_name
-                and entry.port_2_name == new_entry.port_2_name
-            ):
+            if entry.port_1_name == new_entry.port_1_name and entry.port_2_name == new_entry.port_2_name:
                 self._entry_list[idx] = new_entry
                 return
         self._entry_list.append(new_entry)
@@ -357,9 +350,7 @@ class MultiFrequencyAdaptiveSolution:
         """Create a multi-frequency adaptive solution."""
         self._max_passes = max_passes
         if adaptive_frequencies is None or len(adaptive_frequencies) == 0:
-            self._adaptive_frequencies = [
-                AdaptiveFrequency(freq) for freq in ["2.5GHz", "5GHz", "10GHz"]
-            ]
+            self._adaptive_frequencies = [AdaptiveFrequency(freq) for freq in ["2.5GHz", "5GHz", "10GHz"]]
         else:
             self._adaptive_frequencies = adaptive_frequencies
 
@@ -393,9 +384,7 @@ class BroadbandAdaptiveSolution:
     max_delta : str
     """
 
-    def __init__(
-        self, low_frequency="5GHz", high_frequency="10GHz", max_num_passes=10, max_delta="0.02"
-    ):
+    def __init__(self, low_frequency="5GHz", high_frequency="10GHz", max_num_passes=10, max_delta="0.02"):
         """Create a broadband adaptive solution."""
         self._low_frequency = low_frequency
         self._high_frequency = high_frequency

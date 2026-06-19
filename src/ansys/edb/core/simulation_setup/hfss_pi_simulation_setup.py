@@ -1,10 +1,12 @@
 """HFSSPI simulation setup."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 from ansys.edb.core.simulation_setup.hfss_pi_simulation_settings import HFSSPISimulationSettings
-from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetupType
 
 if TYPE_CHECKING:
     from ansys.edb.core.layout.cell import Cell

@@ -4,7 +4,8 @@ import ansys.api.edb.v1.extended_net_pb2 as enet_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.net import net_class
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ExtendedNet(net_class.NetClass):
@@ -29,9 +30,7 @@ class ExtendedNet(net_class.NetClass):
         ExtendedNet
             Extended net created.
         """
-        return ExtendedNet(
-            cls.__stub.Create(enet_pb2.ExtendedNetCreationMessage(layout=layout.msg, name=name))
-        )
+        return ExtendedNet(cls.__stub.Create(enet_pb2.ExtendedNetCreationMessage(layout=layout.msg, name=name)))
 
     @classmethod
     def find_by_name(cls, layout, name):
@@ -50,9 +49,7 @@ class ExtendedNet(net_class.NetClass):
             Extended net that was found. Check the :obj:`is_null <.ExtendedNet.is_null>`
             property of the extended net to see if it exists.
         """
-        return ExtendedNet(
-            cls.__stub.FindByName(enet_pb2.ExtendedNetLookupMessage(layout=layout.msg, name=name))
-        )
+        return ExtendedNet(cls.__stub.FindByName(enet_pb2.ExtendedNetLookupMessage(layout=layout.msg, name=name)))
 
     def add_net(self, net):
         """Add a net to the extended net.

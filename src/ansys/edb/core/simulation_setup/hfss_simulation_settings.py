@@ -4,25 +4,22 @@ from enum import Enum
 
 import ansys.api.edb.v1.hfss_simulation_settings_pb2 as pb
 
-from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.session import (
-    DCRSettingsServiceStub,
-    HFSSAdvancedMeshingSettingsServiceStub,
-    HFSSAdvancedSettingsServiceStub,
-    HFSSGeneralSettingsServiceStub,
-    HFSSOptionsSettingsServiceStub,
-    HFSSSolverSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
-from ansys.edb.core.simulation_setup.simulation_settings import (
-    AdvancedMeshingSettings,
-    AdvancedSettings,
-    SettingsOptions,
-    SimulationSettings,
-    SimulationSettingsBase,
-    SolverSettings,
-)
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.session import DCRSettingsServiceStub
+from ansys.edb.core.session import HFSSAdvancedMeshingSettingsServiceStub
+from ansys.edb.core.session import HFSSAdvancedSettingsServiceStub
+from ansys.edb.core.session import HFSSGeneralSettingsServiceStub
+from ansys.edb.core.session import HFSSOptionsSettingsServiceStub
+from ansys.edb.core.session import HFSSSolverSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.simulation_setup.simulation_settings import AdvancedMeshingSettings
+from ansys.edb.core.simulation_setup.simulation_settings import AdvancedSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SettingsOptions
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettingsBase
+from ansys.edb.core.simulation_setup.simulation_settings import SolverSettings
 
 
 class BasisFunctionOrder(Enum):
@@ -94,45 +91,35 @@ class HFSSGeneralSettings(SimulationSettingsBase):
     @property
     def single_frequency_adaptive_solution(self):
         """.SingleFrequencyAdaptiveSolution`: Settings for a single frequency adaptive solution."""
-        return parser.to_single_frequency_adaptive_solution(
-            self.__stub.GetSingleFrequencyAdaptiveSolution(self.msg)
-        )
+        return parser.to_single_frequency_adaptive_solution(self.__stub.GetSingleFrequencyAdaptiveSolution(self.msg))
 
     @single_frequency_adaptive_solution.setter
     def single_frequency_adaptive_solution(self, single_frequency_adaptive_solution):
         self.__stub.SetSingleFrequencyAdaptiveSolution(
             pb.SingleFrequencyAdaptiveSolutionPropertyMessage(
                 target=self.msg,
-                adaptive_frequency=messages.single_frequency_adaptive_solution_msg(
-                    single_frequency_adaptive_solution
-                ),
+                adaptive_frequency=messages.single_frequency_adaptive_solution_msg(single_frequency_adaptive_solution),
             )
         )
 
     @property
     def multi_frequency_adaptive_solution(self):
         """:class:`.MultiFrequencyAdaptiveSolution`: Settings for a multi-frequency adaptive solution."""
-        return parser.to_multi_frequency_adaptive_solution(
-            self.__stub.GetMultiFrequencyAdaptiveSolution(self.msg)
-        )
+        return parser.to_multi_frequency_adaptive_solution(self.__stub.GetMultiFrequencyAdaptiveSolution(self.msg))
 
     @multi_frequency_adaptive_solution.setter
     def multi_frequency_adaptive_solution(self, multi_frequency_adaptive_solution):
         self.__stub.SetMultiFrequencyAdaptiveSolution(
             pb.MultiFrequencyAdaptiveSolutionPropertyMessage(
                 target=self.msg,
-                adaptive_frequency=messages.multi_frequency_adaptive_solution_msg(
-                    multi_frequency_adaptive_solution
-                ),
+                adaptive_frequency=messages.multi_frequency_adaptive_solution_msg(multi_frequency_adaptive_solution),
             )
         )
 
     @property
     def broadband_adaptive_solution(self):
         """:class:`.BroadbandAdaptiveSolution`: Settings for a broadband adaptive solution."""
-        return parser.to_broadband_adaptive_solution(
-            self.__stub.GetBroadbandFrequencyAdaptiveSolution(self.msg)
-        )
+        return parser.to_broadband_adaptive_solution(self.__stub.GetBroadbandFrequencyAdaptiveSolution(self.msg))
 
     @broadband_adaptive_solution.setter
     def broadband_adaptive_solution(self, broadband_adaptive_solution):
@@ -150,9 +137,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @adaptive_solution_type.setter
     def adaptive_solution_type(self, adaptive_solution_type):
-        self.__stub.SetAdaptType(
-            pb.AdaptTypePropertyMessage(target=self.msg, adapt_type=adaptive_solution_type.value)
-        )
+        self.__stub.SetAdaptType(pb.AdaptTypePropertyMessage(target=self.msg, adapt_type=adaptive_solution_type.value))
 
     @property
     def save_fields(self):
@@ -170,9 +155,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @save_rad_fields_only.setter
     def save_rad_fields_only(self, save_rad_fields_only):
-        self.__stub.SetSaveRadFieldsOnlyFlag(
-            messages.bool_property_message(self, save_rad_fields_only)
-        )
+        self.__stub.SetSaveRadFieldsOnlyFlag(messages.bool_property_message(self, save_rad_fields_only))
 
     @property
     def use_mesh_region(self):
@@ -199,9 +182,7 @@ class HFSSGeneralSettings(SimulationSettingsBase):
 
     @use_parallel_refinement.setter
     def use_parallel_refinement(self, use_parallel_refinement):
-        self.__stub.SetUseParallelRefinement(
-            messages.bool_property_message(self, use_parallel_refinement)
-        )
+        self.__stub.SetUseParallelRefinement(messages.bool_property_message(self, use_parallel_refinement))
 
 
 class HFSSSettingsOptions(SettingsOptions):
@@ -225,9 +206,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @max_refinement_per_pass.setter
     def max_refinement_per_pass(self, max_refinement_per_pass):
-        self.__stub.SetMaxRefinementPerPass(
-            messages.uint64_property_message(self, max_refinement_per_pass)
-        )
+        self.__stub.SetMaxRefinementPerPass(messages.uint64_property_message(self, max_refinement_per_pass))
 
     @property
     def min_passes(self):
@@ -245,9 +224,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @min_converged_passes.setter
     def min_converged_passes(self, min_refinement_passes):
-        self.__stub.SetMinConvergedPasses(
-            messages.uint64_property_message(self, min_refinement_passes)
-        )
+        self.__stub.SetMinConvergedPasses(messages.uint64_property_message(self, min_refinement_passes))
 
     @property
     def order_basis(self):
@@ -257,24 +234,18 @@ class HFSSSettingsOptions(SettingsOptions):
     @order_basis.setter
     def order_basis(self, order_basis):
         self.__stub.SetBasisFunctionOrder(
-            pb.BasisFunctionOrderPropertyMessage(
-                target=self.msg, basis_function_order=order_basis.value
-            )
+            pb.BasisFunctionOrderPropertyMessage(target=self.msg, basis_function_order=order_basis.value)
         )
 
     @property
     def solve_inside_metal_basis(self):
         """:class:`.BasisFunctionOrder`: Basis function order."""
-        return BasisFunctionOrder(
-            self.__stub.GetSolveInsideMetalBasis(self.msg).basis_function_order
-        )
+        return BasisFunctionOrder(self.__stub.GetSolveInsideMetalBasis(self.msg).basis_function_order)
 
     @solve_inside_metal_basis.setter
     def solve_inside_metal_basis(self, order_basis):
         self.__stub.SetSolveInsideMetalBasis(
-            pb.BasisFunctionOrderPropertyMessage(
-                target=self.msg, basis_function_order=order_basis.value
-            )
+            pb.BasisFunctionOrderPropertyMessage(target=self.msg, basis_function_order=order_basis.value)
         )
 
     @property
@@ -284,9 +255,7 @@ class HFSSSettingsOptions(SettingsOptions):
 
     @solver_type.setter
     def solver_type(self, solver_type):
-        self.__stub.SetSolverTypeOrder(
-            pb.SolverTypePropertyMessage(target=self.msg, solver_type=solver_type.value)
-        )
+        self.__stub.SetSolverTypeOrder(pb.SolverTypePropertyMessage(target=self.msg, solver_type=solver_type.value))
 
     @property
     def relative_residual(self):
@@ -339,9 +308,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @set_triangles_for_wave_port.setter
     def set_triangles_for_wave_port(self, set_triangles_for_wave_port):
-        self.__stub.SetSetTrianglesForWaveport(
-            messages.bool_property_message(self, set_triangles_for_wave_port)
-        )
+        self.__stub.SetSetTrianglesForWaveport(messages.bool_property_message(self, set_triangles_for_wave_port))
 
     @property
     def min_triangles_for_wave_port(self):
@@ -350,9 +317,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @min_triangles_for_wave_port.setter
     def min_triangles_for_wave_port(self, min_triangles_for_wave_port):
-        self.__stub.SetMinTrianglesForWavePort(
-            messages.uint64_property_message(self, min_triangles_for_wave_port)
-        )
+        self.__stub.SetMinTrianglesForWavePort(messages.uint64_property_message(self, min_triangles_for_wave_port))
 
     @property
     def max_triangles_for_wave_port(self):
@@ -361,9 +326,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @max_triangles_for_wave_port.setter
     def max_triangles_for_wave_port(self, max_triangles_for_wave_port):
-        self.__stub.SetMaxTrianglesForWavePort(
-            messages.uint64_property_message(self, max_triangles_for_wave_port)
-        )
+        self.__stub.SetMaxTrianglesForWavePort(messages.uint64_property_message(self, max_triangles_for_wave_port))
 
     @property
     def enable_intra_plane_coupling(self):
@@ -372,9 +335,7 @@ class HFSSSolverSettings(SolverSettings):
 
     @enable_intra_plane_coupling.setter
     def enable_intra_plane_coupling(self, enable_intra_plane_coupling):
-        self.__stub.SetIntraPlaneCouplingEnabled(
-            messages.bool_property_message(self, enable_intra_plane_coupling)
-        )
+        self.__stub.SetIntraPlaneCouplingEnabled(messages.bool_property_message(self, enable_intra_plane_coupling))
 
 
 class HFSSAdvancedSettings(AdvancedSettings):
@@ -389,9 +350,7 @@ class HFSSAdvancedSettings(AdvancedSettings):
 
     @ic_mode_auto_resolution.setter
     def ic_mode_auto_resolution(self, ic_mode_auto_resolution):
-        self.__stub.SetICModeAutoResolution(
-            messages.bool_property_message(self, ic_mode_auto_resolution)
-        )
+        self.__stub.SetICModeAutoResolution(messages.bool_property_message(self, ic_mode_auto_resolution))
 
     @property
     def ic_mode_length(self):
@@ -406,9 +365,7 @@ class HFSSAdvancedSettings(AdvancedSettings):
 class HFSSAdvancedMeshingSettings(AdvancedMeshingSettings):
     """Represents advanced meshing settings for HFSS simulations."""
 
-    __stub: HFSSAdvancedMeshingSettingsServiceStub = StubAccessor(
-        StubType.hfss_advanced_sim_meshing_settings
-    )
+    __stub: HFSSAdvancedMeshingSettingsServiceStub = StubAccessor(StubType.hfss_advanced_sim_meshing_settings)
 
     @property
     def layer_snap_tol(self):
@@ -453,9 +410,7 @@ class HFSSDCRSettings(SimulationSettingsBase):
 
     @min_converged_passes.setter
     def min_converged_passes(self, min_converged_passes):
-        self.__stub.SetMinConvergedPasses(
-            messages.uint64_property_message(self, min_converged_passes)
-        )
+        self.__stub.SetMinConvergedPasses(messages.uint64_property_message(self, min_converged_passes))
 
     @property
     def percent_error(self):
@@ -473,6 +428,4 @@ class HFSSDCRSettings(SimulationSettingsBase):
 
     @percent_refinement_per_pass.setter
     def percent_refinement_per_pass(self, percent_refinement_per_pass):
-        self.__stub.SetPercentRefinementPerPass(
-            messages.double_property_message(self, percent_refinement_per_pass)
-        )
+        self.__stub.SetPercentRefinementPerPass(messages.double_property_message(self, percent_refinement_per_pass))

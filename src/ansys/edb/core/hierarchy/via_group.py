@@ -3,8 +3,10 @@
 from ansys.api.edb.v1.via_group_pb2_grpc import ViaGroupServiceStub
 
 from ansys.edb.core.hierarchy.group import Group
-from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ViaGroup(Group):
@@ -60,9 +62,7 @@ class ViaGroup(Group):
         """
         return ViaGroup(
             cls.__stub.CreateWithOutline(
-                messages.via_group_create_with_outline_message(
-                    layout, outline, conductivity_ratio, layer, net
-                )
+                messages.via_group_create_with_outline_message(layout, outline, conductivity_ratio, layer, net)
             )
         )
 

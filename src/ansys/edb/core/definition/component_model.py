@@ -1,4 +1,5 @@
 """Component model definition."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -9,15 +10,15 @@ if TYPE_CHECKING:
 from enum import Enum
 
 from ansys.api.edb.v1.component_model_pb2 import ComponentModelType as pb_comp_model_Type
-from ansys.api.edb.v1.component_model_pb2_grpc import (
-    ComponentModelServiceStub,
-    DynamicLinkComponentModelServiceStub,
-    NPortComponentModelServiceStub,
-)
+from ansys.api.edb.v1.component_model_pb2_grpc import ComponentModelServiceStub
+from ansys.api.edb.v1.component_model_pb2_grpc import DynamicLinkComponentModelServiceStub
+from ansys.api.edb.v1.component_model_pb2_grpc import NPortComponentModelServiceStub
 import google.protobuf.wrappers_pb2 as proto_wrappers
 
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ComponentModelType(Enum):
@@ -57,9 +58,7 @@ class ComponentModel(ObjBase):
         -------
         .ComponentModel
         """
-        return ComponentModel(
-            cls.__stub.FindByName(messages.string_property_message(comp_def, value))
-        ).cast()
+        return ComponentModel(cls.__stub.FindByName(messages.string_property_message(comp_def, value))).cast()
 
     @classmethod
     def find_by_id(cls, comp_def: ComponentDef, value: int) -> ComponentModel:
@@ -78,9 +77,7 @@ class ComponentModel(ObjBase):
             Component model found. \
             If a component model isn't found, the returned component model is :meth:`null <.is_null>`.
         """
-        return ComponentModel(
-            cls.__stub.FindById(messages.int_property_message(comp_def, value))
-        ).cast()
+        return ComponentModel(cls.__stub.FindById(messages.int_property_message(comp_def, value))).cast()
 
     @property
     def name(self) -> str:
@@ -113,11 +110,7 @@ class ComponentModel(ObjBase):
         -------
         .ComponentModel
         """
-        comp_model_type = (
-            ComponentModelType.UNKNOWN_COMPONENT_MODEL_TYPE
-            if self.is_null
-            else self.component_model_type
-        )
+        comp_model_type = ComponentModelType.UNKNOWN_COMPONENT_MODEL_TYPE if self.is_null else self.component_model_type
         if comp_model_type == ComponentModelType.N_PORT:
             return NPortComponentModel(self.msg)
         elif comp_model_type == ComponentModelType.DYNAMIC_LINK:

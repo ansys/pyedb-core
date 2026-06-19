@@ -1,7 +1,9 @@
 import ansys.api.edb.v1.layer_pb2 as layer_pb2
 import ansys.api.edb.v1.term_pb2 as term_pb2
+import pytest
 from utils.fixtures import *  # noqa
-from utils.test_utils import create_edb_obj_collection_msg, equals
+from utils.test_utils import create_edb_obj_collection_msg
+from utils.test_utils import equals
 
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.inner import messages
@@ -37,9 +39,7 @@ def point_terminal(edb_obj_msg):
 @pytest.fixture
 def lyr_type_mock(mocked_stub):
     lyr_mock = mocked_stub(layer_api, layer_api.Layer)
-    lyr_mock.GetLayerType.return_value = layer_pb2.LayerTypeMessage(
-        type=layer_api.LayerType.USER_LAYER.value
-    )
+    lyr_mock.GetLayerType.return_value = layer_pb2.LayerTypeMessage(type=layer_api.LayerType.USER_LAYER.value)
     return lyr_mock
 
 
@@ -49,9 +49,7 @@ def test_bundle_terminal_create(mocked_stub, point_terminal, bundle_terminal, ed
 
     bt = bundle_terminal_mod.BundleTerminal.create([point_terminal, bundle_terminal])
 
-    mock.assert_called_once_with(
-        messages.edb_obj_collection_message([point_terminal, bundle_terminal])
-    )
+    mock.assert_called_once_with(messages.edb_obj_collection_message([point_terminal, bundle_terminal]))
     assert isinstance(bt, bundle_terminal_mod.BundleTerminal)
     assert not bt.is_null
     assert bt.id == edb_obj_msg.id
@@ -65,9 +63,7 @@ def test_bundle_terminal_create(mocked_stub, point_terminal, bundle_terminal, ed
     ],
 )
 def test_bundle_terminal_get_terminals(mocked_stub, bundle_terminal, term_type, term_cls):
-    get_terminals = mocked_stub(
-        bundle_terminal_mod, bundle_terminal_mod.BundleTerminal
-    ).GetTerminals
+    get_terminals = mocked_stub(bundle_terminal_mod, bundle_terminal_mod.BundleTerminal).GetTerminals
     get_terminals.return_value = expected = create_edb_obj_collection_msg(2)
     get_params = mocked_stub(terminal_mod, terminal_mod.Terminal).GetParams
     get_params.return_value = term_pb2.TermParamsMessage(term_type=term_type)
@@ -98,9 +94,7 @@ def test_point_terminal_create(mocked_stub, layout, net, layer, edb_obj_msg):
 
     pt = point_terminal_mod.PointTerminal.create(layout, net, layer, "test-point-term", (1, 2))
 
-    mock.assert_called_once_with(
-        messages.point_term_creation_message(layout, net, layer, "test-point-term", (1, 2))
-    )
+    mock.assert_called_once_with(messages.point_term_creation_message(layout, net, layer, "test-point-term", (1, 2)))
     assert isinstance(pt, point_terminal_mod.PointTerminal)
     assert not pt.is_null
     assert pt.id == edb_obj_msg.id
@@ -137,9 +131,7 @@ def test_point_terminal_set_params(mocked_stub, point_terminal, layer_ref, point
 
     point_terminal.params = (layer_ref, point)
 
-    mock.assert_called_once_with(
-        messages.point_term_set_params_message(point_terminal, layer_ref, point)
-    )
+    mock.assert_called_once_with(messages.point_term_set_params_message(point_terminal, layer_ref, point))
 
 
 def test_terminal_get_params(mocked_stub, point_terminal, bundle_terminal, layer, lyr_type_mock):

@@ -4,7 +4,9 @@ from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import messages
 from ansys.edb.core.inner.conn_obj import ConnObj
 from ansys.edb.core.primitive.padstack_instance import PadstackInstance
-from ansys.edb.core.session import PinGroupServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import PinGroupServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.terminal.pin_group_terminal import PinGroupTerminal
 
 
@@ -32,9 +34,7 @@ class PinGroup(ConnObj):
         PinGroup
             Pin group created.
         """
-        return PinGroup(
-            cls.__stub.Create(messages.pin_group_creation_message(layout, name, padstack_instances))
-        )
+        return PinGroup(cls.__stub.Create(messages.pin_group_creation_message(layout, name, padstack_instances)))
 
     @classmethod
     def find(cls, layout, name):
@@ -70,9 +70,7 @@ class PinGroup(ConnObj):
         str
             Name of the pin group found.
         """
-        return cls.__stub.GetUniqueName(
-            messages.pin_group_get_unique_name_message(layout, prefix)
-        ).value
+        return cls.__stub.GetUniqueName(messages.pin_group_get_unique_name_message(layout, prefix)).value
 
     @property
     def name(self):

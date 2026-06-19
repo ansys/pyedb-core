@@ -5,12 +5,11 @@ from enum import Enum
 import ansys.api.edb.v1.layer_collection_pb2 as layer_collection_pb2
 
 from ansys.edb.core.inner import ObjBase
-from ansys.edb.core.inner.messages import (
-    get_product_property_ids_message,
-    get_product_property_message,
-    set_product_property_message,
-)
-from ansys.edb.core.layer.layer import Layer, LayerType
+from ansys.edb.core.inner.messages import get_product_property_ids_message
+from ansys.edb.core.inner.messages import get_product_property_message
+from ansys.edb.core.inner.messages import set_product_property_message
+from ansys.edb.core.layer.layer import Layer
+from ansys.edb.core.layer.layer import LayerType
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.session import get_layer_collection_stub
 
@@ -43,9 +42,7 @@ class DielectricMergingMethod(Enum):
 
 def _layer_collection_zone_message(layer_collection, zone):
     """Convert to a ``LayerCollectionZoneMessage`` object."""
-    return layer_collection_pb2.LayerCollectionZoneMessage(
-        layer_collection=layer_collection.msg, zone=zone
-    )
+    return layer_collection_pb2.LayerCollectionZoneMessage(layer_collection=layer_collection.msg, zone=zone)
 
 
 class LayerCollection(ObjBase):
@@ -66,9 +63,7 @@ class LayerCollection(ObjBase):
             Layer collection created.
         """
         return LayerCollection(
-            get_layer_collection_stub().Create(
-                layer_collection_pb2.LayerCollectionModeMessage(mode=mode.value)
-            )
+            get_layer_collection_stub().Create(layer_collection_pb2.LayerCollectionModeMessage(mode=mode.value))
         )
 
     def clone(self):
@@ -89,9 +84,7 @@ class LayerCollection(ObjBase):
     @mode.setter
     def mode(self, mode):
         get_layer_collection_stub().SetMode(
-            layer_collection_pb2.SetLayerCollectionModeMessage(
-                layer_collection=self.msg, mode=mode.value
-            )
+            layer_collection_pb2.SetLayerCollectionModeMessage(layer_collection=self.msg, mode=mode.value)
         )
 
     def add_layers(self, layers):
@@ -126,9 +119,7 @@ class LayerCollection(ObjBase):
 
     def _add_layer(self, layer, above_below=None, add_top=None):
         """Pack layer addition arguments into the ``AddLayersMessage`` object and send to the server."""
-        add_layer_msg = layer_collection_pb2.AddLayerMessage(
-            layer_collection=self.msg, layer=layer.msg
-        )
+        add_layer_msg = layer_collection_pb2.AddLayerMessage(layer_collection=self.msg, layer=layer.msg)
         if above_below is not None:
             above_below_msg = layer_collection_pb2.AddLayerAboveBelowMessage(
                 above_below_layer_name=above_below[0], add_above=above_below[1]
@@ -267,9 +258,7 @@ class LayerCollection(ObjBase):
         """
         layer = Layer(
             get_layer_collection_stub().FindByName(
-                layer_collection_pb2.FindLayerByNameMessage(
-                    layer_collection=self.msg, name=layer_name
-                )
+                layer_collection_pb2.FindLayerByNameMessage(layer_collection=self.msg, name=layer_name)
             )
         )
         return layer if layer.is_null else layer.cast()
@@ -352,9 +341,7 @@ class LayerCollection(ObjBase):
         )
 
         response = get_layer_collection_stub().GetLayers(
-            layer_collection_pb2.GetLayersMessage(
-                layer_collection=self.msg, layer_filter=layer_filter_int
-            )
+            layer_collection_pb2.GetLayersMessage(layer_collection=self.msg, layer_filter=layer_filter_int)
         )
 
         return [Layer(msg).cast() for msg in response.items]
@@ -375,9 +362,7 @@ class LayerCollection(ObjBase):
             Product property.
         """
         return (
-            get_layer_collection_stub()
-            .GetProductProperty(get_product_property_message(self, prod_id, attr_it))
-            .value
+            get_layer_collection_stub().GetProductProperty(get_product_property_message(self, prod_id, attr_it)).value
         )
 
     def set_product_property(self, prod_id, attr_it, prop_value):
@@ -392,9 +377,7 @@ class LayerCollection(ObjBase):
         prop_value : str
             New property value.
         """
-        get_layer_collection_stub().SetProductProperty(
-            set_product_property_message(self, prod_id, attr_it, prop_value)
-        )
+        get_layer_collection_stub().SetProductProperty(set_product_property_message(self, prod_id, attr_it, prop_value))
 
     def get_product_property_ids(self, prod_id):
         """Get a list of attribute IDs for a given product ID for the layer collection.
@@ -410,9 +393,7 @@ class LayerCollection(ObjBase):
             List of attribute IDs for the given product ID.
         """
         attr_ids = (
-            get_layer_collection_stub()
-            .GetProductPropertyIds(get_product_property_ids_message(self, prod_id))
-            .ids
+            get_layer_collection_stub().GetProductPropertyIds(get_product_property_ids_message(self, prod_id)).ids
         )
         return [attr_id for attr_id in attr_ids]
 
@@ -473,11 +454,7 @@ class LayerCollection(ObjBase):
         str
             Name of the zone.
         """
-        return (
-            get_layer_collection_stub()
-            .GetZoneName(_layer_collection_zone_message(self, zone))
-            .value
-        )
+        return get_layer_collection_stub().GetZoneName(_layer_collection_zone_message(self, zone)).value
 
     def set_zone_name(self, zone, name):
         """Set the name for a given zone.
@@ -489,9 +466,7 @@ class LayerCollection(ObjBase):
         name : str
             New name to give the zone.
         """
-        request = layer_collection_pb2.SetZoneNameMessage(
-            layer_collection=self.msg, zone=zone, zone_name=name
-        )
+        request = layer_collection_pb2.SetZoneNameMessage(layer_collection=self.msg, zone=zone, zone_name=name)
         get_layer_collection_stub().SetZoneName(request)
 
     def insert_zone(self, copy_zone=-1):
@@ -509,9 +484,7 @@ class LayerCollection(ObjBase):
         int
             ID of the zone inserted if successful.
         """
-        request = layer_collection_pb2.InsertZoneMessage(
-            layer_collection=self.msg, copy_zone=copy_zone
-        )
+        request = layer_collection_pb2.InsertZoneMessage(layer_collection=self.msg, copy_zone=copy_zone)
         return get_layer_collection_stub().InsertZone(request).value
 
     def remove_zone(self, zone):

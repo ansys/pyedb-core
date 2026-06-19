@@ -1,16 +1,21 @@
 """Layout."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import TYPE_CHECKING
+from typing import Union
 
 if TYPE_CHECKING:
-    from ansys.edb.core.geometry.polygon_data import ExtentType, PolygonData
+    from ansys.edb.core.geometry.polygon_data import ExtentType
+    from ansys.edb.core.geometry.polygon_data import PolygonData
     from ansys.edb.core.layout.cell import Cell
     from ansys.edb.core.net.net import Net
-    from ansys.edb.core.typing import LayerLike, NetLike, ValueLike
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import NetLike
+    from ansys.edb.core.typing import ValueLike
     from ansys.edb.core.utility.value import Value
 
-    LayerListLike = Union[LayerLike, List[LayerLike]]
+    LayerListLike = Union[LayerLike, list[LayerLike]]
     from ansys.edb.core.hierarchy.cell_instance import CellInstance
     from ansys.edb.core.hierarchy.group import Group
     from ansys.edb.core.hierarchy.pin_group import PinGroup
@@ -30,13 +35,18 @@ from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 from ansys.api.edb.v1.layout_pb2_grpc import LayoutServiceStub
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import ObjBase, messages, parser, utils, variable_server
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.inner import utils
+from ansys.edb.core.inner import variable_server
 from ansys.edb.core.layer.layer_collection import LayerCollection
 from ansys.edb.core.layout.mcad_model import McadModel
 from ansys.edb.core.layout_instance import layout_instance
 from ansys.edb.core.primitive.board_bend_def import BoardBendDef
 from ansys.edb.core.primitive.primitive import Primitive
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ViaClusteringMethod(Enum):
@@ -63,9 +73,7 @@ def _geometry_simplifications_settings_with_option_msg(layout, layer, tol, optio
     )
 
 
-def _via_simplifications_settings_with_option_msg(
-    layout, layer, tol, option, simplification_method
-):
+def _via_simplifications_settings_with_option_msg(layout, layer, tol, option, simplification_method):
     """Create a ViaSimplificationSettingsMessage."""
     return layout_pb2.ViaSimplificationSettingsMessage(
         geom_simplification_settings_with_option=_geometry_simplifications_settings_with_option_msg(
@@ -108,19 +116,15 @@ class Layout(ObjBase, variable_server.VariableServer):
     @layer_collection.setter
     def layer_collection(self, layer_collection: LayerCollection):
         self.__stub.SetLayerCollection(
-            layout_pb2.SetLayerCollectionMessage(
-                layout=self.msg, layer_collection=layer_collection.msg
-            )
+            layout_pb2.SetLayerCollectionMessage(layout=self.msg, layer_collection=layer_collection.msg)
         )
 
     def _get_items(self, lyt_obj_type_enum):
         """Get a list of layout objects."""
-        return utils.query_lyt_object_collection(
-            self, lyt_obj_type_enum, self.__stub.GetItems, self.__stub.StreamItems
-        )
+        return utils.query_lyt_object_collection(self, lyt_obj_type_enum, self.__stub.GetItems, self.__stub.StreamItems)
 
     @property
-    def primitives(self) -> List[Primitive]:
+    def primitives(self) -> list[Primitive]:
         """:obj:`list` of :class:`.Primitive`: List of all primitives in the layout.
 
         This property is read-only.
@@ -128,7 +132,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.PRIMITIVE)
 
     @property
-    def padstack_instances(self) -> List[PadstackInstance]:
+    def padstack_instances(self) -> list[PadstackInstance]:
         """:obj:`list` of :class:`.PadstackInstance`: List of all padstack instances in the layout.
 
         This property is read-only.
@@ -136,7 +140,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.PADSTACK_INSTANCE)
 
     @property
-    def terminals(self) -> List[Terminal]:
+    def terminals(self) -> list[Terminal]:
         """:obj:`list` of :class:`.Terminal`: List of all terminals in the layout.
 
         This property is read-only.
@@ -144,7 +148,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.TERMINAL)
 
     @property
-    def cell_instances(self) -> List[CellInstance]:
+    def cell_instances(self) -> list[CellInstance]:
         """:obj:`list` of :class:`.CellInstance`: List of all cell instances in the layout.
 
         This property is read-only.
@@ -152,7 +156,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.CELL_INSTANCE)
 
     @property
-    def nets(self) -> List[Net]:
+    def nets(self) -> list[Net]:
         """:obj:`list` of :class:`.Net`: List of all nets in the layout.
 
         This property is read-only.
@@ -160,7 +164,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.NET)
 
     @property
-    def groups(self) -> List[Group]:
+    def groups(self) -> list[Group]:
         """:obj:`list` of :class:`.Group`: List of all groups in the layout.
 
         This property is read-only.
@@ -168,7 +172,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.GROUP)
 
     @property
-    def net_classes(self) -> List[NetClass]:
+    def net_classes(self) -> list[NetClass]:
         """:obj:`list` of :class:`.NetClass`: List of all net classes in the layout.
 
         This property is read-only.
@@ -176,7 +180,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.NET_CLASS)
 
     @property
-    def differential_pairs(self) -> List[DifferentialPair]:
+    def differential_pairs(self) -> list[DifferentialPair]:
         """:obj:`list` of :class:`.DifferentialPair`: List of all differential pairs in the layout.
 
         This property is read-only.
@@ -184,7 +188,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.DIFFERENTIAL_PAIR)
 
     @property
-    def pin_groups(self) -> List[PinGroup]:
+    def pin_groups(self) -> list[PinGroup]:
         """:obj:`list` of :class:`.PinGroup`: List of all pin groups in the layout.
 
         This property is read-only.
@@ -192,7 +196,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.PIN_GROUP)
 
     @property
-    def voltage_regulators(self) -> List[VoltageRegulator]:
+    def voltage_regulators(self) -> list[VoltageRegulator]:
         """:obj:`list` of :class:`.VoltageRegulator`: List of all voltage regulators in the layout.
 
         This property is read-only.
@@ -200,7 +204,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self._get_items(LayoutObjType.VOLTAGE_REGULATOR)
 
     @property
-    def extended_nets(self) -> List[ExtendedNet]:
+    def extended_nets(self) -> list[ExtendedNet]:
         """:class:`list` of :class:`.ExtendedNet`: List of all extended nets in the layout.
 
         This property is read-only.
@@ -210,7 +214,7 @@ class Layout(ObjBase, variable_server.VariableServer):
     @parser.to_polygon_data
     def expanded_extent(
         self,
-        nets: List[Net],
+        nets: list[Net],
         extent: ExtentType,
         expansion_factor: float,
         expansion_unitless: bool,
@@ -259,7 +263,7 @@ class Layout(ObjBase, variable_server.VariableServer):
             )
         )
 
-    def convert_primitives_to_vias(self, primitives: List[Primitive], is_pins: bool = False):
+    def convert_primitives_to_vias(self, primitives: list[Primitive], is_pins: bool = False):
         """Convert a list of primitives into vias or pins.
 
         Parameters
@@ -271,9 +275,7 @@ class Layout(ObjBase, variable_server.VariableServer):
             to pins or vias. The default is ``False``, in which
             case the primitives will be converted to vias.
         """
-        self.__stub.ConvertPrimitivesToVias(
-            messages.layout_convert_p2v_message(self, primitives, is_pins)
-        )
+        self.__stub.ConvertPrimitivesToVias(messages.layout_convert_p2v_message(self, primitives, is_pins))
 
     @property
     def port_reference_terminals_connected(self) -> bool:
@@ -287,7 +289,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         return self.__stub.ArePortReferenceTerminalsConnected(self.msg).is_connected
 
     @property
-    def zone_primitives(self) -> List[Primitive]:
+    def zone_primitives(self) -> list[Primitive]:
         """:obj:`list` of :class:`.Primitive`: List of \
         all zone primitives in the layout.
 
@@ -311,7 +313,7 @@ class Layout(ObjBase, variable_server.VariableServer):
         self.__stub.SetFixedZonePrimitives(messages.pointer_property_message(self, value))
 
     @property
-    def board_bend_defs(self) -> List[BoardBendDef]:
+    def board_bend_defs(self) -> list[BoardBendDef]:
         """:obj:`list` of :class:`.BoardBendDef`: List of all board bend definitions in the layout.
 
         This property is read-only.
@@ -484,9 +486,7 @@ class Layout(ObjBase, variable_server.VariableServer):
             )
         )
 
-    def snap_primitives(
-        self, layer: LayerListLike, tol: ValueLike = "0.05um", check_connectivity: bool = True
-    ):
+    def snap_primitives(self, layer: LayerListLike, tol: ValueLike = "0.05um", check_connectivity: bool = True):
         """Snap primitives on the specified layer to touching geometry.
 
         Parameters
@@ -585,10 +585,10 @@ class Layout(ObjBase, variable_server.VariableServer):
     def remove_unused_conducting_layers(self):
         """Remove conducting layers that do not contain any primitives."""
         self.__stub.RemoveUnusedConductingLayers(self.msg)
-    
+
     def remove_holes_except_on_critical_nets(
         self,
-        critical_net_groups: list[Tuple[list[NetLike], ValueLike]],
+        critical_net_groups: list[tuple[list[NetLike], ValueLike]],
         hole_area_minimum: ValueLike,
     ):
         """Remove holes in the geometry except for those on critical nets.

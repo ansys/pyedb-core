@@ -101,9 +101,7 @@ def _initialize_and_get_creator_dict(initializer, creator_dict):
 
 
 def _get_type_creator_dict():
-    return _initialize_and_get_creator_dict(
-        _initialize_type_creator_params_dict, _type_creator_params_dict
-    )
+    return _initialize_and_get_creator_dict(_initialize_type_creator_params_dict, _type_creator_params_dict)
 
 
 def _get_primitive_type_creator_dict():

@@ -1,26 +1,30 @@
 """Layout instance."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import LayerLike, NetLike
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import NetLike
 
 import ansys.api.edb.v1.layout_instance_pb2 as layout_instance_pb2
 
 from ansys.edb.core.geometry.point_data import PointData
 from ansys.edb.core.geometry.polygon_data import PolygonData
-from ansys.edb.core.inner import ObjBase, utils
-from ansys.edb.core.inner.messages import (
-    layer_ref_message,
-    net_ref_message,
-    point_message,
-    polygon_data_message,
-    strings_message,
-)
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import utils
+from ansys.edb.core.inner.messages import layer_ref_message
+from ansys.edb.core.inner.messages import net_ref_message
+from ansys.edb.core.inner.messages import point_message
+from ansys.edb.core.inner.messages import polygon_data_message
+from ansys.edb.core.inner.messages import strings_message
 from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.layout_instance import layout_obj_instance
-from ansys.edb.core.session import LayoutInstanceServiceStub, StubAccessor, StubType, is_in_memory
+from ansys.edb.core.session import LayoutInstanceServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.session import is_in_memory
 
 
 class LayoutInstance(ObjBase):
@@ -98,11 +102,7 @@ class LayoutInstance(ObjBase):
             "layer_filter": to_msg_filter_list(layer_filter, layer_ref_message),
             "net_filter": to_msg_filter_list(net_filter, net_ref_message),
         }
-        requests = [
-            layout_instance_pb2.LayoutObjInstancesQueryMessage(
-                **lyt_inst_net_filter_lyr_filter_params
-            )
-        ]
+        requests = [layout_instance_pb2.LayoutObjInstancesQueryMessage(**lyt_inst_net_filter_lyr_filter_params)]
         if spatial_filter is not None:
             for sf in utils.ensure_is_list(spatial_filter):
                 requests.append(spatial_filter_to_msg(sf))
@@ -116,9 +116,7 @@ class LayoutInstance(ObjBase):
             for hit in self.__stub.BatchQueryLayoutObjInstances(queries_msg).query_results:
                 all_hits.append(hit)
         else:
-            for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(
-                self._query_request_iterator(requests)
-            ):
+            for hits_chunk in self.__stub.StreamLayoutObjInstancesQuery(self._query_request_iterator(requests)):
                 for hit in hits_chunk.query_results:
                     all_hits.append(hit)
 
@@ -133,9 +131,7 @@ class LayoutInstance(ObjBase):
                     partial_hits.append(lyt_obj_inst)
                 else:
                     full_hits.append(lyt_obj_inst)
-            return (
-                (full_hits, partial_hits) if isinstance(_spatial_filter, PolygonData) else full_hits
-            )
+            return (full_hits, partial_hits) if isinstance(_spatial_filter, PolygonData) else full_hits
 
         # Process hits and return results
         all_hits_iter = iter(all_hits)

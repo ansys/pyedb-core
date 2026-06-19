@@ -1,31 +1,27 @@
 """SIWave CPA simulation settings."""
+
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List
 
 import ansys.api.edb.v1.si_wave_cpa_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import (
-    SIWaveCPAAdvancedSettingsServiceStub,
-    SIWaveCPAChannelComponentSettingsServiceStub,
-    SIWaveCPADieConfigSettingsServiceStub,
-    SIWaveCPAExternalEnvSettingsServiceStub,
-    SIWaveCPAHotSpotComponentSettingsServiceStub,
-    SIWaveCPANetSettingsServiceStub,
-    SIWaveCPAQ3DSettingsServiceStub,
-    SIWaveCPASettingsServiceStub,
-    SIWaveCPASimulationSettingsServiceStub,
-    SIWaveCPAUnconnectedDiePinSettingsServiceStub,
-    SIWaveCPAVRMSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
-from ansys.edb.core.simulation_setup.simulation_settings import (
-    SimulationSettings,
-    SimulationSettingsBase,
-)
+from ansys.edb.core.session import SIWaveCPAAdvancedSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPAChannelComponentSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPADieConfigSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPAExternalEnvSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPAHotSpotComponentSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPANetSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPAQ3DSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPASettingsServiceStub
+from ansys.edb.core.session import SIWaveCPASimulationSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPAUnconnectedDiePinSettingsServiceStub
+from ansys.edb.core.session import SIWaveCPAVRMSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettingsBase
 
 
 class CPASimulationMode(Enum):
@@ -79,9 +75,7 @@ class CPAPinGroupMode(Enum):
 class SIWaveCPASimulationSettings(SimulationSettings):
     """Represents SIWave CPA simulation settings."""
 
-    __stub: SIWaveCPASimulationSettingsServiceStub = StubAccessor(
-        StubType.siwave_cpa_sim_settings
-    )
+    __stub: SIWaveCPASimulationSettingsServiceStub = StubAccessor(StubType.siwave_cpa_sim_settings)
 
     @property
     def use_channel_setup(self) -> bool:
@@ -119,9 +113,7 @@ class SIWaveCPASimulationSettings(SimulationSettings):
 
     @hotspot_pin_group_threshold.setter
     def hotspot_pin_group_threshold(self, hotspot_pin_group_threshold: float):
-        self.__stub.SetHotspotPinGroupThreshold(
-            messages.double_property_message(self, hotspot_pin_group_threshold)
-        )
+        self.__stub.SetHotspotPinGroupThreshold(messages.double_property_message(self, hotspot_pin_group_threshold))
 
     @property
     def hotspot_pin_group_size(self) -> int:
@@ -130,9 +122,7 @@ class SIWaveCPASimulationSettings(SimulationSettings):
 
     @hotspot_pin_group_size.setter
     def hotspot_pin_group_size(self, hotspot_pin_group_size: int):
-        self.__stub.SetHotspotPinGroupSize(
-            messages.uint64_property_message(self, hotspot_pin_group_size)
-        )
+        self.__stub.SetHotspotPinGroupSize(messages.uint64_property_message(self, hotspot_pin_group_size))
 
     @property
     def hotspot_max_num_pin_groups(self) -> int:
@@ -141,9 +131,7 @@ class SIWaveCPASimulationSettings(SimulationSettings):
 
     @hotspot_max_num_pin_groups.setter
     def hotspot_max_num_pin_groups(self, hotspot_max_num_pin_groups: int):
-        self.__stub.SetHotspotMaxNumPinGroups(
-            messages.uint64_property_message(self, hotspot_max_num_pin_groups)
-        )
+        self.__stub.SetHotspotMaxNumPinGroups(messages.uint64_property_message(self, hotspot_max_num_pin_groups))
 
     @property
     def settings(self) -> SIWaveCPASettings:
@@ -209,9 +197,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
     @extract_mode.setter
     def extract_mode(self, extract_mode: CPAExtractionMode):
         self.__stub.SetExtractMode(
-            pb.CPAExtractionModePropertyMessage(
-                target=self.msg, extract_mode=extract_mode.value
-            )
+            pb.CPAExtractionModePropertyMessage(target=self.msg, extract_mode=extract_mode.value)
         )
 
     @property
@@ -221,9 +207,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @extract_frequency.setter
     def extract_frequency(self, extract_frequency: str):
-        self.__stub.SetExtractFrequency(
-            messages.string_property_message(self, extract_frequency)
-        )
+        self.__stub.SetExtractFrequency(messages.string_property_message(self, extract_frequency))
 
     @property
     def compute_capacitance(self) -> bool:
@@ -232,9 +216,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @compute_capacitance.setter
     def compute_capacitance(self, compute_capacitance: bool):
-        self.__stub.SetComputeCapacitance(
-            messages.bool_property_message(self, compute_capacitance)
-        )
+        self.__stub.SetComputeCapacitance(messages.bool_property_message(self, compute_capacitance))
 
     @property
     def compute_dc(self) -> bool:
@@ -252,9 +234,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @compute_dc_inductance.setter
     def compute_dc_inductance(self, compute_dc_inductance: bool):
-        self.__stub.SetComputeDCInductance(
-            messages.bool_property_message(self, compute_dc_inductance)
-        )
+        self.__stub.SetComputeDCInductance(messages.bool_property_message(self, compute_dc_inductance))
 
     @property
     def compute_dc_capacitance(self) -> bool:
@@ -263,9 +243,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @compute_dc_capacitance.setter
     def compute_dc_capacitance(self, compute_dc_capacitance: bool):
-        self.__stub.SetComputeDCCapacitance(
-            messages.bool_property_message(self, compute_dc_capacitance)
-        )
+        self.__stub.SetComputeDCCapacitance(messages.bool_property_message(self, compute_dc_capacitance))
 
     @property
     def compute_ac(self) -> bool:
@@ -283,9 +261,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @ground_pwr_gnd_nets_for_si.setter
     def ground_pwr_gnd_nets_for_si(self, ground_pwr_gnd_nets_for_si: bool):
-        self.__stub.SetGroundPwrGndNetsForSI(
-            messages.bool_property_message(self, ground_pwr_gnd_nets_for_si)
-        )
+        self.__stub.SetGroundPwrGndNetsForSI(messages.bool_property_message(self, ground_pwr_gnd_nets_for_si))
 
     @property
     def return_net(self) -> str:
@@ -303,9 +279,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @auto_select_small_hole_size.setter
     def auto_select_small_hole_size(self, auto_select_small_hole_size: bool):
-        self.__stub.SetAutoSelectSmallHoleSize(
-            messages.bool_property_message(self, auto_select_small_hole_size)
-        )
+        self.__stub.SetAutoSelectSmallHoleSize(messages.bool_property_message(self, auto_select_small_hole_size))
 
     @property
     def small_hole_size(self) -> str:
@@ -323,9 +297,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @model_type.setter
     def model_type(self, model_type: CPAModelType):
-        self.__stub.SetModelType(
-            pb.CPAModelTypePropertyMessage(target=self.msg, model_type=model_type.value)
-        )
+        self.__stub.SetModelType(pb.CPAModelTypePropertyMessage(target=self.msg, model_type=model_type.value))
 
     @property
     def use_local_analysis(self) -> bool:
@@ -334,9 +306,7 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @use_local_analysis.setter
     def use_local_analysis(self, use_local_analysis: bool):
-        self.__stub.SetUseLocalAnalysis(
-            messages.bool_property_message(self, use_local_analysis)
-        )
+        self.__stub.SetUseLocalAnalysis(messages.bool_property_message(self, use_local_analysis))
 
     @property
     def perform_erc(self) -> bool:
@@ -354,17 +324,13 @@ class SIWaveCPASettings(SimulationSettingsBase):
 
     @exclude_nonfunctional_pads.setter
     def exclude_nonfunctional_pads(self, exclude_nonfunctional_pads: bool):
-        self.__stub.SetExcludeNonfunctionalPads(
-            messages.bool_property_message(self, exclude_nonfunctional_pads)
-        )
+        self.__stub.SetExcludeNonfunctionalPads(messages.bool_property_message(self, exclude_nonfunctional_pads))
 
 
 class SIWaveCPAAdvancedSettings(SimulationSettingsBase):
     """Represents SIWave CPA advanced settings."""
 
-    __stub: SIWaveCPAAdvancedSettingsServiceStub = StubAccessor(
-        StubType.siwave_cpa_advanced_settings
-    )
+    __stub: SIWaveCPAAdvancedSettingsServiceStub = StubAccessor(StubType.siwave_cpa_advanced_settings)
 
     @property
     def ignore_geometry_below_size(self) -> str:
@@ -373,9 +339,7 @@ class SIWaveCPAAdvancedSettings(SimulationSettingsBase):
 
     @ignore_geometry_below_size.setter
     def ignore_geometry_below_size(self, ignore_geometry_below_size: str):
-        self.__stub.SetIgnoreGeometryBelowSize(
-            messages.string_property_message(self, ignore_geometry_below_size)
-        )
+        self.__stub.SetIgnoreGeometryBelowSize(messages.string_property_message(self, ignore_geometry_below_size))
 
     @property
     def ignore_voids_below_size(self) -> str:
@@ -384,9 +348,7 @@ class SIWaveCPAAdvancedSettings(SimulationSettingsBase):
 
     @ignore_voids_below_size.setter
     def ignore_voids_below_size(self, ignore_voids_below_size: str):
-        self.__stub.SetIgnoreVoidsBelowSize(
-            messages.string_property_message(self, ignore_voids_below_size)
-        )
+        self.__stub.SetIgnoreVoidsBelowSize(messages.string_property_message(self, ignore_voids_below_size))
 
     @property
     def snap_vertex_distance(self) -> str:
@@ -395,9 +357,7 @@ class SIWaveCPAAdvancedSettings(SimulationSettingsBase):
 
     @snap_vertex_distance.setter
     def snap_vertex_distance(self, snap_vertex_distance: str):
-        self.__stub.SetSnapVertexDistance(
-            messages.string_property_message(self, snap_vertex_distance)
-        )
+        self.__stub.SetSnapVertexDistance(messages.string_property_message(self, snap_vertex_distance))
 
     @property
     def thermal_aware_sim(self) -> bool:
@@ -415,9 +375,7 @@ class SIWaveCPAAdvancedSettings(SimulationSettingsBase):
 
     @use_uniform_temperature.setter
     def use_uniform_temperature(self, use_uniform_temperature: bool):
-        self.__stub.SetUseUniformTemperature(
-            messages.bool_property_message(self, use_uniform_temperature)
-        )
+        self.__stub.SetUseUniformTemperature(messages.bool_property_message(self, use_uniform_temperature))
 
     @property
     def design_temperature(self) -> str:
@@ -426,9 +384,7 @@ class SIWaveCPAAdvancedSettings(SimulationSettingsBase):
 
     @design_temperature.setter
     def design_temperature(self, design_temperature: str):
-        self.__stub.SetDesignTemperature(
-            messages.string_property_message(self, design_temperature)
-        )
+        self.__stub.SetDesignTemperature(messages.string_property_message(self, design_temperature))
 
     @property
     def sitemp_file_path(self) -> str:
@@ -442,16 +398,12 @@ class SIWaveCPAAdvancedSettings(SimulationSettingsBase):
     @property
     def output_spice_topology(self) -> CPASpiceNetlistTopology:
         """:class:`.CPASpiceNetlistTopology`: Output SPICE netlist topology."""
-        return CPASpiceNetlistTopology(
-            self.__stub.GetOutputSpiceTopology(self.msg).topology
-        )
+        return CPASpiceNetlistTopology(self.__stub.GetOutputSpiceTopology(self.msg).topology)
 
     @output_spice_topology.setter
     def output_spice_topology(self, output_spice_topology: CPASpiceNetlistTopology):
         self.__stub.SetOutputSpiceTopology(
-            pb.CPASpiceNetlistTopologyPropertyMessage(
-                target=self.msg, topology=output_spice_topology.value
-            )
+            pb.CPASpiceNetlistTopologyPropertyMessage(target=self.msg, topology=output_spice_topology.value)
         )
 
 
@@ -467,9 +419,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @custom_refinement.setter
     def custom_refinement(self, custom_refinement: bool):
-        self.__stub.SetCustomRefinement(
-            messages.bool_property_message(self, custom_refinement)
-        )
+        self.__stub.SetCustomRefinement(messages.bool_property_message(self, custom_refinement))
 
     @property
     def max_num_cg_passes(self) -> int:
@@ -478,9 +428,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @max_num_cg_passes.setter
     def max_num_cg_passes(self, max_num_cg_passes: int):
-        self.__stub.SetMaxNumCGPasses(
-            messages.uint64_property_message(self, max_num_cg_passes)
-        )
+        self.__stub.SetMaxNumCGPasses(messages.uint64_property_message(self, max_num_cg_passes))
 
     @property
     def min_num_cg_passes(self) -> int:
@@ -489,9 +437,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @min_num_cg_passes.setter
     def min_num_cg_passes(self, min_num_cg_passes: int):
-        self.__stub.SetMinNumCGPasses(
-            messages.uint64_property_message(self, min_num_cg_passes)
-        )
+        self.__stub.SetMinNumCGPasses(messages.uint64_property_message(self, min_num_cg_passes))
 
     @property
     def cg_percent_error(self) -> float:
@@ -500,9 +446,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @cg_percent_error.setter
     def cg_percent_error(self, cg_percent_error: float):
-        self.__stub.SetCGPercentError(
-            messages.double_property_message(self, cg_percent_error)
-        )
+        self.__stub.SetCGPercentError(messages.double_property_message(self, cg_percent_error))
 
     @property
     def cg_percent_refinement(self) -> float:
@@ -511,9 +455,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @cg_percent_refinement.setter
     def cg_percent_refinement(self, cg_percent_refinement: float):
-        self.__stub.SetCGPercentRefinement(
-            messages.double_property_message(self, cg_percent_refinement)
-        )
+        self.__stub.SetCGPercentRefinement(messages.double_property_message(self, cg_percent_refinement))
 
     @property
     def cg_accuracy_level(self) -> CPAAccuracyLevel:
@@ -523,9 +465,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
     @cg_accuracy_level.setter
     def cg_accuracy_level(self, cg_accuracy_level: CPAAccuracyLevel):
         self.__stub.SetCGAccuracyLevel(
-            pb.CPAAccuracyLevelPropertyMessage(
-                target=self.msg, accuracy_level=cg_accuracy_level.value
-            )
+            pb.CPAAccuracyLevelPropertyMessage(target=self.msg, accuracy_level=cg_accuracy_level.value)
         )
 
     @property
@@ -535,9 +475,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @max_num_rl_passes.setter
     def max_num_rl_passes(self, max_num_rl_passes: int):
-        self.__stub.SetMaxNumRLPasses(
-            messages.uint64_property_message(self, max_num_rl_passes)
-        )
+        self.__stub.SetMaxNumRLPasses(messages.uint64_property_message(self, max_num_rl_passes))
 
     @property
     def min_num_rl_passes(self) -> int:
@@ -546,9 +484,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @min_num_rl_passes.setter
     def min_num_rl_passes(self, min_num_rl_passes: int):
-        self.__stub.SetMinNumRLPasses(
-            messages.uint64_property_message(self, min_num_rl_passes)
-        )
+        self.__stub.SetMinNumRLPasses(messages.uint64_property_message(self, min_num_rl_passes))
 
     @property
     def rl_percent_error(self) -> float:
@@ -557,9 +493,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @rl_percent_error.setter
     def rl_percent_error(self, rl_percent_error: float):
-        self.__stub.SetRLPercentError(
-            messages.double_property_message(self, rl_percent_error)
-        )
+        self.__stub.SetRLPercentError(messages.double_property_message(self, rl_percent_error))
 
     @property
     def rl_percent_refinement(self) -> float:
@@ -568,9 +502,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @rl_percent_refinement.setter
     def rl_percent_refinement(self, rl_percent_refinement: float):
-        self.__stub.SetRLPercentRefinement(
-            messages.double_property_message(self, rl_percent_refinement)
-        )
+        self.__stub.SetRLPercentRefinement(messages.double_property_message(self, rl_percent_refinement))
 
     @property
     def max_num_dc_passes(self) -> int:
@@ -579,9 +511,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @max_num_dc_passes.setter
     def max_num_dc_passes(self, max_num_dc_passes: int):
-        self.__stub.SetMaxNumDCPasses(
-            messages.uint64_property_message(self, max_num_dc_passes)
-        )
+        self.__stub.SetMaxNumDCPasses(messages.uint64_property_message(self, max_num_dc_passes))
 
     @property
     def min_num_dc_passes(self) -> int:
@@ -590,9 +520,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @min_num_dc_passes.setter
     def min_num_dc_passes(self, min_num_dc_passes: int):
-        self.__stub.SetMinNumDCPasses(
-            messages.uint64_property_message(self, min_num_dc_passes)
-        )
+        self.__stub.SetMinNumDCPasses(messages.uint64_property_message(self, min_num_dc_passes))
 
     @property
     def dc_percent_error(self) -> float:
@@ -601,9 +529,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @dc_percent_error.setter
     def dc_percent_error(self, dc_percent_error: float):
-        self.__stub.SetDCPercentError(
-            messages.double_property_message(self, dc_percent_error)
-        )
+        self.__stub.SetDCPercentError(messages.double_property_message(self, dc_percent_error))
 
     @property
     def dc_percent_refinement(self) -> float:
@@ -612,9 +538,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @dc_percent_refinement.setter
     def dc_percent_refinement(self, dc_percent_refinement: float):
-        self.__stub.SetDCPercentRefinement(
-            messages.double_property_message(self, dc_percent_refinement)
-        )
+        self.__stub.SetDCPercentRefinement(messages.double_property_message(self, dc_percent_refinement))
 
     @property
     def dielectric_extension(self) -> str:
@@ -623,9 +547,7 @@ class SIWaveCPAQ3DSettings(SimulationSettingsBase):
 
     @dielectric_extension.setter
     def dielectric_extension(self, dielectric_extension: str):
-        self.__stub.SetDielectricExtension(
-            messages.string_property_message(self, dielectric_extension)
-        )
+        self.__stub.SetDielectricExtension(messages.string_property_message(self, dielectric_extension))
 
     @property
     def terminal_diam(self) -> str:
@@ -665,23 +587,19 @@ class SIWaveCPANetSettings(SimulationSettingsBase):
         )
 
     @property
-    def included_nets(self) -> List[str]:
+    def included_nets(self) -> list[str]:
         """:obj:`list` of :obj:`str`: Nets included in the CPA simulation."""
         return list(self.__stub.GetIncludedNets(self.msg).nets)
 
     @included_nets.setter
-    def included_nets(self, included_nets: List[str]):
-        self.__stub.SetIncludedNets(
-            pb.CPAIncludedNetsPropertyMessage(target=self.msg, nets=included_nets)
-        )
+    def included_nets(self, included_nets: list[str]):
+        self.__stub.SetIncludedNets(pb.CPAIncludedNetsPropertyMessage(target=self.msg, nets=included_nets))
 
 
 class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
     """Represents SIWave CPA external environment settings."""
 
-    __stub: SIWaveCPAExternalEnvSettingsServiceStub = StubAccessor(
-        StubType.siwave_cpa_external_env_settings
-    )
+    __stub: SIWaveCPAExternalEnvSettingsServiceStub = StubAccessor(StubType.siwave_cpa_external_env_settings)
 
     @property
     def top_fill_material(self) -> str:
@@ -690,9 +608,7 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @top_fill_material.setter
     def top_fill_material(self, top_fill_material: str):
-        self.__stub.SetTopFillMaterial(
-            messages.string_property_message(self, top_fill_material)
-        )
+        self.__stub.SetTopFillMaterial(messages.string_property_message(self, top_fill_material))
 
     @property
     def bottom_fill_material(self) -> str:
@@ -701,9 +617,7 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @bottom_fill_material.setter
     def bottom_fill_material(self, bottom_fill_material: str):
-        self.__stub.SetBottomFillMaterial(
-            messages.string_property_message(self, bottom_fill_material)
-        )
+        self.__stub.SetBottomFillMaterial(messages.string_property_message(self, bottom_fill_material))
 
     @property
     def pcb_material(self) -> str:
@@ -721,9 +635,7 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @include_metal_plane1.setter
     def include_metal_plane1(self, include_metal_plane1: bool):
-        self.__stub.SetIncludeMetalPlane1(
-            messages.bool_property_message(self, include_metal_plane1)
-        )
+        self.__stub.SetIncludeMetalPlane1(messages.bool_property_message(self, include_metal_plane1))
 
     @property
     def ground_metal_plane1(self) -> bool:
@@ -732,9 +644,7 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @ground_metal_plane1.setter
     def ground_metal_plane1(self, ground_metal_plane1: bool):
-        self.__stub.SetGroundMetalPlane1(
-            messages.bool_property_message(self, ground_metal_plane1)
-        )
+        self.__stub.SetGroundMetalPlane1(messages.bool_property_message(self, ground_metal_plane1))
 
     @property
     def height_metal_plane1(self) -> str:
@@ -743,9 +653,7 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @height_metal_plane1.setter
     def height_metal_plane1(self, height_metal_plane1: str):
-        self.__stub.SetHeightMetalPlane1(
-            messages.string_property_message(self, height_metal_plane1)
-        )
+        self.__stub.SetHeightMetalPlane1(messages.string_property_message(self, height_metal_plane1))
 
     @property
     def include_metal_plane2(self) -> bool:
@@ -754,9 +662,7 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @include_metal_plane2.setter
     def include_metal_plane2(self, include_metal_plane2: bool):
-        self.__stub.SetIncludeMetalPlane2(
-            messages.bool_property_message(self, include_metal_plane2)
-        )
+        self.__stub.SetIncludeMetalPlane2(messages.bool_property_message(self, include_metal_plane2))
 
     @property
     def ground_metal_plane2(self) -> bool:
@@ -765,9 +671,7 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @ground_metal_plane2.setter
     def ground_metal_plane2(self, ground_metal_plane2: bool):
-        self.__stub.SetGroundMetalPlane2(
-            messages.bool_property_message(self, ground_metal_plane2)
-        )
+        self.__stub.SetGroundMetalPlane2(messages.bool_property_message(self, ground_metal_plane2))
 
     @property
     def height_metal_plane2(self) -> str:
@@ -776,19 +680,15 @@ class SIWaveCPAExternalEnvSettings(SimulationSettingsBase):
 
     @height_metal_plane2.setter
     def height_metal_plane2(self, height_metal_plane2: str):
-        self.__stub.SetHeightMetalPlane2(
-            messages.string_property_message(self, height_metal_plane2)
-        )
+        self.__stub.SetHeightMetalPlane2(messages.string_property_message(self, height_metal_plane2))
 
 
 class SIWaveCPADieConfigSettings(SimulationSettingsBase):
     """Represents SIWave CPA die configuration settings."""
 
-    __stub: SIWaveCPADieConfigSettingsServiceStub = StubAccessor(
-        StubType.siwave_cpa_die_config_settings
-    )
+    __stub: SIWaveCPADieConfigSettingsServiceStub = StubAccessor(StubType.siwave_cpa_die_config_settings)
 
-    def get_all_die_configs(self) -> Dict[str, pb.CPADieConfigMessage]:
+    def get_all_die_configs(self) -> dict[str, pb.CPADieConfigMessage]:
         """:obj:`dict` { :obj:`str` : :class:`CPADieConfigMessage` }: All die configurations, keyed by part reference designator."""
         response = self.__stub.GetAllDieConfigs(self.msg)
         return {entry.part_ref_des: entry.config for entry in response.entries}
@@ -804,9 +704,7 @@ class SIWaveCPADieConfigSettings(SimulationSettingsBase):
             Die configuration message.
         """
         self.__stub.AddDieConfig(
-            pb.CPADieConfigPropertyMessage(
-                target=self.msg, part_ref_des=part_ref_des, config=config
-            )
+            pb.CPADieConfigPropertyMessage(target=self.msg, part_ref_des=part_ref_des, config=config)
         )
 
     def remove_die_config(self, part_ref_des: str):
@@ -817,17 +715,13 @@ class SIWaveCPADieConfigSettings(SimulationSettingsBase):
         part_ref_des : str
             Part reference designator.
         """
-        self.__stub.RemoveDieConfig(
-            pb.CPADieConfigRemoveMessage(target=self.msg, part_ref_des=part_ref_des)
-        )
+        self.__stub.RemoveDieConfig(pb.CPADieConfigRemoveMessage(target=self.msg, part_ref_des=part_ref_des))
 
 
 class SIWaveCPAChannelComponentSettings(SimulationSettingsBase):
     """Represents SIWave CPA channel component settings."""
 
-    __stub: SIWaveCPAChannelComponentSettingsServiceStub = StubAccessor(
-        StubType.siwave_cpa_channel_component_settings
-    )
+    __stub: SIWaveCPAChannelComponentSettingsServiceStub = StubAccessor(StubType.siwave_cpa_channel_component_settings)
 
     def get_part_is_internal_to_netlist(self, ref_des: str) -> bool:
         """Get whether a part is internal to the netlist.
@@ -841,9 +735,7 @@ class SIWaveCPAChannelComponentSettings(SimulationSettingsBase):
         -------
         bool
         """
-        return self.__stub.GetPartIsInternalToNetlist(
-            messages.edb_obj_name_message(self, ref_des)
-        ).value
+        return self.__stub.GetPartIsInternalToNetlist(messages.edb_obj_name_message(self, ref_des)).value
 
     def set_part_is_internal_to_netlist(self, ref_des: str, internal: bool):
         """Set whether a part is internal to the netlist.
@@ -856,9 +748,7 @@ class SIWaveCPAChannelComponentSettings(SimulationSettingsBase):
             Whether the part is internal to the netlist.
         """
         self.__stub.SetPartIsInternalToNetlist(
-            pb.CPAChannelComponentPropertyMessage(
-                target=self.msg, ref_des=ref_des, internal=internal
-            )
+            pb.CPAChannelComponentPropertyMessage(target=self.msg, ref_des=ref_des, internal=internal)
         )
 
 
@@ -867,7 +757,7 @@ class SIWaveCPAVRMSettings(SimulationSettingsBase):
 
     __stub: SIWaveCPAVRMSettingsServiceStub = StubAccessor(StubType.siwave_cpa_vrm_settings)
 
-    def get_all_vrm_configs(self) -> Dict[str, pb.CPAVRMConfigMessage]:
+    def get_all_vrm_configs(self) -> dict[str, pb.CPAVRMConfigMessage]:
         """:obj:`dict` { :obj:`str` : :class:`CPAVRMConfigMessage` }: All VRM configurations, keyed by part reference designator."""
         response = self.__stub.GetAllVRMConfigs(self.msg)
         return {entry.part_ref_des: entry.config for entry in response.entries}
@@ -884,9 +774,7 @@ class SIWaveCPAVRMSettings(SimulationSettingsBase):
         -------
         CPAVRMConfigEntryMessage
         """
-        return self.__stub.GetVRMConfig(
-            pb.CPAGetVRMConfigMessage(target=self.msg, part_ref_des=part_ref_des)
-        )
+        return self.__stub.GetVRMConfig(pb.CPAGetVRMConfigMessage(target=self.msg, part_ref_des=part_ref_des))
 
     def add_vrm_config(self, part_ref_des: str, config: pb.CPAVRMConfigMessage):
         """Add a VRM configuration for a given part reference designator.
@@ -899,9 +787,7 @@ class SIWaveCPAVRMSettings(SimulationSettingsBase):
             VRM configuration message.
         """
         self.__stub.AddVRMConfig(
-            pb.CPAVRMConfigPropertyMessage(
-                target=self.msg, part_ref_des=part_ref_des, config=config
-            )
+            pb.CPAVRMConfigPropertyMessage(target=self.msg, part_ref_des=part_ref_des, config=config)
         )
 
     def remove_vrm_config(self, part_ref_des: str):
@@ -912,9 +798,7 @@ class SIWaveCPAVRMSettings(SimulationSettingsBase):
         part_ref_des : str
             Part reference designator.
         """
-        self.__stub.RemoveVRMConfig(
-            pb.CPAVRMConfigRemoveMessage(target=self.msg, part_ref_des=part_ref_des)
-        )
+        self.__stub.RemoveVRMConfig(pb.CPAVRMConfigRemoveMessage(target=self.msg, part_ref_des=part_ref_des))
 
 
 class SIWaveCPAUnconnectedDiePinSettings(SimulationSettingsBase):
@@ -924,7 +808,7 @@ class SIWaveCPAUnconnectedDiePinSettings(SimulationSettingsBase):
         StubType.siwave_cpa_unconnected_die_pin_settings
     )
 
-    def get_pin_supply_voltages(self) -> Dict[str, str]:
+    def get_pin_supply_voltages(self) -> dict[str, str]:
         """:obj:`dict` { :obj:`str` : :obj:`str` }: Pin supply voltage map keyed by pin name."""
         return dict(self.__stub.GetPinSupplyVoltages(self.msg).pin_supply_voltages)
 
@@ -946,11 +830,9 @@ class SIWaveCPAUnconnectedDiePinSettings(SimulationSettingsBase):
 class SIWaveCPAHotSpotComponentSettings(SimulationSettingsBase):
     """Represents SIWave CPA hot spot component settings."""
 
-    __stub: SIWaveCPAHotSpotComponentSettingsServiceStub = StubAccessor(
-        StubType.siwave_cpa_hot_spot_component_settings
-    )
+    __stub: SIWaveCPAHotSpotComponentSettingsServiceStub = StubAccessor(StubType.siwave_cpa_hot_spot_component_settings)
 
-    def get_hot_spot_components(self) -> List[str]:
+    def get_hot_spot_components(self) -> list[str]:
         """:obj:`list` of :obj:`str`: List of hot spot component reference designators."""
         return list(self.__stub.GetHotSpotComponents(self.msg).ref_des)
 
@@ -966,9 +848,7 @@ class SIWaveCPAHotSpotComponentSettings(SimulationSettingsBase):
         -------
         bool
         """
-        return self.__stub.GetHotSpotEnabled(
-            messages.edb_obj_name_message(self, ref_des)
-        ).value
+        return self.__stub.GetHotSpotEnabled(messages.edb_obj_name_message(self, ref_des)).value
 
     def set_hot_spot_enabled(self, ref_des: str, enabled: bool):
         """Set whether the hot spot analysis is enabled for a given component.
@@ -981,8 +861,5 @@ class SIWaveCPAHotSpotComponentSettings(SimulationSettingsBase):
             Whether hot spot analysis is enabled.
         """
         self.__stub.SetHotSpotEnabled(
-            pb.CPAHotSpotComponentPropertyMessage(
-                target=self.msg, ref_des=ref_des, enabled=enabled
-            )
+            pb.CPAHotSpotComponentPropertyMessage(target=self.msg, ref_des=ref_des, enabled=enabled)
         )
-

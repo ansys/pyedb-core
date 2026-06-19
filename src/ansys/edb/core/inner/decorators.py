@@ -1,4 +1,5 @@
 """Module containing shared decorators."""
+
 import functools
 
 

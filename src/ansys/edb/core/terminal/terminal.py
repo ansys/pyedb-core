@@ -5,9 +5,14 @@ from enum import Enum
 import ansys.api.edb.v1.term_pb2 as term_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import TypeField, conn_obj, factory, messages, parser
+from ansys.edb.core.inner import TypeField
+from ansys.edb.core.inner import conn_obj
+from ansys.edb.core.inner import factory
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.port_post_processing_prop import PortPostProcessingProp
 from ansys.edb.core.utility.value import Value
 
@@ -97,9 +102,7 @@ class Terminal(conn_obj.ConnObj):
         -------
         Terminal
         """
-        return Terminal(
-            cls.__stub.FindByName(messages.term_find_by_name_message(layout, name))
-        ).cast(cls.type)
+        return Terminal(cls.__stub.FindByName(messages.term_find_by_name_message(layout, name))).cast(cls.type)
 
     @property
     def _params(self):
@@ -275,9 +278,7 @@ class Terminal(conn_obj.ConnObj):
         self._params = {"port_post_processing_prop": value}
 
     def _product_solvers(self, product_id):
-        return self.__stub.GetProductSolvers(
-            messages.term_get_product_solver_message(self, product_id)
-        ).solvers
+        return self.__stub.GetProductSolvers(messages.term_get_product_solver_message(self, product_id)).solvers
 
     def product_solver_option(self, product_id, solver_name):
         """Get the product solver option for a given solver.

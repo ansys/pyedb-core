@@ -1,18 +1,22 @@
 """Text."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.typing import LayerLike, ValueLike
+    from ansys.edb.core.typing import LayerLike
+    from ansys.edb.core.typing import ValueLike
 
 
-from ansys.api.edb.v1 import text_pb2, text_pb2_grpc
+from ansys.api.edb.v1 import text_pb2
+from ansys.api.edb.v1 import text_pb2_grpc
 
 from ansys.edb.core.inner import messages
 from ansys.edb.core.primitive.primitive import Primitive
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -22,9 +26,7 @@ class Text(Primitive):
     __stub: text_pb2_grpc.TextServiceStub = StubAccessor(StubType.text)
 
     @classmethod
-    def create(
-        cls, layout: Layout, layer: LayerLike, center_x: ValueLike, center_y: ValueLike, text: str
-    ) -> Text:
+    def create(cls, layout: Layout, layer: LayerLike, center_x: ValueLike, center_y: ValueLike, text: str) -> Text:
         """Create a text object.
 
         Parameters

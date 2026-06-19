@@ -1,19 +1,22 @@
 """Component property."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike
     from ansys.edb.core.definition.package_def import PackageDef
     from ansys.edb.core.hierarchy.model import Model
+    from ansys.edb.core.typing import ValueLike
 
 from ansys.api.edb.v1.component_property_pb2_grpc import ComponentPropertyServiceStub
 import ansys.api.edb.v1.model_pb2 as model_pb2
 
 from ansys.edb.core.definition import package_def
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -41,9 +44,7 @@ class ComponentProperty(ObjBase):
 
     @package_mounting_offset.setter
     def package_mounting_offset(self, offset: ValueLike):
-        self.__stub.SetPackageMountingOffset(
-            messages.value_property_message(self, messages.value_message(offset))
-        )
+        self.__stub.SetPackageMountingOffset(messages.value_property_message(self, messages.value_message(offset)))
 
     @property
     def package_def(self) -> PackageDef:

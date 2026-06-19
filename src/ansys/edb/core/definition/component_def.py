@@ -1,28 +1,31 @@
 """Component definition."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.database import ProductIdType, Database
-    from ansys.edb.core.layout.cell import Cell
+    from ansys.edb.core.database import Database
+    from ansys.edb.core.database import ProductIdType
     from ansys.edb.core.definition.component_model import ComponentModel
     from ansys.edb.core.definition.component_pin import ComponentPin
+    from ansys.edb.core.layout.cell import Cell
 
 from ansys.api.edb.v1.component_def_pb2_grpc import ComponentDefServiceStub
 
-from ansys.edb.core.definition import component_model, component_pin
+from ansys.edb.core.definition import component_model
+from ansys.edb.core.definition import component_pin
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.inner.messages import (
-    edb_obj_collection_property_message,
-    edb_obj_pair_message,
-    get_product_property_ids_message,
-    get_product_property_message,
-    set_product_property_message,
-)
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.messages import edb_obj_collection_property_message
+from ansys.edb.core.inner.messages import edb_obj_pair_message
+from ansys.edb.core.inner.messages import get_product_property_ids_message
+from ansys.edb.core.inner.messages import get_product_property_message
+from ansys.edb.core.inner.messages import set_product_property_message
 from ansys.edb.core.inner.utils import map_list
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ComponentDef(ObjBase):
@@ -47,9 +50,7 @@ class ComponentDef(ObjBase):
         -------
         .ComponentDef
         """
-        return ComponentDef(
-            cls.__stub.Create(messages.component_def_creation_message(db, comp_def_name, fp))
-        )
+        return ComponentDef(cls.__stub.Create(messages.component_def_creation_message(db, comp_def_name, fp)))
 
     @classmethod
     def find(cls, db: Database, comp_def_name: str) -> ComponentDef:
@@ -68,9 +69,7 @@ class ComponentDef(ObjBase):
             Component definition found. \
             If a component definition isn't found, the returned component definition is :meth:`null <.is_null>`.
         """
-        return ComponentDef(
-            cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name))
-        )
+        return ComponentDef(cls.__stub.FindByName(messages.object_name_in_layout_message(db, comp_def_name)))
 
     @property
     def definition_type(self) -> DefinitionObjType:
@@ -182,9 +181,7 @@ class ComponentDef(ObjBase):
         str
             Product property for the given product ID and attribute ID.
         """
-        return self.__stub.GetProductProperty(
-            get_product_property_message(self, prod_id, attr_it)
-        ).value
+        return self.__stub.GetProductProperty(get_product_property_message(self, prod_id, attr_it)).value
 
     def set_product_property(self, prod_id: ProductIdType, attr_it: int, prop_value: str):
         """Set the product property for the given product ID and attribute ID.
@@ -198,9 +195,7 @@ class ComponentDef(ObjBase):
         prop_value : str
             New value for the product property.
         """
-        self.__stub.SetProductProperty(
-            set_product_property_message(self, prod_id, attr_it, prop_value)
-        )
+        self.__stub.SetProductProperty(set_product_property_message(self, prod_id, attr_it, prop_value))
 
     def get_product_property_ids(self, prod_id: ProductIdType) -> list[int]:
         """Get the list of property IDs for a given property ID.
@@ -215,7 +210,5 @@ class ComponentDef(ObjBase):
         list of int
             Attribute IDs for the given product ID.
         """
-        attr_ids = self.__stub.GetProductPropertyIds(
-            get_product_property_ids_message(self, prod_id)
-        ).ids
+        attr_ids = self.__stub.GetProductPropertyIds(get_product_property_ids_message(self, prod_id)).ids
         return [attr_id for attr_id in attr_ids]

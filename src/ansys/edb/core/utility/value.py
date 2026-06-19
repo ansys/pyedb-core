@@ -1,19 +1,22 @@
 """Value."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike, Union
     from ansys.edb.core.database import Database
+    from ansys.edb.core.definition.component_def import ComponentDef
     from ansys.edb.core.layout.cell import Cell
     from ansys.edb.core.layout.layout import Layout
-    from ansys.edb.core.definition.component_def import ComponentDef
+    from ansys.edb.core.typing import Union
+    from ansys.edb.core.typing import ValueLike
 
 
 import math
 
-from ansys.api.edb.v1 import value_pb2, value_pb2_grpc
+from ansys.api.edb.v1 import value_pb2
+from ansys.api.edb.v1 import value_pb2_grpc
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
 from ansys.edb.core import session
@@ -97,9 +100,7 @@ class Value:
             return
         self.msg = ValueMessage()
         if isinstance(val, str):
-            temp = value_pb2.ValueTextMessage(
-                text=val, variable_owner=messages.edb_obj_message(_owner)
-            )
+            temp = value_pb2.ValueTextMessage(text=val, variable_owner=messages.edb_obj_message(_owner))
             self.msg = self.__stub.CreateValue(temp)
         elif isinstance(val, float) or isinstance(val, int):
             self.msg.constant.real = val
@@ -333,9 +334,7 @@ class Value:
         """:obj:`complex`: Evaluation to a constant and return as a float or complex."""
         if self.is_parametric:
             evaluated = self.__stub.GetComplex(
-                value_pb2.ValueTextMessage(
-                    text=self.msg.text, variable_owner=self.msg.variable_owner
-                )
+                value_pb2.ValueTextMessage(text=self.msg.text, variable_owner=self.msg.variable_owner)
             )
         else:
             evaluated = self.msg.constant

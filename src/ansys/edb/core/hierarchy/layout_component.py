@@ -1,15 +1,16 @@
 """Layout Component."""
+
 from ansys.api.edb.v1.layout_component_pb2 import ImportExportLayoutComponentMessage
 
 from ansys.edb.core.hierarchy.cell_instance import CellInstance
 from ansys.edb.core.inner.layout_obj import ObjBase
-from ansys.edb.core.session import LayoutComponentServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutComponentServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 def _import_export_layout_component_msg(layout, output_aedb_comp_path):
-    return ImportExportLayoutComponentMessage(
-        layout=layout.msg, aedbcomp_path=output_aedb_comp_path
-    )
+    return ImportExportLayoutComponentMessage(layout=layout.msg, aedbcomp_path=output_aedb_comp_path)
 
 
 class LayoutComponent(ObjBase):
@@ -33,9 +34,7 @@ class LayoutComponent(ObjBase):
         bool
             ``True`` if layout component is successfully exported, ``False`` otherwise.
         """
-        return cls.__stub.ExportLayoutComponent(
-            _import_export_layout_component_msg(layout, output_aedb_comp_path)
-        )
+        return cls.__stub.ExportLayoutComponent(_import_export_layout_component_msg(layout, output_aedb_comp_path))
 
     @classmethod
     def import_layout_component(cls, layout, aedb_comp_path):
@@ -54,9 +53,7 @@ class LayoutComponent(ObjBase):
             Imported layout component
         """
         return LayoutComponent(
-            cls.__stub.ImportLayoutComponent(
-                _import_export_layout_component_msg(layout, aedb_comp_path)
-            )
+            cls.__stub.ImportLayoutComponent(_import_export_layout_component_msg(layout, aedb_comp_path))
         )
 
     @property

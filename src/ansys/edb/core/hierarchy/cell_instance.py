@@ -6,7 +6,8 @@ from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.hierarchy import hierarchy_obj
 from ansys.edb.core.inner import messages
 from ansys.edb.core.layout import layout
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.transform3d import Transform3D
 from ansys.edb.core.utility.value import Value
 
@@ -35,9 +36,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         CellInstance
             Cell instance created.
         """
-        return CellInstance(
-            cls.__stub.Create(messages.cell_instance_creation_message(layout, name, ref))
-        )
+        return CellInstance(cls.__stub.Create(messages.cell_instance_creation_message(layout, name, ref)))
 
     @classmethod
     def create_with_component(cls, layout, name, ref):
@@ -57,11 +56,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         CellInstance
             Cell instance created.
         """
-        return CellInstance(
-            cls.__stub.CreateWithComponent(
-                messages.cell_instance_creation_message(layout, name, ref)
-            )
-        )
+        return CellInstance(cls.__stub.CreateWithComponent(messages.cell_instance_creation_message(layout, name, ref)))
 
     @classmethod
     def find(cls, layout, name):
@@ -79,9 +74,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         CellInstance
             Cell instance that is found, ``None`` otherwise.
         """
-        return CellInstance(
-            cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name))
-        )
+        return CellInstance(cls.__stub.FindByName(messages.object_name_in_layout_message(layout, name)))
 
     @property
     def reference_layout(self):
@@ -147,9 +140,7 @@ class CellInstance(hierarchy_obj.HierarchyObj):
         :class:`.Value`
             Override value for the cell instance parameter.
         """
-        return Value(
-            self.__stub.GetParameterOverride(messages.string_property_message(self, param_name))
-        )
+        return Value(self.__stub.GetParameterOverride(messages.string_property_message(self, param_name)))
 
     def set_parameter_override(self, param_name, param_value):
         """Set an override value for a given cell instance parameter.

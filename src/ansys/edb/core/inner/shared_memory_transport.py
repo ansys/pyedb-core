@@ -104,9 +104,7 @@ class SharedMemoryTransport:
 
     def connect(self):
         """Attach to the shared memory block."""
-        self._shm = shared_memory.SharedMemory(
-            name=self._shm_name, create=False, size=self._shm_size
-        )
+        self._shm = shared_memory.SharedMemory(name=self._shm_name, create=False, size=self._shm_size)
         # The server owns the shared memory lifecycle (creation and unlinking).
         # On POSIX, unregister from Python's resource tracker so it doesn't
         # warn about a "leaked" object or attempt to unlink on shutdown.
@@ -132,9 +130,7 @@ class SharedMemoryTransport:
     # RPC execution
     # ------------------------------------------------------------------
 
-    def execute_rpc(
-        self, service_name: str, rpc_name: str, serialized_request: bytes
-    ) -> tuple[bool, bytes, str]:
+    def execute_rpc(self, service_name: str, rpc_name: str, serialized_request: bytes) -> tuple[bool, bytes, str]:
         """Send a serialized RPC request and wait for the response.
 
         Returns
@@ -186,9 +182,7 @@ class SharedMemoryTransport:
             serialized_response = bytes(buf[SHM_DATA_OFFSET : SHM_DATA_OFFSET + resp_size])
             return (True, serialized_response, "")
         else:
-            error_message = bytes(buf[SHM_DATA_OFFSET : SHM_DATA_OFFSET + err_size]).decode(
-                "utf-8", errors="replace"
-            )
+            error_message = bytes(buf[SHM_DATA_OFFSET : SHM_DATA_OFFSET + err_size]).decode("utf-8", errors="replace")
             return (False, b"", error_message)
 
     # ------------------------------------------------------------------
@@ -232,8 +226,7 @@ class SharedMemoryTransport:
         if proc.poll() is not None:
             rc = proc.returncode
             raise RuntimeError(
-                f"EDB_RPC_Server process exited unexpectedly "
-                f"(exit code {rc}) while waiting for an RPC response"
+                f"EDB_RPC_Server process exited unexpectedly (exit code {rc}) while waiting for an RPC response"
             )
 
     def _read_u32(self, offset: int) -> int:

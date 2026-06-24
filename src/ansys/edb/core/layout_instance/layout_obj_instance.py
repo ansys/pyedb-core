@@ -1,26 +1,24 @@
 """Layout object instance."""
 
-from ansys.edb.core.inner import ObjBase, factory, parser, utils
-from ansys.edb.core.inner.messages import bool_property_message, layer_ref_property_message
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import factory
+from ansys.edb.core.inner import parser
+from ansys.edb.core.inner import utils
+from ansys.edb.core.inner.messages import bool_property_message
+from ansys.edb.core.inner.messages import layer_ref_property_message
 from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.layout_instance import layout_instance_context
-from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import (
-    LayoutObjInstance2DGeometry,
-)
-from ansys.edb.core.layout_instance.layout_obj_instance_3d_geometry import (
-    LayoutObjInstance3DGeometry,
-)
-from ansys.edb.core.session import LayoutObjInstanceServiceStub, StubAccessor, StubType
+from ansys.edb.core.layout_instance.layout_obj_instance_2d_geometry import LayoutObjInstance2DGeometry
+from ansys.edb.core.layout_instance.layout_obj_instance_3d_geometry import LayoutObjInstance3DGeometry
+from ansys.edb.core.session import LayoutObjInstanceServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 def _parse_layout_obj_instance_geometry_message(lyt_obj_inst_geom_msg):
     if lyt_obj_inst_geom_msg.type == -1:
         raise TypeError("Encountered an unknown geometry type for the layout object instance.")
-    geom_type = (
-        LayoutObjInstance2DGeometry
-        if lyt_obj_inst_geom_msg.type == 0
-        else LayoutObjInstance3DGeometry
-    )
+    geom_type = LayoutObjInstance2DGeometry if lyt_obj_inst_geom_msg.type == 0 else LayoutObjInstance3DGeometry
     geom_msg = lyt_obj_inst_geom_msg.geometry
     return geom_type(geom_msg.geometry, geom_msg.owning_drawing, geom_msg.placement_layer)
 
@@ -72,9 +70,7 @@ class LayoutObjInstance(ObjBase):
 
         This property is read-only.
         """
-        return layout_instance_context.LayoutInstanceContext(
-            self.__stub.GetLayoutInstanceContext(self.msg)
-        )
+        return layout_instance_context.LayoutInstanceContext(self.__stub.GetLayoutInstanceContext(self.msg))
 
     @property
     def layout_obj(self):

@@ -1,20 +1,24 @@
 """3D transformformations."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import Point3DLike
     from ansys.edb.core.geometry.point3d_data import Point3DData
+    from ansys.edb.core.typing import Point3DLike
     from ansys.edb.core.utility.transform import Transform
 
 import ansys.api.edb.v1.transform_3d_pb2 as pb
 from ansys.api.edb.v1.transform_3d_pb2_grpc import Transform3DServiceStub
 from google.protobuf import empty_pb2
 
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.inner.parser import to_3_point3d_data, to_point3d_data
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner.parser import to_3_point3d_data
+from ansys.edb.core.inner.parser import to_point3d_data
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class Transform3D(ObjBase):
@@ -56,7 +60,7 @@ class Transform3D(ObjBase):
         return Transform3D(cls.__stub.CreateCopy(messages.edb_obj_message(transform3d)))
 
     @classmethod
-    def create_from_matrix(cls, matrix: List[List[float]]) -> Transform3D:
+    def create_from_matrix(cls, matrix: list[list[float]]) -> Transform3D:
         """Create a 3D transformation from general matrix data.
 
         Parameters
@@ -80,6 +84,7 @@ class Transform3D(ObjBase):
         ----------
         offset : :term:`Point3DLike`
             Vector offset.
+
         Returns
         -------
         .Transform3D
@@ -101,9 +106,7 @@ class Transform3D(ObjBase):
         -------
         .Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateCenterScale(messages.cpos_3d_double_message(center, scale))
-        )
+        return Transform3D(cls.__stub.CreateCenterScale(messages.cpos_3d_double_message(center, scale)))
 
     @classmethod
     def create_from_angle(cls, zyx_decomposition: Point3DLike) -> Transform3D:
@@ -118,9 +121,7 @@ class Transform3D(ObjBase):
         -------
         .Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateRotationFromAngle(messages.cpos_3d_message(zyx_decomposition))
-        )
+        return Transform3D(cls.__stub.CreateRotationFromAngle(messages.cpos_3d_message(zyx_decomposition)))
 
     @classmethod
     def create_from_axis(cls, x: Point3DLike, y: Point3DLike, z: Point3DLike) -> Transform3D:
@@ -139,9 +140,7 @@ class Transform3D(ObjBase):
         -------
         .Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateRotationFromAxis(messages.cpos_3d_triple_message(x, y, z))
-        )
+        return Transform3D(cls.__stub.CreateRotationFromAxis(messages.cpos_3d_triple_message(x, y, z)))
 
     @classmethod
     def create_from_axis_and_angle(cls, axis: Point3DLike, angle: float) -> Transform3D:
@@ -158,14 +157,10 @@ class Transform3D(ObjBase):
         -------
         .Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateRotationFromAxisAndAngle(messages.cpos_3d_double_message(axis, angle))
-        )
+        return Transform3D(cls.__stub.CreateRotationFromAxisAndAngle(messages.cpos_3d_double_message(axis, angle)))
 
     @classmethod
-    def create_from_one_axis_to_another(
-        cls, from_axis: Point3DLike, to_axis: Point3DLike
-    ) -> Transform3D:
+    def create_from_one_axis_to_another(cls, from_axis: Point3DLike, to_axis: Point3DLike) -> Transform3D:
         """Create a 3D transformformation with rotation from an axis to an axis.
 
         Parameters
@@ -179,9 +174,7 @@ class Transform3D(ObjBase):
         -------
         .Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateRotationFromToAxis(messages.cpos_3d_pair_message(from_axis, to_axis))
-        )
+        return Transform3D(cls.__stub.CreateRotationFromToAxis(messages.cpos_3d_pair_message(from_axis, to_axis)))
 
     @classmethod
     def create_from_transform_2d(cls, transform: Transform, z_off: float) -> Transform3D:
@@ -198,9 +191,7 @@ class Transform3D(ObjBase):
         -------
         .Transform3D
         """
-        return Transform3D(
-            cls.__stub.CreateTransform2D(messages.double_property_message(transform, z_off))
-        )
+        return Transform3D(cls.__stub.CreateTransform2D(messages.double_property_message(transform, z_off)))
 
     def transpose(self):
         """Transpose the 3D transformation."""
@@ -266,9 +257,7 @@ class Transform3D(ObjBase):
         .Transform3D
             3D transformation object created.
         """
-        return Transform3D(
-            self.__stub.OperatorPlus(messages.pointer_property_message(self, other_transform))
-        )
+        return Transform3D(self.__stub.OperatorPlus(messages.pointer_property_message(self, other_transform)))
 
     @property
     @to_3_point3d_data
@@ -319,20 +308,14 @@ class Transform3D(ObjBase):
         return self.__stub.GetShift(messages.edb_obj_message(self))
 
     @property
-    def matrix(self) -> List[List[float]]:
+    def matrix(self) -> list[list[float]]:
         """:obj:`list` of :obj:`list` of :obj:`float` : Transformation matrix as a 2D 4x4 array."""
         msg = self.__stub.GetMatrix(messages.edb_obj_message(self))
         matrix = [[float(_) for _ in msg.doubles[(i - 1) * 4 : i * 4]] for i in range(1, 5)]
         return matrix
 
     @matrix.setter
-    def matrix(self, value: List[List[float]]):
-        if (
-            len(value) == 4
-            and len(value[0]) == 4
-            and len(value[1]) == 4
-            and len(value[2]) == 4
-            and len(value[3]) == 4
-        ):
+    def matrix(self, value: list[list[float]]):
+        if len(value) == 4 and len(value[0]) == 4 and len(value[1]) == 4 and len(value[2]) == 4 and len(value[3]) == 4:
             unrolled_matrix = [float(j) for submatrix in value for j in submatrix]
             self.__stub.SetMatrix(messages.doubles_property_message(self, unrolled_matrix))

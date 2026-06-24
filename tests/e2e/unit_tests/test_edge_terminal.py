@@ -2,9 +2,11 @@ from ansys.edb.core.geometry.polygon_data import PolygonData
 from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.net.net import Net
 from ansys.edb.core.primitive.path import Path as Line
-from ansys.edb.core.primitive.path import PathCornerType, PathEndCapType
+from ansys.edb.core.primitive.path import PathCornerType
+from ansys.edb.core.primitive.path import PathEndCapType
 from ansys.edb.core.primitive.primitive import PrimitiveType
-from ansys.edb.core.terminal.edge_terminal import EdgeTerminal, PrimitiveEdge
+from ansys.edb.core.terminal.edge_terminal import EdgeTerminal
+from ansys.edb.core.terminal.edge_terminal import PrimitiveEdge
 from ansys.edb.core.terminal.terminal import Terminal
 
 

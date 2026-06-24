@@ -5,28 +5,37 @@ import tempfile
 import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.definition.material_def import MaterialDef, MaterialProperty
+from ansys.edb.core.definition.material_def import MaterialDef
+from ansys.edb.core.definition.material_def import MaterialProperty
 from ansys.edb.core.geometry.polygon_data import PolygonData
 from ansys.edb.core.hierarchy.via_group import ViaGroup
 from ansys.edb.core.layer.layer import LayerType
-from ansys.edb.core.layer.layer_collection import LayerCollection, LayerCollectionMode
+from ansys.edb.core.layer.layer_collection import LayerCollection
+from ansys.edb.core.layer.layer_collection import LayerCollectionMode
 from ansys.edb.core.layer.stackup_layer import StackupLayer
 from ansys.edb.core.layer.via_layer import ViaLayer
-from ansys.edb.core.layout.cell import Cell, CellType
+from ansys.edb.core.layout.cell import Cell
+from ansys.edb.core.layout.cell import CellType
 from ansys.edb.core.net.net import Net
-from ansys.edb.core.primitive.path import Path, PathCornerType, PathEndCapType
+from ansys.edb.core.primitive.path import Path
+from ansys.edb.core.primitive.path import PathCornerType
+from ansys.edb.core.primitive.path import PathEndCapType
 from ansys.edb.core.primitive.polygon import Polygon
-from ansys.edb.core.primitive.rectangle import Rectangle, RectangleRepresentationType
+from ansys.edb.core.primitive.rectangle import Rectangle
+from ansys.edb.core.primitive.rectangle import RectangleRepresentationType
 from ansys.edb.core.session import session
 from ansys.edb.core.simulation_setup.adaptive_solutions import SingleFrequencyAdaptiveSolution
 from ansys.edb.core.simulation_setup.hfss_simulation_setup import HfssSimulationSetup
 from ansys.edb.core.simulation_setup.mesh_operation import SkinDepthMeshOperation
-from ansys.edb.core.simulation_setup.simulation_setup import Distribution, FrequencyData, SweepData
+from ansys.edb.core.simulation_setup.simulation_setup import Distribution
+from ansys.edb.core.simulation_setup.simulation_setup import FrequencyData
+from ansys.edb.core.simulation_setup.simulation_setup import SweepData
 from ansys.edb.core.terminal.point_terminal import PointTerminal
 
 # Wrapper class over Database
 # This will ensure clean entry and exit from database
-from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo, HFSSExtentInfoType
+from ansys.edb.core.utility.hfss_extent_info import HfssExtentInfo
+from ansys.edb.core.utility.hfss_extent_info import HFSSExtentInfoType
 
 
 class TDatabase:
@@ -323,9 +332,7 @@ class SpiralInductor(BaseExample):
         layers = []
         elevation = 0.0
         for name, material_name, thickness in reversed(dielectrics):
-            layer = StackupLayer.create(
-                name, LayerType.DIELECTRIC_LAYER, um(thickness), um(elevation), material_name
-            )
+            layer = StackupLayer.create(name, LayerType.DIELECTRIC_LAYER, um(thickness), um(elevation), material_name)
             layers.append(layer)
             elevation += thickness
         return layers
@@ -334,9 +341,7 @@ class SpiralInductor(BaseExample):
         print("creating signal layers")
         layers = []
         for name, material_name, thickness, elevation in reversed(signals):
-            layer = StackupLayer.create(
-                name, LayerType.SIGNAL_LAYER, um(thickness), um(elevation), material_name
-            )
+            layer = StackupLayer.create(name, LayerType.SIGNAL_LAYER, um(thickness), um(elevation), material_name)
             layers.append(layer)
             if name == "Ground":
                 layer.negative = True
@@ -369,9 +374,7 @@ class SpiralInductor(BaseExample):
     def create_coil_feed(self):
         print("creating coil feed")
         self.create_rectangle("OVERPASS", "SPIRAL", um(265.1), um(330), um(275.1), um(430))
-        polygon = PolygonData(
-            [um(265.1, 330), um(265.1, 340), um(275.1, 340), um(275.1, 330)], closed=True
-        )
+        polygon = PolygonData([um(265.1, 330), um(265.1, 340), um(275.1, 340), um(275.1, 330)], closed=True)
         ViaGroup.create_with_outline(self.layout, polygon, 0.5, "VOVERPASS")
         self.create_point_terminals()
 
@@ -407,13 +410,9 @@ class SpiralInductor(BaseExample):
         )
         general_settings.save_fields = True
         setup.mesh_operations = [
-            SkinDepthMeshOperation(
-                name="SPIRAL_M9", net_layer_info=[("SPIRAL", "M9", False)], num_layers="3"
-            )
+            SkinDepthMeshOperation(name="SPIRAL_M9", net_layer_info=[("SPIRAL", "M9", False)], num_layers="3")
         ]
-        sweep_data = SweepData(
-            "Sweep 1", FrequencyData(Distribution.LIN, "0GHz", "30GHz", "0.01GHz")
-        )
+        sweep_data = SweepData("Sweep 1", FrequencyData(Distribution.LIN, "0GHz", "30GHz", "0.01GHz"))
         sweep_data.interpolation_data.fast_sweep = True
         setup.sweep_data = [sweep_data]
 

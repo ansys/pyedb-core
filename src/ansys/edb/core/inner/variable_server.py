@@ -106,9 +106,7 @@ class VariableServer:
         name : str
             Variable name.
         """
-        temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self._variable_owner_msg, name=name
-        )
+        temp = variable_server_msgs.VariableNameMessage(variable_owner=self._variable_owner_msg, name=name)
         get_variable_server_stub().DeleteVariable(temp)
 
     def set_variable_value(self, name, new_value):
@@ -139,9 +137,7 @@ class VariableServer:
         :class:`.Value`
             Variable value.
         """
-        temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self._variable_owner_msg, name=name
-        )
+        temp = variable_server_msgs.VariableNameMessage(variable_owner=self._variable_owner_msg, name=name)
         return Value(get_variable_server_stub().GetVariableValue(temp))
 
     def is_parameter(self, name):
@@ -157,9 +153,7 @@ class VariableServer:
         bool
             ``True`` if the variable is a parameter, ``False`` otherwise.
         """
-        temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self._variable_owner_msg, name=name
-        )
+        temp = variable_server_msgs.VariableNameMessage(variable_owner=self._variable_owner_msg, name=name)
         return get_variable_server_stub().IsParameter(temp).value
 
     def get_all_variable_names(self):
@@ -185,9 +179,7 @@ class VariableServer:
         str
             Description of the variable.
         """
-        temp = variable_server_msgs.VariableNameMessage(
-            variable_owner=self._variable_owner_msg, name=name
-        )
+        temp = variable_server_msgs.VariableNameMessage(variable_owner=self._variable_owner_msg, name=name)
         return get_variable_server_stub().GetVariableDesc(temp).value
 
     def set_variable_desc(self, name, desc):
@@ -200,9 +192,7 @@ class VariableServer:
         desc : str
              New variable description.
         """
-        temp = variable_server_msgs.SetDescriptionMessage(
-            variable_owner=self._variable_owner_msg, name=name, desc=desc
-        )
+        temp = variable_server_msgs.SetDescriptionMessage(variable_owner=self._variable_owner_msg, name=name, desc=desc)
         get_variable_server_stub().SetVariableDesc(temp)
 
     def create_value(self, val):

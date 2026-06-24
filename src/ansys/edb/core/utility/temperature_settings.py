@@ -1,4 +1,5 @@
 """Temperature settings."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -23,9 +24,7 @@ class TemperatureSettings:
         Temperature value.
     """
 
-    def __init__(
-        self, include_temp_dependence: bool, enable_thermal_feedback: bool, temperature: ValueLike
-    ):
+    def __init__(self, include_temp_dependence: bool, enable_thermal_feedback: bool, temperature: ValueLike):
         """Initialize temperature settings.
 
         Parameters

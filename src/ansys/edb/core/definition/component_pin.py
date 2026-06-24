@@ -1,4 +1,5 @@
 """Component pin Definition."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -9,8 +10,10 @@ if TYPE_CHECKING:
 from ansys.api.edb.v1.component_pin_pb2_grpc import ComponentPinServiceStub
 
 from ansys.edb.core.definition import component_def
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ComponentPin(ObjBase):

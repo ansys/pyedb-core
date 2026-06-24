@@ -1,22 +1,27 @@
 """Polygon data."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from ansys.edb.core.geometry.point_data import PointData
     from ansys.edb.core.typing import PointLike
     from ansys.edb.core.utility.value import Value
-    from ansys.edb.core.geometry.point_data import PointData
 
 from enum import Enum
 import itertools
 import math
 
-from ansys.api.edb.v1 import edb_defs_pb2, point_data_pb2, polygon_data_pb2, polygon_data_pb2_grpc
+from ansys.api.edb.v1 import edb_defs_pb2
+from ansys.api.edb.v1 import point_data_pb2
+from ansys.api.edb.v1 import polygon_data_pb2
+from ansys.api.edb.v1 import polygon_data_pb2_grpc
 
 from ansys.edb.core import session
 from ansys.edb.core.geometry.arc_data import ArcData
-from ansys.edb.core.inner import messages, parser
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
 from ansys.edb.core.inner.utils import client_stream_iterator
 from ansys.edb.core.session import is_in_memory
 from ansys.edb.core.utility import conversions
@@ -61,9 +66,7 @@ class PolygonData:
             chunk_entries_getter,
         )
 
-    __stub: polygon_data_pb2_grpc.PolygonDataServiceStub = session.StubAccessor(
-        session.StubType.polygon_data
-    )
+    __stub: polygon_data_pb2_grpc.PolygonDataServiceStub = session.StubAccessor(session.StubType.polygon_data)
 
     @classmethod
     def _from_msg(cls, message):
@@ -146,10 +149,7 @@ class PolygonData:
             )
         elif lower_left is not None and upper_right is not None:
             ll, ur = [conversions.to_point(pt) for pt in [lower_left, upper_right]]
-            self._points = [
-                conversions.to_point(pt)
-                for pt in [(ll.x, ll.y), (ur.x, ll.y), (ur.x, ur.y), (ll.x, ur.y)]
-            ]
+            self._points = [conversions.to_point(pt) for pt in [(ll.x, ll.y), (ur.x, ll.y), (ur.x, ur.y), (ll.x, ur.y)]]
         else:
             raise TypeError("PolygonData must be initialized from a list of points/arcs or a box.")
 
@@ -315,9 +315,7 @@ class PolygonData:
         bool
             ``True`` when the polygon contains self-intersections, ``False`` otherwise.
         """
-        return self.__stub.HasSelfIntersections(
-            messages.polygon_data_with_tol_message(self, tol)
-        ).value
+        return self.__stub.HasSelfIntersections(messages.polygon_data_with_tol_message(self, tol)).value
 
     @parser.to_polygon_data_list
     def remove_self_intersections(self, tol: float = 1e-9) -> list[PolygonData]:
@@ -333,9 +331,7 @@ class PolygonData:
         list of .PolygonData
             A list of non self-intersecting polygons.
         """
-        return self.__stub.RemoveSelfIntersections(
-            messages.polygon_data_with_tol_message(self, tol)
-        )
+        return self.__stub.RemoveSelfIntersections(messages.polygon_data_with_tol_message(self, tol))
 
     @parser.to_point_data_list
     def normalized(self) -> list[PointData]:
@@ -377,9 +373,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Transform(
-            messages.polygon_data_transform_message("rotate", self, angle, center)
-        )
+        return self.__stub.Transform(messages.polygon_data_transform_message("rotate", self, angle, center))
 
     @parser.to_polygon_data
     def scale(self, factor: float, center: PointLike) -> PolygonData:
@@ -396,9 +390,7 @@ class PolygonData:
         -------
         .PolygonData
         """
-        return self.__stub.Transform(
-            messages.polygon_data_transform_message("scale", self, factor, center)
-        )
+        return self.__stub.Transform(messages.polygon_data_transform_message("scale", self, factor, center))
 
     @parser.to_polygon_data
     def mirror_x(self, x: float) -> PolygonData:
@@ -419,8 +411,8 @@ class PolygonData:
     def bbox(self) -> tuple[PointData, PointData]:
         """Compute the bounding box.
 
-         Returns
-         -------
+        Returns
+        -------
         tuple of (.PointData, .PointData)
         """
         return self.__stub.GetBBox(messages.polygon_data_list_message([self]))
@@ -487,9 +479,7 @@ class PolygonData:
         .PolygonData
         """
         return self.__stub.RemoveArcs(
-            messages.polygon_data_remove_arc_message(
-                self, max_chord_error, max_arc_angle, max_points
-            )
+            messages.polygon_data_remove_arc_message(self, max_chord_error, max_arc_angle, max_points)
         )
 
     @parser.to_polygon_data
@@ -574,9 +564,7 @@ class PolygonData:
         .PointData
             Point closest to the given point.
         """
-        return self.__stub.GetClosestPoints(
-            messages.polygon_data_with_points_message(self, point=point)
-        ).points[0]
+        return self.__stub.GetClosestPoints(messages.polygon_data_with_points_message(self, point=point)).points[0]
 
     @parser.to_point_data_list
     def closest_points(self, polygon: PolygonData) -> tuple[PointData, PointData]:
@@ -590,9 +578,7 @@ class PolygonData:
         -------
         tuple of (.PointData, .PointData)
         """
-        return self.__stub.GetClosestPoints(
-            messages.polygon_data_with_points_message(self, polygon=polygon)
-        ).points
+        return self.__stub.GetClosestPoints(messages.polygon_data_with_points_message(self, polygon=polygon)).points
 
     @classmethod
     @parser.to_polygon_data_list
@@ -671,9 +657,7 @@ class PolygonData:
         return cls.__stub.Xor(messages.polygon_data_pair_message(polygons1, polygons2))
 
     @parser.to_polygon_data_list
-    def expand(
-        self, offset: float, round_corner: bool, max_corner_ext: float, tol: float = 1e-9
-    ) -> list[PolygonData]:
+    def expand(self, offset: float, round_corner: bool, max_corner_ext: float, tol: float = 1e-9) -> list[PolygonData]:
         """Expand the polygon by an offset.
 
         Parameters
@@ -692,9 +676,7 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        return self.__stub.Expand(
-            messages.polygon_data_expand_message(self, offset, tol, round_corner, max_corner_ext)
-        )
+        return self.__stub.Expand(messages.polygon_data_expand_message(self, offset, tol, round_corner, max_corner_ext))
 
     @classmethod
     @parser.to_polygon_data_list
@@ -711,6 +693,4 @@ class PolygonData:
         -------
         list of .PolygonData
         """
-        return cls.__stub.Get2DAlphaShape(
-            messages.polygon_data_get_alpha_shape_message(points, alpha)
-        )
+        return cls.__stub.Get2DAlphaShape(messages.polygon_data_get_alpha_shape_message(points, alpha))

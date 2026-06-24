@@ -1,17 +1,16 @@
 """Sphinx documentation configuration file."""
+
 from datetime import datetime
 import os
 import sys
 
-from ansys_sphinx_theme import (
-    ansys_favicon,
-    ansys_logo_white,
-    ansys_logo_white_cropped,
-    get_version_match,
-    latex,
-    pyansys_logo_black,
-    watermark,
-)
+from ansys_sphinx_theme import ansys_favicon
+from ansys_sphinx_theme import ansys_logo_white
+from ansys_sphinx_theme import ansys_logo_white_cropped
+from ansys_sphinx_theme import get_version_match
+from ansys_sphinx_theme import latex
+from ansys_sphinx_theme import pyansys_logo_black
+from ansys_sphinx_theme import watermark
 from sphinx.builders.latex import LaTeXBuilder
 
 from ansys.edb.core import __version__
@@ -35,9 +34,7 @@ html_context = {
     "github_repo": "pyedb-core",
     "github_version": "develop",
     "doc_path": "doc/source",
-    "pyansys_tags": [
-        "Electronics"
-    ]
+    "pyansys_tags": ["Electronics"],
 }
 
 html_theme_options = {

@@ -1,9 +1,8 @@
 """SIWave simulation setup."""
 
-from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup, SimulationSetupType
-from ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings import (
-    SIWaveCPASimulationSettings,
-)
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetup
+from ansys.edb.core.simulation_setup.simulation_setup import SimulationSetupType
+from ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings import SIWaveCPASimulationSettings
 
 
 class SIWaveCPASimulationSetup(SimulationSetup):
@@ -31,4 +30,3 @@ class SIWaveCPASimulationSetup(SimulationSetup):
     def settings(self):
         """:class:`.SIWaveCPASimulationSettings`: Simulation settings of the simulation setup."""
         return SIWaveCPASimulationSettings(self)
-    

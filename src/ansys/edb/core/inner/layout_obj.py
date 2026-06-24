@@ -5,7 +5,9 @@ import ansys.api.edb.v1.layout_obj_pb2 as layout_obj_pb2
 from ansys.edb.core.edb_defs import LayoutObjType
 from ansys.edb.core.inner import ObjBase
 import ansys.edb.core.inner.messages as messages
-from ansys.edb.core.session import LayoutObjServiceStub, StubAccessor, StubType
+from ansys.edb.core.session import LayoutObjServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class LayoutObj(ObjBase):
@@ -30,9 +32,7 @@ class LayoutObj(ObjBase):
         """
         from ansys.edb.core.layout import layout
 
-        return layout.Layout(
-            self.__stub.GetLayout(LayoutObj._layout_obj_target_msg(self, self.layout_obj_type))
-        )
+        return layout.Layout(self.__stub.GetLayout(LayoutObj._layout_obj_target_msg(self, self.layout_obj_type)))
 
     def delete(self):
         """Delete the layout object."""

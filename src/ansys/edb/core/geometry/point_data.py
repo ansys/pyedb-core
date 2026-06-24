@@ -1,12 +1,15 @@
 """Point data."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike, PointLike
-    from ansys.edb.core.utility.value import Value
     from typing import Iterable
+
+    from ansys.edb.core.typing import PointLike
+    from ansys.edb.core.typing import ValueLike
+    from ansys.edb.core.utility.value import Value
 
 from functools import reduce
 import math
@@ -16,16 +19,16 @@ import sys
 from ansys.api.edb.v1 import point_data_pb2_grpc
 
 from ansys.edb.core import session
-from ansys.edb.core.inner import messages, parser
-from ansys.edb.core.utility import conversions, value
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.utility import conversions
+from ansys.edb.core.utility import value
 
 
 class PointData:
     """Represents arbitrary (x, y) coordinates that exist on a 2D space."""
 
-    __stub: point_data_pb2_grpc.PointDataServiceStub = session.StubAccessor(
-        session.StubType.point_data
-    )
+    __stub: point_data_pb2_grpc.PointDataServiceStub = session.StubAccessor(session.StubType.point_data)
 
     def __init__(self, *data: Iterable[ValueLike]):
         """Initialize point data from a list of coordinates.
@@ -84,11 +87,7 @@ class PointData:
         y_val.msg = message.y
         pt._x = x_val
         pt._y = y_val
-        pt._arc_h = (
-            x_val
-            if not y_val.is_parametric and y_val.msg.constant.real == sys.float_info.max
-            else None
-        )
+        pt._arc_h = x_val if not y_val.is_parametric and y_val.msg.constant.real == sys.float_info.max else None
         return pt
 
     @classmethod
@@ -326,9 +325,7 @@ class PointData:
         if end is None:
             return (self - start).magnitude()
         else:
-            return self.__stub.Distance(
-                messages.point_data_with_line_message(self, start, end)
-            ).value
+            return self.__stub.Distance(messages.point_data_with_line_message(self, start, end)).value
 
     def cross(self, other: PointLike) -> Value | None:
         """Compute the cross product of the point vector with another point vector.

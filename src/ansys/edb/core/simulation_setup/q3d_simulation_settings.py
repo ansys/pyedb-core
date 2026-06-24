@@ -1,4 +1,5 @@
 """Q3D simulation settings."""
+
 from __future__ import annotations
 
 from enum import Enum
@@ -7,23 +8,19 @@ import ansys.api.edb.v1.hfss_simulation_settings_pb2 as hfss_pb2
 import ansys.api.edb.v1.q3d_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import (
-    Q3DAdvancedMeshingSettingsServiceStub,
-    Q3DAdvancedSettingsServiceStub,
-    Q3DCGSettingsServiceStub,
-    Q3DDCRLSettingsServiceStub,
-    Q3DGeneralSettingsServiceStub,
-    Q3DSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
+from ansys.edb.core.session import Q3DAdvancedMeshingSettingsServiceStub
+from ansys.edb.core.session import Q3DAdvancedSettingsServiceStub
+from ansys.edb.core.session import Q3DCGSettingsServiceStub
+from ansys.edb.core.session import Q3DDCRLSettingsServiceStub
+from ansys.edb.core.session import Q3DGeneralSettingsServiceStub
+from ansys.edb.core.session import Q3DSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.simulation_setup.hfss_simulation_settings import SolverType
-from ansys.edb.core.simulation_setup.simulation_settings import (
-    AdvancedMeshingSettings,
-    AdvancedSettings,
-    SimulationSettings,
-    SimulationSettingsBase,
-)
+from ansys.edb.core.simulation_setup.simulation_settings import AdvancedMeshingSettings
+from ansys.edb.core.simulation_setup.simulation_settings import AdvancedSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettingsBase
 
 
 class Q3DSolutionOrder(Enum):
@@ -173,9 +170,7 @@ class Q3DSettings(SimulationSettingsBase):
 
     @min_converged_passes.setter
     def min_converged_passes(self, min_converged_passes: int):
-        self.__stub.SetMinConvergedPasses(
-            self._q3d_settings_uint64_property_message(min_converged_passes)
-        )
+        self.__stub.SetMinConvergedPasses(self._q3d_settings_uint64_property_message(min_converged_passes))
 
     @property
     def percent_error(self) -> float:
@@ -193,22 +188,16 @@ class Q3DSettings(SimulationSettingsBase):
 
     @max_refine_per_pass.setter
     def max_refine_per_pass(self, max_refine_per_pass: float):
-        self.__stub.SetMaxRefinePerPass(
-            self._q3d_settings_double_property_message(max_refine_per_pass)
-        )
+        self.__stub.SetMaxRefinePerPass(self._q3d_settings_double_property_message(max_refine_per_pass))
 
     def _q3d_settings_message(self):
         return pb.Q3DSettingsMessage(target=self.msg, q3d_settings_type=self._sim_type.value)
 
     def _q3d_settings_uint64_property_message(self, value):
-        return pb.Q3DSettingsUInt64PropertyMessage(
-            q3d_settings=self._q3d_settings_message(), value=value
-        )
+        return pb.Q3DSettingsUInt64PropertyMessage(q3d_settings=self._q3d_settings_message(), value=value)
 
     def _q3d_settings_double_property_message(self, value):
-        return pb.Q3DSettingsDoublePropertyMessage(
-            q3d_settings=self._q3d_settings_message(), value=value
-        )
+        return pb.Q3DSettingsDoublePropertyMessage(q3d_settings=self._q3d_settings_message(), value=value)
 
 
 class Q3DDCRLSettings(Q3DSettings):
@@ -223,15 +212,14 @@ class Q3DDCRLSettings(Q3DSettings):
     @property
     def solution_order(self) -> Q3DSolutionOrder:
         """:class:`.Q3DSolutionOrder`: Inductance adaptive solution accuracy. \
-            The solver will give accurate results at the Normal setting for most applications."""
+            The solver will give accurate results at the Normal setting for most applications.
+        """
         return Q3DSolutionOrder(self.__stub.GetSolutionOrder(self.msg).q3d_solution_order)
 
     @solution_order.setter
     def solution_order(self, q3d_solution_order: Q3DSolutionOrder):
         self.__stub.SetSolutionOrder(
-            pb.Q3DSolutionOrderPropertyMessage(
-                target=self.msg, q3d_solution_order=q3d_solution_order.value
-            )
+            pb.Q3DSolutionOrderPropertyMessage(target=self.msg, q3d_solution_order=q3d_solution_order.value)
         )
 
 
@@ -264,15 +252,14 @@ class Q3DCGSettings(Q3DSettings):
     @property
     def solution_order(self) -> Q3DSolutionOrder:
         """:class:`.Q3DSolutionOrder`: Adaptive solution accuracy. \
-            The solver will give accurate results at the Normal setting for most applications."""
+            The solver will give accurate results at the Normal setting for most applications.
+        """
         return Q3DSolutionOrder(self.__stub.GetSolutionOrder(self.msg).q3d_solution_order)
 
     @solution_order.setter
     def solution_order(self, q3d_solution_order: Q3DSolutionOrder):
         self.__stub.SetSolutionOrder(
-            pb.Q3DSolutionOrderPropertyMessage(
-                target=self.msg, q3d_solution_order=q3d_solution_order.value
-            )
+            pb.Q3DSolutionOrderPropertyMessage(target=self.msg, q3d_solution_order=q3d_solution_order.value)
         )
 
     @property
@@ -282,9 +269,7 @@ class Q3DCGSettings(Q3DSettings):
 
     @solver_type.setter
     def solver_type(self, solver_type):
-        self.__stub.SetSolverType(
-            hfss_pb2.SolverTypePropertyMessage(target=self.msg, solver_type=solver_type.value)
-        )
+        self.__stub.SetSolverType(hfss_pb2.SolverTypePropertyMessage(target=self.msg, solver_type=solver_type.value))
 
     @property
     def compression_tol(self) -> float:
@@ -308,9 +293,7 @@ class Q3DAdvancedSettings(AdvancedSettings, Q3DSettings):
 
     @ic_mode_auto_resolution.setter
     def ic_mode_auto_resolution(self, ic_mode_auto_resolution: bool):
-        self.__stub.SetICModeAutoResolution(
-            messages.bool_property_message(self, ic_mode_auto_resolution)
-        )
+        self.__stub.SetICModeAutoResolution(messages.bool_property_message(self, ic_mode_auto_resolution))
 
     @property
     def ic_mode_length(self) -> str:
@@ -325,9 +308,7 @@ class Q3DAdvancedSettings(AdvancedSettings, Q3DSettings):
 class Q3DAdvancedMeshingSettings(AdvancedMeshingSettings):
     """Represents advanced meshing settings for Q3D simulations."""
 
-    __stub: Q3DAdvancedMeshingSettingsServiceStub = StubAccessor(
-        StubType.q3d_advanced_meshing_sim_settings
-    )
+    __stub: Q3DAdvancedMeshingSettingsServiceStub = StubAccessor(StubType.q3d_advanced_meshing_sim_settings)
 
     @property
     def layer_alignment(self) -> str:

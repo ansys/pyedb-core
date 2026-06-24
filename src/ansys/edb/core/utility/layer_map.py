@@ -1,13 +1,15 @@
 """Layer map."""
+
 from __future__ import annotations
 
 from enum import Enum
-from typing import List
 
 from ansys.api.edb.v1 import layer_map_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class LayerMapUniqueDirection(Enum):
@@ -70,7 +72,7 @@ class LayerMap(ObjBase):
             )
         )
 
-    def get_mapping_forward(self, layer_id: int) -> List[int]:
+    def get_mapping_forward(self, layer_id: int) -> list[int]:
         """Get the list of IDs mapped forward with the given ID (key).
 
         Parameters
@@ -89,7 +91,7 @@ class LayerMap(ObjBase):
         )
         return [int(to_id) for to_id in msg.ids]
 
-    def get_mapping_backward(self, layer_id: int) -> List[int]:
+    def get_mapping_backward(self, layer_id: int) -> list[int]:
         """Get a list of IDs mapped backward with the given ID (value).
 
         Parameters

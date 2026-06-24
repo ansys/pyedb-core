@@ -1,14 +1,18 @@
 """This module performs conversions from arbitrary user input to explicit types."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike, PointLike, Point3DLike
+    from ansys.edb.core.typing import Point3DLike
+    from ansys.edb.core.typing import PointLike
+    from ansys.edb.core.typing import ValueLike
 
 from ansys.api.edb.v1.edb_messages_pb2 import ValueMessage
 
-from ansys.edb.core.geometry import point3d_data, point_data
+from ansys.edb.core.geometry import point3d_data
+from ansys.edb.core.geometry import point_data
 from ansys.edb.core.utility import value
 
 
@@ -28,9 +32,7 @@ def to_value(val: ValueLike) -> value.Value:
     elif type(val) in [int, float, complex, str, ValueMessage]:
         return value.Value(val)
     else:
-        raise TypeError(
-            f"Value-like objects must be either of type Value or int/float/complex/str. - Received '{val}'"
-        )
+        raise TypeError(f"Value-like objects must be either of type Value or int/float/complex/str. - Received '{val}'")
 
 
 def to_point(val: PointLike) -> point_data.PointData:

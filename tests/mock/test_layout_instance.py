@@ -103,9 +103,7 @@ def test_query_layout_obj_instances_stream_path(
     assert_loi_list(loi_list, expected_lengths)
 
 
-def assert_loi_list(
-    loi_list: list[LayoutObjInstance | list[LayoutObjInstance]], expected_lengths: int | list[int]
-):
+def assert_loi_list(loi_list: list[LayoutObjInstance | list[LayoutObjInstance]], expected_lengths: int | list[int]):
     """Assert that the given list of layout object instances matches the expected lengths and types.
 
     Parameters

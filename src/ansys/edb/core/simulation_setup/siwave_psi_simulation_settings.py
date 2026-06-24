@@ -1,24 +1,20 @@
 """SIWavePSI simulation settings."""
+
 from __future__ import annotations
 
 from enum import Enum
-from typing import List
 
 import ansys.api.edb.v1.si_wave_psi_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import (
-    SIWavePSIGeneralSettingsServiceStub,
-    SIWavePSINetProcessingSettingsServiceStub,
-    SIWavePSIPowerGroundNetsServiceStub,
-    SIWavePSISignalNetsSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
-from ansys.edb.core.simulation_setup.simulation_settings import (
-    SimulationSettings,
-    SimulationSettingsBase,
-)
+from ansys.edb.core.session import SIWavePSIGeneralSettingsServiceStub
+from ansys.edb.core.session import SIWavePSINetProcessingSettingsServiceStub
+from ansys.edb.core.session import SIWavePSIPowerGroundNetsServiceStub
+from ansys.edb.core.session import SIWavePSISignalNetsSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettingsBase
 
 
 class SIWavePSISimulationPreference(Enum):
@@ -100,17 +96,14 @@ class SIWavePSISimulationSettings(SimulationSettings):
 class SIWavePSIGeneralSettings(SimulationSettingsBase):
     """Represents SIWavePSI general settings."""
 
-    __stub: SIWavePSIGeneralSettingsServiceStub = StubAccessor(
-        StubType.siwave_psi_general_sim_settings
-    )
+    __stub: SIWavePSIGeneralSettingsServiceStub = StubAccessor(StubType.siwave_psi_general_sim_settings)
 
     @property
     def simulation_preference(self) -> SIWavePSISimulationPreference:
         """:class:`.SIWavePSISimulationPreference`: Simulation preference. \
-            Balanced (i.e., use less memory) or Accuracy (i.e., use more memory)."""
-        return SIWavePSISimulationPreference(
-            self.__stub.GetPISliderPos(self.msg).si_wave_psi_simulation_preference
-        )
+            Balanced (i.e., use less memory) or Accuracy (i.e., use more memory).
+        """
+        return SIWavePSISimulationPreference(self.__stub.GetPISliderPos(self.msg).si_wave_psi_simulation_preference)
 
     @simulation_preference.setter
     def simulation_preference(self, simulation_preference: SIWavePSISimulationPreference):
@@ -123,29 +116,24 @@ class SIWavePSIGeneralSettings(SimulationSettingsBase):
     @property
     def model_type(self) -> SIWavePSIModelType:
         """:class:`.SIWavePSIModelType`: (General Mode Only) Model type."""
-        return SIWavePSIModelType(
-            self.__stub.GetSIWavePSIModelType(self.msg).si_wave_psi_model_type
-        )
+        return SIWavePSIModelType(self.__stub.GetSIWavePSIModelType(self.msg).si_wave_psi_model_type)
 
     @model_type.setter
     def model_type(self, si_wave_psi_model_type: SIWavePSIModelType):
         self.__stub.SetSIWavePSIModelType(
-            pb.SIWavePSIModelTypePropertyMessage(
-                target=self.msg, si_wave_psi_model_type=si_wave_psi_model_type.value
-            )
+            pb.SIWavePSIModelTypePropertyMessage(target=self.msg, si_wave_psi_model_type=si_wave_psi_model_type.value)
         )
 
     @property
     def min_plane_area_to_mesh(self) -> str:
         """:obj:`str`: (General Mode Only) The minimum plane area to mesh. \
-            Ignore geometry smaller than this value."""
+            Ignore geometry smaller than this value.
+        """
         return self.__stub.GetMinPlaneAreaToMesh(self.msg).value
 
     @min_plane_area_to_mesh.setter
     def min_plane_area_to_mesh(self, min_plane_area_to_mesh: str):
-        self.__stub.SetMinPlaneAreaToMesh(
-            messages.string_property_message(self, min_plane_area_to_mesh)
-        )
+        self.__stub.SetMinPlaneAreaToMesh(messages.string_property_message(self, min_plane_area_to_mesh))
 
     @property
     def min_void_area_to_mesh(self) -> str:
@@ -154,21 +142,18 @@ class SIWavePSIGeneralSettings(SimulationSettingsBase):
 
     @min_void_area_to_mesh.setter
     def min_void_area_to_mesh(self, min_void_area_to_mesh: str):
-        self.__stub.SetMinVoidAreaToMesh(
-            messages.string_property_message(self, min_void_area_to_mesh)
-        )
+        self.__stub.SetMinVoidAreaToMesh(messages.string_property_message(self, min_void_area_to_mesh))
 
     @property
     def snap_length_threshold(self) -> str:
         """:obj:`str`: (General Mode Only) The snap length threshold. \
-            Snap vertices separated by less than this value."""
+            Snap vertices separated by less than this value.
+        """
         return self.__stub.GetSnapLengthThreshold(self.msg).value
 
     @snap_length_threshold.setter
     def snap_length_threshold(self, snap_length_threshold: str):
-        self.__stub.SetSnapLengthThreshold(
-            messages.string_property_message(self, snap_length_threshold)
-        )
+        self.__stub.SetSnapLengthThreshold(messages.string_property_message(self, snap_length_threshold))
 
     @property
     def include_enhanced_bondwire_modeling(self) -> bool:
@@ -184,9 +169,7 @@ class SIWavePSIGeneralSettings(SimulationSettingsBase):
     @property
     def surface_roughness_model(self) -> SurfaceRoughnessModel:
         """:class:`.SurfaceRoughnessModel`: Surface roughness model."""
-        return SurfaceRoughnessModel(
-            self.__stub.GetSurfaceRoughnessModel(self.msg).surface_roughness_model
-        )
+        return SurfaceRoughnessModel(self.__stub.GetSurfaceRoughnessModel(self.msg).surface_roughness_model)
 
     @surface_roughness_model.setter
     def surface_roughness_model(self, surface_roughness_model: SurfaceRoughnessModel):
@@ -203,14 +186,13 @@ class SIWavePSIGeneralSettings(SimulationSettingsBase):
 
     @rms_surface_roughness.setter
     def rms_surface_roughness(self, rms_surface_roughness: str):
-        self.__stub.SetRMSSurfaceRoughness(
-            messages.string_property_message(self, rms_surface_roughness)
-        )
+        self.__stub.SetRMSSurfaceRoughness(messages.string_property_message(self, rms_surface_roughness))
 
     @property
     def perform_erc(self) -> bool:
         """:obj:`bool`: (General Mode Only) Flag indicating whether to \
-            perform error checking while generating the solver input file."""
+            perform error checking while generating the solver input file.
+        """
         return self.__stub.GetPerformERC(self.msg).value
 
     @perform_erc.setter
@@ -221,9 +203,7 @@ class SIWavePSIGeneralSettings(SimulationSettingsBase):
 class SIWavePSINetProcessingSettings(SimulationSettingsBase):
     """Represents SIWavePSI net processing settings."""
 
-    __stub: SIWavePSINetProcessingSettingsServiceStub = StubAccessor(
-        StubType.siwave_psi_net_processing_sim_settings
-    )
+    __stub: SIWavePSINetProcessingSettingsServiceStub = StubAccessor(StubType.siwave_psi_net_processing_sim_settings)
 
     @property
     def auto_select_nets_for_simulation(self) -> bool:
@@ -248,21 +228,19 @@ class SIWavePSINetProcessingSettings(SimulationSettingsBase):
         )
 
     @property
-    def include_nets(self) -> List[str]:
+    def include_nets(self) -> list[str]:
         """:obj:`list` of :obj:`str`: Nets to include in SIWavePSI simulation."""
         return self.__stub.GetIncludeNets(self.msg).strings
 
     @include_nets.setter
-    def include_nets(self, value: List[str]):
+    def include_nets(self, value: list[str]):
         self.__stub.SetIncludeNets(messages.strings_property_message(self, value))
 
 
 class SIWavePSIPowerGroundNetsSettings(SimulationSettingsBase):
     """Represents SIWavePSI power/ground nets settings."""
 
-    __stub: SIWavePSIPowerGroundNetsServiceStub = StubAccessor(
-        StubType.siwave_psi_power_ground_sim_settings
-    )
+    __stub: SIWavePSIPowerGroundNetsServiceStub = StubAccessor(StubType.siwave_psi_power_ground_sim_settings)
 
     @property
     def improved_loss_model(self):
@@ -272,21 +250,18 @@ class SIWavePSIPowerGroundNetsSettings(SimulationSettingsBase):
     @improved_loss_model.setter
     def improved_loss_model(self, improved_loss_model: ImprovedLossModel):
         self.__stub.SetImprovedLossModel(
-            pb.ImprovedLossModelPropertyMessage(
-                target=self.msg, improved_loss_model=improved_loss_model.value
-            )
+            pb.ImprovedLossModelPropertyMessage(target=self.msg, improved_loss_model=improved_loss_model.value)
         )
 
     @property
     def auto_detect_ignore_small_holes_min_diameter(self) -> bool:
         """:obj:`bool`: Flag indicating whether to automatically detect a diameter \
-            that holes smaller than the diameter will be ignored."""
+            that holes smaller than the diameter will be ignored.
+        """
         return self.__stub.GetAutoDetectIgnoreSmallHolesMinDiameter(self.msg).value
 
     @auto_detect_ignore_small_holes_min_diameter.setter
-    def auto_detect_ignore_small_holes_min_diameter(
-        self, auto_detect_ignore_small_holes_min_diameter: bool
-    ):
+    def auto_detect_ignore_small_holes_min_diameter(self, auto_detect_ignore_small_holes_min_diameter: bool):
         self.__stub.SetAutoDetectIgnoreSmallHolesMinDiameter(
             messages.bool_property_message(self, auto_detect_ignore_small_holes_min_diameter)
         )
@@ -306,9 +281,7 @@ class SIWavePSIPowerGroundNetsSettings(SimulationSettingsBase):
 class SIWavePSISignalNetsSettings(SimulationSettingsBase):
     """Represents SIWavePSI signal nets settings."""
 
-    __stub: SIWavePSISignalNetsSettingsServiceStub = StubAccessor(
-        StubType.siwave_psi_signal_nets_sim_settings
-    )
+    __stub: SIWavePSISignalNetsSettingsServiceStub = StubAccessor(StubType.siwave_psi_signal_nets_sim_settings)
 
     @property
     def error_tolerance(self) -> ErrorTolerance:
@@ -324,23 +297,21 @@ class SIWavePSISignalNetsSettings(SimulationSettingsBase):
     @property
     def conductor_modeling(self) -> ConductorModeling:
         """:class:`.ConductorModeling`: Conductor modeling. \
-            When using surface roughness, users must use IMPEDANCE_BOUNDARY."""
-        return ConductorModeling(
-            self.__stub.GetSignalNetsConductorModeling(self.msg).conductor_modeling
-        )
+            When using surface roughness, users must use IMPEDANCE_BOUNDARY.
+        """
+        return ConductorModeling(self.__stub.GetSignalNetsConductorModeling(self.msg).conductor_modeling)
 
     @conductor_modeling.setter
     def conductor_modeling(self, conductor_modeling: ConductorModeling):
         self.__stub.SetSignalNetsConductorModeling(
-            pb.ConductorModelingPropertyMessage(
-                target=self.msg, conductor_modeling=conductor_modeling.value
-            )
+            pb.ConductorModelingPropertyMessage(target=self.msg, conductor_modeling=conductor_modeling.value)
         )
 
     @property
     def include_improved_loss_handling(self) -> bool:
         """:obj:`bool`: Flag indicating whether to include improved metal loss handling. \
-            Enabling this option can significantly slow simulation time."""
+            Enabling this option can significantly slow simulation time.
+        """
         return self.__stub.GetSignalNetsIncludeImprovedLossHandling(self.msg).value
 
     @include_improved_loss_handling.setter
@@ -352,13 +323,12 @@ class SIWavePSISignalNetsSettings(SimulationSettingsBase):
     @property
     def include_improved_dielectric_fill_refinement(self) -> bool:
         """:obj:`bool`: Flag indicating whether to include improved dielectric fill refinement. \
-            Activating Improved Dielectric Fill Refinement in Metal Layers can significantly slow simulation time."""
+            Activating Improved Dielectric Fill Refinement in Metal Layers can significantly slow simulation time.
+        """
         return self.__stub.GetSignalNetsIncludeImprovedDielectricFillRefinement(self.msg).value
 
     @include_improved_dielectric_fill_refinement.setter
-    def include_improved_dielectric_fill_refinement(
-        self, include_improved_dielectric_fill_refinement: bool
-    ):
+    def include_improved_dielectric_fill_refinement(self, include_improved_dielectric_fill_refinement: bool):
         self.__stub.SetSignalNetsIncludeImprovedDielectricFillRefinement(
             messages.bool_property_message(self, include_improved_dielectric_fill_refinement)
         )

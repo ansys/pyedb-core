@@ -1,10 +1,13 @@
 """Voltage regulator."""
+
 import ansys.api.edb.v1.voltage_regulator_pb2 as vr_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import conn_obj, messages
+from ansys.edb.core.inner import conn_obj
+from ansys.edb.core.inner import messages
 from ansys.edb.core.primitive.padstack_instance import PadstackInstance
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -170,9 +173,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @voltage.setter
     def voltage(self, newvoltage):
-        self.__stub.SetVoltage(
-            messages.value_property_message(self.msg, messages.value_message(newvoltage))
-        )
+        self.__stub.SetVoltage(messages.value_property_message(self.msg, messages.value_message(newvoltage)))
 
     @property
     def lrc(self):
@@ -184,9 +185,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @lrc.setter
     def lrc(self, newlrc):
-        self.__stub.SetLoadRegulationCurrent(
-            messages.value_property_message(self.msg, messages.value_message(newlrc))
-        )
+        self.__stub.SetLoadRegulationCurrent(messages.value_property_message(self.msg, messages.value_message(newlrc)))
 
     @property
     def lrp(self):
@@ -198,9 +197,7 @@ class VoltageRegulator(conn_obj.ConnObj):
 
     @lrp.setter
     def lrp(self, newlrp):
-        self.__stub.SetLoadRegulationPercent(
-            messages.value_property_message(self.msg, messages.value_message(newlrp))
-        )
+        self.__stub.SetLoadRegulationPercent(messages.value_property_message(self.msg, messages.value_message(newlrp)))
 
     @property
     def pos_remote_sense_pin(self):
@@ -281,9 +278,7 @@ class VoltageRegulator(conn_obj.ConnObj):
             Power module.
         """
         self.__stub.AddPowerModule(
-            vr_pb2.PowerModulePropertyMessage(
-                vrm=self.msg, module=messages.power_module_message(power_module)
-            )
+            vr_pb2.PowerModulePropertyMessage(vrm=self.msg, module=messages.power_module_message(power_module))
         )
 
     def remove_power_module(self, name):

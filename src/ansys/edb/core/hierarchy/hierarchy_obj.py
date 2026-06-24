@@ -1,9 +1,11 @@
 """Hierarchy object."""
 
 from ansys.edb.core.definition import component_def
-from ansys.edb.core.inner import conn_obj, messages
+from ansys.edb.core.inner import conn_obj
+from ansys.edb.core.inner import messages
 from ansys.edb.core.layer.layer import Layer
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.transform import Transform
 from ansys.edb.core.utility.value import Value
 
@@ -16,7 +18,8 @@ class HierarchyObj(conn_obj.ConnObj):
     @property
     def transform(self):
         """:class:`.Transform`: \
-        Transformation information of the hierarchy object."""
+        Transformation information of the hierarchy object.
+        """
         transform_msg = self.__stub.GetTransform(self.msg)
         return Transform(transform_msg)
 
@@ -56,7 +59,8 @@ class HierarchyObj(conn_obj.ConnObj):
     def location(self):
         """:obj:`tuple` (:class:`.Value`, \
         :class:`.Value`): \
-        Location [x, y] of the hierarchy object on the :obj:`placement_layer` object."""
+        Location [x, y] of the hierarchy object on the :obj:`placement_layer` object.
+        """
         pnt_msg = self.__stub.GetLocation(self.msg)
         return [Value(pnt_msg.x), Value(pnt_msg.y)]
 

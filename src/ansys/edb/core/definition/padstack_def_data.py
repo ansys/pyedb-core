@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike, PointLike
     from ansys.edb.core.geometry.point_data import PointData
     from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.typing import PointLike
+    from ansys.edb.core.typing import ValueLike
 
 from enum import Enum
 
@@ -15,8 +16,11 @@ import ansys.api.edb.v1.padstack_def_data_pb2 as pb
 from ansys.api.edb.v1.padstack_def_data_pb2_grpc import PadstackDefDataServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.inner import ObjBase, messages, parser
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility import conversions
 from ansys.edb.core.utility.value import Value
 
@@ -118,7 +122,7 @@ class PadstackDefData(ObjBase):
         self.__stub.SetMaterial(pb.PadstackDefDataSetMaterialMessage(target=self.msg, name=name))
 
     @property
-    def layer_names(self) -> List[str]:
+    def layer_names(self) -> list[str]:
         """:obj:`list` of :obj:`str`: Names of the padstack definition layers.
 
         This property is read-only.
@@ -127,7 +131,7 @@ class PadstackDefData(ObjBase):
         return list(layer_names_msg)
 
     @property
-    def layer_ids(self) -> List[int]:
+    def layer_ids(self) -> list[int]:
         """:obj:`list` of :obj:`int`: IDs of the padstack definition layers.
 
         This property is read-only.
@@ -135,7 +139,7 @@ class PadstackDefData(ObjBase):
         layer_ids_msg = self.__stub.GetLayerIds(self.msg)
         return list(layer_ids_msg.ids)
 
-    def add_layers(self, names: List[str]):
+    def add_layers(self, names: list[str]):
         """
         Add layers to the padstack definition.
 
@@ -151,11 +155,7 @@ class PadstackDefData(ObjBase):
 
     def get_pad_parameters(
         self, layer: str | int, pad_type: PadType
-    ) -> (
-        Tuple[PadGeometryType, List[Value], Value, Value, Value]
-        | Tuple[PolygonData, Value, Value, Value]
-        | Tuple[()]
-    ):
+    ) -> tuple[PadGeometryType, list[Value], Value, Value, Value] | tuple[PolygonData, Value, Value, Value] | tuple[()]:
         """
         Get pad parameters by layer name and pad type.
 
@@ -205,7 +205,7 @@ class PadstackDefData(ObjBase):
         offset_y: ValueLike,
         rotation: ValueLike,
         type_geom: PadGeometryType = None,
-        sizes: List[ValueLike] = None,
+        sizes: list[ValueLike] = None,
         poly: PolygonData = None,
     ):
         """
@@ -261,11 +261,7 @@ class PadstackDefData(ObjBase):
 
     def get_hole_parameters(
         self,
-    ) -> (
-        Tuple[PadGeometryType, List[Value], Value, Value, Value]
-        | Tuple[PolygonData, Value, Value, Value]
-        | Tuple[()]
-    ):
+    ) -> tuple[PadGeometryType, list[Value], Value, Value, Value] | tuple[PolygonData, Value, Value, Value] | tuple[()]:
         """
         Get the hole parameters of the padstack definition.
 
@@ -287,7 +283,7 @@ class PadstackDefData(ObjBase):
         offset_y: ValueLike,
         rotation: ValueLike,
         type_geom: PadGeometryType = None,
-        sizes: List[ValueLike] = None,
+        sizes: list[ValueLike] = None,
         poly: PolygonData = None,
     ):
         """
@@ -312,9 +308,7 @@ class PadstackDefData(ObjBase):
         poly : .PolygonData, default: None
             Polygon geometry. The default is :obj:`None` if not setting polygonal pad parameters.
         """
-        return self.set_pad_parameters(
-            -1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes, poly
-        )
+        return self.set_pad_parameters(-1, PadType.HOLE, offset_x, offset_y, rotation, type_geom, sizes, poly)
 
     @property
     def hole_range(self) -> PadstackHoleRange:
@@ -323,9 +317,7 @@ class PadstackDefData(ObjBase):
 
     @hole_range.setter
     def hole_range(self, hole_range: PadstackHoleRange):
-        self.__stub.SetHoleRange(
-            pb.PadstackDefDataSetHoleRangeMessage(target=self.msg, hole_range=hole_range.value)
-        )
+        self.__stub.SetHoleRange(pb.PadstackDefDataSetHoleRangeMessage(target=self.msg, hole_range=hole_range.value))
 
     @property
     def plating_percentage(self) -> Value:
@@ -348,9 +340,7 @@ class PadstackDefData(ObjBase):
     @solder_ball_shape.setter
     def solder_ball_shape(self, solderball_shape: SolderballShape):
         self.__stub.SetSolderBallShape(
-            pb.PadstackDefDataSetSolderballShapeMessage(
-                target=self.msg, solderball_shape=solderball_shape.value
-            )
+            pb.PadstackDefDataSetSolderballShapeMessage(target=self.msg, solderball_shape=solderball_shape.value)
         )
 
     @property
@@ -367,7 +357,7 @@ class PadstackDefData(ObjBase):
         )
 
     @property
-    def solder_ball_param(self) -> Tuple[Value, Value]:
+    def solder_ball_param(self) -> tuple[Value, Value]:
         """:obj:`tuple` of (:class:`.Value`, :class:`.Value`): Solder ball parameters ``(d1, d2)``.
 
         - ``d1`` is the diameter for a cylindrical solder ball or the top diameter for a spheroidal solder ball.
@@ -380,7 +370,7 @@ class PadstackDefData(ObjBase):
         )
 
     @solder_ball_param.setter
-    def solder_ball_param(self, params: Tuple[ValueLike, ValueLike]):
+    def solder_ball_param(self, params: tuple[ValueLike, ValueLike]):
         self.__stub.SetSolderBallParam(
             pb.PadstackDefDataSetSolderBallParamMessage(
                 target=self.msg,
@@ -400,7 +390,7 @@ class PadstackDefData(ObjBase):
             pb.PadstackDefDataSetSolderBallMaterialMessage(target=self.msg, material=material)
         )
 
-    def get_connection_pt(self, layer: str) -> Tuple[PointData, ConnectionPtDirection]:
+    def get_connection_pt(self, layer: str) -> tuple[PointData, ConnectionPtDirection]:
         """
         Get connection point position and direction of the padstack definition by layer name.
 
@@ -417,9 +407,7 @@ class PadstackDefData(ObjBase):
             - ``position``: Position of the connection point.
             - ``direction``: Direction of the connection point.
         """
-        msg = self.__stub.GetConnectionPt(
-            pb.PadstackDefDataGetConnectionPtMessage(target=self.msg, layer=layer)
-        )
+        msg = self.__stub.GetConnectionPt(pb.PadstackDefDataGetConnectionPtMessage(target=self.msg, layer=layer))
         return parser.to_point_data(msg), ConnectionPtDirection(msg.direction)
 
     def set_connection_pt(self, layer: str, position: PointLike, direction: ConnectionPtDirection):

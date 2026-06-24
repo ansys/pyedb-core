@@ -1,7 +1,8 @@
 """Port property."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansys.edb.core.typing import ValueLike
@@ -9,8 +10,10 @@ if TYPE_CHECKING:
 from ansys.api.edb.v1.port_property_pb2_grpc import PortPropertyServiceStub
 import google.protobuf.empty_pb2 as empty_pb2
 
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -47,9 +50,7 @@ class PortProperty(ObjBase):
 
     @reference_height.setter
     def reference_height(self, height: ValueLike):
-        self.__stub.SetReferenceHeight(
-            messages.value_property_message(self, messages.value_message(height))
-        )
+        self.__stub.SetReferenceHeight(messages.value_property_message(self, messages.value_message(height)))
 
     @property
     def reference_size_auto(self) -> bool:
@@ -60,7 +61,7 @@ class PortProperty(ObjBase):
     def reference_size_auto(self, auto: bool):
         self.__stub.SetReferenceSizeAuto(messages.bool_property_message(self, auto))
 
-    def get_reference_size(self) -> Tuple[Value, Value]:
+    def get_reference_size(self) -> tuple[Value, Value]:
         r"""Get the X and Y reference sizes for the port property.
 
         Returns

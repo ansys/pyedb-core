@@ -1,6 +1,7 @@
 import random
 
-from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage, EDBObjMessage
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjCollectionMessage
+from ansys.api.edb.v1.edb_messages_pb2 import EDBObjMessage
 
 from ansys.edb.core.inner import ObjBase
 
@@ -90,11 +91,11 @@ def patch_stub(stub_getter, mocker, test_method_name, expected_response, **kwarg
         Name of stub method to be patched
     expected_response : Any
         The response message that will be returned by the mocked stub method
+
     Returns
     -------
     unittest.mock.Mock
     """
-
     # Create the mock server
     mock_server = mocker.Mock()
     mock_server_attr = {test_method_name + ".return_value": expected_response}

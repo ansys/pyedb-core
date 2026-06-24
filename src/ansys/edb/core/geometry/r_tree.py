@@ -1,17 +1,21 @@
 """RTree class."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.geometry.polygon_data import PolygonData
     from ansys.edb.core.geometry.point_data import PointData
+    from ansys.edb.core.geometry.polygon_data import PolygonData
 
 from ansys.api.edb.v1 import r_tree_pb2_grpc
 import ansys.api.edb.v1.r_tree_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages, parser
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.inner import parser
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class RTreeObj:
@@ -119,9 +123,7 @@ class RTree(ObjBase):
             R-tree data object with index in this form: ``(polygon, id pair)``.
         """
         if self._handle_rtree_obj(rtree_obj):
-            self.__stub.DeleteIntObject(
-                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
-            )
+            self.__stub.DeleteIntObject(RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id))
             del self._id_to_obj[rtree_obj._unique_id]
             del self._obj_to_id[(rtree_obj.obj, rtree_obj.polygon)]
 
@@ -180,9 +182,7 @@ class RTree(ObjBase):
                 Line segment spanning the closest points between the object and the nearest neighbor.
         """
         if self._handle_rtree_obj(rtree_obj):
-            msg = self.__stub.NearestNeighbor(
-                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
-            )
+            msg = self.__stub.NearestNeighbor(RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id))
             return self._id_to_obj[int(msg.id)], parser.to_box(msg.coordinates)
 
     def touching_geometry(self, rtree_obj: RTreeObj, increment_visit: bool) -> list[RTreeObj]:
@@ -205,9 +205,7 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.TouchingGeometry(
-                RTree._r_tree_geometry_request_message(
-                    self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
-                )
+                RTree._r_tree_geometry_request_message(self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit)
             )
             return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
@@ -230,9 +228,7 @@ class RTree(ObjBase):
         """
         if self._handle_rtree_obj(rtree_obj):
             msg = self.__stub.ConnectedGeometry(
-                RTree._r_tree_geometry_request_message(
-                    self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit
-                )
+                RTree._r_tree_geometry_request_message(self, rtree_obj.polygon, rtree_obj._unique_id, increment_visit)
             )
             return [self._id_to_obj[int(to_id)] for to_id in msg.props]
 
@@ -273,9 +269,7 @@ class RTree(ObjBase):
             ``True`` if the Rtree object has been visited, ``False`` otherwise.
         """
         if self._handle_rtree_obj(rtree_obj):
-            return self.__stub.IsVisited(
-                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
-            ).value
+            return self.__stub.IsVisited(RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)).value
 
     def visit(self, rtree_obj: RTreeObj):
         """Increment the count of a given RTree object.
@@ -286,9 +280,7 @@ class RTree(ObjBase):
             R-tree data object with index in this form: ``(polygon, id pair)``.
         """
         if self._handle_rtree_obj(rtree_obj):
-            self.__stub.Visit(
-                RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id)
-            )
+            self.__stub.Visit(RTree._r_tree_obj_message(self, rtree_obj.polygon, rtree_obj._unique_id))
 
     @property
     def get_visit(self) -> int:

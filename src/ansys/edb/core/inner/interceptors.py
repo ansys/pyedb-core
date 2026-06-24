@@ -4,18 +4,19 @@ import abc
 from collections import namedtuple
 import logging
 
-from grpc import (
-    ClientCallDetails,
-    StatusCode,
-    StreamStreamClientInterceptor,
-    UnaryStreamClientInterceptor,
-    UnaryUnaryClientInterceptor,
-)
+from grpc import ClientCallDetails
+from grpc import StatusCode
+from grpc import StreamStreamClientInterceptor
+from grpc import UnaryStreamClientInterceptor
+from grpc import UnaryUnaryClientInterceptor
 
-from ansys.edb.core.inner.exceptions import EDBSessionException, ErrorCode, InvalidArgumentException
+from ansys.edb.core.inner.exceptions import EDBSessionException
+from ansys.edb.core.inner.exceptions import ErrorCode
+from ansys.edb.core.inner.exceptions import InvalidArgumentException
 from ansys.edb.core.inner.rpc_info_utils import can_cache
 from ansys.edb.core.inner.rpc_response_map import get_rpc_response_type
-from ansys.edb.core.utility.io_manager import ServerNotification, get_io_manager
+from ansys.edb.core.utility.io_manager import ServerNotification
+from ansys.edb.core.utility.io_manager import get_io_manager
 
 
 class Interceptor(
@@ -172,9 +173,7 @@ class IOInterceptor(Interceptor):
                 if (hijacked_result := self._attempt_hijack(*cache_key_details)) is not None:
                     self._hijacked = True
                     return hijacked_result
-                if io_manager.cache is not None and can_cache(
-                    cache_key_details[0], cache_key_details[1]
-                ):
+                if io_manager.cache is not None and can_cache(cache_key_details[0], cache_key_details[1]):
                     self._current_cache_key_details = cache_key_details
                 io_manager.add_notification_for_server(ServerNotification.RESET_FUTURE_TRACKING)
         if self._should_log_traffic():

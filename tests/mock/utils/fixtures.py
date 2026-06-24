@@ -7,7 +7,8 @@ from ansys.edb.core.layer.layer import Layer
 from ansys.edb.core.layout.layout import Layout
 from ansys.edb.core.net.net import Net
 
-from .test_utils import create_edb_obj_msg, generate_random_int
+from .test_utils import create_edb_obj_msg
+from .test_utils import generate_random_int
 
 
 @pytest.fixture

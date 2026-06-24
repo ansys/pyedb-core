@@ -1,4 +1,5 @@
 """Technology definition."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -8,8 +9,11 @@ if TYPE_CHECKING:
 
 import ansys.api.edb.v1.technology_def_pb2 as pb
 
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import StubAccessor, StubType, TechnologyDefServiceStub
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.session import TechnologyDefServiceStub
 
 
 class TechnologyDef(ObjBase):
@@ -78,9 +82,7 @@ class TechnologyDef(ObjBase):
             Technology definition object found. \
             If a technology definition isn't found, the returned technology definition is :meth:`null <.is_null>`.
         """
-        return TechnologyDef(
-            cls.__stub.FindByName(messages.edb_obj_name_message(database, definition_name))
-        )
+        return TechnologyDef(cls.__stub.FindByName(messages.edb_obj_name_message(database, definition_name)))
 
     def delete(self):
         """Delete the technology definition."""

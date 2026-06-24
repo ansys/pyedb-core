@@ -1,8 +1,10 @@
 """Terminal Instance."""
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import conn_obj, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import conn_obj
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.terminal.terminal import Terminal
 
 
@@ -32,9 +34,7 @@ class TerminalInstance(conn_obj.ConnObj):
         TerminalInstance
         """
         return TerminalInstance(
-            cls.__stub.Create(
-                messages.term_inst_creation_message(layout, net_ref, cell_instance, name)
-            )
+            cls.__stub.Create(messages.term_inst_creation_message(layout, net_ref, cell_instance, name))
         )
 
     @property

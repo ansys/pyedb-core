@@ -3,22 +3,16 @@
 import ansys.api.edb.v1.raptor_x_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import (
-    RaptorXAdvancedSettingsServiceStub,
-    RaptorXGeneralSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
-from ansys.edb.core.simulation_setup.simulation_settings import (
-    SimulationSettings,
-    SimulationSettingsBase,
-)
+from ansys.edb.core.session import RaptorXAdvancedSettingsServiceStub
+from ansys.edb.core.session import RaptorXGeneralSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettingsBase
 
 
 def _translate_options_dictionary(dictionary):
-    return {
-        key: messages.strings_message([val for val in vals]) for (key, vals) in dictionary.items()
-    }
+    return {key: messages.strings_message([val for val in vals]) for (key, vals) in dictionary.items()}
 
 
 def _to_options_dict(msg):
@@ -29,10 +23,7 @@ def _to_raptor_x_sim_settings_options_property_msg(obj, options):
     return pb.RaptorXSimSettingsOptionsPropertyMessage(
         target=obj.msg,
         value=pb.RaptorXSimSettingsOptionsMessage(
-            options={
-                key: messages.strings_message([val for val in vals])
-                for (key, vals) in options.items()
-            }
+            options={key: messages.strings_message([val for val in vals]) for (key, vals) in options.items()}
         ),
     )
 
@@ -59,7 +50,8 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
     @property
     def use_gold_em_solver(self):
         """:obj:`bool`: Flag indicating if the gold em solver is used. If ``False``, \
-        the fast em solver is used."""
+        the fast em solver is used.
+        """
         return self.__stub.GetUseGoldEMSolver(self.msg).value
 
     @use_gold_em_solver.setter
@@ -100,9 +92,7 @@ class RaptorXGeneralSettings(SimulationSettingsBase):
 
     @netlist_export_spectre.setter
     def netlist_export_spectre(self, netlist_export_spectre):
-        self.__stub.SetNetlistExportSpectre(
-            messages.bool_property_message(self, netlist_export_spectre)
-        )
+        self.__stub.SetNetlistExportSpectre(messages.bool_property_message(self, netlist_export_spectre))
 
     @property
     def save_rfm(self):
@@ -162,9 +152,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @use_cells_per_wavelength.setter
     def use_cells_per_wavelength(self, use_cells_per_wavelength):
-        self.__stub.SetUseCellsPerWavelength(
-            messages.bool_property_message(self, use_cells_per_wavelength)
-        )
+        self.__stub.SetUseCellsPerWavelength(messages.bool_property_message(self, use_cells_per_wavelength))
 
     @property
     def cells_per_wavelength(self):
@@ -173,9 +161,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @cells_per_wavelength.setter
     def cells_per_wavelength(self, cells_per_wavelength):
-        self.__stub.SetCellsPerWavelength(
-            messages.uint64_property_message(self, cells_per_wavelength)
-        )
+        self.__stub.SetCellsPerWavelength(messages.uint64_property_message(self, cells_per_wavelength))
 
     @property
     def use_plane_projection_factor(self):
@@ -184,9 +170,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @use_plane_projection_factor.setter
     def use_plane_projection_factor(self, use_plane_projection_factor):
-        self.__stub.SetUsePlaneProjectionFactor(
-            messages.bool_property_message(self, use_plane_projection_factor)
-        )
+        self.__stub.SetUsePlaneProjectionFactor(messages.bool_property_message(self, use_plane_projection_factor))
 
     @property
     def plane_projection_factor(self):
@@ -195,9 +179,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @plane_projection_factor.setter
     def plane_projection_factor(self, plane_projection_factor):
-        self.__stub.SetPlaneProjectionFactor(
-            messages.double_property_message(self, plane_projection_factor)
-        )
+        self.__stub.SetPlaneProjectionFactor(messages.double_property_message(self, plane_projection_factor))
 
     @property
     def use_relaxed_z_axis(self):
@@ -215,9 +197,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @use_eliminate_slit_per_holes.setter
     def use_eliminate_slit_per_holes(self, use_eliminate_slit_per_holes):
-        self.__stub.SetUseEliminateSlitPerHoles(
-            messages.bool_property_message(self, use_eliminate_slit_per_holes)
-        )
+        self.__stub.SetUseEliminateSlitPerHoles(messages.bool_property_message(self, use_eliminate_slit_per_holes))
 
     @property
     def eliminate_slit_per_holes(self):
@@ -226,9 +206,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @eliminate_slit_per_holes.setter
     def eliminate_slit_per_holes(self, eliminate_slit_per_holes):
-        self.__stub.SetEliminateSlitPerHoles(
-            messages.double_property_message(self, eliminate_slit_per_holes)
-        )
+        self.__stub.SetEliminateSlitPerHoles(messages.double_property_message(self, eliminate_slit_per_holes))
 
     @property
     def use_auto_removal_sliver_poly(self):
@@ -237,9 +215,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @use_auto_removal_sliver_poly.setter
     def use_auto_removal_sliver_poly(self, use_auto_removal_sliver_poly):
-        self.__stub.SetUseAutoRemovalSliverPoly(
-            messages.bool_property_message(self, use_auto_removal_sliver_poly)
-        )
+        self.__stub.SetUseAutoRemovalSliverPoly(messages.bool_property_message(self, use_auto_removal_sliver_poly))
 
     @property
     def auto_removal_sliver_poly(self):
@@ -248,9 +224,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @auto_removal_sliver_poly.setter
     def auto_removal_sliver_poly(self, auto_removal_sliver_poly):
-        self.__stub.SetAutoRemovalSliverPoly(
-            messages.double_property_message(self, auto_removal_sliver_poly)
-        )
+        self.__stub.SetAutoRemovalSliverPoly(messages.double_property_message(self, auto_removal_sliver_poly))
 
     @property
     def use_accelerate_via_extraction(self):
@@ -259,14 +233,13 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @use_accelerate_via_extraction.setter
     def use_accelerate_via_extraction(self, use_accelerate_via_extraction):
-        self.__stub.SetUseAccelerateViaExtraction(
-            messages.bool_property_message(self, use_accelerate_via_extraction)
-        )
+        self.__stub.SetUseAccelerateViaExtraction(messages.bool_property_message(self, use_accelerate_via_extraction))
 
     @property
     def use_enable_substrate_network_extraction(self):
         """:obj:`bool`: Flag indicating if modeling of substrate coupling effects \
-        is enabled using equivalent distributed RC networks."""
+        is enabled using equivalent distributed RC networks.
+        """
         return self.__stub.GetUseEnableSubstrateNetworkExtraction(self.msg).value
 
     @use_enable_substrate_network_extraction.setter
@@ -313,21 +286,18 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @use_enable_etch_transform.setter
     def use_enable_etch_transform(self, use_enable_etch_transform):
-        self.__stub.SetUseEnableEtchTransform(
-            messages.bool_property_message(self, use_enable_etch_transform)
-        )
+        self.__stub.SetUseEnableEtchTransform(messages.bool_property_message(self, use_enable_etch_transform))
 
     @property
     def use_enable_hybrid_extraction(self):
         """:obj:`bool`: Flag indicating if the modeler is to split the layout into \
-        two parts in an attempt to decrease the complexity."""
+        two parts in an attempt to decrease the complexity.
+        """
         return self.__stub.GetUseEnableHybridExtraction(self.msg).value
 
     @use_enable_hybrid_extraction.setter
     def use_enable_hybrid_extraction(self, use_enable_hybrid_extraction):
-        self.__stub.SetUseEnableHybridExtraction(
-            messages.bool_property_message(self, use_enable_hybrid_extraction)
-        )
+        self.__stub.SetUseEnableHybridExtraction(messages.bool_property_message(self, use_enable_hybrid_extraction))
 
     @property
     def use_enable_advanced_cap_effects(self):
@@ -347,9 +317,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @use_override_shrink_factor.setter
     def use_override_shrink_factor(self, use_override_shrink_factor):
-        self.__stub.SetUseOverrideShrinkFac(
-            messages.bool_property_message(self, use_override_shrink_factor)
-        )
+        self.__stub.SetUseOverrideShrinkFac(messages.bool_property_message(self, use_override_shrink_factor))
 
     @property
     def override_shrink_factor(self):
@@ -358,9 +326,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @override_shrink_factor.setter
     def override_shrink_factor(self, override_shrink_factor):
-        self.__stub.SetOverrideShrinkFac(
-            messages.double_property_message(self, override_shrink_factor)
-        )
+        self.__stub.SetOverrideShrinkFac(messages.double_property_message(self, override_shrink_factor))
 
     @property
     def advanced_options(self):
@@ -369,9 +335,7 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @advanced_options.setter
     def advanced_options(self, advanced_options):
-        self.__stub.SetAdvancedOptions(
-            _to_raptor_x_sim_settings_options_property_msg(self, advanced_options)
-        )
+        self.__stub.SetAdvancedOptions(_to_raptor_x_sim_settings_options_property_msg(self, advanced_options))
 
     @property
     def net_settings_options(self):
@@ -380,6 +344,4 @@ class RaptorXAdvancedSettings(SimulationSettingsBase):
 
     @net_settings_options.setter
     def net_settings_options(self, net_settings_options):
-        self.__stub.SetNetSettingsOptions(
-            _to_raptor_x_sim_settings_options_property_msg(self, net_settings_options)
-        )
+        self.__stub.SetNetSettingsOptions(_to_raptor_x_sim_settings_options_property_msg(self, net_settings_options))

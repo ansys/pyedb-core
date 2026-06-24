@@ -5,19 +5,15 @@ from enum import Enum
 import ansys.api.edb.v1.si_wave_simulation_settings_pb2 as pb
 
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import (
-    SIWaveAdvancedSettingsServiceStub,
-    SIWaveDCAdvancedSettingsServiceStub,
-    SIWaveDCSettingsServiceStub,
-    SIWaveGeneralSettingsServiceStub,
-    SIWaveSParameterSettingsServiceStub,
-    StubAccessor,
-    StubType,
-)
-from ansys.edb.core.simulation_setup.simulation_settings import (
-    SimulationSettings,
-    SimulationSettingsBase,
-)
+from ansys.edb.core.session import SIWaveAdvancedSettingsServiceStub
+from ansys.edb.core.session import SIWaveDCAdvancedSettingsServiceStub
+from ansys.edb.core.session import SIWaveDCSettingsServiceStub
+from ansys.edb.core.session import SIWaveGeneralSettingsServiceStub
+from ansys.edb.core.session import SIWaveSParameterSettingsServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettings
+from ansys.edb.core.simulation_setup.simulation_settings import SimulationSettingsBase
 
 
 class SParamInterpolation(Enum):
@@ -138,9 +134,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @include_co_plane_coupling.setter
     def include_co_plane_coupling(self, include_co_plane_coupling):
-        self.__stub.SetIncludeCoPlaneCoupling(
-            messages.bool_property_message(self, include_co_plane_coupling)
-        )
+        self.__stub.SetIncludeCoPlaneCoupling(messages.bool_property_message(self, include_co_plane_coupling))
 
     @property
     def include_inter_plane_coupling(self):
@@ -149,9 +143,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @include_inter_plane_coupling.setter
     def include_inter_plane_coupling(self, include_inter_plane_coupling):
-        self.__stub.SetIncludeInterPlaneCoupling(
-            messages.bool_property_message(self, include_inter_plane_coupling)
-        )
+        self.__stub.SetIncludeInterPlaneCoupling(messages.bool_property_message(self, include_inter_plane_coupling))
 
     @property
     def include_split_plane_coupling(self):
@@ -160,9 +152,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @include_split_plane_coupling.setter
     def include_split_plane_coupling(self, include_split_plane_coupling):
-        self.__stub.SetIncludeSplitPlaneCoupling(
-            messages.bool_property_message(self, include_split_plane_coupling)
-        )
+        self.__stub.SetIncludeSplitPlaneCoupling(messages.bool_property_message(self, include_split_plane_coupling))
 
     @property
     def include_fringe_plane_coupling(self):
@@ -171,9 +161,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @include_fringe_plane_coupling.setter
     def include_fringe_plane_coupling(self, include_fringe_plane_coupling):
-        self.__stub.SetIncludeFringePlaneCoupling(
-            messages.bool_property_message(self, include_fringe_plane_coupling)
-        )
+        self.__stub.SetIncludeFringePlaneCoupling(messages.bool_property_message(self, include_fringe_plane_coupling))
 
     @property
     def include_trace_plane_coupling(self):
@@ -182,9 +170,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @include_trace_plane_coupling.setter
     def include_trace_plane_coupling(self, include_trace_plane_coupling):
-        self.__stub.SetIncludeTracePlaneCoupling(
-            messages.bool_property_message(self, include_trace_plane_coupling)
-        )
+        self.__stub.SetIncludeTracePlaneCoupling(messages.bool_property_message(self, include_trace_plane_coupling))
 
     @property
     def cross_talk_threshold(self):
@@ -193,9 +179,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @cross_talk_threshold.setter
     def cross_talk_threshold(self, cross_talk_threshold):
-        self.__stub.SetCrossTalkThreshold(
-            messages.string_property_message(self, cross_talk_threshold)
-        )
+        self.__stub.SetCrossTalkThreshold(messages.string_property_message(self, cross_talk_threshold))
 
     @property
     def max_coupled_lines(self):
@@ -222,9 +206,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @min_pad_area_to_mesh.setter
     def min_pad_area_to_mesh(self, min_pad_area_to_mesh):
-        self.__stub.SetMinPadAreaToMesh(
-            messages.string_property_message(self, min_pad_area_to_mesh)
-        )
+        self.__stub.SetMinPadAreaToMesh(messages.string_property_message(self, min_pad_area_to_mesh))
 
     @property
     def min_plane_area_to_mesh(self):
@@ -233,9 +215,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @min_plane_area_to_mesh.setter
     def min_plane_area_to_mesh(self, min_plane_area_to_mesh):
-        self.__stub.SetMinPlaneAreaToMesh(
-            messages.string_property_message(self, min_plane_area_to_mesh)
-        )
+        self.__stub.SetMinPlaneAreaToMesh(messages.string_property_message(self, min_plane_area_to_mesh))
 
     @property
     def snap_length_threshold(self):
@@ -244,9 +224,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @snap_length_threshold.setter
     def snap_length_threshold(self, snap_length_threshold):
-        self.__stub.SetSnapLengthThreshold(
-            messages.string_property_message(self, snap_length_threshold)
-        )
+        self.__stub.SetSnapLengthThreshold(messages.string_property_message(self, snap_length_threshold))
 
     @property
     def mesh_automatic(self):
@@ -274,9 +252,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
     @ac_dc_merge_mode.setter
     def ac_dc_merge_mode(self, ac_dc_merge_mode):
         self.__stub.SetAcDcMergeMode(
-            pb.ACDCMergeModePropertyMessage(
-                target=self.msg, ac_dc_merge_mode=ac_dc_merge_mode.value
-            )
+            pb.ACDCMergeModePropertyMessage(target=self.msg, ac_dc_merge_mode=ac_dc_merge_mode.value)
         )
 
     @property
@@ -286,9 +262,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @return_current_distribution.setter
     def return_current_distribution(self, return_current_distribution):
-        self.__stub.Set3DReturnCurrentDistribution(
-            messages.bool_property_message(self, return_current_distribution)
-        )
+        self.__stub.Set3DReturnCurrentDistribution(messages.bool_property_message(self, return_current_distribution))
 
     @property
     def include_vi_sources(self):
@@ -333,9 +307,7 @@ class SIWaveAdvancedSettings(SimulationSettingsBase):
 
     @ignore_non_functional_pads.setter
     def ignore_non_functional_pads(self, ignore_non_functional_pads):
-        self.__stub.SetIgnoreNonFunctionalPads(
-            messages.bool_property_message(self, ignore_non_functional_pads)
-        )
+        self.__stub.SetIgnoreNonFunctionalPads(messages.bool_property_message(self, ignore_non_functional_pads))
 
 
 class SIWaveDCSettings(SimulationSettingsBase):
@@ -350,9 +322,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 
     @use_dc_custom_settings.setter
     def use_dc_custom_settings(self, use_dc_custom_settings):
-        self.__stub.SetUseDCCustomSettings(
-            messages.bool_property_message(self, use_dc_custom_settings)
-        )
+        self.__stub.SetUseDCCustomSettings(messages.bool_property_message(self, use_dc_custom_settings))
 
     @property
     def compute_inductance(self):
@@ -394,9 +364,7 @@ class SIWaveDCSettings(SimulationSettingsBase):
 class SIWaveDCAdvancedSettings(SimulationSettingsBase):
     """Represents advanced DC settings for SIWave simulations."""
 
-    __stub: SIWaveDCAdvancedSettingsServiceStub = StubAccessor(
-        StubType.siwave_dc_advanced_sim_settings
-    )
+    __stub: SIWaveDCAdvancedSettingsServiceStub = StubAccessor(StubType.siwave_dc_advanced_sim_settings)
 
     @property
     def dc_min_plane_area_to_mesh(self):
@@ -405,9 +373,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @dc_min_plane_area_to_mesh.setter
     def dc_min_plane_area_to_mesh(self, dc_min_plane_area_to_mesh):
-        self.__stub.SetDCMinPlaneAreaToMesh(
-            messages.string_property_message(self, dc_min_plane_area_to_mesh)
-        )
+        self.__stub.SetDCMinPlaneAreaToMesh(messages.string_property_message(self, dc_min_plane_area_to_mesh))
 
     @property
     def dc_min_void_area_to_mesh(self):
@@ -416,9 +382,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @dc_min_void_area_to_mesh.setter
     def dc_min_void_area_to_mesh(self, dc_min_void_area_to_mesh):
-        self.__stub.SetDCMinVoidAreaToMesh(
-            messages.string_property_message(self, dc_min_void_area_to_mesh)
-        )
+        self.__stub.SetDCMinVoidAreaToMesh(messages.string_property_message(self, dc_min_void_area_to_mesh))
 
     @property
     def max_init_mesh_edge_length(self):
@@ -427,9 +391,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @max_init_mesh_edge_length.setter
     def max_init_mesh_edge_length(self, max_init_mesh_edge_length):
-        self.__stub.SetMaxInitMeshEdgeLength(
-            messages.string_property_message(self, max_init_mesh_edge_length)
-        )
+        self.__stub.SetMaxInitMeshEdgeLength(messages.string_property_message(self, max_init_mesh_edge_length))
 
     @property
     def perform_adaptive_refinement(self):
@@ -438,9 +400,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @perform_adaptive_refinement.setter
     def perform_adaptive_refinement(self, perform_adaptive_refinement):
-        self.__stub.SetPerformAdaptiveRefinement(
-            messages.bool_property_message(self, perform_adaptive_refinement)
-        )
+        self.__stub.SetPerformAdaptiveRefinement(messages.bool_property_message(self, perform_adaptive_refinement))
 
     @property
     def max_num_passes(self):
@@ -467,9 +427,7 @@ class SIWaveDCAdvancedSettings(SimulationSettingsBase):
 
     @percent_local_refinement.setter
     def percent_local_refinement(self, percent_local_refinement):
-        self.__stub.SetPercentLocalRefinement(
-            messages.uint64_property_message(self, percent_local_refinement)
-        )
+        self.__stub.SetPercentLocalRefinement(messages.uint64_property_message(self, percent_local_refinement))
 
     @property
     def energy_error(self):
@@ -557,9 +515,7 @@ class SIWaveSParameterSettings(SimulationSettingsBase):
     @interpolation.setter
     def interpolation(self, interpolation):
         self.__stub.SetInterpolation(
-            pb.SParamInterpolationPropertyMessage(
-                target=self.msg, interpolation=interpolation.value
-            )
+            pb.SParamInterpolationPropertyMessage(target=self.msg, interpolation=interpolation.value)
         )
 
     @property
@@ -570,9 +526,7 @@ class SIWaveSParameterSettings(SimulationSettingsBase):
     @extrapolation.setter
     def extrapolation(self, extrapolation):
         self.__stub.SetExtrapolation(
-            pb.SParamExtrapolationPropertyMessage(
-                target=self.msg, extrapolation=extrapolation.value
-            )
+            pb.SParamExtrapolationPropertyMessage(target=self.msg, extrapolation=extrapolation.value)
         )
 
     @property
@@ -582,6 +536,4 @@ class SIWaveSParameterSettings(SimulationSettingsBase):
 
     @dc_behavior.setter
     def dc_behavior(self, dc_behavior):
-        self.__stub.SetDCBehavior(
-            pb.SParamDCBehaviorPropertyMessage(target=self.msg, dc_behavior=dc_behavior.value)
-        )
+        self.__stub.SetDCBehavior(pb.SParamDCBehaviorPropertyMessage(target=self.msg, dc_behavior=dc_behavior.value))

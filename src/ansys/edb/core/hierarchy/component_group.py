@@ -8,7 +8,8 @@ import ansys.api.edb.v1.edb_defs_pb2 as edb_defs_pb2
 from ansys.edb.core.definition import component_property
 from ansys.edb.core.hierarchy.group import Group
 from ansys.edb.core.inner import messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class ComponentType(Enum):
@@ -47,9 +48,7 @@ class ComponentGroup(Group):
         ComponentGroup
             Component group created.
         """
-        return ComponentGroup(
-            cls.__stub.Create(messages.component_group_create_message(layout, name, comp_name))
-        )
+        return ComponentGroup(cls.__stub.Create(messages.component_group_create_message(layout, name, comp_name)))
 
     @property
     def num_pins(self):
@@ -79,10 +78,7 @@ class ComponentGroup(Group):
             return RLCComponentProperty(comp_prop.msg)
         if comp_type == edb_defs_pb2.ComponentType.IC:
             return ICComponentProperty(comp_prop.msg)
-        if (
-            comp_type == edb_defs_pb2.ComponentType.IO
-            or comp_type == edb_defs_pb2.ComponentType.OTHER
-        ):
+        if comp_type == edb_defs_pb2.ComponentType.IO or comp_type == edb_defs_pb2.ComponentType.OTHER:
             return IOComponentProperty(comp_prop.msg)
         else:
             return None
@@ -118,7 +114,5 @@ class ComponentGroup(Group):
         list[ComponentGroup]
             List of component groups that are found.
         """
-        objs = cls.__stub.FindByDef(
-            messages.object_name_in_layout_message(layout, comp_def_name)
-        ).items
+        objs = cls.__stub.FindByDef(messages.object_name_in_layout_message(layout, comp_def_name)).items
         return [ComponentGroup(cg) for cg in objs]

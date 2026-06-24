@@ -1,32 +1,34 @@
 """Package definition."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike
     from ansys.edb.core.database import Database
-    from ansys.edb.core.geometry.polygon_data import PolygonData
     from ansys.edb.core.database import ProductIdType
+    from ansys.edb.core.geometry.polygon_data import PolygonData
+    from ansys.edb.core.typing import ValueLike
 
 from ansys.api.edb.v1 import package_def_pb2_grpc
 
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, parser
-from ansys.edb.core.inner.messages import (
-    edb_obj_message,
-    get_product_property_ids_message,
-    get_product_property_message,
-    int_property_message,
-    polygon_data_property_message,
-    set_heat_sink_message,
-    set_product_property_message,
-    string_property_message,
-    value_message,
-    value_property_message,
-)
-from ansys.edb.core.session import StubAccessor, StubType
-from ansys.edb.core.utility.heat_sink import HeatSink, HeatSinkFinOrientation
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import parser
+from ansys.edb.core.inner.messages import edb_obj_message
+from ansys.edb.core.inner.messages import get_product_property_ids_message
+from ansys.edb.core.inner.messages import get_product_property_message
+from ansys.edb.core.inner.messages import int_property_message
+from ansys.edb.core.inner.messages import polygon_data_property_message
+from ansys.edb.core.inner.messages import set_heat_sink_message
+from ansys.edb.core.inner.messages import set_product_property_message
+from ansys.edb.core.inner.messages import string_property_message
+from ansys.edb.core.inner.messages import value_message
+from ansys.edb.core.inner.messages import value_property_message
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
+from ansys.edb.core.utility.heat_sink import HeatSink
+from ansys.edb.core.utility.heat_sink import HeatSinkFinOrientation
 from ansys.edb.core.utility.value import Value
 
 
@@ -111,7 +113,8 @@ class PackageDef(ObjBase):
     @parser.to_polygon_data
     def exterior_boundary(self) -> PolygonData:
         """:class:`.PolygonData`: \
-        Exterior boundary of the package definition."""
+        Exterior boundary of the package definition.
+        """
         return self.__stub.GetExteriorBoundary(edb_obj_message(self))
 
     @exterior_boundary.setter
@@ -207,9 +210,7 @@ class PackageDef(ObjBase):
         str
             Product property for the given product ID and attribute ID.
         """
-        return self.__stub.GetProductProperty(
-            get_product_property_message(self, prod_id, attr_it)
-        ).value
+        return self.__stub.GetProductProperty(get_product_property_message(self, prod_id, attr_it)).value
 
     def set_product_property(self, prod_id: ProductIdType, attr_it: int, prop_value: str):
         """Set the product property for the given product ID and attribute ID.
@@ -223,11 +224,9 @@ class PackageDef(ObjBase):
         prop_value : str
             New value for the product property.
         """
-        self.__stub.SetProductProperty(
-            set_product_property_message(self, prod_id, attr_it, prop_value)
-        )
+        self.__stub.SetProductProperty(set_product_property_message(self, prod_id, attr_it, prop_value))
 
-    def get_product_property_ids(self, prod_id: ProductIdType) -> List[int]:
+    def get_product_property_ids(self, prod_id: ProductIdType) -> list[int]:
         """Get the list of attribute IDs that are set for a given property ID.
 
         Parameters
@@ -240,7 +239,5 @@ class PackageDef(ObjBase):
         list of int
             Attribute IDs that are defined for the given product ID.
         """
-        attr_ids = self.__stub.GetProductPropertyIds(
-            get_product_property_ids_message(self, prod_id)
-        ).ids
+        attr_ids = self.__stub.GetProductPropertyIds(get_product_property_ids_message(self, prod_id)).ids
         return [attr_id for attr_id in attr_ids]

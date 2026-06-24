@@ -1,23 +1,25 @@
 """Material definition."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, List, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansys.edb.core.typing import ValueLike
     from ansys.edb.core.database import Database
+    from ansys.edb.core.typing import ValueLike
 
 from enum import Enum
 
 import ansys.api.edb.v1.material_def_pb2 as pb
 
 from ansys.edb.core.definition.dielectric_material_model import DielectricMaterialModel
-from ansys.edb.core.definition.material_property_thermal_modifier import (
-    MaterialPropertyThermalModifier,
-)
+from ansys.edb.core.definition.material_property_thermal_modifier import MaterialPropertyThermalModifier
 from ansys.edb.core.edb_defs import DefinitionObjType
-from ansys.edb.core.inner import ObjBase, messages
-from ansys.edb.core.session import MaterialDefServiceStub, StubAccessor, StubType
+from ansys.edb.core.inner import ObjBase
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import MaterialDefServiceStub
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 from ansys.edb.core.utility.value import Value
 
 
@@ -44,7 +46,7 @@ class MaterialDef(ObjBase):
     __stub: MaterialDefServiceStub = StubAccessor(StubType.material)
 
     @classmethod
-    def create(cls, database: Database, name: str, **kwargs: Dict[str, ValueLike]) -> MaterialDef:
+    def create(cls, database: Database, name: str, **kwargs: dict[str, ValueLike]) -> MaterialDef:
         """Create a material definition in a given database.
 
         Parameters
@@ -122,10 +124,9 @@ class MaterialDef(ObjBase):
     @property
     def dielectric_material_model(self):
         """:class:`.DielectricMaterialModel`: \
-        Dielectric material model of the material definition."""
-        return DielectricMaterialModel(
-            self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self))
-        )
+        Dielectric material model of the material definition.
+        """
+        return DielectricMaterialModel(self.__stub.GetDielectricMaterialModel(messages.edb_obj_message(self)))
 
     @dielectric_material_model.setter
     def dielectric_material_model(self, dielectric):
@@ -218,13 +219,11 @@ class MaterialDef(ObjBase):
         .Value
         """
         return Value(
-            self.__stub.GetProperty(
-                MaterialDef._get_property_message(self, material_property, component_id, col, row)
-            )
+            self.__stub.GetProperty(MaterialDef._get_property_message(self, material_property, component_id, col, row))
         )
 
     @property
-    def all_properties(self) -> List[MaterialProperty]:
+    def all_properties(self) -> list[MaterialProperty]:
         """:obj:`list` of :class:`.MaterialProperty`: All properties defined in the material definition.
 
         This property is read-only.
@@ -241,12 +240,10 @@ class MaterialDef(ObjBase):
             Material property to be removed.
         """
         self.__stub.RemoveProperty(
-            MaterialDef._get_property_message(
-                messages.edb_obj_message(self), material_property, None, None, None
-            )
+            MaterialDef._get_property_message(messages.edb_obj_message(self), material_property, None, None, None)
         )
 
-    def get_dimensions(self, material_property_id: MaterialProperty) -> Tuple[int, int]:
+    def get_dimensions(self, material_property_id: MaterialProperty) -> tuple[int, int]:
         """Get the dimensions of the tensor of a material property.
 
             The mappings between the types of material properties and dimensions are as follows:
@@ -270,9 +267,7 @@ class MaterialDef(ObjBase):
         msg = self.__stub.GetDimensions(MaterialDef._property_message(self, material_property_id))
         return msg.tensor.col, msg.tensor.row
 
-    def get_thermal_modifier(
-        self, material_property_id: MaterialProperty
-    ) -> MaterialPropertyThermalModifier:
+    def get_thermal_modifier(self, material_property_id: MaterialProperty) -> MaterialPropertyThermalModifier:
         """Get the thermal modifier of a material property.
 
         Parameters
@@ -285,9 +280,7 @@ class MaterialDef(ObjBase):
         .MaterialPropertyThermalModifier
         """
         return MaterialPropertyThermalModifier(
-            self.__stub.GetThermalModifier(
-                MaterialDef._property_message(self, material_property_id)
-            )
+            self.__stub.GetThermalModifier(MaterialDef._property_message(self, material_property_id))
         )
 
     def set_thermal_modifier(
@@ -337,9 +330,7 @@ class MaterialDef(ObjBase):
             )
         )
 
-    def set_anisotropic_thermal_modifier(
-        self, material_property_id, component_id, thermal_modifier
-    ):
+    def set_anisotropic_thermal_modifier(self, material_property_id, component_id, thermal_modifier):
         """Set the thermal modifier of an anisotropic material property.
 
         Parameters

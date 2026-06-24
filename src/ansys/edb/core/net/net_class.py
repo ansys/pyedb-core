@@ -3,8 +3,10 @@
 import ansys.api.edb.v1.net_class_pb2 as nc_pb2
 
 from ansys.edb.core.edb_defs import LayoutObjType
-from ansys.edb.core.inner import layout_obj, messages
-from ansys.edb.core.session import StubAccessor, StubType
+from ansys.edb.core.inner import layout_obj
+from ansys.edb.core.inner import messages
+from ansys.edb.core.session import StubAccessor
+from ansys.edb.core.session import StubType
 
 
 class NetClass(layout_obj.LayoutObj):
@@ -30,9 +32,7 @@ class NetClass(layout_obj.LayoutObj):
         NetClass
             Net class created.
         """
-        return NetClass(
-            cls.__stub.Create(nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name))
-        )
+        return NetClass(cls.__stub.Create(nc_pb2.NetClassCreationMessage(layout=layout.msg, name=name)))
 
     @classmethod
     def find_by_name(cls, layout, name):
@@ -128,6 +128,4 @@ class NetClass(layout_obj.LayoutObj):
         bool
             ``True`` if the net is in the net class, ``False`` otherwise.
         """
-        return self.__stub.ContainsNet(
-            nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg)
-        ).value
+        return self.__stub.ContainsNet(nc_pb2.NetClassEditMessage(netclass=self.msg, net=net.msg)).value

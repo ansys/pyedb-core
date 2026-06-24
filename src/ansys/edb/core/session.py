@@ -217,6 +217,7 @@ class _Session:
         port_num: int,
         ansys_em_root: str,
         dump_traffic_log: bool,
+        use_shared_memory_ipc: bool = False,
     ):
         if MOD.current_session is not None:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
@@ -232,16 +233,9 @@ class _Session:
         self.rpc_counter = defaultdict(int) if dump_traffic_log else None
         self._shm_transport = None
 
-        # Shared memory is attempted automatically for local launches.
-        # The flag is set here and may be cleared in connect() if the
-        # server turns out to be an older version without shm support.
-        # Setting ANSYS_EDB_CORE_DISABLE_SHARED_MEMORY forces legacy gRPC
-        # mode even on localhost (e.g. when connecting to an older server).
-        self.shared_memory = (
-            self.is_local()
-            and ansys_em_root is not None
-            and os.environ.get("ANSYS_EDB_CORE_DISABLE_SHARED_MEMORY", "0") != "1"
-        )
+        # Shared memory is only used when explicitly requested via
+        # use_shared_memory_ipc=True and a local server is being launched.
+        self.shared_memory = use_shared_memory_ipc and self.is_local() and ansys_em_root is not None
         if self.shared_memory:
             self._shm_name = f"edb_shm_{os.getpid()}"
 
@@ -670,12 +664,9 @@ def launch_session(
     ansys_em_root: str,
     port_num: int | None = None,
     dump_traffic_log: bool = False,
+    use_shared_memory_ipc: bool = False,
 ):
     r"""Launch a local session to an EDB API server.
-
-    Shared-memory IPC is used automatically when launching a local
-    server.  If the installed server does not support shared memory,
-    the session falls back to standard gRPC communication transparently.
 
     The session must be manually disconnected after use by calling session.disconnect()
 
@@ -688,6 +679,12 @@ def launch_session(
         is selected.
     dump_traffic_log : bool, default: False
         Flag indicating if the network traffic log should be dumped when the session is disconnected.
+    use_shared_memory_ipc : bool, default: False
+        Flag indicating if shared-memory IPC should be used for client/server communication.
+        When ``True``, data is transferred via a shared memory region instead of over the network,
+        which can significantly boost performance for large data transfers.
+        If the installed server does not support shared memory, the session falls back to standard
+        gRPC communication automatically.
 
     Examples
     --------
@@ -700,7 +697,9 @@ def launch_session(
     ip_address = None  # remote launch is not supported yet
 
     try:
-        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log)
+        _ensure_session(
+            ansys_em_root, port_num, ip_address, dump_traffic_log, use_shared_memory_ipc
+        )
         return MOD.current_session
     except Exception as e:  # noqa
         if MOD.current_session is not None:
@@ -714,12 +713,9 @@ def session(
     port_num: int | None = None,
     ip_address: str | None = None,
     dump_traffic_log: bool = False,
+    use_shared_memory_ipc: bool = False,
 ):
     r"""Launch a local session to an EDB API server in a context manager.
-
-    Shared-memory IPC is used automatically when launching a local
-    server.  If the installed server does not support shared memory,
-    the session falls back to standard gRPC communication transparently.
 
     Parameters
     ----------
@@ -736,7 +732,13 @@ def session(
            This parameter is currently not supported. In future releases, this parameter is to
            support remotely running the API on another machine.
     dump_traffic_log : bool, default: False
-        Flag indicating if the network traffic log should be dumped when the session is disconnected
+        Flag indicating if the network traffic log should be dumped when the session is disconnected.
+    use_shared_memory_ipc : bool, default: False
+        Flag indicating if shared-memory IPC should be used for client/server communication.
+        When ``True``, data is transferred via a shared memory region instead of over the network,
+        which can significantly boost performance for large data transfers.
+        If the installed server does not support shared memory, the session falls back to standard
+        gRPC communication automatically.
 
     Examples
     --------
@@ -746,7 +748,9 @@ def session(
     >>>    # program goes here
     """
     try:
-        _ensure_session(ansys_em_root, port_num, ip_address, dump_traffic_log)
+        _ensure_session(
+            ansys_em_root, port_num, ip_address, dump_traffic_log, use_shared_memory_ipc
+        )
         yield
     except EDBSessionException:
         raise
@@ -812,6 +816,7 @@ def _ensure_session(
     port_num: int,
     ip_address: str | None,
     dump_traffic_log: bool,
+    use_shared_memory_ipc: bool = False,
 ):
     """Check for a running local session and create one if it doesn't exist.
 
@@ -825,12 +830,16 @@ def _ensure_session(
         IP address where the server executable file is running.
     dump_traffic_log : bool
         Flag indicating if the network traffic log should be dumped when the session is disconnected.
+    use_shared_memory_ipc : bool, default: False
+        Flag indicating if shared-memory IPC should be used for client/server communication.
     """
     if MOD.current_session is not None:
         if (MOD.current_session.port_num) != port_num:
             raise EDBSessionException(ErrorCode.STARTUP_MULTI_SESSIONS)
     else:
-        MOD.current_session = _Session(ip_address, port_num, ansys_em_root, dump_traffic_log)
+        MOD.current_session = _Session(
+            ip_address, port_num, ansys_em_root, dump_traffic_log, use_shared_memory_ipc
+        )
         MOD.current_session.connect()
 
 

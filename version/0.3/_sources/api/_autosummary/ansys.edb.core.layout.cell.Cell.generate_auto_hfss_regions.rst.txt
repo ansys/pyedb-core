@@ -1,0 +1,6 @@
+generate\_auto\_hfss\_regions
+=============================
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. automethod:: Cell.generate_auto_hfss_regions

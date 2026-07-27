@@ -1,0 +1,6 @@
+PADGEOMTYPE\_OVAL
+=================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadGeometryType.PADGEOMTYPE_OVAL

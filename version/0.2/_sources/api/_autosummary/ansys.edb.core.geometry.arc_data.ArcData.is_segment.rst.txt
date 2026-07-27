@@ -1,0 +1,6 @@
+is\_segment
+===========
+
+.. currentmodule:: ansys.edb.core.geometry.arc_data
+
+.. automethod:: ArcData.is_segment

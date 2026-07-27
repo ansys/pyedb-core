@@ -1,0 +1,6 @@
+thin\_dielectric\_layer\_threshold
+==================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSolverSettings.thin_dielectric_layer_threshold

@@ -1,0 +1,6 @@
+INVALID\_PRODUCT
+================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoattribute:: ProductIdType.INVALID_PRODUCT

@@ -1,0 +1,6 @@
+include\_improved\_loss\_handling
+=================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSISignalNetsSettings.include_improved_loss_handling

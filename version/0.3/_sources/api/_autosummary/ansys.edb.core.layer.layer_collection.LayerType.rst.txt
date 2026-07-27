@@ -1,0 +1,40 @@
+﻿LayerType
+=========
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoclass:: LayerType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayerType.SIGNAL_LAYER
+      LayerType.DIELECTRIC_LAYER
+      LayerType.CONDUCTING_LAYER
+      LayerType.AIRLINES_LAYER
+      LayerType.ERRORS_LAYER
+      LayerType.SYMBOL_LAYER
+      LayerType.MEASURE_LAYER
+      LayerType.ASSEMBLY_LAYER
+      LayerType.SILKSCREEN_LAYER
+      LayerType.SOLDER_MASK_LAYER
+      LayerType.SOLDER_PASTE_LAYER
+      LayerType.GLUE_LAYER
+      LayerType.WIREBOND_LAYER
+      LayerType.USER_LAYER
+      LayerType.SIWAVE_HFSS_SOLVER_REGIONS
+      LayerType.POST_PROCESSING_LAYER
+      LayerType.OUTLINE_LAYER
+      LayerType.LAYER_TYPES_COUNT
+      LayerType.UNDEFINED_LAYER_TYPE
+   
+   

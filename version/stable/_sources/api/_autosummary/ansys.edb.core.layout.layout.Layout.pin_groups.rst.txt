@@ -1,0 +1,6 @@
+pin\_groups
+===========
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. autoproperty:: Layout.pin_groups

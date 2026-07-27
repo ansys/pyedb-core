@@ -1,0 +1,6 @@
+use\_mx\_conv\_data
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: SingleFrequencyAdaptiveSolution.use_mx_conv_data

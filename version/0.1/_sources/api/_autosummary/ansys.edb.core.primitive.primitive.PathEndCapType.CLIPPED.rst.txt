@@ -1,0 +1,6 @@
+CLIPPED
+=======
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PathEndCapType.CLIPPED

@@ -1,0 +1,6 @@
+solve\_inside\_metal\_basis
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSettingsOptions.solve_inside_metal_basis

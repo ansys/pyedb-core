@@ -1,0 +1,6 @@
+circle\_start\_azimuth
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSAdvancedMeshingSettings.circle_start_azimuth

@@ -1,0 +1,102 @@
+﻿BoardBendDef
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoclass:: BoardBendDef
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      BoardBendDef.add_void
+      
+      
+      BoardBendDef.cast
+      
+      
+      BoardBendDef.create
+      
+      
+      BoardBendDef.create_3d_comp
+      
+      
+      BoardBendDef.create_hfss
+      
+      
+      BoardBendDef.create_stride
+      
+      
+      BoardBendDef.delete
+      
+      
+      BoardBendDef.find_by_id
+      
+      
+      BoardBendDef.get_hfss_prop
+      
+      
+      BoardBendDef.get_product_property
+      
+      
+      BoardBendDef.get_product_property_ids
+      
+      
+      BoardBendDef.make_zone_primitive
+      
+      
+      BoardBendDef.remove_hfss_prop
+      
+      
+      BoardBendDef.set_hfss_prop
+      
+      
+      BoardBendDef.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BoardBendDef.angle
+      BoardBendDef.bend_middle
+      BoardBendDef.bent_regions
+      BoardBendDef.boundary_primitive
+      BoardBendDef.can_be_zone_primitive
+      BoardBendDef.component
+      BoardBendDef.edb_uid
+      BoardBendDef.group
+      BoardBendDef.has_voids
+      BoardBendDef.id
+      BoardBendDef.is_mcad
+      BoardBendDef.is_mcad_3d_comp
+      BoardBendDef.is_mcad_hfss
+      BoardBendDef.is_mcad_stride
+      BoardBendDef.is_negative
+      BoardBendDef.is_null
+      BoardBendDef.is_parameterized
+      BoardBendDef.is_void
+      BoardBendDef.is_zone_primitive
+      BoardBendDef.layer
+      BoardBendDef.layout
+      BoardBendDef.layout_obj_type
+      BoardBendDef.msg
+      BoardBendDef.net
+      BoardBendDef.obj_type
+      BoardBendDef.owner
+      BoardBendDef.primitive_type
+      BoardBendDef.radius
+      BoardBendDef.voids
+   
+   

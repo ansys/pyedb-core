@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. automethod:: ViaGroup.create

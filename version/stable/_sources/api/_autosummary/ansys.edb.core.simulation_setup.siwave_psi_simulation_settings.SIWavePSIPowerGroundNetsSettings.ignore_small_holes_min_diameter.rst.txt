@@ -1,0 +1,6 @@
+ignore\_small\_holes\_min\_diameter
+===================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSIPowerGroundNetsSettings.ignore_small_holes_min_diameter

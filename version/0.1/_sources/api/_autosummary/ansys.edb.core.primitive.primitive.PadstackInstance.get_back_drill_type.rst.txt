@@ -1,0 +1,6 @@
+get\_back\_drill\_type
+======================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.get_back_drill_type

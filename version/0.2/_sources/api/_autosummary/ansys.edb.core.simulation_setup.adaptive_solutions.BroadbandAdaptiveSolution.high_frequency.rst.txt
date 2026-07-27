@@ -1,0 +1,6 @@
+high\_frequency
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: BroadbandAdaptiveSolution.high_frequency

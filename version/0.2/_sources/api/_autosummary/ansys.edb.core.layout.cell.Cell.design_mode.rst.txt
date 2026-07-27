@@ -1,0 +1,6 @@
+design\_mode
+============
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoproperty:: Cell.design_mode

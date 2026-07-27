@@ -1,0 +1,6 @@
+group
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. autoproperty:: BoardBendDef.group

@@ -1,0 +1,6 @@
+point\_3
+========
+
+.. currentmodule:: ansys.edb.core.geometry.triangle3d_data
+
+.. autoproperty:: Triangle3DData.point_3

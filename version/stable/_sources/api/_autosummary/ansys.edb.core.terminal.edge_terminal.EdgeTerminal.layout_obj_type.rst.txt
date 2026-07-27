@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoattribute:: EdgeTerminal.layout_obj_type

@@ -1,0 +1,45 @@
+﻿MatrixConvergenceData
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoclass:: MatrixConvergenceData
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      MatrixConvergenceData.add_entry
+      
+      
+      MatrixConvergenceData.set_all_constant
+      
+      
+      MatrixConvergenceData.set_all_diag_constant
+      
+      
+      MatrixConvergenceData.set_all_off_diag_constant
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MatrixConvergenceData.all_constant
+      MatrixConvergenceData.all_diag_constant
+      MatrixConvergenceData.all_off_diag_constant
+      MatrixConvergenceData.entry_list
+      MatrixConvergenceData.mag_min_threshold
+   
+   

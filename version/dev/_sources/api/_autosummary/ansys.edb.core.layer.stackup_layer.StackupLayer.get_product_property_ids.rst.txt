@@ -1,0 +1,6 @@
+get\_product\_property\_ids
+===========================
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. automethod:: StackupLayer.get_product_property_ids

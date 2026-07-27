@@ -1,0 +1,6 @@
+component\_def
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. autoproperty:: Group.component_def

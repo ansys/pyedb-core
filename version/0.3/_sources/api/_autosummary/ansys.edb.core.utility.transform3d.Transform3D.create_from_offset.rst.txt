@@ -1,0 +1,6 @@
+create\_from\_offset
+====================
+
+.. currentmodule:: ansys.edb.core.utility.transform3d
+
+.. automethod:: Transform3D.create_from_offset

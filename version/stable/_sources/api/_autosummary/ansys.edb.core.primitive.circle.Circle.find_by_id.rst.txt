@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.primitive.circle
+
+.. automethod:: Circle.find_by_id

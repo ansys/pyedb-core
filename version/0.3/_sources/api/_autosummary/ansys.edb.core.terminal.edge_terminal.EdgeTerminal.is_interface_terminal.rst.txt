@@ -1,0 +1,6 @@
+is\_interface\_terminal
+=======================
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoproperty:: EdgeTerminal.is_interface_terminal

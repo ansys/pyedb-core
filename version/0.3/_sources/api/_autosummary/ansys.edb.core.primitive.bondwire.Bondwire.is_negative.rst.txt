@@ -1,0 +1,6 @@
+is\_negative
+============
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. autoproperty:: Bondwire.is_negative

@@ -1,0 +1,22 @@
+﻿InterpolatingSweepData
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoclass:: InterpolatingSweepData
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

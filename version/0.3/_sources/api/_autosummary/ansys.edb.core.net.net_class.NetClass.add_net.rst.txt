@@ -1,0 +1,6 @@
+add\_net
+========
+
+.. currentmodule:: ansys.edb.core.net.net_class
+
+.. automethod:: NetClass.add_net

@@ -1,0 +1,23 @@
+﻿CellType
+========
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoclass:: CellType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CellType.CIRCUIT_CELL
+      CellType.FOOTPRINT_CELL
+   
+   

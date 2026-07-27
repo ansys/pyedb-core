@@ -1,0 +1,6 @@
+material\_defs
+==============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.material_defs

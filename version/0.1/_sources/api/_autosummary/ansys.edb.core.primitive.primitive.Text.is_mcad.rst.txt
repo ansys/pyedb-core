@@ -1,0 +1,6 @@
+is\_mcad
+========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Text.is_mcad

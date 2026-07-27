@@ -1,0 +1,104 @@
+﻿ViaLayer
+========
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. autoclass:: ViaLayer
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ViaLayer.cast
+      
+      
+      ViaLayer.clone
+      
+      
+      ViaLayer.create
+      
+      
+      ViaLayer.get_fill_material
+      
+      
+      ViaLayer.get_material
+      
+      
+      ViaLayer.get_product_property
+      
+      
+      ViaLayer.get_product_property_ids
+      
+      
+      ViaLayer.get_ref_layer_name
+      
+      
+      ViaLayer.get_roughness_model
+      
+      
+      ViaLayer.is_in_zone
+      
+      
+      ViaLayer.set_fill_material
+      
+      
+      ViaLayer.set_is_in_zone
+      
+      
+      ViaLayer.set_material
+      
+      
+      ViaLayer.set_product_property
+      
+      
+      ViaLayer.set_ref_layer
+      
+      
+      ViaLayer.set_roughness_model
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ViaLayer.color
+      ViaLayer.draw_override
+      ViaLayer.etch_factor
+      ViaLayer.etch_factor_enabled
+      ViaLayer.etch_net_class
+      ViaLayer.hfss_solver_properties
+      ViaLayer.id
+      ViaLayer.is_null
+      ViaLayer.is_stackup_layer
+      ViaLayer.is_via_layer
+      ViaLayer.layer_id
+      ViaLayer.layout_obj_type
+      ViaLayer.locked
+      ViaLayer.lower_elevation
+      ViaLayer.msg
+      ViaLayer.name
+      ViaLayer.negative
+      ViaLayer.referencing_via_layer_ids
+      ViaLayer.roughness_enabled
+      ViaLayer.thickness
+      ViaLayer.top_bottom_association
+      ViaLayer.transparency
+      ViaLayer.type
+      ViaLayer.upper_elevation
+      ViaLayer.use_solver_properties
+      ViaLayer.visibility_mask
+      ViaLayer.zone
+      ViaLayer.zones
+   
+   

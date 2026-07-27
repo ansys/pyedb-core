@@ -1,0 +1,6 @@
+dc\_relative\_permittivity
+==========================
+
+.. currentmodule:: ansys.edb.core.definition.djordjecvic_sarkar_model
+
+.. autoproperty:: DjordjecvicSarkarModel.dc_relative_permittivity

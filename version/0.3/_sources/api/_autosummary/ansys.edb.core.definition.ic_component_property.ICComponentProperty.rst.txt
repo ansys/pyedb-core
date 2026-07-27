@@ -1,0 +1,43 @@
+﻿ICComponentProperty
+===================
+
+.. currentmodule:: ansys.edb.core.definition.ic_component_property
+
+.. autoclass:: ICComponentProperty
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ICComponentProperty.clone
+      
+      
+      ICComponentProperty.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ICComponentProperty.die_property
+      ICComponentProperty.id
+      ICComponentProperty.is_null
+      ICComponentProperty.model
+      ICComponentProperty.msg
+      ICComponentProperty.package_def
+      ICComponentProperty.package_mounting_offset
+      ICComponentProperty.port_property
+      ICComponentProperty.solder_ball_property
+   
+   

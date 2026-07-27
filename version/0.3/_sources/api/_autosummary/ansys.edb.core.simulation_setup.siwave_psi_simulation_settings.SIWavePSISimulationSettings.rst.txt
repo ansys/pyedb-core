@@ -1,0 +1,34 @@
+﻿SIWavePSISimulationSettings
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoclass:: SIWavePSISimulationSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSISimulationSettings.enabled
+      SIWavePSISimulationSettings.general
+      SIWavePSISimulationSettings.msg
+      SIWavePSISimulationSettings.net_processing
+      SIWavePSISimulationSettings.power_ground_nets
+      SIWavePSISimulationSettings.signal_nets
+   
+   

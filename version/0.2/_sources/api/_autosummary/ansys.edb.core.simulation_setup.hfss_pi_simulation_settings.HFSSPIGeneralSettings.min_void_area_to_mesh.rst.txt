@@ -1,0 +1,6 @@
+min\_void\_area\_to\_mesh
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIGeneralSettings.min_void_area_to_mesh

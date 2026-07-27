@@ -1,0 +1,6 @@
+via\_model\_type
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedSettings.via_model_type

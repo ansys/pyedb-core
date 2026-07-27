@@ -1,0 +1,6 @@
+center\_line
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Path.center_line

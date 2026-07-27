@@ -1,0 +1,30 @@
+﻿BoundaryType
+============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoclass:: BoundaryType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BoundaryType.PORT
+      BoundaryType.PEC
+      BoundaryType.RLC
+      BoundaryType.CURRENT_SOURCE
+      BoundaryType.VOLTAGE_SOURCE
+      BoundaryType.NEXXIM_GROUND
+      BoundaryType.NEXXIM_PORT
+      BoundaryType.DC_TERMINAL
+      BoundaryType.VOLTAGE_PROBE
+   
+   

@@ -1,0 +1,46 @@
+﻿SPICEModel
+==========
+
+.. currentmodule:: ansys.edb.core.hierarchy.spice_model
+
+.. autoclass:: SPICEModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SPICEModel.add_terminal
+      
+      
+      SPICEModel.clone
+      
+      
+      SPICEModel.create
+      
+      
+      SPICEModel.remove_terminal
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SPICEModel.id
+      SPICEModel.is_null
+      SPICEModel.model_name
+      SPICEModel.model_path
+      SPICEModel.msg
+      SPICEModel.sub_circuit
+   
+   

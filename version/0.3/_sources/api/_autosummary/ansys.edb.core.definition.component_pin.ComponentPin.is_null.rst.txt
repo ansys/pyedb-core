@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.component_pin
+
+.. autoproperty:: ComponentPin.is_null

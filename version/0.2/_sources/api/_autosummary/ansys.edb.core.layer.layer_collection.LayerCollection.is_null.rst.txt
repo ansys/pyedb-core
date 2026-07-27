@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoproperty:: LayerCollection.is_null

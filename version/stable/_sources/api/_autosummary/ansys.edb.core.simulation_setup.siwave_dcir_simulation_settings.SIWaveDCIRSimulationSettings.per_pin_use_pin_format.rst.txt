@@ -1,0 +1,6 @@
+per\_pin\_use\_pin\_format
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.per_pin_use_pin_format

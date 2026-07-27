@@ -1,0 +1,36 @@
+﻿Q3DSimulationSettings
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DSimulationSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DSimulationSettings.acrl
+      Q3DSimulationSettings.advanced
+      Q3DSimulationSettings.advanced_meshing
+      Q3DSimulationSettings.cg
+      Q3DSimulationSettings.dcrl
+      Q3DSimulationSettings.enabled
+      Q3DSimulationSettings.general
+      Q3DSimulationSettings.msg
+   
+   

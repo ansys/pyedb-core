@@ -1,0 +1,6 @@
+netlist
+=======
+
+.. currentmodule:: ansys.edb.core.hierarchy.netlist_model
+
+.. autoproperty:: NetlistModel.netlist

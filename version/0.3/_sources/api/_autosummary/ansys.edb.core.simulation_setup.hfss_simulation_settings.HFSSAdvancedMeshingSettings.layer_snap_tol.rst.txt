@@ -1,0 +1,6 @@
+layer\_snap\_tol
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSAdvancedMeshingSettings.layer_snap_tol

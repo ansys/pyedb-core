@@ -1,0 +1,6 @@
+loss\_tangent\_at\_frequency
+============================
+
+.. currentmodule:: ansys.edb.core.definition.djordjecvic_sarkar_model
+
+.. autoproperty:: DjordjecvicSarkarModel.loss_tangent_at_frequency

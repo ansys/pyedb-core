@@ -1,0 +1,75 @@
+﻿TerminalInstance
+================
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. autoclass:: TerminalInstance
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TerminalInstance.cast
+      
+      
+      TerminalInstance.create
+      
+      
+      TerminalInstance.create_3d_comp
+      
+      
+      TerminalInstance.create_hfss
+      
+      
+      TerminalInstance.create_stride
+      
+      
+      TerminalInstance.delete
+      
+      
+      TerminalInstance.find_by_id
+      
+      
+      TerminalInstance.get_product_property
+      
+      
+      TerminalInstance.get_product_property_ids
+      
+      
+      TerminalInstance.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TerminalInstance.component
+      TerminalInstance.definition_terminal
+      TerminalInstance.definition_terminal_name
+      TerminalInstance.edb_uid
+      TerminalInstance.group
+      TerminalInstance.id
+      TerminalInstance.is_mcad
+      TerminalInstance.is_mcad_3d_comp
+      TerminalInstance.is_mcad_hfss
+      TerminalInstance.is_mcad_stride
+      TerminalInstance.is_null
+      TerminalInstance.layout
+      TerminalInstance.layout_obj_type
+      TerminalInstance.msg
+      TerminalInstance.net
+      TerminalInstance.obj_type
+      TerminalInstance.owning_cell_instance
+   
+   

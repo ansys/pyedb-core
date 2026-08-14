@@ -1,0 +1,30 @@
+﻿MultiFrequencyAdaptiveSolution
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoclass:: MultiFrequencyAdaptiveSolution
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MultiFrequencyAdaptiveSolution.adaptive_frequencies
+      MultiFrequencyAdaptiveSolution.max_passes
+   
+   

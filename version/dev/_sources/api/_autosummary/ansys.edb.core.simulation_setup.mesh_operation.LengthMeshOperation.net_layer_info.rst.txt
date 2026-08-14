@@ -1,0 +1,6 @@
+net\_layer\_info
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoproperty:: LengthMeshOperation.net_layer_info

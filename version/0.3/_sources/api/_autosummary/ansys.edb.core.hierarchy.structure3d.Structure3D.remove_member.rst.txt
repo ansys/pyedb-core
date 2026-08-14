@@ -1,0 +1,6 @@
+remove\_member
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. automethod:: Structure3D.remove_member

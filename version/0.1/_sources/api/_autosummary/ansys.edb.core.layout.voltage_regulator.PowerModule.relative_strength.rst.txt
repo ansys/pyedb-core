@@ -1,0 +1,6 @@
+relative\_strength
+==================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: PowerModule.relative_strength

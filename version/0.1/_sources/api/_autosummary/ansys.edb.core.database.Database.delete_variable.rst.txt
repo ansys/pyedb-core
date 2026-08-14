@@ -1,0 +1,6 @@
+delete\_variable
+================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.delete_variable

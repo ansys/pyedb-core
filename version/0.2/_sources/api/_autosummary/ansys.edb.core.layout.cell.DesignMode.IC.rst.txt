@@ -1,0 +1,6 @@
+IC
+==
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoattribute:: DesignMode.IC

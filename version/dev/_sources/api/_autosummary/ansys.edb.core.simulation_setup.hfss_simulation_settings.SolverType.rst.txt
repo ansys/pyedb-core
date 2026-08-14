@@ -1,0 +1,25 @@
+﻿SolverType
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoclass:: SolverType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SolverType.AUTO_SOLVER
+      SolverType.DIRECT_SOLVER
+      SolverType.ITERATIVE_SOLVER
+      SolverType.NUM_SOLVER_TYPES
+   
+   

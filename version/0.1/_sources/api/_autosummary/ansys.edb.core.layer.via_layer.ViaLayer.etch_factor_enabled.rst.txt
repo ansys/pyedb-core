@@ -1,0 +1,6 @@
+etch\_factor\_enabled
+=====================
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. autoproperty:: ViaLayer.etch_factor_enabled

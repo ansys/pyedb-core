@@ -1,0 +1,6 @@
+pos\_remote\_sense\_pin
+=======================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: VoltageRegulator.pos_remote_sense_pin

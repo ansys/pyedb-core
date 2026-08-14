@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance_terminal
+
+.. automethod:: TerminalInstanceTerminal.delete

@@ -1,0 +1,6 @@
+position
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_setup
+
+.. autoproperty:: HFSSPISimulationSetup.position

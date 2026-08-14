@@ -1,0 +1,6 @@
+arc\_step\_size
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedMeshingSettings.arc_step_size

@@ -1,0 +1,104 @@
+﻿TerminalInstanceTerminal
+========================
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance_terminal
+
+.. autoclass:: TerminalInstanceTerminal
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TerminalInstanceTerminal.cast
+      
+      
+      TerminalInstanceTerminal.create
+      
+      
+      TerminalInstanceTerminal.create_3d_comp
+      
+      
+      TerminalInstanceTerminal.create_hfss
+      
+      
+      TerminalInstanceTerminal.create_stride
+      
+      
+      TerminalInstanceTerminal.delete
+      
+      
+      TerminalInstanceTerminal.find
+      
+      
+      TerminalInstanceTerminal.find_by_id
+      
+      
+      TerminalInstanceTerminal.get_product_property
+      
+      
+      TerminalInstanceTerminal.get_product_property_ids
+      
+      
+      TerminalInstanceTerminal.product_solver_names
+      
+      
+      TerminalInstanceTerminal.product_solver_option
+      
+      
+      TerminalInstanceTerminal.set_product_property
+      
+      
+      TerminalInstanceTerminal.set_product_solver_option
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TerminalInstanceTerminal.boundary_type
+      TerminalInstanceTerminal.bundle_terminal
+      TerminalInstanceTerminal.component
+      TerminalInstanceTerminal.edb_uid
+      TerminalInstanceTerminal.group
+      TerminalInstanceTerminal.hfss_pi_type
+      TerminalInstanceTerminal.id
+      TerminalInstanceTerminal.impedance
+      TerminalInstanceTerminal.is_auto_port
+      TerminalInstanceTerminal.is_circuit_port
+      TerminalInstanceTerminal.is_interface_terminal
+      TerminalInstanceTerminal.is_mcad
+      TerminalInstanceTerminal.is_mcad_3d_comp
+      TerminalInstanceTerminal.is_mcad_hfss
+      TerminalInstanceTerminal.is_mcad_stride
+      TerminalInstanceTerminal.is_null
+      TerminalInstanceTerminal.is_reference_terminal
+      TerminalInstanceTerminal.layout
+      TerminalInstanceTerminal.layout_obj_type
+      TerminalInstanceTerminal.model
+      TerminalInstanceTerminal.msg
+      TerminalInstanceTerminal.name
+      TerminalInstanceTerminal.net
+      TerminalInstanceTerminal.obj_type
+      TerminalInstanceTerminal.port_post_processing_prop
+      TerminalInstanceTerminal.reference_layer
+      TerminalInstanceTerminal.reference_terminal
+      TerminalInstanceTerminal.rlc_boundary_parameters
+      TerminalInstanceTerminal.source_amplitude
+      TerminalInstanceTerminal.source_phase
+      TerminalInstanceTerminal.term_to_ground
+      TerminalInstanceTerminal.terminal_instance
+      TerminalInstanceTerminal.type
+      TerminalInstanceTerminal.use_reference_from_hierarchy
+   
+   

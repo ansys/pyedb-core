@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. automethod:: PinGroup.delete

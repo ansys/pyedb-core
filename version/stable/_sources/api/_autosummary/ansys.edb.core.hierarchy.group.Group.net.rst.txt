@@ -1,0 +1,6 @@
+net
+===
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. autoproperty:: Group.net

@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. automethod:: TerminalInstance.find_by_id

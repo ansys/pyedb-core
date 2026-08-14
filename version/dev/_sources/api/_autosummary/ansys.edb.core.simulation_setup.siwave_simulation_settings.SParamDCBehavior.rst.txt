@@ -1,0 +1,27 @@
+﻿SParamDCBehavior
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SParamDCBehavior
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SParamDCBehavior.ZERO_DC
+      SParamDCBehavior.SAME_DC
+      SParamDCBehavior.LINEAR_DC
+      SParamDCBehavior.CONSTANT_DC
+      SParamDCBehavior.ONE_PORT_CAPACITOR_DC
+      SParamDCBehavior.OPEN_DC
+   
+   

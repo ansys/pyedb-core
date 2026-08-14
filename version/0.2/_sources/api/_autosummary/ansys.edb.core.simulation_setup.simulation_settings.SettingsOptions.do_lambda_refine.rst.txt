@@ -1,0 +1,6 @@
+do\_lambda\_refine
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: SettingsOptions.do_lambda_refine

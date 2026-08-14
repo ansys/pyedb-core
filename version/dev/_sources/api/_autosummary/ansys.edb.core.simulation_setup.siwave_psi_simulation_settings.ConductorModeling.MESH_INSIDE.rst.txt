@@ -1,0 +1,6 @@
+MESH\_INSIDE
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoattribute:: ConductorModeling.MESH_INSIDE

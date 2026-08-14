@@ -1,0 +1,6 @@
+get\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.net.extended_net
+
+.. automethod:: ExtendedNet.get_product_property

@@ -1,0 +1,6 @@
+create\_value
+=============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.create_value

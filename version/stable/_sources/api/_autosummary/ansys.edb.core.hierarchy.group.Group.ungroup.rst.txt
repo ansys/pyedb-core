@@ -1,0 +1,6 @@
+ungroup
+=======
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. automethod:: Group.ungroup

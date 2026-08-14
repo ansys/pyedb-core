@@ -1,0 +1,6 @@
+get\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. automethod:: Group.get_product_property

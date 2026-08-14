@@ -1,0 +1,6 @@
+clear
+=====
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. automethod:: LayerMap.clear

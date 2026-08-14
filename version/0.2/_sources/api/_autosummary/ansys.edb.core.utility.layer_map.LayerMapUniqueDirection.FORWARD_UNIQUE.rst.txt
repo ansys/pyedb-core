@@ -1,0 +1,6 @@
+FORWARD\_UNIQUE
+===============
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. autoattribute:: LayerMapUniqueDirection.FORWARD_UNIQUE

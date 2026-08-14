@@ -1,0 +1,6 @@
+IMPEDANCE\_BOUNDARY
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoattribute:: ConductorModeling.IMPEDANCE_BOUNDARY

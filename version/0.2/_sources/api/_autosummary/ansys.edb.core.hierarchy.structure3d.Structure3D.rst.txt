@@ -1,0 +1,99 @@
+﻿Structure3D
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. autoclass:: Structure3D
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Structure3D.add_member
+      
+      
+      Structure3D.cast
+      
+      
+      Structure3D.create
+      
+      
+      Structure3D.create_3d_comp
+      
+      
+      Structure3D.create_hfss
+      
+      
+      Structure3D.create_stride
+      
+      
+      Structure3D.delete
+      
+      
+      Structure3D.find
+      
+      
+      Structure3D.find_by_id
+      
+      
+      Structure3D.get_material
+      
+      
+      Structure3D.get_product_property
+      
+      
+      Structure3D.get_product_property_ids
+      
+      
+      Structure3D.remove_member
+      
+      
+      Structure3D.set_material
+      
+      
+      Structure3D.set_product_property
+      
+      
+      Structure3D.ungroup
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Structure3D.component
+      Structure3D.component_def
+      Structure3D.edb_uid
+      Structure3D.group
+      Structure3D.id
+      Structure3D.is_mcad
+      Structure3D.is_mcad_3d_comp
+      Structure3D.is_mcad_hfss
+      Structure3D.is_mcad_stride
+      Structure3D.is_null
+      Structure3D.layout
+      Structure3D.layout_obj_type
+      Structure3D.location
+      Structure3D.members
+      Structure3D.mesh_closure
+      Structure3D.msg
+      Structure3D.name
+      Structure3D.net
+      Structure3D.obj_type
+      Structure3D.placement_layer
+      Structure3D.solve_independent_preference
+      Structure3D.thickness
+      Structure3D.transform
+   
+   

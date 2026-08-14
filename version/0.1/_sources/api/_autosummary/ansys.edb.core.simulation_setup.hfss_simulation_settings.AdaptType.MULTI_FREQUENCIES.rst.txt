@@ -1,0 +1,6 @@
+MULTI\_FREQUENCIES
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoattribute:: AdaptType.MULTI_FREQUENCIES

@@ -1,0 +1,6 @@
+voids
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. autoproperty:: Rectangle.voids

@@ -1,0 +1,6 @@
+relative\_permittivity\_at\_high\_low\_frequency
+================================================
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. autoproperty:: DebyeModel.relative_permittivity_at_high_low_frequency

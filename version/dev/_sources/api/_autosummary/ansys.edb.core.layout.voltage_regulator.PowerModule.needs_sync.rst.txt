@@ -1,0 +1,6 @@
+needs\_sync
+===========
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: PowerModule.needs_sync

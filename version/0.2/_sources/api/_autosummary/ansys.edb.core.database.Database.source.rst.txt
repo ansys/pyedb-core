@@ -1,0 +1,6 @@
+source
+======
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.source

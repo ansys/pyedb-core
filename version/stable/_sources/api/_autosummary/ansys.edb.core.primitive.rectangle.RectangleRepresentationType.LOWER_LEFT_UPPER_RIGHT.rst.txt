@@ -1,0 +1,6 @@
+LOWER\_LEFT\_UPPER\_RIGHT
+=========================
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. autoattribute:: RectangleRepresentationType.LOWER_LEFT_UPPER_RIGHT

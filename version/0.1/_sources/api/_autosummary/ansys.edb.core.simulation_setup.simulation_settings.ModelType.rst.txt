@@ -1,0 +1,23 @@
+﻿ModelType
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoclass:: ModelType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ModelType.GENERAL_MODEL
+      ModelType.IC_MODEL
+   
+   

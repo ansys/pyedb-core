@@ -1,0 +1,24 @@
+﻿FreqSweepType
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoclass:: FreqSweepType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      FreqSweepType.INTERPOLATING_SWEEP
+      FreqSweepType.DISCRETE_SWEEP
+      FreqSweepType.BROADBAND_SWEEP
+   
+   

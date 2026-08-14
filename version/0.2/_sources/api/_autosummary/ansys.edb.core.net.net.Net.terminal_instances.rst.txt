@@ -1,0 +1,6 @@
+terminal\_instances
+===================
+
+.. currentmodule:: ansys.edb.core.net.net
+
+.. autoproperty:: Net.terminal_instances

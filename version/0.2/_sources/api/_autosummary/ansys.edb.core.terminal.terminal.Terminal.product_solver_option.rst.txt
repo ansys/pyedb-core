@@ -1,0 +1,6 @@
+product\_solver\_option
+=======================
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. automethod:: Terminal.product_solver_option

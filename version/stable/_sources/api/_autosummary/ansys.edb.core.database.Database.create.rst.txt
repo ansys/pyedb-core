@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.create

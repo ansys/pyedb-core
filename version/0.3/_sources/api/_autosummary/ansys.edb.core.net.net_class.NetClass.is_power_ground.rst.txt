@@ -1,0 +1,6 @@
+is\_power\_ground
+=================
+
+.. currentmodule:: ansys.edb.core.net.net_class
+
+.. autoproperty:: NetClass.is_power_ground

@@ -1,0 +1,6 @@
+port\_1\_name
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: MatrixConvergenceDataEntry.port_1_name

@@ -1,0 +1,6 @@
+dc\_min\_plane\_area\_to\_mesh
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCAdvancedSettings.dc_min_plane_area_to_mesh

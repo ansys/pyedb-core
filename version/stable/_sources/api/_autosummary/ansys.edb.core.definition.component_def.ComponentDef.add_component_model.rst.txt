@@ -1,0 +1,6 @@
+add\_component\_model
+=====================
+
+.. currentmodule:: ansys.edb.core.definition.component_def
+
+.. automethod:: ComponentDef.add_component_model

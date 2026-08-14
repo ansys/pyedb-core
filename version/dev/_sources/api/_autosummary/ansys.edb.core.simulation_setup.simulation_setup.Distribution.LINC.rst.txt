@@ -1,0 +1,6 @@
+LINC
+====
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: Distribution.LINC

@@ -1,0 +1,6 @@
+footprint\_cells
+================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.footprint_cells

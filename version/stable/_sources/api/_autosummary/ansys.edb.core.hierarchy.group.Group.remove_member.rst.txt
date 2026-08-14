@@ -1,0 +1,6 @@
+remove\_member
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. automethod:: Group.remove_member

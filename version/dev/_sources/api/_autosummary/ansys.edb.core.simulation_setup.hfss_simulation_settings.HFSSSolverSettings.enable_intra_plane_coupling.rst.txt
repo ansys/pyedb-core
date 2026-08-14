@@ -1,0 +1,6 @@
+enable\_intra\_plane\_coupling
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSolverSettings.enable_intra_plane_coupling

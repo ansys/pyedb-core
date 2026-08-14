@@ -1,0 +1,6 @@
+perform\_erc
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSIGeneralSettings.perform_erc

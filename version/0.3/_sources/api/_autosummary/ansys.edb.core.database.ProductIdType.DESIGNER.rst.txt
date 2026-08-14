@@ -1,0 +1,6 @@
+DESIGNER
+========
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoattribute:: ProductIdType.DESIGNER

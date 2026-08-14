@@ -1,0 +1,6 @@
+PATH\_3D
+========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PrimitiveType.PATH_3D

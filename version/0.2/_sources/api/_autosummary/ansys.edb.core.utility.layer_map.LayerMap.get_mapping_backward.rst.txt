@@ -1,0 +1,6 @@
+get\_mapping\_backward
+======================
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. automethod:: LayerMap.get_mapping_backward

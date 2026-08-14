@@ -1,0 +1,6 @@
+DEBYE
+=====
+
+.. currentmodule:: ansys.edb.core.definition.dielectric_material_model
+
+.. autoattribute:: DielectricMaterialModelType.DEBYE

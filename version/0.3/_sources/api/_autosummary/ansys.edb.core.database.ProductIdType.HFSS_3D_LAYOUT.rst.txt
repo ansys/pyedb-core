@@ -1,0 +1,6 @@
+HFSS\_3D\_LAYOUT
+================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoattribute:: ProductIdType.HFSS_3D_LAYOUT

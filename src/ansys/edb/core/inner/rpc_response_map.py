@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Defines map of RPC responses by service and method name."""
 
 from ansys.api.edb.v1.bondwire_def_pb2 import Jedec5BondwireDefParametersMessage
@@ -6,6 +28,7 @@ from ansys.api.edb.v1.bondwire_pb2 import BondwireTypeMessage
 from ansys.api.edb.v1.bondwire_pb2 import GetCrossSectionTypeMessage
 from ansys.api.edb.v1.circle_pb2 import CircleParametersMessage
 from ansys.api.edb.v1.component_model_pb2 import ComponentModelTypeMessage
+from ansys.api.edb.v1.component_property_pb2 import ComponentPropertyTypeMessage
 from ansys.api.edb.v1.component_property_pb2 import ComponentPropModelMessage
 from ansys.api.edb.v1.connectable_pb2 import LayoutObjTypeMessage
 from ansys.api.edb.v1.database_pb2 import GetVersionMessage
@@ -318,6 +341,7 @@ rpc_response_map = {
     },
     "ansys.api.edb.v1.ComponentPropertyService": {
         "Clone": EDBObjMessage,
+        "GetComponentPropertyType": ComponentPropertyTypeMessage,
         "GetPackageMountingOffset": ValueMessage,
         "SetPackageMountingOffset": Empty,
         "GetPackageDef": EDBObjMessage,

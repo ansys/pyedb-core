@@ -63,7 +63,7 @@ class TestDatabaseCreate:
         """Verify Database.create() raises when the path is completely invalid."""
         # Use a path with illegal characters that the OS itself will reject
         invalid_path = str(tmp_path / "invalid|path<>.aedb")
-        with pytest.raises(Exception):
+        with pytest.raises(RuntimeError):
             Database.create(invalid_path)
 
     @pytest.mark.parametrize("read_only", [True, False])
@@ -75,6 +75,12 @@ class TestDatabaseCreate:
             assert db.is_read_only is read_only
         finally:
             db.close()
+
+    def test_open_fails_for_nonexistent_path(self, edb_session, tmp_path):
+        """Verify Database.open() raises when the path does not contain a database."""
+        missing_path = str(tmp_path / "does_not_exist.aedb")
+        with pytest.raises(RuntimeError):
+            Database.open(missing_path, read_only=True)
 
 
 # ---------------------------------------------------------------------------
@@ -102,6 +108,12 @@ class TestDatabaseProperties:
         source_str = "my_source"
         new_db.source = source_str
         assert new_db.source == source_str
+
+    def test_source_version_property_round_trip(self, new_db):
+        """Verify source_version property reflects the value assigned via its setter."""
+        source_version_str = "2024.2"
+        new_db.source_version = source_version_str
+        assert new_db.source_version == source_version_str
 
 
 # ---------------------------------------------------------------------------
@@ -180,8 +192,13 @@ class TestDatabaseFindById:
         assert found.edb_uid == uid
 
     def test_find_by_id_invalid_raises(self, edb_session):
-        """Verify find_by_id() with a non-existent ID raises an exception."""
-        with pytest.raises(Exception):
+        """Verify find_by_id() with a non-existent ID raises an exception.
+
+        Note: find_by_id() does not document a Raises section; the server
+        returns a database with an invalid/zero ID for an unknown UID, which
+        trips the internal variable-owner-ID assertion in VariableServer.
+        """
+        with pytest.raises(AssertionError):
             Database.find_by_id(999999)
 
 

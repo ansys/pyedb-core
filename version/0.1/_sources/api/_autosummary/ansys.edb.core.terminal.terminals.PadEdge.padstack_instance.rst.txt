@@ -1,0 +1,6 @@
+padstack\_instance
+==================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: PadEdge.padstack_instance

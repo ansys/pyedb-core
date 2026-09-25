@@ -1,0 +1,64 @@
+﻿PadstackDefData
+===============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoclass:: PadstackDefData
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PadstackDefData.add_layers
+      
+      
+      PadstackDefData.create
+      
+      
+      PadstackDefData.get_connection_pt
+      
+      
+      PadstackDefData.get_hole_parameters
+      
+      
+      PadstackDefData.get_pad_parameters
+      
+      
+      PadstackDefData.set_connection_pt
+      
+      
+      PadstackDefData.set_hole_parameters
+      
+      
+      PadstackDefData.set_pad_parameters
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PadstackDefData.hole_range
+      PadstackDefData.id
+      PadstackDefData.is_null
+      PadstackDefData.layer_ids
+      PadstackDefData.layer_names
+      PadstackDefData.material
+      PadstackDefData.msg
+      PadstackDefData.plating_percentage
+      PadstackDefData.solder_ball_material
+      PadstackDefData.solder_ball_param
+      PadstackDefData.solder_ball_placement
+      PadstackDefData.solder_ball_shape
+   
+   

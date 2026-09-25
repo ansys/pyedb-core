@@ -1,0 +1,6 @@
+get\_ref\_layer\_name
+=====================
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. automethod:: ViaLayer.get_ref_layer_name

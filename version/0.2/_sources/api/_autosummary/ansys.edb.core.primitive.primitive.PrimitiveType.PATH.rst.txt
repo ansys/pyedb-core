@@ -1,0 +1,6 @@
+PATH
+====
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PrimitiveType.PATH

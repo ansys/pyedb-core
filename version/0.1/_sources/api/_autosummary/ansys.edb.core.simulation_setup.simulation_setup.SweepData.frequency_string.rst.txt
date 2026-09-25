@@ -1,0 +1,6 @@
+frequency\_string
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoproperty:: SweepData.frequency_string

@@ -1,0 +1,6 @@
+ignore\_dummy\_nets\_for\_selected\_nets
+========================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSINetProcessingSettings.ignore_dummy_nets_for_selected_nets

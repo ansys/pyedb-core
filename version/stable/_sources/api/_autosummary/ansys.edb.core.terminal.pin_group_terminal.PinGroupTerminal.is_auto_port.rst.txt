@@ -1,0 +1,6 @@
+is\_auto\_port
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.pin_group_terminal
+
+.. autoproperty:: PinGroupTerminal.is_auto_port

@@ -1,0 +1,6 @@
+NO\_OVERRIDE
+============
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: DrawOverride.NO_OVERRIDE

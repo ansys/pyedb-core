@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoattribute:: BundleTerminal.type

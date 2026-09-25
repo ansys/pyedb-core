@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoattribute:: StackupLayer.layout_obj_type

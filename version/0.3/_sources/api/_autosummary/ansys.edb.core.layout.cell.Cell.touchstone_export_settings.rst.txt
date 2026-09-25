@@ -1,0 +1,6 @@
+touchstone\_export\_settings
+============================
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoproperty:: Cell.touchstone_export_settings

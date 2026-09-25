@@ -1,0 +1,6 @@
+create\_3d\_comp
+================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. automethod:: PadstackInstanceTerminal.create_3d_comp

@@ -1,0 +1,6 @@
+obj\_type
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Rectangle.obj_type

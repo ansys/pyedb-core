@@ -1,0 +1,30 @@
+﻿ErrorTolerance
+==============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: ErrorTolerance
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ErrorTolerance.ET_0_0
+      ErrorTolerance.ET_0_02
+      ErrorTolerance.ET_0_04
+      ErrorTolerance.ET_0_06
+      ErrorTolerance.ET_0_08
+      ErrorTolerance.ET_0_1
+      ErrorTolerance.ET_0_2
+      ErrorTolerance.ET_0_5
+      ErrorTolerance.ET_1_0
+   
+   

@@ -1,0 +1,6 @@
+definition\_terminal\_name
+==========================
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. autoproperty:: TerminalInstance.definition_terminal_name

@@ -1,0 +1,6 @@
+zero\_metal\_layer\_thickness
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedSettings.zero_metal_layer_thickness

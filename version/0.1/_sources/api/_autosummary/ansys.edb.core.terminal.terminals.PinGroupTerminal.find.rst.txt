@@ -1,0 +1,6 @@
+find
+====
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. automethod:: PinGroupTerminal.find

@@ -1,0 +1,6 @@
+get\_product\_property\_ids
+===========================
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. automethod:: CellInstance.get_product_property_ids

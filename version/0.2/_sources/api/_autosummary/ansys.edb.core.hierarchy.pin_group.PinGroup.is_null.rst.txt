@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. autoproperty:: PinGroup.is_null

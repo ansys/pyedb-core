@@ -1,0 +1,34 @@
+﻿PowerModule
+===========
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoclass:: PowerModule
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PowerModule.active
+      PowerModule.comp_group_name
+      PowerModule.needs_sync
+      PowerModule.neg_output_terminal
+      PowerModule.pos_output_terminal
+      PowerModule.relative_strength
+   
+   

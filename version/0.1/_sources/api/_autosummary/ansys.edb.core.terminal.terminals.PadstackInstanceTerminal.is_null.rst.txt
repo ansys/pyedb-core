@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: PadstackInstanceTerminal.is_null

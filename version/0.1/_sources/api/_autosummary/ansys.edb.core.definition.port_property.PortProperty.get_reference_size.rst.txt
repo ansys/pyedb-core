@@ -1,0 +1,6 @@
+get\_reference\_size
+====================
+
+.. currentmodule:: ansys.edb.core.definition.port_property
+
+.. automethod:: PortProperty.get_reference_size

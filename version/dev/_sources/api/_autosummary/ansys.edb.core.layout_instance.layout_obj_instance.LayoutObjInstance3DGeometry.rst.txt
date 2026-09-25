@@ -1,0 +1,34 @@
+﻿LayoutObjInstance3DGeometry
+===========================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_obj_instance
+
+.. autoclass:: LayoutObjInstance3DGeometry
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayoutObjInstance3DGeometry.color
+      LayoutObjInstance3DGeometry.id
+      LayoutObjInstance3DGeometry.is_null
+      LayoutObjInstance3DGeometry.material
+      LayoutObjInstance3DGeometry.msg
+      LayoutObjInstance3DGeometry.tesselation_data
+   
+   

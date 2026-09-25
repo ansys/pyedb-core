@@ -1,0 +1,45 @@
+﻿PortProperty
+============
+
+.. currentmodule:: ansys.edb.core.definition.port_property
+
+.. autoclass:: PortProperty
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PortProperty.clone
+      
+      
+      PortProperty.create
+      
+      
+      PortProperty.get_reference_size
+      
+      
+      PortProperty.set_reference_size
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PortProperty.id
+      PortProperty.is_null
+      PortProperty.msg
+      PortProperty.reference_height
+      PortProperty.reference_size_auto
+   
+   

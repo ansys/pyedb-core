@@ -1,0 +1,6 @@
+reference\_layout
+=================
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. autoproperty:: InstArray.reference_layout

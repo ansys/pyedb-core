@@ -1,0 +1,6 @@
+CIRCUIT\_CELL
+=============
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoattribute:: CellType.CIRCUIT_CELL

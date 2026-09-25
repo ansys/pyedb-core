@@ -1,0 +1,6 @@
+package\_defs
+=============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.package_defs

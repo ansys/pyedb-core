@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. autoproperty:: DifferentialPair.is_null

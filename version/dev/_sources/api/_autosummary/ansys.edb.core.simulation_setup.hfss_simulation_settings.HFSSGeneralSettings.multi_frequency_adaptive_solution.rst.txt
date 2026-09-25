@@ -1,0 +1,6 @@
+multi\_frequency\_adaptive\_solution
+====================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSGeneralSettings.multi_frequency_adaptive_solution

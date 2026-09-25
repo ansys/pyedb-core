@@ -1,0 +1,6 @@
+is\_mcad\_stride
+================
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. autoproperty:: BoardBendDef.is_mcad_stride

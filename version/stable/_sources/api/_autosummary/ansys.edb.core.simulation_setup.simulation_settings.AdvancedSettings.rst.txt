@@ -1,0 +1,43 @@
+﻿AdvancedSettings
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoclass:: AdvancedSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      AdvancedSettings.defeature_absolute_length
+      AdvancedSettings.defeature_ratio
+      AdvancedSettings.healing_option
+      AdvancedSettings.mesh_for_via_plating
+      AdvancedSettings.model_type
+      AdvancedSettings.msg
+      AdvancedSettings.num_via_density
+      AdvancedSettings.num_via_sides
+      AdvancedSettings.remove_floating_geometry
+      AdvancedSettings.small_void_area
+      AdvancedSettings.union_polygons
+      AdvancedSettings.use_defeature
+      AdvancedSettings.use_defeature_absolute_length
+      AdvancedSettings.via_material
+      AdvancedSettings.via_model_type
+   
+   

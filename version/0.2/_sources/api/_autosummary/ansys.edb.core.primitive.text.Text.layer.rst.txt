@@ -1,0 +1,6 @@
+layer
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.text
+
+.. autoproperty:: Text.layer

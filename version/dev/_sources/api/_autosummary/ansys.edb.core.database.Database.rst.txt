@@ -1,0 +1,120 @@
+﻿Database
+========
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoclass:: Database
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Database.add_menu_variable
+      
+      
+      Database.add_variable
+      
+      
+      Database.close
+      
+      
+      Database.copy_cells
+      
+      
+      Database.create
+      
+      
+      Database.create_value
+      
+      
+      Database.delete
+      
+      
+      Database.delete_variable
+      
+      
+      Database.find_by_id
+      
+      
+      Database.get_all_variable_names
+      
+      
+      Database.get_product_property
+      
+      
+      Database.get_product_property_ids
+      
+      
+      Database.get_variable_desc
+      
+      
+      Database.get_variable_value
+      
+      
+      Database.get_version_by_release
+      
+      
+      Database.import_material_from_control_file
+      
+      
+      Database.is_parameter
+      
+      
+      Database.open
+      
+      
+      Database.save
+      
+      
+      Database.save_as
+      
+      
+      Database.scale
+      
+      
+      Database.set_product_property
+      
+      
+      Database.set_variable_desc
+      
+      
+      Database.set_variable_value
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Database.apd_bondwire_defs
+      Database.circuit_cells
+      Database.component_defs
+      Database.dataset_defs
+      Database.directory
+      Database.edb_uid
+      Database.footprint_cells
+      Database.id
+      Database.is_null
+      Database.is_read_only
+      Database.jedec4_bondwire_defs
+      Database.jedec5_bondwire_defs
+      Database.material_defs
+      Database.msg
+      Database.package_defs
+      Database.padstack_defs
+      Database.source
+      Database.source_version
+      Database.top_circuit_cells
+      Database.version
+   
+   

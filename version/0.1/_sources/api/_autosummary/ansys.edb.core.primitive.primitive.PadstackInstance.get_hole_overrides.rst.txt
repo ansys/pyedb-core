@@ -1,0 +1,6 @@
+get\_hole\_overrides
+====================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.get_hole_overrides

@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. autoattribute:: PadstackInstanceTerminal.type

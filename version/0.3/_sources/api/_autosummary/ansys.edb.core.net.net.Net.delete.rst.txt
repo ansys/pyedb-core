@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.net.net
+
+.. automethod:: Net.delete

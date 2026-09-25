@@ -1,0 +1,6 @@
+HFSS\_PI
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: SimulationSetupType.HFSS_PI

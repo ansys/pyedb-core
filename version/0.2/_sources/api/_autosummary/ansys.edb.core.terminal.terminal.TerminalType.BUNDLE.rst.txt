@@ -1,0 +1,6 @@
+BUNDLE
+======
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: TerminalType.BUNDLE

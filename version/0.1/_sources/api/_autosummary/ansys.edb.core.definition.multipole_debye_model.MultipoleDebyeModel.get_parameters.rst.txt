@@ -1,0 +1,6 @@
+get\_parameters
+===============
+
+.. currentmodule:: ansys.edb.core.definition.multipole_debye_model
+
+.. automethod:: MultipoleDebyeModel.get_parameters

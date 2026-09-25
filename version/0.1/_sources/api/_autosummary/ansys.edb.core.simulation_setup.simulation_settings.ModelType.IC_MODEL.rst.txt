@@ -1,0 +1,6 @@
+IC\_MODEL
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoattribute:: ModelType.IC_MODEL

@@ -1,0 +1,6 @@
+get\_version\_by\_release
+=========================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.get_version_by_release

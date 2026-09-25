@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. autoproperty:: Jedec5BondwireDef.is_null

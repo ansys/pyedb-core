@@ -1,0 +1,6 @@
+term\_instances
+===============
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.term_instances

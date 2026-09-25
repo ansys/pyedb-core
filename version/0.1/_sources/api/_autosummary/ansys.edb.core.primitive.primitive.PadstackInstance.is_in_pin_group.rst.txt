@@ -1,0 +1,6 @@
+is\_in\_pin\_group
+==================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.is_in_pin_group

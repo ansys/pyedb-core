@@ -1,0 +1,6 @@
+get\_product\_property\_ids
+===========================
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. automethod:: Structure3D.get_product_property_ids

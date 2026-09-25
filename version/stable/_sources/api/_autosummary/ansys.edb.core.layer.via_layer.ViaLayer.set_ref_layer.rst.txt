@@ -1,0 +1,6 @@
+set\_ref\_layer
+===============
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. automethod:: ViaLayer.set_ref_layer

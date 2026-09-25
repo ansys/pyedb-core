@@ -1,0 +1,6 @@
+lambda\_target
+==============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: SettingsOptions.lambda_target

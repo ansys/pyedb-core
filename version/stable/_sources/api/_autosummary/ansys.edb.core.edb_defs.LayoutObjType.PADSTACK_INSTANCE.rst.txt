@@ -1,0 +1,6 @@
+PADSTACK\_INSTANCE
+==================
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.PADSTACK_INSTANCE

@@ -1,0 +1,6 @@
+is\_footprint
+=============
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoproperty:: Cell.is_footprint

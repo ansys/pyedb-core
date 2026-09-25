@@ -1,0 +1,6 @@
+create\_3d\_comp
+================
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. automethod:: ComponentGroup.create_3d_comp

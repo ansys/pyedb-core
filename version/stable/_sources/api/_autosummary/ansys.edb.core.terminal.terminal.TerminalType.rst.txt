@@ -1,0 +1,27 @@
+﻿TerminalType
+============
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoclass:: TerminalType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TerminalType.EDGE
+      TerminalType.POINT
+      TerminalType.TERM_INST
+      TerminalType.PADSTACK_INST
+      TerminalType.BUNDLE
+      TerminalType.PIN_GROUP
+   
+   

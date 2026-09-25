@@ -1,0 +1,97 @@
+﻿ComponentGroup
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. autoclass:: ComponentGroup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ComponentGroup.add_member
+      
+      
+      ComponentGroup.cast
+      
+      
+      ComponentGroup.create
+      
+      
+      ComponentGroup.create_3d_comp
+      
+      
+      ComponentGroup.create_hfss
+      
+      
+      ComponentGroup.create_stride
+      
+      
+      ComponentGroup.delete
+      
+      
+      ComponentGroup.find
+      
+      
+      ComponentGroup.find_by_def
+      
+      
+      ComponentGroup.find_by_id
+      
+      
+      ComponentGroup.get_product_property
+      
+      
+      ComponentGroup.get_product_property_ids
+      
+      
+      ComponentGroup.remove_member
+      
+      
+      ComponentGroup.set_product_property
+      
+      
+      ComponentGroup.ungroup
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ComponentGroup.component
+      ComponentGroup.component_def
+      ComponentGroup.component_property
+      ComponentGroup.component_type
+      ComponentGroup.edb_uid
+      ComponentGroup.group
+      ComponentGroup.id
+      ComponentGroup.is_mcad
+      ComponentGroup.is_mcad_3d_comp
+      ComponentGroup.is_mcad_hfss
+      ComponentGroup.is_mcad_stride
+      ComponentGroup.is_null
+      ComponentGroup.layout
+      ComponentGroup.layout_obj_type
+      ComponentGroup.location
+      ComponentGroup.members
+      ComponentGroup.msg
+      ComponentGroup.name
+      ComponentGroup.net
+      ComponentGroup.num_pins
+      ComponentGroup.obj_type
+      ComponentGroup.placement_layer
+      ComponentGroup.solve_independent_preference
+      ComponentGroup.transform
+   
+   

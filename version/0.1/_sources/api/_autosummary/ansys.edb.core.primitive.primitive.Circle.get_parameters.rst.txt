@@ -1,0 +1,6 @@
+get\_parameters
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Circle.get_parameters

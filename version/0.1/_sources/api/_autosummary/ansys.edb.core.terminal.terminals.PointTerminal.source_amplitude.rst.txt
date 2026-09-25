@@ -1,0 +1,6 @@
+source\_amplitude
+=================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: PointTerminal.source_amplitude

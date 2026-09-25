@@ -1,0 +1,6 @@
+delete\_rlc
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_pair_model
+
+.. automethod:: PinPairModel.delete_rlc

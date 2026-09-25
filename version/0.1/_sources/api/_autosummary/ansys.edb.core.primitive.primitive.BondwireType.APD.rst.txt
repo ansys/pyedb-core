@@ -1,0 +1,6 @@
+APD
+===
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: BondwireType.APD

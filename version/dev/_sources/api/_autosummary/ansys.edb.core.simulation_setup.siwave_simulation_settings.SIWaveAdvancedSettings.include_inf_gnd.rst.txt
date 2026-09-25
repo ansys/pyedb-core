@@ -1,0 +1,6 @@
+include\_inf\_gnd
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.include_inf_gnd

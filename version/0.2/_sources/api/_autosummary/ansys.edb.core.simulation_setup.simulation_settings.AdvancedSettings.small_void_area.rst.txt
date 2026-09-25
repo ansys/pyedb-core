@@ -1,0 +1,6 @@
+small\_void\_area
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedSettings.small_void_area

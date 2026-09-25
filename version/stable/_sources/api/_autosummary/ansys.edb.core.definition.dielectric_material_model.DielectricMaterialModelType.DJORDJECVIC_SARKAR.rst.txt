@@ -1,0 +1,6 @@
+DJORDJECVIC\_SARKAR
+===================
+
+.. currentmodule:: ansys.edb.core.definition.dielectric_material_model
+
+.. autoattribute:: DielectricMaterialModelType.DJORDJECVIC_SARKAR

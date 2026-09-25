@@ -1,0 +1,6 @@
+LEVEL\_1
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoattribute:: ImprovedLossModel.LEVEL_1

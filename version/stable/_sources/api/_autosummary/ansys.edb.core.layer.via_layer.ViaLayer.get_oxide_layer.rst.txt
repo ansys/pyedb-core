@@ -1,0 +1,6 @@
+get\_oxide\_layer
+=================
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. automethod:: ViaLayer.get_oxide_layer

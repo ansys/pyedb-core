@@ -1,0 +1,6 @@
+is\_no\_net
+===========
+
+.. currentmodule:: ansys.edb.core.net.net
+
+.. autoproperty:: Net.is_no_net

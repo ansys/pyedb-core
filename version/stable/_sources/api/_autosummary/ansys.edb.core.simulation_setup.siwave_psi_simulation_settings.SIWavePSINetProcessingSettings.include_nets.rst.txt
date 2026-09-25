@@ -1,0 +1,6 @@
+include\_nets
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSINetProcessingSettings.include_nets

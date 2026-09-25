@@ -1,0 +1,6 @@
+get\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. automethod:: DifferentialPair.get_product_property

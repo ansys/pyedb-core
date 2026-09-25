@@ -1,0 +1,6 @@
+get\_is\_3d\_placement
+======================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance_context
+
+.. automethod:: LayoutInstanceContext.get_is_3d_placement

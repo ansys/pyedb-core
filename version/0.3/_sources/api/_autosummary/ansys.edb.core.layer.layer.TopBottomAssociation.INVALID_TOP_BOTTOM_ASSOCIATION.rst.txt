@@ -1,0 +1,6 @@
+INVALID\_TOP\_BOTTOM\_ASSOCIATION
+=================================
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: TopBottomAssociation.INVALID_TOP_BOTTOM_ASSOCIATION

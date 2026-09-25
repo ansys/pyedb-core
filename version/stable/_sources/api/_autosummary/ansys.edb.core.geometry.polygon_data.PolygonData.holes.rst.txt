@@ -1,0 +1,6 @@
+holes
+=====
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoproperty:: PolygonData.holes

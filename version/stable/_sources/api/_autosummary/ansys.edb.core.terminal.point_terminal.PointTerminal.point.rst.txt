@@ -1,0 +1,6 @@
+point
+=====
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. autoproperty:: PointTerminal.point

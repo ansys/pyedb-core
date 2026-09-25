@@ -1,0 +1,6 @@
+remove\_hfss\_prop
+==================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive_instance_collection
+
+.. automethod:: PrimitiveInstanceCollection.remove_hfss_prop

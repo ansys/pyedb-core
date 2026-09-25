@@ -1,0 +1,6 @@
+get\_roughness\_model
+=====================
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. automethod:: StackupLayer.get_roughness_model

@@ -1,0 +1,42 @@
+﻿IOComponentProperty
+===================
+
+.. currentmodule:: ansys.edb.core.definition.io_component_property
+
+.. autoclass:: IOComponentProperty
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      IOComponentProperty.clone
+      
+      
+      IOComponentProperty.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      IOComponentProperty.id
+      IOComponentProperty.is_null
+      IOComponentProperty.model
+      IOComponentProperty.msg
+      IOComponentProperty.package_def
+      IOComponentProperty.package_mounting_offset
+      IOComponentProperty.port_property
+      IOComponentProperty.solder_ball_property
+   
+   

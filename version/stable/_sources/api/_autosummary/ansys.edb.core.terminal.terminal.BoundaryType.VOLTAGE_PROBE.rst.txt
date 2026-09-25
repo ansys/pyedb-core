@@ -1,0 +1,6 @@
+VOLTAGE\_PROBE
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: BoundaryType.VOLTAGE_PROBE

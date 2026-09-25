@@ -1,0 +1,6 @@
+add\_variable
+=============
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.add_variable

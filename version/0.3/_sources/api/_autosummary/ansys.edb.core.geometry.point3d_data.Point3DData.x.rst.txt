@@ -1,0 +1,6 @@
+x
+=
+
+.. currentmodule:: ansys.edb.core.geometry.point3d_data
+
+.. autoproperty:: Point3DData.x

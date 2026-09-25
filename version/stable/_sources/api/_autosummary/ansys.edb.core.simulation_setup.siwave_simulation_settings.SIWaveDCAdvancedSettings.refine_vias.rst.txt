@@ -1,0 +1,6 @@
+refine\_vias
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCAdvancedSettings.refine_vias

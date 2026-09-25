@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.definition.rlc_component_property
+
+.. autoproperty:: RLCComponentProperty.msg

@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. automethod:: PointTerminal.find_by_id

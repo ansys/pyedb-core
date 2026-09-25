@@ -1,0 +1,6 @@
+percent\_refinement\_per\_pass
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSDCRSettings.percent_refinement_per_pass

@@ -1,0 +1,6 @@
+get\_parameters
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. automethod:: Rectangle.get_parameters

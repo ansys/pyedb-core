@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. autoproperty:: DebyeModel.type

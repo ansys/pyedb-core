@@ -1,0 +1,31 @@
+﻿ThermalModifier
+===============
+
+.. currentmodule:: ansys.edb.core.definition.material_def
+
+.. autoclass:: ThermalModifier
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ThermalModifier.id
+      ThermalModifier.is_null
+      ThermalModifier.msg
+   
+   

@@ -1,0 +1,6 @@
+impedance
+=========
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: EdgeTerminal.impedance

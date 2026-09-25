@@ -1,0 +1,6 @@
+is\_parameterized
+=================
+
+.. currentmodule:: ansys.edb.core.primitive.circle
+
+.. autoproperty:: Circle.is_parameterized

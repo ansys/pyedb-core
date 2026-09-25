@@ -1,0 +1,6 @@
+is\_interface\_terminal
+=======================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: BundleTerminal.is_interface_terminal

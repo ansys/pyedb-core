@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoattribute:: CellInstance.layout_obj_type

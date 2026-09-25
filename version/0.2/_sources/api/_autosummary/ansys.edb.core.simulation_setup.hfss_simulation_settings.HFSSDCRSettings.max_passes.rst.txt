@@ -1,0 +1,6 @@
+max\_passes
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSDCRSettings.max_passes

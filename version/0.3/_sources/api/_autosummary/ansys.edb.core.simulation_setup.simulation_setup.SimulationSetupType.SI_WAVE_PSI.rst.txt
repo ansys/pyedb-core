@@ -1,0 +1,6 @@
+SI\_WAVE\_PSI
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: SimulationSetupType.SI_WAVE_PSI

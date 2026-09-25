@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_pair_model
+
+.. autoproperty:: PinPairModel.msg

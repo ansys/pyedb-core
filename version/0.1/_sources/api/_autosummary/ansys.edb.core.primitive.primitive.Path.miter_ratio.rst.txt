@@ -1,0 +1,6 @@
+miter\_ratio
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Path.miter_ratio

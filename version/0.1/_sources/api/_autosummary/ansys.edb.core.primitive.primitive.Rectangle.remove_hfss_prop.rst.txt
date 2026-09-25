@@ -1,0 +1,6 @@
+remove\_hfss\_prop
+==================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Rectangle.remove_hfss_prop

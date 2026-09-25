@@ -1,0 +1,23 @@
+﻿HFSSPISimulationPreference
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPISimulationPreference
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPISimulationPreference.BALANCED
+      HFSSPISimulationPreference.ACCURACY
+   
+   

@@ -1,0 +1,6 @@
+die\_type
+=========
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoproperty:: DieProperty.die_type

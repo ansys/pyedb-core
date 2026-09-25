@@ -1,0 +1,6 @@
+get\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.terminal.pin_group_terminal
+
+.. automethod:: PinGroupTerminal.get_product_property

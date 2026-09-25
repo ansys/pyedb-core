@@ -1,0 +1,27 @@
+﻿LayerVisibility
+===============
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoclass:: LayerVisibility
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayerVisibility.PRIMITIVE_VISIBLE
+      LayerVisibility.PATH_VISIBLE
+      LayerVisibility.PAD_VISIBLE
+      LayerVisibility.HOLE_VISIBLE
+      LayerVisibility.COMPONENT_VISIBLE
+      LayerVisibility.ALL_VISIBLE
+   
+   

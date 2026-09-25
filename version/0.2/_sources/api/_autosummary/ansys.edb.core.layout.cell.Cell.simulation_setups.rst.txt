@@ -1,0 +1,6 @@
+simulation\_setups
+==================
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoproperty:: Cell.simulation_setups

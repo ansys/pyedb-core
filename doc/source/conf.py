@@ -121,7 +121,10 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # Ignore the following links during link checking
-linkcheck_ignore = ["https://www.ansys.com/products/electronics"]
+linkcheck_ignore = [
+    "https://www.ansys.com/products/electronics",
+    "https://discuss.ansys.com/",
+]
 
 # Ignore type hints in documentation (they are only used for code completion)
 autodoc_typehints = "none"

@@ -36,7 +36,8 @@ import pytest
 from ansys.edb.core.database import Database
 from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.layout.cell import CellType
-from ansys.edb.core.session import session
+from ansys.edb.core.session import get_current_session
+from ansys.edb.core.session import launch_session
 
 
 def _resolve_ansysem_install() -> str:
@@ -58,6 +59,48 @@ def _server_available() -> bool:
     if not install_dir:
         return False
     return Path(install_dir).is_dir()
+
+
+# ---------------------------------------------------------------------------
+# Server crash recovery
+# ---------------------------------------------------------------------------
+
+# Set by the edb_session fixture so a crashed server can be relaunched with
+# the same parameters mid-run.
+_server_launch_params: tuple[str, bool] | None = None
+
+
+def _server_is_alive() -> bool:
+    """Return whether the currently active EDB server process is still running."""
+    sess = get_current_session()
+    if sess is None:
+        return False
+    if not sess.is_launch():
+        # Attached to a remote/pre-existing server; nothing to check locally.
+        return True
+    return sess.local_server_proc is not None and sess.local_server_proc.poll() is None
+
+
+def _recover_server_if_crashed() -> None:
+    """Relaunch the EDB server if the previously launched process has died."""
+    if _server_launch_params is None or _server_is_alive():
+        return
+    sess = get_current_session()
+    if sess is not None:
+        try:
+            sess.disconnect()
+        except Exception:
+            pass
+    install_dir, use_shm = _server_launch_params
+    print("EDB_RPC_Server appears to have crashed; relaunching for subsequent tests.")
+    launch_session(install_dir, use_shared_memory_ipc=use_shm)
+
+
+def _safe_close(db) -> None:
+    """Close a database, skipping the call if the server has already crashed."""
+    if not _server_is_alive():
+        return
+    db.close()
 
 
 # ---------------------------------------------------------------------------
@@ -133,13 +176,39 @@ def edb_session(request):
     Pass ``--no-shared-memory`` on the pytest command line to disable
     shared-memory IPC and fall back to standard gRPC communication.
     Shared memory is enabled by default.
+
+    If the server process crashes mid-run, the ``_crash_recovery`` autouse
+    fixture relaunches it using the same parameters recorded here.
     """
+    global _server_launch_params
     install_dir = _resolve_ansysem_install()
     if not install_dir or not Path(install_dir).is_dir():
         pytest.skip("ANSYS EDB server not available")
     use_shm = not request.config.getoption("--no-shared-memory", default=False)
-    with session(install_dir, use_shared_memory_ipc=use_shm):
+    _server_launch_params = (install_dir, use_shm)
+    launch_session(install_dir, use_shared_memory_ipc=use_shm)
+    try:
         yield
+    finally:
+        sess = get_current_session()
+        if sess is not None:
+            sess.disconnect()
+        _server_launch_params = None
+
+
+@pytest.fixture(autouse=True)
+def _crash_recovery(request):
+    """Detect a crashed EDB server around each test and relaunch it for later tests.
+
+    Only applies to tests marked ``requires_server``; other tests are unaffected.
+    """
+    if request.node.get_closest_marker("requires_server") is None:
+        yield
+        return
+    request.getfixturevalue("edb_session")
+    _recover_server_if_crashed()
+    yield
+    _recover_server_if_crashed()
 
 
 @pytest.fixture(scope="session")
@@ -226,7 +295,7 @@ def new_db(edb_session, tmp_path):
     db_path = str(tmp_path / "test.aedb")
     db = Database.create(db_path)
     yield db
-    db.close()
+    _safe_close(db)
 
 
 @pytest.fixture
@@ -258,7 +327,7 @@ def ssn_db(edb_session, edb_copy):
     db_path = edb_copy("SSN.aedb")
     db = Database.open(str(db_path), read_only=True)
     yield db
-    db.close()
+    _safe_close(db)
 
 
 @pytest.fixture
@@ -267,7 +336,7 @@ def diff_via_db(edb_session, edb_copy):
     db_path = edb_copy("Diff_Via.aedb")
     db = Database.open(str(db_path), read_only=True)
     yield db
-    db.close()
+    _safe_close(db)
 
 
 @pytest.fixture
@@ -281,7 +350,7 @@ def db_with_definitions(edb_session, edb_copy):
     db_path = edb_copy("Definition_Types.aedb")
     db = Database.open(str(db_path), read_only=True)
     yield db
-    db.close()
+    _safe_close(db)
 
 
 # ---------------------------------------------------------------------------
@@ -312,4 +381,4 @@ def create_temp_db(edb_session, tmp_path):
 
     for db in created:
         if not db.is_null:
-            db.close()
+            _safe_close(db)

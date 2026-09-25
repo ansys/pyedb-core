@@ -69,7 +69,7 @@ issues to report bugs and request new features. When possible, use these issue t
 
 If your issue does not fit into one of these categories, create your own issue.
 
-On the `Discussions <https://discuss.ansys.com/>`_ page on the Ansys Developer portal, you can post questions,
+On the `Forum <https://developerforum.synopsys.com/>`_ page on the Ansys Developer portal, you can post questions,
 share ideas, and get community feedback.
 
 To reach the PyAnsys support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.

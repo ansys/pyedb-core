@@ -26,6 +26,7 @@ import abc
 from collections import namedtuple
 import logging
 
+from ansys.api.edb.v1.rpc_response_map import get_rpc_response_type
 from grpc import ClientCallDetails
 from grpc import StatusCode
 from grpc import StreamStreamClientInterceptor
@@ -36,7 +37,6 @@ from ansys.edb.core.inner.exceptions import EDBSessionException
 from ansys.edb.core.inner.exceptions import ErrorCode
 from ansys.edb.core.inner.exceptions import InvalidArgumentException
 from ansys.edb.core.inner.rpc_info_utils import can_cache
-from ansys.edb.core.inner.rpc_response_map import get_rpc_response_type
 from ansys.edb.core.utility.io_manager import ServerNotification
 from ansys.edb.core.utility.io_manager import get_io_manager
 

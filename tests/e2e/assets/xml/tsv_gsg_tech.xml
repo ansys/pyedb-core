@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<c:Control xmlns:c="http://www.ansys.com/control" schemaVersion="1.0">
+
+  <Stackup schemaVersion="1.0">
+    <Materials>
+      <Material Name="My_Oxyde_Middle">
+        <Permittivity>
+          <Double>4.2</Double>
+        </Permittivity>
+        <ThermalConductivity>
+          <Double>1.5</Double>
+        </ThermalConductivity>
+        <SpecificHeat>
+          <Double>745</Double>
+        </SpecificHeat>
+        <ThermalExpansionCoefficient>
+          <Double>4.5e-06</Double>
+        </ThermalExpansionCoefficient>
+        <MassDensity>
+          <Double>2220</Double>
+        </MassDensity>
+      </Material>
+      <Material Name="air">
+        <Permittivity>
+          <Double>1.0006</Double>
+        </Permittivity>
+        <Permeability>
+          <Double>1.0000004</Double>
+        </Permeability>
+        <ThermalConductivity>
+          <Double>0.0261</Double>
+        </ThermalConductivity>
+        <SpecificHeat>
+          <Double>1005</Double>
+        </SpecificHeat>
+        <ThermalExpansionCoefficient>
+          <Double>0.00333</Double>
+        </ThermalExpansionCoefficient>
+        <MassDensity>
+          <Double>1.1614</Double>
+        </MassDensity>
+      </Material>
+      <Material Name="copper">
+        <Permeability>
+          <Double>0.999991</Double>
+        </Permeability>
+        <Conductivity>
+          <Double>58000000</Double>
+        </Conductivity>
+        <ThermalConductivity>
+          <Double>400</Double>
+        </ThermalConductivity>
+        <SpecificHeat>
+          <Double>385</Double>
+        </SpecificHeat>
+        <ThermalExpansionCoefficient>
+          <Double>1.77e-05</Double>
+        </ThermalExpansionCoefficient>
+        <MassDensity>
+          <Double>8933</Double>
+        </MassDensity>
+        <YoungsModulus>
+          <Double>120000000000</Double>
+        </YoungsModulus>
+        <PoissonsRatio>
+          <Double>0.38</Double>
+        </PoissonsRatio>
+      </Material>
+      <Material Name="pec">
+        <Conductivity>
+          <Double>1e+30</Double>
+        </Conductivity>
+      </Material>
+      <Material Name="silicon1">
+        <Permittivity>
+          <Double>11.9</Double>
+        </Permittivity>
+        <Conductivity>
+          <Double>10</Double>
+        </Conductivity>
+        <ThermalConductivity>
+          <Double>148</Double>
+        </ThermalConductivity>
+        <SpecificHeat>
+          <Double>712</Double>
+        </SpecificHeat>
+        <ThermalExpansionCoefficient>
+          <Double>2.54e-06</Double>
+        </ThermalExpansionCoefficient>
+        <MassDensity>
+          <Double>2330</Double>
+        </MassDensity>
+        <YoungsModulus>
+          <Double>135000000000</Double>
+        </YoungsModulus>
+        <PoissonsRatio>
+          <Double>0.25</Double>
+        </PoissonsRatio>
+      </Material>
+      <Material Name="silicon_dioxide">
+        <Permittivity>
+          <Double>4</Double>
+        </Permittivity>
+        <ThermalConductivity>
+          <Double>1.5</Double>
+        </ThermalConductivity>
+        <SpecificHeat>
+          <Double>745</Double>
+        </SpecificHeat>
+        <ThermalExpansionCoefficient>
+          <Double>4.5e-06</Double>
+        </ThermalExpansionCoefficient>
+        <MassDensity>
+          <Double>2220</Double>
+        </MassDensity>
+      </Material>
+    </Materials>
+    <ELayers LengthUnit="um">
+      <Dielectrics>
+        <Layer Color="#8db7ca" Material="air" Name="Air_Top" Thickness="4"/>
+        <Layer Color="#264a33" Material="My_Oxyde_Middle" Name="Ox_Top" Thickness="1"/>
+        <Layer Color="#553755" Material="silicon1" Name="SiTSV" Thickness="98"/>
+        <Layer Color="#1a291f" Material="My_Oxyde_Middle" Name="Ox_bot" Thickness="1"/>
+        <Layer Color="#44614c" Material="air" Name="Air_Bot" Thickness="4"/>
+      </Dielectrics>
+      <Layers>
+        <Layer Color="#db74f0" Elevation="108" Material="pec" Name="Top" Thickness="0" Type="conductor"/>
+        <Layer Color="#10738a" Elevation="104" Material="pec" Name="GND_Top" Thickness="4" Type="conductor"/>
+        <Layer Color="#868feb" Elevation="104" Material="pec" Name="Feed_Top" Thickness="1" Type="conductor"/>
+        <Layer Color="#289889" Elevation="3" Material="pec" Name="Feed_Bot" Thickness="1" Type="conductor"/>
+        <Layer Color="#fb3451" Elevation="0" Material="pec" Name="GND_Bottom" Thickness="4" Type="conductor"/>
+        <Layer Color="#d63b07" Elevation="0" Material="pec" Name="Bot" Thickness="0" Type="conductor"/>
+        <Layer Color="#353981" Name="Outline" Type="outline"/>
+      </Layers>
+      <Vias>
+        <Layer Color="#8db7ca" Material="copper" Name="TSV" StartLayer="Feed_Top" StopLayer="Feed_Bot">
+          <TSVProperties Material="silicon_dioxide" Thickness="0.3"/>
+        </Layer>
+      </Vias>
+    </ELayers>
+  </Stackup>
+
+</c:Control>

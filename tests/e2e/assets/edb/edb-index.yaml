@@ -1,0 +1,202 @@
+# Initial asset index for e2e tests.
+# Each entry maps a test asset EDB to its metadata.
+#
+# Schema:
+#   - id: unique_identifier
+#     path: relative/path/from/this/directory.aedb
+#     description: What this EDB contains
+#     tags: [tag1, tag2]
+#     recipe_id: id_from_edb_design_recipes  # optional, omit only for empty EDBs
+#     contains: [ObjectType1, ObjectType2]  # ansys.edb.core class names present in the EDB
+
+assets:
+  - id: definition_types
+    path: Definition_Types.aedb
+    description: Minimal EDB containing exactly one instance of each definition type for unit-testing Database definition-list properties
+    tags: [test-fixture, definitions, material, padstack, component, package, dataset, bondwire]
+    contains:
+      - MaterialDef
+      - PadstackDef
+      - ComponentDef
+      - PackageDef
+      - DatasetDef
+      - ApdBondwireDef
+      - Jedec4BondwireDef
+      - Jedec5BondwireDef
+
+  - id: diff_via
+    path: Diff_Via.aedb
+    description: 12-layer PCB differential via transition with ground return vias, parameterized traces, overlapping stackup, and HFSS simulation setup
+    tags: [pcb, differential-via, signal-integrity, via-transition, ground-return-via, 12-layer, hfss, overlapping-stackup, parameterized]
+    recipe_id: pcb-differential-via
+    contains:
+      - Cell
+      - PadstackInstance
+      - PadstackDef
+      - Path
+      - Rectangle
+      - BundleTerminal
+      - HfssSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: ssn
+    path: SSN.aedb
+    description: 6-layer SSN PCB with mixed RLC/IC/IO components, dense routing and vias, and SIWave simulation setup
+    tags: [pcb, ssn, simultaneous-switching-noise, components, rlc, ic, io, power-integrity, 6-layer, laminate, siwave]
+    recipe_id: pcb-ssn-components
+    contains:
+      - Cell
+      - PadstackInstance
+      - PadstackDef
+      - Path
+      - Polygon
+      - Rectangle
+      - Circle
+      - PadstackInstanceTerminal
+      - PinGroupTerminal
+      - ComponentGroup
+      - SIWaveSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: multizone_flex_microstrip
+    path: Multizone_Flex_Microstrip.aedb
+    description: 2-layer rigid-flex PCB with multizone stackup, polyimide dielectric, board bend definition, and HFSS simulation setup
+    tags: [pcb, rigid-flex, multizone, board-bend, flex, polyimide, microstrip, hfss, 2-layer]
+    recipe_id: pcb-rigidflex-multizone
+    contains:
+      - Cell
+      - PadstackDef
+      - Path
+      - Rectangle
+      - Circle
+      - BoardBendDef
+      - EdgeTerminal
+      - HfssSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: parametric_microstrip_simulation
+    path: Parametric_Microstrip_Simulation.aedb
+    description: 2-layer parametric microstrip with serpentine trace, database variables, ground plane, and SIWave simulation setup
+    tags: [pcb, parametric, microstrip, serpentine, meander, variables, siwave, laminate, 2-layer]
+    recipe_id: pcb-parametric-microstrip
+    contains:
+      - Cell
+      - PadstackDef
+      - Path
+      - Rectangle
+      - EdgeTerminal
+      - PinGroup
+      - SIWaveSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: pin_group_example
+    path: Pin_Group_Example.aedb
+    description: 4-layer PCB with IO components and pin group terminals for power integrity simulation with both HFSS and SIWave setups
+    tags: [pcb, pin-group, pin-group-terminal, io-component, power-integrity, laminate, 4-layer, hfss, siwave]
+    recipe_id: pcb-pin-group-ports
+    contains:
+      - Cell
+      - PadstackInstance
+      - PadstackDef
+      - Rectangle
+      - Polygon
+      - PinGroupTerminal
+      - PinGroup
+      - ComponentGroup
+      - HfssSimulationSetup
+      - SIWaveSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: transition_microstrip_stripline
+    path: Transition_Microstrip_Stripline.aedb
+    description: 4-layer PCB microstrip-to-stripline transition with parameterized trace widths, via connections, and HFSS edge port simulation
+    tags: [pcb, stripline, microstrip, via-transition, transmission-line, edge-port, hfss, overlapping-stackup, 4-layer, parameterized]
+    recipe_id: pcb-microstrip-stripline-transition
+    contains:
+      - Cell
+      - PadstackInstance
+      - PadstackDef
+      - Rectangle
+      - Circle
+      - EdgeTerminal
+      - HfssSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: tsv_gsg
+    path: TSV_GSG.aedb
+    description: IC-level through-silicon-via GSG structure with oxide liners, feed layers, and HFSS simulation
+    tags: [ic, tsv, through-silicon-via, gsg, ground-signal-ground, silicon, hfss, overlapping-stackup, parameterized]
+    recipe_id: ic-tsv-gsg
+    contains:
+      - Cell
+      - PadstackDef
+      - Rectangle
+      - Circle
+      - EdgeTerminal
+      - HfssSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: interposer_si
+    path: Interposer_SI.aedb
+    description: Silicon interposer with TSVs, 6 RDL metal layers, UBM bumps, and multi-signal routing for HFSS and RaptorX simulation
+    tags: [interposer, tsv, silicon, rdl, redistribution, ubm, bump, multi-layer, ic, hfss, raptor-x, overlapping-stackup]
+    recipe_id: ic-interposer-si
+    contains:
+      - Cell
+      - PadstackInstance
+      - PadstackDef
+      - Rectangle
+      - Polygon
+      - PadstackInstanceTerminal
+      - ComponentGroup
+      - HfssSimulationSetup
+      - RaptorXSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef
+  - id: pcb_pkg_merge
+    path: PCB_Pkg_Merge.aedb
+    description: Hierarchical PCB plus package design with cell instance placement, bondwires, BGA-style padstacks, and HFSS simulation setup
+    tags: [pcb, package, hierarchy, cell-instance, pcb-merge, bondwire, bga, hfss, multi-cell, overlapping-stackup]
+    recipe_id: pcb-package-hierarchy
+    contains:
+      - Cell
+      - CellInstance
+      - PadstackInstance
+      - PadstackDef
+      - Path
+      - Polygon
+      - Rectangle
+      - Bondwire
+      - BundleTerminal
+      - PadstackInstanceTerminal
+      - TerminalInstance
+      - HfssSimulationSetup
+      - Net
+      - NetClass
+      - StackupLayer
+      - MaterialDef
+      - ComponentDef

@@ -162,6 +162,15 @@ force-sort-within-sections = true
 known-first-party = ["doc", "src/ansys/edb/core", "tests"]
 force-single-line = true
 
+[tool.pytest.ini_options]
+testpaths = ["tests/e2e_legacy"]
+markers = [
+    "requires_server: test requires EDB_RPC_Server",
+    "slow: long-running test",
+    "smoke: minimal validation set",
+]
+addopts = "--tb=short"
+
 [tool.coverage.run]
 source = ["ansys.edb"]
 

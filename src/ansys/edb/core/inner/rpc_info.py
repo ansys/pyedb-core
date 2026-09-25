@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Defines container which gives additional information for RPC methods."""
 
 
@@ -85,10 +107,7 @@ rpc_information = {
         "GetWidthValue": _RpcInfo(cache=True),
         "SetWidthValue": _RpcInfo(buffer=True),
     },
-    "ansys.api.edb.v1.BondwireDefService": {
-        "Delete": _RpcInfo(buffer=True),
-        "GetName": _RpcInfo(cache=True),
-    },
+    "ansys.api.edb.v1.BondwireDefService": {"Delete": _RpcInfo(buffer=True), "GetName": _RpcInfo(cache=True)},
     "ansys.api.edb.v1.ApdBondwireDefService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),
         "FindByName": _RpcInfo(cache=True),
@@ -160,6 +179,7 @@ rpc_information = {
         "Set3DTransform": _RpcInfo(buffer=True),
         "GetParameterOverride": _RpcInfo(cache=True),
         "SetParameterOverride": _RpcInfo(buffer=True),
+        "SetNetMapping": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.CircleService": {
         "Create": _RpcInfo(buffer=True, returns_future=True),
@@ -365,8 +385,6 @@ rpc_information = {
         "SetICModeLength": _RpcInfo(buffer=True),
         "GetSmallPlaneArea": _RpcInfo(cache=True),
         "SetSmallPlaneArea": _RpcInfo(buffer=True),
-        "GetZeroMetalLayerThickness": _RpcInfo(cache=True),
-        "SetZeroMetalLayerThickness": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.HFSSPISolverSettingsService": {
         "GetEnhancedLowFrequencyAccuracy": _RpcInfo(cache=True),
@@ -546,6 +564,8 @@ rpc_information = {
         "SetZoneName": _RpcInfo(buffer=True),
         "RemoveZone": _RpcInfo(buffer=True),
         "AddZoneToLayer": _RpcInfo(buffer=True),
+        "SetZoneCore": _RpcInfo(buffer=True),
+        "GetZoneCore": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.LayerMapService": {
         "Create": _RpcInfo(buffer=True, returns_future=True, write_no_cache_invalidation=True),
@@ -902,6 +922,9 @@ rpc_information = {
         "RemoveHfssProp": _RpcInfo(buffer=True),
         "IsZonePrimitive": _RpcInfo(cache=True),
         "MakeZonePrimitive": _RpcInfo(buffer=True),
+        "GetColorMask": _RpcInfo(cache=True),
+        "SetColorMask": _RpcInfo(buffer=True),
+        "GetColorMaskId": _RpcInfo(cache=True),
     },
     "ansys.api.edb.v1.PrimitiveInstanceCollectionService": {
         "GetGeometry": _RpcInfo(cache=True),
@@ -1097,6 +1120,8 @@ rpc_information = {
         "SetMeshForViaPlating": _RpcInfo(buffer=True),
         "GetModelType": _RpcInfo(cache=True),
         "SetModelType": _RpcInfo(buffer=True),
+        "GetZeroMetalLayerThickness": _RpcInfo(cache=True),
+        "SetZeroMetalLayerThickness": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.AdvancedMeshingSettingsService": {
         "GetArcStepSize": _RpcInfo(cache=True),
@@ -1125,6 +1150,156 @@ rpc_information = {
         "GetSweepData": _RpcInfo(cache=True),
         "SetSweepData": _RpcInfo(buffer=True),
         "GetType": _RpcInfo(cache=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPASimulationSettingsService": {
+        "GetUseChannelSetup": _RpcInfo(cache=True),
+        "SetUseChannelSetup": _RpcInfo(buffer=True),
+        "GetSimulationMode": _RpcInfo(cache=True),
+        "SetSimulationMode": _RpcInfo(buffer=True),
+        "GetUseQ3DSolver": _RpcInfo(cache=True),
+        "SetUseQ3DSolver": _RpcInfo(buffer=True),
+        "GetHotspotPinGroupThreshold": _RpcInfo(cache=True),
+        "SetHotspotPinGroupThreshold": _RpcInfo(buffer=True),
+        "GetHotspotPinGroupSize": _RpcInfo(cache=True),
+        "SetHotspotPinGroupSize": _RpcInfo(buffer=True),
+        "GetHotspotMaxNumPinGroups": _RpcInfo(cache=True),
+        "SetHotspotMaxNumPinGroups": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPASettingsService": {
+        "GetExtractMode": _RpcInfo(cache=True),
+        "SetExtractMode": _RpcInfo(buffer=True),
+        "GetExtractFrequency": _RpcInfo(cache=True),
+        "SetExtractFrequency": _RpcInfo(buffer=True),
+        "GetComputeCapacitance": _RpcInfo(cache=True),
+        "SetComputeCapacitance": _RpcInfo(buffer=True),
+        "GetComputeDC": _RpcInfo(cache=True),
+        "SetComputeDC": _RpcInfo(buffer=True),
+        "GetComputeDCInductance": _RpcInfo(cache=True),
+        "SetComputeDCInductance": _RpcInfo(buffer=True),
+        "GetComputeDCCapacitance": _RpcInfo(cache=True),
+        "SetComputeDCCapacitance": _RpcInfo(buffer=True),
+        "GetComputeAC": _RpcInfo(cache=True),
+        "SetComputeAC": _RpcInfo(buffer=True),
+        "GetGroundPwrGndNetsForSI": _RpcInfo(cache=True),
+        "SetGroundPwrGndNetsForSI": _RpcInfo(buffer=True),
+        "GetReturnNet": _RpcInfo(cache=True),
+        "SetReturnNet": _RpcInfo(buffer=True),
+        "GetAutoSelectSmallHoleSize": _RpcInfo(cache=True),
+        "SetAutoSelectSmallHoleSize": _RpcInfo(buffer=True),
+        "GetSmallHoleSize": _RpcInfo(cache=True),
+        "SetSmallHoleSize": _RpcInfo(buffer=True),
+        "GetModelType": _RpcInfo(cache=True),
+        "SetModelType": _RpcInfo(buffer=True),
+        "GetUseLocalAnalysis": _RpcInfo(cache=True),
+        "SetUseLocalAnalysis": _RpcInfo(buffer=True),
+        "GetPerformERC": _RpcInfo(cache=True),
+        "SetPerformERC": _RpcInfo(buffer=True),
+        "GetExcludeNonfunctionalPads": _RpcInfo(cache=True),
+        "SetExcludeNonfunctionalPads": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPAAdvancedSettingsService": {
+        "GetIgnoreGeometryBelowSize": _RpcInfo(cache=True),
+        "SetIgnoreGeometryBelowSize": _RpcInfo(buffer=True),
+        "GetIgnoreVoidsBelowSize": _RpcInfo(cache=True),
+        "SetIgnoreVoidsBelowSize": _RpcInfo(buffer=True),
+        "GetSnapVertexDistance": _RpcInfo(cache=True),
+        "SetSnapVertexDistance": _RpcInfo(buffer=True),
+        "GetThermalAwareSim": _RpcInfo(cache=True),
+        "SetThermalAwareSim": _RpcInfo(buffer=True),
+        "GetUseUniformTemperature": _RpcInfo(cache=True),
+        "SetUseUniformTemperature": _RpcInfo(buffer=True),
+        "GetDesignTemperature": _RpcInfo(cache=True),
+        "SetDesignTemperature": _RpcInfo(buffer=True),
+        "GetSitempFilePath": _RpcInfo(cache=True),
+        "SetSitempFilePath": _RpcInfo(buffer=True),
+        "GetOutputSpiceTopology": _RpcInfo(cache=True),
+        "SetOutputSpiceTopology": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPAQ3DSettingsService": {
+        "GetCustomRefinement": _RpcInfo(cache=True),
+        "SetCustomRefinement": _RpcInfo(buffer=True),
+        "GetMaxNumCGPasses": _RpcInfo(cache=True),
+        "SetMaxNumCGPasses": _RpcInfo(buffer=True),
+        "GetMinNumCGPasses": _RpcInfo(cache=True),
+        "SetMinNumCGPasses": _RpcInfo(buffer=True),
+        "GetCGPercentError": _RpcInfo(cache=True),
+        "SetCGPercentError": _RpcInfo(buffer=True),
+        "GetCGPercentRefinement": _RpcInfo(cache=True),
+        "SetCGPercentRefinement": _RpcInfo(buffer=True),
+        "GetCGAccuracyLevel": _RpcInfo(cache=True),
+        "SetCGAccuracyLevel": _RpcInfo(buffer=True),
+        "GetMaxNumRLPasses": _RpcInfo(cache=True),
+        "SetMaxNumRLPasses": _RpcInfo(buffer=True),
+        "GetMinNumRLPasses": _RpcInfo(cache=True),
+        "SetMinNumRLPasses": _RpcInfo(buffer=True),
+        "GetRLPercentError": _RpcInfo(cache=True),
+        "SetRLPercentError": _RpcInfo(buffer=True),
+        "GetRLPercentRefinement": _RpcInfo(cache=True),
+        "SetRLPercentRefinement": _RpcInfo(buffer=True),
+        "GetMaxNumDCPasses": _RpcInfo(cache=True),
+        "SetMaxNumDCPasses": _RpcInfo(buffer=True),
+        "GetMinNumDCPasses": _RpcInfo(cache=True),
+        "SetMinNumDCPasses": _RpcInfo(buffer=True),
+        "GetDCPercentError": _RpcInfo(cache=True),
+        "SetDCPercentError": _RpcInfo(buffer=True),
+        "GetDCPercentRefinement": _RpcInfo(cache=True),
+        "SetDCPercentRefinement": _RpcInfo(buffer=True),
+        "GetDielectricExtension": _RpcInfo(cache=True),
+        "SetDielectricExtension": _RpcInfo(buffer=True),
+        "GetTerminalDiam": _RpcInfo(cache=True),
+        "SetTerminalDiam": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPANetSettingsService": {
+        "GetAutoSelectNetsForSimulation": _RpcInfo(cache=True),
+        "SetAutoSelectNetsForSimulation": _RpcInfo(buffer=True),
+        "GetIgnoreDummyNetsForSelectedNets": _RpcInfo(cache=True),
+        "SetIgnoreDummyNetsForSelectedNets": _RpcInfo(buffer=True),
+        "GetIncludedNets": _RpcInfo(cache=True),
+        "SetIncludedNets": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPAExternalEnvSettingsService": {
+        "GetTopFillMaterial": _RpcInfo(cache=True),
+        "SetTopFillMaterial": _RpcInfo(buffer=True),
+        "GetBottomFillMaterial": _RpcInfo(cache=True),
+        "SetBottomFillMaterial": _RpcInfo(buffer=True),
+        "GetPcbMaterial": _RpcInfo(cache=True),
+        "SetPcbMaterial": _RpcInfo(buffer=True),
+        "GetIncludeMetalPlane1": _RpcInfo(cache=True),
+        "SetIncludeMetalPlane1": _RpcInfo(buffer=True),
+        "GetGroundMetalPlane1": _RpcInfo(cache=True),
+        "SetGroundMetalPlane1": _RpcInfo(buffer=True),
+        "GetHeightMetalPlane1": _RpcInfo(cache=True),
+        "SetHeightMetalPlane1": _RpcInfo(buffer=True),
+        "GetIncludeMetalPlane2": _RpcInfo(cache=True),
+        "SetIncludeMetalPlane2": _RpcInfo(buffer=True),
+        "GetGroundMetalPlane2": _RpcInfo(cache=True),
+        "SetGroundMetalPlane2": _RpcInfo(buffer=True),
+        "GetHeightMetalPlane2": _RpcInfo(cache=True),
+        "SetHeightMetalPlane2": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPADieConfigSettingsService": {
+        "GetAllDieConfigs": _RpcInfo(cache=True),
+        "AddDieConfig": _RpcInfo(buffer=True),
+        "RemoveDieConfig": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPAChannelComponentSettingsService": {
+        "GetPartIsInternalToNetlist": _RpcInfo(cache=True),
+        "SetPartIsInternalToNetlist": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPAVRMSettingsService": {
+        "GetAllVRMConfigs": _RpcInfo(cache=True),
+        "GetVRMConfig": _RpcInfo(cache=True),
+        "AddVRMConfig": _RpcInfo(buffer=True),
+        "RemoveVRMConfig": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPAUnconnectedDiePinSettingsService": {
+        "GetPinSupplyVoltages": _RpcInfo(cache=True),
+        "SetPinSupplyVoltage": _RpcInfo(buffer=True),
+    },
+    "ansys.api.edb.v1.SIWaveCPAHotSpotComponentSettingsService": {
+        "GetHotSpotComponents": _RpcInfo(cache=True),
+        "GetHotSpotEnabled": _RpcInfo(cache=True),
+        "SetHotSpotEnabled": _RpcInfo(buffer=True),
     },
     "ansys.api.edb.v1.SIWaveDCIRSimulationSettingsService": {
         "GetIcepakTempFile": _RpcInfo(cache=True),
@@ -1443,10 +1618,7 @@ rpc_information = {
         "SetMatrix": _RpcInfo(buffer=True),
         "GetMatrix": _RpcInfo(cache=True),
     },
-    "ansys.api.edb.v1.ValueService": {
-        "GetDouble": _RpcInfo(cache=True),
-        "GetComplex": _RpcInfo(cache=True),
-    },
+    "ansys.api.edb.v1.ValueService": {"GetDouble": _RpcInfo(cache=True), "GetComplex": _RpcInfo(cache=True)},
     "ansys.api.edb.v1.VariableServerService": {
         "AddVariable": _RpcInfo(buffer=True),
         "AddMenuVariable": _RpcInfo(buffer=True),

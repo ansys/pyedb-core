@@ -170,3 +170,11 @@ cython_debug/
 **/*.aedb/**/*+
 **/*.aedb/**/*.bak
 **/*.aedb/**/*.tmp
+
+# Copilot skills, agents, etc.
+.github/agents/
+.github/skills/
+.github/prompts/
+
+# vscode files
+.vscode/

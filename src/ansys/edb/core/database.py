@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Database."""
 
 from __future__ import annotations
@@ -40,17 +62,28 @@ from ansys.edb.core.session import StubType
 
 
 class ProductIdType(Enum):
-    """Enum representing IDs of Ansys products that support EDB usage."""
+    """Ansys products that can read and write product-specific properties on a database."""
 
     HFSS_3D_LAYOUT = DESIGNER = edb_defs_pb2.DESIGNER
+    """HFSS 3D Layout."""
     SIWAVE = edb_defs_pb2.SI_WAVE
+    """SIwave."""
     GENERIC_TRANSLATOR = edb_defs_pb2.GENERIC_TRANSLATOR
+    """A generic translator product."""
     USER_DEFINED = edb_defs_pb2.USER_DEFINED
+    """A user-defined product."""
     INVALID_PRODUCT = edb_defs_pb2.INVALID_PRODUCT
+    """Sentinel value indicating no product is set."""
 
 
 class Database(ObjBase, variable_server.VariableServer):
-    """Represents a database object."""
+    """Represents an EDB database.
+
+    A database is the top-level container for designs. It is stored as an
+    ``.aedb`` folder on disk and holds one or more cells along with the
+    definitions (padstacks, materials, components, and so on) shared by
+    those cells.
+    """
 
     __stub: DatabaseServiceStub = StubAccessor(StubType.database)
 
@@ -66,34 +99,48 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def create(cls, db_path: str) -> Database:
-        """Create a database in a given location.
+        """Create a new database at a location.
 
         Parameters
         ----------
         db_path : str
-            Path to the top-level database directory.
+            Path to the ``.aedb`` folder to create for the new database.
 
         Returns
         -------
         .Database
+            Newly created database.
+
+        Raises
+        ------
+        RuntimeError
+            If the path is not accessible or the database could not be created there.
         """
         msg = cls.__stub.Create(proto_wrappers.StringValue(value=db_path))
         return Database(msg)
 
     @classmethod
     def open(cls, db_path: str, read_only: bool) -> Database:
-        """Open a database in a given location.
+        """Open an existing database from a location.
 
         Parameters
         ----------
         db_path : str
-            Path to the top-level database directory.
+            Path to the ``.aedb`` folder of the database to open.
         read_only : bool
-            Whether to open the database in read-only mode.
+            Whether to open the database in read-only mode. When ``False``, the
+            database is opened for writing.
 
         Returns
         -------
         .Database
+            Database opened from the given location.
+
+        Raises
+        ------
+        RuntimeError
+            If the path is not accessible, the database uses an unsupported layout
+            component format, or the database is encrypted.
         """
         return Database(
             cls.__stub.Open(
@@ -106,24 +153,40 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def delete(cls, db_path: str):
-        """Delete a database in a given specified location.
+        """Delete a database from disk.
 
         Parameters
         ----------
         db_path : str
-            Path to the top-level database directory.
+            Path to the ``.aedb`` folder of the database to delete.
+
+        Raises
+        ------
+        RuntimeError
+            If the database at the given path could not be deleted.
         """
         cls.__stub.Delete(proto_wrappers.StringValue(value=db_path))
 
     def save(self):
-        """Save any changes to the database."""
+        """Save any changes made to the database.
+
+        Raises
+        ------
+        RuntimeError
+            If the database could not be saved.
+        """
         self.__stub.Save(self.msg)
 
     def close(self):
         """Close the database.
 
         .. note::
-            Unsaved changes are lost.
+            Unsaved changes are lost when the database is closed.
+
+        Raises
+        ------
+        RuntimeError
+            If the database could not be closed.
         """
         self.__stub.Close(self.msg)
         self.msg = None
@@ -135,7 +198,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def top_circuit_cells(self) -> list[Cell]:
-        """:obj:`list` of :class:`.Cell`: Top circuit cells in the database."""
+        """:obj:`list` of :class:`.Cell`: Top-level circuit cells in the database."""
         return Database._map_cell_edb_obj_collection(self.__stub.GetTopCircuits(self.msg))
 
     @property
@@ -150,7 +213,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def edb_uid(self) -> int:
-        """:obj:`int`: Unique EDB ID of the database."""
+        """:obj:`int`: Unique ID assigned to the database."""
         return self.__stub.GetId(self.msg).value
 
     @property
@@ -160,112 +223,118 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @classmethod
     def find_by_id(cls, db_id: int) -> Database:
-        """Find a database by ID.
+        """Find a previously opened database by its unique ID.
 
         Parameters
         ----------
         db_id : int
-            Unique EDB ID for the database.
+            Unique ID of the database to find.
 
         Returns
         -------
         .Database
+            Database with the given unique ID.
         """
         return Database(cls.__stub.FindById(proto_wrappers.Int64Value(value=db_id)))
 
     def save_as(self, path: str, version: str = ""):
-        """Save the database to a new location and older EDB version.
+        """Save the database to a new location, optionally in an older version format.
 
         Parameters
         ----------
         path : str
-            Location for saving the new database file to.
+            Path to the ``.aedb`` folder where the database is saved.
         version : str, default: ""
-            EDB version for the new database file. The default is ``""``, in which case
-            the new database file is saved for the current version.
+            EDB version to save the database as. If empty, the current version is used.
         """
         self.__stub.SaveAs(database_pb2.SaveAsDatabaseMessage(db=self.msg, new_location=path, version=version))
 
     @classmethod
     def get_version_by_release(cls, release: str) -> str:
-        """Get the EDB version for a given release name.
+        """Get the EDB version associated with a release name.
 
         Parameters
         ----------
         release : str
-           Release name.
+           Release name whose EDB version is requested.
 
         Returns
         -------
         str
-           EDB version.
+           EDB version associated with the release name.
         """
         return cls.__stub.GetVersionByRelease(str_message(release)).value
 
     @property
     def directory(self) -> str:
-        """:obj:`str`: Directory where the database is located."""
+        """:obj:`str`: Directory containing the database."""
         return self.__stub.GetDirectory(self.msg).value
 
     def get_product_property(self, prod_id: ProductIdType, attr_it: int) -> str:
-        """Get a product-specific property value.
+        """Get a product-specific property value stored on the database.
 
         Parameters
         ----------
         prod_id : .ProductIdType
-            Product ID.
+            Product the property belongs to.
         attr_it : int
-            Attribute ID.
+            Attribute ID of the property to get.
 
         Returns
         -------
         str
-            Property value.
+            Value of the product property.
         """
         return self.__stub.GetProductProperty(get_product_property_message(self, prod_id, attr_it)).value
 
     def set_product_property(self, prod_id: ProductIdType, attr_it: int, prop_value: str):
-        """Set the product property associated with the given product ID and attribute ID.
+        """Set a product-specific property value on the database.
 
         Parameters
         ----------
         prod_id : .ProductIdType
-            Product ID.
+            Product the property belongs to.
         attr_it : int
-            Attribute ID.
+            Attribute ID of the property to set.
         prop_value : str
             New value for the product property.
         """
         self.__stub.SetProductProperty(set_product_property_message(self, prod_id, attr_it, prop_value))
 
     def get_product_property_ids(self, prod_id: ProductIdType) -> list[int]:
-        """Get a list of attribute IDs for a given product property ID.
+        """Get the attribute IDs of the product properties stored on the database.
 
         Parameters
         ----------
         prod_id : .ProductIdType
-            Product ID.
+            Product whose property attribute IDs are requested.
 
         Returns
         -------
-        list[int]
-            Attribute IDs associated with the product property.
+        list of int
+            Attribute IDs of the product properties associated with the given product.
         """
         attr_ids = self.__stub.GetProductPropertyIds(get_product_property_ids_message(self, prod_id)).ids
         return [attr_id for attr_id in attr_ids]
 
     def import_material_from_control_file(self, control_file: str, schema_dir: str | None = None, append: bool = True):
-        """Import materials from a control file.
+        """Import materials into the database from a control file.
 
         Parameters
         ----------
         control_file : str
-            Full path to the control file.
+            Path to the control file to import materials from.
         schema_dir : str or None, default: None
-            Path to the schema directory.
+            Path to the schema directory used to validate the control file. When not set,
+            the schema in the Ansys EM install directory is used.
         append : bool, default: True
-            Whether to keep existing materials in the database. If ``False``, the
-            existing materials in the database are removed.
+            When true, existing materials in the database are kept. When false, existing
+            materials are removed before the import.
+
+        Raises
+        ------
+        RuntimeError
+            If the materials could not be imported from the control file.
         """
         self.__stub.ImportMaterialFromControlFile(
             database_pb2.ImportMaterialFromControlFileMessage(
@@ -278,23 +347,28 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def version(self) -> tuple[int, int]:
-        """:obj:`tuple` of (:obj:`int`, :obj:`int`): Version [major, minor] of the database."""
+        """:obj:`tuple` of (:obj:`int`, :obj:`int`): Major and minor version numbers of the database."""
         version_msg = self.__stub.GetVersion(self.msg)
         return version_msg.major.id, version_msg.minor.id
 
     def scale(self, scale_factor: float):
-        """Scale all geometries and their locations uniformly by a positive factor.
+        """Scale the geometry of the database.
 
         Parameters
         ----------
         scale_factor : float
-            Amount to multiply coordinates by.
+            Positive factor that all geometry coordinates in the database are multiplied by.
+
+        Raises
+        ------
+        RuntimeError
+            If the geometry could not be scaled.
         """
         self.__stub.Scale(double_property_message(self, scale_factor))
 
     @property
     def source(self) -> str:
-        """:obj:`str`: Name of the source database."""
+        """:obj:`str`: Name of the source database the database was derived from."""
         return self.__stub.GetSource(self.msg).value
 
     @source.setter
@@ -303,7 +377,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def source_version(self) -> str:
-        """:obj:`str`: Source version for the database."""
+        """:obj:`str`: Version of the source the database was derived from."""
         return self.__stub.GetSourceVersion(self.msg).value
 
     @source_version.setter
@@ -311,17 +385,22 @@ class Database(ObjBase, variable_server.VariableServer):
         self.__stub.SetSourceVersion(edb_obj_name_message(self, source_version))
 
     def copy_cells(self, cells_to_copy: list[Cell]) -> list[Cell]:
-        """Copy cells from other databases or this database into this database.
+        """Copy cells from another database into this database.
 
         Parameters
         ----------
         cells_to_copy : list of .Cell
-            Cells to copy.
+            Cells to copy into the database.
 
         Returns
         -------
         list of .Cell
-            New cells created in this database.
+            New cells created in the database.
+
+        Raises
+        ------
+        RuntimeError
+            If no cells were copied.
         """
         return Database._map_cell_edb_obj_collection(
             self.__stub.CopyCells(
@@ -358,7 +437,7 @@ class Database(ObjBase, variable_server.VariableServer):
 
     @property
     def jedec5_bondwire_defs(self) -> list[Jedec5BondwireDef]:
-        """:obj:`list` of:class:`.Jedec5BondwireDef`: All JEDEC5 bondwire definitions in the database."""
+        """:obj:`list` of :class:`.Jedec5BondwireDef`: All JEDEC5 bondwire definitions in the database."""
         return self._get_bondwire_definition_objs(Jedec5BondwireDef, BondwireDefType.JEDEC5_BONDWIRE_DEF)
 
     @property

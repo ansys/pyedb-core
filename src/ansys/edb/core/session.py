@@ -452,7 +452,10 @@ class _Session:
 
         try:
             self.local_server_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+            print(f"Started local server with PID: {self.local_server_proc.pid}")
+            print(f"Server command: {' '.join(cmd)}")
         except Exception as e:
+            print(f"Error in Popen: {e}")
             self.disconnect()
             raise EDBSessionException(ErrorCode.STARTUP_UNEXPECTED, e)
 

@@ -466,8 +466,11 @@ class _Session:
         # The server always prints "Server listening on <address>" when ready.
         if not stdout.startswith("Server listening on"):
             try:
+                print(f"Unexpected server output:\n\n---\n{stdout}\n---\n")
                 print("Local server failed to start properly. Trying to shut down gracefully...")
-                if self.local_server_proc.wait(10):
+                exit_code = self.local_server_proc.wait(10)
+                print(f"Server exited with code {exit_code}")
+                if exit_code != 0:
                     self._on_server_startup_error()
             except subprocess.TimeoutExpired:
                 raise EDBSessionException(ErrorCode.STARTUP_TIMEOUT, stdout)

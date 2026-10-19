@@ -190,3 +190,30 @@ class Primitive(conn_obj.ConnObj):
             ID of the zone primitive to use.
         """
         self.__stub.MakeZonePrimitive(messages.int_property_message(self, zone_id))
+
+    @property
+    def color_mask(self) -> str:
+        """:obj:`str`: Color mask of the primitive.
+
+        This property is read-only.
+        """
+        return self.__stub.GetColorMask(self.msg).value
+
+    @color_mask.setter
+    def color_mask(self, color_mask: str):
+        """Set the color mask of the primitive.
+
+        Parameters
+        ----------
+        color_mask : str
+            Color mask to set.
+        """
+        self.__stub.SetColorMask(messages.string_property_message(self, color_mask))
+
+    @property
+    def color_mask_id(self) -> int:
+        """:obj:`int`: Color mask ID of the primitive.
+
+        This property is read-only.
+        """
+        return self.__stub.GetColorMaskId(self.msg).value

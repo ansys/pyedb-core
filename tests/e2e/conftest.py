@@ -1,151 +1,384 @@
+# Copyright (C) 2022 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Root conftest for e2e tests.
+
+Provides session-scoped server fixture, asset path resolution,
+and helper fixtures for temporary EDB copies.
+"""
+
+import os
+from pathlib import Path
+import re
+import shutil
+
 import pytest
-import settings
 
 from ansys.edb.core.database import Database
-from ansys.edb.core.definition.padstack_def import PadstackDef
-from ansys.edb.core.definition.padstack_def_data import PadGeometryType
-from ansys.edb.core.definition.padstack_def_data import PadstackDefData
-from ansys.edb.core.definition.padstack_def_data import PadType
-from ansys.edb.core.geometry.polygon_data import PolygonData
-from ansys.edb.core.layer.layer import LayerType
-from ansys.edb.core.layer.layer_collection import LayerCollectionMode
-from ansys.edb.core.layer.stackup_layer import StackupLayer
-from ansys.edb.core.layer.via_layer import ViaLayer
 from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.layout.cell import CellType
-from ansys.edb.core.net.net import Net
-from ansys.edb.core.primitive.path import Path as Line
-from ansys.edb.core.primitive.path import PathCornerType
-from ansys.edb.core.primitive.path import PathEndCapType
-from ansys.edb.core.primitive.rectangle import Rectangle
-from ansys.edb.core.primitive.rectangle import RectangleRepresentationType
-from ansys.edb.core.session import session
-from ansys.edb.core.terminal.edge_terminal import EdgeTerminal
-from ansys.edb.core.terminal.edge_terminal import PrimitiveEdge
+from ansys.edb.core.session import get_current_session
+from ansys.edb.core.session import launch_session
 
 
-@pytest.fixture
-def test_session():
-    with session(settings.server_exe_dir()):
-        yield
+def _resolve_ansysem_install() -> str:
+    """Return the AnsysEM install directory from environment variables."""
+    explicit = os.environ.get("ANSYS_EDB_CORE_INSTALL_DIR", "")
+    if explicit:
+        return explicit
+    best_version, best_dir = -1, ""
+    for key, value in os.environ.items():
+        m = re.fullmatch(r"ANSYSEM_ROOT(\d+)", key)
+        if m and int(m.group(1)) > best_version:
+            best_version, best_dir = int(m.group(1)), value
+    return best_dir
 
 
-@pytest.fixture
-def new_database_path(tmp_path):
-    return str(tmp_path / "test.aedb")
+def _server_available() -> bool:
+    """Check whether the EDB server can be launched."""
+    install_dir = _resolve_ansysem_install()
+    if not install_dir:
+        return False
+    return Path(install_dir).is_dir()
 
 
-@pytest.fixture
-def new_database(test_session, new_database_path):
-    db = Database.create(new_database_path)
-    yield db
+# ---------------------------------------------------------------------------
+# Server crash recovery
+# ---------------------------------------------------------------------------
+
+# Set by the edb_session fixture so a crashed server can be relaunched with
+# the same parameters mid-run.
+_server_launch_params: tuple[str, bool] | None = None
+
+
+def _server_is_alive() -> bool:
+    """Return whether the currently active EDB server process is still running."""
+    sess = get_current_session()
+    if sess is None:
+        return False
+    if not sess.is_launch():
+        # Attached to a remote/pre-existing server; nothing to check locally.
+        return True
+    return sess.local_server_proc is not None and sess.local_server_proc.poll() is None
+
+
+def _recover_server_if_crashed() -> None:
+    """Relaunch the EDB server if the previously launched process has died."""
+    if _server_launch_params is None or _server_is_alive():
+        return
+    sess = get_current_session()
+    if sess is not None:
+        try:
+            sess.disconnect()
+        except Exception:
+            pass
+    install_dir, use_shm = _server_launch_params
+    print("EDB_RPC_Server appears to have crashed; relaunching for subsequent tests.")
+    launch_session(install_dir, use_shared_memory_ipc=use_shm)
+
+
+def _safe_close(db) -> None:
+    """Close a database, skipping the call if the server has already crashed."""
+    if not _server_is_alive():
+        return
     db.close()
 
 
-@pytest.fixture
-def circuit_cell(new_database):
-    return Cell.create(new_database, CellType.CIRCUIT_CELL, "circuit_cell")
+# ---------------------------------------------------------------------------
+# Marks registration
+# ---------------------------------------------------------------------------
 
 
-@pytest.fixture()
-def circuit_cell_with_overlapping_stackup(circuit_cell: Cell):
-    layers = [
-        StackupLayer.create("D1", LayerType.DIELECTRIC_LAYER, 150e-6, 0.0, "FR4_epoxy"),
-        StackupLayer.create("L1", LayerType.CONDUCTING_LAYER, 25e-6, 125e-6, "copper"),
-        StackupLayer.create("L2", LayerType.CONDUCTING_LAYER, 25e-6, 0.0, "copper"),
-        ViaLayer.create("V1", "L2", "L1", "copper"),
+def pytest_addoption(parser):
+    parser.addoption(
+        "--use-shared-memory",
+        action="store_true",
+        default=True,
+        help="Use shared-memory IPC for client/server communication (default: enabled).",
+    )
+    parser.addoption(
+        "--no-shared-memory",
+        action="store_true",
+        default=False,
+        help="Disable shared-memory IPC and use standard gRPC communication.",
+    )
+
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "requires_server: test requires EDB_RPC_Server")
+    config.addinivalue_line("markers", "slow: long-running test")
+    config.addinivalue_line("markers", "smoke: minimal validation set")
+
+
+# ---------------------------------------------------------------------------
+# Skip logic for server-dependent tests
+# ---------------------------------------------------------------------------
+
+
+# Tests that are known to fail when using standard gRPC (--no-shared-memory) due to
+# server-side behavioural differences in this transport mode.
+_NO_SHM_XFAIL_NODEIDS = frozenset(
+    [
+        "tests/e2e/definition/test_multipole_debye_model.py::TestMultipoleDebyeModelParameters::test_parameters_empty_on_create",
+        "tests/e2e/net/test_net_class.py::TestNetClassCreate::test_create_duplicate_name_raises",
+        "tests/e2e/net/test_extended_net.py::TestExtendedNetCreate::test_create_duplicate_name_raises",
+        "tests/e2e/net/test_differential_pair.py::TestDifferentialPairCreate::test_create_duplicate_name_raises",
     ]
-    circuit_cell.layout.layer_collection.mode = LayerCollectionMode.OVERLAPPING
-    for layer in layers:
-        circuit_cell.layout.layer_collection.add_stackup_layer_at_elevation(layer)
-    yield circuit_cell
+)
 
 
-@pytest.fixture()
-def circuit_cell_with_stackup(circuit_cell: Cell):
-    layers = [
-        StackupLayer.create("L1", LayerType.CONDUCTING_LAYER, 25e-6, 0.0, "copper"),
-        StackupLayer.create("D1", LayerType.DIELECTRIC_LAYER, 100e-6, 0.0, "FR4_epoxy"),
-        StackupLayer.create("L2", LayerType.CONDUCTING_LAYER, 25e-6, 0.0, "copper"),
-    ]
-    for layer in layers:
-        circuit_cell.layout.layer_collection.add_layer_bottom(layer)
-    yield circuit_cell
+def pytest_collection_modifyitems(config, items):
+    if not _server_available():
+        skip_marker = pytest.mark.skip(reason="ANSYS EDB server not available")
+        for item in items:
+            if "requires_server" in item.keywords:
+                item.add_marker(skip_marker)
 
-
-@pytest.fixture()
-def circuit_cell_with_padstack_def(circuit_cell_with_stackup: Cell):
-    db = circuit_cell_with_stackup.database
-    padstack_def_data = PadstackDefData.create()
-    layer_names = ["Start", "Default", "Stop"]
-    padstack_def_data.add_layers(layer_names)
-    for name in layer_names:
-        padstack_def_data.set_pad_parameters(
-            name,
-            PadType.REGULAR_PAD,
-            0.0,
-            0.0,
-            0.0,
-            PadGeometryType.PADGEOMTYPE_CIRCLE,
-            [70e-6],
+    if config.getoption("--no-shared-memory", default=False):
+        xfail_marker = pytest.mark.xfail(
+            reason="Known server-side failure over standard gRPC (--no-shared-memory)",
+            strict=False,
         )
-        padstack_def_data.set_pad_parameters(
-            name,
-            PadType.ANTI_PAD,
-            0.0,
-            0.0,
-            0.0,
-            PadGeometryType.PADGEOMTYPE_CIRCLE,
-            [100e-6],
-        )
-    padstack_def_data.set_hole_parameters(0.0, 0.0, 0.0, PadGeometryType.PADGEOMTYPE_CIRCLE, [50e-6])
-    padstack_def = PadstackDef.create(db, "VIA050070100")
-    padstack_def.data = padstack_def_data
-    yield circuit_cell_with_stackup
+        for item in items:
+            if item.nodeid in _NO_SHM_XFAIL_NODEIDS:
+                item.add_marker(xfail_marker)
+
+
+# ---------------------------------------------------------------------------
+# Session-scoped fixtures
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="session")
+def edb_session(request):
+    """Launch an EDB server session for the entire test run.
+
+    Skips all dependents if the server is unavailable.
+    Pass ``--no-shared-memory`` on the pytest command line to disable
+    shared-memory IPC and fall back to standard gRPC communication.
+    Shared memory is enabled by default.
+
+    If the server process crashes mid-run, the ``_crash_recovery`` autouse
+    fixture relaunches it using the same parameters recorded here.
+    """
+    global _server_launch_params
+    install_dir = _resolve_ansysem_install()
+    if not install_dir or not Path(install_dir).is_dir():
+        pytest.skip("ANSYS EDB server not available")
+    use_shm = not request.config.getoption("--no-shared-memory", default=False)
+    _server_launch_params = (install_dir, use_shm)
+    launch_session(install_dir, use_shared_memory_ipc=use_shm)
+    try:
+        yield
+    finally:
+        sess = get_current_session()
+        if sess is not None:
+            sess.disconnect()
+        _server_launch_params = None
+
+
+@pytest.fixture(autouse=True)
+def _crash_recovery(request):
+    """Detect a crashed EDB server around each test and relaunch it for later tests.
+
+    Only applies to tests marked ``requires_server``; other tests are unaffected.
+    """
+    if request.node.get_closest_marker("requires_server") is None:
+        yield
+        return
+    request.getfixturevalue("edb_session")
+    _recover_server_if_crashed()
+    yield
+    _recover_server_if_crashed()
+
+
+@pytest.fixture(scope="session")
+def ansysem_install_dir(edb_session):
+    """Return the resolved AnsysEM install directory as a Path.
+
+    Guaranteed to be a valid directory (session is already running).
+    """
+    return Path(_resolve_ansysem_install())
+
+
+@pytest.fixture(scope="session")
+def asset_dir():
+    """Return the path to the test assets root directory."""
+    return Path(__file__).parent / "assets"
+
+
+@pytest.fixture(scope="session")
+def edb_dir(asset_dir):
+    """Return the path to the EDB assets subdirectory."""
+    return asset_dir / "edb"
+
+
+@pytest.fixture(scope="session")
+def xml_dir(asset_dir):
+    """Return the path to the XML assets subdirectory."""
+    return asset_dir / "xml"
+
+
+# ---------------------------------------------------------------------------
+# Function-scoped fixtures
+# ---------------------------------------------------------------------------
 
 
 @pytest.fixture
-def circuit_cell_with_edge_terminals(circuit_cell_with_padstack_def: Cell) -> Cell:
-    _ = Rectangle.create(
-        circuit_cell_with_padstack_def.layout,
-        "L2",
-        Net.create(circuit_cell_with_padstack_def.layout, "GND"),
-        RectangleRepresentationType.CENTER_WIDTH_HEIGHT,
-        0.0,
-        0.0,
-        2e-3,
-        1e-3,
-        0.0,
-        0.0,
-    )
+def edb_copy(edb_dir, tmp_path):
+    """Factory fixture: copy an asset EDB to a temp directory and return the path.
 
-    line = Line.create(
-        circuit_cell_with_padstack_def.layout,
-        "L1",
-        Net.create(circuit_cell_with_padstack_def.layout, "NET1"),
-        0.2e-3,
-        PathEndCapType.FLAT,
-        PathEndCapType.FLAT,
-        PathCornerType.ROUND,
-        PolygonData([[-0.9e-3, 0.0], [0.9e-3, 0.0]]),
-    )
+    Usage::
 
-    edge1 = PrimitiveEdge.create(line, [-0.9e-3, 0.0])
-    edge_terminal1 = EdgeTerminal.create(
-        circuit_cell_with_padstack_def.layout,
-        "P1",
-        [edge1],
-        Net.find_by_name(circuit_cell_with_padstack_def.layout, "NET1"),
-    )
-    edge_terminal1.reference_layer = "L2"
+        def test_something(edb_copy):
+            edb_path = edb_copy("my_design.aedb")
+            db = Database.open(str(edb_path), read_only=False)
+    """
 
-    edge2 = PrimitiveEdge.create(line, [0.9e-3, 0.0])
-    edge_terminal2 = EdgeTerminal.create(
-        circuit_cell_with_padstack_def.layout,
-        "P2",
-        [edge2],
-        Net.find_by_name(circuit_cell_with_padstack_def.layout, "NET1"),
-    )
-    edge_terminal2.reference_layer = "L2"
+    def _copy(asset_name: str) -> Path:
+        src = edb_dir / asset_name
+        if not src.exists():
+            pytest.fail(f"EDB asset not found: {src}")
+        dst = tmp_path / asset_name
+        shutil.copytree(src, dst)
+        return dst
 
-    return circuit_cell_with_padstack_def
+    return _copy
+
+
+@pytest.fixture
+def xml_asset_path(xml_dir):
+    """Factory fixture: return the path to an XML/XSD asset file.
+
+    XML assets are read-only and do not need to be copied.
+
+    Usage::
+
+        def test_something(xml_asset_path):
+            path = xml_asset_path("tsv_gsg_tech.xml")
+    """
+
+    def _path(asset_name: str) -> Path:
+        p = xml_dir / asset_name
+        if not p.exists():
+            pytest.fail(f"XML asset not found: {p}")
+        return p
+
+    return _path
+
+
+@pytest.fixture
+def new_db(edb_session, tmp_path):
+    """Create a fresh empty database in a temp directory.
+
+    Closes the database on teardown.
+    """
+    db_path = str(tmp_path / "test.aedb")
+    db = Database.create(db_path)
+    yield db
+    _safe_close(db)
+
+
+@pytest.fixture
+def new_circuit_cell(new_db):
+    """Create a circuit cell in the new database."""
+    return Cell.create(new_db, CellType.CIRCUIT_CELL, "test_cell")
+
+
+@pytest.fixture
+def new_footprint_cell(new_db):
+    """Create a footprint cell in the new database."""
+    return Cell.create(new_db, CellType.FOOTPRINT_CELL, "test_footprint")
+
+
+@pytest.fixture
+def new_layout(new_circuit_cell):
+    """Return the layout of the new circuit cell."""
+    return new_circuit_cell.layout
+
+
+# ---------------------------------------------------------------------------
+# Asset-backed database fixtures
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def ssn_db(edb_session, edb_copy):
+    """Open the SSN asset database read-only."""
+    db_path = edb_copy("SSN.aedb")
+    db = Database.open(str(db_path), read_only=True)
+    yield db
+    _safe_close(db)
+
+
+@pytest.fixture
+def diff_via_db(edb_session, edb_copy):
+    """Open the Diff_Via asset database read-only."""
+    db_path = edb_copy("Diff_Via.aedb")
+    db = Database.open(str(db_path), read_only=True)
+    yield db
+    _safe_close(db)
+
+
+@pytest.fixture
+def db_with_definitions(edb_session, edb_copy):
+    """Open the Definition_Types asset database read-only.
+
+    Contains exactly one instance of each definition type (MaterialDef,
+    PadstackDef, ComponentDef, PackageDef, DatasetDef, ApdBondwireDef,
+    and one user-created Jedec4/5 alongside the server-injected Default).
+    """
+    db_path = edb_copy("Definition_Types.aedb")
+    db = Database.open(str(db_path), read_only=True)
+    yield db
+    _safe_close(db)
+
+
+# ---------------------------------------------------------------------------
+# Temporary database factory fixture
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def create_temp_db(edb_session, tmp_path):
+    """Factory fixture: create a named empty database in the test's tmp_path.
+
+    Automatically closes any unclosed databases on teardown.
+
+    Usage::
+
+        def test_something(create_temp_db):
+            db = create_temp_db("my_test.aedb")
+            ...
+    """
+    created = []
+
+    def _create(name: str) -> Database:
+        db = Database.create(str(tmp_path / name))
+        created.append(db)
+        return db
+
+    yield _create
+
+    for db in created:
+        if not db.is_null:
+            _safe_close(db)

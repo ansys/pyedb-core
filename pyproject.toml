@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-edb-core"
-version = "0.4.0.dev3"
+version = "0.4.0.dev4"
 description = "A python wrapper for Ansys Edb service"
 readme = "README.rst"
 requires-python = ">=3.10"
@@ -25,7 +25,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "ansys-api-edb==0.4.dev3",
+    "ansys-api-edb==0.4.dev4",
     "protobuf>=4.25.8,<8",
     "grpcio>=1.44.0",
     "ansys-tools-common>=0.3.1"
@@ -161,6 +161,15 @@ convention = "numpy"
 force-sort-within-sections = true
 known-first-party = ["doc", "src/ansys/edb/core", "tests"]
 force-single-line = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests/e2e_legacy"]
+markers = [
+    "requires_server: test requires EDB_RPC_Server",
+    "slow: long-running test",
+    "smoke: minimal validation set",
+]
+addopts = "--tb=short"
 
 [tool.coverage.run]
 source = ["ansys.edb"]

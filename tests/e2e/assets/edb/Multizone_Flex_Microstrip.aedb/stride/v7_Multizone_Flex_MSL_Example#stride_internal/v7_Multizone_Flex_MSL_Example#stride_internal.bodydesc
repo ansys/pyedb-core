@@ -1,0 +1,92 @@
+$begin 'Header'
+	Version=16
+$end 'Header'
+$begin 'MeshBodies'
+	$begin 'Bodies'
+		$begin 'MeshBody'
+			Id=12
+			Nam='bottom_t_fill'
+			Mat='polyimide'
+			Layer='bottom'
+			Diel=true
+			Thickness=1.8000000000000000e-05
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=11
+			Nam='DE'
+			Mat='polyimide'
+			Layer='DE'
+			Diel=true
+			Thickness=4.9999999999999996e-05
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=6
+			Nam='Port1'
+			Layer='top'
+			Sheet=true
+			Type='Terminal'
+			Priority=1
+			Net='Port1'
+			OrigNet='Port1'
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=8
+			Nam='Port2'
+			Layer='top'
+			Sheet=true
+			Type='Terminal'
+			Priority=1
+			Net='Port2'
+			OrigNet='Port2'
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=7
+			Nam='Port_Port1'
+			Mat='pec'
+			DesNam='Port1'
+			Layer='top'
+			Sheet=true
+			Type='Port'
+			Priority=1
+			Net='Port1'
+			OrigNet='Port1'
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=9
+			Nam='Port_Port2'
+			Mat='pec'
+			DesNam='Port2'
+			Layer='top'
+			Sheet=true
+			Type='Port'
+			Priority=1
+			Net='Port2'
+			OrigNet='Port2'
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=2
+			Nam='rect_28'
+			Mat='copper'
+			Layer='bottom'
+			Priority=1
+			Thickness=1.8000000000000000e-05
+			Subtype=6
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=10
+			Nam='top_t_fill'
+			Mat='polyimide'
+			Layer='top'
+			Diel=true
+			Thickness=1.8000000000000000e-05
+		$end 'MeshBody'
+		$begin 'MeshBody'
+			Id=1
+			Nam='trace'
+			Mat='copper'
+			Layer='top'
+			Priority=1
+			Thickness=1.8000000000000000e-05
+		$end 'MeshBody'
+	$end 'Bodies'
+$end 'MeshBodies'

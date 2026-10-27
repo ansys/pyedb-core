@@ -1,0 +1,6 @@
+is\_point
+=========
+
+.. currentmodule:: ansys.edb.core.geometry.arc_data
+
+.. automethod:: ArcData.is_point

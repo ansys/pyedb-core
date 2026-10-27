@@ -1,0 +1,6 @@
+set\_visible
+============
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. automethod:: McadModel.set_visible

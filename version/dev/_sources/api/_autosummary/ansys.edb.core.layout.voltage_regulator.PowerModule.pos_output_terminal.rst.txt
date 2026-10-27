@@ -1,0 +1,6 @@
+pos\_output\_terminal
+=====================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: PowerModule.pos_output_terminal

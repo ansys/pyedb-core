@@ -1,0 +1,6 @@
+create\_stride
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. automethod:: TerminalInstance.create_stride

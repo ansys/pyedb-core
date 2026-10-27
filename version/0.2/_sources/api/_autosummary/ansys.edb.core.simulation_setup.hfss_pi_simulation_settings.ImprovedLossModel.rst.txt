@@ -1,0 +1,24 @@
+﻿ImprovedLossModel
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: ImprovedLossModel
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ImprovedLossModel.LEVEL_1
+      ImprovedLossModel.LEVEL_2
+      ImprovedLossModel.LEVEL_3
+   
+   

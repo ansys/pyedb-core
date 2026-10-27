@@ -1,0 +1,6 @@
+pi\_slider\_pos
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveGeneralSettings.pi_slider_pos

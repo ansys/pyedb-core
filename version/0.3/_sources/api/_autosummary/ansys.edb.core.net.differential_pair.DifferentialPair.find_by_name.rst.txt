@@ -1,0 +1,6 @@
+find\_by\_name
+==============
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. automethod:: DifferentialPair.find_by_name

@@ -1,0 +1,6 @@
+TWOWAY\_UNIQUE
+==============
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. autoattribute:: LayerMapUniqueDirection.TWOWAY_UNIQUE

@@ -1,0 +1,25 @@
+﻿EDBErrorSeverity
+================
+
+.. currentmodule:: ansys.edb.core.utility.edb_error_manager
+
+.. autoclass:: EDBErrorSeverity
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      EDBErrorSeverity.INFO
+      EDBErrorSeverity.WARNING
+      EDBErrorSeverity.ERROR
+      EDBErrorSeverity.FATAL
+   
+   

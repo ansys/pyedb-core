@@ -1,0 +1,6 @@
+obj\_type
+=========
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. autoproperty:: PointTerminal.obj_type

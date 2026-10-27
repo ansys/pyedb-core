@@ -1,0 +1,6 @@
+mag\_limit
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoproperty:: MatrixConvergenceDataEntry.mag_limit

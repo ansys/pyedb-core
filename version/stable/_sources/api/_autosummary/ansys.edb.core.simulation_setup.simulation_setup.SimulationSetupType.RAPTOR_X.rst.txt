@@ -1,0 +1,6 @@
+RAPTOR\_X
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: SimulationSetupType.RAPTOR_X

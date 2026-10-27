@@ -1,0 +1,6 @@
+clone
+=====
+
+.. currentmodule:: ansys.edb.core.hierarchy.netlist_model
+
+.. automethod:: NetlistModel.clone

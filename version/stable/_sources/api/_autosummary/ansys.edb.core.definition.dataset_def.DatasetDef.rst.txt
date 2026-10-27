@@ -1,0 +1,45 @@
+﻿DatasetDef
+==========
+
+.. currentmodule:: ansys.edb.core.definition.dataset_def
+
+.. autoclass:: DatasetDef
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      DatasetDef.create
+      
+      
+      DatasetDef.find_by_name
+      
+      
+      DatasetDef.get_data
+      
+      
+      DatasetDef.set_data
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DatasetDef.definition_type
+      DatasetDef.id
+      DatasetDef.is_null
+      DatasetDef.msg
+      DatasetDef.name
+   
+   

@@ -1,0 +1,6 @@
+name
+====
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoproperty:: Layer.name

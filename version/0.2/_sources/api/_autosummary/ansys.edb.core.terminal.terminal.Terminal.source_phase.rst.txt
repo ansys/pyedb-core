@@ -1,0 +1,6 @@
+source\_phase
+=============
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoproperty:: Terminal.source_phase

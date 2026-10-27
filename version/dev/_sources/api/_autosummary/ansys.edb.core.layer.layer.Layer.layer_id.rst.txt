@@ -1,0 +1,6 @@
+layer\_id
+=========
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoproperty:: Layer.layer_id

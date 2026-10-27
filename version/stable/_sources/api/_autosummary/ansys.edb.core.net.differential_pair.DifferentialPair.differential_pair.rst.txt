@@ -1,0 +1,6 @@
+differential\_pair
+==================
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. autoproperty:: DifferentialPair.differential_pair

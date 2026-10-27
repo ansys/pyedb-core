@@ -1,0 +1,6 @@
+ic\_mode\_auto\_resolution
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSAdvancedSettings.ic_mode_auto_resolution

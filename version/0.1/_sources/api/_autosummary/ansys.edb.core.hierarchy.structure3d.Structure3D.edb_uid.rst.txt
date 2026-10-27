@@ -1,0 +1,6 @@
+edb\_uid
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. autoproperty:: Structure3D.edb_uid

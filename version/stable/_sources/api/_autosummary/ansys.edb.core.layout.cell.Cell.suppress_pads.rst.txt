@@ -1,0 +1,6 @@
+suppress\_pads
+==============
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoproperty:: Cell.suppress_pads

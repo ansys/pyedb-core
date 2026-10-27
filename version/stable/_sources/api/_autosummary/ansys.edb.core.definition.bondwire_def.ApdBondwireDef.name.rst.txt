@@ -1,0 +1,6 @@
+name
+====
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. autoproperty:: ApdBondwireDef.name

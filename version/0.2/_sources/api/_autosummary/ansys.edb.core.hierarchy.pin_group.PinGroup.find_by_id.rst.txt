@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. automethod:: PinGroup.find_by_id

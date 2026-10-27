@@ -1,0 +1,6 @@
+add\_member
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. automethod:: ViaGroup.add_member

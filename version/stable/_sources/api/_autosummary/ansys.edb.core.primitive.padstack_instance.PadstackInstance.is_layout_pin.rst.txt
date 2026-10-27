@@ -1,0 +1,6 @@
+is\_layout\_pin
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. autoproperty:: PadstackInstance.is_layout_pin

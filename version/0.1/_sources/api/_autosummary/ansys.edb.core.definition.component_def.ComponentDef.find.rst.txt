@@ -1,0 +1,6 @@
+find
+====
+
+.. currentmodule:: ansys.edb.core.definition.component_def
+
+.. automethod:: ComponentDef.find

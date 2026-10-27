@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.primitive.circle
+
+.. automethod:: Circle.create_hfss

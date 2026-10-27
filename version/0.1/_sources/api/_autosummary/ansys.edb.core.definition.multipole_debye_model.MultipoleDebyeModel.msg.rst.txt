@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.definition.multipole_debye_model
+
+.. autoproperty:: MultipoleDebyeModel.msg

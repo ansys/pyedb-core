@@ -1,0 +1,6 @@
+hfss\_extent\_info
+==================
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoproperty:: Cell.hfss_extent_info

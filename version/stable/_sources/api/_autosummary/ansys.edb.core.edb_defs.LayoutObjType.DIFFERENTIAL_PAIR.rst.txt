@@ -1,0 +1,6 @@
+DIFFERENTIAL\_PAIR
+==================
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.DIFFERENTIAL_PAIR

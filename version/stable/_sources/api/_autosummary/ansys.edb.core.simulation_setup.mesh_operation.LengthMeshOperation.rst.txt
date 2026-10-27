@@ -1,0 +1,38 @@
+﻿LengthMeshOperation
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoclass:: LengthMeshOperation
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LengthMeshOperation.enabled
+      LengthMeshOperation.max_elements
+      LengthMeshOperation.max_length
+      LengthMeshOperation.mesh_region
+      LengthMeshOperation.name
+      LengthMeshOperation.net_layer_info
+      LengthMeshOperation.refine_inside
+      LengthMeshOperation.restrict_max_elements
+      LengthMeshOperation.restrict_max_length
+      LengthMeshOperation.solve_inside
+   
+   

@@ -1,0 +1,6 @@
+POINT\_IN
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoattribute:: SParamInterpolation.POINT_IN

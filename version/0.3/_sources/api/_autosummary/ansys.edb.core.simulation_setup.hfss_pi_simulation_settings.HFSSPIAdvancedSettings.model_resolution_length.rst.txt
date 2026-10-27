@@ -1,0 +1,6 @@
+model\_resolution\_length
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIAdvancedSettings.model_resolution_length

@@ -1,0 +1,6 @@
+group
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Text.group

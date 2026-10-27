@@ -1,0 +1,6 @@
+PADSTACK\_INST
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: TerminalType.PADSTACK_INST

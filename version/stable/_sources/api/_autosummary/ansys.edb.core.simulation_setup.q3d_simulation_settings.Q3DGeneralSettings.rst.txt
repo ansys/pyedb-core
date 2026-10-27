@@ -1,0 +1,35 @@
+﻿Q3DGeneralSettings
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DGeneralSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DGeneralSettings.do_ac
+      Q3DGeneralSettings.do_cg
+      Q3DGeneralSettings.do_dc
+      Q3DGeneralSettings.do_dc_res_only
+      Q3DGeneralSettings.msg
+      Q3DGeneralSettings.save_fields
+      Q3DGeneralSettings.solution_frequency
+   
+   

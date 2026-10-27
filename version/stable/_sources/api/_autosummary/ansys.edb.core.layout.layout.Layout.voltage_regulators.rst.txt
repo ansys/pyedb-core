@@ -1,0 +1,6 @@
+voltage\_regulators
+===================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. autoproperty:: Layout.voltage_regulators

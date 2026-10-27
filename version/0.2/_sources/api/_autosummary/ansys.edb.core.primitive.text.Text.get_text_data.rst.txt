@@ -1,0 +1,6 @@
+get\_text\_data
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.text
+
+.. automethod:: Text.get_text_data

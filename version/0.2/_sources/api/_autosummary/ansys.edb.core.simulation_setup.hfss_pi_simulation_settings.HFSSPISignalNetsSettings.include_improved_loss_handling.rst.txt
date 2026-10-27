@@ -1,0 +1,6 @@
+include\_improved\_loss\_handling
+=================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPISignalNetsSettings.include_improved_loss_handling

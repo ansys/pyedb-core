@@ -1,0 +1,6 @@
+create\_with\_component
+=======================
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. automethod:: InstArray.create_with_component

@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.create_hfss

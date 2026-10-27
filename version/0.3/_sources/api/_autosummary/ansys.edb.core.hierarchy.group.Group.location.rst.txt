@@ -1,0 +1,6 @@
+location
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. autoproperty:: Group.location

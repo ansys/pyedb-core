@@ -1,0 +1,6 @@
+SHARP
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PathCornerType.SHARP

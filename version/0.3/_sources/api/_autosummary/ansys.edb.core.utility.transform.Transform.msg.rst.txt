@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.utility.transform
+
+.. autoproperty:: Transform.msg

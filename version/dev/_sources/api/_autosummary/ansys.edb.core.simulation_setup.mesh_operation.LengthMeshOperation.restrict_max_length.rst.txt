@@ -1,0 +1,6 @@
+restrict\_max\_length
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoproperty:: LengthMeshOperation.restrict_max_length

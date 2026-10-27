@@ -1,0 +1,6 @@
+loss\_tangent\_at\_high\_low\_frequency
+=======================================
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. autoproperty:: DebyeModel.loss_tangent_at_high_low_frequency

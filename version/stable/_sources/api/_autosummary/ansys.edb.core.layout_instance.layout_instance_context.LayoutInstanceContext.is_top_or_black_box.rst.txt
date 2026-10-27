@@ -1,0 +1,6 @@
+is\_top\_or\_black\_box
+=======================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance_context
+
+.. autoproperty:: LayoutInstanceContext.is_top_or_black_box

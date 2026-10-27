@@ -1,0 +1,6 @@
+is\_auto\_port
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: TerminalInstanceTerminal.is_auto_port

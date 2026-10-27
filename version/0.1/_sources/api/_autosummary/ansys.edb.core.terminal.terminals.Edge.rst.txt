@@ -1,0 +1,35 @@
+﻿Edge
+====
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoclass:: Edge
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Edge.cast
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Edge.id
+      Edge.is_null
+      Edge.msg
+      Edge.type
+   
+   

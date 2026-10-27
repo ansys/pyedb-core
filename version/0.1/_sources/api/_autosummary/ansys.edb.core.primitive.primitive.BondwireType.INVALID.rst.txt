@@ -1,0 +1,6 @@
+INVALID
+=======
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: BondwireType.INVALID

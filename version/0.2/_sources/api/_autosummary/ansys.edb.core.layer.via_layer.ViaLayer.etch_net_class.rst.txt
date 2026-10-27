@@ -1,0 +1,6 @@
+etch\_net\_class
+================
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. autoproperty:: ViaLayer.etch_net_class

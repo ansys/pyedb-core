@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoproperty:: SimulationSetup.type

@@ -1,0 +1,6 @@
+set\_hfss\_prop
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Circle.set_hfss_prop

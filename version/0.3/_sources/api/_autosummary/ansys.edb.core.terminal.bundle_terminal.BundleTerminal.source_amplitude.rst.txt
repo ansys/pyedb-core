@@ -1,0 +1,6 @@
+source\_amplitude
+=================
+
+.. currentmodule:: ansys.edb.core.terminal.bundle_terminal
+
+.. autoproperty:: BundleTerminal.source_amplitude

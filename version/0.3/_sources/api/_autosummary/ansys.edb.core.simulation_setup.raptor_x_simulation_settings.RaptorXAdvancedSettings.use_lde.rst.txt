@@ -1,0 +1,6 @@
+use\_lde
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.raptor_x_simulation_settings
+
+.. autoproperty:: RaptorXAdvancedSettings.use_lde

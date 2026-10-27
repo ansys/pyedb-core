@@ -1,0 +1,6 @@
+package\_def
+============
+
+.. currentmodule:: ansys.edb.core.definition.component_property
+
+.. autoproperty:: ComponentProperty.package_def

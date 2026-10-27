@@ -1,0 +1,6 @@
+is\_mcad
+========
+
+.. currentmodule:: ansys.edb.core.terminal.pin_group_terminal
+
+.. autoproperty:: PinGroupTerminal.is_mcad

@@ -1,0 +1,6 @@
+type
+====
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.type

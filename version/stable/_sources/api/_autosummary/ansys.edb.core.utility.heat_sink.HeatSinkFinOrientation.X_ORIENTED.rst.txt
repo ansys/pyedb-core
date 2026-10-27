@@ -1,0 +1,6 @@
+X\_ORIENTED
+===========
+
+.. currentmodule:: ansys.edb.core.utility.heat_sink
+
+.. autoattribute:: HeatSinkFinOrientation.X_ORIENTED

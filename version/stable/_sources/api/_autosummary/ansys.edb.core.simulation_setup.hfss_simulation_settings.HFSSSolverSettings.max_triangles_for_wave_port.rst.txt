@@ -1,0 +1,6 @@
+max\_triangles\_for\_wave\_port
+===============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSolverSettings.max_triangles_for_wave_port

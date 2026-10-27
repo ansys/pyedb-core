@@ -1,0 +1,6 @@
+CONFORMING
+==========
+
+.. currentmodule:: ansys.edb.core.utility.hfss_extent_info
+
+.. autoattribute:: HFSSExtentInfoType.CONFORMING

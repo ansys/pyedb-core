@@ -1,0 +1,6 @@
+voids
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.primitive_instance_collection
+
+.. autoproperty:: PrimitiveInstanceCollection.voids

@@ -1,0 +1,6 @@
+set\_position\_and\_rotation
+============================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.set_position_and_rotation

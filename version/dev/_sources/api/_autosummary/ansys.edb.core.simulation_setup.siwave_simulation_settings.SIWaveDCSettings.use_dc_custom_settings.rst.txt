@@ -1,0 +1,6 @@
+use\_dc\_custom\_settings
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCSettings.use_dc_custom_settings

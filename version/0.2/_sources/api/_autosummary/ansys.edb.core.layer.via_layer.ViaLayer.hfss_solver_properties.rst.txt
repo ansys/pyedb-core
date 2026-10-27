@@ -1,0 +1,6 @@
+hfss\_solver\_properties
+========================
+
+.. currentmodule:: ansys.edb.core.layer.via_layer
+
+.. autoproperty:: ViaLayer.hfss_solver_properties

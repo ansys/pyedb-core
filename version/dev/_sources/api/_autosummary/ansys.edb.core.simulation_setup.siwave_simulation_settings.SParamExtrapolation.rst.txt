@@ -1,0 +1,25 @@
+﻿SParamExtrapolation
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SParamExtrapolation
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SParamExtrapolation.ZERO_EX
+      SParamExtrapolation.SAME_EX
+      SParamExtrapolation.LINEAR_EX
+      SParamExtrapolation.CONSTANT_EX
+   
+   

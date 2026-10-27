@@ -1,0 +1,6 @@
+FOOTPRINT\_CELL
+===============
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoattribute:: CellType.FOOTPRINT_CELL

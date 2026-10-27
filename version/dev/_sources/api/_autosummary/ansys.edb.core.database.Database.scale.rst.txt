@@ -1,0 +1,6 @@
+scale
+=====
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.scale

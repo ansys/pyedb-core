@@ -1,0 +1,6 @@
+comp\_group\_name
+=================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: PowerModule.comp_group_name

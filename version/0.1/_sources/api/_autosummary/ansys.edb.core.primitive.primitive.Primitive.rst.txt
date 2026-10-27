@@ -1,0 +1,94 @@
+﻿Primitive
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoclass:: Primitive
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Primitive.add_void
+      
+      
+      Primitive.cast
+      
+      
+      Primitive.create_3d_comp
+      
+      
+      Primitive.create_hfss
+      
+      
+      Primitive.create_stride
+      
+      
+      Primitive.delete
+      
+      
+      Primitive.find_by_id
+      
+      
+      Primitive.get_hfss_prop
+      
+      
+      Primitive.get_product_property
+      
+      
+      Primitive.get_product_property_ids
+      
+      
+      Primitive.make_zone_primitive
+      
+      
+      Primitive.remove_hfss_prop
+      
+      
+      Primitive.set_hfss_prop
+      
+      
+      Primitive.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Primitive.can_be_zone_primitive
+      Primitive.component
+      Primitive.edb_uid
+      Primitive.group
+      Primitive.has_voids
+      Primitive.id
+      Primitive.is_mcad
+      Primitive.is_mcad_3d_comp
+      Primitive.is_mcad_hfss
+      Primitive.is_mcad_stride
+      Primitive.is_negative
+      Primitive.is_null
+      Primitive.is_parameterized
+      Primitive.is_void
+      Primitive.is_zone_primitive
+      Primitive.layer
+      Primitive.layout
+      Primitive.layout_obj_type
+      Primitive.msg
+      Primitive.net
+      Primitive.obj_type
+      Primitive.owner
+      Primitive.primitive_type
+      Primitive.voids
+   
+   

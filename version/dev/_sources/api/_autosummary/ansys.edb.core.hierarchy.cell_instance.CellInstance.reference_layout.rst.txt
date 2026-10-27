@@ -1,0 +1,6 @@
+reference\_layout
+=================
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.reference_layout

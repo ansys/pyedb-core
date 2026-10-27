@@ -1,0 +1,36 @@
+﻿MultipoleDebyeModel
+===================
+
+.. currentmodule:: ansys.edb.core.definition.multipole_debye_model
+
+.. autoclass:: MultipoleDebyeModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      MultipoleDebyeModel.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MultipoleDebyeModel.id
+      MultipoleDebyeModel.is_null
+      MultipoleDebyeModel.msg
+      MultipoleDebyeModel.parameters
+      MultipoleDebyeModel.type
+   
+   

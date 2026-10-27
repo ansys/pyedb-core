@@ -1,0 +1,6 @@
+include\_improved\_dielectric\_fill\_refinement
+===============================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSISignalNetsSettings.include_improved_dielectric_fill_refinement

@@ -1,0 +1,6 @@
+solve\_independent\_preference
+==============================
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.solve_independent_preference

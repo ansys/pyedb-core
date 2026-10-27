@@ -1,0 +1,6 @@
+pin\_group\_terminal
+====================
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. autoproperty:: PinGroup.pin_group_terminal

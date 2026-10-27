@@ -1,0 +1,102 @@
+﻿InstArray
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. autoclass:: InstArray
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      InstArray.cast
+      
+      
+      InstArray.create
+      
+      
+      InstArray.create_3d_comp
+      
+      
+      InstArray.create_hfss
+      
+      
+      InstArray.create_stride
+      
+      
+      InstArray.create_with_component
+      
+      
+      InstArray.decompose
+      
+      
+      InstArray.delete
+      
+      
+      InstArray.find
+      
+      
+      InstArray.find_by_id
+      
+      
+      InstArray.get_parameter_override
+      
+      
+      InstArray.get_product_property
+      
+      
+      InstArray.get_product_property_ids
+      
+      
+      InstArray.set_parameter_override
+      
+      
+      InstArray.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      InstArray.component
+      InstArray.component_def
+      InstArray.edb_uid
+      InstArray.group
+      InstArray.id
+      InstArray.is_mcad
+      InstArray.is_mcad_3d_comp
+      InstArray.is_mcad_hfss
+      InstArray.is_mcad_stride
+      InstArray.is_null
+      InstArray.layout
+      InstArray.layout_obj_type
+      InstArray.location
+      InstArray.msg
+      InstArray.name
+      InstArray.net
+      InstArray.obj_type
+      InstArray.orig
+      InstArray.placement_3d
+      InstArray.placement_layer
+      InstArray.reference_layout
+      InstArray.solve_independent_preference
+      InstArray.term_instances
+      InstArray.transform
+      InstArray.transform3d
+      InstArray.x_axis
+      InstArray.x_count
+      InstArray.y_axis
+      InstArray.y_count
+   
+   

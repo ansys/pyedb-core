@@ -1,0 +1,6 @@
+layer\_alignment
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedMeshingSettings.layer_alignment

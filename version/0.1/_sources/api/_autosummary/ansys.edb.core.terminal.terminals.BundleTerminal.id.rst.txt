@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: BundleTerminal.id

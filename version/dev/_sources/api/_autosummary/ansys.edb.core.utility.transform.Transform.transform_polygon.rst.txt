@@ -1,0 +1,6 @@
+transform\_polygon
+==================
+
+.. currentmodule:: ansys.edb.core.utility.transform
+
+.. automethod:: Transform.transform_polygon

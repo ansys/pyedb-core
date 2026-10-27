@@ -1,0 +1,32 @@
+﻿ConnectionPtDirection
+=====================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoclass:: ConnectionPtDirection
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ConnectionPtDirection.PS_NO_DIRECTION
+      ConnectionPtDirection.PS_ANY_DIRECTION
+      ConnectionPtDirection.PS_0_DIRECTION
+      ConnectionPtDirection.PS_45_DIRECTION
+      ConnectionPtDirection.PS_90_DIRECTION
+      ConnectionPtDirection.PS_135_DIRECTION
+      ConnectionPtDirection.PS_180_DIRECTION
+      ConnectionPtDirection.PS_225_DIRECTION
+      ConnectionPtDirection.PS_270_DIRECTION
+      ConnectionPtDirection.PS_315_DIRECTION
+      ConnectionPtDirection.PS_UNKNOWN_DIRECTION
+   
+   

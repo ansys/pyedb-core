@@ -1,0 +1,6 @@
+id
+==
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. autoproperty:: McadModel.id

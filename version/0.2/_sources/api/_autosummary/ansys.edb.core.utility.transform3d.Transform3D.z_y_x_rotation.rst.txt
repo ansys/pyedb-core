@@ -1,0 +1,6 @@
+z\_y\_x\_rotation
+=================
+
+.. currentmodule:: ansys.edb.core.utility.transform3d
+
+.. autoproperty:: Transform3D.z_y_x_rotation

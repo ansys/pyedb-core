@@ -1,0 +1,6 @@
+set\_back\_drill\_by\_depth
+===========================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.set_back_drill_by_depth

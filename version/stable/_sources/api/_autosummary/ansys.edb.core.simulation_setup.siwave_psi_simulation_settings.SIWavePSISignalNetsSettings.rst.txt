@@ -1,0 +1,33 @@
+﻿SIWavePSISignalNetsSettings
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoclass:: SIWavePSISignalNetsSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSISignalNetsSettings.conductor_modeling
+      SIWavePSISignalNetsSettings.error_tolerance
+      SIWavePSISignalNetsSettings.include_improved_dielectric_fill_refinement
+      SIWavePSISignalNetsSettings.include_improved_loss_handling
+      SIWavePSISignalNetsSettings.msg
+   
+   

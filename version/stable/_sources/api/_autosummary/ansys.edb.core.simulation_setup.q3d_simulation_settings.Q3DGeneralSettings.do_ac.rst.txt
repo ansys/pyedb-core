@@ -1,0 +1,6 @@
+do\_ac
+======
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DGeneralSettings.do_ac

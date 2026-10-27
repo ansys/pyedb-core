@@ -1,0 +1,6 @@
+get\_traj
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. automethod:: Bondwire.get_traj

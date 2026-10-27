@@ -1,0 +1,6 @@
+zero\_metal\_layer\_thickness
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIAdvancedSettings.zero_metal_layer_thickness

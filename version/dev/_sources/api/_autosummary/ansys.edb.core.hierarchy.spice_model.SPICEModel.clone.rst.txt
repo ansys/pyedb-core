@@ -1,0 +1,6 @@
+clone
+=====
+
+.. currentmodule:: ansys.edb.core.hierarchy.spice_model
+
+.. automethod:: SPICEModel.clone

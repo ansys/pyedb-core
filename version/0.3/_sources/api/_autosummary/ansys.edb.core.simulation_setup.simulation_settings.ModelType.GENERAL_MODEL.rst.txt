@@ -1,0 +1,6 @@
+GENERAL\_MODEL
+==============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoattribute:: ModelType.GENERAL_MODEL

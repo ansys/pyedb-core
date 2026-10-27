@@ -1,0 +1,36 @@
+﻿HFSSSolverSettings
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoclass:: HFSSSolverSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSSolverSettings.enable_intra_plane_coupling
+      HFSSSolverSettings.max_delta_z0
+      HFSSSolverSettings.max_triangles_for_wave_port
+      HFSSSolverSettings.min_triangles_for_wave_port
+      HFSSSolverSettings.msg
+      HFSSSolverSettings.set_triangles_for_wave_port
+      HFSSSolverSettings.thin_dielectric_layer_threshold
+      HFSSSolverSettings.thin_signal_layer_threshold
+   
+   

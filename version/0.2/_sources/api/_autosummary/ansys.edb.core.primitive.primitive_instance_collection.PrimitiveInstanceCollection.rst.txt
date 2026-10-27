@@ -1,0 +1,55 @@
+﻿PrimitiveInstanceCollection
+===========================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive_instance_collection
+
+.. autoclass:: PrimitiveInstanceCollection
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PrimitiveInstanceCollection.create
+      
+      
+      PrimitiveInstanceCollection.decompose
+      
+      
+      PrimitiveInstanceCollection.delete
+      
+      
+      PrimitiveInstanceCollection.get_product_property
+      
+      
+      PrimitiveInstanceCollection.get_product_property_ids
+      
+      
+      PrimitiveInstanceCollection.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PrimitiveInstanceCollection.geometry
+      PrimitiveInstanceCollection.id
+      PrimitiveInstanceCollection.instantiated_geometry
+      PrimitiveInstanceCollection.is_null
+      PrimitiveInstanceCollection.layout
+      PrimitiveInstanceCollection.layout_obj_type
+      PrimitiveInstanceCollection.msg
+      PrimitiveInstanceCollection.obj_type
+      PrimitiveInstanceCollection.positions
+   
+   

@@ -1,0 +1,6 @@
+snap\_primitives
+================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.snap_primitives

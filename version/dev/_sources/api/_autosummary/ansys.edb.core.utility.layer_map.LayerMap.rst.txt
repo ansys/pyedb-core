@@ -1,0 +1,46 @@
+﻿LayerMap
+========
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. autoclass:: LayerMap
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LayerMap.clear
+      
+      
+      LayerMap.create
+      
+      
+      LayerMap.get_mapping_backward
+      
+      
+      LayerMap.get_mapping_forward
+      
+      
+      LayerMap.set_mapping
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayerMap.id
+      LayerMap.is_null
+      LayerMap.msg
+   
+   

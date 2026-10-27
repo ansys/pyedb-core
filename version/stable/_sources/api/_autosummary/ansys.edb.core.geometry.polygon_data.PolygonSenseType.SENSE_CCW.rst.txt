@@ -1,0 +1,6 @@
+SENSE\_CCW
+==========
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoattribute:: PolygonSenseType.SENSE_CCW

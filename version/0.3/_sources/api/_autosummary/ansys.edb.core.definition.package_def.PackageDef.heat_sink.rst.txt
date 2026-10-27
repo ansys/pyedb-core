@@ -1,0 +1,6 @@
+heat\_sink
+==========
+
+.. currentmodule:: ansys.edb.core.definition.package_def
+
+.. autoproperty:: PackageDef.heat_sink

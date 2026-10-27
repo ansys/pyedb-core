@@ -1,0 +1,27 @@
+﻿ProductIdType
+=============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoclass:: ProductIdType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ProductIdType.HFSS_3D_LAYOUT
+      ProductIdType.DESIGNER
+      ProductIdType.SIWAVE
+      ProductIdType.GENERIC_TRANSLATOR
+      ProductIdType.USER_DEFINED
+      ProductIdType.INVALID_PRODUCT
+   
+   

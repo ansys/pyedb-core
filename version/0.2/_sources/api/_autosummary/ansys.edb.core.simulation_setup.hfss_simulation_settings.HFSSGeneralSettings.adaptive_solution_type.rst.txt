@@ -1,0 +1,6 @@
+adaptive\_solution\_type
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSGeneralSettings.adaptive_solution_type

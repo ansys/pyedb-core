@@ -1,0 +1,6 @@
+auto\_model\_resolution
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIAdvancedSettings.auto_model_resolution

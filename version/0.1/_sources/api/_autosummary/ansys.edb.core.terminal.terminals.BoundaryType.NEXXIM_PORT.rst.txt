@@ -1,0 +1,6 @@
+NEXXIM\_PORT
+============
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoattribute:: BoundaryType.NEXXIM_PORT

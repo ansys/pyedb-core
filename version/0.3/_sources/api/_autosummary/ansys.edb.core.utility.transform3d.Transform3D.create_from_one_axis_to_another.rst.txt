@@ -1,0 +1,6 @@
+create\_from\_one\_axis\_to\_another
+====================================
+
+.. currentmodule:: ansys.edb.core.utility.transform3d
+
+.. automethod:: Transform3D.create_from_one_axis_to_another

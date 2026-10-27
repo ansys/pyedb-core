@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. automethod:: ComponentGroup.delete

@@ -1,0 +1,34 @@
+﻿MeshOperation
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoclass:: MeshOperation
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MeshOperation.enabled
+      MeshOperation.mesh_region
+      MeshOperation.name
+      MeshOperation.net_layer_info
+      MeshOperation.refine_inside
+      MeshOperation.solve_inside
+   
+   

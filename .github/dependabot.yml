@@ -4,6 +4,33 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    groups:
+      core:
+        patterns:
+          - "*ansys*"
+          - "grpcio"
+          - "protobuf"
+        exclude-patterns:
+          - "*sphinx*"
+        update-types:
+        - "minor"
+        - "patch"
+      tests:
+        patterns:
+          - "pytest*"
+          - "tox"
+        exclude-patterns:
+          - "*sphinx*"
+        update-types:
+        - "minor"
+        - "patch"
+      doc:
+        patterns:
+          - "*sphinx*"
+          - "numpy*"
+        update-types:
+        - "minor"
+        - "patch"
     cooldown:
       default-days: 7
       include:
@@ -20,12 +47,19 @@ updates:
       - "maintenance"
       - "dependencies"
     commit-message:
-      prefix: "BUILD(pip)"
+      prefix: "CI(pip)"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+       actions:
+          patterns:
+            - "*"
+          update-types:
+          - "minor"
+          - "patch"
     cooldown:
       default-days: 7
       include:
@@ -41,4 +75,26 @@ updates:
       - "maintenance"
       - "dependencies"
     commit-message:
-      prefix: "BUILD(actions)"
+      prefix: "CI(actions)"
+
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      exclude:
+        - "ansys/pre-commit-hooks/*"
+    labels:
+      - "maintenance"
+    commit-message:
+      prefix: "CHORE(pre-commit)"
+    groups:
+      pre-commit-hooks:
+        patterns:
+          - "*"
+    assignees:
+      - "drewm102"
+      - "chenchienjacklin"
+      - "SMoraisAnsys"
+      - "ecoussoux-ansys"

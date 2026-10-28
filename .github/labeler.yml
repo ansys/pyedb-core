@@ -1,0 +1,15 @@
+documentation:
+- changed-files:
+  - any-glob-to-any-file: ['doc/**/*', 'examples/**/*']
+
+maintenance:
+- changed-files:
+  - any-glob-to-any-file: ['.github/**/*', '.pre-commit-config.yaml']
+
+dependencies:
+- changed-files:
+  - any-glob-to-any-file: ['pyproject.toml']
+
+ci/cd:
+- changed-files:
+  - any-glob-to-any-file: ['.github/**/*', 'docker/**/*']

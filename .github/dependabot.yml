@@ -42,3 +42,22 @@ updates:
       - "dependencies"
     commit-message:
       prefix: "BUILD(actions)"
+
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      exclude:
+        - "ansys/pre-commit-hooks/*"
+    labels:
+      - "maintenance"
+    commit-message:
+      prefix: "CHORE(PRE-COMMIT)"
+    groups:
+      pre-commit-hooks:
+        patterns:
+          - "*"
+    assignees:
+      - "bwnedrud"

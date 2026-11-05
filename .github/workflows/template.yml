@@ -7,10 +7,19 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   pr-title:
+    name: Check the title of the pull request
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Run a PR title validation
-        run: grep -E "^(CI:|DOC:|REFACT:|FIX:|MAINT:|TEST:|FEATURE:)" <<< "${{ github.event.pull_request.title }}"
+      - name: Check the title of the pull request
+        uses: ansys/actions/check-pr-title@a5c8d0d92928e144130a3c64aa7200b9547785de # v11.1.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          use-upper-case: true

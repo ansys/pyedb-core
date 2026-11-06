@@ -1,0 +1,6 @@
+is\_mcad\_3d\_comp
+==================
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_group
+
+.. autoproperty:: PinGroup.is_mcad_3d_comp

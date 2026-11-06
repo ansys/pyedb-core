@@ -1,0 +1,6 @@
+healing\_option
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSAdvancedSettings.healing_option

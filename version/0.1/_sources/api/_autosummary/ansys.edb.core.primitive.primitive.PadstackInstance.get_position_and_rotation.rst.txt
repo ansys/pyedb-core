@@ -1,0 +1,6 @@
+get\_position\_and\_rotation
+============================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: PadstackInstance.get_position_and_rotation

@@ -1,0 +1,6 @@
+WIREBOND
+========
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoattribute:: DieType.WIREBOND

@@ -1,0 +1,6 @@
+BONDWIRE\_DEF
+=============
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: DefinitionObjType.BONDWIRE_DEF

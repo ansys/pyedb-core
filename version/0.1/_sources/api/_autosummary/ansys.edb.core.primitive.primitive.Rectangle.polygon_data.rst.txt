@@ -1,0 +1,6 @@
+polygon\_data
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Rectangle.polygon_data

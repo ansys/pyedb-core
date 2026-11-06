@@ -1,0 +1,33 @@
+﻿SettingsOptions
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoclass:: SettingsOptions
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SettingsOptions.do_lambda_refine
+      SettingsOptions.lambda_target
+      SettingsOptions.mesh_size_factor
+      SettingsOptions.msg
+      SettingsOptions.use_default_lambda_value
+   
+   

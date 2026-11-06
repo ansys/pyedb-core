@@ -1,0 +1,46 @@
+﻿SIWaveDCIRSimulationSettings
+============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings
+
+.. autoclass:: SIWaveDCIRSimulationSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveDCIRSimulationSettings.advanced
+      SIWaveDCIRSimulationSettings.dc
+      SIWaveDCIRSimulationSettings.dc_advanced
+      SIWaveDCIRSimulationSettings.dc_report_config_file
+      SIWaveDCIRSimulationSettings.dc_report_show_active_devices
+      SIWaveDCIRSimulationSettings.enabled
+      SIWaveDCIRSimulationSettings.export_dc_thermal_data
+      SIWaveDCIRSimulationSettings.full_dc_report_path
+      SIWaveDCIRSimulationSettings.general
+      SIWaveDCIRSimulationSettings.icepak_temp_file
+      SIWaveDCIRSimulationSettings.import_thermal_data
+      SIWaveDCIRSimulationSettings.msg
+      SIWaveDCIRSimulationSettings.per_pin_res_path
+      SIWaveDCIRSimulationSettings.per_pin_use_pin_format
+      SIWaveDCIRSimulationSettings.s_parameter
+      SIWaveDCIRSimulationSettings.source_terms_to_ground
+      SIWaveDCIRSimulationSettings.use_loop_res_for_per_pin
+      SIWaveDCIRSimulationSettings.via_report_path
+   
+   

@@ -1,0 +1,6 @@
+set\_mapping
+============
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. automethod:: LayerMap.set_mapping

@@ -1,0 +1,6 @@
+import\_material\_from\_control\_file
+=====================================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.import_material_from_control_file

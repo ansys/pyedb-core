@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. automethod:: Cell.create

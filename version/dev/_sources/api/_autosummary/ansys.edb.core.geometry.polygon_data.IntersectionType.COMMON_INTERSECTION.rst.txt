@@ -1,0 +1,6 @@
+COMMON\_INTERSECTION
+====================
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoattribute:: IntersectionType.COMMON_INTERSECTION

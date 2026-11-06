@@ -1,0 +1,6 @@
+owner
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. autoproperty:: Rectangle.owner

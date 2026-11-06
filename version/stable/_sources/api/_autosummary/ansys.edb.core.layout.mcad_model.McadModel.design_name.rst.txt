@@ -1,0 +1,6 @@
+design\_name
+============
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. autoproperty:: McadModel.design_name

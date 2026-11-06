@@ -1,0 +1,6 @@
+color
+=====
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoproperty:: Layer.color

@@ -1,0 +1,42 @@
+﻿SIWavePSISimulationSetup
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_setup
+
+.. autoclass:: SIWavePSISimulationSetup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SIWavePSISimulationSetup.cast
+      
+      
+      SIWavePSISimulationSetup.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSISimulationSetup.id
+      SIWavePSISimulationSetup.is_null
+      SIWavePSISimulationSetup.msg
+      SIWavePSISimulationSetup.name
+      SIWavePSISimulationSetup.position
+      SIWavePSISimulationSetup.settings
+      SIWavePSISimulationSetup.sweep_data
+      SIWavePSISimulationSetup.type
+   
+   

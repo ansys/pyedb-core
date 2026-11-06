@@ -1,0 +1,6 @@
+model\_type
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedSettings.model_type

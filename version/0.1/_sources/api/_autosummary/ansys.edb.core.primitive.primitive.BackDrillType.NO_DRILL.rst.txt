@@ -1,0 +1,6 @@
+NO\_DRILL
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: BackDrillType.NO_DRILL

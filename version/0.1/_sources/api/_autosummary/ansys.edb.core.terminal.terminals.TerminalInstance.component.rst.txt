@@ -1,0 +1,6 @@
+component
+=========
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: TerminalInstance.component

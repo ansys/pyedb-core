@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.terminal.pin_group_terminal
+
+.. autoattribute:: PinGroupTerminal.layout_obj_type

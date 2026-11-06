@@ -1,0 +1,6 @@
+is\_mcad\_hfss
+==============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Text.is_mcad_hfss

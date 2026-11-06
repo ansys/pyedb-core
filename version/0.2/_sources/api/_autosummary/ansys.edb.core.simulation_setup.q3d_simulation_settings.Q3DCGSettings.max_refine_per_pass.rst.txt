@@ -1,0 +1,6 @@
+max\_refine\_per\_pass
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DCGSettings.max_refine_per_pass

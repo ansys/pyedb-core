@@ -1,0 +1,6 @@
+COAXIAL\_OPEN
+=============
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: HfssPIType.COAXIAL_OPEN

@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_setup
+
+.. autoproperty:: SIWavePSISimulationSetup.is_null

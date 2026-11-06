@@ -1,0 +1,6 @@
+get\_hfss\_prop
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. automethod:: Primitive.get_hfss_prop

@@ -1,0 +1,31 @@
+﻿PrimitiveType
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoclass:: PrimitiveType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PrimitiveType.RECTANGLE
+      PrimitiveType.CIRCLE
+      PrimitiveType.POLYGON
+      PrimitiveType.PATH
+      PrimitiveType.BONDWIRE
+      PrimitiveType.PRIM_PLUGIN
+      PrimitiveType.TEXT
+      PrimitiveType.PATH_3D
+      PrimitiveType.BOARD_BEND
+      PrimitiveType.INVALID_TYPE
+   
+   

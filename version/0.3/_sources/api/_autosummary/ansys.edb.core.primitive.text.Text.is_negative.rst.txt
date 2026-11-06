@@ -1,0 +1,6 @@
+is\_negative
+============
+
+.. currentmodule:: ansys.edb.core.primitive.text
+
+.. autoproperty:: Text.is_negative

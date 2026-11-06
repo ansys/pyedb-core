@@ -1,0 +1,103 @@
+﻿PrimitiveInstanceCollection
+===========================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive_instance_collection
+
+.. autoclass:: PrimitiveInstanceCollection
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PrimitiveInstanceCollection.add_void
+      
+      
+      PrimitiveInstanceCollection.cast
+      
+      
+      PrimitiveInstanceCollection.create
+      
+      
+      PrimitiveInstanceCollection.create_3d_comp
+      
+      
+      PrimitiveInstanceCollection.create_hfss
+      
+      
+      PrimitiveInstanceCollection.create_stride
+      
+      
+      PrimitiveInstanceCollection.decompose
+      
+      
+      PrimitiveInstanceCollection.delete
+      
+      
+      PrimitiveInstanceCollection.find_by_id
+      
+      
+      PrimitiveInstanceCollection.get_hfss_prop
+      
+      
+      PrimitiveInstanceCollection.get_product_property
+      
+      
+      PrimitiveInstanceCollection.get_product_property_ids
+      
+      
+      PrimitiveInstanceCollection.make_zone_primitive
+      
+      
+      PrimitiveInstanceCollection.remove_hfss_prop
+      
+      
+      PrimitiveInstanceCollection.set_hfss_prop
+      
+      
+      PrimitiveInstanceCollection.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PrimitiveInstanceCollection.can_be_zone_primitive
+      PrimitiveInstanceCollection.component
+      PrimitiveInstanceCollection.edb_uid
+      PrimitiveInstanceCollection.geometry
+      PrimitiveInstanceCollection.group
+      PrimitiveInstanceCollection.has_voids
+      PrimitiveInstanceCollection.id
+      PrimitiveInstanceCollection.instantiated_geometry
+      PrimitiveInstanceCollection.is_mcad
+      PrimitiveInstanceCollection.is_mcad_3d_comp
+      PrimitiveInstanceCollection.is_mcad_hfss
+      PrimitiveInstanceCollection.is_mcad_stride
+      PrimitiveInstanceCollection.is_negative
+      PrimitiveInstanceCollection.is_null
+      PrimitiveInstanceCollection.is_parameterized
+      PrimitiveInstanceCollection.is_void
+      PrimitiveInstanceCollection.is_zone_primitive
+      PrimitiveInstanceCollection.layer
+      PrimitiveInstanceCollection.layout
+      PrimitiveInstanceCollection.layout_obj_type
+      PrimitiveInstanceCollection.msg
+      PrimitiveInstanceCollection.net
+      PrimitiveInstanceCollection.obj_type
+      PrimitiveInstanceCollection.owner
+      PrimitiveInstanceCollection.positions
+      PrimitiveInstanceCollection.primitive_type
+      PrimitiveInstanceCollection.voids
+   
+   

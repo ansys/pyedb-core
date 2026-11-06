@@ -1,0 +1,26 @@
+﻿TopBottomAssociation
+====================
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoclass:: TopBottomAssociation
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TopBottomAssociation.TOP_ASSOCIATED
+      TopBottomAssociation.NO_TOP_BOTTOM_ASSOCIATED
+      TopBottomAssociation.BOTTOM_ASSOCIATED
+      TopBottomAssociation.TOP_BOTTOM_ASSOCIATION_COUNT
+      TopBottomAssociation.INVALID_TOP_BOTTOM_ASSOCIATION
+   
+   

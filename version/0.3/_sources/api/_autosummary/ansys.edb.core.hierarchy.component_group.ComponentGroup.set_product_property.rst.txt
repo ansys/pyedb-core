@@ -1,0 +1,6 @@
+set\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. automethod:: ComponentGroup.set_product_property

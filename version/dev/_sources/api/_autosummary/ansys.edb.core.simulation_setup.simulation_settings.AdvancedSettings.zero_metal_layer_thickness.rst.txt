@@ -1,0 +1,6 @@
+zero\_metal\_layer\_thickness
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: AdvancedSettings.zero_metal_layer_thickness

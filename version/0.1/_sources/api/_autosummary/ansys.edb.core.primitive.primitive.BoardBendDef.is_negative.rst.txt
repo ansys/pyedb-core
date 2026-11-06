@@ -1,0 +1,6 @@
+is\_negative
+============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: BoardBendDef.is_negative

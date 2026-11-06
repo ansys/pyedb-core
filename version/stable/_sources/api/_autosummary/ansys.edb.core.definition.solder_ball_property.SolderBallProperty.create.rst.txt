@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.definition.solder_ball_property
+
+.. automethod:: SolderBallProperty.create

@@ -1,0 +1,6 @@
+obj\_type
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. autoproperty:: ComponentGroup.obj_type

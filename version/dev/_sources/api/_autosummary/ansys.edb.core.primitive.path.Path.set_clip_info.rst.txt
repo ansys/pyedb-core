@@ -1,0 +1,6 @@
+set\_clip\_info
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. automethod:: Path.set_clip_info

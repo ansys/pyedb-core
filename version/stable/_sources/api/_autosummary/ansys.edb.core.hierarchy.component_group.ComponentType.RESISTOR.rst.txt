@@ -1,0 +1,6 @@
+RESISTOR
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. autoattribute:: ComponentType.RESISTOR

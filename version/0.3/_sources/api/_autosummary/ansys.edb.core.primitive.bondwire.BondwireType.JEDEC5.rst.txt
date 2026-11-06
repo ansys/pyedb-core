@@ -1,0 +1,6 @@
+JEDEC5
+======
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. autoattribute:: BondwireType.JEDEC5

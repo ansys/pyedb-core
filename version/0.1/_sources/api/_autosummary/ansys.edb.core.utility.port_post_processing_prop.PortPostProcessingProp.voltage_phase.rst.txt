@@ -1,0 +1,6 @@
+voltage\_phase
+==============
+
+.. currentmodule:: ansys.edb.core.utility.port_post_processing_prop
+
+.. autoproperty:: PortPostProcessingProp.voltage_phase

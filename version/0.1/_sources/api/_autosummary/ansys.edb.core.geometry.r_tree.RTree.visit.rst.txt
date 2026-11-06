@@ -1,0 +1,6 @@
+visit
+=====
+
+.. currentmodule:: ansys.edb.core.geometry.r_tree
+
+.. automethod:: RTree.visit

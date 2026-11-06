@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. automethod:: DebyeModel.create

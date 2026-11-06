@@ -1,0 +1,6 @@
+POINT
+=====
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: TerminalType.POINT

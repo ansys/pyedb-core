@@ -1,0 +1,6 @@
+term\_to\_ground
+================
+
+.. currentmodule:: ansys.edb.core.terminal.bundle_terminal
+
+.. autoproperty:: BundleTerminal.term_to_ground

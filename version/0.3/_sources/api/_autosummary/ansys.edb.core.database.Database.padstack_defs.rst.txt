@@ -1,0 +1,6 @@
+padstack\_defs
+==============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.padstack_defs

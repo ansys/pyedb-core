@@ -1,0 +1,6 @@
+broadband\_adaptive\_solution
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSGeneralSettings.broadband_adaptive_solution

@@ -1,0 +1,33 @@
+﻿SIWaveSParameterSettings
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SIWaveSParameterSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveSParameterSettings.dc_behavior
+      SIWaveSParameterSettings.extrapolation
+      SIWaveSParameterSettings.interpolation
+      SIWaveSParameterSettings.msg
+      SIWaveSParameterSettings.use_state_space
+   
+   

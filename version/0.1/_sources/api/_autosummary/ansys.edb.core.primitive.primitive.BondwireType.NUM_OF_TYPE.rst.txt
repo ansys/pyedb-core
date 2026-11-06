@@ -1,0 +1,6 @@
+NUM\_OF\_TYPE
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: BondwireType.NUM_OF_TYPE

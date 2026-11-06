@@ -1,0 +1,6 @@
+group\_vias
+===========
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.group_vias

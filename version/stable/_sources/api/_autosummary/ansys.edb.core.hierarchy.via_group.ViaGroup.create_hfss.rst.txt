@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. automethod:: ViaGroup.create_hfss

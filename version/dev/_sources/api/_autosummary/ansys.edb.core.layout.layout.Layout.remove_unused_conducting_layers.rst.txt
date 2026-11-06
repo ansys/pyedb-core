@@ -1,0 +1,6 @@
+remove\_unused\_conducting\_layers
+==================================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.remove_unused_conducting_layers

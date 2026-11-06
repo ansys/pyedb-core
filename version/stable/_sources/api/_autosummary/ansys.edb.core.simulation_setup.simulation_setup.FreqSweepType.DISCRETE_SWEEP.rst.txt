@@ -1,0 +1,6 @@
+DISCRETE\_SWEEP
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: FreqSweepType.DISCRETE_SWEEP

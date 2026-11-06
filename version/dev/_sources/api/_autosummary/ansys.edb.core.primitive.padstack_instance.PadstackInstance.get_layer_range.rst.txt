@@ -1,0 +1,6 @@
+get\_layer\_range
+=================
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. automethod:: PadstackInstance.get_layer_range

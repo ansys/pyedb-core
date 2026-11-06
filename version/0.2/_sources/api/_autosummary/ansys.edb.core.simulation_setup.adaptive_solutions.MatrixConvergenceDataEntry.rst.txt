@@ -1,0 +1,32 @@
+﻿MatrixConvergenceDataEntry
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. autoclass:: MatrixConvergenceDataEntry
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      MatrixConvergenceDataEntry.mag_limit
+      MatrixConvergenceDataEntry.phase_limit
+      MatrixConvergenceDataEntry.port_1_name
+      MatrixConvergenceDataEntry.port_2_name
+   
+   

@@ -1,0 +1,6 @@
+INVALID\_DEFINITION\_TYPE
+=========================
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: DefinitionObjType.INVALID_DEFINITION_TYPE

@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.geometry.r_tree
+
+.. autoproperty:: RTree.is_null

@@ -1,0 +1,6 @@
+create\_stride
+==============
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.create_stride

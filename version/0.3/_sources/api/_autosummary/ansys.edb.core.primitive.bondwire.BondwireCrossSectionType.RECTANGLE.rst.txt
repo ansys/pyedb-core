@@ -1,0 +1,6 @@
+RECTANGLE
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. autoattribute:: BondwireCrossSectionType.RECTANGLE

@@ -1,0 +1,6 @@
+reference\_terminal
+===================
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. autoproperty:: PointTerminal.reference_terminal

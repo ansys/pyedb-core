@@ -1,0 +1,6 @@
+auto\_select\_nets\_for\_simulation
+===================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPINetProcessingSettings.auto_select_nets_for_simulation

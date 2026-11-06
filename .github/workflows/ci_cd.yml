@@ -12,13 +12,38 @@ on:
 env:
   PACKAGE_NAME: 'ansys-edb-core'
   DOCUMENTATION_CNAME: 'edb.core.docs.pyansys.com'
-  MAIN_PYTHON_VERSION: '3.10'
+  MAIN_PYTHON_VERSION: '3.12'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+
+  update-changelog:
+    name: "Update CHANGELOG for new tag"
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # Needed to create changelog entries in repository
+      pull-requests: write   # Required to create pull requests for changelog updates
+    steps:
+      - uses: ansys/actions/doc-deploy-changelog@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
+        with:
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+
+  style:
+    name: Code style
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: PyAnsys code style checks
+        uses: ansys/actions/code-style@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   doc-style:
       name: Documentation Style Check
@@ -29,6 +54,42 @@ jobs:
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
             fail-level: 'warning'
+
+  check-vulnerabilities:
+    name: Check Vulnerabilities
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: PyAnsys Vulnerability check (on main)
+        if: github.ref == 'refs/heads/main'
+        uses: ansys/actions/check-vulnerabilities@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-package-name: ${{ env.PACKAGE_NAME }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+
+      - name: PyAnsys Vulnerability check (on dev mode)
+        if: github.ref != 'refs/heads/main'
+        uses: ansys/actions/check-vulnerabilities@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-package-name: ${{ env.PACKAGE_NAME }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          dev-mode: true
+
+  check-actions-security:
+    name: "Check Actions Security"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: ansys/actions/check-actions-security@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
+        with:
+          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auditing-level: 'high'
+          trust-ansys-actions: true
 
   doc-build:
     name: Documentation build
@@ -54,7 +115,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.12', '3.13', '3.14']
     steps:
       - name: Build wheelhouse and perform smoke test
         uses: ansys/actions/build-wheelhouse@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
@@ -71,7 +132,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.12', '3.13', '3.14']
       fail-fast: false
     steps:
       - name: Install Git and checkout project

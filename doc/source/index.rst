@@ -15,6 +15,7 @@ PyEDB-Core documentation |version|
    api/index
    examples/index
    contribute
+   changelog
 
 Indices and tables
 ==================

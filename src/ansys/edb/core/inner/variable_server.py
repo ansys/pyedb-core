@@ -21,7 +21,8 @@ class VariableServer:
         variable_owner : :class:`.Database`, :class:`.Cell`, :class:`.Layout`
             The :class:`.ObjBase` that owns the variables.
         """
-        assert variable_owner.id > 0, "Invalid variable owner ID,"
+        if variable_owner.id <= 0:
+            raise ValueError(f"Invalid variable owner ID: {variable_owner.id}.")
         self.variable_owner = variable_owner
 
     @property

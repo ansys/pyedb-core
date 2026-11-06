@@ -11,7 +11,7 @@ from __future__ import annotations
 from multiprocessing import shared_memory
 import os
 import struct
-import subprocess
+import subprocess  # nosec B404
 import sys
 import time
 
@@ -139,7 +139,8 @@ class SharedMemoryTransport:
             (success, serialized_response, error_message)
         """
         buf = self._buf
-        assert buf is not None, "SharedMemoryTransport not connected"
+        if buf is None:
+            raise RuntimeError("SharedMemoryTransport not connected")
 
         max_data_size = self._shm_size - SHM_DATA_OFFSET
 
@@ -196,7 +197,8 @@ class SharedMemoryTransport:
         a server crash surfaces as a clear exception instead of an infinite hang.
         """
         buf = self._buf
-        assert buf is not None
+        if buf is None:
+            raise RuntimeError("SharedMemoryTransport not connected")
         last_alive_check = time.monotonic()
         while True:
             # Phase 1: tight spin
@@ -230,11 +232,13 @@ class SharedMemoryTransport:
             )
 
     def _read_u32(self, offset: int) -> int:
-        assert self._buf is not None
+        if self._buf is None:
+            raise RuntimeError("SharedMemoryTransport not connected")
         return struct.unpack_from("<I", self._buf, offset)[0]
 
     def _write_u32(self, offset: int, value: int):
-        assert self._buf is not None
+        if self._buf is None:
+            raise RuntimeError("SharedMemoryTransport not connected")
         struct.pack_into("<I", self._buf, offset, value)
 
     def _write_state(self, state: int):
@@ -245,5 +249,6 @@ class SharedMemoryTransport:
         this is guaranteed by the strong memory model (stores are not
         reordered w.r.t. other stores), so a plain write suffices.
         """
-        assert self._buf is not None
+        if self._buf is None:
+            raise RuntimeError("SharedMemoryTransport not connected")
         struct.pack_into("<I", self._buf, OFFSET_STATE, state)

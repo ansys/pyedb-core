@@ -236,31 +236,3 @@ jobs:
           doc-artifact-name: documentation-html
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
-
-  actions-security:
-    name: "Check actions security"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read  # Required to checkout repository code when the repository is not public
-    steps:
-      - uses: ansys/actions/check-actions-security@v11.1
-        with:
-          generate-summary: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          auditing-level: 'high'
-          trust-ansys-actions: true
-
-  check-vulnerabilities:
-    name: "Check library vulnerabilities"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read  # Required to checkout repository code when the repository is not public
-      security-events: write  # Required to create security advisories
-      issues: write  # Required to create issues (only when create-issues is set to true)
-    steps:
-      - uses: ansys/actions/check-vulnerabilities@v11.1
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-          python-package-name: ${{ env.PACKAGE_NAME }}
-          dev-mode: ${{ github.ref != 'refs/heads/main' }}

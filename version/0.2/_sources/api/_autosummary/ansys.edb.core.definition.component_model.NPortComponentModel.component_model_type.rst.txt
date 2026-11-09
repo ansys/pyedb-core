@@ -1,0 +1,6 @@
+component\_model\_type
+======================
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. autoproperty:: NPortComponentModel.component_model_type

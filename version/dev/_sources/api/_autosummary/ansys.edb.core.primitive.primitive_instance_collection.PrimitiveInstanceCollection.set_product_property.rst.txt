@@ -1,0 +1,6 @@
+set\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive_instance_collection
+
+.. automethod:: PrimitiveInstanceCollection.set_product_property

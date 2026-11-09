@@ -1,0 +1,6 @@
+load\_definitions\_from\_file
+=============================
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. automethod:: ApdBondwireDef.load_definitions_from_file

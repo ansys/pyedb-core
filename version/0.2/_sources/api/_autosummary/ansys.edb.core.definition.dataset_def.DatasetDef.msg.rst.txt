@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.definition.dataset_def
+
+.. autoproperty:: DatasetDef.msg

@@ -1,0 +1,6 @@
+Q3D\_SIM
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_setup
+
+.. autoattribute:: SimulationSetupType.Q3D_SIM

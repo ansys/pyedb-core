@@ -1,0 +1,6 @@
+hfss\_pi\_type
+==============
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoproperty:: EdgeTerminal.hfss_pi_type

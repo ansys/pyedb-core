@@ -1,0 +1,6 @@
+max\_refinement\_per\_pass
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSettingsOptions.max_refinement_per_pass

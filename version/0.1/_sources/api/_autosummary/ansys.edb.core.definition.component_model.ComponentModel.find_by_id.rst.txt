@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. automethod:: ComponentModel.find_by_id

@@ -1,0 +1,6 @@
+SIWAVE
+======
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoattribute:: ProductIdType.SIWAVE

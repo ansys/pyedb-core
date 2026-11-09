@@ -1,0 +1,41 @@
+﻿PadEdge
+=======
+
+.. currentmodule:: ansys.edb.core.terminal.edge_terminal
+
+.. autoclass:: PadEdge
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PadEdge.cast
+      
+      
+      PadEdge.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PadEdge.arc
+      PadEdge.id
+      PadEdge.is_null
+      PadEdge.layer
+      PadEdge.msg
+      PadEdge.padstack_instance
+      PadEdge.type
+   
+   

@@ -1,0 +1,6 @@
+max\_delta\_z0
+==============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSolverSettings.max_delta_z0

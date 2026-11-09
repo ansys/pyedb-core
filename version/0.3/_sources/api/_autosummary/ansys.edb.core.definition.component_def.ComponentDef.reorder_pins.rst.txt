@@ -1,0 +1,6 @@
+reorder\_pins
+=============
+
+.. currentmodule:: ansys.edb.core.definition.component_def
+
+.. automethod:: ComponentDef.reorder_pins

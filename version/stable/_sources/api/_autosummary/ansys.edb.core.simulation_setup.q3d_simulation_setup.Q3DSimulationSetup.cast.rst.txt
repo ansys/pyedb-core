@@ -1,0 +1,6 @@
+cast
+====
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_setup
+
+.. automethod:: Q3DSimulationSetup.cast

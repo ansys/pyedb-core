@@ -1,0 +1,6 @@
+transparency
+============
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.transparency

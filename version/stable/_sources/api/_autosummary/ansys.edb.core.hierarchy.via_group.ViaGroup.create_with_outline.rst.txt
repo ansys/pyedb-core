@@ -1,0 +1,6 @@
+create\_with\_outline
+=====================
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. automethod:: ViaGroup.create_with_outline

@@ -1,0 +1,6 @@
+LAYER
+=====
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoattribute:: DCThicknessType.LAYER

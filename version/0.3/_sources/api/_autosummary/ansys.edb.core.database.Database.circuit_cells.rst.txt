@@ -1,0 +1,6 @@
+circuit\_cells
+==============
+
+.. currentmodule:: ansys.edb.core.database
+
+.. autoproperty:: Database.circuit_cells

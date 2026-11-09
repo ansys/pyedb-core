@@ -1,0 +1,6 @@
+get\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. automethod:: BoardBendDef.get_product_property

@@ -1,0 +1,6 @@
+hole\_range
+===========
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoproperty:: PadstackDefData.hole_range

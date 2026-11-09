@@ -1,0 +1,6 @@
+layout
+======
+
+.. currentmodule:: ansys.edb.core.primitive.circle
+
+.. autoproperty:: Circle.layout

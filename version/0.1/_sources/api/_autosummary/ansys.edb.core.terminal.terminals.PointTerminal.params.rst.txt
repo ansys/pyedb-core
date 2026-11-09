@@ -1,0 +1,6 @@
+params
+======
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: PointTerminal.params

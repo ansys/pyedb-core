@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.create

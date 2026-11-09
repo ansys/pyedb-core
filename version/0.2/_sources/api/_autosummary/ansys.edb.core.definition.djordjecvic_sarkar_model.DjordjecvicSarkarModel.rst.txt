@@ -1,0 +1,41 @@
+﻿DjordjecvicSarkarModel
+======================
+
+.. currentmodule:: ansys.edb.core.definition.djordjecvic_sarkar_model
+
+.. autoclass:: DjordjecvicSarkarModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      DjordjecvicSarkarModel.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DjordjecvicSarkarModel.dc_conductivity
+      DjordjecvicSarkarModel.dc_relative_permittivity
+      DjordjecvicSarkarModel.frequency
+      DjordjecvicSarkarModel.id
+      DjordjecvicSarkarModel.is_null
+      DjordjecvicSarkarModel.loss_tangent_at_frequency
+      DjordjecvicSarkarModel.msg
+      DjordjecvicSarkarModel.relative_permittivity_at_frequency
+      DjordjecvicSarkarModel.type
+      DjordjecvicSarkarModel.use_dc_relative_conductivity
+   
+   

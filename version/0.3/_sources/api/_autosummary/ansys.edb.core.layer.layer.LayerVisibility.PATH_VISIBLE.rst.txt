@@ -1,0 +1,6 @@
+PATH\_VISIBLE
+=============
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoattribute:: LayerVisibility.PATH_VISIBLE

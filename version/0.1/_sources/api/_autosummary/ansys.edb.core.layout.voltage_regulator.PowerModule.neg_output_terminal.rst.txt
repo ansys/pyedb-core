@@ -1,0 +1,6 @@
+neg\_output\_terminal
+=====================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. autoproperty:: PowerModule.neg_output_terminal

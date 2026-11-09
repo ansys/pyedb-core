@@ -1,0 +1,6 @@
+layout
+======
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. autoproperty:: ViaGroup.layout

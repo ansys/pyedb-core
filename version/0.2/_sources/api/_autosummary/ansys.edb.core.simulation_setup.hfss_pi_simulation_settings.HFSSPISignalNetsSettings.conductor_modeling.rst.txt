@@ -1,0 +1,6 @@
+conductor\_modeling
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPISignalNetsSettings.conductor_modeling

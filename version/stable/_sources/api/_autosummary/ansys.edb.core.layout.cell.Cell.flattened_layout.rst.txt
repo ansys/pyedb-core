@@ -1,0 +1,6 @@
+flattened\_layout
+=================
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. autoproperty:: Cell.flattened_layout

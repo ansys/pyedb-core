@@ -1,0 +1,6 @@
+CENTER\_WIDTH\_HEIGHT
+=====================
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. autoattribute:: RectangleRepresentationType.CENTER_WIDTH_HEIGHT

@@ -1,0 +1,25 @@
+﻿HFSSExtentInfoType
+==================
+
+.. currentmodule:: ansys.edb.core.utility.hfss_extent_info
+
+.. autoclass:: HFSSExtentInfoType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSExtentInfoType.BOUNDING_BOX
+      HFSSExtentInfoType.CONFORMING
+      HFSSExtentInfoType.CONVEX_HUL
+      HFSSExtentInfoType.POLYGON
+   
+   

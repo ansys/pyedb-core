@@ -1,0 +1,6 @@
+bend\_middle
+============
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. autoproperty:: BoardBendDef.bend_middle

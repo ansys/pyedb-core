@@ -1,0 +1,6 @@
+compute\_inductance
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveDCSettings.compute_inductance

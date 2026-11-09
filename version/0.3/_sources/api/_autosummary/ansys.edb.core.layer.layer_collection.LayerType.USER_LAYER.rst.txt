@@ -1,0 +1,6 @@
+USER\_LAYER
+===========
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoattribute:: LayerType.USER_LAYER

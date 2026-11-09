@@ -1,0 +1,24 @@
+﻿LayerCollectionMode
+===================
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoclass:: LayerCollectionMode
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayerCollectionMode.LAMINATE
+      LayerCollectionMode.OVERLAPPING
+      LayerCollectionMode.MULTIZONE
+   
+   

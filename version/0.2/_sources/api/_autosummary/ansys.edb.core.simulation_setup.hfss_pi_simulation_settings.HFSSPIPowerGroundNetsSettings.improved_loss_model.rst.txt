@@ -1,0 +1,6 @@
+improved\_loss\_model
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIPowerGroundNetsSettings.improved_loss_model

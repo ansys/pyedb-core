@@ -1,0 +1,6 @@
+remove\_hfss\_prop
+==================
+
+.. currentmodule:: ansys.edb.core.primitive.circle
+
+.. automethod:: Circle.remove_hfss_prop

@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.definition.package_def
+
+.. automethod:: PackageDef.create

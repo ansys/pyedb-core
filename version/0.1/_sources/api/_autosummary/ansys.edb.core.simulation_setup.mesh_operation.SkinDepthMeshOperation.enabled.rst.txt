@@ -1,0 +1,6 @@
+enabled
+=======
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoproperty:: SkinDepthMeshOperation.enabled

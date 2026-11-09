@@ -1,0 +1,6 @@
+frequency\_range
+================
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. autoproperty:: DebyeModel.frequency_range

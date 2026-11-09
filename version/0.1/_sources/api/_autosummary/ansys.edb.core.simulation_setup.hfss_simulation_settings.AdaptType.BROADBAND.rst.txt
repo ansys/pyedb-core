@@ -1,0 +1,6 @@
+BROADBAND
+=========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoattribute:: AdaptType.BROADBAND

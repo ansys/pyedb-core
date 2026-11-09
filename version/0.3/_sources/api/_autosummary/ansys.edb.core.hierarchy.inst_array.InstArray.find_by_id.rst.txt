@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. automethod:: InstArray.find_by_id

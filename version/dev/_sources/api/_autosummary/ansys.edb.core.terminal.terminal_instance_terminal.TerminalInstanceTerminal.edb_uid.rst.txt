@@ -1,0 +1,6 @@
+edb\_uid
+========
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance_terminal
+
+.. autoproperty:: TerminalInstanceTerminal.edb_uid

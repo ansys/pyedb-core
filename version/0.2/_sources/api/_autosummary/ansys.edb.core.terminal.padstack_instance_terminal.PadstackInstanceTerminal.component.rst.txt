@@ -1,0 +1,6 @@
+component
+=========
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. autoproperty:: PadstackInstanceTerminal.component

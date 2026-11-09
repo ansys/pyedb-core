@@ -1,0 +1,6 @@
+add\_entry
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.adaptive_solutions
+
+.. automethod:: MatrixConvergenceData.add_entry

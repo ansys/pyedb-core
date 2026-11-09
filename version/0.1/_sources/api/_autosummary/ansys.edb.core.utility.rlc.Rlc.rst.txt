@@ -1,0 +1,22 @@
+﻿Rlc
+===
+
+.. currentmodule:: ansys.edb.core.utility.rlc
+
+.. autoclass:: Rlc
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

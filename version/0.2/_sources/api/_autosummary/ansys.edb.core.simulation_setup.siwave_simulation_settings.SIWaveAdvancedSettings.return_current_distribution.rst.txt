@@ -1,0 +1,6 @@
+return\_current\_distribution
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.return_current_distribution

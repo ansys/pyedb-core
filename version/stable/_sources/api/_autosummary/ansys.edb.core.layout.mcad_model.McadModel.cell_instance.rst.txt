@@ -1,0 +1,6 @@
+cell\_instance
+==============
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. autoproperty:: McadModel.cell_instance

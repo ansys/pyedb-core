@@ -1,0 +1,37 @@
+﻿Value
+=====
+
+.. currentmodule:: ansys.edb.core.utility.value
+
+.. autoclass:: Value
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Value.equals
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Value.complex
+      Value.double
+      Value.is_complex
+      Value.is_parametric
+      Value.sqrt
+      Value.value
+   
+   

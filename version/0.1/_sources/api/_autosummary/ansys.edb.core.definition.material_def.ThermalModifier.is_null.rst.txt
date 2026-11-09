@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.material_def
+
+.. autoproperty:: ThermalModifier.is_null

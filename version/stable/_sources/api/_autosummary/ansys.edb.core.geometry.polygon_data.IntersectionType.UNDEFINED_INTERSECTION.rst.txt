@@ -1,0 +1,6 @@
+UNDEFINED\_INTERSECTION
+=======================
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoattribute:: IntersectionType.UNDEFINED_INTERSECTION

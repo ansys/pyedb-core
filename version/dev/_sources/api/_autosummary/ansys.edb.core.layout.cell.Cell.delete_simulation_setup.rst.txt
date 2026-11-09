@@ -1,0 +1,6 @@
+delete\_simulation\_setup
+=========================
+
+.. currentmodule:: ansys.edb.core.layout.cell
+
+.. automethod:: Cell.delete_simulation_setup

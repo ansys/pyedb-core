@@ -1,0 +1,42 @@
+﻿DebyeModel
+==========
+
+.. currentmodule:: ansys.edb.core.definition.debye_model
+
+.. autoclass:: DebyeModel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      DebyeModel.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DebyeModel.dc_conductivity
+      DebyeModel.frequency_range
+      DebyeModel.id
+      DebyeModel.is_null
+      DebyeModel.is_relative_permitivity_enabled_at_optical_frequency
+      DebyeModel.loss_tangent_at_high_low_frequency
+      DebyeModel.msg
+      DebyeModel.relative_permitivity_at_high_low_frequency
+      DebyeModel.relative_permitivity_at_optical_frequency
+      DebyeModel.type
+      DebyeModel.use_dc_conductivity
+   
+   

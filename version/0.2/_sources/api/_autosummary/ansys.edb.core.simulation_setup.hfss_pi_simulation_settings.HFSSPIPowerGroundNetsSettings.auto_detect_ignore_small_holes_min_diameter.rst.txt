@@ -1,0 +1,6 @@
+auto\_detect\_ignore\_small\_holes\_min\_diameter
+=================================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIPowerGroundNetsSettings.auto_detect_ignore_small_holes_min_diameter

@@ -1,0 +1,6 @@
+has\_voids
+==========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Text.has_voids

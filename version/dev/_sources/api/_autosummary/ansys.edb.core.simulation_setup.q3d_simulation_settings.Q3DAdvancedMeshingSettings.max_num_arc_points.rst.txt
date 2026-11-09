@@ -1,0 +1,6 @@
+max\_num\_arc\_points
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DAdvancedMeshingSettings.max_num_arc_points

@@ -1,0 +1,24 @@
+﻿HeatSinkFinOrientation
+======================
+
+.. currentmodule:: ansys.edb.core.utility.heat_sink
+
+.. autoclass:: HeatSinkFinOrientation
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HeatSinkFinOrientation.X_ORIENTED
+      HeatSinkFinOrientation.Y_ORIENTED
+      HeatSinkFinOrientation.OTHER_ORIENTED
+   
+   

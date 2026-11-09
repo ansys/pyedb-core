@@ -1,0 +1,6 @@
+get\_bbox
+=========
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance_context
+
+.. automethod:: LayoutInstanceContext.get_bbox

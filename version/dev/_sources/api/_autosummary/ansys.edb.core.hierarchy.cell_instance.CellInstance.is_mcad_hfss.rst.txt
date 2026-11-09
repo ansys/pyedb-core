@@ -1,0 +1,6 @@
+is\_mcad\_hfss
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.is_mcad_hfss

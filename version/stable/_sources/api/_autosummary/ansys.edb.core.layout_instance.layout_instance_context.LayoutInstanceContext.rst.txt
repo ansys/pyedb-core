@@ -1,0 +1,41 @@
+﻿LayoutInstanceContext
+=====================
+
+.. currentmodule:: ansys.edb.core.layout_instance.layout_instance_context
+
+.. autoclass:: LayoutInstanceContext
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LayoutInstanceContext.get_bbox
+      
+      
+      LayoutInstanceContext.get_is_3d_placement
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayoutInstanceContext.id
+      LayoutInstanceContext.is_null
+      LayoutInstanceContext.is_top_or_black_box
+      LayoutInstanceContext.layout
+      LayoutInstanceContext.msg
+      LayoutInstanceContext.placement_elevation
+      LayoutInstanceContext.top_or_black_box
+   
+   

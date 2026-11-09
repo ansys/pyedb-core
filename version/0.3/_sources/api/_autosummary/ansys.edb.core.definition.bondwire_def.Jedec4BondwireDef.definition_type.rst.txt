@@ -1,0 +1,6 @@
+definition\_type
+================
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. autoproperty:: Jedec4BondwireDef.definition_type

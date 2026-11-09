@@ -1,0 +1,38 @@
+﻿Q3DCGSettings
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DCGSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DCGSettings.auto_incr_sol_order
+      Q3DCGSettings.compression_tol
+      Q3DCGSettings.max_passes
+      Q3DCGSettings.max_refine_per_pass
+      Q3DCGSettings.min_converged_passes
+      Q3DCGSettings.min_passes
+      Q3DCGSettings.msg
+      Q3DCGSettings.percent_error
+      Q3DCGSettings.solution_order
+      Q3DCGSettings.solver_type
+   
+   

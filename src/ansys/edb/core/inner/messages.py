@@ -642,7 +642,7 @@ def cell_find_message(database, cell_type, cell_name=None, cell_id=None):
     elif cell_id is not None:
         return CellFindMessage(database=database.msg, type=cell_type.value, id=cell_id)
     else:
-        assert False, "Either name or ID must be provided to find a cell."
+        raise TypeError("Either name or ID must be provided to find a cell.")
 
 
 def cell_cutout_message(cell, included_nets, clipped_nets, clipping_polygon, clean_clipping, in_place):

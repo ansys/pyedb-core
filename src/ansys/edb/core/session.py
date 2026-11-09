@@ -36,7 +36,7 @@ from shutil import which
 import socket
 from struct import pack
 from struct import unpack
-import subprocess
+import subprocess  # nosec B404
 from sys import modules
 
 from ansys.api.edb.v1.arc_data_pb2_grpc import ArcDataServiceStub
@@ -306,7 +306,7 @@ class _Session:
         bad_port_num = -1
         cmd = [self.server_executable, "-a", "bad_auth", "-p", str(bad_port_num)]
 
-        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # nosec B603
         return result.stderr == f"Port number must be positive: {bad_port_num}"
 
     @staticmethod
@@ -424,8 +424,9 @@ class _Session:
             # Signal the server to shut down before disconnecting
             try:
                 self._shm_transport.shutdown()
-            except Exception:
-                pass
+            except Exception as e:
+                LOGGER.warn(f"Could not signal the server to shut down before disconnecting: {e}")
+
             self._shm_transport.disconnect()
             self._shm_transport = None
 
@@ -449,7 +450,7 @@ class _Session:
         cmd = [self.server_executable] + self.server_arguments()
 
         try:
-            self.local_server_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+            self.local_server_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)  # nosec B603
         except Exception as e:
             self.disconnect()
             raise EDBSessionException(ErrorCode.STARTUP_UNEXPECTED, e)

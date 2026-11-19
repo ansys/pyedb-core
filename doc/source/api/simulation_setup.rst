@@ -20,7 +20,6 @@ Classes
    hfss_pi_simulation_setup.HFSSPISimulationSetup
    hfss_pi_simulation_settings.HFSSPISimulationSettings
    hfss_pi_simulation_settings.HFSSPIGeneralSettings
-   hfss_pi_simulation_settings.HFSSPISettingsOptions
    hfss_pi_simulation_settings.HFSSPISolverSettings
    hfss_pi_simulation_settings.HFSSPIAdvancedSettings
    adaptive_solutions.AdaptiveFrequency
@@ -56,12 +55,24 @@ Classes
    siwave_simulation_settings.SIWaveDCAdvancedSettings
    siwave_simulation_settings.SIWaveSParameterSettings
    siwave_simulation_setup.SIWaveSimulationSetup
-   siwave_psi_simulation_settings.SIwavePSISimulationSettings
-   siwave_psi_simulation_settings.SIwavePSIGeneralSettings
-   siwave_psi_simulation_settings.SIwavePSINetProcessingSettings
-   siwave_psi_simulation_settings.SIwavePSIPowerGroundNetsSettings
-   siwave_psi_simulation_settings.SIwavePSISignalNetsSettings
-   siwave_psi_simulation_setup.SIwavePSISimulationSetup
+   siwave_psi_simulation_settings.SIWavePSISimulationSettings
+   siwave_psi_simulation_settings.SIWavePSIGeneralSettings
+   siwave_psi_simulation_settings.SIWavePSINetProcessingSettings
+   siwave_psi_simulation_settings.SIWavePSIPowerGroundNetsSettings
+   siwave_psi_simulation_settings.SIWavePSISignalNetsSettings
+   siwave_psi_simulation_setup.SIWavePSISimulationSetup
+   siwave_cpa_simulation_settings.SIWaveCPASimulationSettings
+   siwave_cpa_simulation_settings.SIWaveCPASettings
+   siwave_cpa_simulation_settings.SIWaveCPAAdvancedSettings
+   siwave_cpa_simulation_settings.SIWaveCPAQ3DSettings
+   siwave_cpa_simulation_settings.SIWaveCPANetSettings
+   siwave_cpa_simulation_settings.SIWaveCPAExternalEnvSettings
+   siwave_cpa_simulation_settings.SIWaveCPADieConfigSettings
+   siwave_cpa_simulation_settings.SIWaveCPAChannelComponentSettings
+   siwave_cpa_simulation_settings.SIWaveCPAVRMSettings
+   siwave_cpa_simulation_settings.SIWaveCPAUnconnectedDiePinSettings
+   siwave_cpa_simulation_settings.SIWaveCPAHotSpotComponentSettings
+   siwave_cpa_simulation_setup.SIWaveCPASimulationSetup
    q3d_simulation_settings.Q3DSimulationSettings
    q3d_simulation_settings.Q3DGeneralSettings
    q3d_simulation_settings.Q3DDCRLSettings
@@ -88,11 +99,18 @@ Enums
       siwave_simulation_settings.SParamInterpolation
       siwave_simulation_settings.SParamExtrapolation
       siwave_simulation_settings.SParamDCBehavior
-      siwave_psi_simulation_settings.SIwavePSISimulationPreference
-      siwave_psi_simulation_settings.SIwavePSIModelType
+      siwave_simulation_settings.ACDCMergeMode
+      siwave_psi_simulation_settings.SIWavePSISimulationPreference
+      siwave_psi_simulation_settings.SIWavePSIModelType
       siwave_psi_simulation_settings.SurfaceRoughnessModel
       siwave_psi_simulation_settings.ImprovedLossModel
       siwave_psi_simulation_settings.ConductorModeling
       siwave_psi_simulation_settings.ErrorTolerance
+      siwave_cpa_simulation_settings.CPASimulationMode
+      siwave_cpa_simulation_settings.CPAExtractionMode
+      siwave_cpa_simulation_settings.CPAModelType
+      siwave_cpa_simulation_settings.CPAAccuracyLevel
+      siwave_cpa_simulation_settings.CPASpiceNetlistTopology
+      siwave_cpa_simulation_settings.CPAPinGroupMode
       q3d_simulation_settings.Q3DSolutionOrder
       q3d_simulation_settings.Q3DSettingsType

@@ -179,7 +179,12 @@ class Path(Primitive):
 
     @center_line.setter
     def center_line(self, center_line: PolygonData):
-        path_pb2.SetCenterLineMessage(target=self.msg, center_line=messages.polygon_data_message(center_line))
+        self.__stub.SetCenterLine(
+            path_pb2.SetCenterLineMessage(
+                target=self.msg,
+                center_line=messages.polygon_data_message(center_line),
+            )
+        )
 
     def get_end_cap_style(self) -> tuple[PathEndCapType, PathEndCapType]:
         """Get end cap styles for the path.

@@ -137,7 +137,7 @@ class PadstackDefData(ObjBase):
     @property
     def material(self) -> str:
         """:obj:`str`: The padstack hole material."""
-        return self.__stub.GetMaterial(self.msg)
+        return self.__stub.GetMaterial(self.msg).value
 
     @material.setter
     def material(self, name: str):
@@ -368,7 +368,7 @@ class PadstackDefData(ObjBase):
     @property
     def solder_ball_placement(self) -> SolderballPlacement:
         """:class:`.SolderballPlacement`: Solder ball placement."""
-        return SolderballPlacement(self.__stub.GetSolderBallPlacement(self.msg))
+        return SolderballPlacement(self.__stub.GetSolderBallPlacement(self.msg).solderball_placement)
 
     @solder_ball_placement.setter
     def solder_ball_placement(self, solderball_placement: SolderballPlacement):

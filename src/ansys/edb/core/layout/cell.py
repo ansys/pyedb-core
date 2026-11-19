@@ -1,3 +1,25 @@
+# Copyright (C) 2022 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Cell."""
 
 from enum import Enum
@@ -273,7 +295,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         - ``1`` for always on
         - ``2`` for pad intersection
         """
-        return self.__stub.GetAntiPadsOption(self.msg)
+        return self.__stub.GetAntiPadsOption(self.msg).value
 
     @anti_pads_option.setter
     def anti_pads_option(self, value):
@@ -396,7 +418,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         str
             String stored in the product-specific property.
         """
-        return self.__stub.GetProductProperty(messages.get_product_property_message(self, prod_id, attr_id))
+        return self.__stub.GetProductProperty(messages.get_product_property_message(self, prod_id, attr_id)).value
 
     def set_product_property(self, prod_id, attr_id, prop_value):
         """Set the product property of the cell for a given product ID and attribute ID.

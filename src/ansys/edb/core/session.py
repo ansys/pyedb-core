@@ -403,7 +403,7 @@ class _Session:
     def _fallback_to_grpc(self):
         """Disable shared-memory mode and warn the user."""
         self.shared_memory = False
-        LOGGER.warn(
+        LOGGER.warning(
             "The installed EDB_RPC_Server does not support shared-memory IPC. "
             "Falling back to standard gRPC communication. "
             "Update to the latest version of AEDT for improved performance.",
@@ -425,7 +425,7 @@ class _Session:
             try:
                 self._shm_transport.shutdown()
             except Exception as e:
-                LOGGER.warn(f"Could not signal the server to shut down before disconnecting: {e}")
+                LOGGER.warning(f"Could not signal the server to shut down before disconnecting: {e}")
 
             self._shm_transport.disconnect()
             self._shm_transport = None
@@ -505,7 +505,7 @@ class _Session:
             try:
                 os.remove(uds_file_path)
             except OSError as e:
-                LOGGER.warn(f"Warning: Could not remove socket file {uds_file_path}: {e}")
+                LOGGER.warning(f"Warning: Could not remove socket file {uds_file_path}: {e}")
 
 
 class StubType(Enum):

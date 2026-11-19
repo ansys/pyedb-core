@@ -273,7 +273,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         - ``1`` for always on
         - ``2`` for pad intersection
         """
-        return self.__stub.GetAntiPadsOption(self.msg)
+        return self.__stub.GetAntiPadsOption(self.msg).value
 
     @anti_pads_option.setter
     def anti_pads_option(self, value):
@@ -396,7 +396,7 @@ class Cell(ObjBase, variable_server.VariableServer):
         str
             String stored in the product-specific property.
         """
-        return self.__stub.GetProductProperty(messages.get_product_property_message(self, prod_id, attr_id))
+        return self.__stub.GetProductProperty(messages.get_product_property_message(self, prod_id, attr_id)).value
 
     def set_product_property(self, prod_id, attr_id, prop_value):
         """Set the product property of the cell for a given product ID and attribute ID.

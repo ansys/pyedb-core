@@ -45,7 +45,7 @@ class BondwireDef(ObjBase):
 
         This property is read-only.
         """
-        return self.__stub.GetName(self.msg)
+        return self.__stub.GetName(self.msg).value
 
     def delete(self):
         """Delete the bondwire definition."""
@@ -130,7 +130,7 @@ class ApdBondwireDef(BondwireDef):
         str
             String block of the bondwire parameters.
         """
-        return self.__stub.GetParameters(self.msg)
+        return self.__stub.GetParameters(self.msg).value
 
     def set_parameters(self, name: str):
         """Set the parameters of the APD bondwire definition.

@@ -385,3 +385,7 @@ class Database(ObjBase, variable_server.VariableServer):
     def dataset_defs(self) -> list[DatasetDef]:
         """:obj:`list` of :class:`.DatasetDef`: All dataset definitions in the database."""
         return self._get_definition_objs(DatasetDef, DefinitionObjType.DATASET_DEF)
+
+    def encrypt(self, key: str) -> None:
+        """Encrypt the database with the given key."""
+        self.__stub.Encrypt(database_pb2.DatabaseEncryptionMessage(target=self.msg, key=key))

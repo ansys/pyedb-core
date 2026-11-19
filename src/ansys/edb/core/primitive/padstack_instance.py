@@ -219,7 +219,7 @@ class PadstackInstance(conn_obj.ConnObj):
     def solderball_layer(self) -> Layer:
         """:class:`.Layer`: Solderball layer of the padstack instance."""
         sb_layer = Layer(self.__stub.GetSolderBallLayer(self.msg))
-        return sb_layer if sb_layer.is_null() else sb_layer.cast()
+        return sb_layer if sb_layer.is_null else sb_layer.cast()
 
     @solderball_layer.setter
     def solderball_layer(self, solderball_layer: Layer):

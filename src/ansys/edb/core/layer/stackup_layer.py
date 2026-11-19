@@ -269,7 +269,7 @@ class StackupLayer(Layer):
     @property
     def use_solver_properties(self):
         """:obj:`bool`: Flag indicating if solver properties are used by the layer."""
-        return get_stackup_layer_stub().IsEtchFactorEnabled(self.msg).value
+        return get_stackup_layer_stub().GetUseSolverProperties(self.msg).value
 
     @use_solver_properties.setter
     def use_solver_properties(self, use_solver_properties):

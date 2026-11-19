@@ -1,0 +1,6 @@
+solder\_ball\_placement
+=======================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoproperty:: PadstackDefData.solder_ball_placement

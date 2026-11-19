@@ -1,0 +1,6 @@
+TERM\_INST
+==========
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: TerminalType.TERM_INST

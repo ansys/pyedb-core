@@ -1,0 +1,6 @@
+sitemp\_file\_path
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAAdvancedSettings.sitemp_file_path

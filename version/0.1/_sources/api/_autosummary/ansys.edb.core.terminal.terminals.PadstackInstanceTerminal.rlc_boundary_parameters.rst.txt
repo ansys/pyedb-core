@@ -1,0 +1,6 @@
+rlc\_boundary\_parameters
+=========================
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoproperty:: PadstackInstanceTerminal.rlc_boundary_parameters

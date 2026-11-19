@@ -1,0 +1,6 @@
+PEC
+===
+
+.. currentmodule:: ansys.edb.core.terminal.terminal
+
+.. autoattribute:: BoundaryType.PEC

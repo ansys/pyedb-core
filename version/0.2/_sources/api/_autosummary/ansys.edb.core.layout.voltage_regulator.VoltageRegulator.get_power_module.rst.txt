@@ -1,0 +1,6 @@
+get\_power\_module
+==================
+
+.. currentmodule:: ansys.edb.core.layout.voltage_regulator
+
+.. automethod:: VoltageRegulator.get_power_module

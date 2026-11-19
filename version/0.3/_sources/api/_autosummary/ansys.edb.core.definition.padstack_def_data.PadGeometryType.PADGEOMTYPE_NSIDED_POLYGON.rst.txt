@@ -1,0 +1,6 @@
+PADGEOMTYPE\_NSIDED\_POLYGON
+============================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadGeometryType.PADGEOMTYPE_NSIDED_POLYGON

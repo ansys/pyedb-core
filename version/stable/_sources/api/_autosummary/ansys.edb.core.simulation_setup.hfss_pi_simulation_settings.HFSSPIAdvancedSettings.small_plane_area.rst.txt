@@ -1,0 +1,6 @@
+small\_plane\_area
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIAdvancedSettings.small_plane_area

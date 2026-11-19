@@ -1,0 +1,6 @@
+PRIM\_INST\_COLLECTION
+======================
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PrimitiveType.PRIM_INST_COLLECTION

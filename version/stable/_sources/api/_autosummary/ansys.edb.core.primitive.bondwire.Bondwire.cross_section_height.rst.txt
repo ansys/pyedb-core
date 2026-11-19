@@ -1,0 +1,6 @@
+cross\_section\_height
+======================
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. autoproperty:: Bondwire.cross_section_height

@@ -1,0 +1,6 @@
+package\_mounting\_offset
+=========================
+
+.. currentmodule:: ansys.edb.core.definition.ic_component_property
+
+.. autoproperty:: ICComponentProperty.package_mounting_offset

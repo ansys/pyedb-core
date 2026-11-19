@@ -1,0 +1,24 @@
+﻿CPAModelType
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: CPAModelType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CPAModelType.RDL_IC
+      CPAModelType.PACKAGE
+      CPAModelType.PCB
+   
+   

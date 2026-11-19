@@ -1,0 +1,34 @@
+﻿HFSSPISimulationSettings
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPISimulationSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPISimulationSettings.enabled
+      HFSSPISimulationSettings.general
+      HFSSPISimulationSettings.msg
+      HFSSPISimulationSettings.net_processing
+      HFSSPISimulationSettings.power_ground_nets
+      HFSSPISimulationSettings.signal_nets
+   
+   

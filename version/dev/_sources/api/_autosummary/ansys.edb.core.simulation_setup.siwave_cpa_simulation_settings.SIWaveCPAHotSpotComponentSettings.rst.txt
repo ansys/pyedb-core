@@ -1,0 +1,38 @@
+﻿SIWaveCPAHotSpotComponentSettings
+=================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPAHotSpotComponentSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SIWaveCPAHotSpotComponentSettings.get_hot_spot_components
+      
+      
+      SIWaveCPAHotSpotComponentSettings.get_hot_spot_enabled
+      
+      
+      SIWaveCPAHotSpotComponentSettings.set_hot_spot_enabled
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPAHotSpotComponentSettings.msg
+   
+   

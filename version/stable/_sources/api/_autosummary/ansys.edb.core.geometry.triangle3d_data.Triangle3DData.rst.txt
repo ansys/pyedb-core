@@ -1,0 +1,31 @@
+﻿Triangle3DData
+==============
+
+.. currentmodule:: ansys.edb.core.geometry.triangle3d_data
+
+.. autoclass:: Triangle3DData
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Triangle3DData.point_1
+      Triangle3DData.point_2
+      Triangle3DData.point_3
+   
+   

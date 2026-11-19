@@ -1,0 +1,6 @@
+layer\_names
+============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoproperty:: PadstackDefData.layer_names

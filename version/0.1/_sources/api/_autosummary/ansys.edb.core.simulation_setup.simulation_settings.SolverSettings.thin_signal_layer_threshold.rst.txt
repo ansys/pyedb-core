@@ -1,0 +1,6 @@
+thin\_signal\_layer\_threshold
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoproperty:: SolverSettings.thin_signal_layer_threshold

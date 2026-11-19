@@ -1,0 +1,42 @@
+﻿SIWaveCPASimulationSetup
+========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_setup
+
+.. autoclass:: SIWaveCPASimulationSetup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SIWaveCPASimulationSetup.cast
+      
+      
+      SIWaveCPASimulationSetup.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPASimulationSetup.id
+      SIWaveCPASimulationSetup.is_null
+      SIWaveCPASimulationSetup.msg
+      SIWaveCPASimulationSetup.name
+      SIWaveCPASimulationSetup.position
+      SIWaveCPASimulationSetup.settings
+      SIWaveCPASimulationSetup.sweep_data
+      SIWaveCPASimulationSetup.type
+   
+   

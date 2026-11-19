@@ -1,0 +1,6 @@
+get\_pin\_supply\_voltages
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. automethod:: SIWaveCPAUnconnectedDiePinSettings.get_pin_supply_voltages

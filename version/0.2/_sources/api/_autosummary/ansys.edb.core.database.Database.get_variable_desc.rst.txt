@@ -1,0 +1,6 @@
+get\_variable\_desc
+===================
+
+.. currentmodule:: ansys.edb.core.database
+
+.. automethod:: Database.get_variable_desc

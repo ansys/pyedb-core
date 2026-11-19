@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.djordjecvic_sarkar_model
+
+.. autoproperty:: DjordjecvicSarkarModel.is_null

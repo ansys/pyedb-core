@@ -1,0 +1,6 @@
+layer
+=====
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Polygon.layer

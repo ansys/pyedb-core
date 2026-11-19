@@ -1,0 +1,6 @@
+hotspot\_max\_num\_pin\_groups
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASimulationSettings.hotspot_max_num_pin_groups

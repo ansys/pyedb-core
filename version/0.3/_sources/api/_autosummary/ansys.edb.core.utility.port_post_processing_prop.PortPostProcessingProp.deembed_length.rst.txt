@@ -1,0 +1,6 @@
+deembed\_length
+===============
+
+.. currentmodule:: ansys.edb.core.utility.port_post_processing_prop
+
+.. autoproperty:: PortPostProcessingProp.deembed_length

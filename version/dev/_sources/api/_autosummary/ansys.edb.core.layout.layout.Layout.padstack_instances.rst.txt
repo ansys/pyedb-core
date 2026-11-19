@@ -1,0 +1,6 @@
+padstack\_instances
+===================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. autoproperty:: Layout.padstack_instances

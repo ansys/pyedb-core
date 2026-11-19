@@ -1,0 +1,27 @@
+﻿CPAExtractionMode
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: CPAExtractionMode
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CPAExtractionMode.L_NETWORK
+      CPAExtractionMode.T_NETWORK
+      CPAExtractionMode.MOR_NETWORK
+      CPAExtractionMode.RLCG
+      CPAExtractionMode.PLOC
+      CPAExtractionMode.DIE_GROUPS
+   
+   

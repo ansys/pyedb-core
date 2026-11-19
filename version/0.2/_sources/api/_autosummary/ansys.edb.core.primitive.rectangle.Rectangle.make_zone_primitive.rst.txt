@@ -1,0 +1,6 @@
+make\_zone\_primitive
+=====================
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. automethod:: Rectangle.make_zone_primitive

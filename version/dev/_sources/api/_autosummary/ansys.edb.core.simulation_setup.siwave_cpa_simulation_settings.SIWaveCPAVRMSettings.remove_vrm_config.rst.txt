@@ -1,0 +1,6 @@
+remove\_vrm\_config
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. automethod:: SIWaveCPAVRMSettings.remove_vrm_config

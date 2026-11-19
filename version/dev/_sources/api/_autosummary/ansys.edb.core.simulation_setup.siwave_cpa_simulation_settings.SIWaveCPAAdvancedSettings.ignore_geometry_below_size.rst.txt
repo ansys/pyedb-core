@@ -1,0 +1,6 @@
+ignore\_geometry\_below\_size
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAAdvancedSettings.ignore_geometry_below_size

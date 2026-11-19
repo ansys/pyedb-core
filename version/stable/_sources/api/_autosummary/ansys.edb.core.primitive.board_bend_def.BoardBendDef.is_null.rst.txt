@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. autoproperty:: BoardBendDef.is_null

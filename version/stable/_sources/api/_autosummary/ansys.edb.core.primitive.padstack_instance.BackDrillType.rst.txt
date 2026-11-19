@@ -1,0 +1,24 @@
+﻿BackDrillType
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. autoclass:: BackDrillType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      BackDrillType.NO_DRILL
+      BackDrillType.LAYER_DRILL
+      BackDrillType.DEPTH_DRILL
+   
+   

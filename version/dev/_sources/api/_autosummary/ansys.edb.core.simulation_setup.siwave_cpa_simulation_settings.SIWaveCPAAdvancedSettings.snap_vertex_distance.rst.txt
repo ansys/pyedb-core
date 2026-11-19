@@ -1,0 +1,6 @@
+snap\_vertex\_distance
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAAdvancedSettings.snap_vertex_distance

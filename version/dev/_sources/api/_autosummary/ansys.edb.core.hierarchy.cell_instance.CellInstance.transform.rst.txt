@@ -1,0 +1,6 @@
+transform
+=========
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoproperty:: CellInstance.transform

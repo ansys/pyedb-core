@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. autoproperty:: LayerMap.is_null

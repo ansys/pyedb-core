@@ -1,0 +1,35 @@
+﻿SIWaveCPAChannelComponentSettings
+=================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPAChannelComponentSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SIWaveCPAChannelComponentSettings.get_part_is_internal_to_netlist
+      
+      
+      SIWaveCPAChannelComponentSettings.set_part_is_internal_to_netlist
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPAChannelComponentSettings.msg
+   
+   

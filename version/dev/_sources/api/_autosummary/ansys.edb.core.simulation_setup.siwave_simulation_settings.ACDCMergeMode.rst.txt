@@ -1,0 +1,23 @@
+﻿ACDCMergeMode
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: ACDCMergeMode
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ACDCMergeMode.DEFAULT
+      ACDCMergeMode.FAST
+   
+   

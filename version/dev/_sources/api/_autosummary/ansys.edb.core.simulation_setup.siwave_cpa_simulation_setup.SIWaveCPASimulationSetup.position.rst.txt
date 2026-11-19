@@ -1,0 +1,6 @@
+position
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_setup
+
+.. autoproperty:: SIWaveCPASimulationSetup.position

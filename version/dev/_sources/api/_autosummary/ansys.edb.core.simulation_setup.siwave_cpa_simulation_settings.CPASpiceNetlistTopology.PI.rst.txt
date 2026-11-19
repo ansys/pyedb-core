@@ -1,0 +1,6 @@
+PI
+==
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoattribute:: CPASpiceNetlistTopology.PI

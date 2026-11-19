@@ -1,0 +1,6 @@
+layer\_id
+=========
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.layer_id

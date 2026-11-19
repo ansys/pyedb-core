@@ -1,0 +1,6 @@
+is\_mcad\_stride
+================
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. autoproperty:: ViaGroup.is_mcad_stride

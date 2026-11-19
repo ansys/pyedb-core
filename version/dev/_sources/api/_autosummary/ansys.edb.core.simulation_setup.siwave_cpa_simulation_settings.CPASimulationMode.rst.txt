@@ -1,0 +1,23 @@
+﻿CPASimulationMode
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: CPASimulationMode
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CPASimulationMode.PI
+      CPASimulationMode.SI
+   
+   

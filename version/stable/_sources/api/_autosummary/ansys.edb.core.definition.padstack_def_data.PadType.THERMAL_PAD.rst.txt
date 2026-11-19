@@ -1,0 +1,6 @@
+THERMAL\_PAD
+============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: PadType.THERMAL_PAD

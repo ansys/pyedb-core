@@ -1,0 +1,6 @@
+remove\_net
+===========
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. automethod:: DifferentialPair.remove_net

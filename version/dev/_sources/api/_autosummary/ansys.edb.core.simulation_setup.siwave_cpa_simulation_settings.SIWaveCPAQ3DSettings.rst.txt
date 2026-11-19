@@ -1,0 +1,45 @@
+﻿SIWaveCPAQ3DSettings
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPAQ3DSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPAQ3DSettings.cg_accuracy_level
+      SIWaveCPAQ3DSettings.cg_percent_error
+      SIWaveCPAQ3DSettings.cg_percent_refinement
+      SIWaveCPAQ3DSettings.custom_refinement
+      SIWaveCPAQ3DSettings.dc_percent_error
+      SIWaveCPAQ3DSettings.dc_percent_refinement
+      SIWaveCPAQ3DSettings.dielectric_extension
+      SIWaveCPAQ3DSettings.max_num_cg_passes
+      SIWaveCPAQ3DSettings.max_num_dc_passes
+      SIWaveCPAQ3DSettings.max_num_rl_passes
+      SIWaveCPAQ3DSettings.min_num_cg_passes
+      SIWaveCPAQ3DSettings.min_num_dc_passes
+      SIWaveCPAQ3DSettings.min_num_rl_passes
+      SIWaveCPAQ3DSettings.msg
+      SIWaveCPAQ3DSettings.rl_percent_error
+      SIWaveCPAQ3DSettings.rl_percent_refinement
+      SIWaveCPAQ3DSettings.terminal_diam
+   
+   

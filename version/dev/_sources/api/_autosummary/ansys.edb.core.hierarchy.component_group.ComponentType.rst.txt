@@ -1,0 +1,28 @@
+﻿ComponentType
+=============
+
+.. currentmodule:: ansys.edb.core.hierarchy.component_group
+
+.. autoclass:: ComponentType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ComponentType.OTHER
+      ComponentType.RESISTOR
+      ComponentType.INDUCTOR
+      ComponentType.CAPACITOR
+      ComponentType.IC
+      ComponentType.IO
+      ComponentType.INVALID
+   
+   

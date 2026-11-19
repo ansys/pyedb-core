@@ -1,0 +1,6 @@
+is\_in\_zone
+============
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. automethod:: Layer.is_in_zone

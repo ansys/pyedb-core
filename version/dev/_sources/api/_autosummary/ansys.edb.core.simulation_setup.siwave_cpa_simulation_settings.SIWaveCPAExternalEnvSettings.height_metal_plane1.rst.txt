@@ -1,0 +1,6 @@
+height\_metal\_plane1
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAExternalEnvSettings.height_metal_plane1

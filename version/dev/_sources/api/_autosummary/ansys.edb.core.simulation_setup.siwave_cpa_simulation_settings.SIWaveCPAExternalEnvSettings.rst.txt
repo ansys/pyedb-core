@@ -1,0 +1,38 @@
+﻿SIWaveCPAExternalEnvSettings
+============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPAExternalEnvSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPAExternalEnvSettings.bottom_fill_material
+      SIWaveCPAExternalEnvSettings.ground_metal_plane1
+      SIWaveCPAExternalEnvSettings.ground_metal_plane2
+      SIWaveCPAExternalEnvSettings.height_metal_plane1
+      SIWaveCPAExternalEnvSettings.height_metal_plane2
+      SIWaveCPAExternalEnvSettings.include_metal_plane1
+      SIWaveCPAExternalEnvSettings.include_metal_plane2
+      SIWaveCPAExternalEnvSettings.msg
+      SIWaveCPAExternalEnvSettings.pcb_material
+      SIWaveCPAExternalEnvSettings.top_fill_material
+   
+   

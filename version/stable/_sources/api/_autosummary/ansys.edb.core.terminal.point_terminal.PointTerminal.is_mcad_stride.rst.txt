@@ -1,0 +1,6 @@
+is\_mcad\_stride
+================
+
+.. currentmodule:: ansys.edb.core.terminal.point_terminal
+
+.. autoproperty:: PointTerminal.is_mcad_stride

@@ -1,0 +1,25 @@
+﻿SolderballShape
+===============
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoclass:: SolderballShape
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SolderballShape.NO_SOLDERBALL
+      SolderballShape.SOLDERBALL_CYLINDER
+      SolderballShape.SOLDERBALL_SPHEROID
+      SolderballShape.UNKNOWN_SOLDERBALL_SHAPE
+   
+   

@@ -1,0 +1,6 @@
+thermal\_aware\_sim
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAAdvancedSettings.thermal_aware_sim

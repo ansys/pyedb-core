@@ -1,0 +1,6 @@
+TERMINAL
+========
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.TERMINAL

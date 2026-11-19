@@ -1,0 +1,6 @@
+per\_pin\_res\_path
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_dcir_simulation_settings
+
+.. autoproperty:: SIWaveDCIRSimulationSettings.per_pin_res_path

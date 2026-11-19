@@ -1,0 +1,52 @@
+﻿ApdBondwireDef
+==============
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. autoclass:: ApdBondwireDef
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ApdBondwireDef.create
+      
+      
+      ApdBondwireDef.delete
+      
+      
+      ApdBondwireDef.find_by_name
+      
+      
+      ApdBondwireDef.get_parameters
+      
+      
+      ApdBondwireDef.load_definitions_from_file
+      
+      
+      ApdBondwireDef.set_parameters
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ApdBondwireDef.bondwire_type
+      ApdBondwireDef.definition_type
+      ApdBondwireDef.id
+      ApdBondwireDef.is_null
+      ApdBondwireDef.msg
+      ApdBondwireDef.name
+   
+   

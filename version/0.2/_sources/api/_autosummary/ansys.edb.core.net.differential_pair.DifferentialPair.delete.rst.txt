@@ -1,0 +1,6 @@
+delete
+======
+
+.. currentmodule:: ansys.edb.core.net.differential_pair
+
+.. automethod:: DifferentialPair.delete

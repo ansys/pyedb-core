@@ -1,0 +1,6 @@
+top\_fill\_material
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAExternalEnvSettings.top_fill_material

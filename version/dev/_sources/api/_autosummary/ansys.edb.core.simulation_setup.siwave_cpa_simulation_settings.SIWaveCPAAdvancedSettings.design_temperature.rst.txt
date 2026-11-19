@@ -1,0 +1,6 @@
+design\_temperature
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAAdvancedSettings.design_temperature

@@ -1,0 +1,6 @@
+LINEAR\_EX
+==========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoattribute:: SParamExtrapolation.LINEAR_EX

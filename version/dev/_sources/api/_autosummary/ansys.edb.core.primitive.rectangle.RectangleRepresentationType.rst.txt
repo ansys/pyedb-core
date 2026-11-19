@@ -1,0 +1,24 @@
+﻿RectangleRepresentationType
+===========================
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. autoclass:: RectangleRepresentationType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RectangleRepresentationType.INVALID_RECT_TYPE
+      RectangleRepresentationType.CENTER_WIDTH_HEIGHT
+      RectangleRepresentationType.LOWER_LEFT_UPPER_RIGHT
+   
+   

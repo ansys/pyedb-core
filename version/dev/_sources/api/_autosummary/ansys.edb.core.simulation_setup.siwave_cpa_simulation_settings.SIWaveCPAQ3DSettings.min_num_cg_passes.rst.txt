@@ -1,0 +1,6 @@
+min\_num\_cg\_passes
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAQ3DSettings.min_num_cg_passes

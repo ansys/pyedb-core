@@ -1,0 +1,6 @@
+remove\_die\_config
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. automethod:: SIWaveCPADieConfigSettings.remove_die_config

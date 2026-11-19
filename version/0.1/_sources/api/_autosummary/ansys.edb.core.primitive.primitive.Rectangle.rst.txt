@@ -1,0 +1,107 @@
+﻿Rectangle
+=========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoclass:: Rectangle
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Rectangle.add_void
+      
+      
+      Rectangle.cast
+      
+      
+      Rectangle.create
+      
+      
+      Rectangle.create_3d_comp
+      
+      
+      Rectangle.create_hfss
+      
+      
+      Rectangle.create_stride
+      
+      
+      Rectangle.delete
+      
+      
+      Rectangle.find_by_id
+      
+      
+      Rectangle.get_hfss_prop
+      
+      
+      Rectangle.get_parameters
+      
+      
+      Rectangle.get_product_property
+      
+      
+      Rectangle.get_product_property_ids
+      
+      
+      Rectangle.make_zone_primitive
+      
+      
+      Rectangle.remove_hfss_prop
+      
+      
+      Rectangle.render
+      
+      
+      Rectangle.set_hfss_prop
+      
+      
+      Rectangle.set_parameters
+      
+      
+      Rectangle.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Rectangle.can_be_zone_primitive
+      Rectangle.component
+      Rectangle.edb_uid
+      Rectangle.group
+      Rectangle.has_voids
+      Rectangle.id
+      Rectangle.is_mcad
+      Rectangle.is_mcad_3d_comp
+      Rectangle.is_mcad_hfss
+      Rectangle.is_mcad_stride
+      Rectangle.is_negative
+      Rectangle.is_null
+      Rectangle.is_parameterized
+      Rectangle.is_void
+      Rectangle.is_zone_primitive
+      Rectangle.layer
+      Rectangle.layout
+      Rectangle.layout_obj_type
+      Rectangle.msg
+      Rectangle.net
+      Rectangle.obj_type
+      Rectangle.owner
+      Rectangle.polygon_data
+      Rectangle.primitive_type
+      Rectangle.voids
+   
+   

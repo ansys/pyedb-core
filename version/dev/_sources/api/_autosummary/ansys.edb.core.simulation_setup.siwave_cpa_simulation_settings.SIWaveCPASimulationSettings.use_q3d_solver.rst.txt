@@ -1,0 +1,6 @@
+use\_q3d\_solver
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASimulationSettings.use_q3d_solver

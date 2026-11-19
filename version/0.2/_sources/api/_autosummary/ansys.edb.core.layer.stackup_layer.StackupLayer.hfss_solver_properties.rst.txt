@@ -1,0 +1,6 @@
+hfss\_solver\_properties
+========================
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoproperty:: StackupLayer.hfss_solver_properties

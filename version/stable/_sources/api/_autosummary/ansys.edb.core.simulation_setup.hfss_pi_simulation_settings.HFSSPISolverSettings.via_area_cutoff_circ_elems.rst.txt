@@ -1,0 +1,6 @@
+via\_area\_cutoff\_circ\_elems
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPISolverSettings.via_area_cutoff_circ_elems

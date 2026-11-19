@@ -1,0 +1,6 @@
+LAYER
+=====
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.LAYER

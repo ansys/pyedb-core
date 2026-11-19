@@ -1,0 +1,6 @@
+set\_connection\_pt
+===================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. automethod:: PadstackDefData.set_connection_pt

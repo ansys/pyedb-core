@@ -1,0 +1,6 @@
+use\_uniform\_temperature
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAAdvancedSettings.use_uniform_temperature

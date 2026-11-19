@@ -1,0 +1,6 @@
+relative\_permittivity\_at\_frequency
+=====================================
+
+.. currentmodule:: ansys.edb.core.definition.djordjecvic_sarkar_model
+
+.. autoproperty:: DjordjecvicSarkarModel.relative_permittivity_at_frequency

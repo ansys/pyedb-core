@@ -1,0 +1,6 @@
+OPEN\_ENDED
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy.structure3d
+
+.. autoattribute:: MeshClosure.OPEN_ENDED

@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.port_property
+
+.. autoproperty:: PortProperty.is_null

@@ -1,0 +1,24 @@
+﻿CPASpiceNetlistTopology
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: CPASpiceNetlistTopology
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CPASpiceNetlistTopology.PI
+      CPASpiceNetlistTopology.T_NETWORK
+      CPASpiceNetlistTopology.MOR_NETWORK
+   
+   

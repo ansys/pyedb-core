@@ -1,0 +1,6 @@
+product\_solver\_option
+=======================
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. automethod:: PadstackInstanceTerminal.product_solver_option

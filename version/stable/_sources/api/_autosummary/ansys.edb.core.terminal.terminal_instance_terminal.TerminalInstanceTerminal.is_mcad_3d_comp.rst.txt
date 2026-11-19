@@ -1,0 +1,6 @@
+is\_mcad\_3d\_comp
+==================
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance_terminal
+
+.. autoproperty:: TerminalInstanceTerminal.is_mcad_3d_comp

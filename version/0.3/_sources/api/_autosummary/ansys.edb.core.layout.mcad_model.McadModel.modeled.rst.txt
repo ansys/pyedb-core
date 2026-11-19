@@ -1,0 +1,6 @@
+modeled
+=======
+
+.. currentmodule:: ansys.edb.core.layout.mcad_model
+
+.. automethod:: McadModel.modeled

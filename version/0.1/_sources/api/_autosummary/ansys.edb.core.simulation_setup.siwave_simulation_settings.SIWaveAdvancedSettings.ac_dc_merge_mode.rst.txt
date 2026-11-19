@@ -1,0 +1,6 @@
+ac\_dc\_merge\_mode
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.ac_dc_merge_mode

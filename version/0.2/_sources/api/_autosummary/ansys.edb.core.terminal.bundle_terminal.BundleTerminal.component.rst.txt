@@ -1,0 +1,6 @@
+component
+=========
+
+.. currentmodule:: ansys.edb.core.terminal.bundle_terminal
+
+.. autoproperty:: BundleTerminal.component

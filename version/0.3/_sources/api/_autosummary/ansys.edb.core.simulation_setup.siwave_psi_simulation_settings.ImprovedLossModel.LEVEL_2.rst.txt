@@ -1,0 +1,6 @@
+LEVEL\_2
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoattribute:: ImprovedLossModel.LEVEL_2

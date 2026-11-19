@@ -1,0 +1,6 @@
+pcb\_material
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAExternalEnvSettings.pcb_material

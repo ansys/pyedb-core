@@ -1,0 +1,6 @@
+auto\_select\_small\_hole\_size
+===============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASettings.auto_select_small_hole_size

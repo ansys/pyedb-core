@@ -1,0 +1,6 @@
+set\_hot\_spot\_enabled
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. automethod:: SIWaveCPAHotSpotComponentSettings.set_hot_spot_enabled

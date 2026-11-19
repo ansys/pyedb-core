@@ -1,0 +1,94 @@
+﻿CellInstance
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.cell_instance
+
+.. autoclass:: CellInstance
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      CellInstance.cast
+      
+      
+      CellInstance.create
+      
+      
+      CellInstance.create_3d_comp
+      
+      
+      CellInstance.create_hfss
+      
+      
+      CellInstance.create_stride
+      
+      
+      CellInstance.create_with_component
+      
+      
+      CellInstance.delete
+      
+      
+      CellInstance.find
+      
+      
+      CellInstance.find_by_id
+      
+      
+      CellInstance.get_parameter_override
+      
+      
+      CellInstance.get_product_property
+      
+      
+      CellInstance.get_product_property_ids
+      
+      
+      CellInstance.set_parameter_override
+      
+      
+      CellInstance.set_product_property
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CellInstance.component
+      CellInstance.component_def
+      CellInstance.edb_uid
+      CellInstance.group
+      CellInstance.id
+      CellInstance.is_mcad
+      CellInstance.is_mcad_3d_comp
+      CellInstance.is_mcad_hfss
+      CellInstance.is_mcad_stride
+      CellInstance.is_null
+      CellInstance.layout
+      CellInstance.layout_obj_type
+      CellInstance.location
+      CellInstance.msg
+      CellInstance.name
+      CellInstance.net
+      CellInstance.obj_type
+      CellInstance.placement_3d
+      CellInstance.placement_layer
+      CellInstance.reference_layout
+      CellInstance.solve_independent_preference
+      CellInstance.term_instances
+      CellInstance.transform
+      CellInstance.transform3d
+   
+   

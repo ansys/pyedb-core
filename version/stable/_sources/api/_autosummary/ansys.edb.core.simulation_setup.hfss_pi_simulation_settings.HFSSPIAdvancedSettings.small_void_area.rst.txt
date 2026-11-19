@@ -1,0 +1,6 @@
+small\_void\_area
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoproperty:: HFSSPIAdvancedSettings.small_void_area

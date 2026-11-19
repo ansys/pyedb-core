@@ -1,0 +1,6 @@
+get\_hfss\_prop
+===============
+
+.. currentmodule:: ansys.edb.core.primitive.board_bend_def
+
+.. automethod:: BoardBendDef.get_hfss_prop

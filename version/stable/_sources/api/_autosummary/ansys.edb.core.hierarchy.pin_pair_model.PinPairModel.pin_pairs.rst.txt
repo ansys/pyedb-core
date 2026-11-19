@@ -1,0 +1,6 @@
+pin\_pairs
+==========
+
+.. currentmodule:: ansys.edb.core.hierarchy.pin_pair_model
+
+.. automethod:: PinPairModel.pin_pairs

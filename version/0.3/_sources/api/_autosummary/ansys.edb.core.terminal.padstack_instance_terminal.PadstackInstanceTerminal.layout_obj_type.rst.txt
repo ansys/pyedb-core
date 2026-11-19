@@ -1,0 +1,6 @@
+layout\_obj\_type
+=================
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. autoattribute:: PadstackInstanceTerminal.layout_obj_type

@@ -1,0 +1,6 @@
+external\_env\_settings
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASimulationSettings.external_env_settings

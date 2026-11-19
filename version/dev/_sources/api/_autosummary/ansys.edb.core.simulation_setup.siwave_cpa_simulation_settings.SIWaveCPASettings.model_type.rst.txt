@@ -1,0 +1,6 @@
+model\_type
+===========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASettings.model_type

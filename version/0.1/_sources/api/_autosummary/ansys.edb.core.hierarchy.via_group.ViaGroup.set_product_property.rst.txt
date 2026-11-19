@@ -1,0 +1,6 @@
+set\_product\_property
+======================
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. automethod:: ViaGroup.set_product_property

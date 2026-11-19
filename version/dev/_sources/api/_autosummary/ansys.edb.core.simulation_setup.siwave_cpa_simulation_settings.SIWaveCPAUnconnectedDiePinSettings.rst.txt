@@ -1,0 +1,35 @@
+﻿SIWaveCPAUnconnectedDiePinSettings
+==================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPAUnconnectedDiePinSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SIWaveCPAUnconnectedDiePinSettings.get_pin_supply_voltages
+      
+      
+      SIWaveCPAUnconnectedDiePinSettings.set_pin_supply_voltage
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPAUnconnectedDiePinSettings.msg
+   
+   

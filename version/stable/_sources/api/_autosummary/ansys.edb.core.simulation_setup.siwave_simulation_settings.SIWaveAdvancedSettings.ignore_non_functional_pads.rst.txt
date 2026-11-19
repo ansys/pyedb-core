@@ -1,0 +1,6 @@
+ignore\_non\_functional\_pads
+=============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.ignore_non_functional_pads

@@ -1,0 +1,46 @@
+﻿SIWaveCPASimulationSettings
+===========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPASimulationSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPASimulationSettings.advanced_settings
+      SIWaveCPASimulationSettings.channel_component_settings
+      SIWaveCPASimulationSettings.die_config_settings
+      SIWaveCPASimulationSettings.enabled
+      SIWaveCPASimulationSettings.external_env_settings
+      SIWaveCPASimulationSettings.hot_spot_component_settings
+      SIWaveCPASimulationSettings.hotspot_max_num_pin_groups
+      SIWaveCPASimulationSettings.hotspot_pin_group_size
+      SIWaveCPASimulationSettings.hotspot_pin_group_threshold
+      SIWaveCPASimulationSettings.msg
+      SIWaveCPASimulationSettings.net_settings
+      SIWaveCPASimulationSettings.q3d_settings
+      SIWaveCPASimulationSettings.settings
+      SIWaveCPASimulationSettings.simulation_mode
+      SIWaveCPASimulationSettings.unconnected_die_pin_settings
+      SIWaveCPASimulationSettings.use_channel_setup
+      SIWaveCPASimulationSettings.use_q3d_solver
+      SIWaveCPASimulationSettings.vrm_settings
+   
+   

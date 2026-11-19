@@ -1,0 +1,22 @@
+﻿BasicQuadraticParams
+====================
+
+.. currentmodule:: ansys.edb.core.utility.material_property_thermal_modifier_params
+
+.. autoclass:: BasicQuadraticParams
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   

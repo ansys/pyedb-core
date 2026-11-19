@@ -1,0 +1,6 @@
+arc\_data
+=========
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoproperty:: PolygonData.arc_data

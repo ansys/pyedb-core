@@ -1,0 +1,6 @@
+remove\_holes\_except\_on\_critical\_nets
+=========================================
+
+.. currentmodule:: ansys.edb.core.layout.layout
+
+.. automethod:: Layout.remove_holes_except_on_critical_nets

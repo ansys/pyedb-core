@@ -1,0 +1,6 @@
+layer\_map
+==========
+
+.. currentmodule:: ansys.edb.core.primitive.padstack_instance
+
+.. autoproperty:: PadstackInstance.layer_map

@@ -1,0 +1,23 @@
+﻿CPAPinGroupMode
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: CPAPinGroupMode
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CPAPinGroupMode.NONE
+      CPAPinGroupMode.HOTSPOT_PIN_GROUP
+   
+   

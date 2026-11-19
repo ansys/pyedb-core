@@ -1,0 +1,6 @@
+get\_part\_is\_internal\_to\_netlist
+====================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. automethod:: SIWaveCPAChannelComponentSettings.get_part_is_internal_to_netlist

@@ -1,0 +1,6 @@
+use\_local\_analysis
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASettings.use_local_analysis

@@ -1,0 +1,6 @@
+offset\_x
+=========
+
+.. currentmodule:: ansys.edb.core.utility.transform
+
+.. autoproperty:: Transform.offset_x

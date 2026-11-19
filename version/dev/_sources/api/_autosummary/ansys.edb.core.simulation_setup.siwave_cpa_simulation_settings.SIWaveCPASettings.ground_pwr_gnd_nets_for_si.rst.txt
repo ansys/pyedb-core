@@ -1,0 +1,6 @@
+ground\_pwr\_gnd\_nets\_for\_si
+===============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASettings.ground_pwr_gnd_nets_for_si

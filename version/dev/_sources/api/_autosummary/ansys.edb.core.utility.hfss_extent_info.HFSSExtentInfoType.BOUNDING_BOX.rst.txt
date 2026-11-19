@@ -1,0 +1,6 @@
+BOUNDING\_BOX
+=============
+
+.. currentmodule:: ansys.edb.core.utility.hfss_extent_info
+
+.. autoattribute:: HFSSExtentInfoType.BOUNDING_BOX

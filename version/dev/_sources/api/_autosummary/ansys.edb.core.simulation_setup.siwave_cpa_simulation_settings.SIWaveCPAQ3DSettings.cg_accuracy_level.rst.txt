@@ -1,0 +1,6 @@
+cg\_accuracy\_level
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAQ3DSettings.cg_accuracy_level

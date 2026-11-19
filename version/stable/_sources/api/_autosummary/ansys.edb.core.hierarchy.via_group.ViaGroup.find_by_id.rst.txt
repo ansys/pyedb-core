@@ -1,0 +1,6 @@
+find\_by\_id
+============
+
+.. currentmodule:: ansys.edb.core.hierarchy.via_group
+
+.. automethod:: ViaGroup.find_by_id

@@ -1,0 +1,34 @@
+﻿HFSSDCRSettings
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoclass:: HFSSDCRSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSDCRSettings.max_passes
+      HFSSDCRSettings.min_converged_passes
+      HFSSDCRSettings.min_passes
+      HFSSDCRSettings.msg
+      HFSSDCRSettings.percent_error
+      HFSSDCRSettings.percent_refinement_per_pass
+   
+   

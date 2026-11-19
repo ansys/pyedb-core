@@ -1,0 +1,6 @@
+is\_identity
+============
+
+.. currentmodule:: ansys.edb.core.utility.transform
+
+.. autoproperty:: Transform.is_identity

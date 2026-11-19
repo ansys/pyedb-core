@@ -1,0 +1,26 @@
+﻿HfssPIType
+==========
+
+.. currentmodule:: ansys.edb.core.terminal.terminals
+
+.. autoclass:: HfssPIType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HfssPIType.DEFAULT
+      HfssPIType.COAXIAL_OPEN
+      HfssPIType.COAXIAL_SHORTENED
+      HfssPIType.GAP
+      HfssPIType.LUMPED
+   
+   

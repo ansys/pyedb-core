@@ -1,0 +1,38 @@
+﻿HFSSPIGeneralSettings
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPIGeneralSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPIGeneralSettings.include_enhanced_bondwire_modeling
+      HFSSPIGeneralSettings.min_plane_area_to_mesh
+      HFSSPIGeneralSettings.min_void_area_to_mesh
+      HFSSPIGeneralSettings.model_type
+      HFSSPIGeneralSettings.msg
+      HFSSPIGeneralSettings.perform_erc
+      HFSSPIGeneralSettings.rms_surface_roughness
+      HFSSPIGeneralSettings.simulation_preference
+      HFSSPIGeneralSettings.snap_length_threshold
+      HFSSPIGeneralSettings.surface_roughness_model
+   
+   

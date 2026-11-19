@@ -1,0 +1,6 @@
+rl\_percent\_refinement
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAQ3DSettings.rl_percent_refinement

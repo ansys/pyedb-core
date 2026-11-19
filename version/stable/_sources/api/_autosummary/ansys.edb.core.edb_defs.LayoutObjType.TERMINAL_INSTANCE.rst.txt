@@ -1,0 +1,6 @@
+TERMINAL\_INSTANCE
+==================
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.TERMINAL_INSTANCE

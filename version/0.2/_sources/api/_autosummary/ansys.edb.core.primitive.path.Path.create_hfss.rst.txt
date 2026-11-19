@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.primitive.path
+
+.. automethod:: Path.create_hfss

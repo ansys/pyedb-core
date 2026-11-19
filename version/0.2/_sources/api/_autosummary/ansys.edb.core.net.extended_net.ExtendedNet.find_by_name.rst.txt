@@ -1,0 +1,6 @@
+find\_by\_name
+==============
+
+.. currentmodule:: ansys.edb.core.net.extended_net
+
+.. automethod:: ExtendedNet.find_by_name

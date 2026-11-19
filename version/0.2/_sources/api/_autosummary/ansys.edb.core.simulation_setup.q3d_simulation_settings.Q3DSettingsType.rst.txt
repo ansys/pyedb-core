@@ -1,0 +1,24 @@
+﻿Q3DSettingsType
+===============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoclass:: Q3DSettingsType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DSettingsType.DC
+      Q3DSettingsType.AC
+      Q3DSettingsType.CG
+   
+   

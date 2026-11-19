@@ -1,0 +1,6 @@
+hot\_spot\_component\_settings
+==============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASimulationSettings.hot_spot_component_settings

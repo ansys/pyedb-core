@@ -1,0 +1,41 @@
+﻿SIWaveCPAVRMSettings
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPAVRMSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SIWaveCPAVRMSettings.add_vrm_config
+      
+      
+      SIWaveCPAVRMSettings.get_all_vrm_configs
+      
+      
+      SIWaveCPAVRMSettings.get_vrm_config
+      
+      
+      SIWaveCPAVRMSettings.remove_vrm_config
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPAVRMSettings.msg
+   
+   

@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.terminal.bundle_terminal
+
+.. automethod:: BundleTerminal.create

@@ -1,0 +1,6 @@
+add\_member
+===========
+
+.. currentmodule:: ansys.edb.core.hierarchy.group
+
+.. automethod:: Group.add_member

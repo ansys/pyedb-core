@@ -1,0 +1,6 @@
+solve\_inside
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoproperty:: MeshOperation.solve_inside

@@ -1,0 +1,6 @@
+edb\_uid
+========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Bondwire.edb_uid

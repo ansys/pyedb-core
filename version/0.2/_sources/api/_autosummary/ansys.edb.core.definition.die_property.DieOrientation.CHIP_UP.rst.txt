@@ -1,0 +1,6 @@
+CHIP\_UP
+========
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoattribute:: DieOrientation.CHIP_UP

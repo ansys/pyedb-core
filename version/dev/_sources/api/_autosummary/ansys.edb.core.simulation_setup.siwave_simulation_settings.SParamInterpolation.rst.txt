@@ -1,0 +1,24 @@
+﻿SParamInterpolation
+===================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoclass:: SParamInterpolation
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SParamInterpolation.POINT_IN
+      SParamInterpolation.LINEAR_IN
+      SParamInterpolation.STEP_IN
+   
+   

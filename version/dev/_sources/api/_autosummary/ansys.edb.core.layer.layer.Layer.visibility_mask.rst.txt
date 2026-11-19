@@ -1,0 +1,6 @@
+visibility\_mask
+================
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoproperty:: Layer.visibility_mask

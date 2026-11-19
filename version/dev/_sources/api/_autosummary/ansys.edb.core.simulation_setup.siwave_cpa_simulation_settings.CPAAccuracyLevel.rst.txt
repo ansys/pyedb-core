@@ -1,0 +1,23 @@
+﻿CPAAccuracyLevel
+================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: CPAAccuracyLevel
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CPAAccuracyLevel.NORMAL
+      CPAAccuracyLevel.HIGH
+   
+   

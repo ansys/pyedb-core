@@ -1,0 +1,6 @@
+edb\_uid
+========
+
+.. currentmodule:: ansys.edb.core.terminal.pin_group_terminal
+
+.. autoproperty:: PinGroupTerminal.edb_uid

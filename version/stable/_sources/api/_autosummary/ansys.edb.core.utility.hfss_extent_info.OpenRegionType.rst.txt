@@ -1,0 +1,23 @@
+﻿OpenRegionType
+==============
+
+.. currentmodule:: ansys.edb.core.utility.hfss_extent_info
+
+.. autoclass:: OpenRegionType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      OpenRegionType.RADIATION
+      OpenRegionType.PML
+   
+   

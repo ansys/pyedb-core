@@ -1,0 +1,6 @@
+inf\_gnd\_location
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_simulation_settings
+
+.. autoproperty:: SIWaveAdvancedSettings.inf_gnd_location

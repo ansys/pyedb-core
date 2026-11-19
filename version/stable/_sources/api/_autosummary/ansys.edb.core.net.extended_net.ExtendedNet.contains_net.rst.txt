@@ -1,0 +1,6 @@
+contains\_net
+=============
+
+.. currentmodule:: ansys.edb.core.net.extended_net
+
+.. automethod:: ExtendedNet.contains_net

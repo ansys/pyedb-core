@@ -1,0 +1,37 @@
+﻿LayoutObjType
+=============
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoclass:: LayoutObjType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayoutObjType.INVALID_LAYOUT_OBJ
+      LayoutObjType.PRIMITIVE
+      LayoutObjType.PADSTACK_INSTANCE
+      LayoutObjType.TERMINAL
+      LayoutObjType.TERMINAL_INSTANCE
+      LayoutObjType.CELL_INSTANCE
+      LayoutObjType.LAYER
+      LayoutObjType.NET
+      LayoutObjType.PADSTACK
+      LayoutObjType.GROUP
+      LayoutObjType.NET_CLASS
+      LayoutObjType.CELL
+      LayoutObjType.DIFFERENTIAL_PAIR
+      LayoutObjType.PIN_GROUP
+      LayoutObjType.VOLTAGE_REGULATOR
+      LayoutObjType.EXTENDED_NET
+   
+   

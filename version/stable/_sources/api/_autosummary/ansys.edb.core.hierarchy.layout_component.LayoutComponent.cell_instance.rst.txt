@@ -1,0 +1,6 @@
+cell\_instance
+==============
+
+.. currentmodule:: ansys.edb.core.hierarchy.layout_component
+
+.. autoproperty:: LayoutComponent.cell_instance

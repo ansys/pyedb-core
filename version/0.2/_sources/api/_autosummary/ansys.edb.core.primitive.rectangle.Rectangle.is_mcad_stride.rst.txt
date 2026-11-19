@@ -1,0 +1,6 @@
+is\_mcad\_stride
+================
+
+.. currentmodule:: ansys.edb.core.primitive.rectangle
+
+.. autoproperty:: Rectangle.is_mcad_stride

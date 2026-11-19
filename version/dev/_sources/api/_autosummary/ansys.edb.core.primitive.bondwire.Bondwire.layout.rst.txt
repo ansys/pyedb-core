@@ -1,0 +1,6 @@
+layout
+======
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. autoproperty:: Bondwire.layout

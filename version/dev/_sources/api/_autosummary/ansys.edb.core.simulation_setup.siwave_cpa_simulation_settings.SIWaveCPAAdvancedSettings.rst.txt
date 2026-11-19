@@ -1,0 +1,37 @@
+﻿SIWaveCPAAdvancedSettings
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPAAdvancedSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPAAdvancedSettings.design_temperature
+      SIWaveCPAAdvancedSettings.ignore_geometry_below_size
+      SIWaveCPAAdvancedSettings.ignore_voids_below_size
+      SIWaveCPAAdvancedSettings.msg
+      SIWaveCPAAdvancedSettings.output_spice_topology
+      SIWaveCPAAdvancedSettings.sitemp_file_path
+      SIWaveCPAAdvancedSettings.snap_vertex_distance
+      SIWaveCPAAdvancedSettings.thermal_aware_sim
+      SIWaveCPAAdvancedSettings.use_uniform_temperature
+   
+   

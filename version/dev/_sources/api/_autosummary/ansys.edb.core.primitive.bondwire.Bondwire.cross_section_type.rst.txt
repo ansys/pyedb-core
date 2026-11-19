@@ -1,0 +1,6 @@
+cross\_section\_type
+====================
+
+.. currentmodule:: ansys.edb.core.primitive.bondwire
+
+.. autoproperty:: Bondwire.cross_section_type

@@ -1,0 +1,6 @@
+ET\_0\_1
+========
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoattribute:: ErrorTolerance.ET_0_1

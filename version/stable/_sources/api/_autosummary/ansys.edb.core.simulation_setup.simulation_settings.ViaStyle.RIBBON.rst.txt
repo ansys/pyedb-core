@@ -1,0 +1,6 @@
+RIBBON
+======
+
+.. currentmodule:: ansys.edb.core.simulation_setup.simulation_settings
+
+.. autoattribute:: ViaStyle.RIBBON

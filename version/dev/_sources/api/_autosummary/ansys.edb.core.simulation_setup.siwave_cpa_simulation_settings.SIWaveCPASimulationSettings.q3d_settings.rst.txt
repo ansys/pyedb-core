@@ -1,0 +1,6 @@
+q3d\_settings
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASimulationSettings.q3d_settings

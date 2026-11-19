@@ -1,0 +1,6 @@
+mesh\_size\_factor
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoproperty:: HFSSSettingsOptions.mesh_size_factor

@@ -1,0 +1,32 @@
+﻿SIWaveCPANetSettings
+====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPANetSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPANetSettings.auto_select_nets_for_simulation
+      SIWaveCPANetSettings.ignore_dummy_nets_for_selected_nets
+      SIWaveCPANetSettings.included_nets
+      SIWaveCPANetSettings.msg
+   
+   

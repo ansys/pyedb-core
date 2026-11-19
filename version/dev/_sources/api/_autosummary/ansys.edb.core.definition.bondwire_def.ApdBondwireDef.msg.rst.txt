@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.definition.bondwire_def
+
+.. autoproperty:: ApdBondwireDef.msg

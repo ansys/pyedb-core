@@ -1,0 +1,6 @@
+auto\_select\_nets\_for\_simulation
+===================================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPANetSettings.auto_select_nets_for_simulation

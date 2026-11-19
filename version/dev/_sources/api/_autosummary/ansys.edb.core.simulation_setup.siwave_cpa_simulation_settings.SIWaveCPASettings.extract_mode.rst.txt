@@ -1,0 +1,6 @@
+extract\_mode
+=============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASettings.extract_mode

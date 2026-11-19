@@ -1,0 +1,44 @@
+﻿SIWaveCPASettings
+=================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPASettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPASettings.auto_select_small_hole_size
+      SIWaveCPASettings.compute_ac
+      SIWaveCPASettings.compute_capacitance
+      SIWaveCPASettings.compute_dc
+      SIWaveCPASettings.compute_dc_capacitance
+      SIWaveCPASettings.compute_dc_inductance
+      SIWaveCPASettings.exclude_nonfunctional_pads
+      SIWaveCPASettings.extract_frequency
+      SIWaveCPASettings.extract_mode
+      SIWaveCPASettings.ground_pwr_gnd_nets_for_si
+      SIWaveCPASettings.model_type
+      SIWaveCPASettings.msg
+      SIWaveCPASettings.perform_erc
+      SIWaveCPASettings.return_net
+      SIWaveCPASettings.small_hole_size
+      SIWaveCPASettings.use_local_analysis
+   
+   

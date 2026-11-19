@@ -1,0 +1,6 @@
+is\_null
+========
+
+.. currentmodule:: ansys.edb.core.definition.component_def
+
+.. autoproperty:: ComponentDef.is_null

@@ -1,0 +1,24 @@
+﻿LayerMapUniqueDirection
+=======================
+
+.. currentmodule:: ansys.edb.core.utility.layer_map
+
+.. autoclass:: LayerMapUniqueDirection
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LayerMapUniqueDirection.FORWARD_UNIQUE
+      LayerMapUniqueDirection.BACKWARD_UNIQUE
+      LayerMapUniqueDirection.TWOWAY_UNIQUE
+   
+   

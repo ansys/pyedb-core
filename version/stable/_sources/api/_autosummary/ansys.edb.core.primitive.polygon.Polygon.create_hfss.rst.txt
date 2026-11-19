@@ -1,0 +1,6 @@
+create\_hfss
+============
+
+.. currentmodule:: ansys.edb.core.primitive.polygon
+
+.. automethod:: Polygon.create_hfss

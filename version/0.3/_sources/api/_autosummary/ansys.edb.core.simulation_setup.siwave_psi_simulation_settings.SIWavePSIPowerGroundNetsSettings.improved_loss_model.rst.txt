@@ -1,0 +1,6 @@
+improved\_loss\_model
+=====================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoproperty:: SIWavePSIPowerGroundNetsSettings.improved_loss_model

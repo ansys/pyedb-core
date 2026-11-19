@@ -1,0 +1,6 @@
+mesh\_region
+============
+
+.. currentmodule:: ansys.edb.core.simulation_setup.mesh_operation
+
+.. autoproperty:: LengthMeshOperation.mesh_region

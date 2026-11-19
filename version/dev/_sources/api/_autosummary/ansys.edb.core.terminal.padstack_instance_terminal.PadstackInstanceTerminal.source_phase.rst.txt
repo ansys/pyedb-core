@@ -1,0 +1,6 @@
+source\_phase
+=============
+
+.. currentmodule:: ansys.edb.core.terminal.padstack_instance_terminal
+
+.. autoproperty:: PadstackInstanceTerminal.source_phase

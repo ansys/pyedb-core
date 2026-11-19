@@ -1,0 +1,6 @@
+NONE
+====
+
+.. currentmodule:: ansys.edb.core.definition.die_property
+
+.. autoattribute:: DieType.NONE

@@ -1,0 +1,6 @@
+clone
+=====
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. automethod:: LayerCollection.clone

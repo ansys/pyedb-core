@@ -1,0 +1,6 @@
+set\_property
+=============
+
+.. currentmodule:: ansys.edb.core.definition.material_def
+
+.. automethod:: MaterialDef.set_property

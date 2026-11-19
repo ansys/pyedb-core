@@ -1,0 +1,6 @@
+get\_all\_die\_configs
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. automethod:: SIWaveCPADieConfigSettings.get_all_die_configs

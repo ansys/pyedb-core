@@ -1,0 +1,6 @@
+SOLDERBALL\_SPHEROID
+====================
+
+.. currentmodule:: ansys.edb.core.definition.padstack_def_data
+
+.. autoattribute:: SolderballShape.SOLDERBALL_SPHEROID

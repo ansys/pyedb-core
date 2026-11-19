@@ -1,0 +1,6 @@
+output\_spice\_topology
+=======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPAAdvancedSettings.output_spice_topology

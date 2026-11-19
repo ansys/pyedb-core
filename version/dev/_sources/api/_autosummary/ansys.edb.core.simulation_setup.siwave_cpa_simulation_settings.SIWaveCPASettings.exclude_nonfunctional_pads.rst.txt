@@ -1,0 +1,6 @@
+exclude\_nonfunctional\_pads
+============================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASettings.exclude_nonfunctional_pads

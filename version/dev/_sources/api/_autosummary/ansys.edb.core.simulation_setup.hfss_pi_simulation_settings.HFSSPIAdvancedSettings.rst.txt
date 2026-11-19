@@ -1,0 +1,41 @@
+﻿HFSSPIAdvancedSettings
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_pi_simulation_settings
+
+.. autoclass:: HFSSPIAdvancedSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HFSSPIAdvancedSettings.arc_to_chord_error
+      HFSSPIAdvancedSettings.auto_model_resolution
+      HFSSPIAdvancedSettings.max_num_arc_points
+      HFSSPIAdvancedSettings.mesh_for_via_plating
+      HFSSPIAdvancedSettings.model_resolution_length
+      HFSSPIAdvancedSettings.msg
+      HFSSPIAdvancedSettings.num_via_sides
+      HFSSPIAdvancedSettings.remove_floating_geometry
+      HFSSPIAdvancedSettings.small_plane_area
+      HFSSPIAdvancedSettings.small_void_area
+      HFSSPIAdvancedSettings.use_arc_chord_error_approx
+      HFSSPIAdvancedSettings.via_material
+      HFSSPIAdvancedSettings.zero_metal_layer_thickness
+   
+   

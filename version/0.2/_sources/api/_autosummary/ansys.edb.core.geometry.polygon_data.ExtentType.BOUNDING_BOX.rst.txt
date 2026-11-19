@@ -1,0 +1,6 @@
+BOUNDING\_BOX
+=============
+
+.. currentmodule:: ansys.edb.core.geometry.polygon_data
+
+.. autoattribute:: ExtentType.BOUNDING_BOX

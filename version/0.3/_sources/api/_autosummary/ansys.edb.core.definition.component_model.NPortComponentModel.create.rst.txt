@@ -1,0 +1,6 @@
+create
+======
+
+.. currentmodule:: ansys.edb.core.definition.component_model
+
+.. automethod:: NPortComponentModel.create

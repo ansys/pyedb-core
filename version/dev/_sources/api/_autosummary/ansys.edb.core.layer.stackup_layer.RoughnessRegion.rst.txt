@@ -1,0 +1,24 @@
+﻿RoughnessRegion
+===============
+
+.. currentmodule:: ansys.edb.core.layer.stackup_layer
+
+.. autoclass:: RoughnessRegion
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RoughnessRegion.TOP
+      RoughnessRegion.BOTTOM
+      RoughnessRegion.SIDE
+   
+   

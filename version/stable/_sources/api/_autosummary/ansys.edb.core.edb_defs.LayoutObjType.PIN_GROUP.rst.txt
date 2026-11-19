@@ -1,0 +1,6 @@
+PIN\_GROUP
+==========
+
+.. currentmodule:: ansys.edb.core.edb_defs
+
+.. autoattribute:: LayoutObjType.PIN_GROUP

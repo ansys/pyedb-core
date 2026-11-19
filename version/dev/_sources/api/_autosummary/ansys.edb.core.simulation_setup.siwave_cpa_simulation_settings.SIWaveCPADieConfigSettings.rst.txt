@@ -1,0 +1,38 @@
+﻿SIWaveCPADieConfigSettings
+==========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoclass:: SIWaveCPADieConfigSettings
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SIWaveCPADieConfigSettings.add_die_config
+      
+      
+      SIWaveCPADieConfigSettings.get_all_die_configs
+      
+      
+      SIWaveCPADieConfigSettings.remove_die_config
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWaveCPADieConfigSettings.msg
+   
+   

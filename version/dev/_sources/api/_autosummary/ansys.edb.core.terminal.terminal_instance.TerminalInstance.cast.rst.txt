@@ -1,0 +1,6 @@
+cast
+====
+
+.. currentmodule:: ansys.edb.core.terminal.terminal_instance
+
+.. automethod:: TerminalInstance.cast

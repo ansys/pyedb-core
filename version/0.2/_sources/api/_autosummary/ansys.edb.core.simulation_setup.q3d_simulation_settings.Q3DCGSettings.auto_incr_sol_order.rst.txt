@@ -1,0 +1,6 @@
+auto\_incr\_sol\_order
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_settings
+
+.. autoproperty:: Q3DCGSettings.auto_incr_sol_order

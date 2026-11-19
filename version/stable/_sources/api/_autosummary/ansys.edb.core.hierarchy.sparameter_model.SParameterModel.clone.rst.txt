@@ -1,0 +1,6 @@
+clone
+=====
+
+.. currentmodule:: ansys.edb.core.hierarchy.sparameter_model
+
+.. automethod:: SParameterModel.clone

@@ -1,0 +1,42 @@
+﻿Q3DSimulationSetup
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.q3d_simulation_setup
+
+.. autoclass:: Q3DSimulationSetup
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Q3DSimulationSetup.cast
+      
+      
+      Q3DSimulationSetup.create
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Q3DSimulationSetup.id
+      Q3DSimulationSetup.is_null
+      Q3DSimulationSetup.msg
+      Q3DSimulationSetup.name
+      Q3DSimulationSetup.position
+      Q3DSimulationSetup.settings
+      Q3DSimulationSetup.sweep_data
+      Q3DSimulationSetup.type
+   
+   

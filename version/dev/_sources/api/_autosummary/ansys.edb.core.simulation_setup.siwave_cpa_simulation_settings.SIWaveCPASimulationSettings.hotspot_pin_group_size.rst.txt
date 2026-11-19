@@ -1,0 +1,6 @@
+hotspot\_pin\_group\_size
+=========================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. autoproperty:: SIWaveCPASimulationSettings.hotspot_pin_group_size

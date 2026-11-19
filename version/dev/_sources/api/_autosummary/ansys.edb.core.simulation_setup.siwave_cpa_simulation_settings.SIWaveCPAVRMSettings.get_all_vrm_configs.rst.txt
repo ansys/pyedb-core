@@ -1,0 +1,6 @@
+get\_all\_vrm\_configs
+======================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_cpa_simulation_settings
+
+.. automethod:: SIWaveCPAVRMSettings.get_all_vrm_configs

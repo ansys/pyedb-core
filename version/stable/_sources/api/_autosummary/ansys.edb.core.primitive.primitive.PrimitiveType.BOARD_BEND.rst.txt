@@ -1,0 +1,6 @@
+BOARD\_BEND
+===========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoattribute:: PrimitiveType.BOARD_BEND

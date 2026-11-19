@@ -1,0 +1,6 @@
+corner\_style
+=============
+
+.. currentmodule:: ansys.edb.core.primitive.primitive
+
+.. autoproperty:: Path.corner_style

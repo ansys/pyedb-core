@@ -1,0 +1,6 @@
+NUM\_SOLVER\_TYPES
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.hfss_simulation_settings
+
+.. autoattribute:: SolverType.NUM_SOLVER_TYPES

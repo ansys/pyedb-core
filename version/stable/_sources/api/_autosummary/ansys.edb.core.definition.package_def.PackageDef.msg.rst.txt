@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.definition.package_def
+
+.. autoproperty:: PackageDef.msg

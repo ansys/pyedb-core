@@ -1,0 +1,6 @@
+x\_count
+========
+
+.. currentmodule:: ansys.edb.core.hierarchy.inst_array
+
+.. autoproperty:: InstArray.x_count

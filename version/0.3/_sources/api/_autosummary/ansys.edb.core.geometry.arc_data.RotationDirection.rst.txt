@@ -1,0 +1,24 @@
+﻿RotationDirection
+=================
+
+.. currentmodule:: ansys.edb.core.geometry.arc_data
+
+.. autoclass:: RotationDirection
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RotationDirection.CW
+      RotationDirection.CCW
+      RotationDirection.CO_LINEAR
+   
+   

@@ -1,0 +1,6 @@
+edb\_uid
+========
+
+.. currentmodule:: ansys.edb.core.primitive.primitive_instance_collection
+
+.. autoproperty:: PrimitiveInstanceCollection.edb_uid

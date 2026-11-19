@@ -1,0 +1,6 @@
+locked
+======
+
+.. currentmodule:: ansys.edb.core.layer.layer
+
+.. autoproperty:: Layer.locked

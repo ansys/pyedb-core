@@ -1,0 +1,24 @@
+﻿SIWavePSIModelType
+==================
+
+.. currentmodule:: ansys.edb.core.simulation_setup.siwave_psi_simulation_settings
+
+.. autoclass:: SIWavePSIModelType
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SIWavePSIModelType.RDL
+      SIWavePSIModelType.PACKAGE
+      SIWavePSIModelType.PCB
+   
+   

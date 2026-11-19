@@ -1,0 +1,6 @@
+msg
+===
+
+.. currentmodule:: ansys.edb.core.definition.port_property
+
+.. autoproperty:: PortProperty.msg

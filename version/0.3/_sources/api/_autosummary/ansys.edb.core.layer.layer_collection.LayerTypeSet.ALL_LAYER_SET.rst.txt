@@ -1,0 +1,6 @@
+ALL\_LAYER\_SET
+===============
+
+.. currentmodule:: ansys.edb.core.layer.layer_collection
+
+.. autoattribute:: LayerTypeSet.ALL_LAYER_SET

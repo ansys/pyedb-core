@@ -1,0 +1,25 @@
+$begin 'Models'
+	$begin 'v7_Multizone_Flex_MSL_Example#stride_internal'
+		Des='Multizone_Flex_MSL_Example#stride_internal'
+		Var='BendModel=\'1\''
+		ID=7
+		Scl=1.0000000000000000e-03
+		Xo=0.0000000000000000e+00
+		Yo=0.0000000000000000e+00
+		Zo=0.0000000000000000e+00
+		Def=''
+		Rot[16: 1.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00]
+		$begin 'Mdd'
+			hid=false
+			trace(vis=true, wir=false, trn=0.6, col=16512, cst=1, mdl=true, mto='copper')
+			rect_28(vis=true, wir=false, trn=0.6, col=128, cst=1, mdl=true, mto='copper')
+			Port1(vis=true, wir=false, trn=0.6, col=0, cst=1, mdl=true, mto='Copper')
+			Port_Port1(vis=true, wir=false, trn=0, col=5855692, cst=1, mdl=true, mto='pec')
+			Port2(vis=true, wir=false, trn=0.6, col=0, cst=1, mdl=true, mto='Copper')
+			Port_Port2(vis=true, wir=false, trn=0, col=5855692, cst=1, mdl=true, mto='pec')
+			top_t_fill(vis=true, wir=true, trn=1, col=6579300, cst=1, mdl=true, mto='polyimide')
+			DE(vis=true, wir=false, trn=0.6, col=32768, cst=1, mdl=true, mto='polyimide')
+			bottom_t_fill(vis=true, wir=true, trn=1, col=6579300, cst=1, mdl=true, mto='polyimide')
+		$end 'Mdd'
+	$end 'v7_Multizone_Flex_MSL_Example#stride_internal'
+$end 'Models'

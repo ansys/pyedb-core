@@ -30,8 +30,8 @@ from ansys.edb.core.layer.layer_collection import LayerCollectionMode
 from ansys.edb.core.layout.cell import Cell
 from ansys.edb.core.layout.cell import CellType
 from ansys.edb.core.primitive.board_bend_def import BoardBendDef
-from ansys.edb.core.primitive.board_bend_def import Rectangle
-from ansys.edb.core.primitive.board_bend_def import RectangleRepresentationType
+from ansys.edb.core.primitive.rectangle import Rectangle
+from ansys.edb.core.primitive.rectangle import RectangleRepresentationType
 from ansys.edb.core.session import session
 from ansys.edb.core.utility.value import Value
 

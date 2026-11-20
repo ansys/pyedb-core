@@ -815,6 +815,17 @@ def is_in_memory() -> bool:
     return MOD.current_session is not None and MOD.current_session.shared_memory
 
 
+def get_current_session() -> _Session | None:
+    """Get the currently active session, if any.
+
+    Returns
+    -------
+    ._Session or None
+        Currently active session, or ``None`` if no session is active.
+    """
+    return MOD.current_session
+
+
 def _ensure_session(
     ansys_em_root: str,
     port_num: int,

@@ -1,0 +1,70 @@
+$begin 'LayerInfo'
+	$begin 'LayerAttributes'
+		Name='top'
+		Id=0
+		CellId=1
+		Material='copper'
+		FillMaterial='polyimide'
+		Type='SIG'
+		SubType='LAYER'
+		Lower=6.7999999999999999e-05
+		Thickness=1.8000000000000000e-05
+		Wireframe=0
+		R=128
+		G=64
+		B=0
+		Alpha=102
+		ZoneIndex=0
+	$end 'LayerAttributes'
+	$begin 'LayerAttributes'
+		Name='bottom'
+		Id=1
+		CellId=1
+		Material='copper'
+		FillMaterial='polyimide'
+		Type='SIG'
+		SubType='LAYER'
+		Lower=0.0000000000000000e+00
+		Thickness=1.8000000000000000e-05
+		Wireframe=0
+		R=128
+		G=0
+		B=0
+		Alpha=102
+		ZoneIndex=0
+	$end 'LayerAttributes'
+	$begin 'LayerAttributes'
+		Name='Outline'
+		Id=2
+		CellId=1
+		Material=''
+		FillMaterial=''
+		Type='OUTLINE'
+		SubType='LAYER'
+		Lower=0.0000000000000000e+00
+		Thickness=0.0000000000000000e+00
+		Wireframe=0
+		R=53
+		G=57
+		B=129
+		Alpha=102
+		ZoneIndex=-1
+	$end 'LayerAttributes'
+	$begin 'LayerAttributes'
+		Name='DE'
+		Id=3
+		CellId=1
+		Material='polyimide'
+		FillMaterial=''
+		Type='DIEL'
+		SubType='LAYER'
+		Lower=1.8000000000000000e-05
+		Thickness=4.9999999999999996e-05
+		Wireframe=0
+		R=0
+		G=128
+		B=0
+		Alpha=102
+		ZoneIndex=0
+	$end 'LayerAttributes'
+$end 'LayerInfo'

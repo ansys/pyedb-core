@@ -61,8 +61,10 @@ class TestDatabaseCreate:
 
     def test_create_fails_for_nonexistent_directory(self, edb_session, tmp_path):
         """Verify Database.create() raises when the path is completely invalid."""
-        # Use a path with illegal characters that the OS itself will reject
-        invalid_path = str(tmp_path / "invalid|path<>.aedb")
+        # Use a path whose parent is a regular file, which is illegal on both Windows and Linux
+        blocker = tmp_path / "blocker"
+        blocker.write_text("not a directory")
+        invalid_path = str(blocker / "invalid.aedb")
         with pytest.raises(RuntimeError):
             Database.create(invalid_path)
 

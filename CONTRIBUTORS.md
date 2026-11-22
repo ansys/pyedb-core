@@ -12,6 +12,7 @@
 * [asamaiya](https://github.com/asamaiya)
 * [chenchienjacklin](https://github.com/chenchienjacklin)
 * [drewm102](https://github.com/drewm102)
+* [Edouard Coussoux](https://github.com/ecoussoux-ansys)
 * [Hiroki](https://github.com/hiro727)
 * [Isaac Waldron](https://github.com/isaacwaldron)
 * [Karan Bhagat](https://github.com/kbhagat-ansys)

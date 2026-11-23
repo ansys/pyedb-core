@@ -162,7 +162,7 @@ class Bondwire(Primitive):
         str
             Material name.
         """
-        return self.__stub.GetMaterial(Bondwire._bondwire_bool_message(self, evaluated))
+        return self.__stub.GetMaterial(Bondwire._bondwire_bool_message(self, evaluated)).value
 
     def set_material(self, material: str):
         """Set the material of the bondwire.

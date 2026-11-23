@@ -349,7 +349,7 @@ class _Session:
             return grpc.intercept_channel(grpc.insecure_channel(address, options=options), *self.interceptors)
         channel_params = {"transport_mode": self.transport_mode}
         if self._uses_uds():
-            channel_params["uds_fullpath"] = self._get_uds_file()
+            channel_params["uds_full_path"] = self._get_uds_file()
         else:
             channel_params["host"] = "localhost"
             channel_params["port"] = self.port_num
